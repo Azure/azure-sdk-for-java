@@ -4,7 +4,7 @@
  * license information.
  */
 
-package com.microsoft.azure.batch.protocol;
+package com.microsoft.azure.batch.auth;
 
 import com.microsoft.rest.DateTimeRfc1123;
 import okhttp3.Interceptor;
@@ -24,19 +24,19 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class BatchCredentialsInterceptor implements Interceptor {
+class BatchCredentialsInterceptor implements Interceptor {
 
     /**
      * 
      */
-    private BatchCredentials credentials;
+    private BatchSharedKeyCredentials credentials;
 
     /**
      * Constructor for BatchCredentialsInterceptor
      * @param batchCredentials
      *                          The account name/key credential              
      */
-    public BatchCredentialsInterceptor(BatchCredentials batchCredentials) {
+    public BatchCredentialsInterceptor(BatchSharedKeyCredentials batchCredentials) {
         this.credentials = batchCredentials;
     }
 
@@ -159,7 +159,7 @@ public class BatchCredentialsInterceptor implements Interceptor {
                 signature = signature + "\n" + entry.getValue();
             }
         }
-        String signedSignature = sign(credentials.getBatchKey(), signature);
+        String signedSignature = sign(credentials.getKeyValue(), signature);
         String authorization = "SharedKey " + credentials.getAccountName()
                 + ":" + signedSignature;
         builder.header("Authorization", authorization);
