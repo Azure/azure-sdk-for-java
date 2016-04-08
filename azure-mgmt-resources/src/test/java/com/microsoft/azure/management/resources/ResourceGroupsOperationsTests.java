@@ -1,45 +1,44 @@
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.azure.management.resources.models.dto.toplevel.ResourceGroup;
-
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.models.ResourceGroup;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.List;
-
 public class ResourceGroupsOperationsTests extends ResourceManagementTestBase {
+    public ResourceGroupsOperationsTests() throws Exception {
+    }
+
     @Test
     public void canCreateResourceGroup() throws Exception {
         String rgName = "javacsmrg";
         String location = "southcentralus";
         // Create
-        ResourceGroup group = new ResourceGroup();
-        group.setLocation(location);
-        group.setTags(new HashMap<String, String>());
-        group.getTags().put("department", "finance");
-        group.getTags().put("tagname", "tagvalue");
-        resourceManagementClient.resourceGroups().createOrUpdate(rgName, group);
+        subscription.resourceGroups().define(rgName)
+                .withLocation(Region.US_WEST)
+                .withTag("department", "finance")
+                .withTag("tagname", "tagvalue")
+                .provision();
         // List
-        List<ResourceGroup> listResult = resourceManagementClient.resourceGroups().list().getBody();
+        ResourceGroups resourceGroups = subscription.resourceGroups();
         ResourceGroup groupResult = null;
-        for (ResourceGroup rg : listResult) {
-            if (rg.getName().equals(rgName)) {
+        for (ResourceGroup rg : resourceGroups) {
+            if (rg.name().equals(rgName)) {
                 groupResult = rg;
                 break;
             }
         }
         Assert.assertNotNull(groupResult);
-        Assert.assertEquals("finance", groupResult.getTags().get("department"));
-        Assert.assertEquals("tagvalue", groupResult.getTags().get("tagname"));
-        Assert.assertEquals(location, groupResult.getLocation());
+        Assert.assertEquals("finance", groupResult.tags().get("department"));
+        Assert.assertEquals("tagvalue", groupResult.tags().get("tagname"));
+        Assert.assertEquals(location, groupResult.location());
         // Get
-        ResourceGroup getGroup = resourceManagementClient.resourceGroups().get(rgName).getBody();
+        ResourceGroup getGroup = resourceGroups.get(rgName);
         Assert.assertNotNull(getGroup);
-        Assert.assertEquals(rgName, getGroup.getName());
-        Assert.assertEquals(location, getGroup.getLocation());
+        Assert.assertEquals(rgName, getGroup.name());
+        Assert.assertEquals(location, getGroup.location());
         // Delete
-        resourceManagementClient.resourceGroups().delete(rgName);
-        Assert.assertFalse(resourceManagementClient.resourceGroups().checkExistence(rgName).getBody());
+        resourceGroups.delete(rgName);
+        Assert.assertFalse(resourceGroups.checkExistence(rgName));
     }
 }

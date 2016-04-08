@@ -18,17 +18,17 @@ public interface ResourceGroup extends
      ***********************************************************/
 
     String name();
-    String provisioningState() throws Exception;
-    String region() throws Exception;
-    Map<String, String> tags() throws Exception;
+    String provisioningState();
+    String location();
+    Map<String, String> tags();
 
     /**************************************************************
      * Setters (fluent interface)
      **************************************************************/
 
     interface DefinitionBlank {
-        DefinitionProvisionable withRegion(String regionName);
-        DefinitionProvisionable withRegion(Region region);
+        DefinitionProvisionable withLocation(String regionName);
+        DefinitionProvisionable withLocation(Region region);
     }
 
     interface DefinitionProvisionable extends Provisionable<ResourceGroup> {

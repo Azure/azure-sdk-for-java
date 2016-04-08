@@ -1,46 +1,65 @@
 package com.microsoft.azure.management.resources.implementation;
 
+import com.microsoft.azure.CloudException;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.ResourceGroups;
-import com.microsoft.azure.management.resources.fluentcore.arm.Azure;
-import com.microsoft.azure.management.resources.fluentcore.collection.implementation.EntitiesImpl;
+import com.microsoft.azure.management.resources.implementation.api.ResourceGroupsInner;
+import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.resources.models.implementation.ResourceGroupImpl;
+import com.microsoft.azure.management.resources.models.implementation.api.PageImpl;
 import com.microsoft.azure.management.resources.models.implementation.api.ResourceGroupInner;
+import com.microsoft.rest.RestException;
+import com.microsoft.rest.ServiceCallback;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class ResourceGroupsImpl extends EntitiesImpl<Azure>
+public class ResourceGroupsImpl
+        extends PagedList<ResourceGroup>
         implements ResourceGroups {
+    private ResourceGroupsInner client;
+    private ResourceManagementClientImpl serviceClient;
+    private PagedList<ResourceGroupInner> innerList;
+    private Map<String, ResourceGroup> indexable;
 
-    ResourceGroupsImpl(Azure azure) {
-        super(azure);
+    public ResourceGroupsImpl(ResourceManagementClientImpl serviceClient) throws IOException, CloudException {
+        this.serviceClient = serviceClient;
+        this.client = serviceClient.resourceGroups();
+        this.innerList = client.list().getBody();
     }
 
     @Override
-    public Map<String, ResourceGroup> list() throws Exception {
-        HashMap<String, ResourceGroup> wrappers = new HashMap<>();
-        for(ResourceGroupInner nativeItem : getNativeEntities()) {
-            ResourceGroupImpl wrapper = new ResourceGroupImpl(nativeItem, this);
-            wrappers.put(nativeItem.name(), wrapper);
+    public Map<String, ResourceGroup> asMap() throws Exception {
+        if (indexable == null) {
+            indexable = new HashMap<>();
+            for(ResourceGroup item : this) {
+                indexable.put(item.name(), item);
+            }
         }
-
-        return Collections.unmodifiableMap(wrappers);
+        return Collections.unmodifiableMap(indexable);
     }
 
     @Override
     // Gets a specific resource group
     public ResourceGroupImpl get(String name) throws Exception {
-        ResourceGroupInner azureGroup = azure.resourceManagementClient().resourceGroups().get(name).getBody();
-        return new ResourceGroupImpl(azureGroup, this);
+        ResourceGroupInner group = client.get(name).getBody();
+        return new ResourceGroupImpl(group, client);
     }
 
     @Override
     public void delete(String name) throws Exception {
-        azure.resourceManagementClient().resourceGroups().delete(name);
-        //TODO: Apparently the effect of the deletion is not immediate - Azure SDK misleadingly returns from this synch call even though listing resource groups will still include this
+        client.delete(name);
+    }
+
+    @Override
+    public void deleteAsync(String name, ServiceCallback<Void> callback) {
+        client.deleteAsync(name, callback);
     }
 
     @Override
@@ -53,6 +72,11 @@ public class ResourceGroupsImpl extends EntitiesImpl<Azure>
         return createWrapper(name);
     }
 
+    @Override
+    public boolean checkExistence(String name) throws CloudException, IOException {
+        return client.checkExistence(name).getBody();
+    }
+
     /***************************************************
      * Helpers
      ***************************************************/
@@ -61,13 +85,26 @@ public class ResourceGroupsImpl extends EntitiesImpl<Azure>
     private ResourceGroupImpl createWrapper(String name) {
         ResourceGroupInner azureGroup = new ResourceGroupInner();
         azureGroup.setName(name);
-        return new ResourceGroupImpl(azureGroup, this);
+        return new ResourceGroupImpl(azureGroup, client);
     }
 
-    // Helper to get the resource groups from Azure
-    private ArrayList<ResourceGroupInner> getNativeEntities() throws Exception {
-        // return this.azure.resourceManagementClient().resourceGroups().list().getBody();
-        // TODO
-        return null;
+    @Override
+    public Page<ResourceGroup> nextPage(String nextPageLink) throws RestException, IOException {
+        PageImpl<ResourceGroup> page = new PageImpl<>();
+        List<ResourceGroup> items = new ArrayList<>();
+        if (currentPage() == null) {
+            for (ResourceGroupInner inner : innerList) {
+                items.add((new ResourceGroupImpl(inner, client)));
+            }
+            page.setNextPageLink(innerList.nextpageLink());
+        } else {
+            Page<ResourceGroupInner> innerPage = innerList.nextPage(nextPageLink);
+            page.setNextPageLink(innerPage.getNextPageLink());
+            for (ResourceGroupInner inner : innerList) {
+                items.add((new ResourceGroupImpl(inner, client)));
+            }
+        }
+        page.setItems(items);
+        return page;
     }
 }

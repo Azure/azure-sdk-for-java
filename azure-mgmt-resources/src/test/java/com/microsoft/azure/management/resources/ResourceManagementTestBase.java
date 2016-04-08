@@ -1,22 +1,21 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
-import com.microsoft.azure.management.resources.client.ResourceManagementClient;
-import com.microsoft.azure.management.resources.client.implementation.ResourceManagementClientImpl;
-import okhttp3.logging.HttpLoggingInterceptor;
+import com.microsoft.azure.management.resources.implementation.AzureResource;
+import com.microsoft.azure.management.resources.models.Subscription;
 
 public abstract class ResourceManagementTestBase {
-    protected ResourceManagementClient resourceManagementClient;
+    protected AzureResourceAuthenticated resourceClient;
+    protected Subscription subscription;
 
-    public ResourceManagementTestBase() {
-        resourceManagementClient = new ResourceManagementClientImpl(
+    public ResourceManagementTestBase() throws Exception {
+        resourceClient = AzureResource.authenticate(
                 new ApplicationTokenCredentials(
                         System.getenv("arm.clientid"),
                         System.getenv("arm.domain"),
                         System.getenv("arm.secret"),
                         null)
         );
-        resourceManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
-        resourceManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);
+        subscription = resourceClient.subscriptions().get(System.getenv("arm.subscriptionid"));
     }
 }
