@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.models;
 
 import com.microsoft.azure.management.resources.models.ResourceGroup;
+import com.microsoft.azure.management.resources.models.implementation.api.ResourceGroupInner;
 
 public interface GroupableResource extends
 		Resource {
@@ -30,7 +31,7 @@ public interface GroupableResource extends
 		 * @param group An existing resource group object as returned by the Azure SDK for Java to put the resource in
 		 * @return The next stage of the resource definition
 		 */
-		T withExistingGroup(com.microsoft.azure.management.resources.models.dto.toplevel.ResourceGroup group);
+		T withExistingGroup(ResourceGroupInner group);
 
 		/**
 		 * Creates a new resource group to put the resource in. The group will be created in the same region as the resource. 

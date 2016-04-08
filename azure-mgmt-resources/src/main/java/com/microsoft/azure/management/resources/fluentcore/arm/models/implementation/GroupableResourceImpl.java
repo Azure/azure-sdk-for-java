@@ -4,6 +4,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Azure;
 import com.microsoft.azure.management.resources.fluentcore.collection.implementation.EntitiesImpl;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.models.implementation.api.ResourceGroupInner;
 
 public abstract class GroupableResourceImpl<
         WRAPPER,
@@ -48,7 +49,7 @@ public abstract class GroupableResourceImpl<
             }
 
             group = this.collection.azure().resourceGroups().define(this.groupName)
-                    .withRegion(this.region())
+                    .withLocation(this.region())
                     .provision();
             this.isExistingGroup = true;
             return group;
@@ -89,7 +90,7 @@ public abstract class GroupableResourceImpl<
         return this.withExistingGroup(group.name());
     }
 
-    public final WRAPPERIMPL withExistingGroup(com.microsoft.azure.management.resources.models.dto.toplevel.ResourceGroup group) {
-        return this.withExistingGroup(group.getName());
+    public final WRAPPERIMPL withExistingGroup(ResourceGroupInner group) {
+        return this.withExistingGroup(group.name());
     }
 }

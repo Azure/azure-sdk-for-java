@@ -1,9 +1,8 @@
 package com.microsoft.azure.management.resources.models.implementation;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.Azure;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.collection.implementation.EntitiesImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
+import com.microsoft.azure.management.resources.implementation.api.ResourceGroupsInner;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.resources.models.implementation.api.ResourceGroupInner;
 
@@ -19,11 +18,11 @@ public class ResourceGroupImpl 	extends
         ResourceGroup.DefinitionProvisionable,
         ResourceGroup.Update  {
 
-    private final EntitiesImpl<Azure> collection;
+    private final ResourceGroupsInner client;
 
-    public ResourceGroupImpl(ResourceGroupInner azureGroup, EntitiesImpl<Azure> collection) {
+    public ResourceGroupImpl(ResourceGroupInner azureGroup, ResourceGroupsInner client) {
         super(azureGroup.name(), azureGroup);
-        this.collection = collection;
+        this.client = client;
     }
 
     /***********************************************************
@@ -36,17 +35,17 @@ public class ResourceGroupImpl 	extends
     }
 
     @Override
-    public String provisioningState() throws Exception {
+    public String provisioningState() {
         return this.inner().properties().provisioningState();
     }
 
     @Override
-    public String region() throws Exception {
+    public String location() {
         return this.inner().location();
     }
 
     @Override
-    public Map<String, String> tags() throws Exception {
+    public Map<String, String> tags() {
         return Collections.unmodifiableMap(this.inner().tags());
     }
 
@@ -55,14 +54,14 @@ public class ResourceGroupImpl 	extends
      **************************************************************/
 
     @Override
-    public ResourceGroupImpl withRegion(String regionName) {       //  FLUENT: implementation of ResourceGroup.DefinitionBlank
+    public ResourceGroupImpl withLocation(String regionName) {       //  FLUENT: implementation of ResourceGroup.DefinitionBlank
         this.inner().setLocation(regionName);                      //
         return this;
     }
 
     @Override
-    public ResourceGroupImpl withRegion(Region region) {            //  FLUENT: implementation of ResourceGroup.DefinitionBlank
-        return this.withRegion(region.toString());                  //
+    public ResourceGroupImpl withLocation(Region region) {            //  FLUENT: implementation of ResourceGroup.DefinitionBlank
+        return this.withLocation(region.toString());                  //
     }
 
     @Override
@@ -93,26 +92,26 @@ public class ResourceGroupImpl 	extends
     @Override
     public ResourceGroupImpl apply() throws Exception {             //  FLUENT: implementation of ResourceGroup.Update.Updatable<T>
         ResourceGroupInner params = new ResourceGroupInner();
-        ResourceGroup group;
+        ResourceGroupInner group;
 
         params.setTags(this.inner().tags());
 
         // Figure out the region, since the SDK requires on the params explicitly even though it cannot be changed
         if(this.inner().location() != null) {
             params.setLocation(this.inner().location());
-        } else if(null == (group = this.collection.azure().resourceGroups().get(this.id))) {
+        } else if(null == (group = client.get(this.id).getBody())) {
             throw new Exception("Resource group not found");
         } else {
-            params.setLocation(group.region());
+            params.setLocation(group.location());
         }
 
-        this.collection.azure().resourceManagementClient().resourceGroups().createOrUpdate(this.id, params);
+        client.createOrUpdate(this.id, params);
         return this;
     }
 
     @Override
     public void delete() throws Exception {                         //  FLUENT: implementation of ResourceGroup.Update.UpdateBlank.Delete
-        this.collection.azure().resourceGroups().delete(this.id);
+        client.delete(this.id);
     }
 
     @Override
@@ -120,13 +119,13 @@ public class ResourceGroupImpl 	extends
         ResourceGroupInner params = new ResourceGroupInner();
         params.setLocation(this.inner().location());
         params.setTags(this.inner().tags());
-        this.collection.azure().resourceManagementClient().resourceGroups().createOrUpdate(this.id, params);
+        client.createOrUpdate(this.id, params);
         return this;
     }
 
     @Override
     public ResourceGroupImpl refresh() throws Exception {           //  FLUENT: implementation of ResourceGroup.Refreshable<ResourceGroup>
-        this.setInner(this.collection.azure().resourceManagementClient().resourceGroups().get(this.id).getBody());
+        this.setInner(client.get(this.id).getBody());
         return this;
     }
 }

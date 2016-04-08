@@ -20,7 +20,10 @@
 package com.microsoft.azure.management.resources.fluentcore.collection;
 
 
+import com.microsoft.rest.ServiceCallback;
+
 // Requires class to support deleting entities
 public interface SupportsDeleting {
 	void delete(String id) throws Exception;
+	void deleteAsync(String id, ServiceCallback<Void> callback) throws Exception;
 }

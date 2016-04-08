@@ -47,6 +47,16 @@
 
   <repositories>
     <repository>
+      <id>adx-internal</id>
+      <name>Azure internal Snapshots</name>
+      <url>file://\\aaptfile01\ADXSDK\Java\internal-snapshots</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+    </repository>
+    <repository>
       <id>adx-snapshots</id>
       <name>Azure ADX Snapshots</name>
       <url>http://adxsnapshots.azurewebsites.net</url>

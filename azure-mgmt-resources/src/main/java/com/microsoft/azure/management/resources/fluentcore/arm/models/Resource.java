@@ -19,7 +19,7 @@ public interface Resource extends
 	 */	
 	interface DefinitionWithRegion<T> {
 		/**
-		 * @param region The name of the location for the resource
+		 * @param regionName The name of the location for the resource
 		 * @return The next stage of the resource definition
 		 */
 	    T withRegion(String regionName);

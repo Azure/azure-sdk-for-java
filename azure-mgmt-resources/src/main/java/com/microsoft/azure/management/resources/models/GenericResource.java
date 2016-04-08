@@ -3,14 +3,15 @@ package com.microsoft.azure.management.resources.models;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Taggable;
 import com.microsoft.azure.management.resources.fluentcore.model.*;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
-import com.microsoft.azure.management.resources.models.dto.Plan;
+import com.microsoft.azure.management.resources.models.implementation.api.GenericResourceInner;
+import com.microsoft.azure.management.resources.models.implementation.api.Plan;
 
 import java.util.Map;
 
 public interface GenericResource extends
         GroupableResource,
         Refreshable<GenericResource>,
-        Wrapper<com.microsoft.azure.management.resources.models.dto.toplevel.GenericResource>,
+        Wrapper<GenericResourceInner>,
         Deletable {
 
     /***********************************************************
