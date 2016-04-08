@@ -4,6 +4,7 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Subscriptions;
+import com.microsoft.azure.management.resources.implementation.api.SubscriptionClientImpl;
 import com.microsoft.azure.management.resources.implementation.api.SubscriptionsInner;
 import com.microsoft.azure.management.resources.models.Location;
 import com.microsoft.azure.management.resources.models.Subscription;
@@ -22,13 +23,13 @@ import java.util.Map;
 public class SubscriptionsImpl
         extends PagedList<Subscription>
         implements Subscriptions {
-    private SubscriptionsInner client;
+    private SubscriptionClientImpl client;
     private PagedList<SubscriptionInner> innerList;
     private Map<String, Subscription> indexable;
 
-    SubscriptionsImpl(SubscriptionsInner client) throws IOException, CloudException {
+    SubscriptionsImpl(SubscriptionClientImpl client) throws IOException, CloudException {
         this.client = client;
-        this.innerList = client.list().getBody();
+        this.innerList = client.subscriptions().list().getBody();
     }
 
     @Override
@@ -45,7 +46,7 @@ public class SubscriptionsImpl
     @Override
     // Gets a specific resource group
     public SubscriptionImpl get(String name) throws Exception {
-        SubscriptionInner subscription = client.get(name).getBody();
+        SubscriptionInner subscription = client.subscriptions().get(name).getBody();
         return new SubscriptionImpl(subscription, client);
     }
 

@@ -27,6 +27,6 @@ public class AzureResourceAuthenticatedImpl implements AzureResourceAuthenticate
 
     @Override
     public Subscriptions subscriptions() throws IOException, CloudException {
-        return new SubscriptionsImpl(subscriptionClient.subscriptions());
+        return new SubscriptionsImpl(subscriptionClient);
     }
 }

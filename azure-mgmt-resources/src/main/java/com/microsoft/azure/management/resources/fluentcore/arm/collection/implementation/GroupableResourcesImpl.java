@@ -24,7 +24,7 @@ public abstract class GroupableResourcesImpl<WRAPPER,
     public final Map<String, WRAPPER> list(String groupName) throws Exception {
         HashMap<String, WRAPPER> wrappers = new HashMap<>();
         for(INNER nativeItem : getNativeEntities(groupName)) {
-            wrappers.put(nativeItem.getId(), wrap(nativeItem));
+            wrappers.put(nativeItem.id(), wrap(nativeItem));
         }
         return Collections.unmodifiableMap(wrappers);
     }
