@@ -69,7 +69,7 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     interface FileSystemService {
         @Headers("Content-Type: application/octet-stream")
         @POST("WebHdfsExt/{filePath}")
-        Call<ResponseBody> concurrentAppend(@Path("filePath") String filePath, @Body RequestBody streamContents, @Query("appendMode") AppendModeType appendMode, @Query("op") String op, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> concurrentAppend(@Path("filePath") String filePath, @Body RequestBody streamContents, @Query("appendMode") AppendModeType appendMode, @Query("op") String op, @Header("Transfer-Encoding") String transferEncoding, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("webhdfs/v1/{path}")
@@ -89,7 +89,7 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("webhdfs/v1/{listFilePath}")
-        Call<ResponseBody> listFileStatus(@Path("listFilePath") String listFilePath, @Query("op") String op, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listFileStatus(@Path("listFilePath") String listFilePath, @Query("listSize") Integer listSize, @Query("listAfter") String listAfter, @Query("listBefore") String listBefore, @Query("op") String op, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("webhdfs/va/{getContentSummaryFilePath}")
@@ -101,11 +101,11 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
 
         @Headers("Content-Type: application/octet-stream")
         @POST("webhdfs/v1/{directFilePath}")
-        Call<ResponseBody> append(@Path("directFilePath") String directFilePath, @Body RequestBody streamContents, @Query("op") String op, @Query("append") String append, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> append(@Path("directFilePath") String directFilePath, @Body RequestBody streamContents, @Query("op") String op, @Query("append") String append, @Header("Transfer-Encoding") String transferEncoding, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/octet-stream")
         @PUT("webhdfs/v1/{directFilePath}")
-        Call<ResponseBody> create(@Path("directFilePath") String directFilePath, @Body RequestBody streamContents, @Query("overwrite") Boolean overwrite, @Query("op") String op, @Query("write") String write, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> create(@Path("directFilePath") String directFilePath, @Body RequestBody streamContents, @Query("overwrite") Boolean overwrite, @Query("op") String op, @Query("write") String write, @Header("Transfer-Encoding") String transferEncoding, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("webhdfs/v1/{directFilePath}")
@@ -178,11 +178,12 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         final String op = "CONCURRENTAPPEND";
+        final String transferEncoding = "chunked";
         final AppendModeType appendMode = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
-        Call<ResponseBody> call = service.concurrentAppend(filePath, streamContentsConverted, appendMode, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.concurrentAppend(filePath, streamContentsConverted, appendMode, op, transferEncoding, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return concurrentAppendDelegate(call.execute());
     }
 
@@ -221,11 +222,12 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             return null;
         }
         final String op = "CONCURRENTAPPEND";
+        final String transferEncoding = "chunked";
         final AppendModeType appendMode = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
-        Call<ResponseBody> call = service.concurrentAppend(filePath, streamContentsConverted, appendMode, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.concurrentAppend(filePath, streamContentsConverted, appendMode, op, transferEncoding, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -269,10 +271,11 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         final String op = "CONCURRENTAPPEND";
+        final String transferEncoding = "chunked";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
-        Call<ResponseBody> call = service.concurrentAppend(filePath, streamContentsConverted, appendMode, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.concurrentAppend(filePath, streamContentsConverted, appendMode, op, transferEncoding, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return concurrentAppendDelegate(call.execute());
     }
 
@@ -312,10 +315,11 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             return null;
         }
         final String op = "CONCURRENTAPPEND";
+        final String transferEncoding = "chunked";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
-        Call<ResponseBody> call = service.concurrentAppend(filePath, streamContentsConverted, appendMode, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.concurrentAppend(filePath, streamContentsConverted, appendMode, op, transferEncoding, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -889,10 +893,13 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        final String op = "LISTSTATUS";
+        final String op = "MSLISTSTATUS";
+        final Integer listSize = null;
+        final String listAfter = null;
+        final String listBefore = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.listFileStatus(listFilePath, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listFileStatus(listFilePath, listSize, listAfter, listBefore, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return listFileStatusDelegate(call.execute());
     }
 
@@ -925,10 +932,96 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        final String op = "LISTSTATUS";
+        final String op = "MSLISTSTATUS";
+        final Integer listSize = null;
+        final String listAfter = null;
+        final String listBefore = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.listFileStatus(listFilePath, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listFileStatus(listFilePath, listSize, listAfter, listBefore, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<FileStatusesResult>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(listFileStatusDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Get the list of file status objects specified by the file path, with optional pagination parameters.
+     *
+     * @param listFilePath The Data Lake Store path (starting with '/') of the directory to list.
+     * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param listSize Gets or sets the number of items to return. Optional.
+     * @param listAfter Gets or sets the item or lexographical index after which to begin returning results. For example, a file list of 'a','b','d' and listAfter='b' will return 'd', and a listAfter='c' will also return 'd'. Optional.
+     * @param listBefore Gets or sets the item or lexographical index before which to begin returning results. For example, a file list of 'a','b','d' and listBefore='d' will return 'a','b', and a listBefore='c' will also return 'a','b'. Optional.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the FileStatusesResult object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<FileStatusesResult> listFileStatus(String listFilePath, String accountName, Integer listSize, String listAfter, String listBefore) throws CloudException, IOException, IllegalArgumentException {
+        if (listFilePath == null) {
+            throw new IllegalArgumentException("Parameter listFilePath is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.getAdlsFileSystemDnsSuffix() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        final String op = "MSLISTSTATUS";
+        this.client.getBaseUrl().set("{accountName}", accountName);
+        this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
+        Call<ResponseBody> call = service.listFileStatus(listFilePath, listSize, listAfter, listBefore, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        return listFileStatusDelegate(call.execute());
+    }
+
+    /**
+     * Get the list of file status objects specified by the file path, with optional pagination parameters.
+     *
+     * @param listFilePath The Data Lake Store path (starting with '/') of the directory to list.
+     * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param listSize Gets or sets the number of items to return. Optional.
+     * @param listAfter Gets or sets the item or lexographical index after which to begin returning results. For example, a file list of 'a','b','d' and listAfter='b' will return 'd', and a listAfter='c' will also return 'd'. Optional.
+     * @param listBefore Gets or sets the item or lexographical index before which to begin returning results. For example, a file list of 'a','b','d' and listBefore='d' will return 'a','b', and a listBefore='c' will also return 'a','b'. Optional.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listFileStatusAsync(String listFilePath, String accountName, Integer listSize, String listAfter, String listBefore, final ServiceCallback<FileStatusesResult> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (listFilePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter listFilePath is required and cannot be null."));
+            return null;
+        }
+        if (accountName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getAdlsFileSystemDnsSuffix() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String op = "MSLISTSTATUS";
+        this.client.getBaseUrl().set("{accountName}", accountName);
+        this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
+        Call<ResponseBody> call = service.listFileStatus(listFilePath, listSize, listAfter, listBefore, op, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<FileStatusesResult>(serviceCallback) {
             @Override
@@ -1147,10 +1240,11 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         final String op = "APPEND";
         final String append = "true";
+        final String transferEncoding = "chunked";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
-        Call<ResponseBody> call = service.append(directFilePath, streamContentsConverted, op, append, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.append(directFilePath, streamContentsConverted, op, append, transferEncoding, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return appendDelegate(call.execute());
     }
 
@@ -1190,10 +1284,11 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         final String op = "APPEND";
         final String append = "true";
+        final String transferEncoding = "chunked";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
-        Call<ResponseBody> call = service.append(directFilePath, streamContentsConverted, op, append, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.append(directFilePath, streamContentsConverted, op, append, transferEncoding, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -1239,12 +1334,13 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         final String op = "CREATE";
         final String write = "true";
+        final String transferEncoding = "chunked";
         final byte[] streamContents = new byte[0];
         final Boolean overwrite = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
-        Call<ResponseBody> call = service.create(directFilePath, streamContentsConverted, overwrite, op, write, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.create(directFilePath, streamContentsConverted, overwrite, op, write, transferEncoding, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return createDelegate(call.execute());
     }
 
@@ -1279,12 +1375,13 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         final String op = "CREATE";
         final String write = "true";
+        final String transferEncoding = "chunked";
         final byte[] streamContents = new byte[0];
         final Boolean overwrite = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
-        Call<ResponseBody> call = service.create(directFilePath, streamContentsConverted, overwrite, op, write, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.create(directFilePath, streamContentsConverted, overwrite, op, write, transferEncoding, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -1326,10 +1423,11 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         final String op = "CREATE";
         final String write = "true";
+        final String transferEncoding = "chunked";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
-        Call<ResponseBody> call = service.create(directFilePath, streamContentsConverted, overwrite, op, write, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.create(directFilePath, streamContentsConverted, overwrite, op, write, transferEncoding, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return createDelegate(call.execute());
     }
 
@@ -1366,10 +1464,11 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         final String op = "CREATE";
         final String write = "true";
+        final String transferEncoding = "chunked";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
-        Call<ResponseBody> call = service.create(directFilePath, streamContentsConverted, overwrite, op, write, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.create(directFilePath, streamContentsConverted, overwrite, op, write, transferEncoding, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override

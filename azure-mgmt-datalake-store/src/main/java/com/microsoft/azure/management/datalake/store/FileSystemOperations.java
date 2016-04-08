@@ -244,6 +244,34 @@ public interface FileSystemOperations {
      * @return the {@link ServiceCall} object
      */
     ServiceCall listFileStatusAsync(String listFilePath, String accountName, final ServiceCallback<FileStatusesResult> serviceCallback) throws IllegalArgumentException;
+    /**
+     * Get the list of file status objects specified by the file path, with optional pagination parameters.
+     *
+     * @param listFilePath The Data Lake Store path (starting with '/') of the directory to list.
+     * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param listSize Gets or sets the number of items to return. Optional.
+     * @param listAfter Gets or sets the item or lexographical index after which to begin returning results. For example, a file list of 'a','b','d' and listAfter='b' will return 'd', and a listAfter='c' will also return 'd'. Optional.
+     * @param listBefore Gets or sets the item or lexographical index before which to begin returning results. For example, a file list of 'a','b','d' and listBefore='d' will return 'a','b', and a listBefore='c' will also return 'a','b'. Optional.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the FileStatusesResult object wrapped in {@link ServiceResponse} if successful.
+     */
+    ServiceResponse<FileStatusesResult> listFileStatus(String listFilePath, String accountName, Integer listSize, String listAfter, String listBefore) throws CloudException, IOException, IllegalArgumentException;
+
+    /**
+     * Get the list of file status objects specified by the file path, with optional pagination parameters.
+     *
+     * @param listFilePath The Data Lake Store path (starting with '/') of the directory to list.
+     * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param listSize Gets or sets the number of items to return. Optional.
+     * @param listAfter Gets or sets the item or lexographical index after which to begin returning results. For example, a file list of 'a','b','d' and listAfter='b' will return 'd', and a listAfter='c' will also return 'd'. Optional.
+     * @param listBefore Gets or sets the item or lexographical index before which to begin returning results. For example, a file list of 'a','b','d' and listBefore='d' will return 'a','b', and a listBefore='c' will also return 'a','b'. Optional.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall listFileStatusAsync(String listFilePath, String accountName, Integer listSize, String listAfter, String listBefore, final ServiceCallback<FileStatusesResult> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets the file content summary object specified by the file path.
