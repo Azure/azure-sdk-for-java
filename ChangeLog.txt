@@ -1,3 +1,8 @@
+2016.04.07 Version 4.2.0
+ * Added support for setting a library-wide proxy. The default proxy can be set on OperationContext.
+ * Added support in Page Blob for getting a list of differing page ranges between snapshot versions.
+ * Added support in Page Blob for getting ranges of pages.
+
 2016.03.31 Version 4.1.0
  * Added support for client side encryption for blobs, queues and tables.
  * Since the encryption preview, added functionality where uploading encrypted blobs can be done with just PutBlob, not PutBlock + PutBlockList, if the blob is small enough.

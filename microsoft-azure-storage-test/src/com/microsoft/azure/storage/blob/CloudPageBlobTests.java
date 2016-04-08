@@ -22,12 +22,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Random;
 
 import org.junit.After;
@@ -831,32 +833,60 @@ public class CloudPageBlobTests {
         assertNotNull(blob.getProperties().getPageBlobSequenceNumber());
     }
 
-    @Test
-    public void testDownloadPages() throws StorageException, URISyntaxException, IOException {
+    private CloudPageBlob setUpPageRanges() throws StorageException, URISyntaxException, IOException {
         int blobLengthToUse = 8 * 512;
-        byte[] buffer = BlobTestHelper.getRandomBuffer(8 * 512);
+        byte[] buffer = BlobTestHelper.getRandomBuffer(blobLengthToUse);
 
         String blobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testblob");
         final CloudPageBlob blobRef = this.container.getPageBlobReference(blobName);
         blobRef.create(blobLengthToUse);
 
-        // Upload one page (page 0)
+        // Upload page 0
         ByteArrayInputStream inputStream = new ByteArrayInputStream(buffer);
         blobRef.uploadPages(inputStream, 0, 512);
 
         // Upload pages 2-4
         inputStream = new ByteArrayInputStream(buffer, 512, 3 * 512);
         blobRef.uploadPages(inputStream, 2 * 512, 3 * 512);
+        
+        // Upload page 6
+        inputStream = new ByteArrayInputStream(buffer, 3 * 512, 512);
+        blobRef.uploadPages(inputStream, 6 * 512, 512);
 
-        // Now, we expect the first 512 bytes of the blob to be the first 512 bytes of the random buffer (page 0)
-        // the next 512 bytes should be 0 (page 1)
-        // The next 3 * 512 bytes should be equal to bytes (512 -> 4 * 512) of the random buffer (pages 2-4)
-        // The next 3 * 512 bytes should be 0 (pages 5-7)
+        // Page0: 512 bytes should be the first 512 bytes of the random buffer (page 0)
+        // Page1: 512 bytes should be 0
+        // Page2-4: 3 * 512 bytes should be equal to bytes (512 -> 4 * 512) of the random buffer (pages 2-4)
+        // Page5: 512 bytes should be 0
+        // Page6: 512 bytes should be the 4th 512 byte segmented of the random buffer
+        // Page7-8: 2 * 512 bytes should be 0
+        return blobRef;
+    }
+    
+    @Test
+    public void testDownloadPages() throws StorageException, URISyntaxException, IOException {
+        final CloudPageBlob blobRef = setUpPageRanges();
 
         ArrayList<PageRange> actualPageRanges = blobRef.downloadPageRanges();
         ArrayList<PageRange> expectedPageRanges = new ArrayList<PageRange>();
         expectedPageRanges.add(new PageRange(0, 512 - 1));
-        expectedPageRanges.add(new PageRange(2 * 512, 2 * 512 + 3 * 512 - 1));
+        expectedPageRanges.add(new PageRange(2 * 512, 5 * 512 - 1));
+        expectedPageRanges.add(new PageRange(6 * 512, 7 * 512 - 1));
+
+        assertEquals(expectedPageRanges.size(), actualPageRanges.size());
+        for (int i = 0; i < expectedPageRanges.size(); i++) {
+            assertEquals(expectedPageRanges.get(i).getStartOffset(), actualPageRanges.get(i).getStartOffset());
+            assertEquals(expectedPageRanges.get(i).getEndOffset(), actualPageRanges.get(i).getEndOffset());
+        }
+    }
+    
+    @Test
+    public void testDownloadPageRangesWithOffset() throws StorageException, URISyntaxException, IOException {
+        final CloudPageBlob blobRef = setUpPageRanges();
+        
+        List<PageRange> actualPageRanges = blobRef.downloadPageRanges((long)1*512, null);
+        List<PageRange> expectedPageRanges = new ArrayList<PageRange>();
+        expectedPageRanges.add(new PageRange(2 * 512, 5 * 512 - 1));
+        expectedPageRanges.add(new PageRange(6 * 512, 7 * 512 - 1));
 
         assertEquals(expectedPageRanges.size(), actualPageRanges.size());
         for (int i = 0; i < expectedPageRanges.size(); i++) {
@@ -865,6 +895,70 @@ public class CloudPageBlobTests {
         }
     }
 
+    @Test
+    public void testDownloadPageRangesWithOffsetAndLength() throws StorageException, URISyntaxException, IOException {
+        final CloudPageBlob blobRef = setUpPageRanges();
+        
+        List<PageRange> actualPageRanges = blobRef.downloadPageRanges((long)1*512, (long)5*512);
+        List<PageRange> expectedPageRanges = new ArrayList<PageRange>();
+        expectedPageRanges.add(new PageRange(2 * 512, 5 * 512 - 1));
+
+        assertEquals(expectedPageRanges.size(), actualPageRanges.size());
+        for (int i = 0; i < expectedPageRanges.size(); i++) {
+            assertEquals(expectedPageRanges.get(i).getStartOffset(), actualPageRanges.get(i).getStartOffset());
+            assertEquals(expectedPageRanges.get(i).getEndOffset(), actualPageRanges.get(i).getEndOffset());
+        }
+    }
+    
+    @Test
+    public void testDownloadPageRangeDiff() throws StorageException, URISyntaxException, IOException {
+        final CloudPageBlob blobRef = setUpPageRanges();
+        final CloudPageBlob snapshot = (CloudPageBlob) blobRef.createSnapshot();
+        
+        // Add page 1
+        InputStream inputStream = new ByteArrayInputStream(BlobTestHelper.getRandomBuffer(512));        
+        inputStream = new ByteArrayInputStream(BlobTestHelper.getRandomBuffer(512));
+        blobRef.uploadPages(inputStream, 0, 512);        
+        
+        // Clear page 6
+        blobRef.clearPages(6 * 512, 512);
+
+        List<PageRangeDiff> actualPageRanges = blobRef.downloadPageRangesDiff(snapshot.getSnapshotID());
+        List<PageRangeDiff> expectedPageRanges = new ArrayList<PageRangeDiff>();
+        expectedPageRanges.add(new PageRangeDiff(0, 512 - 1, false));
+        expectedPageRanges.add(new PageRangeDiff(6 * 512, 7 * 512 - 1, true));
+
+        assertEquals(expectedPageRanges.size(), actualPageRanges.size());
+        for (int i = 0; i < expectedPageRanges.size(); i++) {
+            assertEquals(expectedPageRanges.get(i).getStartOffset(), actualPageRanges.get(i).getStartOffset());
+            assertEquals(expectedPageRanges.get(i).getEndOffset(), actualPageRanges.get(i).getEndOffset());
+            assertEquals(expectedPageRanges.get(i).isCleared(), actualPageRanges.get(i).isCleared());
+        }
+    }
+    
+    @Test
+    public void testDownloadPageRangeDiffWithOffsetAndLength() throws StorageException, URISyntaxException, IOException {
+        final CloudPageBlob blobRef = setUpPageRanges();
+        final CloudPageBlob snapshot = (CloudPageBlob) blobRef.createSnapshot();
+        
+        // Add page 1
+        InputStream inputStream = new ByteArrayInputStream(BlobTestHelper.getRandomBuffer(512));
+        blobRef.uploadPages(inputStream, 0, 512);
+
+        List<PageRangeDiff> actualPageRanges = blobRef.downloadPageRangesDiff(snapshot.getSnapshotID(), (long) 0,
+                (long) 5 * 512, null, null, null);
+        
+        List<PageRangeDiff> expectedPageRanges = new ArrayList<PageRangeDiff>();
+        expectedPageRanges.add(new PageRangeDiff(0, 512 - 1, false));
+
+        assertEquals(expectedPageRanges.size(), actualPageRanges.size());
+        for (int i = 0; i < expectedPageRanges.size(); i++) {
+            assertEquals(expectedPageRanges.get(i).getStartOffset(), actualPageRanges.get(i).getStartOffset());
+            assertEquals(expectedPageRanges.get(i).getEndOffset(), actualPageRanges.get(i).getEndOffset());
+            assertEquals(expectedPageRanges.get(i).isCleared(), actualPageRanges.get(i).isCleared());
+        }
+    }
+    
     @Test
     public void testUploadDownloadBlobProperties() throws URISyntaxException, StorageException, IOException {
         final int length = 512;
