@@ -35,9 +35,15 @@ public final class OperationContext {
 
     /**
      * Indicates whether the client library should produce log entries by default. The default can be overridden to
-     * enable logging for an individual operation context instance by using {@link setLoggingEnabled}.
+     * enable logging for an individual operation context instance by using {@link #setLoggingEnabled}.
      */
     private static boolean enableLoggingByDefault = false;
+    
+    /**
+     * Indicates whether the client library should use a proxy by default. The default can be overridden to
+     * enable proxy for an individual operation context instance by using {@link #setProxy}.
+     */
+    private static Proxy proxyDefault;
 
     /**
      * Represents a proxy to be used when making a request.
@@ -208,7 +214,8 @@ public final class OperationContext {
     }
 
     /**
-     * Gets a proxy which will be used when making a request. Default is <code>null</code>.
+     * Gets a proxy which will be used when making a request. Default is <code>null</code>. To set a proxy to use by 
+     * default, use {@link #setDefaultProxy}
      * 
      * @return A {@link java.net.Proxy} to use when making a request.
      */
@@ -391,7 +398,8 @@ public final class OperationContext {
     }
 
     /**
-     * Sets a proxy which will be used when making a request. Default is <code>null</code>.
+     * Sets a proxy which will be used when making a request. Default is <code>null</code>. To set a proxy to use by 
+     * default, use {@link #setDefaultProxy}
      * 
      * @param proxy
      *            A {@link java.net.Proxy} to use when making a request.
@@ -529,5 +537,26 @@ public final class OperationContext {
      */
     public static void setLoggingEnabledByDefault(boolean enableLoggingByDefault) {
         OperationContext.enableLoggingByDefault = enableLoggingByDefault;
+    }
+    
+    /**
+     * Gets the default proxy used by the client library if enabled. The default can be overridden
+     * to enable a proxy for an individual operation context instance by using {@link #setProxy}.
+     * 
+     * @return The default {@link java.net.Proxy} if set; otherwise <code>null</code>
+     */
+    public static Proxy getDefaultProxy() {
+        return OperationContext.proxyDefault;
+    }
+
+    /**
+     * Specifies the proxy the client library should use by default. The default can be overridden
+     * to turn on a proxy for an individual operation context instance by using {@link #setProxy}.
+     * 
+     * @param defaultProxy
+     *        The {@link java.net.Proxy} to use by default, or <code>null</code> to not use a proxy.
+     */
+    public static void setDefaultProxy(Proxy defaultProxy) {
+        OperationContext.proxyDefault = defaultProxy;
     }
 }
