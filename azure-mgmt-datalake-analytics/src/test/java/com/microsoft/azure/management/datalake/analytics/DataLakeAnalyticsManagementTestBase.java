@@ -9,10 +9,8 @@ import com.microsoft.azure.management.datalake.analytics.models.JobType;
 import com.microsoft.azure.management.datalake.analytics.models.USqlJobProperties;
 import com.microsoft.azure.management.datalake.store.DataLakeStoreAccountManagementClient;
 import com.microsoft.azure.management.datalake.store.DataLakeStoreAccountManagementClientImpl;
-import com.microsoft.azure.management.resources.client.ResourceManagementClient;
-import com.microsoft.azure.management.resources.client.implementation.ResourceManagementClientImpl;
-import com.microsoft.azure.management.storage.StorageManagementClient;
-import com.microsoft.azure.management.storage.StorageManagementClientImpl;
+import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
+import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
 import okhttp3.logging.HttpLoggingInterceptor;
 import org.junit.Assert;
 
@@ -22,9 +20,9 @@ public abstract class DataLakeAnalyticsManagementTestBase {
     protected static DataLakeAnalyticsAccountManagementClient dataLakeAnalyticsAccountManagementClient;
     protected static DataLakeAnalyticsJobManagementClient dataLakeAnalyticsJobManagementClient;
     protected static DataLakeAnalyticsCatalogManagementClient dataLakeAnalyticsCatalogManagementClient;
-    protected static ResourceManagementClient resourceManagementClient;
+    protected static ResourceManagementClientImpl resourceManagementClient;
     protected static DataLakeStoreAccountManagementClient dataLakeStoreAccountManagementClient;
-    protected static StorageManagementClient storageManagementClient;
+    protected static StorageManagementClientImpl storageManagementClient;
 
     public static void createClients() {
         UserTokenCredentials credentials = new UserTokenCredentials(

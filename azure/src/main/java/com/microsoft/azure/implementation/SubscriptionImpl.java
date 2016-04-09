@@ -6,55 +6,50 @@
 
 package com.microsoft.azure.implementation;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.Subscription;
-import com.microsoft.azure.management.compute.ComputeManagementClient;
-import com.microsoft.azure.management.compute.implementation.ComputeManagementClientImpl;
-import com.microsoft.azure.management.compute.VirtualMachines;
-import com.microsoft.azure.management.network.NetworkManagementClient;
-import com.microsoft.azure.management.network.NetworkManagementClientImpl;
-import com.microsoft.azure.management.network.VirtualNetworks;
-import com.microsoft.azure.management.resources.collection.ResourceGroups;
-import com.microsoft.azure.management.resources.client.ResourceManagementClient;
-import com.microsoft.azure.management.resources.client.implementation.ResourceManagementClientImpl;
+import com.microsoft.azure.management.resources.AzureResourceAuthenticated;
+import com.microsoft.azure.management.resources.ResourceGroups;
+import com.microsoft.azure.management.resources.implementation.AzureResource;
+import com.microsoft.azure.management.storage.AzureStorageAuthenticated;
 import com.microsoft.azure.management.storage.StorageAccounts;
-import com.microsoft.azure.management.storage.StorageManagementClient;
-import com.microsoft.azure.management.storage.StorageManagementClientImpl;
+import com.microsoft.azure.management.storage.implementation.AzureStorage;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
+import java.io.IOException;
+
 public class SubscriptionImpl implements Subscription {
-    private ResourceManagementClient resourceClient;
-    private StorageManagementClient storageClient;
-    private NetworkManagementClient networkClient;
-    private ComputeManagementClient computeClient;
+    private ServiceClientCredentials credentials;
+    private String subscriptionId;
+    private AzureResourceAuthenticated resourceClient;
+    private AzureStorageAuthenticated storageClient;
 
     public SubscriptionImpl(ServiceClientCredentials credentials, String subscriptionId) {
-        this.resourceClient = new ResourceManagementClientImpl(credentials);
-        this.storageClient = new StorageManagementClientImpl(credentials);
-        this.networkClient = new NetworkManagementClientImpl(credentials);
-        this.computeClient = new ComputeManagementClientImpl(credentials);
-        this.resourceClient.setSubscriptionId(subscriptionId);
-        this.storageClient.setSubscriptionId(subscriptionId);
-        this.networkClient.setSubscriptionId(subscriptionId);
-        this.computeClient.setSubscriptionId(subscriptionId);
+        this.credentials = credentials;
+        this.subscriptionId = subscriptionId;
+    }
+
+    private AzureResourceAuthenticated resourceClient() {
+        if (resourceClient == null) {
+            resourceClient = AzureResource.authenticate(this.credentials); // TODO: Subscriptionid
+        }
+        return resourceClient;
+    }
+
+    private AzureStorageAuthenticated storageClient() {
+        if (storageClient == null) {
+            storageClient = AzureStorage.authenticate(this.credentials, this.subscriptionId);
+        }
+        return storageClient;
     }
 
     @Override
-    public VirtualMachines virtualMachines() {
-        return computeClient.virtualMachines();
+    public ResourceGroups resourceGroups() throws IOException, CloudException {
+        return resourceClient().resourceGroups();
     }
 
     @Override
-    public ResourceGroups resourceGroups() {
-        return resourceClient.resourceGroups();
-    }
-
-    @Override
-    public StorageAccounts storageAccounts() {
-        return storageClient.storageAccounts();
-    }
-
-    @Override
-    public VirtualNetworks virtualNetworks() {
-        return networkClient.virtualNetworks();
+    public StorageAccounts storageAccounts()  throws IOException, CloudException {
+        return storageClient().storageAccounts();
     }
 }

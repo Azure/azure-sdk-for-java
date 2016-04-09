@@ -8,7 +8,7 @@ import com.microsoft.azure.management.datalake.store.models.FileStatusProperties
 import com.microsoft.azure.management.datalake.store.models.FileStatusResult;
 import com.microsoft.azure.management.datalake.store.models.FileStatusesResult;
 import com.microsoft.azure.management.datalake.store.models.FileType;
-import com.microsoft.azure.management.resources.models.dto.toplevel.ResourceGroup;
+import com.microsoft.azure.management.resources.models.implementation.api.ResourceGroupInner;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -37,7 +37,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
     @BeforeClass
     public static void setup() throws Exception {
         createClients();
-        ResourceGroup group = new ResourceGroup();
+        ResourceGroupInner group = new ResourceGroupInner();
         String location = "eastus2";
         group.setLocation(location);
         resourceManagementClient.resourceGroups().createOrUpdate(rgName, group);

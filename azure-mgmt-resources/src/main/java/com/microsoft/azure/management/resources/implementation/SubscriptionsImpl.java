@@ -27,7 +27,7 @@ public class SubscriptionsImpl
     private PagedList<SubscriptionInner> innerList;
     private Map<String, Subscription> indexable;
 
-    SubscriptionsImpl(SubscriptionClientImpl client) throws IOException, CloudException {
+    public SubscriptionsImpl(SubscriptionClientImpl client) throws IOException, CloudException {
         this.client = client;
         this.innerList = client.subscriptions().list().getBody();
     }

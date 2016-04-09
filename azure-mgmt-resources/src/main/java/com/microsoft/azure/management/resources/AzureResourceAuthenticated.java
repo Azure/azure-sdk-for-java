@@ -13,4 +13,5 @@ import java.io.IOException;
 
 public interface AzureResourceAuthenticated {
     Subscriptions subscriptions() throws IOException, CloudException;
+    ResourceGroups resourceGroups() throws IOException, CloudException;
 }

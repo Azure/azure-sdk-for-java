@@ -6,17 +6,12 @@
 
 package com.microsoft.azure;
 
-import com.microsoft.azure.management.compute.VirtualMachines;
-import com.microsoft.azure.management.network.VirtualNetworks;
-import com.microsoft.azure.management.resources.collection.ResourceGroups;
+import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.storage.StorageAccounts;
 
+import java.io.IOException;
+
 public interface Subscription {
-    VirtualMachines virtualMachines();
-
-    ResourceGroups resourceGroups();
-
-    StorageAccounts storageAccounts();
-
-    VirtualNetworks virtualNetworks();
+    ResourceGroups resourceGroups() throws IOException, CloudException;
+    StorageAccounts storageAccounts() throws IOException, CloudException;
 }
