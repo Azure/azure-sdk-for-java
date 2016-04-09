@@ -5,8 +5,6 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.implementation.api.SubscriptionClientImpl;
-import com.microsoft.azure.management.resources.implementation.api.SubscriptionsInner;
-import com.microsoft.azure.management.resources.models.Location;
 import com.microsoft.azure.management.resources.models.Subscription;
 import com.microsoft.azure.management.resources.models.implementation.SubscriptionImpl;
 import com.microsoft.azure.management.resources.models.implementation.api.PageImpl;
@@ -14,13 +12,9 @@ import com.microsoft.azure.management.resources.models.implementation.api.Subscr
 import com.microsoft.rest.RestException;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class SubscriptionsImpl
+final class SubscriptionsImpl
         extends PagedList<Subscription>
         implements Subscriptions {
     private SubscriptionClientImpl client;
@@ -30,6 +24,7 @@ public class SubscriptionsImpl
     public SubscriptionsImpl(SubscriptionClientImpl client) throws IOException, CloudException {
         this.client = client;
         this.innerList = client.subscriptions().list().getBody();
+        this.loadNextPage();
     }
 
     @Override
@@ -72,10 +67,5 @@ public class SubscriptionsImpl
         }
         page.setItems(items);
         return page;
-    }
-
-    @Override
-    public PagedList<Location> listLocations() {
-        return null;
     }
 }
