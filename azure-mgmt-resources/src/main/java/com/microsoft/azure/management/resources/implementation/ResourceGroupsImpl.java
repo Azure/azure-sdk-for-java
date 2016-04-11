@@ -1,48 +1,37 @@
 package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.Page;
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.ResourceGroups;
+import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupsInner;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.resources.models.implementation.ResourceGroupImpl;
-import com.microsoft.azure.management.resources.models.implementation.api.PageImpl;
 import com.microsoft.azure.management.resources.models.implementation.api.ResourceGroupInner;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCallback;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ResourceGroupsImpl
-        extends PagedList<ResourceGroup>
         implements ResourceGroups {
     private ResourceGroupsInner client;
     private ResourceManagementClientImpl serviceClient;
-    private PagedList<ResourceGroupInner> innerList;
-    private Map<String, ResourceGroup> indexable;
 
-    public ResourceGroupsImpl(ResourceManagementClientImpl serviceClient) throws IOException, CloudException {
+    public ResourceGroupsImpl(ResourceManagementClientImpl serviceClient) {
         this.serviceClient = serviceClient;
         this.client = serviceClient.resourceGroups();
-        this.innerList = client.list().getBody();
     }
 
     @Override
-    public Map<String, ResourceGroup> asMap() throws Exception {
-        if (indexable == null) {
-            indexable = new HashMap<>();
-            for(ResourceGroup item : this) {
-                indexable.put(item.name(), item);
+    public List<ResourceGroup> list() throws CloudException, IOException {
+        PagedListConverter<ResourceGroupInner, ResourceGroup> converter = new PagedListConverter<ResourceGroupInner, ResourceGroup>() {
+            @Override
+            public ResourceGroup typeConvert(ResourceGroupInner resourceGroupInner) {
+                return new ResourceGroupImpl(resourceGroupInner, client);
             }
-        }
-        return Collections.unmodifiableMap(indexable);
+        };
+        return converter.convert(client.list().getBody());
     }
 
     @Override
@@ -88,23 +77,4 @@ public class ResourceGroupsImpl
         return new ResourceGroupImpl(azureGroup, client);
     }
 
-    @Override
-    public Page<ResourceGroup> nextPage(String nextPageLink) throws RestException, IOException {
-        PageImpl<ResourceGroup> page = new PageImpl<>();
-        List<ResourceGroup> items = new ArrayList<>();
-        if (currentPage() == null) {
-            for (ResourceGroupInner inner : innerList) {
-                items.add((new ResourceGroupImpl(inner, client)));
-            }
-            page.setNextPageLink(innerList.nextpageLink());
-        } else {
-            Page<ResourceGroupInner> innerPage = innerList.nextPage(nextPageLink);
-            page.setNextPageLink(innerPage.getNextPageLink());
-            for (ResourceGroupInner inner : innerList) {
-                items.add((new ResourceGroupImpl(inner, client)));
-            }
-        }
-        page.setItems(items);
-        return page;
-    }
 }

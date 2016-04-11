@@ -19,10 +19,12 @@
 */
 package com.microsoft.azure.management.resources.fluentcore.collection;
 
+import com.microsoft.azure.CloudException;
+
+import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 // Requires class to support listing entities
-public interface SupportsListing<T> extends List<T> {
-	Map<String, T> asMap() throws Exception;
+public interface SupportsListing<T> {
+	List<T> list() throws CloudException, IOException;
 }

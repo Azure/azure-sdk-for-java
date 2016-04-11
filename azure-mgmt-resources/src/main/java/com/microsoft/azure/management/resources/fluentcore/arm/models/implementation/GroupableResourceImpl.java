@@ -22,7 +22,7 @@ public abstract class GroupableResourceImpl<
     ResourceGroups resourceGroups;
     ResourceManagementClientImpl resourceManagementClient;
 
-    protected GroupableResourceImpl(String id, INNER innerObject, ResourceManagementClientImpl serviceClient)  throws CloudException, IOException {
+    protected GroupableResourceImpl(String id, INNER innerObject, ResourceManagementClientImpl serviceClient) {
         super(id, innerObject);
         this.resourceManagementClient = serviceClient;
         this.resourceGroups = new ResourceGroupsImpl(serviceClient);
