@@ -9,6 +9,8 @@ import java.util.logging.Logger;
 
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.reactor.Reactor;
+
 import com.microsoft.azure.servicebus.ClientConstants;
 
 public class ReactorHandler extends BaseHandler
@@ -22,6 +24,9 @@ public class ReactorHandler extends BaseHandler
         {
             TRACE_LOGGER.log(Level.FINE, "reactor.onReactorInit");
         }
+		
+		Reactor reactor = e.getReactor();
+		reactor.setTimeout(ClientConstants.REACTOR_IO_POLL_TIMEOUT);
 	}
     
     @Override public void onReactorFinal(Event e)

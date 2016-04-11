@@ -40,4 +40,6 @@ public final class ClientConstants
 	public final static String SERVICEBUS_CLIENT_TRACE = "servicebus.trace";
 	
 	public final static boolean DEFAULT_IS_TRANSIENT = true;
+	
+	public final static int REACTOR_IO_POLL_TIMEOUT = 100;
 }
