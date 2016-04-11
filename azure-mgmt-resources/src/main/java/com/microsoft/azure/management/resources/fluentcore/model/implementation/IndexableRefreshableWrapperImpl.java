@@ -19,8 +19,6 @@
 */
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
 
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableRefreshableImpl;
-
 public abstract class IndexableRefreshableWrapperImpl<WRAPPER, INNER> extends IndexableRefreshableImpl<WRAPPER> {
 
 	private INNER innerObject; 

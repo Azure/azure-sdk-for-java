@@ -50,14 +50,14 @@ final class GenericResourcesImpl extends PagedList<GenericResource>
         List<GenericResource> items = new ArrayList<>();
         if (currentPage() == null) {
             for (GenericResourceInner inner : innerList) {
-                items.add((new GenericResourceImpl(inner, client)));
+                items.add((new GenericResourceImpl(inner.id(), inner, serviceClient)));
             }
             page.setNextPageLink(innerList.nextpageLink());
         } else {
             Page<GenericResourceInner> innerPage = innerList.nextPage(nextPageLink);
             page.setNextPageLink(innerPage.getNextPageLink());
             for (GenericResourceInner inner : innerList) {
-                items.add((new GenericResourceImpl(inner, client)));
+                items.add((new GenericResourceImpl(inner.id(), inner, serviceClient)));
             }
         }
         page.setItems(items);

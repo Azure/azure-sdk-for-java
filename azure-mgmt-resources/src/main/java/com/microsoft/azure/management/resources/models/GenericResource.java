@@ -11,8 +11,7 @@ import java.util.Map;
 public interface GenericResource extends
         GroupableResource,
         Refreshable<GenericResource>,
-        Wrapper<GenericResourceInner>,
-        Deletable {
+        Wrapper<GenericResourceInner> {
 
     /***********************************************************
      * Getters

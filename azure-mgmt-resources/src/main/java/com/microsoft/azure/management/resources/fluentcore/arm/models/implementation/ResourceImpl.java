@@ -1,10 +1,8 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.models.implementation;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.Azure;
-import com.microsoft.azure.management.resources.fluentcore.collection.implementation.EntitiesImpl;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -19,11 +17,9 @@ public abstract class ResourceImpl<
         implements
         Resource {
 
-    protected final EntitiesImpl<Azure> collection;
 
-    protected ResourceImpl(String id, INNER innerObject, EntitiesImpl<Azure> collection) {
+    protected ResourceImpl(String id, INNER innerObject) {
         super(id, innerObject);
-        this.collection = collection;
     }
 
     /*******************************************
