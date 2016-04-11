@@ -6,10 +6,11 @@
 
 package com.microsoft.azure;
 
-import com.microsoft.azure.management.resources.collection.Subscriptions;
+import com.microsoft.azure.management.resources.Subscriptions;
+
+import java.io.IOException;
 
 public interface AzureAuthenticated {
     Subscriptions subscriptions();
-
-    Subscription subscription(String subscriptionId);
+    Subscription subscription(String subscriptionId) throws IOException, CloudException;
 }

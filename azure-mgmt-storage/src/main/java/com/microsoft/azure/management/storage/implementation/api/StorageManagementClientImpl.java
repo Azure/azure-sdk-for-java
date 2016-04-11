@@ -4,7 +4,7 @@
  * license information.
  */
 
-package com.microsoft.azure.management.storage;
+package com.microsoft.azure.management.storage.implementation.api;
 
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
@@ -16,9 +16,9 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
 /**
- * Initializes a new instance of the StorageManagementClient class.
+ * Initializes a new instance of the StorageManagementClientImpl class.
  */
-public final class StorageManagementClientImpl extends AzureServiceClient implements StorageManagementClient {
+public final class StorageManagementClientImpl extends AzureServiceClient {
     /** The URL used as the base for all cloud service requests. */
     private final AutoRestBaseUrl baseUrl;
     /** the {@link AzureClient} used for long running operations. */
@@ -150,19 +150,19 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
-     * Gets the StorageAccounts object to access its operations.
-     * @return the StorageAccounts object.
+     * Gets the StorageAccountsInner object to access its operations.
+     * @return the StorageAccountsInner object.
      */
-    public StorageAccounts storageAccounts() {
-        return new StorageAccountsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public StorageAccountsInner storageAccounts() {
+        return new StorageAccountsInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the Usages object to access its operations.
-     * @return the Usages object.
+     * Gets the UsagesInner object to access its operations.
+     * @return the UsagesInner object.
      */
-    public Usages usages() {
-        return new UsagesImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public UsagesInner usages() {
+        return new UsagesInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**

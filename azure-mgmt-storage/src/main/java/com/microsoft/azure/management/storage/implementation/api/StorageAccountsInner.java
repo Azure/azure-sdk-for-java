@@ -4,19 +4,19 @@
  * license information.
  */
 
-package com.microsoft.azure.management.storage;
+package com.microsoft.azure.management.storage.implementation.api;
 
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.storage.models.CheckNameAvailabilityResult;
-import com.microsoft.azure.management.storage.models.PageImpl;
-import com.microsoft.azure.management.storage.models.StorageAccount;
-import com.microsoft.azure.management.storage.models.StorageAccountCheckNameAvailabilityParameters;
-import com.microsoft.azure.management.storage.models.StorageAccountCreateParameters;
-import com.microsoft.azure.management.storage.models.StorageAccountKeys;
-import com.microsoft.azure.management.storage.models.StorageAccountRegenerateKeyParameters;
-import com.microsoft.azure.management.storage.models.StorageAccountUpdateParameters;
+import com.microsoft.azure.management.storage.models.implementation.api.CheckNameAvailabilityResultInner;
+import com.microsoft.azure.management.storage.models.implementation.api.PageImpl;
+import com.microsoft.azure.management.storage.models.implementation.api.StorageAccountCheckNameAvailabilityParameters;
+import com.microsoft.azure.management.storage.models.implementation.api.StorageAccountCreateParametersInner;
+import com.microsoft.azure.management.storage.models.implementation.api.StorageAccountInner;
+import com.microsoft.azure.management.storage.models.implementation.api.StorageAccountKeysInner;
+import com.microsoft.azure.management.storage.models.implementation.api.StorageAccountRegenerateKeyParameters;
+import com.microsoft.azure.management.storage.models.implementation.api.StorageAccountUpdateParametersInner;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -44,19 +44,19 @@ import retrofit2.Retrofit;
  * An instance of this class provides access to all the operations defined
  * in StorageAccounts.
  */
-public final class StorageAccountsImpl implements StorageAccounts {
+public final class StorageAccountsInner {
     /** The Retrofit service to perform REST calls. */
     private StorageAccountsService service;
     /** The service client containing this operation class. */
-    private StorageManagementClient client;
+    private StorageManagementClientImpl client;
 
     /**
-     * Initializes an instance of StorageAccounts.
+     * Initializes an instance of StorageAccountsInner.
      *
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public StorageAccountsImpl(Retrofit retrofit, StorageManagementClient client) {
+    public StorageAccountsInner(Retrofit retrofit, StorageManagementClientImpl client) {
         this.service = retrofit.create(StorageAccountsService.class);
         this.client = client;
     }
@@ -72,11 +72,11 @@ public final class StorageAccountsImpl implements StorageAccounts {
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}")
-        Call<ResponseBody> create(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Body StorageAccountCreateParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> create(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Body StorageAccountCreateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}")
-        Call<ResponseBody> beginCreate(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Body StorageAccountCreateParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> beginCreate(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Body StorageAccountCreateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}", method = "DELETE", hasBody = true)
@@ -88,7 +88,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}")
-        Call<ResponseBody> update(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Body StorageAccountUpdateParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> update(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Body StorageAccountUpdateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/listKeys")
@@ -115,9 +115,9 @@ public final class StorageAccountsImpl implements StorageAccounts {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the CheckNameAvailabilityResult object wrapped in {@link ServiceResponse} if successful.
+     * @return the CheckNameAvailabilityResultInner object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<CheckNameAvailabilityResult> checkNameAvailability(String name) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<CheckNameAvailabilityResultInner> checkNameAvailability(String name) throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
@@ -143,7 +143,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall checkNameAvailabilityAsync(String name, final ServiceCallback<CheckNameAvailabilityResult> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall checkNameAvailabilityAsync(String name, final ServiceCallback<CheckNameAvailabilityResultInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -165,7 +165,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
         accountName = null;
         Call<ResponseBody> call = service.checkNameAvailability(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), accountName);
         final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<CheckNameAvailabilityResult>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<CheckNameAvailabilityResultInner>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -186,9 +186,9 @@ public final class StorageAccountsImpl implements StorageAccounts {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the CheckNameAvailabilityResult object wrapped in {@link ServiceResponse} if successful.
+     * @return the CheckNameAvailabilityResultInner object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<CheckNameAvailabilityResult> checkNameAvailability(String name, String type) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<CheckNameAvailabilityResultInner> checkNameAvailability(String name, String type) throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
@@ -214,7 +214,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall checkNameAvailabilityAsync(String name, String type, final ServiceCallback<CheckNameAvailabilityResult> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall checkNameAvailabilityAsync(String name, String type, final ServiceCallback<CheckNameAvailabilityResultInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -235,7 +235,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
         accountName.setType(type);
         Call<ResponseBody> call = service.checkNameAvailability(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), accountName);
         final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<CheckNameAvailabilityResult>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<CheckNameAvailabilityResultInner>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -248,9 +248,9 @@ public final class StorageAccountsImpl implements StorageAccounts {
         return serviceCall;
     }
 
-    private ServiceResponse<CheckNameAvailabilityResult> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CheckNameAvailabilityResult, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<CheckNameAvailabilityResult>() { }.getType())
+    private ServiceResponse<CheckNameAvailabilityResultInner> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<CheckNameAvailabilityResultInner, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<CheckNameAvailabilityResultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -265,9 +265,9 @@ public final class StorageAccountsImpl implements StorageAccounts {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the StorageAccount object wrapped in ServiceResponse if successful.
+     * @return the StorageAccountInner object wrapped in ServiceResponse if successful.
      */
-    public ServiceResponse<StorageAccount> create(String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public ServiceResponse<StorageAccountInner> create(String resourceGroupName, String accountName, StorageAccountCreateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -285,7 +285,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
         }
         Validator.validate(parameters);
         Response<ResponseBody> result = service.create(resourceGroupName, accountName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
-        return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<StorageAccount>() { }.getType());
+        return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<StorageAccountInner>() { }.getType());
     }
 
     /**
@@ -298,7 +298,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall createAsync(String resourceGroupName, String accountName, StorageAccountCreateParameters parameters, final ServiceCallback<StorageAccount> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall createAsync(String resourceGroupName, String accountName, StorageAccountCreateParametersInner parameters, final ServiceCallback<StorageAccountInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -327,7 +327,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
             }
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<StorageAccount>() { }.getType(), serviceCall, serviceCallback);
+                client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<StorageAccountInner>() { }.getType(), serviceCall, serviceCallback);
             }
         });
         return serviceCall;
@@ -342,9 +342,9 @@ public final class StorageAccountsImpl implements StorageAccounts {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the StorageAccount object wrapped in {@link ServiceResponse} if successful.
+     * @return the StorageAccountInner object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<StorageAccount> beginCreate(String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<StorageAccountInner> beginCreate(String resourceGroupName, String accountName, StorageAccountCreateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -375,7 +375,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall beginCreateAsync(String resourceGroupName, String accountName, StorageAccountCreateParameters parameters, final ServiceCallback<StorageAccount> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall beginCreateAsync(String resourceGroupName, String accountName, StorageAccountCreateParametersInner parameters, final ServiceCallback<StorageAccountInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -402,7 +402,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
         Validator.validate(parameters, serviceCallback);
         Call<ResponseBody> call = service.beginCreate(resourceGroupName, accountName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<StorageAccount>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<StorageAccountInner>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -415,9 +415,9 @@ public final class StorageAccountsImpl implements StorageAccounts {
         return serviceCall;
     }
 
-    private ServiceResponse<StorageAccount> beginCreateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StorageAccount, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<StorageAccount>() { }.getType())
+    private ServiceResponse<StorageAccountInner> beginCreateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<StorageAccountInner, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<StorageAccountInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -509,9 +509,9 @@ public final class StorageAccountsImpl implements StorageAccounts {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the StorageAccount object wrapped in {@link ServiceResponse} if successful.
+     * @return the StorageAccountInner object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<StorageAccount> getProperties(String resourceGroupName, String accountName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<StorageAccountInner> getProperties(String resourceGroupName, String accountName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -537,7 +537,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getPropertiesAsync(String resourceGroupName, String accountName, final ServiceCallback<StorageAccount> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getPropertiesAsync(String resourceGroupName, String accountName, final ServiceCallback<StorageAccountInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -559,7 +559,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
         }
         Call<ResponseBody> call = service.getProperties(resourceGroupName, accountName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<StorageAccount>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<StorageAccountInner>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -572,9 +572,9 @@ public final class StorageAccountsImpl implements StorageAccounts {
         return serviceCall;
     }
 
-    private ServiceResponse<StorageAccount> getPropertiesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StorageAccount, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<StorageAccount>() { }.getType())
+    private ServiceResponse<StorageAccountInner> getPropertiesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<StorageAccountInner, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<StorageAccountInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -588,9 +588,9 @@ public final class StorageAccountsImpl implements StorageAccounts {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the StorageAccount object wrapped in {@link ServiceResponse} if successful.
+     * @return the StorageAccountInner object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<StorageAccount> update(String resourceGroupName, String accountName, StorageAccountUpdateParameters parameters) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<StorageAccountInner> update(String resourceGroupName, String accountName, StorageAccountUpdateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -621,7 +621,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updateAsync(String resourceGroupName, String accountName, StorageAccountUpdateParameters parameters, final ServiceCallback<StorageAccount> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall updateAsync(String resourceGroupName, String accountName, StorageAccountUpdateParametersInner parameters, final ServiceCallback<StorageAccountInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -648,7 +648,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
         Validator.validate(parameters, serviceCallback);
         Call<ResponseBody> call = service.update(resourceGroupName, accountName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<StorageAccount>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<StorageAccountInner>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -661,9 +661,9 @@ public final class StorageAccountsImpl implements StorageAccounts {
         return serviceCall;
     }
 
-    private ServiceResponse<StorageAccount> updateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StorageAccount, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<StorageAccount>() { }.getType())
+    private ServiceResponse<StorageAccountInner> updateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<StorageAccountInner, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<StorageAccountInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -676,9 +676,9 @@ public final class StorageAccountsImpl implements StorageAccounts {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the StorageAccountKeys object wrapped in {@link ServiceResponse} if successful.
+     * @return the StorageAccountKeysInner object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<StorageAccountKeys> listKeys(String resourceGroupName, String accountName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<StorageAccountKeysInner> listKeys(String resourceGroupName, String accountName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -704,7 +704,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listKeysAsync(String resourceGroupName, String accountName, final ServiceCallback<StorageAccountKeys> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listKeysAsync(String resourceGroupName, String accountName, final ServiceCallback<StorageAccountKeysInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -726,7 +726,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
         }
         Call<ResponseBody> call = service.listKeys(resourceGroupName, accountName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<StorageAccountKeys>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<StorageAccountKeysInner>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -739,9 +739,9 @@ public final class StorageAccountsImpl implements StorageAccounts {
         return serviceCall;
     }
 
-    private ServiceResponse<StorageAccountKeys> listKeysDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StorageAccountKeys, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<StorageAccountKeys>() { }.getType())
+    private ServiceResponse<StorageAccountKeysInner> listKeysDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<StorageAccountKeysInner, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<StorageAccountKeysInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -752,9 +752,9 @@ public final class StorageAccountsImpl implements StorageAccounts {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;StorageAccount&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;StorageAccountInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<StorageAccount>> list() throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<List<StorageAccountInner>> list() throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
@@ -762,8 +762,8 @@ public final class StorageAccountsImpl implements StorageAccounts {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<StorageAccount>> response = listDelegate(call.execute());
-        List<StorageAccount> result = response.getBody().getItems();
+        ServiceResponse<PageImpl<StorageAccountInner>> response = listDelegate(call.execute());
+        List<StorageAccountInner> result = response.getBody().getItems();
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -774,7 +774,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listAsync(final ServiceCallback<List<StorageAccount>> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listAsync(final ServiceCallback<List<StorageAccountInner>> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -788,11 +788,11 @@ public final class StorageAccountsImpl implements StorageAccounts {
         }
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<StorageAccount>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<StorageAccountInner>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<StorageAccount>> result = listDelegate(response);
+                    ServiceResponse<PageImpl<StorageAccountInner>> result = listDelegate(response);
                     serviceCallback.success(new ServiceResponse<>(result.getBody().getItems(), result.getResponse()));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -802,9 +802,9 @@ public final class StorageAccountsImpl implements StorageAccounts {
         return serviceCall;
     }
 
-    private ServiceResponse<PageImpl<StorageAccount>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<StorageAccount>, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<PageImpl<StorageAccount>>() { }.getType())
+    private ServiceResponse<PageImpl<StorageAccountInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<StorageAccountInner>, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<PageImpl<StorageAccountInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -816,9 +816,9 @@ public final class StorageAccountsImpl implements StorageAccounts {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;StorageAccount&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;StorageAccountInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<StorageAccount>> listByResourceGroup(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<List<StorageAccountInner>> listByResourceGroup(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -829,8 +829,8 @@ public final class StorageAccountsImpl implements StorageAccounts {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listByResourceGroup(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<StorageAccount>> response = listByResourceGroupDelegate(call.execute());
-        List<StorageAccount> result = response.getBody().getItems();
+        ServiceResponse<PageImpl<StorageAccountInner>> response = listByResourceGroupDelegate(call.execute());
+        List<StorageAccountInner> result = response.getBody().getItems();
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -842,7 +842,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listByResourceGroupAsync(String resourceGroupName, final ServiceCallback<List<StorageAccount>> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listByResourceGroupAsync(String resourceGroupName, final ServiceCallback<List<StorageAccountInner>> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -860,11 +860,11 @@ public final class StorageAccountsImpl implements StorageAccounts {
         }
         Call<ResponseBody> call = service.listByResourceGroup(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<StorageAccount>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<StorageAccountInner>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<StorageAccount>> result = listByResourceGroupDelegate(response);
+                    ServiceResponse<PageImpl<StorageAccountInner>> result = listByResourceGroupDelegate(response);
                     serviceCallback.success(new ServiceResponse<>(result.getBody().getItems(), result.getResponse()));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -874,9 +874,9 @@ public final class StorageAccountsImpl implements StorageAccounts {
         return serviceCall;
     }
 
-    private ServiceResponse<PageImpl<StorageAccount>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<StorageAccount>, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<PageImpl<StorageAccount>>() { }.getType())
+    private ServiceResponse<PageImpl<StorageAccountInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<StorageAccountInner>, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<PageImpl<StorageAccountInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -890,9 +890,9 @@ public final class StorageAccountsImpl implements StorageAccounts {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the StorageAccountKeys object wrapped in {@link ServiceResponse} if successful.
+     * @return the StorageAccountKeysInner object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<StorageAccountKeys> regenerateKey(String resourceGroupName, String accountName, String keyName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<StorageAccountKeysInner> regenerateKey(String resourceGroupName, String accountName, String keyName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -924,7 +924,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall regenerateKeyAsync(String resourceGroupName, String accountName, String keyName, final ServiceCallback<StorageAccountKeys> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall regenerateKeyAsync(String resourceGroupName, String accountName, String keyName, final ServiceCallback<StorageAccountKeysInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -952,7 +952,7 @@ public final class StorageAccountsImpl implements StorageAccounts {
         regenerateKey.setKeyName(keyName);
         Call<ResponseBody> call = service.regenerateKey(resourceGroupName, accountName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), regenerateKey);
         final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<StorageAccountKeys>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<StorageAccountKeysInner>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -965,9 +965,9 @@ public final class StorageAccountsImpl implements StorageAccounts {
         return serviceCall;
     }
 
-    private ServiceResponse<StorageAccountKeys> regenerateKeyDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StorageAccountKeys, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<StorageAccountKeys>() { }.getType())
+    private ServiceResponse<StorageAccountKeysInner> regenerateKeyDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<StorageAccountKeysInner, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<StorageAccountKeysInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

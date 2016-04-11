@@ -2,13 +2,11 @@ package com.microsoft.azure.management.datalake.store;
 
 import com.microsoft.azure.credentials.AzureEnvironment;
 import com.microsoft.azure.credentials.UserTokenCredentials;
-import com.microsoft.azure.management.resources.client.ResourceManagementClient;
-import com.microsoft.azure.management.resources.client.implementation.ResourceManagementClientImpl;
-
+import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 public abstract class DataLakeStoreManagementTestBase {
-    protected static ResourceManagementClient resourceManagementClient;
+    protected static ResourceManagementClientImpl resourceManagementClient;
     protected static DataLakeStoreAccountManagementClient dataLakeStoreAccountManagementClient;
     protected static DataLakeStoreFileSystemManagementClient dataLakeStoreFileSystemManagementClient;
 

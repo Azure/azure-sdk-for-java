@@ -3,7 +3,7 @@
 // license information.
 
 /**
- * This package contains the model classes for StorageManagementClient.
+ * This package contains the models.implementation.api classes for StorageManagementClient.
  * The Storage Management Client.
  */
-package com.microsoft.azure.management.storage.models;
+package com.microsoft.azure.management.storage.models.implementation.api;

@@ -13,7 +13,7 @@ import com.microsoft.azure.management.datalake.analytics.models.USqlTableValuedF
 import com.microsoft.azure.management.datalake.analytics.models.USqlType;
 import com.microsoft.azure.management.datalake.analytics.models.USqlView;
 import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccount;
-import com.microsoft.azure.management.resources.models.dto.toplevel.ResourceGroup;
+import com.microsoft.azure.management.resources.models.implementation.api.ResourceGroupInner;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -133,7 +133,7 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
     @BeforeClass
     public static void setup() throws Exception {
         createClients();
-        ResourceGroup group = new ResourceGroup();
+        ResourceGroupInner group = new ResourceGroupInner();
         group.setLocation(location);
         resourceManagementClient.resourceGroups().createOrUpdate(rgName, group);
         // create storage and ADLS accounts, setting the accessKey

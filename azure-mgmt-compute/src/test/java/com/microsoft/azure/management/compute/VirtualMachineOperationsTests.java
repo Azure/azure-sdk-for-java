@@ -20,9 +20,9 @@ import com.microsoft.azure.management.network.models.PublicIPAddress;
 import com.microsoft.azure.management.network.models.PublicIPAddressDnsSettings;
 import com.microsoft.azure.management.network.models.Subnet;
 import com.microsoft.azure.management.network.models.VirtualNetwork;
-import com.microsoft.azure.management.resources.models.dto.toplevel.ResourceGroup;
-import com.microsoft.azure.management.storage.models.AccountType;
-import com.microsoft.azure.management.storage.models.StorageAccountCreateParameters;
+import com.microsoft.azure.management.resources.models.implementation.api.ResourceGroupInner;
+import com.microsoft.azure.management.storage.models.implementation.api.AccountType;
+import com.microsoft.azure.management.storage.models.implementation.api.StorageAccountCreateParametersInner;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -40,10 +40,10 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
     @BeforeClass
     public static void setup() throws Exception {
         createClients();
-        ResourceGroup group = new ResourceGroup();
+        ResourceGroupInner group = new ResourceGroupInner();
         group.setLocation(location);
         resourceManagementClient.resourceGroups().createOrUpdate(rgName, group);
-        StorageAccountCreateParameters parameters = new StorageAccountCreateParameters();
+        StorageAccountCreateParametersInner parameters = new StorageAccountCreateParametersInner();
         parameters.setLocation(location);
         parameters.setAccountType(AccountType.STANDARD_LRS);
         storageManagementClient.storageAccounts().create(rgName, accountName, parameters).getBody();
@@ -81,26 +81,26 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
         NetworkInterfaceReference nir = new NetworkInterfaceReference();
         nir.setPrimary(true);
         PublicIPAddress address = createPublicIP();
-        nir.setId(createNIC(createVNET(), address != null ? address.getIpAddress() : null).getId());
+        nir.setId(createNIC(createVNET(), address != null ? address.getIpAddress() : null).id());
         request.getNetworkProfile().getNetworkInterfaces().add(nir);
         VirtualMachine result = computeManagementClient.virtualMachines().createOrUpdate(rgName, vmName, request).getBody();
         Assert.assertNotNull(result);
-        Assert.assertEquals(location, result.getLocation());
+        Assert.assertEquals(location, result.location());
         // List
         List<VirtualMachine> listResult = computeManagementClient.virtualMachines().list(rgName).getBody();
         VirtualMachine listVM = null;
         for (VirtualMachine vm : listResult) {
-            if (vm.getName().equals(vmName)) {
+            if (vm.name().equals(vmName)) {
                 listVM = vm;
                 break;
             }
         }
         Assert.assertNotNull(listVM);
-        Assert.assertEquals(location, listVM.getLocation());
+        Assert.assertEquals(location, listVM.location());
         // Get
         VirtualMachine getResult = computeManagementClient.virtualMachines().get(rgName, vmName, null).getBody();
         Assert.assertNotNull(getResult);
-        Assert.assertEquals(location, getResult.getLocation());
+        Assert.assertEquals(location, getResult.location());
         // Delete
         computeManagementClient.virtualMachines().delete(rgName, vmName);
     }

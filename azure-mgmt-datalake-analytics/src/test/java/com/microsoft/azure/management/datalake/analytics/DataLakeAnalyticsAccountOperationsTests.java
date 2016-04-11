@@ -9,9 +9,9 @@ import com.microsoft.azure.management.datalake.analytics.models.DataLakeStoreAcc
 import com.microsoft.azure.management.datalake.analytics.models.StorageAccountInfo;
 import com.microsoft.azure.management.datalake.analytics.models.StorageAccountProperties;
 import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccount;
-import com.microsoft.azure.management.resources.models.dto.toplevel.ResourceGroup;
-import com.microsoft.azure.management.storage.models.AccountType;
-import com.microsoft.azure.management.storage.models.StorageAccountCreateParameters;
+import com.microsoft.azure.management.resources.models.implementation.api.ResourceGroupInner;
+import com.microsoft.azure.management.storage.models.implementation.api.AccountType;
+import com.microsoft.azure.management.storage.models.implementation.api.StorageAccountCreateParametersInner;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -33,7 +33,7 @@ public class DataLakeAnalyticsAccountOperationsTests extends DataLakeAnalyticsMa
     @BeforeClass
     public static void setup() throws Exception {
         createClients();
-        ResourceGroup group = new ResourceGroup();
+        ResourceGroupInner group = new ResourceGroupInner();
         group.setLocation(location);
         resourceManagementClient.resourceGroups().createOrUpdate(rgName, group);
         // create storage and ADLS accounts, setting the accessKey
@@ -44,11 +44,11 @@ public class DataLakeAnalyticsAccountOperationsTests extends DataLakeAnalyticsMa
         adlsAccount.setName(adlsAcct2);
         dataLakeStoreAccountManagementClient.accounts().create(rgName, adlsAcct2, adlsAccount);
 
-        StorageAccountCreateParameters createParams = new StorageAccountCreateParameters();
+        StorageAccountCreateParametersInner createParams = new StorageAccountCreateParametersInner();
         createParams.setLocation(location);
         createParams.setAccountType(AccountType.STANDARD_LRS);
         storageManagementClient.storageAccounts().create(rgName, storageAcct, createParams);
-        storageAccessKey = storageManagementClient.storageAccounts().listKeys(rgName, storageAcct).getBody().getKey1();
+        storageAccessKey = storageManagementClient.storageAccounts().listKeys(rgName, storageAcct).getBody().key1();
     }
 
     @AfterClass

@@ -4,7 +4,7 @@
  * license information.
  */
 
-package com.microsoft.azure.management.storage.models;
+package com.microsoft.azure.management.storage.models.implementation.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -30,7 +30,7 @@ public class CustomDomain {
      *
      * @return the name value
      */
-    public String getName() {
+    public String name() {
         return this.name;
     }
 
@@ -38,9 +38,11 @@ public class CustomDomain {
      * Set the name value.
      *
      * @param name the name value to set
+     * @return the CustomDomain object itself.
      */
-    public void setName(String name) {
+    public CustomDomain setName(String name) {
         this.name = name;
+        return this;
     }
 
     /**
@@ -48,7 +50,7 @@ public class CustomDomain {
      *
      * @return the useSubDomain value
      */
-    public Boolean getUseSubDomain() {
+    public Boolean useSubDomain() {
         return this.useSubDomain;
     }
 
@@ -56,9 +58,11 @@ public class CustomDomain {
      * Set the useSubDomain value.
      *
      * @param useSubDomain the useSubDomain value to set
+     * @return the CustomDomain object itself.
      */
-    public void setUseSubDomain(Boolean useSubDomain) {
+    public CustomDomain setUseSubDomain(Boolean useSubDomain) {
         this.useSubDomain = useSubDomain;
+        return this;
     }
 
 }

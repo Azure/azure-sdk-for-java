@@ -4,13 +4,13 @@
  * license information.
  */
 
-package com.microsoft.azure.management.storage;
+package com.microsoft.azure.management.storage.implementation.api;
 
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.storage.models.PageImpl;
-import com.microsoft.azure.management.storage.models.Usage;
+import com.microsoft.azure.management.storage.models.implementation.api.PageImpl;
+import com.microsoft.azure.management.storage.models.implementation.api.UsageInner;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -31,19 +31,19 @@ import retrofit2.Retrofit;
  * An instance of this class provides access to all the operations defined
  * in Usages.
  */
-public final class UsagesImpl implements Usages {
+public final class UsagesInner {
     /** The Retrofit service to perform REST calls. */
     private UsagesService service;
     /** The service client containing this operation class. */
-    private StorageManagementClient client;
+    private StorageManagementClientImpl client;
 
     /**
-     * Initializes an instance of Usages.
+     * Initializes an instance of UsagesInner.
      *
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public UsagesImpl(Retrofit retrofit, StorageManagementClient client) {
+    public UsagesInner(Retrofit retrofit, StorageManagementClientImpl client) {
         this.service = retrofit.create(UsagesService.class);
         this.client = client;
     }
@@ -65,9 +65,9 @@ public final class UsagesImpl implements Usages {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;Usage&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<List<Usage>> list() throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<List<UsageInner>> list() throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
@@ -75,8 +75,8 @@ public final class UsagesImpl implements Usages {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<Usage>> response = listDelegate(call.execute());
-        List<Usage> result = response.getBody().getItems();
+        ServiceResponse<PageImpl<UsageInner>> response = listDelegate(call.execute());
+        List<UsageInner> result = response.getBody().getItems();
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -87,7 +87,7 @@ public final class UsagesImpl implements Usages {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listAsync(final ServiceCallback<List<Usage>> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listAsync(final ServiceCallback<List<UsageInner>> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -101,11 +101,11 @@ public final class UsagesImpl implements Usages {
         }
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<Usage>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<UsageInner>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<Usage>> result = listDelegate(response);
+                    ServiceResponse<PageImpl<UsageInner>> result = listDelegate(response);
                     serviceCallback.success(new ServiceResponse<>(result.getBody().getItems(), result.getResponse()));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
@@ -115,9 +115,9 @@ public final class UsagesImpl implements Usages {
         return serviceCall;
     }
 
-    private ServiceResponse<PageImpl<Usage>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<Usage>, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<PageImpl<Usage>>() { }.getType())
+    private ServiceResponse<PageImpl<UsageInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<UsageInner>, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<PageImpl<UsageInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

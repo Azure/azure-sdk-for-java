@@ -2,7 +2,7 @@ package com.microsoft.azure.management.datalake.store;
 
 import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccount;
 import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccountProperties;
-import com.microsoft.azure.management.resources.models.dto.toplevel.ResourceGroup;
+import com.microsoft.azure.management.resources.models.implementation.api.ResourceGroupInner;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -19,7 +19,7 @@ public class DataLakeStoreAccountOperationsTests extends DataLakeStoreManagement
     @BeforeClass
     public static void setup() throws Exception {
         createClients();
-        ResourceGroup group = new ResourceGroup();
+        ResourceGroupInner group = new ResourceGroupInner();
         group.setLocation(location);
         resourceManagementClient.resourceGroups().createOrUpdate(rgName, group);
     }

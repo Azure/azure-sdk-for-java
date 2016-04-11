@@ -4,7 +4,7 @@
  * license information.
  */
 
-package com.microsoft.azure.management.storage.models;
+package com.microsoft.azure.management.storage.models.implementation.api;
 
 
 /**
@@ -26,7 +26,7 @@ public class UsageName {
      *
      * @return the value value
      */
-    public String getValue() {
+    public String value() {
         return this.value;
     }
 
@@ -34,9 +34,11 @@ public class UsageName {
      * Set the value value.
      *
      * @param value the value value to set
+     * @return the UsageName object itself.
      */
-    public void setValue(String value) {
+    public UsageName setValue(String value) {
         this.value = value;
+        return this;
     }
 
     /**
@@ -44,7 +46,7 @@ public class UsageName {
      *
      * @return the localizedValue value
      */
-    public String getLocalizedValue() {
+    public String localizedValue() {
         return this.localizedValue;
     }
 
@@ -52,9 +54,11 @@ public class UsageName {
      * Set the localizedValue value.
      *
      * @param localizedValue the localizedValue value to set
+     * @return the UsageName object itself.
      */
-    public void setLocalizedValue(String localizedValue) {
+    public UsageName setLocalizedValue(String localizedValue) {
         this.localizedValue = localizedValue;
+        return this;
     }
 
 }

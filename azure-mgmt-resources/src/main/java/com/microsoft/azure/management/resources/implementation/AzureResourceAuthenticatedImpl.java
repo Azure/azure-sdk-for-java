@@ -8,11 +8,13 @@ package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.AzureResourceAuthenticated;
+import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.implementation.api.SubscriptionClientImpl;
 import com.microsoft.azure.management.resources.models.Subscription;
 import com.microsoft.azure.management.resources.models.implementation.SubscriptionImpl;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import org.apache.commons.lang3.NotImplementedException;
 
 import java.io.IOException;
 
@@ -28,5 +30,10 @@ public class AzureResourceAuthenticatedImpl implements AzureResourceAuthenticate
     @Override
     public Subscriptions subscriptions() throws IOException, CloudException {
         return new SubscriptionsImpl(subscriptionClient);
+    }
+
+    @Override
+    public ResourceGroups resourceGroups() throws IOException, CloudException {
+        throw new NotImplementedException("resourceGroups");
     }
 }

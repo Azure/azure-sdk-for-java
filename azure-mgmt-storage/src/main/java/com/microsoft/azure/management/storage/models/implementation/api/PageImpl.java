@@ -4,7 +4,7 @@
  * license information.
  */
 
-package com.microsoft.azure.management.storage.models;
+package com.microsoft.azure.management.storage.models.implementation.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.azure.Page;

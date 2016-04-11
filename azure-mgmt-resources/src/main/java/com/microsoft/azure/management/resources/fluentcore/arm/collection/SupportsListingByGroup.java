@@ -20,14 +20,23 @@
 
 package com.microsoft.azure.management.resources.fluentcore.arm.collection;
 
+import java.util.List;
 import java.util.Map;
 
 public interface SupportsListingByGroup<T> {
 	/**
-	 * Lists the entities in a specific group
+	 * Map of the entities in a specific group
  	 * @param groupName
 	 * @return
 	 * @throws Exception
 	 */
-	Map<String, T> list(String groupName) throws Exception;
+	Map<String, T> asMap(String groupName) throws Exception;
+
+	/**
+	 * List of the entities in a specific group
+	 * @param groupName
+	 * @return
+	 * @throws Exception
+	 */
+	List<T> list(String groupName) throws Exception;
 }
