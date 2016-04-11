@@ -41,5 +41,5 @@ public final class ClientConstants
 	
 	public final static boolean DEFAULT_IS_TRANSIENT = true;
 	
-	public final static int REACTOR_IO_POLL_TIMEOUT = 100;
+	public final static int REACTOR_IO_POLL_TIMEOUT = 20;
 }
