@@ -15,25 +15,8 @@
  * limitations under the License.
  *
  */
+package com.microsoft.windowsazure.services.servicebus.models;
 
-package com.microsoft.azure.keyvault.extensions;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-public class LRUCache<K, V> extends LinkedHashMap<K, V> {
-
-    private static final long serialVersionUID = -9113883233462089603L;
-
-    private final int _capacity;
-
-    public LRUCache(int capacity) {
-        super(capacity, 1.0f, true);
-        _capacity = capacity;
-    }
-
-    @Override
-    protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
-        return size() > _capacity;
-    }
+public class ListEventHubsOptions extends AbstractListOptions<ListEventHubsOptions> {
+    public static final ListEventHubsOptions DEFAULT = new ListEventHubsOptions();
 }
