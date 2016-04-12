@@ -20,28 +20,31 @@ package com.microsoft.azure.keyvault.extensions;
 
 import java.util.concurrent.Future;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.microsoft.azure.keyvault.core.IKey;
 import com.microsoft.azure.keyvault.core.IKeyResolver;
 
 public class CachingKeyResolver implements IKeyResolver {
 
-    private final LRUCache<String, IKey> _cache;
-    private final IKeyResolver           _inner;
+    private final LoadingCache<String, Future<IKey>> _cache;
+    private final IKeyResolver                       _inner;
 
     public CachingKeyResolver(int capacity, IKeyResolver inner) {
-        _cache = new LRUCache<String, IKey>(capacity);
+        _cache = CacheBuilder.newBuilder().maximumSize(capacity)
+        		.build( new CacheLoader<String, Future<IKey>>(){
+
+					@Override
+					public Future<IKey> load(String kid) {
+						return _inner.resolveKeyAsync(kid);
+					}});
+        
         _inner = inner;
     }
 
     @Override
     public Future<IKey> resolveKeyAsync(String kid) {
-
-        IKey result = _cache.get(kid);
-
-        if (result == null) {
-            return _inner.resolveKeyAsync(kid);
-        } else {
-            return new FutureImmediate<IKey>(result);
-        }
+    	return _cache.getUnchecked(kid);
     }
 }

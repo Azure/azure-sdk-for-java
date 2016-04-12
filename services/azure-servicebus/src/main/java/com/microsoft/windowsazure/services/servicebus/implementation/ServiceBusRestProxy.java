@@ -35,14 +35,19 @@ import javax.ws.rs.core.MediaType;
 import com.microsoft.windowsazure.services.servicebus.ServiceBusContract;
 import com.microsoft.windowsazure.services.servicebus.models.AbstractListOptions;
 import com.microsoft.windowsazure.services.servicebus.models.BrokeredMessage;
+import com.microsoft.windowsazure.services.servicebus.models.CreateEventHubResult;
 import com.microsoft.windowsazure.services.servicebus.models.CreateQueueResult;
 import com.microsoft.windowsazure.services.servicebus.models.CreateRuleResult;
 import com.microsoft.windowsazure.services.servicebus.models.CreateSubscriptionResult;
 import com.microsoft.windowsazure.services.servicebus.models.CreateTopicResult;
+import com.microsoft.windowsazure.services.servicebus.models.EventHubInfo;
+import com.microsoft.windowsazure.services.servicebus.models.GetEventHubResult;
 import com.microsoft.windowsazure.services.servicebus.models.GetQueueResult;
 import com.microsoft.windowsazure.services.servicebus.models.GetRuleResult;
 import com.microsoft.windowsazure.services.servicebus.models.GetSubscriptionResult;
 import com.microsoft.windowsazure.services.servicebus.models.GetTopicResult;
+import com.microsoft.windowsazure.services.servicebus.models.ListEventHubsOptions;
+import com.microsoft.windowsazure.services.servicebus.models.ListEventHubsResult;
 import com.microsoft.windowsazure.services.servicebus.models.ListQueuesOptions;
 import com.microsoft.windowsazure.services.servicebus.models.ListQueuesResult;
 import com.microsoft.windowsazure.services.servicebus.models.ListRulesOptions;
@@ -163,8 +168,12 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     }
 
     private WebResource getResource() {
+        return getResourceWithApiVersion("2013-07");
+    }
+
+    private WebResource getResourceWithApiVersion(String version) {
         WebResource resource = getChannel().resource(uri).queryParam(
-                "api-version", "2013-07");
+                "api-version", version);
         for (ClientFilter filter : filters) {
             resource.addFilter(filter);
         }
@@ -398,6 +407,44 @@ public class ServiceBusRestProxy implements ServiceBusContract {
             path = path.queryParam("$filter", options.getFilter());
         }
         return path;
+    }
+
+    @Override
+    public CreateEventHubResult createEventHub(EventHubInfo entry)
+            throws ServiceException {
+        return new CreateEventHubResult(getResourceWithApiVersion("2014-01").path(entry.getPath())
+                .type("application/atom+xml;type=entry;charset=utf-8")
+                .put(EventHubInfo.class, entry));
+    }
+
+    @Override
+    public void deleteEventHub(String eventHubPath) throws ServiceException {
+        getResourceWithApiVersion("2014-01").path(eventHubPath).delete();
+    }
+
+    @Override
+    public GetEventHubResult getEventHub(String eventHubPath) throws ServiceException {
+        return new GetEventHubResult(getResourceWithApiVersion("2014-01").path(eventHubPath).get(
+                EventHubInfo.class));
+    }
+
+    @Override
+    public ListEventHubsResult listEventHubs(ListEventHubsOptions options)
+            throws ServiceException {
+        Feed feed = listOptions(options,
+                getResourceWithApiVersion("2014-01").path("$Resources/EventHubs")).get(Feed.class);
+        ArrayList<EventHubInfo> eventHubs = new ArrayList<EventHubInfo>();
+        for (Entry entry : feed.getEntries()) {
+            eventHubs.add(new EventHubInfo(entry));
+        }
+        ListEventHubsResult result = new ListEventHubsResult();
+        result.setItems(eventHubs);
+        return result;
+    }
+
+    @Override
+    public ListEventHubsResult listEventHubs() throws ServiceException {
+        return listEventHubs(ListEventHubsOptions.DEFAULT);
     }
 
     @Override

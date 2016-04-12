@@ -44,7 +44,9 @@ import com.microsoft.windowsazure.services.servicebus.implementation.SqlFilter;
 import com.microsoft.windowsazure.services.servicebus.implementation.SqlRuleAction;
 import com.microsoft.windowsazure.services.servicebus.implementation.TrueFilter;
 import com.microsoft.windowsazure.services.servicebus.models.BrokeredMessage;
+import com.microsoft.windowsazure.services.servicebus.models.EventHubInfo;
 import com.microsoft.windowsazure.services.servicebus.models.GetQueueResult;
+import com.microsoft.windowsazure.services.servicebus.models.ListEventHubsResult;
 import com.microsoft.windowsazure.services.servicebus.models.ListQueuesResult;
 import com.microsoft.windowsazure.services.servicebus.models.ListRulesResult;
 import com.microsoft.windowsazure.services.servicebus.models.ListSubscriptionsResult;
@@ -752,6 +754,29 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
         TopicInfo fetched = service.getTopic(topicName).getValue();
         service.deleteTopic(topicName);
         ListTopicsResult listed2 = service.listTopics();
+
+        // Assert
+        assertNotNull(created);
+        assertNotNull(listed);
+        assertNotNull(fetched);
+        assertNotNull(listed2);
+
+        assertEquals(listed.getItems().size() - 1, listed2.getItems().size());
+    }
+
+    @Test
+    public void eventHubCanBeCreatedListedFetchedAndDeleted()
+            throws ServiceException {
+        // Arrange
+        String eventHubName = "TestEventHubCanBeCreatedListedFetchedAndDeleted";
+
+        // Act
+        EventHubInfo created = service.createEventHub(
+                new EventHubInfo().setPath(eventHubName)).getValue();
+        ListEventHubsResult listed = service.listEventHubs();
+        EventHubInfo fetched = service.getEventHub(eventHubName).getValue();
+        service.deleteEventHub(eventHubName);
+        ListEventHubsResult listed2 = service.listEventHubs();
 
         // Assert
         assertNotNull(created);
