@@ -14,14 +14,14 @@ import com.microsoft.rest.ServiceCallback;
 import java.io.IOException;
 import java.util.List;
 
-final class GenericResourcesImpl
+public final class GenericResourcesImpl
     implements GenericResources {
 
     ResourceManagementClientImpl serviceClient;
     ResourcesInner resources;
     ResourceGroupsInner resourceGroups;
 
-    public GenericResourcesImpl(ResourceManagementClientImpl serviceClient) throws CloudException, IOException {
+    public GenericResourcesImpl(ResourceManagementClientImpl serviceClient) {
         this.serviceClient = serviceClient;
         this.resources = serviceClient.resources();
         this.resourceGroups = serviceClient.resourceGroups();
@@ -65,7 +65,7 @@ final class GenericResourcesImpl
     }
 
     @Override
-    public GenericResource get(String name) throws Exception {
+    public GenericResource get(String name) throws IOException, CloudException {
         return null;
     }
 }

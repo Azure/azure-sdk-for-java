@@ -6,11 +6,14 @@
 
 package com.microsoft.azure;
 
-import com.microsoft.azure.management.resources.Subscriptions;
-
-import java.io.IOException;
+import com.microsoft.azure.management.resources.GenericResources;
+import com.microsoft.azure.management.resources.ResourceGroups;
+import com.microsoft.azure.management.storage.StorageAccounts;
+import com.microsoft.azure.management.storage.Usages;
 
 public interface AzureAuthenticated {
-    Subscriptions subscriptions();
-    Subscription subscription(String subscriptionId) throws IOException, CloudException;
+    ResourceGroups resourceGroups();
+    GenericResources genericResources();
+    StorageAccounts storageAccounts();
+    Usages usages();
 }

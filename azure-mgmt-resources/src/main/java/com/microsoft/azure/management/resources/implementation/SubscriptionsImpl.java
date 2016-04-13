@@ -12,12 +12,12 @@ import com.microsoft.azure.management.resources.models.implementation.api.Subscr
 import java.io.IOException;
 import java.util.List;
 
-final class SubscriptionsImpl
+public final class SubscriptionsImpl
         implements Subscriptions {
     private SubscriptionsInner subscriptions;
     private SubscriptionClientImpl client;
 
-    public SubscriptionsImpl(SubscriptionClientImpl client) throws IOException, CloudException {
+    public SubscriptionsImpl(SubscriptionClientImpl client) {
         this.client = client;
         this.subscriptions = client.subscriptions();
     }
@@ -27,7 +27,7 @@ final class SubscriptionsImpl
         PagedListConverter<SubscriptionInner, Subscription> converter = new PagedListConverter<SubscriptionInner, Subscription>() {
             @Override
             public Subscription typeConvert(SubscriptionInner subscriptionInner) {
-                return new SubscriptionImpl(subscriptionInner, subscriptions, client);
+                return new SubscriptionImpl(subscriptionInner, client);
             }
         };
         return converter.convert(subscriptions.list().getBody());
@@ -35,9 +35,9 @@ final class SubscriptionsImpl
 
     @Override
     // Gets a specific resource group
-    public SubscriptionImpl get(String name) throws Exception {
+    public SubscriptionImpl get(String name) throws CloudException, IOException {
         SubscriptionInner subscription = subscriptions.get(name).getBody();
-        return new SubscriptionImpl(subscription, subscriptions, client);
+        return new SubscriptionImpl(subscription, client);
     }
 
     /***************************************************

@@ -11,8 +11,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
-
 public class AzureTests {
     static final ServiceClientCredentials credentials = new ApplicationTokenCredentials(
             System.getenv("client-id"),
@@ -27,29 +25,24 @@ public class AzureTests {
 
     @Before
     public void setup() throws Exception {
-        subscriptions = Azure.authenticate(credentials).subscriptions();
-
-        resourceGroups = Azure.authenticate(credentials)
-            .subscription(subscriptionId)
-            .resourceGroups();
-
-        storageAccounts = Azure.authenticate(credentials)
-            .subscription(subscriptionId)
-            .storageAccounts();
+        subscriptions = Azure.authenticate(credentials);
+        AzureAuthenticated azureAuthenticated = Azure.authenticate(credentials, subscriptionId);
+        resourceGroups = azureAuthenticated.resourceGroups();
+        storageAccounts = azureAuthenticated.storageAccounts();
     }
 
     @Test
     public void listSubscriptions() throws Exception {
-        Assert.assertTrue(0 < subscriptions.size());
+        Assert.assertTrue(0 < subscriptions.list().size());
     }
 
     @Test
     public void listResourceGroups() throws Exception {
-        Assert.assertTrue(0 < resourceGroups.size());
+        Assert.assertTrue(0 < resourceGroups.list().size());
     }
 
     @Test
     public void listStorageAccounts() throws Exception {
-        Assert.assertTrue(0 < storageAccounts.size());
+        Assert.assertTrue(0 < storageAccounts.list().size());
     }
 }

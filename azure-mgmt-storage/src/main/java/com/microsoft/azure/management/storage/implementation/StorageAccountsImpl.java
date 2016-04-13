@@ -1,22 +1,17 @@
 package com.microsoft.azure.management.storage.implementation;
 
-import com.microsoft.azure.Page;
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.resources.models.implementation.api.PageImpl;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
 import com.microsoft.azure.management.storage.models.StorageAccount;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCallback;
 import org.apache.commons.lang3.NotImplementedException;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class StorageAccountsImpl
-        extends PagedList<StorageAccount>
         implements StorageAccounts {
     private final StorageManagementClientImpl client;
 
@@ -57,12 +52,7 @@ public class StorageAccountsImpl
     }
 
     @Override
-    public Page<StorageAccount> nextPage(String nextPageLink) throws RestException, IOException {
-        PageImpl<StorageAccount> page = new PageImpl<>();
-        List<StorageAccount> items = new ArrayList<>();
-        // TODO: populate the 'items'
-        page.setItems(items);
-        page.setNextPageLink(null);
-        return page;
+    public List<StorageAccount> list() throws CloudException, IOException {
+        return null;
     }
 }

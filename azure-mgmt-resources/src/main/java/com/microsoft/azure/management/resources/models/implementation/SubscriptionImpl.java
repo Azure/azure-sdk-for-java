@@ -26,9 +26,9 @@ public class SubscriptionImpl extends
     private final SubscriptionsInner subscriptions;
     private final SubscriptionClientImpl client;
 
-    public SubscriptionImpl(SubscriptionInner subscription, SubscriptionsInner subscriptions, SubscriptionClientImpl client) {
+    public SubscriptionImpl(SubscriptionInner subscription, SubscriptionClientImpl client) {
         super(subscription.id(), subscription);
-        this.subscriptions = subscriptions;
+        this.subscriptions = client.subscriptions();
         this.client = client;
     }
 
@@ -73,7 +73,9 @@ public class SubscriptionImpl extends
 
     @Override
     public ResourceGroups resourceGroups() throws IOException, CloudException {
-        return new ResourceGroupsImpl(new ResourceManagementClientImpl(client.getCredentials()));
+        ResourceManagementClientImpl resourceManagementClient = new ResourceManagementClientImpl(client.getCredentials());
+        resourceManagementClient.setSubscriptionId(this.subscriptionId());
+        return new ResourceGroupsImpl(resourceManagementClient);
     }
 
     @Override

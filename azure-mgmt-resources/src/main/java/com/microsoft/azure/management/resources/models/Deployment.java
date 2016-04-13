@@ -1,14 +1,14 @@
 package com.microsoft.azure.management.resources.models;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Taggable;
-import com.microsoft.azure.management.resources.fluentcore.model.*;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
+import com.microsoft.azure.management.resources.fluentcore.model.Provisionable;
+import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
+import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.resources.models.implementation.api.*;
 import org.joda.time.DateTime;
 
 import java.util.List;
-import java.util.Map;
 
 public interface Deployment extends
         Indexable,

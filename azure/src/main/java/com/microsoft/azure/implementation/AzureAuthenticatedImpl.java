@@ -7,32 +7,63 @@
 package com.microsoft.azure.implementation;
 
 import com.microsoft.azure.AzureAuthenticated;
-import com.microsoft.azure.CloudException;
-import com.microsoft.azure.Subscription;
-import com.microsoft.azure.management.resources.Subscriptions;
-import com.microsoft.azure.management.resources.implementation.SubscriptionsImpl;
-import com.microsoft.azure.management.resources.implementation.api.SubscriptionClientImpl;
+import com.microsoft.azure.management.resources.GenericResources;
+import com.microsoft.azure.management.resources.ResourceGroups;
+import com.microsoft.azure.management.resources.implementation.GenericResourcesImpl;
+import com.microsoft.azure.management.resources.implementation.ResourceGroupsImpl;
+import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
+import com.microsoft.azure.management.storage.StorageAccounts;
+import com.microsoft.azure.management.storage.Usages;
+import com.microsoft.azure.management.storage.implementation.StorageAccountsImpl;
+import com.microsoft.azure.management.storage.implementation.UsagesImpl;
+import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
-
-import java.io.IOException;
 
 public class AzureAuthenticatedImpl implements AzureAuthenticated {
     private ServiceClientCredentials credentials;
-    private Subscriptions subscriptions;
+    private String subscriptionId;
 
-    AzureAuthenticatedImpl(ServiceClientCredentials credentials) throws IOException, CloudException {
+    private ResourceManagementClientImpl resourceManagementClient;
+    private StorageManagementClientImpl storageManagementClient;
+
+    AzureAuthenticatedImpl(ServiceClientCredentials credentials, String subscriptionId) {
         this.credentials = credentials;
-        SubscriptionClientImpl sClient = new SubscriptionClientImpl(credentials);
-        this.subscriptions = new SubscriptionsImpl(sClient);
+        this.subscriptionId = subscriptionId;
     }
 
     @Override
-    public Subscriptions subscriptions() {
-        return this.subscriptions;
+    public ResourceGroups resourceGroups() {
+        if (resourceManagementClient == null) {
+            resourceManagementClient = new ResourceManagementClientImpl(credentials);
+            resourceManagementClient.setSubscriptionId(subscriptionId);
+        }
+        return new ResourceGroupsImpl(resourceManagementClient);
     }
 
     @Override
-    public Subscription subscription(String subscriptionId) throws IOException, CloudException {
-        return new SubscriptionImpl(credentials, subscriptionId);
+    public GenericResources genericResources() {
+        if (resourceManagementClient == null) {
+            resourceManagementClient = new ResourceManagementClientImpl(credentials);
+            resourceManagementClient.setSubscriptionId(subscriptionId);
+        }
+        return new GenericResourcesImpl(resourceManagementClient);
+    }
+
+    @Override
+    public StorageAccounts storageAccounts() {
+        if (storageManagementClient == null) {
+            storageManagementClient = new StorageManagementClientImpl(credentials);
+            storageManagementClient.setSubscriptionId(subscriptionId);
+        }
+        return new StorageAccountsImpl(storageManagementClient);
+    }
+
+    @Override
+    public Usages usages() {
+        if (storageManagementClient == null) {
+            storageManagementClient = new StorageManagementClientImpl(credentials);
+            storageManagementClient.setSubscriptionId(subscriptionId);
+        }
+        return new UsagesImpl(storageManagementClient);
     }
 }

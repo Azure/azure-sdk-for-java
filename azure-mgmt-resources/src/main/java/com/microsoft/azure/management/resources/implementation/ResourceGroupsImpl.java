@@ -28,7 +28,7 @@ public class ResourceGroupsImpl
         PagedListConverter<ResourceGroupInner, ResourceGroup> converter = new PagedListConverter<ResourceGroupInner, ResourceGroup>() {
             @Override
             public ResourceGroup typeConvert(ResourceGroupInner resourceGroupInner) {
-                return new ResourceGroupImpl(resourceGroupInner, client);
+                return new ResourceGroupImpl(resourceGroupInner, serviceClient);
             }
         };
         return converter.convert(client.list().getBody());
@@ -36,9 +36,9 @@ public class ResourceGroupsImpl
 
     @Override
     // Gets a specific resource group
-    public ResourceGroupImpl get(String name) throws Exception {
+    public ResourceGroupImpl get(String name) throws CloudException, IOException {
         ResourceGroupInner group = client.get(name).getBody();
-        return new ResourceGroupImpl(group, client);
+        return new ResourceGroupImpl(group, serviceClient);
     }
 
     @Override
@@ -74,7 +74,6 @@ public class ResourceGroupsImpl
     private ResourceGroupImpl createWrapper(String name) {
         ResourceGroupInner azureGroup = new ResourceGroupInner();
         azureGroup.setName(name);
-        return new ResourceGroupImpl(azureGroup, client);
+        return new ResourceGroupImpl(azureGroup, serviceClient);
     }
-
 }

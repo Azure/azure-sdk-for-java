@@ -1,11 +1,9 @@
 package com.microsoft.azure.management.storage;
 
+import com.microsoft.azure.management.storage.implementation.StorageResourceAdapter;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.Assert;
-import java.util.HashMap;
-import java.util.List;
 
 public class StorageAccountOperationsTests extends StorageManagementTestBase {
     private static String rgName = "javacsmrg";
@@ -22,6 +20,18 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
     @AfterClass
     public static void cleanup() throws Exception {
         resourceClient.resourceGroups().delete(rgName);
+    }
+
+    @Test
+    public void getStorageAccountFromResource() throws Exception {
+        StorageAccounts storageAccounts = resourceClient.resourceGroups()
+                .get("my-rg")
+                .resourceAdapter(new StorageResourceAdapter.Builder())
+                .storageAccounts();
+        Usages usages = resourceClient.resourceGroups()
+                .get("my-rg")
+                .resourceAdapter(new StorageResourceAdapter.Builder())
+                .usages();
     }
 
     @Test
