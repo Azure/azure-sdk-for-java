@@ -19,9 +19,6 @@
 */
 package com.microsoft.azure.management.resources.fluentcore.model;
 
-import com.microsoft.azure.management.resources.fluentcore.model.Deletable;
-import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
-
-public interface Updatable<T> extends Indexable, Deletable {
+public interface Updatable<T> extends Indexable {
 	T apply() throws Exception;
 }

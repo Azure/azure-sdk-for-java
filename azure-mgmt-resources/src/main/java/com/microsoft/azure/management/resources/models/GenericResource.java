@@ -53,6 +53,6 @@ public interface GenericResource extends
     interface Update extends UpdateBlank, Updatable<Update> {
     }
 
-    interface UpdateBlank extends Deletable, Taggable<Update> {
+    interface UpdateBlank extends Taggable<Update> {
     }
 }
