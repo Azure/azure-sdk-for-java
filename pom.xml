@@ -47,9 +47,9 @@
 
   <repositories>
     <repository>
-      <id>adx-internal</id>
-      <name>Azure internal Snapshots</name>
-      <url>file://\\aaptfile01\ADXSDK\Java\internal-snapshots</url>
+      <id>azureoss-snapshots-pr</id>
+      <name>Azure Private Snapshots</name>
+      <url>http://azureoss.westus.cloudapp.azure.com:8080/nexus/content/repositories/snapshots-pr/</url>
       <layout>default</layout>
       <snapshots>
         <enabled>true</enabled>

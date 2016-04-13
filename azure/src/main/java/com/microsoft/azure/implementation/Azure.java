@@ -7,13 +7,17 @@
 package com.microsoft.azure.implementation;
 
 import com.microsoft.azure.AzureAuthenticated;
-import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.resources.Subscriptions;
+import com.microsoft.azure.management.resources.implementation.SubscriptionsImpl;
+import com.microsoft.azure.management.resources.implementation.api.SubscriptionClientImpl;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
-import java.io.IOException;
-
 public final class Azure {
-    public static AzureAuthenticated authenticate(ServiceClientCredentials credentials) throws IOException, CloudException {
-        return new AzureAuthenticatedImpl(credentials);
+    public static Subscriptions authenticate(ServiceClientCredentials credentials) {
+        return new SubscriptionsImpl(new SubscriptionClientImpl(credentials));
+    }
+
+    public static AzureAuthenticated authenticate(ServiceClientCredentials credentials, String subscriptionId) {
+        return new AzureAuthenticatedImpl(credentials, subscriptionId);
     }
 }

@@ -19,8 +19,6 @@
 */
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
 
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableImpl;
-
 public abstract class IndexableWrapperImpl<I> extends IndexableImpl {
 	protected I innerObject; 
 	protected IndexableWrapperImpl(String name, I innerObject) {

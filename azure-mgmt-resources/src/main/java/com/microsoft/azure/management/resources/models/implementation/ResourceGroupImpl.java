@@ -1,8 +1,10 @@
 package com.microsoft.azure.management.resources.models.implementation;
 
+import com.microsoft.azure.management.resources.ResourceAdapter;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupsInner;
+import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.resources.models.implementation.api.ResourceGroupInner;
 
@@ -19,10 +21,12 @@ public class ResourceGroupImpl 	extends
         ResourceGroup.Update  {
 
     private final ResourceGroupsInner client;
+    private final ResourceManagementClientImpl serviceClient;
 
-    public ResourceGroupImpl(ResourceGroupInner azureGroup, ResourceGroupsInner client) {
+    public ResourceGroupImpl(ResourceGroupInner azureGroup, ResourceManagementClientImpl serviceClient) {
         super(azureGroup.name(), azureGroup);
-        this.client = client;
+        this.client = serviceClient.resourceGroups();
+        this.serviceClient = serviceClient;
     }
 
     /***********************************************************
@@ -127,5 +131,10 @@ public class ResourceGroupImpl 	extends
     public ResourceGroupImpl refresh() throws Exception {           //  FLUENT: implementation of ResourceGroup.Refreshable<ResourceGroup>
         this.setInner(client.get(this.id).getBody());
         return this;
+    }
+
+    @Override
+    public <T extends ResourceAdapter> T resourceAdapter(T.Builder<T> adapterBuilder) {
+        return adapterBuilder.create(this.serviceClient.getCredentials(), this.name());
     }
 }

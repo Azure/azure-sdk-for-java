@@ -1,10 +1,14 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.models.implementation;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.Azure;
-import com.microsoft.azure.management.resources.fluentcore.collection.implementation.EntitiesImpl;
-import com.microsoft.azure.management.resources.models.ResourceGroup;
+import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.implementation.ResourceGroupsImpl;
+import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
+import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.resources.models.implementation.api.ResourceGroupInner;
+
+import java.io.IOException;
 
 public abstract class GroupableResourceImpl<
         WRAPPER,
@@ -15,8 +19,13 @@ public abstract class GroupableResourceImpl<
         implements
         GroupableResource {
 
-    protected GroupableResourceImpl(String id, INNER innerObject, EntitiesImpl<Azure> collection) {
-        super(id, innerObject, collection);
+    ResourceGroups resourceGroups;
+    ResourceManagementClientImpl resourceManagementClient;
+
+    protected GroupableResourceImpl(String id, INNER innerObject, ResourceManagementClientImpl serviceClient) {
+        super(id, innerObject);
+        this.resourceManagementClient = serviceClient;
+        this.resourceGroups = new ResourceGroupsImpl(serviceClient);
     }
 
     protected String groupName;
@@ -48,13 +57,13 @@ public abstract class GroupableResourceImpl<
                 this.groupName = this.name() + "group";
             }
 
-            group = this.collection.azure().resourceGroups().define(this.groupName)
+            group = this.resourceGroups.define(this.groupName)
                     .withLocation(this.region())
                     .provision();
             this.isExistingGroup = true;
             return group;
         } else {
-            return this.collection.azure().resourceGroups(this.groupName);
+            return resourceGroups.get(groupName);
         }
     }
 

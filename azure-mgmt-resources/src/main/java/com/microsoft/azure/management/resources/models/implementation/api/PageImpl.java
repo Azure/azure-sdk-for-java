@@ -54,8 +54,9 @@ public class PageImpl<T> implements Page<T> {
      *
      * @param nextPageLink the link to the next page.
      */
-    public void setNextPageLink(String nextPageLink) {
+    public PageImpl<T> setNextPageLink(String nextPageLink) {
         this.nextPageLink = nextPageLink;
+        return this;
     }
 
     /**
@@ -63,7 +64,8 @@ public class PageImpl<T> implements Page<T> {
      *
      * @param items the list of items in {@link List}.
      */
-    public void setItems(List<T> items) {
+    public PageImpl<T> setItems(List<T> items) {
         this.items = items;
+        return this;
     }
 }

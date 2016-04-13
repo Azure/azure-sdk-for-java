@@ -6,7 +6,10 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class ResourceGroupsOperationsTests extends ResourceManagementTestBase {
+    private  ResourceGroups resourceGroups;
+
     public ResourceGroupsOperationsTests() throws Exception {
+        resourceGroups = subscription.resourceGroups();
     }
 
     @Test
@@ -14,15 +17,14 @@ public class ResourceGroupsOperationsTests extends ResourceManagementTestBase {
         String rgName = "javacsmrg";
         String location = "southcentralus";
         // Create
-        subscription.resourceGroups().define(rgName)
+        resourceGroups.define(rgName)
                 .withLocation(Region.US_WEST)
                 .withTag("department", "finance")
                 .withTag("tagname", "tagvalue")
                 .provision();
         // List
-        ResourceGroups resourceGroups = subscription.resourceGroups();
         ResourceGroup groupResult = null;
-        for (ResourceGroup rg : resourceGroups) {
+        for (ResourceGroup rg : resourceGroups.list()) {
             if (rg.name().equals(rgName)) {
                 groupResult = rg;
                 break;
