@@ -38,7 +38,7 @@ public final class GenericResourcesImpl
         PagedListConverter<GenericResourceInner, GenericResource> converter = new PagedListConverter<GenericResourceInner, GenericResource>() {
             @Override
             public GenericResource typeConvert(GenericResourceInner genericResourceInner) {
-                return new GenericResourceImpl(genericResourceInner.getId(), genericResourceInner, serviceClient);
+                return new GenericResourceImpl(genericResourceInner.id(), genericResourceInner, serviceClient);
             }
         };
         return converter.convert(resources.list().getBody());

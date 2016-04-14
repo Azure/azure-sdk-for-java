@@ -2,11 +2,10 @@ package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.resources.implementation.AzureResourceManager;
-import com.microsoft.azure.management.resources.models.Subscription;
 
 public abstract class ResourceManagementTestBase {
-    protected AzureResourceAuthenticated resourceClient;
-    protected Subscription subscription;
+    protected AzureResourceManager.Authenticated resourceClient;
+    protected AzureResourceManager.Subscription subscription;
 
     public ResourceManagementTestBase() throws Exception {
         resourceClient = AzureResourceManager.authenticate(
@@ -16,6 +15,6 @@ public abstract class ResourceManagementTestBase {
                         System.getenv("arm.secret"),
                         null)
         );
-        subscription = resourceClient.subscriptions().get(System.getenv("arm.subscriptionid"));
+        subscription = resourceClient.withSubscription(System.getenv("arm.subscriptionid"));
     }
 }

@@ -2,12 +2,8 @@ package com.microsoft.azure.management.resources.models.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.resources.GenericResources;
-import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-import com.microsoft.azure.management.resources.implementation.ResourceGroupsImpl;
-import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.implementation.api.SubscriptionClientImpl;
 import com.microsoft.azure.management.resources.implementation.api.SubscriptionsInner;
 import com.microsoft.azure.management.resources.models.Location;
@@ -69,17 +65,5 @@ public class SubscriptionImpl extends
             }
         };
         return converter.convert(subscriptions.listLocations(this.subscriptionId()).getBody());
-    }
-
-    @Override
-    public ResourceGroups resourceGroups() throws IOException, CloudException {
-        ResourceManagementClientImpl resourceManagementClient = new ResourceManagementClientImpl(client.getCredentials());
-        resourceManagementClient.setSubscriptionId(this.subscriptionId());
-        return new ResourceGroupsImpl(resourceManagementClient);
-    }
-
-    @Override
-    public GenericResources genericResources() {
-        return null;
     }
 }
