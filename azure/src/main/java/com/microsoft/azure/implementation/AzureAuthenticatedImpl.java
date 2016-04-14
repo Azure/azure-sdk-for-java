@@ -51,11 +51,17 @@ public class AzureAuthenticatedImpl implements AzureAuthenticated {
 
     @Override
     public StorageAccounts storageAccounts() {
+
+        if (resourceManagementClient == null) {
+            resourceManagementClient = new ResourceManagementClientImpl(credentials);
+            resourceManagementClient.setSubscriptionId(subscriptionId);
+        }
+
         if (storageManagementClient == null) {
             storageManagementClient = new StorageManagementClientImpl(credentials);
             storageManagementClient.setSubscriptionId(subscriptionId);
         }
-        return new StorageAccountsImpl(storageManagementClient);
+        return new StorageAccountsImpl(storageManagementClient, resourceManagementClient);
     }
 
     @Override

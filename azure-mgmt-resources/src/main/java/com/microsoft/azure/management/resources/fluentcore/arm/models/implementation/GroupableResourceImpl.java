@@ -1,14 +1,11 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.models.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.implementation.ResourceGroupsImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.resources.models.implementation.api.ResourceGroupInner;
-
-import java.io.IOException;
 
 public abstract class GroupableResourceImpl<
         WRAPPER,

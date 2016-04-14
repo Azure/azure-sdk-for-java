@@ -28,7 +28,7 @@ public abstract class ResourceImpl<
 
     @Override
     public String region() {
-        return this.inner().location();
+        return this.inner().getLocation();
     }
 
     @Override
@@ -38,17 +38,17 @@ public abstract class ResourceImpl<
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.inner().getId();
     }
 
     @Override
     public String type() {
-        return this.inner().type();
+        return this.inner().getType();
     }
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.inner().getName();
     }
 
     /**************************************************
