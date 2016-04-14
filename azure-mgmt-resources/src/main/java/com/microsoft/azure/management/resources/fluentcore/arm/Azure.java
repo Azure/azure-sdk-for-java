@@ -1,6 +1,6 @@
 package com.microsoft.azure.management.resources.fluentcore.arm;
 
-import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
+import com.microsoft.azure.management.resources.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 

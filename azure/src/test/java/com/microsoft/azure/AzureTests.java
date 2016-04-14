@@ -12,23 +12,23 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class AzureTests {
-    static final ServiceClientCredentials credentials = new ApplicationTokenCredentials(
+    private static final ServiceClientCredentials credentials = new ApplicationTokenCredentials(
             System.getenv("client-id"),
             System.getenv("domain"),
             System.getenv("secret"),
             AzureEnvironment.AZURE);
-    static final String subscriptionId = System.getenv("subscription-id");
+    private static final String subscriptionId = System.getenv("subscription-id");
 
-    Subscriptions subscriptions;
-    ResourceGroups resourceGroups;
-    StorageAccounts storageAccounts;
+    private Subscriptions subscriptions;
+    private ResourceGroups resourceGroups;
+    private StorageAccounts storageAccounts;
 
     @Before
     public void setup() throws Exception {
-        subscriptions = Azure.authenticate(credentials);
-        AzureAuthenticated azureAuthenticated = Azure.authenticate(credentials, subscriptionId);
-        resourceGroups = azureAuthenticated.resourceGroups();
-        storageAccounts = azureAuthenticated.storageAccounts();
+        Azure.Authenticated azure = Azure.authenticate(credentials);
+        subscriptions = azure.subscriptions();
+        resourceGroups = azure.subscription(subscriptionId).resourceGroups();
+        storageAccounts = azure.subscription(subscriptionId).storageAccounts();
     }
 
     @Test

@@ -4,22 +4,20 @@
  * license information.
  */
 
-package com.microsoft.azure.implementation;
+package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.management.resources.GenericResources;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.Tenants;
-import com.microsoft.azure.management.storage.StorageAccounts;
-import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
-public final class Azure {
-    public static Authenticated authenticate(ServiceClientCredentials credentials) {
+public final class AzureResourceManager {
+    public static AzureResourceManager.Authenticated authenticate(ServiceClientCredentials credentials) {
         return new AzureAuthenticatedImpl(credentials);
     }
 
-    public static Subscription authenticate(ServiceClientCredentials credentials, String subscriptionId) {
+    public static AzureResourceManager.Subscription authenticate(ServiceClientCredentials credentials, String subscriptionId) {
         return new AzureSubscriptionImpl(credentials, subscriptionId);
     }
 
@@ -32,7 +30,5 @@ public final class Azure {
     public interface Subscription {
         ResourceGroups resourceGroups();
         GenericResources genericResources();
-        StorageAccounts storageAccounts();
-        Usages usages();
     }
 }

@@ -1,7 +1,7 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
-import com.microsoft.azure.management.resources.implementation.AzureResource;
+import com.microsoft.azure.management.resources.implementation.AzureResourceManager;
 import com.microsoft.azure.management.resources.models.Subscription;
 
 public abstract class ResourceManagementTestBase {
@@ -9,7 +9,7 @@ public abstract class ResourceManagementTestBase {
     protected Subscription subscription;
 
     public ResourceManagementTestBase() throws Exception {
-        resourceClient = AzureResource.authenticate(
+        resourceClient = AzureResourceManager.authenticate(
                 new ApplicationTokenCredentials(
                         System.getenv("arm.clientid"),
                         System.getenv("arm.domain"),
