@@ -34,37 +34,37 @@ final class AzureSubscriptionImpl extends AzureBaseImpl<Azure.Subscription>
 
     @Override
     public ResourceGroups resourceGroups() {
-        if (resourceManagementClient == null) {
-            resourceManagementClient = new ResourceManagementClientImpl(credentials);
-            resourceManagementClient.setSubscriptionId(subscriptionId);
-        }
-        return new ResourceGroupsImpl(resourceManagementClient);
+        return new ResourceGroupsImpl(resourceManagementClient());
     }
 
     @Override
     public GenericResources genericResources() {
-        if (resourceManagementClient == null) {
-            resourceManagementClient = new ResourceManagementClientImpl(credentials);
-            resourceManagementClient.setSubscriptionId(subscriptionId);
-        }
-        return new GenericResourcesImpl(resourceManagementClient);
+        return new GenericResourcesImpl(resourceManagementClient());
     }
 
     @Override
     public StorageAccounts storageAccounts() {
-        if (storageManagementClient == null) {
-            storageManagementClient = new StorageManagementClientImpl(credentials);
-            storageManagementClient.setSubscriptionId(subscriptionId);
-        }
-        return new StorageAccountsImpl(storageManagementClient);
+        return new StorageAccountsImpl(storageManagementClient(), resourceManagementClient());
     }
 
     @Override
     public Usages usages() {
+        return new UsagesImpl(storageManagementClient());
+    }
+
+    private ResourceManagementClientImpl resourceManagementClient() {
+        if (resourceManagementClient == null) {
+            resourceManagementClient = new ResourceManagementClientImpl(credentials);
+            resourceManagementClient.setSubscriptionId(subscriptionId);
+        }
+        return resourceManagementClient;
+    }
+
+    private StorageManagementClientImpl storageManagementClient() {
         if (storageManagementClient == null) {
             storageManagementClient = new StorageManagementClientImpl(credentials);
             storageManagementClient.setSubscriptionId(subscriptionId);
         }
-        return new UsagesImpl(storageManagementClient);
+        return storageManagementClient;
     }
 }
