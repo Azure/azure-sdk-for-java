@@ -181,7 +181,7 @@ public final class BatchErrorCodeStrings {
     public static final String NodeBeingReimaged = "NodeBeingReimaged";
 
     // The node counts do not match.
-    public static final String NodeCountsMismatch = "NodeCountsMismatch";  // TODO: substantiate this
+    public static final String NodeCountsMismatch = "NodeCountsMismatch";
 
     // The compute node on which an operation was attempted is not present in the given pool.
     public static final String NodeNotFound = "NodeNotFound";

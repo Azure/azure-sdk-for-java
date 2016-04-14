@@ -8,7 +8,6 @@ package com.microsoft.azure.batch;
 
 import com.microsoft.azure.batch.auth.BatchSharedKeyCredentials;
 import com.microsoft.azure.batch.interceptor.ClientRequestIdInterceptor;
-import com.microsoft.azure.batch.protocol.BatchCredentials;
 import com.microsoft.azure.batch.protocol.BatchServiceClient;
 import com.microsoft.azure.batch.protocol.BatchServiceClientImpl;
 
@@ -34,8 +33,7 @@ public class BatchClient {
     }
 
     private BatchClient(BatchSharedKeyCredentials credentials) {
-        BatchCredentials cred = new BatchCredentials(credentials.getAccountName(), credentials.getKeyValue());
-        this.protocolLayer = new BatchServiceClientImpl(credentials.getBaseUrl(), cred);
+        this.protocolLayer = new BatchServiceClientImpl(credentials.getBaseUrl(), credentials);
         this.customBehaviors = new LinkedList<>();
         this.customBehaviors.add(new ClientRequestIdInterceptor());
         this.certificateOperations = new CertificateOperations(this, getCustomBehaviors());
