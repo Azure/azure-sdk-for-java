@@ -5,8 +5,9 @@ import com.microsoft.azure.management.resources.implementation.AzureResourceMana
 import com.microsoft.azure.management.storage.implementation.AzureStorageManager;
 
 public abstract class StorageManagementTestBase {
-    protected static AzureResourceAuthenticated resourceClient;
-    protected static AzureStorageAuthenticated storageClient;
+    protected static AzureResourceManager.Authenticated subscriptionClient;
+    protected static AzureResourceManager.Subscription resourceClient;
+    protected static AzureStorageManager.Authenticated storageClient;
 
     public static void createClients() {
         ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(
@@ -15,7 +16,8 @@ public abstract class StorageManagementTestBase {
                 System.getenv("arm.secret"),
                 null);
 
-        resourceClient = AzureResourceManager.authenticate(credentials); // TODO: subscription-id
+        subscriptionClient = AzureResourceManager.authenticate(credentials);
+        resourceClient = subscriptionClient.withSubscription(System.getenv("arm.subscriptionid"));
         storageClient = AzureStorageManager.authenticate(credentials, System.getenv("arm.subscriptionid"));
         // resourceManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);
         // storageManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);

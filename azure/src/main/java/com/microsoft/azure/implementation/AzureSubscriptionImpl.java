@@ -8,9 +8,10 @@ package com.microsoft.azure.implementation;
 
 import com.microsoft.azure.management.resources.GenericResources;
 import com.microsoft.azure.management.resources.ResourceGroups;
+import com.microsoft.azure.management.resources.api.ResourceManagementClientImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureBaseImpl;
 import com.microsoft.azure.management.resources.implementation.GenericResourcesImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceGroupsImpl;
-import com.microsoft.azure.management.resources.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.azure.management.storage.implementation.StorageAccountsImpl;
@@ -18,7 +19,8 @@ import com.microsoft.azure.management.storage.implementation.UsagesImpl;
 import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
-final class AzureSubscriptionImpl implements Azure.Subscription {
+final class AzureSubscriptionImpl extends AzureBaseImpl<Azure.Subscription>
+        implements Azure.Subscription {
     private ServiceClientCredentials credentials;
     private String subscriptionId;
 

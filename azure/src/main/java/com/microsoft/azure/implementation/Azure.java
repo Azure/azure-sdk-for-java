@@ -10,6 +10,7 @@ import com.microsoft.azure.management.resources.GenericResources;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.Tenants;
+import com.microsoft.azure.management.resources.fluentcore.arm.AzureBase;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
@@ -19,17 +20,13 @@ public final class Azure {
         return new AzureAuthenticatedImpl(credentials);
     }
 
-    public static Subscription authenticate(ServiceClientCredentials credentials, String subscriptionId) {
-        return new AzureSubscriptionImpl(credentials, subscriptionId);
-    }
-
-    public interface Authenticated {
-        Subscription subscription(String subscriptionId);
+    public interface Authenticated extends AzureBase<Authenticated> {
         Subscriptions subscriptions();
         Tenants tenants();
+        Subscription withSubscription(String subscriptionId);
     }
 
-    public interface Subscription {
+    public interface Subscription extends AzureBase<Subscription> {
         ResourceGroups resourceGroups();
         GenericResources genericResources();
         StorageAccounts storageAccounts();

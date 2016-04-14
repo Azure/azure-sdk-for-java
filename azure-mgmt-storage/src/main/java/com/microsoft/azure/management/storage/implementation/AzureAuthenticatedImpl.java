@@ -1,17 +1,19 @@
 package com.microsoft.azure.management.storage.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureBaseImpl;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
-class AzureSubscriptionImpl implements AzureStorageManager.Subscription {
+class AzureAuthenticatedImpl extends AzureBaseImpl<AzureStorageManager.Authenticated>
+        implements AzureStorageManager.Authenticated {
 
     private ServiceClientCredentials credentials;
     private String subscriptionId;
     private StorageManagementClientImpl storageManagementClient;
 
-    AzureSubscriptionImpl(ServiceClientCredentials credentials, String subscriptionId) {
+    AzureAuthenticatedImpl(ServiceClientCredentials credentials, String subscriptionId) {
         this.credentials = credentials;
         this.subscriptionId = subscriptionId;
     }

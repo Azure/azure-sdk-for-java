@@ -9,9 +9,11 @@ package com.microsoft.azure.management.resources.implementation;
 import com.microsoft.azure.management.resources.GenericResources;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.api.ResourceManagementClientImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureBaseImpl;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
-final class AzureSubscriptionImpl implements AzureResourceManager.Subscription {
+final class AzureSubscriptionImpl extends AzureBaseImpl<AzureResourceManager.Subscription>
+        implements AzureResourceManager.Subscription {
     private ServiceClientCredentials credentials;
     private String subscriptionId;
 
