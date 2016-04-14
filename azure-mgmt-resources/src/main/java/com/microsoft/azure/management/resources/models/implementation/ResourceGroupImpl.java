@@ -70,7 +70,7 @@ public class ResourceGroupImpl 	extends
 
     @Override
     public ResourceGroupImpl withTags(Map<String, String> tags) {   //  FLUENT: implementation of ResourceGroup.DefinitionProvisionable
-        this.inner().setTags(new HashMap<String, String>(tags));    //                   ResourceGroup.Update.UpdateBlank.Taggable<Update>
+        this.inner().setTags(new HashMap<>(tags));    //                   ResourceGroup.Update.UpdateBlank.Taggable<Update>
         return this;
     }
 
@@ -112,12 +112,7 @@ public class ResourceGroupImpl 	extends
         client.createOrUpdate(this.id, params);
         return this;
     }
-
-    @Override
-    public void delete() throws Exception {                         //  FLUENT: implementation of ResourceGroup.Update.UpdateBlank.Delete
-        client.delete(this.id);
-    }
-
+    
     @Override
     public ResourceGroupImpl provision() throws Exception {         //  FLUENT: implementation of ResourceGroup.DefinitionProvisionable.Provisionable<ResourceGroup>
         ResourceGroupInner params = new ResourceGroupInner();

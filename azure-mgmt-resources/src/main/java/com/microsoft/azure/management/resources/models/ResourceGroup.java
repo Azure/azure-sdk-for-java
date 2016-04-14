@@ -11,8 +11,7 @@ import java.util.Map;
 public interface ResourceGroup extends
         Indexable,
         Refreshable<ResourceGroup>,
-        Wrapper<ResourceGroupInner>,
-        Deletable {
+        Wrapper<ResourceGroupInner>{
 
     /***********************************************************
      * Getters
@@ -40,7 +39,7 @@ public interface ResourceGroup extends
     interface Update extends UpdateBlank, Updatable<Update> {
     }
 
-    interface UpdateBlank extends Deletable, Taggable<Update> {
+    interface UpdateBlank extends Taggable<Update> {
     }
 
     /**************************************************************

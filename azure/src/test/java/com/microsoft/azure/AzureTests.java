@@ -7,28 +7,33 @@ import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import okhttp3.logging.HttpLoggingInterceptor;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 public class AzureTests {
-    static final ServiceClientCredentials credentials = new ApplicationTokenCredentials(
+    private static final ServiceClientCredentials credentials = new ApplicationTokenCredentials(
             System.getenv("client-id"),
             System.getenv("domain"),
             System.getenv("secret"),
             AzureEnvironment.AZURE);
-    static final String subscriptionId = System.getenv("subscription-id");
+    private static final String subscriptionId = System.getenv("subscription-id");
 
-    Subscriptions subscriptions;
-    ResourceGroups resourceGroups;
-    StorageAccounts storageAccounts;
+    private Subscriptions subscriptions;
+    private ResourceGroups resourceGroups;
+    private StorageAccounts storageAccounts;
 
     @Before
     public void setup() throws Exception {
-        subscriptions = Azure.authenticate(credentials);
-        AzureAuthenticated azureAuthenticated = Azure.authenticate(credentials, subscriptionId);
-        resourceGroups = azureAuthenticated.resourceGroups();
-        storageAccounts = azureAuthenticated.storageAccounts();
+        Azure.Authenticated azure = Azure
+                .authenticate(credentials)
+                .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
+                .withUserAgent("AzureTests");
+        subscriptions = azure.subscriptions();
+        Azure.Subscription sub = azure.withSubscription(subscriptionId);
+        resourceGroups = sub.resourceGroups();
+        storageAccounts = sub.storageAccounts();
     }
 
     @Test

@@ -4,18 +4,16 @@
  * license information.
  */
 
-package com.microsoft.azure.implementation;
+package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.Tenants;
 import com.microsoft.azure.management.resources.implementation.api.SubscriptionClientImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureBaseImpl;
-import com.microsoft.azure.management.resources.implementation.SubscriptionsImpl;
-import com.microsoft.azure.management.resources.implementation.TenantsImpl;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
-final class AzureAuthenticatedImpl extends AzureBaseImpl<Azure.Authenticated>
-        implements Azure.Authenticated {
+final class AzureAuthenticatedImpl extends AzureBaseImpl<AzureResourceManager.Authenticated>
+        implements AzureResourceManager.Authenticated {
     private ServiceClientCredentials credentials;
     private SubscriptionClientImpl subscriptionClient;
 
@@ -40,7 +38,7 @@ final class AzureAuthenticatedImpl extends AzureBaseImpl<Azure.Authenticated>
     }
 
     @Override
-    public Azure.Subscription withSubscription(String subscriptionId) {
+    public AzureResourceManager.Subscription withSubscription(String subscriptionId) {
         return new AzureSubscriptionImpl(credentials, subscriptionId);
     }
 }
