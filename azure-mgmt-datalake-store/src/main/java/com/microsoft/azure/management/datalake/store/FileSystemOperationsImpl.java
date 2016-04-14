@@ -153,23 +153,23 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Appends to the specified file. This method supports multiple concurrent appends to the file. NOTE: Concurrent append and normal (serial) append CANNOT be used interchangeably. Once a file has been appended to using either append option, it can only be appended to using that append option.
      *
-     * @param filePath The Data Lake Store path (starting with '/') of the file to which to append using concurrent append.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param filePath The Data Lake Store path (starting with '/') of the file to which to append using concurrent append.
      * @param streamContents The file contents to include when appending to the file.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> concurrentAppend(String filePath, String accountName, byte[] streamContents) throws CloudException, IOException, IllegalArgumentException {
-        if (filePath == null) {
-            throw new IllegalArgumentException("Parameter filePath is required and cannot be null.");
-        }
+    public ServiceResponse<Void> concurrentAppend(String accountName, String filePath, byte[] streamContents) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null.");
+        }
+        if (filePath == null) {
+            throw new IllegalArgumentException("Parameter filePath is required and cannot be null.");
         }
         if (streamContents == null) {
             throw new IllegalArgumentException("Parameter streamContents is required and cannot be null.");
@@ -190,20 +190,16 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Appends to the specified file. This method supports multiple concurrent appends to the file. NOTE: Concurrent append and normal (serial) append CANNOT be used interchangeably. Once a file has been appended to using either append option, it can only be appended to using that append option.
      *
-     * @param filePath The Data Lake Store path (starting with '/') of the file to which to append using concurrent append.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param filePath The Data Lake Store path (starting with '/') of the file to which to append using concurrent append.
      * @param streamContents The file contents to include when appending to the file.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall concurrentAppendAsync(String filePath, String accountName, byte[] streamContents, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall concurrentAppendAsync(String accountName, String filePath, byte[] streamContents, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (filePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter filePath is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -211,6 +207,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (filePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter filePath is required and cannot be null."));
             return null;
         }
         if (streamContents == null) {
@@ -245,8 +245,8 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Appends to the specified file. This method supports multiple concurrent appends to the file. NOTE: Concurrent append and normal (serial) append CANNOT be used interchangeably. Once a file has been appended to using either append option, it can only be appended to using that append option.
      *
-     * @param filePath The Data Lake Store path (starting with '/') of the file to which to append using concurrent append.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param filePath The Data Lake Store path (starting with '/') of the file to which to append using concurrent append.
      * @param streamContents The file contents to include when appending to the file.
      * @param appendMode Indicates the concurrent append call should create the file if it doesn't exist or just open the existing file for append. Possible values include: 'autocreate'
      * @throws CloudException exception thrown from REST call
@@ -254,15 +254,15 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> concurrentAppend(String filePath, String accountName, byte[] streamContents, AppendModeType appendMode) throws CloudException, IOException, IllegalArgumentException {
-        if (filePath == null) {
-            throw new IllegalArgumentException("Parameter filePath is required and cannot be null.");
-        }
+    public ServiceResponse<Void> concurrentAppend(String accountName, String filePath, byte[] streamContents, AppendModeType appendMode) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null.");
+        }
+        if (filePath == null) {
+            throw new IllegalArgumentException("Parameter filePath is required and cannot be null.");
         }
         if (streamContents == null) {
             throw new IllegalArgumentException("Parameter streamContents is required and cannot be null.");
@@ -282,21 +282,17 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Appends to the specified file. This method supports multiple concurrent appends to the file. NOTE: Concurrent append and normal (serial) append CANNOT be used interchangeably. Once a file has been appended to using either append option, it can only be appended to using that append option.
      *
-     * @param filePath The Data Lake Store path (starting with '/') of the file to which to append using concurrent append.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param filePath The Data Lake Store path (starting with '/') of the file to which to append using concurrent append.
      * @param streamContents The file contents to include when appending to the file.
      * @param appendMode Indicates the concurrent append call should create the file if it doesn't exist or just open the existing file for append. Possible values include: 'autocreate'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall concurrentAppendAsync(String filePath, String accountName, byte[] streamContents, AppendModeType appendMode, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall concurrentAppendAsync(String accountName, String filePath, byte[] streamContents, AppendModeType appendMode, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (filePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter filePath is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -304,6 +300,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (filePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter filePath is required and cannot be null."));
             return null;
         }
         if (streamContents == null) {
@@ -343,22 +343,22 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Checks if the specified access is available at the given path.
      *
-     * @param path The Data Lake Store path (starting with '/') of the file or directory for which to check access.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param path The Data Lake Store path (starting with '/') of the file or directory for which to check access.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> checkAccess(String path, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (path == null) {
-            throw new IllegalArgumentException("Parameter path is required and cannot be null.");
-        }
+    public ServiceResponse<Void> checkAccess(String accountName, String path) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null.");
+        }
+        if (path == null) {
+            throw new IllegalArgumentException("Parameter path is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -374,19 +374,15 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Checks if the specified access is available at the given path.
      *
-     * @param path The Data Lake Store path (starting with '/') of the file or directory for which to check access.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param path The Data Lake Store path (starting with '/') of the file or directory for which to check access.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall checkAccessAsync(String path, String accountName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall checkAccessAsync(String accountName, String path, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (path == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter path is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -394,6 +390,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (path == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter path is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -422,23 +422,23 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Checks if the specified access is available at the given path.
      *
-     * @param path The Data Lake Store path (starting with '/') of the file or directory for which to check access.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param path The Data Lake Store path (starting with '/') of the file or directory for which to check access.
      * @param fsaction File system operation read/write/execute in string form, matching regex pattern '[rwx-]{3}'
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> checkAccess(String path, String accountName, String fsaction) throws CloudException, IOException, IllegalArgumentException {
-        if (path == null) {
-            throw new IllegalArgumentException("Parameter path is required and cannot be null.");
-        }
+    public ServiceResponse<Void> checkAccess(String accountName, String path, String fsaction) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null.");
+        }
+        if (path == null) {
+            throw new IllegalArgumentException("Parameter path is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -453,20 +453,16 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Checks if the specified access is available at the given path.
      *
-     * @param path The Data Lake Store path (starting with '/') of the file or directory for which to check access.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param path The Data Lake Store path (starting with '/') of the file or directory for which to check access.
      * @param fsaction File system operation read/write/execute in string form, matching regex pattern '[rwx-]{3}'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall checkAccessAsync(String path, String accountName, String fsaction, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall checkAccessAsync(String accountName, String path, String fsaction, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (path == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter path is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -474,6 +470,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (path == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter path is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -507,22 +507,22 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Creates a directory.
      *
-     * @param path The Data Lake Store path (starting with '/') of the directory to create.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param path The Data Lake Store path (starting with '/') of the directory to create.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the FileOperationResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<FileOperationResult> mkdirs(String path, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (path == null) {
-            throw new IllegalArgumentException("Parameter path is required and cannot be null.");
-        }
+    public ServiceResponse<FileOperationResult> mkdirs(String accountName, String path) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null.");
+        }
+        if (path == null) {
+            throw new IllegalArgumentException("Parameter path is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -537,19 +537,15 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Creates a directory.
      *
-     * @param path The Data Lake Store path (starting with '/') of the directory to create.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param path The Data Lake Store path (starting with '/') of the directory to create.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall mkdirsAsync(String path, String accountName, final ServiceCallback<FileOperationResult> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall mkdirsAsync(String accountName, String path, final ServiceCallback<FileOperationResult> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (path == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter path is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -557,6 +553,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (path == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter path is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -591,23 +591,23 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Concatenates the list of source files into the destination file, removing all source files upon success.
      *
-     * @param destinationPath The Data Lake Store path (starting with '/') of the destination file resulting from the concatenation.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param destinationPath The Data Lake Store path (starting with '/') of the destination file resulting from the concatenation.
      * @param sources A list of comma seperated Data Lake Store paths (starting with '/') of the files to concatenate, in the order in which they should be concatenated.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> concat(String destinationPath, String accountName, List<String> sources) throws CloudException, IOException, IllegalArgumentException {
-        if (destinationPath == null) {
-            throw new IllegalArgumentException("Parameter destinationPath is required and cannot be null.");
-        }
+    public ServiceResponse<Void> concat(String accountName, String destinationPath, List<String> sources) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null.");
+        }
+        if (destinationPath == null) {
+            throw new IllegalArgumentException("Parameter destinationPath is required and cannot be null.");
         }
         if (sources == null) {
             throw new IllegalArgumentException("Parameter sources is required and cannot be null.");
@@ -627,20 +627,16 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Concatenates the list of source files into the destination file, removing all source files upon success.
      *
-     * @param destinationPath The Data Lake Store path (starting with '/') of the destination file resulting from the concatenation.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param destinationPath The Data Lake Store path (starting with '/') of the destination file resulting from the concatenation.
      * @param sources A list of comma seperated Data Lake Store paths (starting with '/') of the files to concatenate, in the order in which they should be concatenated.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall concatAsync(String destinationPath, String accountName, List<String> sources, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall concatAsync(String accountName, String destinationPath, List<String> sources, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (destinationPath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter destinationPath is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -648,6 +644,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (destinationPath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter destinationPath is required and cannot be null."));
             return null;
         }
         if (sources == null) {
@@ -687,23 +687,23 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Concatenates the list of source files into the destination file, deleting all source files upon success. This method accepts more source file paths than the Concat method. This method and the parameters it accepts are subject to change for usability in an upcoming version.
      *
-     * @param msConcatDestinationPath The Data Lake Store path (starting with '/') of the destination file resulting from the concatenation.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param msConcatDestinationPath The Data Lake Store path (starting with '/') of the destination file resulting from the concatenation.
      * @param streamContents A list of Data Lake Store paths (starting with '/') of the source files. Must be in the format: sources=&lt;comma separated list&gt;
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> msConcat(String msConcatDestinationPath, String accountName, byte[] streamContents) throws CloudException, IOException, IllegalArgumentException {
-        if (msConcatDestinationPath == null) {
-            throw new IllegalArgumentException("Parameter msConcatDestinationPath is required and cannot be null.");
-        }
+    public ServiceResponse<Void> msConcat(String accountName, String msConcatDestinationPath, byte[] streamContents) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null.");
+        }
+        if (msConcatDestinationPath == null) {
+            throw new IllegalArgumentException("Parameter msConcatDestinationPath is required and cannot be null.");
         }
         if (streamContents == null) {
             throw new IllegalArgumentException("Parameter streamContents is required and cannot be null.");
@@ -723,20 +723,16 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Concatenates the list of source files into the destination file, deleting all source files upon success. This method accepts more source file paths than the Concat method. This method and the parameters it accepts are subject to change for usability in an upcoming version.
      *
-     * @param msConcatDestinationPath The Data Lake Store path (starting with '/') of the destination file resulting from the concatenation.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param msConcatDestinationPath The Data Lake Store path (starting with '/') of the destination file resulting from the concatenation.
      * @param streamContents A list of Data Lake Store paths (starting with '/') of the source files. Must be in the format: sources=&lt;comma separated list&gt;
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall msConcatAsync(String msConcatDestinationPath, String accountName, byte[] streamContents, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall msConcatAsync(String accountName, String msConcatDestinationPath, byte[] streamContents, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (msConcatDestinationPath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter msConcatDestinationPath is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -744,6 +740,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (msConcatDestinationPath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter msConcatDestinationPath is required and cannot be null."));
             return null;
         }
         if (streamContents == null) {
@@ -777,8 +777,8 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Concatenates the list of source files into the destination file, deleting all source files upon success. This method accepts more source file paths than the Concat method. This method and the parameters it accepts are subject to change for usability in an upcoming version.
      *
-     * @param msConcatDestinationPath The Data Lake Store path (starting with '/') of the destination file resulting from the concatenation.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param msConcatDestinationPath The Data Lake Store path (starting with '/') of the destination file resulting from the concatenation.
      * @param streamContents A list of Data Lake Store paths (starting with '/') of the source files. Must be in the format: sources=&lt;comma separated list&gt;
      * @param deleteSourceDirectory Indicates that as an optimization instead of deleting each individual source stream, delete the source stream folder if all streams are in the same folder instead. This results in a substantial performance improvement when the only streams in the folder are part of the concatenation operation. WARNING: This includes the deletion of any other files that are not source files. Only set this to true when source files are the only files in the source directory.
      * @throws CloudException exception thrown from REST call
@@ -786,15 +786,15 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> msConcat(String msConcatDestinationPath, String accountName, byte[] streamContents, Boolean deleteSourceDirectory) throws CloudException, IOException, IllegalArgumentException {
-        if (msConcatDestinationPath == null) {
-            throw new IllegalArgumentException("Parameter msConcatDestinationPath is required and cannot be null.");
-        }
+    public ServiceResponse<Void> msConcat(String accountName, String msConcatDestinationPath, byte[] streamContents, Boolean deleteSourceDirectory) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null.");
+        }
+        if (msConcatDestinationPath == null) {
+            throw new IllegalArgumentException("Parameter msConcatDestinationPath is required and cannot be null.");
         }
         if (streamContents == null) {
             throw new IllegalArgumentException("Parameter streamContents is required and cannot be null.");
@@ -813,21 +813,17 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Concatenates the list of source files into the destination file, deleting all source files upon success. This method accepts more source file paths than the Concat method. This method and the parameters it accepts are subject to change for usability in an upcoming version.
      *
-     * @param msConcatDestinationPath The Data Lake Store path (starting with '/') of the destination file resulting from the concatenation.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param msConcatDestinationPath The Data Lake Store path (starting with '/') of the destination file resulting from the concatenation.
      * @param streamContents A list of Data Lake Store paths (starting with '/') of the source files. Must be in the format: sources=&lt;comma separated list&gt;
      * @param deleteSourceDirectory Indicates that as an optimization instead of deleting each individual source stream, delete the source stream folder if all streams are in the same folder instead. This results in a substantial performance improvement when the only streams in the folder are part of the concatenation operation. WARNING: This includes the deletion of any other files that are not source files. Only set this to true when source files are the only files in the source directory.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall msConcatAsync(String msConcatDestinationPath, String accountName, byte[] streamContents, Boolean deleteSourceDirectory, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall msConcatAsync(String accountName, String msConcatDestinationPath, byte[] streamContents, Boolean deleteSourceDirectory, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (msConcatDestinationPath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter msConcatDestinationPath is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -835,6 +831,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (msConcatDestinationPath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter msConcatDestinationPath is required and cannot be null."));
             return null;
         }
         if (streamContents == null) {
@@ -873,22 +873,22 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Get the list of file status objects specified by the file path, with optional pagination parameters.
      *
-     * @param listFilePath The Data Lake Store path (starting with '/') of the directory to list.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param listFilePath The Data Lake Store path (starting with '/') of the directory to list.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the FileStatusesResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<FileStatusesResult> listFileStatus(String listFilePath, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (listFilePath == null) {
-            throw new IllegalArgumentException("Parameter listFilePath is required and cannot be null.");
-        }
+    public ServiceResponse<FileStatusesResult> listFileStatus(String accountName, String listFilePath) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null.");
+        }
+        if (listFilePath == null) {
+            throw new IllegalArgumentException("Parameter listFilePath is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -906,19 +906,15 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Get the list of file status objects specified by the file path, with optional pagination parameters.
      *
-     * @param listFilePath The Data Lake Store path (starting with '/') of the directory to list.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param listFilePath The Data Lake Store path (starting with '/') of the directory to list.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listFileStatusAsync(String listFilePath, String accountName, final ServiceCallback<FileStatusesResult> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listFileStatusAsync(String accountName, String listFilePath, final ServiceCallback<FileStatusesResult> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (listFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter listFilePath is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -926,6 +922,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (listFilePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter listFilePath is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -956,8 +956,8 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Get the list of file status objects specified by the file path, with optional pagination parameters.
      *
-     * @param listFilePath The Data Lake Store path (starting with '/') of the directory to list.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param listFilePath The Data Lake Store path (starting with '/') of the directory to list.
      * @param listSize Gets or sets the number of items to return. Optional.
      * @param listAfter Gets or sets the item or lexographical index after which to begin returning results. For example, a file list of 'a','b','d' and listAfter='b' will return 'd', and a listAfter='c' will also return 'd'. Optional.
      * @param listBefore Gets or sets the item or lexographical index before which to begin returning results. For example, a file list of 'a','b','d' and listBefore='d' will return 'a','b', and a listBefore='c' will also return 'a','b'. Optional.
@@ -966,15 +966,15 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the FileStatusesResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<FileStatusesResult> listFileStatus(String listFilePath, String accountName, Integer listSize, String listAfter, String listBefore) throws CloudException, IOException, IllegalArgumentException {
-        if (listFilePath == null) {
-            throw new IllegalArgumentException("Parameter listFilePath is required and cannot be null.");
-        }
+    public ServiceResponse<FileStatusesResult> listFileStatus(String accountName, String listFilePath, Integer listSize, String listAfter, String listBefore) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null.");
+        }
+        if (listFilePath == null) {
+            throw new IllegalArgumentException("Parameter listFilePath is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -989,8 +989,8 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Get the list of file status objects specified by the file path, with optional pagination parameters.
      *
-     * @param listFilePath The Data Lake Store path (starting with '/') of the directory to list.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param listFilePath The Data Lake Store path (starting with '/') of the directory to list.
      * @param listSize Gets or sets the number of items to return. Optional.
      * @param listAfter Gets or sets the item or lexographical index after which to begin returning results. For example, a file list of 'a','b','d' and listAfter='b' will return 'd', and a listAfter='c' will also return 'd'. Optional.
      * @param listBefore Gets or sets the item or lexographical index before which to begin returning results. For example, a file list of 'a','b','d' and listBefore='d' will return 'a','b', and a listBefore='c' will also return 'a','b'. Optional.
@@ -998,13 +998,9 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listFileStatusAsync(String listFilePath, String accountName, Integer listSize, String listAfter, String listBefore, final ServiceCallback<FileStatusesResult> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listFileStatusAsync(String accountName, String listFilePath, Integer listSize, String listAfter, String listBefore, final ServiceCallback<FileStatusesResult> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (listFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter listFilePath is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1012,6 +1008,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (listFilePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter listFilePath is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -1046,22 +1046,22 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Gets the file content summary object specified by the file path.
      *
-     * @param getContentSummaryFilePath The Data Lake Store path (starting with '/') of the file for which to retrieve the summary.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param getContentSummaryFilePath The Data Lake Store path (starting with '/') of the file for which to retrieve the summary.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ContentSummaryResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<ContentSummaryResult> getContentSummary(String getContentSummaryFilePath, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (getContentSummaryFilePath == null) {
-            throw new IllegalArgumentException("Parameter getContentSummaryFilePath is required and cannot be null.");
-        }
+    public ServiceResponse<ContentSummaryResult> getContentSummary(String accountName, String getContentSummaryFilePath) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null.");
+        }
+        if (getContentSummaryFilePath == null) {
+            throw new IllegalArgumentException("Parameter getContentSummaryFilePath is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -1076,19 +1076,15 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Gets the file content summary object specified by the file path.
      *
-     * @param getContentSummaryFilePath The Data Lake Store path (starting with '/') of the file for which to retrieve the summary.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param getContentSummaryFilePath The Data Lake Store path (starting with '/') of the file for which to retrieve the summary.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getContentSummaryAsync(String getContentSummaryFilePath, String accountName, final ServiceCallback<ContentSummaryResult> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getContentSummaryAsync(String accountName, String getContentSummaryFilePath, final ServiceCallback<ContentSummaryResult> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (getContentSummaryFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter getContentSummaryFilePath is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1096,6 +1092,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (getContentSummaryFilePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter getContentSummaryFilePath is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -1130,22 +1130,22 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Get the file status object specified by the file path.
      *
-     * @param getFilePath The Data Lake Store path (starting with '/') of the file or directory for which to retrieve the status.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param getFilePath The Data Lake Store path (starting with '/') of the file or directory for which to retrieve the status.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the FileStatusResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<FileStatusResult> getFileStatus(String getFilePath, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (getFilePath == null) {
-            throw new IllegalArgumentException("Parameter getFilePath is required and cannot be null.");
-        }
+    public ServiceResponse<FileStatusResult> getFileStatus(String accountName, String getFilePath) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null.");
+        }
+        if (getFilePath == null) {
+            throw new IllegalArgumentException("Parameter getFilePath is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -1160,19 +1160,15 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Get the file status object specified by the file path.
      *
-     * @param getFilePath The Data Lake Store path (starting with '/') of the file or directory for which to retrieve the status.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param getFilePath The Data Lake Store path (starting with '/') of the file or directory for which to retrieve the status.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getFileStatusAsync(String getFilePath, String accountName, final ServiceCallback<FileStatusResult> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getFileStatusAsync(String accountName, String getFilePath, final ServiceCallback<FileStatusResult> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (getFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter getFilePath is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1180,6 +1176,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (getFilePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter getFilePath is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -1214,23 +1214,23 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Appends to the specified file. This method does not support multiple concurrent appends to the file. NOTE: Concurrent append and normal (serial) append CANNOT be used interchangeably. Once a file has been appended to using either append option, it can only be appended to using that append option. Use the ConcurrentAppend option if you would like support for concurrent appends.
      *
-     * @param directFilePath The Data Lake Store path (starting with '/') of the file to which to append.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param directFilePath The Data Lake Store path (starting with '/') of the file to which to append.
      * @param streamContents The file contents to include when appending to the file.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> append(String directFilePath, String accountName, byte[] streamContents) throws CloudException, IOException, IllegalArgumentException {
-        if (directFilePath == null) {
-            throw new IllegalArgumentException("Parameter directFilePath is required and cannot be null.");
-        }
+    public ServiceResponse<Void> append(String accountName, String directFilePath, byte[] streamContents) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null.");
+        }
+        if (directFilePath == null) {
+            throw new IllegalArgumentException("Parameter directFilePath is required and cannot be null.");
         }
         if (streamContents == null) {
             throw new IllegalArgumentException("Parameter streamContents is required and cannot be null.");
@@ -1251,20 +1251,16 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Appends to the specified file. This method does not support multiple concurrent appends to the file. NOTE: Concurrent append and normal (serial) append CANNOT be used interchangeably. Once a file has been appended to using either append option, it can only be appended to using that append option. Use the ConcurrentAppend option if you would like support for concurrent appends.
      *
-     * @param directFilePath The Data Lake Store path (starting with '/') of the file to which to append.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param directFilePath The Data Lake Store path (starting with '/') of the file to which to append.
      * @param streamContents The file contents to include when appending to the file.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall appendAsync(String directFilePath, String accountName, byte[] streamContents, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall appendAsync(String accountName, String directFilePath, byte[] streamContents, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (directFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter directFilePath is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1272,6 +1268,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (directFilePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter directFilePath is required and cannot be null."));
             return null;
         }
         if (streamContents == null) {
@@ -1312,22 +1312,22 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Creates a file with optionally specified content.
      *
-     * @param directFilePath The Data Lake Store path (starting with '/') of the file to create.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param directFilePath The Data Lake Store path (starting with '/') of the file to create.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> create(String directFilePath, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (directFilePath == null) {
-            throw new IllegalArgumentException("Parameter directFilePath is required and cannot be null.");
-        }
+    public ServiceResponse<Void> create(String accountName, String directFilePath) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null.");
+        }
+        if (directFilePath == null) {
+            throw new IllegalArgumentException("Parameter directFilePath is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -1335,11 +1335,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         final String op = "CREATE";
         final String write = "true";
         final String transferEncoding = "chunked";
-        final byte[] streamContents = new byte[0];
+        final RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), new byte[0]);
         final Boolean overwrite = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
         Call<ResponseBody> call = service.create(directFilePath, streamContentsConverted, overwrite, op, write, transferEncoding, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return createDelegate(call.execute());
     }
@@ -1347,19 +1346,15 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Creates a file with optionally specified content.
      *
-     * @param directFilePath The Data Lake Store path (starting with '/') of the file to create.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param directFilePath The Data Lake Store path (starting with '/') of the file to create.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall createAsync(String directFilePath, String accountName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall createAsync(String accountName, String directFilePath, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (directFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter directFilePath is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1369,6 +1364,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null."));
             return null;
         }
+        if (directFilePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter directFilePath is required and cannot be null."));
+            return null;
+        }
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
@@ -1376,11 +1375,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         final String op = "CREATE";
         final String write = "true";
         final String transferEncoding = "chunked";
-        final byte[] streamContents = new byte[0];
+        final RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), new byte[0]);
         final Boolean overwrite = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
         Call<ResponseBody> call = service.create(directFilePath, streamContentsConverted, overwrite, op, write, transferEncoding, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1399,8 +1397,8 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Creates a file with optionally specified content.
      *
-     * @param directFilePath The Data Lake Store path (starting with '/') of the file to create.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param directFilePath The Data Lake Store path (starting with '/') of the file to create.
      * @param streamContents The file contents to include when creating the file. This parameter is optional, resulting in an empty file if not specified.
      * @param overwrite The indication of if the file should be overwritten.
      * @throws CloudException exception thrown from REST call
@@ -1408,15 +1406,15 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> create(String directFilePath, String accountName, byte[] streamContents, Boolean overwrite) throws CloudException, IOException, IllegalArgumentException {
-        if (directFilePath == null) {
-            throw new IllegalArgumentException("Parameter directFilePath is required and cannot be null.");
-        }
+    public ServiceResponse<Void> create(String accountName, String directFilePath, byte[] streamContents, Boolean overwrite) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null.");
+        }
+        if (directFilePath == null) {
+            throw new IllegalArgumentException("Parameter directFilePath is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -1426,7 +1424,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         final String transferEncoding = "chunked";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
+        RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), new byte[0]);
+        if (streamContents != null) {
+            streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
+        }
         Call<ResponseBody> call = service.create(directFilePath, streamContentsConverted, overwrite, op, write, transferEncoding, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return createDelegate(call.execute());
     }
@@ -1434,21 +1435,17 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Creates a file with optionally specified content.
      *
-     * @param directFilePath The Data Lake Store path (starting with '/') of the file to create.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param directFilePath The Data Lake Store path (starting with '/') of the file to create.
      * @param streamContents The file contents to include when creating the file. This parameter is optional, resulting in an empty file if not specified.
      * @param overwrite The indication of if the file should be overwritten.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall createAsync(String directFilePath, String accountName, byte[] streamContents, Boolean overwrite, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall createAsync(String accountName, String directFilePath, byte[] streamContents, Boolean overwrite, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (directFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter directFilePath is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1456,6 +1453,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (directFilePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter directFilePath is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -1467,7 +1468,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         final String transferEncoding = "chunked";
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlsFileSystemDnsSuffix}", this.client.getAdlsFileSystemDnsSuffix());
-        RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
+        RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), new byte[0]);
+        if (streamContents != null) {
+            streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
+        }
         Call<ResponseBody> call = service.create(directFilePath, streamContentsConverted, overwrite, op, write, transferEncoding, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1492,22 +1496,22 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Opens and reads from the specified file.
      *
-     * @param directFilePath The Data Lake Store path (starting with '/') of the file to open.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param directFilePath The Data Lake Store path (starting with '/') of the file to open.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the InputStream object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<InputStream> open(String directFilePath, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (directFilePath == null) {
-            throw new IllegalArgumentException("Parameter directFilePath is required and cannot be null.");
-        }
+    public ServiceResponse<InputStream> open(String accountName, String directFilePath) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null.");
+        }
+        if (directFilePath == null) {
+            throw new IllegalArgumentException("Parameter directFilePath is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -1525,19 +1529,15 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Opens and reads from the specified file.
      *
-     * @param directFilePath The Data Lake Store path (starting with '/') of the file to open.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param directFilePath The Data Lake Store path (starting with '/') of the file to open.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall openAsync(String directFilePath, String accountName, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall openAsync(String accountName, String directFilePath, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (directFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter directFilePath is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1545,6 +1545,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (directFilePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter directFilePath is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -1575,8 +1579,8 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Opens and reads from the specified file.
      *
-     * @param directFilePath The Data Lake Store path (starting with '/') of the file to open.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param directFilePath The Data Lake Store path (starting with '/') of the file to open.
      * @param length the Long value
      * @param offset the Long value
      * @throws CloudException exception thrown from REST call
@@ -1584,15 +1588,15 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the InputStream object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<InputStream> open(String directFilePath, String accountName, Long length, Long offset) throws CloudException, IOException, IllegalArgumentException {
-        if (directFilePath == null) {
-            throw new IllegalArgumentException("Parameter directFilePath is required and cannot be null.");
-        }
+    public ServiceResponse<InputStream> open(String accountName, String directFilePath, Long length, Long offset) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null.");
+        }
+        if (directFilePath == null) {
+            throw new IllegalArgumentException("Parameter directFilePath is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -1608,21 +1612,17 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Opens and reads from the specified file.
      *
-     * @param directFilePath The Data Lake Store path (starting with '/') of the file to open.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param directFilePath The Data Lake Store path (starting with '/') of the file to open.
      * @param length the Long value
      * @param offset the Long value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall openAsync(String directFilePath, String accountName, Long length, Long offset, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall openAsync(String accountName, String directFilePath, Long length, Long offset, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (directFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter directFilePath is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1630,6 +1630,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (directFilePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter directFilePath is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -1665,23 +1669,23 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Sets the Access Control List (ACL) for a file or folder.
      *
-     * @param setAclFilePath The Data Lake Store path (starting with '/') of the file or directory on which to set the ACL.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param setAclFilePath The Data Lake Store path (starting with '/') of the file or directory on which to set the ACL.
      * @param aclspec The ACL spec included in ACL creation operations in the format '[default:]user|group|other::r|-w|-x|-'
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> setAcl(String setAclFilePath, String accountName, String aclspec) throws CloudException, IOException, IllegalArgumentException {
-        if (setAclFilePath == null) {
-            throw new IllegalArgumentException("Parameter setAclFilePath is required and cannot be null.");
-        }
+    public ServiceResponse<Void> setAcl(String accountName, String setAclFilePath, String aclspec) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null.");
+        }
+        if (setAclFilePath == null) {
+            throw new IllegalArgumentException("Parameter setAclFilePath is required and cannot be null.");
         }
         if (aclspec == null) {
             throw new IllegalArgumentException("Parameter aclspec is required and cannot be null.");
@@ -1699,20 +1703,16 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Sets the Access Control List (ACL) for a file or folder.
      *
-     * @param setAclFilePath The Data Lake Store path (starting with '/') of the file or directory on which to set the ACL.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param setAclFilePath The Data Lake Store path (starting with '/') of the file or directory on which to set the ACL.
      * @param aclspec The ACL spec included in ACL creation operations in the format '[default:]user|group|other::r|-w|-x|-'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall setAclAsync(String setAclFilePath, String accountName, String aclspec, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall setAclAsync(String accountName, String setAclFilePath, String aclspec, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (setAclFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter setAclFilePath is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1720,6 +1720,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (setAclFilePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter setAclFilePath is required and cannot be null."));
             return null;
         }
         if (aclspec == null) {
@@ -1757,23 +1761,23 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Modifies existing Access Control List (ACL) entries on a file or folder.
      *
-     * @param modifyAclFilePath The Data Lake Store path (starting with '/') of the file or directory with the ACL being modified.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param modifyAclFilePath The Data Lake Store path (starting with '/') of the file or directory with the ACL being modified.
      * @param aclspec The ACL specification included in ACL modification operations in the format '[default:]user|group|other::r|-w|-x|-'
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> modifyAclEntries(String modifyAclFilePath, String accountName, String aclspec) throws CloudException, IOException, IllegalArgumentException {
-        if (modifyAclFilePath == null) {
-            throw new IllegalArgumentException("Parameter modifyAclFilePath is required and cannot be null.");
-        }
+    public ServiceResponse<Void> modifyAclEntries(String accountName, String modifyAclFilePath, String aclspec) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null.");
+        }
+        if (modifyAclFilePath == null) {
+            throw new IllegalArgumentException("Parameter modifyAclFilePath is required and cannot be null.");
         }
         if (aclspec == null) {
             throw new IllegalArgumentException("Parameter aclspec is required and cannot be null.");
@@ -1791,20 +1795,16 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Modifies existing Access Control List (ACL) entries on a file or folder.
      *
-     * @param modifyAclFilePath The Data Lake Store path (starting with '/') of the file or directory with the ACL being modified.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param modifyAclFilePath The Data Lake Store path (starting with '/') of the file or directory with the ACL being modified.
      * @param aclspec The ACL specification included in ACL modification operations in the format '[default:]user|group|other::r|-w|-x|-'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall modifyAclEntriesAsync(String modifyAclFilePath, String accountName, String aclspec, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall modifyAclEntriesAsync(String accountName, String modifyAclFilePath, String aclspec, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (modifyAclFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter modifyAclFilePath is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1812,6 +1812,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (modifyAclFilePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter modifyAclFilePath is required and cannot be null."));
             return null;
         }
         if (aclspec == null) {
@@ -1849,23 +1853,23 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Removes existing Access Control List (ACL) entries for a file or folder.
      *
-     * @param removeAclFilePath The Data Lake Store path (starting with '/') of the file or directory with the ACL being removed.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param removeAclFilePath The Data Lake Store path (starting with '/') of the file or directory with the ACL being removed.
      * @param aclspec The ACL spec included in ACL removal operations in the format '[default:]user|group|other'
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> removeAclEntries(String removeAclFilePath, String accountName, String aclspec) throws CloudException, IOException, IllegalArgumentException {
-        if (removeAclFilePath == null) {
-            throw new IllegalArgumentException("Parameter removeAclFilePath is required and cannot be null.");
-        }
+    public ServiceResponse<Void> removeAclEntries(String accountName, String removeAclFilePath, String aclspec) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null.");
+        }
+        if (removeAclFilePath == null) {
+            throw new IllegalArgumentException("Parameter removeAclFilePath is required and cannot be null.");
         }
         if (aclspec == null) {
             throw new IllegalArgumentException("Parameter aclspec is required and cannot be null.");
@@ -1883,20 +1887,16 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Removes existing Access Control List (ACL) entries for a file or folder.
      *
-     * @param removeAclFilePath The Data Lake Store path (starting with '/') of the file or directory with the ACL being removed.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param removeAclFilePath The Data Lake Store path (starting with '/') of the file or directory with the ACL being removed.
      * @param aclspec The ACL spec included in ACL removal operations in the format '[default:]user|group|other'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall removeAclEntriesAsync(String removeAclFilePath, String accountName, String aclspec, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall removeAclEntriesAsync(String accountName, String removeAclFilePath, String aclspec, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (removeAclFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter removeAclFilePath is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1904,6 +1904,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (removeAclFilePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter removeAclFilePath is required and cannot be null."));
             return null;
         }
         if (aclspec == null) {
@@ -1941,22 +1945,22 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Removes the existing Access Control List (ACL) of the specified file or directory.
      *
-     * @param aclFilePath The Data Lake Store path (starting with '/') of the file or directory with the ACL being removed.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param aclFilePath The Data Lake Store path (starting with '/') of the file or directory with the ACL being removed.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> removeAcl(String aclFilePath, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (aclFilePath == null) {
-            throw new IllegalArgumentException("Parameter aclFilePath is required and cannot be null.");
-        }
+    public ServiceResponse<Void> removeAcl(String accountName, String aclFilePath) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null.");
+        }
+        if (aclFilePath == null) {
+            throw new IllegalArgumentException("Parameter aclFilePath is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -1971,19 +1975,15 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Removes the existing Access Control List (ACL) of the specified file or directory.
      *
-     * @param aclFilePath The Data Lake Store path (starting with '/') of the file or directory with the ACL being removed.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param aclFilePath The Data Lake Store path (starting with '/') of the file or directory with the ACL being removed.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall removeAclAsync(String aclFilePath, String accountName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall removeAclAsync(String accountName, String aclFilePath, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (aclFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter aclFilePath is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1991,6 +1991,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (aclFilePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter aclFilePath is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -2024,22 +2028,22 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Gets Access Control List (ACL) entries for the specified file or directory.
      *
-     * @param aclFilePath The Data Lake Store path (starting with '/') of the file or directory for which to get the ACL.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param aclFilePath The Data Lake Store path (starting with '/') of the file or directory for which to get the ACL.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the AclStatusResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<AclStatusResult> getAclStatus(String aclFilePath, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (aclFilePath == null) {
-            throw new IllegalArgumentException("Parameter aclFilePath is required and cannot be null.");
-        }
+    public ServiceResponse<AclStatusResult> getAclStatus(String accountName, String aclFilePath) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null.");
+        }
+        if (aclFilePath == null) {
+            throw new IllegalArgumentException("Parameter aclFilePath is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -2054,19 +2058,15 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Gets Access Control List (ACL) entries for the specified file or directory.
      *
-     * @param aclFilePath The Data Lake Store path (starting with '/') of the file or directory for which to get the ACL.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param aclFilePath The Data Lake Store path (starting with '/') of the file or directory for which to get the ACL.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getAclStatusAsync(String aclFilePath, String accountName, final ServiceCallback<AclStatusResult> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getAclStatusAsync(String accountName, String aclFilePath, final ServiceCallback<AclStatusResult> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (aclFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter aclFilePath is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -2074,6 +2074,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (aclFilePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter aclFilePath is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -2108,22 +2112,22 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Deletes the requested file or directory, optionally recursively.
      *
-     * @param filePath The Data Lake Store path (starting with '/') of the file or directory to delete.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param filePath The Data Lake Store path (starting with '/') of the file or directory to delete.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the FileOperationResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<FileOperationResult> delete(String filePath, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (filePath == null) {
-            throw new IllegalArgumentException("Parameter filePath is required and cannot be null.");
-        }
+    public ServiceResponse<FileOperationResult> delete(String accountName, String filePath) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null.");
+        }
+        if (filePath == null) {
+            throw new IllegalArgumentException("Parameter filePath is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -2139,19 +2143,15 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Deletes the requested file or directory, optionally recursively.
      *
-     * @param filePath The Data Lake Store path (starting with '/') of the file or directory to delete.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param filePath The Data Lake Store path (starting with '/') of the file or directory to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteAsync(String filePath, String accountName, final ServiceCallback<FileOperationResult> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall deleteAsync(String accountName, String filePath, final ServiceCallback<FileOperationResult> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (filePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter filePath is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -2159,6 +2159,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (filePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter filePath is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -2187,23 +2191,23 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Deletes the requested file or directory, optionally recursively.
      *
-     * @param filePath The Data Lake Store path (starting with '/') of the file or directory to delete.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param filePath The Data Lake Store path (starting with '/') of the file or directory to delete.
      * @param recursive The optional switch indicating if the delete should be recursive
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the FileOperationResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<FileOperationResult> delete(String filePath, String accountName, Boolean recursive) throws CloudException, IOException, IllegalArgumentException {
-        if (filePath == null) {
-            throw new IllegalArgumentException("Parameter filePath is required and cannot be null.");
-        }
+    public ServiceResponse<FileOperationResult> delete(String accountName, String filePath, Boolean recursive) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null.");
+        }
+        if (filePath == null) {
+            throw new IllegalArgumentException("Parameter filePath is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -2218,20 +2222,16 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Deletes the requested file or directory, optionally recursively.
      *
-     * @param filePath The Data Lake Store path (starting with '/') of the file or directory to delete.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param filePath The Data Lake Store path (starting with '/') of the file or directory to delete.
      * @param recursive The optional switch indicating if the delete should be recursive
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteAsync(String filePath, String accountName, Boolean recursive, final ServiceCallback<FileOperationResult> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall deleteAsync(String accountName, String filePath, Boolean recursive, final ServiceCallback<FileOperationResult> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (filePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter filePath is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -2239,6 +2239,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (filePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter filePath is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -2273,23 +2277,23 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Rename a file or directory.
      *
-     * @param renameFilePath The Data Lake Store path (starting with '/') of the file or directory to move/rename.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param renameFilePath The Data Lake Store path (starting with '/') of the file or directory to move/rename.
      * @param destination The path to move/rename the file or folder to
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the FileOperationResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<FileOperationResult> rename(String renameFilePath, String accountName, String destination) throws CloudException, IOException, IllegalArgumentException {
-        if (renameFilePath == null) {
-            throw new IllegalArgumentException("Parameter renameFilePath is required and cannot be null.");
-        }
+    public ServiceResponse<FileOperationResult> rename(String accountName, String renameFilePath, String destination) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null.");
+        }
+        if (renameFilePath == null) {
+            throw new IllegalArgumentException("Parameter renameFilePath is required and cannot be null.");
         }
         if (destination == null) {
             throw new IllegalArgumentException("Parameter destination is required and cannot be null.");
@@ -2307,20 +2311,16 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Rename a file or directory.
      *
-     * @param renameFilePath The Data Lake Store path (starting with '/') of the file or directory to move/rename.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param renameFilePath The Data Lake Store path (starting with '/') of the file or directory to move/rename.
      * @param destination The path to move/rename the file or folder to
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall renameAsync(String renameFilePath, String accountName, String destination, final ServiceCallback<FileOperationResult> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall renameAsync(String accountName, String renameFilePath, String destination, final ServiceCallback<FileOperationResult> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (renameFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter renameFilePath is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -2328,6 +2328,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (renameFilePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter renameFilePath is required and cannot be null."));
             return null;
         }
         if (destination == null) {
@@ -2366,22 +2370,22 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Sets the owner of a file or directory.
      *
-     * @param setOwnerFilePath The Data Lake Store path (starting with '/') of the file or directory for which to set the owner.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param setOwnerFilePath The Data Lake Store path (starting with '/') of the file or directory for which to set the owner.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> setOwner(String setOwnerFilePath, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (setOwnerFilePath == null) {
-            throw new IllegalArgumentException("Parameter setOwnerFilePath is required and cannot be null.");
-        }
+    public ServiceResponse<Void> setOwner(String accountName, String setOwnerFilePath) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null.");
+        }
+        if (setOwnerFilePath == null) {
+            throw new IllegalArgumentException("Parameter setOwnerFilePath is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -2398,19 +2402,15 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Sets the owner of a file or directory.
      *
-     * @param setOwnerFilePath The Data Lake Store path (starting with '/') of the file or directory for which to set the owner.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param setOwnerFilePath The Data Lake Store path (starting with '/') of the file or directory for which to set the owner.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall setOwnerAsync(String setOwnerFilePath, String accountName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall setOwnerAsync(String accountName, String setOwnerFilePath, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (setOwnerFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter setOwnerFilePath is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -2418,6 +2418,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (setOwnerFilePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter setOwnerFilePath is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -2447,8 +2451,8 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Sets the owner of a file or directory.
      *
-     * @param setOwnerFilePath The Data Lake Store path (starting with '/') of the file or directory for which to set the owner.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param setOwnerFilePath The Data Lake Store path (starting with '/') of the file or directory for which to set the owner.
      * @param owner The AAD Object ID of the user owner of the file or directory. If empty, the property will remain unchanged.
      * @param group The AAD Object ID of the group owner of the file or directory. If empty, the property will remain unchanged.
      * @throws CloudException exception thrown from REST call
@@ -2456,15 +2460,15 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> setOwner(String setOwnerFilePath, String accountName, String owner, String group) throws CloudException, IOException, IllegalArgumentException {
-        if (setOwnerFilePath == null) {
-            throw new IllegalArgumentException("Parameter setOwnerFilePath is required and cannot be null.");
-        }
+    public ServiceResponse<Void> setOwner(String accountName, String setOwnerFilePath, String owner, String group) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null.");
+        }
+        if (setOwnerFilePath == null) {
+            throw new IllegalArgumentException("Parameter setOwnerFilePath is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -2479,21 +2483,17 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Sets the owner of a file or directory.
      *
-     * @param setOwnerFilePath The Data Lake Store path (starting with '/') of the file or directory for which to set the owner.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param setOwnerFilePath The Data Lake Store path (starting with '/') of the file or directory for which to set the owner.
      * @param owner The AAD Object ID of the user owner of the file or directory. If empty, the property will remain unchanged.
      * @param group The AAD Object ID of the group owner of the file or directory. If empty, the property will remain unchanged.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall setOwnerAsync(String setOwnerFilePath, String accountName, String owner, String group, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall setOwnerAsync(String accountName, String setOwnerFilePath, String owner, String group, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (setOwnerFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter setOwnerFilePath is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -2501,6 +2501,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (setOwnerFilePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter setOwnerFilePath is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -2534,22 +2538,22 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Sets the permission of the file or folder.
      *
-     * @param setPermissionFilePath The Data Lake Store path (starting with '/') of the file or directory for which to set the permission.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param setPermissionFilePath The Data Lake Store path (starting with '/') of the file or directory for which to set the permission.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> setPermission(String setPermissionFilePath, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (setPermissionFilePath == null) {
-            throw new IllegalArgumentException("Parameter setPermissionFilePath is required and cannot be null.");
-        }
+    public ServiceResponse<Void> setPermission(String accountName, String setPermissionFilePath) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null.");
+        }
+        if (setPermissionFilePath == null) {
+            throw new IllegalArgumentException("Parameter setPermissionFilePath is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -2565,19 +2569,15 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Sets the permission of the file or folder.
      *
-     * @param setPermissionFilePath The Data Lake Store path (starting with '/') of the file or directory for which to set the permission.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param setPermissionFilePath The Data Lake Store path (starting with '/') of the file or directory for which to set the permission.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall setPermissionAsync(String setPermissionFilePath, String accountName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall setPermissionAsync(String accountName, String setPermissionFilePath, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (setPermissionFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter setPermissionFilePath is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -2585,6 +2585,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (setPermissionFilePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter setPermissionFilePath is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -2613,23 +2617,23 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Sets the permission of the file or folder.
      *
-     * @param setPermissionFilePath The Data Lake Store path (starting with '/') of the file or directory for which to set the permission.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param setPermissionFilePath The Data Lake Store path (starting with '/') of the file or directory for which to set the permission.
      * @param permission A string representation of the permission (i.e 'rwx'). If empty, this property remains unchanged.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> setPermission(String setPermissionFilePath, String accountName, String permission) throws CloudException, IOException, IllegalArgumentException {
-        if (setPermissionFilePath == null) {
-            throw new IllegalArgumentException("Parameter setPermissionFilePath is required and cannot be null.");
-        }
+    public ServiceResponse<Void> setPermission(String accountName, String setPermissionFilePath, String permission) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null.");
+        }
+        if (setPermissionFilePath == null) {
+            throw new IllegalArgumentException("Parameter setPermissionFilePath is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -2644,20 +2648,16 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
     /**
      * Sets the permission of the file or folder.
      *
-     * @param setPermissionFilePath The Data Lake Store path (starting with '/') of the file or directory for which to set the permission.
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param setPermissionFilePath The Data Lake Store path (starting with '/') of the file or directory for which to set the permission.
      * @param permission A string representation of the permission (i.e 'rwx'). If empty, this property remains unchanged.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall setPermissionAsync(String setPermissionFilePath, String accountName, String permission, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall setPermissionAsync(String accountName, String setPermissionFilePath, String permission, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (setPermissionFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter setPermissionFilePath is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -2665,6 +2665,10 @@ public final class FileSystemOperationsImpl implements FileSystemOperations {
         }
         if (this.client.getAdlsFileSystemDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlsFileSystemDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (setPermissionFilePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter setPermissionFilePath is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {

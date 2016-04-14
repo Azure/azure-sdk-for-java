@@ -21,7 +21,7 @@ public class AggregateUploadException extends Exception {
     }
 
     /***
-     * 
+     *
      * @return
      */
     public Throwable[] getAllExceptions() {

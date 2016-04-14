@@ -103,10 +103,10 @@ public abstract class DataLakeAnalyticsManagementTestBase {
         jobToSubmit.setType(JobType.USQL);
         jobToSubmit.setProperties(jobProperties);
 
-        JobInformation jobCreateResponse = jobClient.getJobOperations().create(jobId, adlaAcct, jobToSubmit).getBody();
+        JobInformation jobCreateResponse = jobClient.getJobOperations().create(adlaAcct, jobId, jobToSubmit).getBody();
         Assert.assertNotNull(jobCreateResponse);
 
-        JobInformation getJobResponse = jobClient.getJobOperations().get(jobCreateResponse.getJobId(), adlaAcct).getBody();
+        JobInformation getJobResponse = jobClient.getJobOperations().get(adlaAcct, jobCreateResponse.getJobId()).getBody();
         Assert.assertNotNull(getJobResponse);
 
         int maxWaitInSeconds = 180; // 3 minutes should be long enough
@@ -117,7 +117,7 @@ public abstract class DataLakeAnalyticsManagementTestBase {
             // wait 5 seconds before polling again
             Thread.sleep(5000);
             curWaitInSeconds += 5;
-            getJobResponse = jobClient.getJobOperations().get(jobCreateResponse.getJobId(), adlaAcct).getBody();
+            getJobResponse = jobClient.getJobOperations().get(adlaAcct, jobCreateResponse.getJobId()).getBody();
             Assert.assertNotNull(getJobResponse);
         }
 

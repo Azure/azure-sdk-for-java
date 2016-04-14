@@ -17,7 +17,10 @@ public enum SeverityTypes {
     WARNING("Warning"),
 
     /** Enum value Error. */
-    ERROR("Error");
+    ERROR("Error"),
+
+    /** Enum value Info. */
+    INFO("Info");
 
     /** The actual serialized value for a SeverityTypes instance. */
     private String value;

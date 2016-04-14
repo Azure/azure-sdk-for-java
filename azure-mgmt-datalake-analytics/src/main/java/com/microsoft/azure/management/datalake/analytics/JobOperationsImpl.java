@@ -101,22 +101,22 @@ public final class JobOperationsImpl implements JobOperations {
     /**
      * Gets statistics of the specified job.
      *
-     * @param jobIdentity JobInfo ID.
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @param jobIdentity JobInfo ID.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the JobStatistics object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<JobStatistics> getStatistics(UUID jobIdentity, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (jobIdentity == null) {
-            throw new IllegalArgumentException("Parameter jobIdentity is required and cannot be null.");
-        }
+    public ServiceResponse<JobStatistics> getStatistics(String accountName, UUID jobIdentity) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaJobDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaJobDnsSuffix() is required and cannot be null.");
+        }
+        if (jobIdentity == null) {
+            throw new IllegalArgumentException("Parameter jobIdentity is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -130,19 +130,15 @@ public final class JobOperationsImpl implements JobOperations {
     /**
      * Gets statistics of the specified job.
      *
-     * @param jobIdentity JobInfo ID.
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @param jobIdentity JobInfo ID.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getStatisticsAsync(UUID jobIdentity, String accountName, final ServiceCallback<JobStatistics> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getStatisticsAsync(String accountName, UUID jobIdentity, final ServiceCallback<JobStatistics> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobIdentity == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobIdentity is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -150,6 +146,10 @@ public final class JobOperationsImpl implements JobOperations {
         }
         if (this.client.getAdlaJobDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaJobDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (jobIdentity == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter jobIdentity is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -183,22 +183,22 @@ public final class JobOperationsImpl implements JobOperations {
     /**
      * Gets the U-SQL job debug data information specified by the job ID.
      *
-     * @param jobIdentity JobInfo ID.
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @param jobIdentity JobInfo ID.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the JobDataPath object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<JobDataPath> getDebugDataPath(UUID jobIdentity, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (jobIdentity == null) {
-            throw new IllegalArgumentException("Parameter jobIdentity is required and cannot be null.");
-        }
+    public ServiceResponse<JobDataPath> getDebugDataPath(String accountName, UUID jobIdentity) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaJobDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaJobDnsSuffix() is required and cannot be null.");
+        }
+        if (jobIdentity == null) {
+            throw new IllegalArgumentException("Parameter jobIdentity is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -212,19 +212,15 @@ public final class JobOperationsImpl implements JobOperations {
     /**
      * Gets the U-SQL job debug data information specified by the job ID.
      *
-     * @param jobIdentity JobInfo ID.
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @param jobIdentity JobInfo ID.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getDebugDataPathAsync(UUID jobIdentity, String accountName, final ServiceCallback<JobDataPath> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getDebugDataPathAsync(String accountName, UUID jobIdentity, final ServiceCallback<JobDataPath> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobIdentity == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobIdentity is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -232,6 +228,10 @@ public final class JobOperationsImpl implements JobOperations {
         }
         if (this.client.getAdlaJobDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaJobDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (jobIdentity == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter jobIdentity is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -349,22 +349,22 @@ public final class JobOperationsImpl implements JobOperations {
     /**
      * Cancels the running job specified by the job ID.
      *
-     * @param jobIdentity JobInfo ID to cancel.
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @param jobIdentity JobInfo ID to cancel.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> cancel(UUID jobIdentity, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (jobIdentity == null) {
-            throw new IllegalArgumentException("Parameter jobIdentity is required and cannot be null.");
-        }
+    public ServiceResponse<Void> cancel(String accountName, UUID jobIdentity) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaJobDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaJobDnsSuffix() is required and cannot be null.");
+        }
+        if (jobIdentity == null) {
+            throw new IllegalArgumentException("Parameter jobIdentity is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -378,19 +378,15 @@ public final class JobOperationsImpl implements JobOperations {
     /**
      * Cancels the running job specified by the job ID.
      *
-     * @param jobIdentity JobInfo ID to cancel.
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @param jobIdentity JobInfo ID to cancel.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall cancelAsync(UUID jobIdentity, String accountName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall cancelAsync(String accountName, UUID jobIdentity, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobIdentity == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobIdentity is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -398,6 +394,10 @@ public final class JobOperationsImpl implements JobOperations {
         }
         if (this.client.getAdlaJobDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaJobDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (jobIdentity == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter jobIdentity is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -430,22 +430,22 @@ public final class JobOperationsImpl implements JobOperations {
     /**
      * Gets the job information for the specified job ID.
      *
-     * @param jobIdentity JobInfo ID.
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @param jobIdentity JobInfo ID.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the JobInformation object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<JobInformation> get(UUID jobIdentity, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (jobIdentity == null) {
-            throw new IllegalArgumentException("Parameter jobIdentity is required and cannot be null.");
-        }
+    public ServiceResponse<JobInformation> get(String accountName, UUID jobIdentity) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaJobDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaJobDnsSuffix() is required and cannot be null.");
+        }
+        if (jobIdentity == null) {
+            throw new IllegalArgumentException("Parameter jobIdentity is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -459,19 +459,15 @@ public final class JobOperationsImpl implements JobOperations {
     /**
      * Gets the job information for the specified job ID.
      *
-     * @param jobIdentity JobInfo ID.
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @param jobIdentity JobInfo ID.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getAsync(UUID jobIdentity, String accountName, final ServiceCallback<JobInformation> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getAsync(String accountName, UUID jobIdentity, final ServiceCallback<JobInformation> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobIdentity == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobIdentity is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -479,6 +475,10 @@ public final class JobOperationsImpl implements JobOperations {
         }
         if (this.client.getAdlaJobDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaJobDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (jobIdentity == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter jobIdentity is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -512,23 +512,23 @@ public final class JobOperationsImpl implements JobOperations {
     /**
      * Submits a job to the specified Data Lake Analytics account.
      *
-     * @param jobIdentity The job ID (a GUID) for the job being submitted.
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @param jobIdentity The job ID (a GUID) for the job being submitted.
      * @param parameters The parameters to submit a job.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the JobInformation object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<JobInformation> create(UUID jobIdentity, String accountName, JobInformation parameters) throws CloudException, IOException, IllegalArgumentException {
-        if (jobIdentity == null) {
-            throw new IllegalArgumentException("Parameter jobIdentity is required and cannot be null.");
-        }
+    public ServiceResponse<JobInformation> create(String accountName, UUID jobIdentity, JobInformation parameters) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaJobDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaJobDnsSuffix() is required and cannot be null.");
+        }
+        if (jobIdentity == null) {
+            throw new IllegalArgumentException("Parameter jobIdentity is required and cannot be null.");
         }
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
@@ -546,20 +546,16 @@ public final class JobOperationsImpl implements JobOperations {
     /**
      * Submits a job to the specified Data Lake Analytics account.
      *
-     * @param jobIdentity The job ID (a GUID) for the job being submitted.
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @param jobIdentity The job ID (a GUID) for the job being submitted.
      * @param parameters The parameters to submit a job.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall createAsync(UUID jobIdentity, String accountName, JobInformation parameters, final ServiceCallback<JobInformation> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall createAsync(String accountName, UUID jobIdentity, JobInformation parameters, final ServiceCallback<JobInformation> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobIdentity == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobIdentity is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -567,6 +563,10 @@ public final class JobOperationsImpl implements JobOperations {
         }
         if (this.client.getAdlaJobDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaJobDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (jobIdentity == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter jobIdentity is required and cannot be null."));
             return null;
         }
         if (parameters == null) {
