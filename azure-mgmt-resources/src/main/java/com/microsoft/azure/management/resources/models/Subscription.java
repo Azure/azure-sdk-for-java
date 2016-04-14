@@ -2,8 +2,6 @@ package com.microsoft.azure.management.resources.models;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.resources.GenericResources;
-import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.resources.models.implementation.api.SubscriptionInner;
@@ -28,6 +26,4 @@ public interface Subscription extends
      * Other operations
      ***********************************************************/
     PagedList<Location> listLocations() throws IOException, CloudException;
-    ResourceGroups resourceGroups() throws IOException, CloudException;
-    GenericResources genericResources();
 }

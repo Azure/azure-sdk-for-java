@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.storage.implementation;
 
 import com.microsoft.azure.management.resources.ResourceAdapter;
+import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
@@ -13,7 +14,7 @@ public class StorageResourceAdapter implements ResourceAdapter<StorageResourceAd
 
     private StorageResourceAdapter(ServiceClientCredentials credentials) {
         this.client = new StorageManagementClientImpl(credentials);
-        this.storageAccounts = new StorageAccountsImpl(client);
+        this.storageAccounts = new StorageAccountsImpl(client, new ResourceManagementClientImpl(credentials));
         this.usages = new UsagesImpl(client);
     }
 

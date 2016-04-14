@@ -14,11 +14,11 @@ public class ResourceGroupsOperationsTests extends ResourceManagementTestBase {
 
     @Test
     public void canCreateResourceGroup() throws Exception {
-        String rgName = "javacsmrg";
+        String rgName = "javacsmrg2";
         String location = "southcentralus";
         // Create
         resourceGroups.define(rgName)
-                .withLocation(Region.US_WEST)
+                .withLocation(Region.US_SOUTH_CENTRAL)
                 .withTag("department", "finance")
                 .withTag("tagname", "tagvalue")
                 .provision();
