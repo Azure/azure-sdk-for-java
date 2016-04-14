@@ -2,7 +2,7 @@ package com.microsoft.azure.management.resources.models.implementation;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
-import com.microsoft.azure.management.resources.api.DeploymentsInner;
+import com.microsoft.azure.management.resources.implementation.api.DeploymentsInner;
 import com.microsoft.azure.management.resources.models.Deployment;
 import com.microsoft.azure.management.resources.models.Provider;
 import com.microsoft.azure.management.resources.models.implementation.api.*;

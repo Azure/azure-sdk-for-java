@@ -4,7 +4,7 @@
  * license information.
  */
 
-package com.microsoft.azure.management.resources.api;
+package com.microsoft.azure.management.resources.implementation.api;
 
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;

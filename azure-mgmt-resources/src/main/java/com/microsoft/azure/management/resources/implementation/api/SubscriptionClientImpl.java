@@ -4,7 +4,7 @@
  * license information.
  */
 
-package com.microsoft.azure.management.resources.api;
+package com.microsoft.azure.management.resources.implementation.api;
 
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
@@ -16,9 +16,9 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
 /**
- * Initializes a new instance of the FeatureClientImpl class.
+ * Initializes a new instance of the SubscriptionClientImpl class.
  */
-public final class FeatureClientImpl extends AzureServiceClient {
+public final class SubscriptionClientImpl extends AzureServiceClient {
     /** The URL used as the base for all cloud service requests. */
     private final AutoRestBaseUrl baseUrl;
     /** the {@link AzureClient} used for long running operations. */
@@ -51,27 +51,6 @@ public final class FeatureClientImpl extends AzureServiceClient {
      */
     public ServiceClientCredentials getCredentials() {
         return this.credentials;
-    }
-
-    /** Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. */
-    private String subscriptionId;
-
-    /**
-     * Gets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
-     *
-     * @return the subscriptionId value.
-     */
-    public String getSubscriptionId() {
-        return this.subscriptionId;
-    }
-
-    /**
-     * Sets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
-     *
-     * @param subscriptionId the subscriptionId value.
-     */
-    public void setSubscriptionId(String subscriptionId) {
-        this.subscriptionId = subscriptionId;
     }
 
     /** Client Api Version. */
@@ -150,29 +129,37 @@ public final class FeatureClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Gets the FeaturesInner object to access its operations.
-     * @return the FeaturesInner object.
+     * Gets the SubscriptionsInner object to access its operations.
+     * @return the SubscriptionsInner object.
      */
-    public FeaturesInner features() {
-        return new FeaturesInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public SubscriptionsInner subscriptions() {
+        return new SubscriptionsInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Initializes an instance of FeatureClient client.
+     * Gets the TenantsInner object to access its operations.
+     * @return the TenantsInner object.
+     */
+    public TenantsInner tenants() {
+        return new TenantsInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    }
+
+    /**
+     * Initializes an instance of SubscriptionClient client.
      *
      * @param credentials the management credentials for Azure
      */
-    public FeatureClientImpl(ServiceClientCredentials credentials) {
+    public SubscriptionClientImpl(ServiceClientCredentials credentials) {
         this("https://management.azure.com", credentials);
     }
 
     /**
-     * Initializes an instance of FeatureClient client.
+     * Initializes an instance of SubscriptionClient client.
      *
      * @param baseUrl the base URL of the host
      * @param credentials the management credentials for Azure
      */
-    public FeatureClientImpl(String baseUrl, ServiceClientCredentials credentials) {
+    public SubscriptionClientImpl(String baseUrl, ServiceClientCredentials credentials) {
         super();
         this.baseUrl = new AutoRestBaseUrl(baseUrl);
         this.credentials = credentials;
@@ -180,14 +167,14 @@ public final class FeatureClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Initializes an instance of FeatureClient client.
+     * Initializes an instance of SubscriptionClient client.
      *
      * @param baseUrl the base URL of the host
      * @param credentials the management credentials for Azure
      * @param clientBuilder the builder for building up an {@link OkHttpClient}
      * @param retrofitBuilder the builder for building up a {@link Retrofit}
      */
-    public FeatureClientImpl(String baseUrl, ServiceClientCredentials credentials, OkHttpClient.Builder clientBuilder, Retrofit.Builder retrofitBuilder) {
+    public SubscriptionClientImpl(String baseUrl, ServiceClientCredentials credentials, OkHttpClient.Builder clientBuilder, Retrofit.Builder retrofitBuilder) {
         super(clientBuilder, retrofitBuilder);
         this.baseUrl = new AutoRestBaseUrl(baseUrl);
         this.credentials = credentials;
@@ -196,7 +183,7 @@ public final class FeatureClientImpl extends AzureServiceClient {
 
     @Override
     protected void initialize() {
-        this.apiVersion = "2015-12-01";
+        this.apiVersion = "2015-11-01";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;

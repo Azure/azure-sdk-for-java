@@ -4,14 +4,14 @@
  * license information.
  */
 
-package com.microsoft.azure.management.resources.api;
+package com.microsoft.azure.management.resources.implementation.api;
 
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.resources.models.implementation.api.ClassicAdministratorInner;
 import com.microsoft.azure.management.resources.models.implementation.api.PageImpl;
-import com.microsoft.azure.management.resources.models.implementation.api.TenantIdDescriptionInner;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
@@ -24,6 +24,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import retrofit2.Response;
@@ -31,33 +32,33 @@ import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
- * in Tenants.
+ * in ClassicAdministrators.
  */
-public final class TenantsInner {
+public final class ClassicAdministratorsInner {
     /** The Retrofit service to perform REST calls. */
-    private TenantsService service;
+    private ClassicAdministratorsService service;
     /** The service client containing this operation class. */
-    private SubscriptionClientImpl client;
+    private AuthorizationManagementClientImpl client;
 
     /**
-     * Initializes an instance of TenantsInner.
+     * Initializes an instance of ClassicAdministratorsInner.
      *
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public TenantsInner(Retrofit retrofit, SubscriptionClientImpl client) {
-        this.service = retrofit.create(TenantsService.class);
+    public ClassicAdministratorsInner(Retrofit retrofit, AuthorizationManagementClientImpl client) {
+        this.service = retrofit.create(ClassicAdministratorsService.class);
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for Tenants to be
+     * The interface defining all the services for ClassicAdministrators to be
      * used by Retrofit to perform actually REST calls.
      */
-    interface TenantsService {
+    interface ClassicAdministratorsService {
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("tenants")
-        Call<ResponseBody> list(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Authorization/classicAdministrators")
+        Call<ResponseBody> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
@@ -66,22 +67,26 @@ public final class TenantsInner {
     }
 
     /**
-     * Gets a list of the tenantIds.
+     * Gets a list of classic administrators for the subscription.
      *
+     * @param apiVersion the String value
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;TenantIdDescriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;ClassicAdministratorInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<TenantIdDescriptionInner>> list() throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+    public ServiceResponse<PagedList<ClassicAdministratorInner>> list(final String apiVersion) throws CloudException, IOException, IllegalArgumentException {
+        if (this.client.getSubscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.list(this.client.getApiVersion(), this.client.getAcceptLanguage());
-        ServiceResponse<PageImpl<TenantIdDescriptionInner>> response = listDelegate(call.execute());
-        PagedList<TenantIdDescriptionInner> result = new PagedList<TenantIdDescriptionInner>(response.getBody()) {
+        if (apiVersion == null) {
+            throw new IllegalArgumentException("Parameter apiVersion is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), apiVersion, this.client.getAcceptLanguage());
+        ServiceResponse<PageImpl<ClassicAdministratorInner>> response = listDelegate(call.execute());
+        PagedList<ClassicAdministratorInner> result = new PagedList<ClassicAdministratorInner>(response.getBody()) {
             @Override
-            public Page<TenantIdDescriptionInner> nextPage(String nextPageLink) throws CloudException, IOException {
+            public Page<ClassicAdministratorInner> nextPage(String nextPageLink) throws CloudException, IOException {
                 return listNext(nextPageLink).getBody();
             }
         };
@@ -89,27 +94,32 @@ public final class TenantsInner {
     }
 
     /**
-     * Gets a list of the tenantIds.
+     * Gets a list of classic administrators for the subscription.
      *
+     * @param apiVersion the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listAsync(final ListOperationCallback<TenantIdDescriptionInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listAsync(final String apiVersion, final ListOperationCallback<ClassicAdministratorInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.getSubscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.list(this.client.getApiVersion(), this.client.getAcceptLanguage());
+        if (apiVersion == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
+            return null;
+        }
+        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), apiVersion, this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<TenantIdDescriptionInner>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<ClassicAdministratorInner>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<TenantIdDescriptionInner>> result = listDelegate(response);
+                    ServiceResponse<PageImpl<ClassicAdministratorInner>> result = listDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
@@ -125,23 +135,23 @@ public final class TenantsInner {
         return serviceCall;
     }
 
-    private ServiceResponse<PageImpl<TenantIdDescriptionInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<TenantIdDescriptionInner>, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<PageImpl<TenantIdDescriptionInner>>() { }.getType())
+    private ServiceResponse<PageImpl<ClassicAdministratorInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ClassicAdministratorInner>, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<PageImpl<ClassicAdministratorInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Gets a list of the tenantIds.
+     * Gets a list of classic administrators for the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;TenantIdDescriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;ClassicAdministratorInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<TenantIdDescriptionInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl<ClassicAdministratorInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -150,7 +160,7 @@ public final class TenantsInner {
     }
 
     /**
-     * Gets a list of the tenantIds.
+     * Gets a list of classic administrators for the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -158,7 +168,7 @@ public final class TenantsInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<TenantIdDescriptionInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<ClassicAdministratorInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -168,11 +178,11 @@ public final class TenantsInner {
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
         serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<TenantIdDescriptionInner>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<ClassicAdministratorInner>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<TenantIdDescriptionInner>> result = listNextDelegate(response);
+                    ServiceResponse<PageImpl<ClassicAdministratorInner>> result = listNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
@@ -188,9 +198,9 @@ public final class TenantsInner {
         return serviceCall;
     }
 
-    private ServiceResponse<PageImpl<TenantIdDescriptionInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<TenantIdDescriptionInner>, CloudException>(this.client.getMapperAdapter())
-                .register(200, new TypeToken<PageImpl<TenantIdDescriptionInner>>() { }.getType())
+    private ServiceResponse<PageImpl<ClassicAdministratorInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ClassicAdministratorInner>, CloudException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<PageImpl<ClassicAdministratorInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

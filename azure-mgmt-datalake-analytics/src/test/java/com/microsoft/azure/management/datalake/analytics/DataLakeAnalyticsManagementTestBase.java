@@ -9,7 +9,7 @@ import com.microsoft.azure.management.datalake.analytics.models.JobType;
 import com.microsoft.azure.management.datalake.analytics.models.USqlJobProperties;
 import com.microsoft.azure.management.datalake.store.DataLakeStoreAccountManagementClient;
 import com.microsoft.azure.management.datalake.store.DataLakeStoreAccountManagementClientImpl;
-import com.microsoft.azure.management.resources.api.ResourceManagementClientImpl;
+import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
 import okhttp3.logging.HttpLoggingInterceptor;
 import org.junit.Assert;

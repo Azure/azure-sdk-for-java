@@ -4,7 +4,7 @@
  * license information.
  */
 
-package com.microsoft.azure.management.resources.api;
+package com.microsoft.azure.management.resources.implementation.api;
 
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
@@ -16,9 +16,9 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
 /**
- * Initializes a new instance of the SubscriptionClientImpl class.
+ * Initializes a new instance of the ResourceManagementClientImpl class.
  */
-public final class SubscriptionClientImpl extends AzureServiceClient {
+public final class ResourceManagementClientImpl extends AzureServiceClient {
     /** The URL used as the base for all cloud service requests. */
     private final AutoRestBaseUrl baseUrl;
     /** the {@link AzureClient} used for long running operations. */
@@ -51,6 +51,27 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
      */
     public ServiceClientCredentials getCredentials() {
         return this.credentials;
+    }
+
+    /** Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. */
+    private String subscriptionId;
+
+    /**
+     * Gets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+     *
+     * @return the subscriptionId value.
+     */
+    public String getSubscriptionId() {
+        return this.subscriptionId;
+    }
+
+    /**
+     * Sets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+     *
+     * @param subscriptionId the subscriptionId value.
+     */
+    public void setSubscriptionId(String subscriptionId) {
+        this.subscriptionId = subscriptionId;
     }
 
     /** Client Api Version. */
@@ -129,37 +150,93 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Gets the SubscriptionsInner object to access its operations.
-     * @return the SubscriptionsInner object.
+     * Gets the DeploymentsInner object to access its operations.
+     * @return the DeploymentsInner object.
      */
-    public SubscriptionsInner subscriptions() {
-        return new SubscriptionsInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public DeploymentsInner deployments() {
+        return new DeploymentsInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the TenantsInner object to access its operations.
-     * @return the TenantsInner object.
+     * Gets the ProvidersInner object to access its operations.
+     * @return the ProvidersInner object.
      */
-    public TenantsInner tenants() {
-        return new TenantsInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public ProvidersInner providers() {
+        return new ProvidersInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Initializes an instance of SubscriptionClient client.
+     * Gets the ResourceGroupsInner object to access its operations.
+     * @return the ResourceGroupsInner object.
+     */
+    public ResourceGroupsInner resourceGroups() {
+        return new ResourceGroupsInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    }
+
+    /**
+     * Gets the ResourcesInner object to access its operations.
+     * @return the ResourcesInner object.
+     */
+    public ResourcesInner resources() {
+        return new ResourcesInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    }
+
+    /**
+     * Gets the TagsInner object to access its operations.
+     * @return the TagsInner object.
+     */
+    public TagsInner tags() {
+        return new TagsInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    }
+
+    /**
+     * Gets the DeploymentOperationsInner object to access its operations.
+     * @return the DeploymentOperationsInner object.
+     */
+    public DeploymentOperationsInner deploymentOperations() {
+        return new DeploymentOperationsInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    }
+
+    /**
+     * Gets the ResourceProviderOperationDetailsInner object to access its operations.
+     * @return the ResourceProviderOperationDetailsInner object.
+     */
+    public ResourceProviderOperationDetailsInner resourceProviderOperationDetails() {
+        return new ResourceProviderOperationDetailsInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    }
+
+    /**
+     * Gets the PolicyDefinitionsInner object to access its operations.
+     * @return the PolicyDefinitionsInner object.
+     */
+    public PolicyDefinitionsInner policyDefinitions() {
+        return new PolicyDefinitionsInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    }
+
+    /**
+     * Gets the PolicyAssignmentsInner object to access its operations.
+     * @return the PolicyAssignmentsInner object.
+     */
+    public PolicyAssignmentsInner policyAssignments() {
+        return new PolicyAssignmentsInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    }
+
+    /**
+     * Initializes an instance of ResourceManagementClient client.
      *
      * @param credentials the management credentials for Azure
      */
-    public SubscriptionClientImpl(ServiceClientCredentials credentials) {
+    public ResourceManagementClientImpl(ServiceClientCredentials credentials) {
         this("https://management.azure.com", credentials);
     }
 
     /**
-     * Initializes an instance of SubscriptionClient client.
+     * Initializes an instance of ResourceManagementClient client.
      *
      * @param baseUrl the base URL of the host
      * @param credentials the management credentials for Azure
      */
-    public SubscriptionClientImpl(String baseUrl, ServiceClientCredentials credentials) {
+    public ResourceManagementClientImpl(String baseUrl, ServiceClientCredentials credentials) {
         super();
         this.baseUrl = new AutoRestBaseUrl(baseUrl);
         this.credentials = credentials;
@@ -167,14 +244,14 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Initializes an instance of SubscriptionClient client.
+     * Initializes an instance of ResourceManagementClient client.
      *
      * @param baseUrl the base URL of the host
      * @param credentials the management credentials for Azure
      * @param clientBuilder the builder for building up an {@link OkHttpClient}
      * @param retrofitBuilder the builder for building up a {@link Retrofit}
      */
-    public SubscriptionClientImpl(String baseUrl, ServiceClientCredentials credentials, OkHttpClient.Builder clientBuilder, Retrofit.Builder retrofitBuilder) {
+    public ResourceManagementClientImpl(String baseUrl, ServiceClientCredentials credentials, OkHttpClient.Builder clientBuilder, Retrofit.Builder retrofitBuilder) {
         super(clientBuilder, retrofitBuilder);
         this.baseUrl = new AutoRestBaseUrl(baseUrl);
         this.credentials = credentials;

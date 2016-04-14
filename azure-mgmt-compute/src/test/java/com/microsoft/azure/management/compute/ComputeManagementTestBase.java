@@ -3,7 +3,7 @@ package com.microsoft.azure.management.compute;
 import com.microsoft.azure.management.compute.implementation.ComputeManagementClientImpl;
 import com.microsoft.azure.management.network.NetworkManagementClient;
 import com.microsoft.azure.management.network.NetworkManagementClientImpl;
-import com.microsoft.azure.management.resources.api.ResourceManagementClientImpl;
+import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import okhttp3.logging.HttpLoggingInterceptor;

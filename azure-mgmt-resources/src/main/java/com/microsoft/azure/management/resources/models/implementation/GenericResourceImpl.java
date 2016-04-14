@@ -1,7 +1,7 @@
 package com.microsoft.azure.management.resources.models.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.resources.api.ResourceManagementClientImpl;
+import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.models.GenericResource;
 import com.microsoft.azure.management.resources.models.implementation.api.GenericResourceInner;
 import com.microsoft.azure.management.resources.models.implementation.api.Plan;

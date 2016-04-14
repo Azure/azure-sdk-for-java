@@ -8,7 +8,7 @@ package com.microsoft.azure.implementation;
 
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.Tenants;
-import com.microsoft.azure.management.resources.api.SubscriptionClientImpl;
+import com.microsoft.azure.management.resources.implementation.api.SubscriptionClientImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureBaseImpl;
 import com.microsoft.azure.management.resources.implementation.SubscriptionsImpl;
 import com.microsoft.azure.management.resources.implementation.TenantsImpl;

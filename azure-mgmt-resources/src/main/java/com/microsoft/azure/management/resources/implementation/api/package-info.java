@@ -5,4 +5,4 @@
 /**
  * This package contains the implementation.api classes for ResourceManagementClient.
  */
-package com.microsoft.azure.management.resources.api;
+package com.microsoft.azure.management.resources.implementation.api;

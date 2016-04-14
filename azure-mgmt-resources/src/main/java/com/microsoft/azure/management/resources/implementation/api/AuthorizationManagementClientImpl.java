@@ -4,7 +4,7 @@
  * license information.
  */
 
-package com.microsoft.azure.management.resources.api;
+package com.microsoft.azure.management.resources.implementation.api;
 
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
@@ -16,9 +16,9 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
 /**
- * Initializes a new instance of the ResourceManagementClientImpl class.
+ * Initializes a new instance of the AuthorizationManagementClientImpl class.
  */
-public final class ResourceManagementClientImpl extends AzureServiceClient {
+public final class AuthorizationManagementClientImpl extends AzureServiceClient {
     /** The URL used as the base for all cloud service requests. */
     private final AutoRestBaseUrl baseUrl;
     /** the {@link AzureClient} used for long running operations. */
@@ -150,93 +150,61 @@ public final class ResourceManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Gets the DeploymentsInner object to access its operations.
-     * @return the DeploymentsInner object.
+     * Gets the ClassicAdministratorsInner object to access its operations.
+     * @return the ClassicAdministratorsInner object.
      */
-    public DeploymentsInner deployments() {
-        return new DeploymentsInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public ClassicAdministratorsInner classicAdministrators() {
+        return new ClassicAdministratorsInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the ProvidersInner object to access its operations.
-     * @return the ProvidersInner object.
+     * Gets the PermissionsInner object to access its operations.
+     * @return the PermissionsInner object.
      */
-    public ProvidersInner providers() {
-        return new ProvidersInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public PermissionsInner permissions() {
+        return new PermissionsInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the ResourceGroupsInner object to access its operations.
-     * @return the ResourceGroupsInner object.
+     * Gets the ProviderOperationsMetadatasInner object to access its operations.
+     * @return the ProviderOperationsMetadatasInner object.
      */
-    public ResourceGroupsInner resourceGroups() {
-        return new ResourceGroupsInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public ProviderOperationsMetadatasInner providerOperationsMetadatas() {
+        return new ProviderOperationsMetadatasInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the ResourcesInner object to access its operations.
-     * @return the ResourcesInner object.
+     * Gets the RoleAssignmentsInner object to access its operations.
+     * @return the RoleAssignmentsInner object.
      */
-    public ResourcesInner resources() {
-        return new ResourcesInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public RoleAssignmentsInner roleAssignments() {
+        return new RoleAssignmentsInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the TagsInner object to access its operations.
-     * @return the TagsInner object.
+     * Gets the RoleDefinitionsInner object to access its operations.
+     * @return the RoleDefinitionsInner object.
      */
-    public TagsInner tags() {
-        return new TagsInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public RoleDefinitionsInner roleDefinitions() {
+        return new RoleDefinitionsInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the DeploymentOperationsInner object to access its operations.
-     * @return the DeploymentOperationsInner object.
-     */
-    public DeploymentOperationsInner deploymentOperations() {
-        return new DeploymentOperationsInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
-    }
-
-    /**
-     * Gets the ResourceProviderOperationDetailsInner object to access its operations.
-     * @return the ResourceProviderOperationDetailsInner object.
-     */
-    public ResourceProviderOperationDetailsInner resourceProviderOperationDetails() {
-        return new ResourceProviderOperationDetailsInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
-    }
-
-    /**
-     * Gets the PolicyDefinitionsInner object to access its operations.
-     * @return the PolicyDefinitionsInner object.
-     */
-    public PolicyDefinitionsInner policyDefinitions() {
-        return new PolicyDefinitionsInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
-    }
-
-    /**
-     * Gets the PolicyAssignmentsInner object to access its operations.
-     * @return the PolicyAssignmentsInner object.
-     */
-    public PolicyAssignmentsInner policyAssignments() {
-        return new PolicyAssignmentsInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
-    }
-
-    /**
-     * Initializes an instance of ResourceManagementClient client.
+     * Initializes an instance of AuthorizationManagementClient client.
      *
      * @param credentials the management credentials for Azure
      */
-    public ResourceManagementClientImpl(ServiceClientCredentials credentials) {
+    public AuthorizationManagementClientImpl(ServiceClientCredentials credentials) {
         this("https://management.azure.com", credentials);
     }
 
     /**
-     * Initializes an instance of ResourceManagementClient client.
+     * Initializes an instance of AuthorizationManagementClient client.
      *
      * @param baseUrl the base URL of the host
      * @param credentials the management credentials for Azure
      */
-    public ResourceManagementClientImpl(String baseUrl, ServiceClientCredentials credentials) {
+    public AuthorizationManagementClientImpl(String baseUrl, ServiceClientCredentials credentials) {
         super();
         this.baseUrl = new AutoRestBaseUrl(baseUrl);
         this.credentials = credentials;
@@ -244,14 +212,14 @@ public final class ResourceManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Initializes an instance of ResourceManagementClient client.
+     * Initializes an instance of AuthorizationManagementClient client.
      *
      * @param baseUrl the base URL of the host
      * @param credentials the management credentials for Azure
      * @param clientBuilder the builder for building up an {@link OkHttpClient}
      * @param retrofitBuilder the builder for building up a {@link Retrofit}
      */
-    public ResourceManagementClientImpl(String baseUrl, ServiceClientCredentials credentials, OkHttpClient.Builder clientBuilder, Retrofit.Builder retrofitBuilder) {
+    public AuthorizationManagementClientImpl(String baseUrl, ServiceClientCredentials credentials, OkHttpClient.Builder clientBuilder, Retrofit.Builder retrofitBuilder) {
         super(clientBuilder, retrofitBuilder);
         this.baseUrl = new AutoRestBaseUrl(baseUrl);
         this.credentials = credentials;
@@ -260,7 +228,7 @@ public final class ResourceManagementClientImpl extends AzureServiceClient {
 
     @Override
     protected void initialize() {
-        this.apiVersion = "2015-11-01";
+        this.apiVersion = "2015-07-01";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;

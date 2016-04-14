@@ -8,7 +8,7 @@ package com.microsoft.azure.implementation;
 
 import com.microsoft.azure.management.resources.GenericResources;
 import com.microsoft.azure.management.resources.ResourceGroups;
-import com.microsoft.azure.management.resources.api.ResourceManagementClientImpl;
+import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureBaseImpl;
 import com.microsoft.azure.management.resources.implementation.GenericResourcesImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceGroupsImpl;

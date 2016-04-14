@@ -2,9 +2,9 @@ package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.Subscriptions;
-import com.microsoft.azure.management.resources.api.SubscriptionClientImpl;
+import com.microsoft.azure.management.resources.implementation.api.SubscriptionClientImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-import com.microsoft.azure.management.resources.api.SubscriptionsInner;
+import com.microsoft.azure.management.resources.implementation.api.SubscriptionsInner;
 import com.microsoft.azure.management.resources.models.Subscription;
 import com.microsoft.azure.management.resources.models.implementation.SubscriptionImpl;
 import com.microsoft.azure.management.resources.models.implementation.api.SubscriptionInner;
