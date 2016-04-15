@@ -1,6 +1,6 @@
 package com.microsoft.azure.management.storage;
 
-import com.microsoft.azure.management.storage.implementation.StorageResourceAdapter;
+import com.microsoft.azure.management.storage.implementation.StorageResourceConnector;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -26,11 +26,11 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
     public void getStorageAccountFromResource() throws Exception {
         StorageAccounts storageAccounts = resourceClient.resourceGroups()
                 .get("my-rg")
-                .resourceAdapter(new StorageResourceAdapter.Builder())
+                .resourcesInGroup(new StorageResourceConnector.Builder())
                 .storageAccounts();
         Usages usages = resourceClient.resourceGroups()
                 .get("my-rg")
-                .resourceAdapter(new StorageResourceAdapter.Builder())
+                .resourcesInGroup(new StorageResourceConnector.Builder())
                 .usages();
     }
 

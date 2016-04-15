@@ -1,6 +1,6 @@
 package com.microsoft.azure.management.resources.models;
 
-import com.microsoft.azure.management.resources.ResourceAdapter;
+import com.microsoft.azure.management.resources.ResourceConnector;
 import com.microsoft.azure.management.resources.fluentcore.model.*;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Taggable;
@@ -46,5 +46,5 @@ public interface ResourceGroup extends
      * Adapter to other resources
      **************************************************************/
 
-    <T extends ResourceAdapter> T resourceAdapter(T.Builder<T> adapterBuilder);
+    <T extends ResourceConnector> T resourcesInGroup(T.Builder<T> adapterBuilder);
 }

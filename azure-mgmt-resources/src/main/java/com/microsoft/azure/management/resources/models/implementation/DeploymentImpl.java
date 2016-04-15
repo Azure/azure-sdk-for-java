@@ -1,10 +1,14 @@
 package com.microsoft.azure.management.resources.models.implementation;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.microsoft.azure.management.resources.ResourceGroups;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
 import com.microsoft.azure.management.resources.implementation.api.DeploymentsInner;
 import com.microsoft.azure.management.resources.models.Deployment;
 import com.microsoft.azure.management.resources.models.Provider;
+import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.resources.models.implementation.api.*;
 import org.joda.time.DateTime;
 
@@ -16,23 +20,35 @@ public class DeploymentImpl extends
         implements
         Deployment,
         Deployment.DefinitionBlank,
+        Deployment.DefinitionWithGroup,
         Deployment.DefinitionWithTemplate,
+        Deployment.DefinitionWithParameters,
         Deployment.DefinitionProvisionable {
 
-    private final DeploymentsInner client;
-    private final String resourceGroupName;
-    private final String deploymentName;
+    private final DeploymentsInner deployments;
+    private final ResourceGroups resourceGroups;
+    private String resourceGroupName;
 
-    public DeploymentImpl(String resourceGroupName, String deploymentName, DeploymentExtendedInner deployment, DeploymentsInner client) {
-        super (deploymentName, deployment);
-        this.client = client;
-        this.resourceGroupName = resourceGroupName;
-        this.deploymentName = deploymentName;
+    public DeploymentImpl(DeploymentExtendedInner deployment, DeploymentsInner deployments, ResourceGroups resourceGroups) {
+        super (deployment.name(), deployment);
+        this.deployments = deployments;
+        this.resourceGroupName = ResourceUtils.groupFromResourceId(deployment.id());
+        this.resourceGroups = resourceGroups;
     }
 
     /***********************************************************
      * Getters
      ***********************************************************/
+
+    @Override
+    public String resourceGroupName() {
+        return this.resourceGroupName;
+    }
+
+    @Override
+    public String name() {
+        return this.inner().name();
+    }
 
     @Override
     public String provisioningState() {
@@ -131,6 +147,19 @@ public class DeploymentImpl extends
      **************************************************************/
 
     @Override
+    public DefinitionWithGroup withNewResourceGroup(String resourceGroupName, Region location) throws Exception {
+        ResourceGroup group = this.resourceGroups.define(resourceGroupName).withLocation(location).provision();
+        this.resourceGroupName = group.name();
+        return this;
+    }
+
+    @Override
+    public DefinitionWithGroup withExistingResourceGroup(String resourceGroupName) {
+        this.resourceGroupName = resourceGroupName;
+        return this;
+    }
+
+    @Override
     public DefinitionWithTemplate withTemplate(Object template) {
         if (this.inner().properties() == null) {
             this.inner().setProperties(new DeploymentPropertiesExtended());
@@ -167,7 +196,7 @@ public class DeploymentImpl extends
     }
 
     @Override
-    public DefinitionProvisionable withParameters(Object parameters) {
+    public DefinitionWithParameters withParameters(Object parameters) {
         if (this.inner().properties() == null) {
             this.inner().setProperties(new DeploymentPropertiesExtended());
         }
@@ -176,7 +205,7 @@ public class DeploymentImpl extends
     }
 
     @Override
-    public DefinitionProvisionable withParameters(JsonNode parameters) {
+    public DefinitionWithParameters withParameters(JsonNode parameters) {
         if (this.inner().properties() == null) {
             this.inner().setProperties(new DeploymentPropertiesExtended());
         }
@@ -185,7 +214,7 @@ public class DeploymentImpl extends
     }
 
     @Override
-    public DefinitionProvisionable withParametersLink(String uri, String contentVersion) {
+    public DefinitionWithParameters withParametersLink(String uri, String contentVersion) {
         if (this.inner().properties() == null) {
             this.inner().setProperties(new DeploymentPropertiesExtended());
         }
@@ -206,7 +235,7 @@ public class DeploymentImpl extends
         inner.properties().setTemplateLink(templateLink());
         inner.properties().setParameters(parameters());
         inner.properties().setParametersLink(parametersLink());
-        client.createOrUpdate(resourceGroupName, deploymentName, inner);
+        deployments.createOrUpdate(resourceGroupName(), name(), inner);
         return this;
     }
 

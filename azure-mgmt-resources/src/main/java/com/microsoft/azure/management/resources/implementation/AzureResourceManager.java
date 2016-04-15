@@ -6,10 +6,7 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
-import com.microsoft.azure.management.resources.GenericResources;
-import com.microsoft.azure.management.resources.ResourceGroups;
-import com.microsoft.azure.management.resources.Subscriptions;
-import com.microsoft.azure.management.resources.Tenants;
+import com.microsoft.azure.management.resources.*;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureBase;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
@@ -27,5 +24,7 @@ public final class AzureResourceManager {
     public interface Subscription extends AzureBase<Subscription> {
         ResourceGroups resourceGroups();
         GenericResources genericResources();
+        Deployments deployments();
+        Deployments.InGroup deployments(String resourceGroupName);
     }
 }

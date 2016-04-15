@@ -1,6 +1,6 @@
 package com.microsoft.azure.management.resources.models.implementation;
 
-import com.microsoft.azure.management.resources.ResourceAdapter;
+import com.microsoft.azure.management.resources.ResourceConnector;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupsInner;
@@ -129,7 +129,7 @@ public class ResourceGroupImpl 	extends
     }
 
     @Override
-    public <T extends ResourceAdapter> T resourceAdapter(T.Builder<T> adapterBuilder) {
-        return adapterBuilder.create(this.serviceClient.getCredentials(), this.name());
+    public <T extends ResourceConnector> T resourcesInGroup(T.Builder<T> adapterBuilder) {
+        return adapterBuilder.create(this.serviceClient, this.name());
     }
 }

@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
+import com.microsoft.azure.management.resources.Deployments;
 import com.microsoft.azure.management.resources.GenericResources;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
@@ -40,5 +41,23 @@ final class AzureSubscriptionImpl extends AzureBaseImpl<AzureResourceManager.Sub
             resourceManagementClient.setSubscriptionId(subscriptionId);
         }
         return new GenericResourcesImpl(resourceManagementClient);
+    }
+
+    @Override
+    public Deployments deployments() {
+        if (resourceManagementClient == null) {
+            resourceManagementClient = new ResourceManagementClientImpl(credentials);
+            resourceManagementClient.setSubscriptionId(subscriptionId);
+        }
+        return new DeploymentsImpl(resourceManagementClient);
+    }
+
+    @Override
+    public Deployments.InGroup deployments(String resourceGroupName) {
+        if (resourceManagementClient == null) {
+            resourceManagementClient = new ResourceManagementClientImpl(credentials);
+            resourceManagementClient.setSubscriptionId(subscriptionId);
+        }
+        return new DeploymentsInGroupImpl(resourceManagementClient, resourceGroupName);
     }
 }
