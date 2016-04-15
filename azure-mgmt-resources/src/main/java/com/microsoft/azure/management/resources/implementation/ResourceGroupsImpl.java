@@ -47,11 +47,6 @@ public class ResourceGroupsImpl
     }
 
     @Override
-    public void deleteAsync(String name, ServiceCallback<Void> callback) {
-        client.deleteAsync(name, callback);
-    }
-
-    @Override
     public ResourceGroupImpl update(String name) {
         return createWrapper(name);
     }
