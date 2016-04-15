@@ -51,4 +51,13 @@ final class AzureSubscriptionImpl extends AzureBaseImpl<AzureResourceManager.Sub
         }
         return new DeploymentsImpl(resourceManagementClient);
     }
+
+    @Override
+    public Deployments.InGroup deployments(String resourceGroupName) {
+        if (resourceManagementClient == null) {
+            resourceManagementClient = new ResourceManagementClientImpl(credentials);
+            resourceManagementClient.setSubscriptionId(subscriptionId);
+        }
+        return new DeploymentsInGroupImpl(resourceManagementClient, resourceGroupName);
+    }
 }

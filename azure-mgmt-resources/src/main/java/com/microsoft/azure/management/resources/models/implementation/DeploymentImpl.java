@@ -3,6 +3,7 @@ package com.microsoft.azure.management.resources.models.implementation;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
 import com.microsoft.azure.management.resources.implementation.api.DeploymentsInner;
 import com.microsoft.azure.management.resources.models.Deployment;
@@ -19,7 +20,7 @@ public class DeploymentImpl extends
         implements
         Deployment,
         Deployment.DefinitionBlank,
-        Deployment.DefinitionWithResourceGroup,
+        Deployment.DefinitionWithGroup,
         Deployment.DefinitionWithTemplate,
         Deployment.DefinitionWithParameters,
         Deployment.DefinitionProvisionable {
@@ -31,6 +32,7 @@ public class DeploymentImpl extends
     public DeploymentImpl(DeploymentExtendedInner deployment, DeploymentsInner deployments, ResourceGroups resourceGroups) {
         super (deployment.name(), deployment);
         this.deployments = deployments;
+        this.resourceGroupName = ResourceUtils.groupFromResourceId(deployment.id());
         this.resourceGroups = resourceGroups;
     }
 
@@ -41,6 +43,11 @@ public class DeploymentImpl extends
     @Override
     public String resourceGroupName() {
         return this.resourceGroupName;
+    }
+
+    @Override
+    public String name() {
+        return this.inner().name();
     }
 
     @Override
@@ -140,14 +147,14 @@ public class DeploymentImpl extends
      **************************************************************/
 
     @Override
-    public DefinitionWithResourceGroup withNewResourceGroup(String resourceGroupName, Region location) throws Exception {
+    public DefinitionWithGroup withNewResourceGroup(String resourceGroupName, Region location) throws Exception {
         ResourceGroup group = this.resourceGroups.define(resourceGroupName).withLocation(location).provision();
         this.resourceGroupName = group.name();
         return this;
     }
 
     @Override
-    public DefinitionWithResourceGroup withExistingResourceGroup(String resourceGroupName) {
+    public DefinitionWithGroup withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
     }
@@ -228,7 +235,7 @@ public class DeploymentImpl extends
         inner.properties().setTemplateLink(templateLink());
         inner.properties().setParameters(parameters());
         inner.properties().setParametersLink(parametersLink());
-        deployments.createOrUpdate(resourceGroupName, inner().name(), inner);
+        deployments.createOrUpdate(resourceGroupName(), name(), inner);
         return this;
     }
 

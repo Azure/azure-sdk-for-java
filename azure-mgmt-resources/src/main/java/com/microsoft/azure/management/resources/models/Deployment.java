@@ -21,6 +21,7 @@ public interface Deployment extends
      ***********************************************************/
 
     String resourceGroupName();
+    String name();
     String provisioningState();
     String correlationid();
     DateTime timestamp();
@@ -38,11 +39,11 @@ public interface Deployment extends
      **************************************************************/
 
     interface DefinitionBlank {
-        DefinitionWithResourceGroup withNewResourceGroup(String resourceGroupName, Region location) throws Exception;
-        DefinitionWithResourceGroup withExistingResourceGroup(String resourceGroupName);
+        DefinitionWithGroup withNewResourceGroup(String resourceGroupName, Region location) throws Exception;
+        DefinitionWithGroup withExistingResourceGroup(String resourceGroupName);
     }
 
-    interface DefinitionWithResourceGroup {
+    interface DefinitionWithGroup {
         DefinitionWithTemplate withTemplate(Object template);
         DefinitionWithTemplate withTemplate(JsonNode template);
         DefinitionWithTemplate withTemplateLink(String uri, String contentVersion);

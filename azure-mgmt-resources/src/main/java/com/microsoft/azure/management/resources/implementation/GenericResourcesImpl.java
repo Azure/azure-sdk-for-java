@@ -44,7 +44,10 @@ public final class GenericResourcesImpl
                 return new GenericResourceImpl(genericResourceInner.id(), genericResourceInner, serviceClient);
             }
         };
-        return converter.convert(resources.list().getBody());
+        if (resourceGroupName == null) {
+
+        }
+        return converter.convert(resourceGroups.listResources(resourceGroupName).getBody());
     }
 
     @Override

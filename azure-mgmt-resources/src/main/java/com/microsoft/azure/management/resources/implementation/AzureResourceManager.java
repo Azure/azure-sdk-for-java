@@ -25,5 +25,6 @@ public final class AzureResourceManager {
         ResourceGroups resourceGroups();
         GenericResources genericResources();
         Deployments deployments();
+        Deployments.InGroup deployments(String resourceGroupName);
     }
 }
