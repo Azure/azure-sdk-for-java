@@ -130,6 +130,6 @@ public class ResourceGroupImpl 	extends
 
     @Override
     public <T extends ResourceAdapter> T resourceAdapter(T.Builder<T> adapterBuilder) {
-        return adapterBuilder.create(this.serviceClient.getCredentials(), this.name());
+        return adapterBuilder.create(this.serviceClient, this.name());
     }
 }

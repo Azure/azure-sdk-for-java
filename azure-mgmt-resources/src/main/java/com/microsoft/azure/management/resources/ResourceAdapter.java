@@ -1,9 +1,9 @@
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 
 public interface ResourceAdapter<T extends ResourceAdapter> {
     interface Builder<T> {
-        T create(ServiceClientCredentials credentials, String resourceGroupName);
+        T create(ResourceManagementClientImpl credentials, String resourceGroupName);
     }
 }

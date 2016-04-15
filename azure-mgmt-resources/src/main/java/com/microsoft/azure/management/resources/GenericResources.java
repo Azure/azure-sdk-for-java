@@ -12,7 +12,7 @@ import java.io.IOException;
 public interface GenericResources extends
         SupportsListing<GenericResource>,
         SupportsGetting<GenericResource>,
-        SupportsCreating<GenericResource>,
+        SupportsCreating<GenericResource.DefinitionBlank>,
         SupportsDeleting {
     boolean checkExistence(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws IOException, CloudException;
 }

@@ -5,10 +5,10 @@ import com.microsoft.azure.management.resources.models.ResourceGroup;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class ResourceGroupsOperationsTests extends ResourceManagementTestBase {
+public class ResourceGroupsTests extends ResourceManagerTestBase {
     private  ResourceGroups resourceGroups;
 
-    public ResourceGroupsOperationsTests() throws Exception {
+    public ResourceGroupsTests() throws Exception {
         resourceGroups = subscription.resourceGroups();
     }
 

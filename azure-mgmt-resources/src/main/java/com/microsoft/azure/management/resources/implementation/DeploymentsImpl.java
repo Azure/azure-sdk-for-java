@@ -27,7 +27,7 @@ public final class DeploymentsImpl
         this.resourceGroups = serviceClient.resourceGroups();
     }
 
-    public DeploymentsImpl(ResourceManagementClientImpl serviceClient, String resourceGroupName) throws CloudException, IOException {
+    public DeploymentsImpl(ResourceManagementClientImpl serviceClient, String resourceGroupName) {
         this.serviceClient = serviceClient;
         this.deployments = serviceClient.deployments();
         this.resourceGroups = serviceClient.resourceGroups();
@@ -39,7 +39,7 @@ public final class DeploymentsImpl
         PagedListConverter<DeploymentExtendedInner, Deployment> converter = new PagedListConverter<DeploymentExtendedInner, Deployment>() {
             @Override
             public Deployment typeConvert(DeploymentExtendedInner deploymentInner) {
-                return new DeploymentImpl(resourceGroupName, deploymentInner.name(), deploymentInner, deployments);
+                return new DeploymentImpl(deploymentInner, deployments, new ResourceGroupsImpl(serviceClient));
             }
         };
         return converter.convert(deployments.list(resourceGroupName).getBody());
@@ -51,12 +51,14 @@ public final class DeploymentsImpl
     }
 
     @Override
-    public Deployment define(String name) throws Exception {
-        return null;
+    public Deployment.DefinitionBlank define(String name) throws Exception {
+        DeploymentExtendedInner deployment = new DeploymentExtendedInner();
+        deployment.setName(name);
+        return new DeploymentImpl(deployment, deployments, new ResourceGroupsImpl(serviceClient));
     }
 
     @Override
     public Deployment get(String name) throws IOException, CloudException {
-        return new DeploymentImpl(resourceGroupName, name, deployments.get(resourceGroupName, name).getBody(), deployments);
+        return new DeploymentImpl(deployments.get(resourceGroupName, name).getBody(), deployments, new ResourceGroupsImpl(serviceClient));
     }
 }

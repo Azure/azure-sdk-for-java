@@ -17,20 +17,23 @@ import java.util.List;
 public final class GenericResourcesImpl
     implements GenericResources {
 
-    ResourceManagementClientImpl serviceClient;
-    ResourcesInner resources;
-    ResourceGroupsInner resourceGroups;
+    final ResourceManagementClientImpl serviceClient;
+    final ResourcesInner resources;
+    final ResourceGroupsInner resourceGroups;
+    final String resourceGroupName;
 
     public GenericResourcesImpl(ResourceManagementClientImpl serviceClient) {
         this.serviceClient = serviceClient;
         this.resources = serviceClient.resources();
         this.resourceGroups = serviceClient.resourceGroups();
+        resourceGroupName = null;
     }
 
-    public GenericResourcesImpl(ResourceManagementClientImpl serviceClient, String resourceGroupName) throws CloudException, IOException {
+    public GenericResourcesImpl(ResourceManagementClientImpl serviceClient, String resourceGroupName) {
         this.serviceClient = serviceClient;
         this.resources = serviceClient.resources();
         this.resourceGroups = serviceClient.resourceGroups();
+        this.resourceGroupName = resourceGroupName;
     }
 
     @Override
@@ -50,7 +53,7 @@ public final class GenericResourcesImpl
     }
 
     @Override
-    public GenericResource define(String name) throws Exception {
+    public GenericResource.DefinitionBlank define(String name) throws Exception {
         return null;
     }
 
@@ -66,6 +69,15 @@ public final class GenericResourcesImpl
 
     @Override
     public GenericResource get(String name) throws IOException, CloudException {
+        if (name == null) {
+            return null;
+        }
+        List<GenericResourceInner> innerList = resourceGroups.listResources(resourceGroupName).getBody();
+        for (GenericResourceInner inner : innerList) {
+            if (name.equals(inner.name())) {
+                return new GenericResourceImpl(inner.id(), inner, serviceClient);
+            }
+        }
         return null;
     }
 }

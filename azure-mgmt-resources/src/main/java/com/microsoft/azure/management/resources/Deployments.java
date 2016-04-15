@@ -11,6 +11,6 @@ import java.io.IOException;
 public interface Deployments extends
         SupportsListing<Deployment>,
         SupportsGetting<Deployment>,
-        SupportsCreating<Deployment> {
+        SupportsCreating<Deployment.DefinitionBlank> {
     boolean checkExistence(String resourceGroupName, String deploymentName) throws IOException, CloudException;
 }
