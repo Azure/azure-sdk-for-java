@@ -18,16 +18,20 @@ public class StorageAccountImpl
         extends GroupableResourceImpl<StorageAccount, StorageAccountInner, StorageAccountImpl>
         implements
         StorageAccount,
+        StorageAccount.DefinitionBlank,
+        StorageAccount.DefinitionWithGroup,
         StorageAccount.DefinitionProvisionable
         {
 
     private PublicEndpoints publicEndpoints;
     private AccountStatuses accountStatuses;
+    private String name;
 
     private final StorageManagementClientImpl storageManagmentClient;
 
-    public StorageAccountImpl(String id, StorageAccountInner innerObject, StorageManagementClientImpl storageManagmentClient, ResourceManagementClientImpl resourceClient) {
-        super(id, innerObject, resourceClient);
+    public StorageAccountImpl(String name, StorageAccountInner innerObject, StorageManagementClientImpl storageManagmentClient, ResourceManagementClientImpl resourceClient) {
+        super(innerObject.id(), innerObject, resourceClient);
+        this.name = name;
         this.storageManagmentClient = storageManagmentClient;
     }
 
@@ -106,7 +110,7 @@ public class StorageAccountImpl
         createParameters.setTags(this.inner().getTags());
 
         ServiceResponse<StorageAccountInner> response =
-                this.storageManagmentClient.storageAccounts().create(this.groupName, this.id, createParameters);
+                this.storageManagmentClient.storageAccounts().create(this.groupName, this.name, createParameters);
         StorageAccountInner storageAccountInner = response.getBody();
         this.setInner(storageAccountInner);
         clearWrapperProperties();
