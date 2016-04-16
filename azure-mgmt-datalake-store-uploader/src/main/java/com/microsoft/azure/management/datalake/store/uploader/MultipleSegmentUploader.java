@@ -116,7 +116,7 @@ public class MultipleSegmentUploader implements Runnable {
     /// </summary>
     /// <param name="segmentNumber">The segment number.</param>
     /// <param name="metadata">The metadata.</param>
-    private void UploadSegment(int segmentNumber, UploadMetadata metadata) throws InterruptedException, UploadFailedException, CloudException, IOException {
+    private void UploadSegment(int segmentNumber, UploadMetadata metadata) throws Exception {
         //mark the segment as 'InProgress' in the metadata
         UpdateSegmentMetadataStatus(metadata, segmentNumber, SegmentUploadStatus.InProgress);
 

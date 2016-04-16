@@ -60,7 +60,7 @@ public class SingleSegmentUploader {
     /// Each such block is attempted a certain number of times; if after that it still cannot be uploaded, the entire segment is aborted (in which case no cleanup is performed on the server).
     /// </summary>
     /// <returns></returns>
-    public void Upload() throws IOException, InterruptedException, CloudException, UploadFailedException {
+    public void Upload() throws Exception {
         File fileInfo = new File(_metadata.InputFilePath);
         if (!(fileInfo.exists())) {
             throw new FileNotFoundException("Unable to locate input file: " + _metadata.InputFilePath);
@@ -84,7 +84,7 @@ public class SingleSegmentUploader {
     /// Verifies the uploaded stream.
     /// </summary>
     /// <exception cref="UploadFailedException"></exception>
-    private void VerifyUploadedStream() throws UploadFailedException, IOException, CloudException, InterruptedException {
+    private void VerifyUploadedStream() throws Exception {
         //verify that the remote stream has the length we expected.
         int retryCount = 0;
         long remoteLength = -1;
@@ -112,7 +112,7 @@ public class SingleSegmentUploader {
     /// </summary>
     /// <param name="inputStream">The input stream.</param>
     /// <param name="endPosition">The end position.</param>
-    private void UploadSegmentContents(EnhancedFileInputStream inputStream, long endPosition) throws InterruptedException, CloudException, IOException, UploadFailedException {
+    private void UploadSegmentContents(EnhancedFileInputStream inputStream, long endPosition) throws Exception {
         long bytesCopiedSoFar = 0; // we start off with a fresh stream
 
         byte[] buffer = new byte[BufferLength];
@@ -181,7 +181,7 @@ public class SingleSegmentUploader {
     /// <param name="bytesToCopy">The bytes to copy.</param>
     /// <param name="targetStreamOffset">The target stream offset.</param>
     /// <returns></returns>
-    private long UploadBuffer(byte[] buffer, int bytesToCopy, long targetStreamOffset) throws IOException, CloudException, InterruptedException {
+    private long UploadBuffer(byte[] buffer, int bytesToCopy, long targetStreamOffset) throws Exception {
         //append it to the remote stream
         int attemptCount = 0;
         boolean uploadCompleted = false;

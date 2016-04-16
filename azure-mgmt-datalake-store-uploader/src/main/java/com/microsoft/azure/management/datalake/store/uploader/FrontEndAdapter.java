@@ -19,7 +19,7 @@ public interface FrontEndAdapter {
      * @param streamPath The relative path to the stream.
      * @param overwrite  Whether to overwrite an existing stream.
      */
-    void CreateStream(String streamPath, boolean overwrite, byte[] data, int byteCount) throws CloudException, IOException;
+    void CreateStream(String streamPath, boolean overwrite, byte[] data, int byteCount) throws Exception;
 
     /**
      * Creates a new, empty stream at the given path.
@@ -27,7 +27,7 @@ public interface FrontEndAdapter {
      * @param streamPath The relative path to the stream.
      * @param recurse    if set to true recursively delete. This is used for folder streams only.
      */
-    void DeleteStream(String streamPath, boolean recurse) throws IOException, CloudException;
+    void DeleteStream(String streamPath, boolean recurse) throws Exception;
 
     /**
      * @param streamPath
@@ -35,7 +35,7 @@ public interface FrontEndAdapter {
      * @param offset
      * @param length
      */
-    void AppendToStream(String streamPath, byte[] data, long offset, int length) throws IOException, CloudException;
+    void AppendToStream(String streamPath, byte[] data, long offset, int length) throws Exception;
 
     /// <summary>
     /// Determines if the stream with given path exists.
@@ -47,14 +47,14 @@ public interface FrontEndAdapter {
      * @param streamPath
      * @return
      */
-    boolean StreamExists(String streamPath) throws IOException, CloudException;
+    boolean StreamExists(String streamPath) throws Exception;
 
     /// <summary>
     /// Gets a value indicating the length of a stream, in bytes.
     /// </summary>
     /// <param name="streamPath">The relative path to the stream.</param>
     /// <returns>The length of the stream, in bytes.</returns>
-    long GetStreamLength(String streamPath) throws IOException, CloudException;
+    long GetStreamLength(String streamPath) throws Exception;
 
     /// <summary>
     /// Concatenates the given input streams (in order) into the given target stream.
@@ -62,5 +62,5 @@ public interface FrontEndAdapter {
     /// </summary>
     /// <param name="targetStreamPath">The relative path to the target stream.</param>
     /// <param name="inputStreamPaths">An ordered array of paths to the input streams.</param>
-    void Concatenate(String targetStreamPath, String[] inputStreamPaths) throws IOException, CloudException;
+    void Concatenate(String targetStreamPath, String[] inputStreamPaths) throws Exception;
 }

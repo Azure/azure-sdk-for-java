@@ -14,10 +14,6 @@ import java.nio.charset.StandardCharsets;
  * Created by begoldsm on 4/11/2016.
  */
 public class UploadParameters {
-    public UploadParameters(String inputFilePath, String targetStreamPath, String accountName) {
-        this(inputFilePath, targetStreamPath, accountName, 1, false, false, true, 256 * 1024 * 1024, null, null, null);
-    }
-
     /// <summary>
     /// Creates a new set of parameters for the DataLake Uploader.
     /// </summary>
@@ -70,7 +66,7 @@ public class UploadParameters {
     /// <param name="localMetadataLocation">(Optional) Indicates the directory path where to store the local upload metadata file while the upload is in progress. This location must be writeable from this application. Default location: SpecialFolder.LocalApplicationData.</param>
     /// <param name="fileEncoding">(Optional) Indicates the type of encoding the file was saved in and should be interpreted as having. The default is UTF-8.</param>
     /// <param name="delimiter">(Optional) Indicates the character delimter for record boundaries within the file, if any.This must be a single character. The default is new lines (\r, \n or \r\n).</param>
-    private UploadParameters(String inputFilePath, String targetStreamPath, String accountName, boolean useSegmentBlockBackOffRetryStrategy, int threadCount, boolean isOverwrite, boolean isResume, boolean isBinary, long maxSegmentLength, String localMetadataLocation, Charset fileEncoding, String delimiter) {
+    protected UploadParameters(String inputFilePath, String targetStreamPath, String accountName, boolean useSegmentBlockBackOffRetryStrategy, int threadCount, boolean isOverwrite, boolean isResume, boolean isBinary, long maxSegmentLength, String localMetadataLocation, Charset fileEncoding, String delimiter) {
         this(inputFilePath, targetStreamPath, accountName, threadCount, isOverwrite, isResume, isBinary, maxSegmentLength, localMetadataLocation, fileEncoding, delimiter);
         this.setUseSegmentBlockBackOffRetryStrategy(useSegmentBlockBackOffRetryStrategy);
     }

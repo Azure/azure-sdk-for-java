@@ -7,14 +7,7 @@ package com.microsoft.azure.management.datalake.store.uploader;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.InvalidObjectException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.text.MessageFormat;
 import java.util.BitSet;
 import java.util.UUID;
@@ -198,7 +191,7 @@ public class UploadMetadata implements Serializable {
     /// <summary>
     /// Saves the given metadata to its canonical location. This method is thread-safe.
     /// </summary>
-    public void Save() throws InvalidObjectException, InvalidMetadataException {
+    public void Save() throws IOException, InvalidMetadataException {
         if (this.MetadataFilePath == null || StringUtils.isEmpty(this.MetadataFilePath)) {
             throw new InvalidObjectException("Null or empty MetadataFilePath. Cannot save metadata until this property is set.");
         }
@@ -212,6 +205,9 @@ public class UploadMetadata implements Serializable {
                 curMetadata.delete();
             }
 
+            // always create the full path to the file, since this will not throw if it already exists.
+            curMetadata.getParentFile().mkdirs();
+            curMetadata.createNewFile();
             try {
                 FileOutputStream fileOut =
                         new FileOutputStream(this.MetadataFilePath);

@@ -101,13 +101,13 @@ public class UploadSegmentMetadata implements Serializable {
 
     /// <summary>
     /// </summary>
-    private final int BaseMultiplier = 50;
+    private static final int BaseMultiplier = 50;
 
     /// <summary>
     /// The Multiplier is the number of times the segment count is inflated when the length of the file increases by a factor of 'Reducer'.
     /// See class description for more details.
     /// </summary>
-    private final int SegmentCountMultiplier = 2;
+    private static final int SegmentCountMultiplier = 2;
 
     /// <summary>
     /// The minimum number of bytes in a segment. For best performance, should be sync-ed with the upload buffer length.

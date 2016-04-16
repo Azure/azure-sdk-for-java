@@ -16,6 +16,7 @@ import com.microsoft.azure.management.storage.StorageManagementClientImpl;
 
 import org.junit.Assert;
 
+import java.text.MessageFormat;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -125,7 +126,7 @@ public abstract class DataLakeAnalyticsManagementTestBase {
 
         // Verify the job completes successfully
         Assert.assertTrue(
-                String.format("Job: {0} did not return success. Current job state: {1}. Actual result: {2}. Error (if any): {3}",
+                MessageFormat.format("Job: {0} did not return success. Current job state: {1}. Actual result: {2}. Error (if any): {3}",
                         getJobResponse.getJobId(), getJobResponse.getState(), getJobResponse.getResult(), getJobResponse.getErrorMessage()),
                 getJobResponse.getState() == JobState.ENDED && getJobResponse.getResult() == JobResult.SUCCEEDED);
     }

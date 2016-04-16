@@ -64,7 +64,7 @@ public class DataLakeStoreUploader {
     /// <summary>
     /// Executes the upload as defined by the input parameters.
     /// </summary>
-    public void Execute() throws IOException, InvalidMetadataException, UploadFailedException, OperationsException, AggregateUploadException, InterruptedException, CloudException {
+    public void Execute() throws Exception {
         //load up existing metadata or create a fresh one
         UploadMetadata metadata = GetMetadata();
 
@@ -142,7 +142,7 @@ public class DataLakeStoreUploader {
     /// If any changes are made, the metadata will be saved to its canonical location.
     /// </summary>
     /// <param name="metadata"></param>
-    private void ValidateMetadataForResume(UploadMetadata metadata) throws IOException, CloudException, OperationsException, UploadFailedException, InterruptedException, InvalidMetadataException {
+    private void ValidateMetadataForResume(UploadMetadata metadata) throws Exception {
         ValidateMetadataMatchesLocalFile(metadata);
 
         //verify that the target stream does not already exist (in case we don't want to overwrite)
@@ -202,7 +202,7 @@ public class DataLakeStoreUploader {
     /// Verifies that the metadata is valid for a fresh upload.
     /// </summary>
     /// <param name="metadata"></param>
-    private void ValidateMetadataForFreshUpload(UploadMetadata metadata) throws IOException, CloudException, OperationsException {
+    private void ValidateMetadataForFreshUpload(UploadMetadata metadata) throws Exception {
         ValidateMetadataMatchesLocalFile(metadata);
 
         //verify that the target stream does not already exist (in case we don't want to overwrite)
@@ -216,7 +216,7 @@ public class DataLakeStoreUploader {
     /// </summary>
     /// <param name="metadata"></param>
     private void ValidateMetadataMatchesLocalFile(UploadMetadata metadata) throws OperationsException {
-        if (metadata.TargetStreamPath.trim() != this.Parameters.getTargetStreamPath().trim()) {
+        if (!metadata.TargetStreamPath.trim().equalsIgnoreCase(this.Parameters.getTargetStreamPath().trim())) {
             throw new OperationsException("Metadata points to a different target stream than the input parameters");
         }
 
@@ -242,7 +242,7 @@ public class DataLakeStoreUploader {
     ///
     /// </summary>
     /// <param name="metadata"></param>
-    private void UploadFile(UploadMetadata metadata) throws InvalidMetadataException, UploadFailedException, IOException, OperationsException, InterruptedException, CloudException, AggregateUploadException {
+    private void UploadFile(UploadMetadata metadata) throws Exception {
         try {
             //TODO: figure out if we need a ServicePointManager equivalent for the connection limit
             //match up the metadata with the information on the server
@@ -280,7 +280,7 @@ public class DataLakeStoreUploader {
     /// Concatenates all the segments defined in the metadata into a single stream.
     /// </summary>
     /// <param name="metadata"></param>
-    private void ConcatenateSegments(final UploadMetadata metadata) throws IOException, CloudException, OperationsException, AggregateUploadException {
+    private void ConcatenateSegments(final UploadMetadata metadata) throws Exception {
         final String[] inputPaths = new String[metadata.SegmentCount];
 
         //verify if target stream exists

@@ -13,11 +13,11 @@ import java.util.List;
  */
 public class AggregateUploadException extends Exception {
 
-    private final Exception[] secondaryExceptions;
+    private final List<Exception> secondaryExceptions;
 
     public AggregateUploadException(String message, Exception primary, List<Exception> others) {
         super(message, primary);
-        this.secondaryExceptions = others == null ? new Exception[0] : (Exception[]) others.toArray();
+        this.secondaryExceptions = others;
     }
 
     /***
@@ -27,7 +27,7 @@ public class AggregateUploadException extends Exception {
     public Throwable[] getAllExceptions() {
 
         int start = 0;
-        int size = secondaryExceptions.length;
+        int size = secondaryExceptions.size();
         final Throwable primary = getCause();
         if (primary != null) {
             start = 1;
