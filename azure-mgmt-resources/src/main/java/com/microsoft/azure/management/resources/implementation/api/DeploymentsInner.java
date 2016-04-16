@@ -10,7 +10,6 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
-import com.microsoft.azure.management.resources.models.implementation.api.DeploymentExtendedFilterInner;
 import com.microsoft.azure.management.resources.models.implementation.api.DeploymentExtendedInner;
 import com.microsoft.azure.management.resources.models.implementation.api.DeploymentInner;
 import com.microsoft.azure.management.resources.models.implementation.api.DeploymentValidateResultInner;
@@ -102,7 +101,7 @@ public final class DeploymentsInner {
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/")
-        Call<ResponseBody> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("$filter") DeploymentExtendedFilterInner filter, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
@@ -767,7 +766,7 @@ public final class DeploymentsInner {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        final DeploymentExtendedFilterInner filter = null;
+        final String filter = null;
         final Integer top = null;
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), filter, top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<DeploymentExtendedInner>> response = listDelegate(call.execute());
@@ -804,7 +803,7 @@ public final class DeploymentsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        final DeploymentExtendedFilterInner filter = null;
+        final String filter = null;
         final Integer top = null;
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), filter, top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
@@ -839,7 +838,7 @@ public final class DeploymentsInner {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;DeploymentExtendedInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<DeploymentExtendedInner>> list(final String resourceGroupName, final DeploymentExtendedFilterInner filter, final Integer top) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<DeploymentExtendedInner>> list(final String resourceGroupName, final String filter, final Integer top) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -849,7 +848,6 @@ public final class DeploymentsInner {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Validator.validate(filter);
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), filter, top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<DeploymentExtendedInner>> response = listDelegate(call.execute());
         PagedList<DeploymentExtendedInner> result = new PagedList<DeploymentExtendedInner>(response.getBody()) {
@@ -871,7 +869,7 @@ public final class DeploymentsInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listAsync(final String resourceGroupName, final DeploymentExtendedFilterInner filter, final Integer top, final ListOperationCallback<DeploymentExtendedInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listAsync(final String resourceGroupName, final String filter, final Integer top, final ListOperationCallback<DeploymentExtendedInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -887,7 +885,6 @@ public final class DeploymentsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        Validator.validate(filter, serviceCallback);
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), filter, top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<DeploymentExtendedInner>>(serviceCallback) {

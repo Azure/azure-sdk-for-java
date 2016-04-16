@@ -30,7 +30,7 @@ var mappings = {
     'authorization': {
         'dir': 'azure-mgmt-resources',
         'source': 'arm-authorization/2015-07-01/swagger/authorization.json',
-        'package': 'com.microsoft.azure.management.resources'
+        'package': 'com.microsoft.azure.management.authorization'
     },
     'features': {
         'dir': 'azure-mgmt-resources',

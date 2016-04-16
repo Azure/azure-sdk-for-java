@@ -10,7 +10,6 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
-import com.microsoft.azure.management.resources.models.implementation.api.GenericResourceFilterInner;
 import com.microsoft.azure.management.resources.models.implementation.api.GenericResourceInner;
 import com.microsoft.azure.management.resources.models.implementation.api.PageImpl;
 import com.microsoft.azure.management.resources.models.implementation.api.ResourcesMoveInfoInner;
@@ -77,7 +76,7 @@ public final class ResourcesInner {
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resources")
-        Call<ResponseBody> list(@Path("subscriptionId") String subscriptionId, @Query("$filter") GenericResourceFilterInner filter, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> list(@Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HEAD("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
@@ -266,7 +265,7 @@ public final class ResourcesInner {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        final GenericResourceFilterInner filter = null;
+        final String filter = null;
         final Integer top = null;
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), filter, top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<GenericResourceInner>> response = listDelegate(call.execute());
@@ -298,7 +297,7 @@ public final class ResourcesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        final GenericResourceFilterInner filter = null;
+        final String filter = null;
         final Integer top = null;
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), filter, top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
@@ -332,14 +331,13 @@ public final class ResourcesInner {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;GenericResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<GenericResourceInner>> list(final GenericResourceFilterInner filter, final Integer top) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<GenericResourceInner>> list(final String filter, final Integer top) throws CloudException, IOException, IllegalArgumentException {
         if (this.client.getSubscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        Validator.validate(filter);
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), filter, top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<GenericResourceInner>> response = listDelegate(call.execute());
         PagedList<GenericResourceInner> result = new PagedList<GenericResourceInner>(response.getBody()) {
@@ -360,7 +358,7 @@ public final class ResourcesInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listAsync(final GenericResourceFilterInner filter, final Integer top, final ListOperationCallback<GenericResourceInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listAsync(final String filter, final Integer top, final ListOperationCallback<GenericResourceInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -372,7 +370,6 @@ public final class ResourcesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        Validator.validate(filter, serviceCallback);
         Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), filter, top, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<GenericResourceInner>>(serviceCallback) {
