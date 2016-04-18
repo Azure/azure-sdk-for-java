@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.storage.implementation;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
@@ -26,11 +27,11 @@ import java.util.Map;
 public class StorageAccountsImpl
         implements StorageAccounts {
     private final StorageManagementClientImpl client;
-    private final ResourceManagementClientImpl resourceClient;
+    private final ResourceGroups resourceGroups;
 
-    public StorageAccountsImpl(StorageManagementClientImpl client, ResourceManagementClientImpl resourceClient) {
+    public StorageAccountsImpl(StorageManagementClientImpl client, ResourceGroups resourceGroups) {
         this.client = client;
-        this.resourceClient = resourceClient;
+        this.resourceGroups = resourceGroups;
     }
 
     public Map<String, StorageAccount> asMap() throws Exception {
@@ -75,11 +76,11 @@ public class StorageAccountsImpl
 
     private StorageAccountImpl createWrapper(String name) {
         StorageAccountInner storageAccountInner = new StorageAccountInner();
-        return new StorageAccountImpl(name, storageAccountInner, this.client, this.resourceClient);
+        return new StorageAccountImpl(name, storageAccountInner, this.client, this.resourceGroups);
     }
 
     private StorageAccountImpl createWrapper(StorageAccountInner storageAccountInner) {
-        return new StorageAccountImpl(storageAccountInner.name(), storageAccountInner, this.client, this.resourceClient);
+        return new StorageAccountImpl(storageAccountInner.name(), storageAccountInner, this.client, this.resourceGroups);
     }
 
     private List<StorageAccount> createListWrapper(List<StorageAccountInner> list) {

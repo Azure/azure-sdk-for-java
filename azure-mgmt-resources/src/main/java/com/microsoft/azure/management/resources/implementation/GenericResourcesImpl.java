@@ -66,11 +66,6 @@ public final class GenericResourcesImpl
     }
 
     @Override
-    public void deleteAsync(String id, ServiceCallback<Void> callback) throws Exception {
-
-    }
-
-    @Override
     public GenericResource get(String name) throws IOException, CloudException {
         if (name == null) {
             return null;

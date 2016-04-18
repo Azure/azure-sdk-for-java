@@ -17,12 +17,10 @@ public abstract class GroupableResourceImpl<
         GroupableResource {
 
     ResourceGroups resourceGroups;
-    ResourceManagementClientImpl resourceManagementClient;
 
-    protected GroupableResourceImpl(String id, INNER innerObject, ResourceManagementClientImpl serviceClient) {
+    protected GroupableResourceImpl(String id, INNER innerObject, ResourceGroups resourceGroups) {
         super(id, innerObject);
-        this.resourceManagementClient = serviceClient;
-        this.resourceGroups = new ResourceGroupsImpl(serviceClient);
+        this.resourceGroups = resourceGroups;
     }
 
     protected String groupName;

@@ -44,7 +44,7 @@ final class AzureSubscriptionImpl extends AzureBaseImpl<Azure.Subscription>
 
     @Override
     public StorageAccounts storageAccounts() {
-        return new StorageAccountsImpl(storageManagementClient(), resourceManagementClient());
+        return new StorageAccountsImpl(storageManagementClient(), resourceGroups());
     }
 
     @Override
