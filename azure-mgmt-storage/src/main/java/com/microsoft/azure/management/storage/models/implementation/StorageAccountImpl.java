@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.storage.models.implementation;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
@@ -29,8 +30,8 @@ public class StorageAccountImpl
 
     private final StorageManagementClientImpl storageManagmentClient;
 
-    public StorageAccountImpl(String name, StorageAccountInner innerObject, StorageManagementClientImpl storageManagmentClient, ResourceManagementClientImpl resourceClient) {
-        super(innerObject.id(), innerObject, resourceClient);
+    public StorageAccountImpl(String name, StorageAccountInner innerObject, StorageManagementClientImpl storageManagmentClient, ResourceGroups resourceGroups) {
+        super(innerObject.id(), innerObject, resourceGroups);
         this.name = name;
         this.storageManagmentClient = storageManagmentClient;
     }
@@ -41,6 +42,11 @@ public class StorageAccountImpl
             accountStatuses = new AccountStatuses(this.inner().statusOfPrimary(), this.inner().statusOfSecondary());
         }
         return accountStatuses;
+    }
+
+    @Override
+    public String name() {
+        return this.name;
     }
 
     @Override
@@ -104,13 +110,14 @@ public class StorageAccountImpl
 
     @Override
     public StorageAccountImpl provision() throws Exception {
+        ensureGroup();
         StorageAccountCreateParametersInner createParameters = new StorageAccountCreateParametersInner();
         createParameters.setAccountType(this.inner().accountType());
         createParameters.setLocation(this.region());
         createParameters.setTags(this.inner().getTags());
 
         ServiceResponse<StorageAccountInner> response =
-                this.storageManagmentClient.storageAccounts().create(this.groupName, this.name, createParameters);
+                this.storageManagmentClient.storageAccounts().create(this.groupName, this.name(), createParameters);
         StorageAccountInner storageAccountInner = response.getBody();
         this.setInner(storageAccountInner);
         clearWrapperProperties();
