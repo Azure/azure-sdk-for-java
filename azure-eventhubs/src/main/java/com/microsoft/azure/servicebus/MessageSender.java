@@ -487,7 +487,9 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 	
 	public void onSendComplete(final byte[] deliveryTag, final DeliveryState outcome)
 	{
-		TRACE_LOGGER.log(Level.FINEST, String.format("linkName[%s]", this.sendLink.getName()));
+		if (TRACE_LOGGER.isLoggable(Level.FINEST))
+			TRACE_LOGGER.log(Level.FINEST, String.format("linkName[%s]", this.sendLink.getName()));
+		
 		ReplayableWorkItem<Void> pendingSendWorkItem = this.pendingSendWaiters.get(deliveryTag);
         
 		if (pendingSendWorkItem != null)
@@ -669,9 +671,22 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 	}
 
 	@Override
-	public void onFlow(int credit)
+	public void onFlow()
 	{
-		this.linkCredit.set(credit);
+		int updatedCredit = 0;
+		synchronized (this.sendCall)
+		{
+			updatedCredit = this.sendLink.getRemoteCredit();
+		}
+		
+		if (updatedCredit <= 0)
+			return;
+		
+		if (TRACE_LOGGER.isLoggable(Level.FINE))
+			TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "linkName[%s], path[%s], remoteLinkCredit[%s], pendingSendsWaitingForCredit[%s], pendingSendsWaitingDelivery[%s]",
+							MessageSender.this.getClientId(), MessageSender.this.sendPath, updatedCredit, this.pendingSendsWaitingForCredit.size(), this.pendingSendWaiters.size()));
+		
+		this.linkCredit.addAndGet(updatedCredit);
 		
 		while (!this.pendingSendsWaitingForCredit.isEmpty() && this.linkCredit.get() > 0)
 		{

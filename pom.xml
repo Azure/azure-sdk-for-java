@@ -12,9 +12,9 @@
 	<url>https://github.com/Azure/azure-event-hubs</url>
 	
 	<properties>
-		<proton-j-version>0.12.1</proton-j-version>
+		<proton-j-version>0.12.2</proton-j-version>
 	  	<junit-version>4.10</junit-version>
-		<client-current-version>0.6.6</client-current-version>
+		<client-current-version>0.6.7</client-current-version>
 	</properties>
 	
 	<build>

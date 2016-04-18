@@ -8,7 +8,7 @@ import org.apache.qpid.proton.amqp.transport.*;
 
 public interface IAmqpSender extends IAmqpLink
 {
-	void onFlow(int credit);
+	void onFlow();
 	
 	void onSendComplete(final byte[] deliveryTag, final DeliveryState outcome);
 }
