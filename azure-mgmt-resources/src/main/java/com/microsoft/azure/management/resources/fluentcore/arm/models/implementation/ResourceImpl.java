@@ -9,16 +9,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class ResourceImpl<
-        WRAPPER,
-        INNER extends com.microsoft.azure.Resource,
-        WRAPPERIMPL extends ResourceImpl<WRAPPER, INNER, WRAPPERIMPL>>
+        FluentModelT,
+        InnerModelT extends com.microsoft.azure.Resource,
+        FluentModelImplT extends ResourceImpl<FluentModelT, InnerModelT, FluentModelImplT>>
         extends
-        IndexableRefreshableWrapperImpl<WRAPPER, INNER>
+        IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
         implements
         Resource {
 
 
-    protected ResourceImpl(String id, INNER innerObject) {
+    protected ResourceImpl(String id, InnerModelT innerObject) {
         super(id, innerObject);
     }
 
@@ -56,21 +56,21 @@ public abstract class ResourceImpl<
      **************************************************/
 
     @SuppressWarnings("unchecked")
-    public final WRAPPERIMPL withTags(Map<String, String> tags) {
+    public final FluentModelImplT withTags(Map<String, String> tags) {
         this.inner().setTags(new HashMap<>(tags));
-        return (WRAPPERIMPL) this;
+        return (FluentModelImplT) this;
     }
 
     @SuppressWarnings("unchecked")
-    public final WRAPPERIMPL withTag(String name, String value) {
+    public final FluentModelImplT withTag(String name, String value) {
         this.inner().getTags().put(name, value);
-        return (WRAPPERIMPL) this;
+        return (FluentModelImplT) this;
     }
 
     @SuppressWarnings("unchecked")
-    public final WRAPPERIMPL withoutTag(String name) {
+    public final FluentModelImplT withoutTag(String name) {
         this.inner().getTags().remove(name);
-        return (WRAPPERIMPL) this;
+        return (FluentModelImplT) this;
     }
 
     /**********************************************
@@ -78,12 +78,12 @@ public abstract class ResourceImpl<
      **********************************************/
 
     @SuppressWarnings("unchecked")
-    public final WRAPPERIMPL withRegion(String regionName) {
+    public final FluentModelImplT withRegion(String regionName) {
         this.inner().setLocation(regionName);
-        return (WRAPPERIMPL) this;
+        return (FluentModelImplT) this;
     }
 
-    public final WRAPPERIMPL withRegion(Region region) {
+    public final FluentModelImplT withRegion(Region region) {
         return this.withRegion(region.toString());
     }
 }

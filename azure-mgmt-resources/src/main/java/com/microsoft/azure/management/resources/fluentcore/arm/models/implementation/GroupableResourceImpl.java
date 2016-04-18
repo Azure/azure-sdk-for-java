@@ -2,23 +2,21 @@ package com.microsoft.azure.management.resources.fluentcore.arm.models.implement
 
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
-import com.microsoft.azure.management.resources.implementation.ResourceGroupsImpl;
-import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.resources.models.implementation.api.ResourceGroupInner;
 
 public abstract class GroupableResourceImpl<
-        WRAPPER,
-        INNER extends com.microsoft.azure.Resource,
-        WRAPPERIMPL extends GroupableResourceImpl<WRAPPER, INNER, WRAPPERIMPL>>
+        FluentModelT,
+        InnerModelT extends com.microsoft.azure.Resource,
+        FluentModelImplT extends GroupableResourceImpl<FluentModelT, InnerModelT, FluentModelImplT>>
         extends
-        ResourceImpl<WRAPPER, INNER, WRAPPERIMPL>
+        ResourceImpl<FluentModelT, InnerModelT, FluentModelImplT>
         implements
         GroupableResource {
 
     ResourceGroups resourceGroups;
 
-    protected GroupableResourceImpl(String id, INNER innerObject, ResourceGroups resourceGroups) {
+    protected GroupableResourceImpl(String id, InnerModelT innerObject, ResourceGroups resourceGroups) {
         super(id, innerObject);
         this.resourceGroups = resourceGroups;
     }
@@ -68,33 +66,33 @@ public abstract class GroupableResourceImpl<
      ****************************************/
 
     @SuppressWarnings("unchecked")
-    public final WRAPPERIMPL withExistingGroup(String groupName) {
+    public final FluentModelImplT withExistingGroup(String groupName) {
         this.groupName = groupName;
         this.isExistingGroup = true;
-        return (WRAPPERIMPL)this;
+        return (FluentModelImplT)this;
     }
 
 
     @SuppressWarnings("unchecked")
-    public final WRAPPERIMPL withNewGroup(String groupName) {
+    public final FluentModelImplT withNewGroup(String groupName) {
         this.groupName = groupName;
         this.isExistingGroup = false;
-        return (WRAPPERIMPL) this;
+        return (FluentModelImplT) this;
     }
 
-    public final WRAPPERIMPL withNewGroup() {
+    public final FluentModelImplT withNewGroup() {
         return this.withNewGroup((String)null);
     }
 
-    public final WRAPPERIMPL withNewGroup(ResourceGroup.DefinitionProvisionable groupDefinition) throws Exception {
+    public final FluentModelImplT withNewGroup(ResourceGroup.DefinitionProvisionable groupDefinition) throws Exception {
         return withExistingGroup(groupDefinition.provision());
     }
 
-    public final WRAPPERIMPL withExistingGroup(ResourceGroup group) {
+    public final FluentModelImplT withExistingGroup(ResourceGroup group) {
         return this.withExistingGroup(group.name());
     }
 
-    public final WRAPPERIMPL withExistingGroup(ResourceGroupInner group) {
+    public final FluentModelImplT withExistingGroup(ResourceGroupInner group) {
         return this.withExistingGroup(group.name());
     }
 }
