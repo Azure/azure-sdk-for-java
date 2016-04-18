@@ -138,6 +138,16 @@
         <version>3.4</version>
       </dependency>
       <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>adal4j</artifactId>
+        <version>1.1.2</version>
+      </dependency>
+      <dependency>
+        <groupId>com.microsoft.aad</groupId>
+        <artifactId>adal</artifactId>
+        <version>1.1.11</version>
+      </dependency>
+      <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>4.12</version>
@@ -264,6 +274,5 @@
     <module>./client-runtime</module>
     <module>./azure-client-runtime</module>
     <module>./azure-client-authentication</module>
-    <module>./azure-android-client-authentication</module>
   </modules>
 </project>
