@@ -4,7 +4,10 @@ import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.credentials.AzureEnvironment;
 import com.microsoft.azure.implementation.Azure;
 import com.microsoft.azure.management.resources.Subscriptions;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.storage.StorageAccounts;
+import com.microsoft.azure.management.storage.models.StorageAccount;
+import com.microsoft.azure.management.storage.models.implementation.api.AccountType;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import okhttp3.logging.HttpLoggingInterceptor;
 import org.junit.Assert;
@@ -49,5 +52,23 @@ public class AzureTests {
     @Test
     public void listStorageAccounts() throws Exception {
         Assert.assertTrue(0 < storageAccounts.list().size());
+    }
+
+    @Test
+    public void createStorageAccount() throws Exception {
+        StorageAccount storageAccount1 = storageAccounts.define("my-stg1")
+                .withRegion(Region.ASIA_EAST)
+                .withNewGroup()
+                .withAccountType(AccountType.PREMIUM_LRS)
+                .provision();
+    }
+
+    @Test
+    public void createStorageAccountInResourceGroupContext() throws Exception {
+        StorageAccount storageAccount2 = resourceGroups.get("my-grp")
+                .storageAccounts()
+                .define("my-grp2")
+                .withAccountType(AccountType.PREMIUM_LRS)
+                .provision();
     }
 }
