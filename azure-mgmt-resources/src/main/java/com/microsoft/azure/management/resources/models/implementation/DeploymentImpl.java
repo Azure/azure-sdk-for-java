@@ -1,11 +1,14 @@
 package com.microsoft.azure.management.resources.models.implementation;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.microsoft.azure.management.resources.DeploymentOperations;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
+import com.microsoft.azure.management.resources.implementation.DeploymentOperationsImpl;
 import com.microsoft.azure.management.resources.implementation.api.DeploymentsInner;
+import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.models.Deployment;
 import com.microsoft.azure.management.resources.models.Provider;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
@@ -26,14 +29,16 @@ public class DeploymentImpl extends
         Deployment.DefinitionProvisionable {
 
     private final DeploymentsInner deployments;
+    private final ResourceManagementClientImpl serviceClient;
     private final ResourceGroups resourceGroups;
     private String resourceGroupName;
 
-    public DeploymentImpl(DeploymentExtendedInner deployment, DeploymentsInner deployments, ResourceGroups resourceGroups) {
+    public DeploymentImpl(DeploymentExtendedInner deployment, DeploymentsInner deployments, ResourceGroups resourceGroups, ResourceManagementClientImpl serviceClient) {
         super (deployment.name(), deployment);
         this.deployments = deployments;
         this.resourceGroupName = ResourceUtils.groupFromResourceId(deployment.id());
         this.resourceGroups = resourceGroups;
+        this.serviceClient = serviceClient;
     }
 
     /***********************************************************
@@ -140,6 +145,11 @@ public class DeploymentImpl extends
             return null;
         }
         return inner().properties().mode();
+    }
+
+    @Override
+    public DeploymentOperations deploymentOperations() {
+        return new DeploymentOperationsImpl(serviceClient, this);
     }
 
     /**************************************************************

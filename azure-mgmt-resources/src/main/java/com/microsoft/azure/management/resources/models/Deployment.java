@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.resources.models;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.microsoft.azure.management.resources.DeploymentOperations;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.Provisionable;
@@ -33,6 +34,8 @@ public interface Deployment extends
     Object parameters();
     ParametersLink parametersLink();
     DeploymentMode mode();
+
+    DeploymentOperations deploymentOperations();
 
     /**************************************************************
      * Setters (fluent interface)
