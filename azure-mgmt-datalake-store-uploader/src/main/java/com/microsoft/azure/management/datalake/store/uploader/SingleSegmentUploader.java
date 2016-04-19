@@ -12,8 +12,10 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
 import java.text.MessageFormat;
+import java.util.Random;
 
 /**
  * Created by begoldsm on 4/12/2016.
@@ -67,7 +69,7 @@ public class SingleSegmentUploader {
         }
 
         //open up a reader from the input file, seek to the appropriate offset
-        try (EnhancedFileInputStream inputStream = OpenInputStream()) {
+        try (RandomAccessFile inputStream = OpenInputStream()) {
             long endPosition = _segmentMetadata.Offset + _segmentMetadata.Length;
             if (endPosition > fileInfo.length()) {
                 throw new IllegalArgumentException("StartOffset+UploadLength is beyond the end of the input file");
@@ -112,13 +114,13 @@ public class SingleSegmentUploader {
     /// </summary>
     /// <param name="inputStream">The input stream.</param>
     /// <param name="endPosition">The end position.</param>
-    private void UploadSegmentContents(EnhancedFileInputStream inputStream, long endPosition) throws Exception {
+    private void UploadSegmentContents(RandomAccessFile inputStream, long endPosition) throws Exception {
         long bytesCopiedSoFar = 0; // we start off with a fresh stream
 
         byte[] buffer = new byte[BufferLength];
         int residualBufferLength = 0; //the number of bytes that remained in the buffer from the last upload (bytes which were not uploaded)
 
-        while (inputStream.getPosition() < endPosition) {
+        while (inputStream.getFilePointer() < endPosition) {
             //read a block of data, and keep track of how many bytes are actually read
             int bytesRead = ReadIntoBuffer(inputStream, buffer, residualBufferLength, endPosition);
             int bufferDataLength = residualBufferLength + bytesRead;
@@ -154,12 +156,12 @@ public class SingleSegmentUploader {
     /// <param name="inputStream">The input stream.</param>
     /// <returns></returns>
     /// <exception cref="UploadFailedException"></exception>
-    private int DetermineUploadCutoffForTextFile(byte[] buffer, int bufferDataLength, EnhancedFileInputStream inputStream) throws UploadFailedException {
+    private int DetermineUploadCutoffForTextFile(byte[] buffer, int bufferDataLength, RandomAccessFile inputStream) throws UploadFailedException, IOException {
         Charset encoding = Charset.forName(_metadata.EncodingCodePage);
         //NOTE: we return an offset, but everywhere else below we treat it as a byte count; in order for that to work, we need to add 1 to the result of FindNewLine.
         int uploadCutoff = StringExtensions.FindNewline(buffer, bufferDataLength - 1, bufferDataLength, true, encoding, _metadata.Delimiter) + 1;
         if (uploadCutoff <= 0 && (_metadata.SegmentCount > 1 || bufferDataLength >= MaxRecordLength)) {
-            throw new UploadFailedException(MessageFormat.format("Found a record that exceeds the maximum allowed record length around offset {0}", inputStream.getPosition()));
+            throw new UploadFailedException(MessageFormat.format("Found a record that exceeds the maximum allowed record length around offset {0}", inputStream.getFilePointer()));
         }
 
         //a corner case here is when the newline is 2 chars long, and the first of those lands on the last byte of the buffer. If so, let's try to find another
@@ -218,12 +220,12 @@ public class SingleSegmentUploader {
     /// <param name="bufferOffset">The buffer offset.</param>
     /// <param name="streamEndPosition">The stream end position.</param>
     /// <returns></returns>
-    private int ReadIntoBuffer(EnhancedFileInputStream inputStream, byte[] buffer, int bufferOffset, long streamEndPosition) throws IOException {
+    private int ReadIntoBuffer(RandomAccessFile inputStream, byte[] buffer, int bufferOffset, long streamEndPosition) throws IOException {
         //read a block of data
         int bytesToRead = buffer.length - bufferOffset;
-        if (bytesToRead > streamEndPosition - inputStream.getPosition()) {
+        if (bytesToRead > streamEndPosition - inputStream.getFilePointer()) {
             //last read may be smaller than previous reads; readjust # of bytes to read accordingly
-            bytesToRead = (int) (streamEndPosition - inputStream.getPosition());
+            bytesToRead = (int) (streamEndPosition - inputStream.getFilePointer());
         }
 
         int remainingBytes = bytesToRead;
@@ -257,14 +259,16 @@ public class SingleSegmentUploader {
     /// </summary>
     /// <returns></returns>
     /// <exception cref="System.ArgumentException">StartOffset is beyond the end of the input file;StartOffset</exception>
-    private EnhancedFileInputStream OpenInputStream() throws IOException {
-        EnhancedFileInputStream stream = new EnhancedFileInputStream(_metadata.InputFilePath);
+    private RandomAccessFile OpenInputStream() throws IOException {
+        RandomAccessFile stream = new RandomAccessFile(_metadata.InputFilePath, "r");
 
-        if (_segmentMetadata.Offset >= stream.getLength()) {
+        if (_segmentMetadata.Offset >= stream.length()) {
             throw new IllegalArgumentException("StartOffset is beyond the end of the input file");
         }
 
-        stream.skip(_segmentMetadata.Offset);
+        // always seek from the beginning of the file
+        stream.seek(0);
+        stream.seek(_segmentMetadata.Offset);
         return stream;
     }
 }

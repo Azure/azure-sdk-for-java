@@ -86,16 +86,47 @@ public class StringExtensions {
         int bufferEndOffset = reverse ? startOffset : startOffset + length;
         int result = -1;
         for (int charPos = startOffset; reverse ? charPos != endOffset : charPos + bytesPerChar - 1 < endOffset; charPos = reverse ? charPos - 1 : charPos + 1) {
-            char c = bytesPerChar == 1 ? (char) buffer[charPos] : new String(buffer, charPos, bytesPerChar, encoding).toCharArray()[0];
+            char c;
+            if (bytesPerChar == 1) {
+                c = (char) buffer[charPos];
+            }
+            else {
+                String temp = new String(buffer, charPos, bytesPerChar, encoding);
+                if (StringUtils.isEmpty(temp)) {
+                    continue;
+                }
+                else {
+                    c = temp.toCharArray()[0];
+                }
+            }
+
             if (IsNewline(c, delimiter)) {
                 result = charPos + bytesPerChar - 1;
                 break;
             }
         }
 
-        if ((delimiter == null || StringUtils.isEmpty(delimiter)) && !reverse && result < bufferEndOffset - bytesPerChar && IsNewline(bytesPerChar == 1 ? (char) buffer[result + bytesPerChar] : new String(buffer, result + 1, bytesPerChar, encoding).toCharArray()[0], delimiter)) {
-            //we originally landed on a \r character; if we have a \r\n character, advance one position to include that
-            result += bytesPerChar;
+        if ((delimiter == null || StringUtils.isEmpty(delimiter)) && !reverse && result < bufferEndOffset - bytesPerChar) {
+            char c;
+            if (bytesPerChar == 1) {
+                c = (char) buffer[result + bytesPerChar];
+            }
+            else {
+                String temp = new String(buffer, result + 1, bytesPerChar, encoding);
+                if (StringUtils.isEmpty(temp)) {
+                    // this can occur if the number of bytes for characters in the string result in an empty string (an invalid code for the given encoding)
+                    // in this case, that means that we are done for the default delimiter.
+                    return result;
+                }
+                else {
+                    c = temp.toCharArray()[0];
+                }
+            }
+
+            if(IsNewline(c, delimiter)) {
+                //we originally landed on a \r character; if we have a \r\n character, advance one position to include that
+                result += bytesPerChar;
+            }
         }
 
         return result;

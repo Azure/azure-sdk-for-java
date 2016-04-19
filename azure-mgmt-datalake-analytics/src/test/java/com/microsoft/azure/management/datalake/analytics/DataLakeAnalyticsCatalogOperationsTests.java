@@ -41,95 +41,94 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
     private static String secretName = generateName("testsecret1");
     private static String secretPwd = generateName("testsecretpwd1");
 
-    private static String catalogCreationScript = MessageFormat.format("\n" +
-            "DROP DATABASE IF EXISTS {0}; CREATE DATABASE {0}; \n" +
-            "//Create Table\n" +
-            "CREATE TABLE {0}.dbo.{1}\n" +
-            "(\n" +
-            "        //Define schema of table\n" +
-            "        UserId          int, \n" +
-            "        Start           DateTime, \n" +
-            "        Region          string, \n" +
-            "        Query           string, \n" +
-            "        Duration        int, \n" +
-            "        Urls            string, \n" +
-            "        ClickedUrls     string,\n" +
-            "    INDEX idx1 //Name of index\n" +
-            "    CLUSTERED (Region ASC) //Column to cluster by\n" +
-            "    PARTITIONED BY HASH (Region) //Column to partition by\n" +
-            ");\n" +
-            "DROP FUNCTION IF EXISTS {0}.dbo.{2};\n" +
-            "\n" +
-            "//create table weblogs on space-delimited website log data\n" +
-            "CREATE FUNCTION {0}.dbo.{2}()\n" +
-            "RETURNS @result TABLE\n" +
-            "(\n" +
-            "    s_date DateTime,\n" +
-            "    s_time string,\n" +
-            "    s_sitename string,\n" +
-            "    cs_method string, \n" +
-            "    cs_uristem string,\n" +
-            "    cs_uriquery string,\n" +
-            "    s_port int,\n" +
-            "    cs_username string, \n" +
-            "    c_ip string,\n" +
-            "    cs_useragent string,\n" +
-            "    cs_cookie string,\n" +
-            "    cs_referer string, \n" +
-            "    cs_host string,\n" +
-            "    sc_status int,\n" +
-            "    sc_substatus int,\n" +
-            "    sc_win32status int, \n" +
-            "    sc_bytes int,\n" +
-            "    cs_bytes int,\n" +
-            "    s_timetaken int\n" +
-            ")\n" +
-            "AS\n" +
-            "BEGIN\n" +
-            "\n" +
-            "    @result = EXTRACT\n" +
-            "        s_date DateTime,\n" +
-            "        s_time string,\n" +
-            "        s_sitename string,\n" +
-            "        cs_method string,\n" +
-            "        cs_uristem string,\n" +
-            "        cs_uriquery string,\n" +
-            "        s_port int,\n" +
-            "        cs_username string,\n" +
-            "        c_ip string,\n" +
-            "        cs_useragent string,\n" +
-            "        cs_cookie string,\n" +
-            "        cs_referer string,\n" +
-            "        cs_host string,\n" +
-            "        sc_status int,\n" +
-            "        sc_substatus int,\n" +
-            "        sc_win32status int,\n" +
-            "        sc_bytes int,\n" +
-            "        cs_bytes int,\n" +
-            "        s_timetaken int\n" +
-            "    FROM @\"/Samples/Data/WebLog.log\"\n" +
-            "    USING Extractors.Text(delimiter:' ');\n" +
-            "\n" +
-            "RETURN;\n" +
-            "END;\n" +
-            "CREATE VIEW {0}.dbo.{3} \n" +
-            "AS \n" +
-            "    SELECT * FROM \n" +
-            "    (\n" +
-            "        VALUES(1,2),(2,4)\n" +
-            "    ) \n" +
-            "AS \n" +
-            "T(a, b);\n" +
-            "CREATE PROCEDURE {0}.dbo.{4}()\n" +
-            "AS BEGIN\n" +
-            "  CREATE VIEW {0}.dbo.{3} \n" +
-            "  AS \n" +
-            "    SELECT * FROM \n" +
-            "    (\n" +
-            "        VALUES(1,2),(2,4)\n" +
-            "    ) \n" +
-            "  AS \n" +
-            "  T(a, b);\n" +
+    private static String catalogCreationScript = MessageFormat.format("DROP DATABASE IF EXISTS {0}; CREATE DATABASE {0}; " +
+            "//Create Table" +
+            "CREATE TABLE {0}.dbo.{1}" +
+            "(" +
+            "        //Define schema of table" +
+            "        UserId          int, " +
+            "        Start           DateTime, " +
+            "        Region          string, " +
+            "        Query           string, " +
+            "        Duration        int, " +
+            "        Urls            string, " +
+            "        ClickedUrls     string," +
+            "    INDEX idx1 //Name of index" +
+            "    CLUSTERED (Region ASC) //Column to cluster by" +
+            "    PARTITIONED BY HASH (Region) //Column to partition by" +
+            ");" +
+            "DROP FUNCTION IF EXISTS {0}.dbo.{2};" +
+            "" +
+            "//create table weblogs on space-delimited website log data" +
+            "CREATE FUNCTION {0}.dbo.{2}()" +
+            "RETURNS @result TABLE" +
+            "(" +
+            "    s_date DateTime," +
+            "    s_time string," +
+            "    s_sitename string," +
+            "    cs_method string, " +
+            "    cs_uristem string," +
+            "    cs_uriquery string," +
+            "    s_port int," +
+            "    cs_username string, " +
+            "    c_ip string," +
+            "    cs_useragent string," +
+            "    cs_cookie string," +
+            "    cs_referer string, " +
+            "    cs_host string," +
+            "    sc_status int," +
+            "    sc_substatus int," +
+            "    sc_win32status int, " +
+            "    sc_bytes int," +
+            "    cs_bytes int," +
+            "    s_timetaken int" +
+            ")" +
+            "AS" +
+            "BEGIN" +
+            "" +
+            "    @result = EXTRACT" +
+            "        s_date DateTime," +
+            "        s_time string," +
+            "        s_sitename string," +
+            "        cs_method string," +
+            "        cs_uristem string," +
+            "        cs_uriquery string," +
+            "        s_port int," +
+            "        cs_username string," +
+            "        c_ip string," +
+            "        cs_useragent string," +
+            "        cs_cookie string," +
+            "        cs_referer string," +
+            "        cs_host string," +
+            "        sc_status int," +
+            "        sc_substatus int," +
+            "        sc_win32status int," +
+            "        sc_bytes int," +
+            "        cs_bytes int," +
+            "        s_timetaken int" +
+            "    FROM @\"/Samples/Data/WebLog.log\"" +
+            "    USING Extractors.Text(delimiter:' ');" +
+            "" +
+            "RETURN;" +
+            "END;" +
+            "CREATE VIEW {0}.dbo.{3} " +
+            "AS " +
+            "    SELECT * FROM " +
+            "    (" +
+            "        VALUES(1,2),(2,4)" +
+            "    ) " +
+            "AS " +
+            "T(a, b);" +
+            "CREATE PROCEDURE {0}.dbo.{4}()" +
+            "AS BEGIN" +
+            "  CREATE VIEW {0}.dbo.{3} " +
+            "  AS " +
+            "    SELECT * FROM " +
+            "    (" +
+            "        VALUES(1,2),(2,4)" +
+            "    ) " +
+            "  AS " +
+            "  T(a, b);" +
             "END;", dbName, tableName, tvfName, viewName, procName);
 
     @BeforeClass

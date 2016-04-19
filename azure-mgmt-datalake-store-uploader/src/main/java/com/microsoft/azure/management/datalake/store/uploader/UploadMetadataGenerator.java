@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
 import java.text.MessageFormat;
 
@@ -78,7 +79,7 @@ public class UploadMetadataGenerator {
     private void AlignSegmentsToRecordBoundaries(UploadMetadata metadata) throws IOException, UploadFailedException {
         int remainingSegments = 0;
 
-        try (EnhancedFileInputStream stream = new EnhancedFileInputStream(metadata.InputFilePath)) {
+        try (RandomAccessFile stream = new RandomAccessFile(metadata.InputFilePath, "r")) {
             long offset = 0;
             for (int i = 0; i < metadata.Segments.length; i++) {
                 UploadSegmentMetadata segment = metadata.Segments[i];
@@ -127,7 +128,7 @@ public class UploadMetadataGenerator {
     /// <param name="delimiter"></param>
     /// <returns></returns>
     /// <exception cref="Microsoft.Azure.Management.DataLake.StoreUploader.UploadFailedException">If no record boundary could be located on either side of the segment end offset within the allowed distance.</exception>
-    private int DetermineLengthAdjustment(UploadSegmentMetadata segment, EnhancedFileInputStream stream, Charset encoding, String delimiter) throws UploadFailedException, IOException {
+    private int DetermineLengthAdjustment(UploadSegmentMetadata segment, RandomAccessFile stream, Charset encoding, String delimiter) throws UploadFailedException, IOException {
         long referenceFileOffset = segment.Offset + segment.Length;
         byte[] buffer = new byte[_maxAppendLength];
 
@@ -198,7 +199,7 @@ public class UploadMetadataGenerator {
     /// <param name="buffer"></param>
     /// <param name="fileReferenceOffset"></param>
     /// <returns>The number of bytes reads, which could be less than the length of the input buffer if we can't read due to the beginning or the end of the file.</returns>
-    private static int ReadIntoBufferAroundReference(EnhancedFileInputStream stream, byte[] buffer, long fileReferenceOffset) throws IOException {
+    private static int ReadIntoBufferAroundReference(RandomAccessFile stream, byte[] buffer, long fileReferenceOffset) throws IOException {
         int length = buffer.length;
         //calculate start offset
         long fileStartOffset = fileReferenceOffset - length / 2;
@@ -212,16 +213,18 @@ public class UploadMetadataGenerator {
             }
         }
 
-        if (fileStartOffset + length > stream.getLength()) {
+        if (fileStartOffset + length > stream.length()) {
             //startOffset + length is beyond the end of the stream, adjust the length accordingly
-            length = (int) (stream.getLength() - fileStartOffset);
+            length = (int) (stream.length() - fileStartOffset);
             if (length <= 0) {
                 return 0;
             }
         }
 
         //read the appropriate block of the file into the buffer, using symmetry with respect to its midpoint
-        stream.skip(fileStartOffset);
+        // we always initiate a seek from the origin of the file.
+        stream.seek(0);
+        stream.seek(fileStartOffset);
         int bufferOffset = 0;
         while (bufferOffset < length) {
             int bytesRead = stream.read(buffer, bufferOffset, length - bufferOffset);

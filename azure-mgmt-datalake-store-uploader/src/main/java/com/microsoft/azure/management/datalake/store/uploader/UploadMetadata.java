@@ -18,6 +18,7 @@ import java.util.UUID;
 public class UploadMetadata implements Serializable {
     private static Object SaveSync = new Object();
 
+
     /// <summary>
     /// Constructs a new UploadMetadata from the given parameters.
     /// </summary>
@@ -161,6 +162,10 @@ public class UploadMetadata implements Serializable {
     /// The metadata file path.
     /// </value>
     public transient String MetadataFilePath;
+
+    protected UploadMetadata() {
+
+    }
 
     /// <summary>
     /// Attempts to load an UploadMetadata object from the given file.
