@@ -4,6 +4,7 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
+import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
 import com.microsoft.azure.management.storage.models.AccountStatuses;
 import com.microsoft.azure.management.storage.models.KeyType;
@@ -21,6 +22,7 @@ public class StorageAccountImpl
         StorageAccount,
         StorageAccount.DefinitionBlank,
         StorageAccount.DefinitionWithGroup,
+        StorageAccount.DefinitionWithGroupContextBlank,
         StorageAccount.DefinitionProvisionable
         {
 
@@ -32,6 +34,12 @@ public class StorageAccountImpl
 
     public StorageAccountImpl(String name, StorageAccountInner innerObject, StorageManagementClientImpl storageManagmentClient, ResourceGroups resourceGroups) {
         super(innerObject.id(), innerObject, resourceGroups);
+        this.name = name;
+        this.storageManagmentClient = storageManagmentClient;
+    }
+
+    public StorageAccountImpl(String name, StorageAccountInner innerObject, StorageManagementClientImpl storageManagmentClient, ResourceGroup resourceGroup) {
+        super(innerObject.id(), innerObject, resourceGroup);
         this.name = name;
         this.storageManagmentClient = storageManagmentClient;
     }

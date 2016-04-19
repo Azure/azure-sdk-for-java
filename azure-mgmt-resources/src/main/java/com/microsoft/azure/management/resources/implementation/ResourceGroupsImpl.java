@@ -8,7 +8,6 @@ import com.microsoft.azure.management.resources.implementation.api.ResourceGroup
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.resources.models.implementation.ResourceGroupImpl;
 import com.microsoft.azure.management.resources.models.implementation.api.ResourceGroupInner;
-import com.microsoft.rest.ServiceCallback;
 
 import java.io.IOException;
 import java.util.List;
@@ -48,12 +47,12 @@ public class ResourceGroupsImpl
 
     @Override
     public ResourceGroupImpl update(String name) {
-        return createWrapper(name);
+        return createFluentWrapper(name);
     }
 
     @Override
     public ResourceGroupImpl define(String name) {
-        return createWrapper(name);
+        return createFluentWrapper(name);
     }
 
     @Override
@@ -66,7 +65,7 @@ public class ResourceGroupsImpl
      ***************************************************/
 
     // Wraps native Azure resource group
-    private ResourceGroupImpl createWrapper(String name) {
+    private ResourceGroupImpl createFluentWrapper(String name) {
         ResourceGroupInner azureGroup = new ResourceGroupInner();
         azureGroup.setName(name);
         return new ResourceGroupImpl(azureGroup, serviceClient);

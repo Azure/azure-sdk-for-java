@@ -21,6 +21,12 @@ public abstract class GroupableResourceImpl<
         this.resourceGroups = resourceGroups;
     }
 
+    protected GroupableResourceImpl(String id, InnerModelT innerObject, ResourceGroup resourceGroup) {
+        super(id, innerObject);
+        this.withRegion(resourceGroup.location());
+        this.withExistingGroup(resourceGroup);
+    }
+
     protected String groupName;
     protected boolean isExistingGroup;
 
@@ -71,7 +77,6 @@ public abstract class GroupableResourceImpl<
         this.isExistingGroup = true;
         return (FluentModelImplT)this;
     }
-
 
     @SuppressWarnings("unchecked")
     public final FluentModelImplT withNewGroup(String groupName) {

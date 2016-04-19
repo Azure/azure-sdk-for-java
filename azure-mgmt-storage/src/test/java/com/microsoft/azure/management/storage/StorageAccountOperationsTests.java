@@ -1,6 +1,9 @@
 package com.microsoft.azure.management.storage;
 
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.storage.implementation.StorageResourceConnector;
+import com.microsoft.azure.management.storage.models.StorageAccount;
+import com.microsoft.azure.management.storage.models.implementation.api.AccountType;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -24,10 +27,21 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
 
     @Test
     public void getStorageAccountFromResource() throws Exception {
-        StorageAccounts storageAccounts = resourceClient.resourceGroups()
+        StorageAccount storageAccount1 = resourceClient.resourceGroups()
                 .get("my-rg")
                 .resourcesInGroup(new StorageResourceConnector.Builder())
-                .storageAccounts();
+                .storageAccounts()
+                .define("my-stg")
+                .withAccountType(AccountType.PREMIUM_LRS)
+                .provision();
+
+        StorageAccount storageAccount2 = storageClient.storageAccounts()
+                .define("my-stg2")
+                .withRegion(Region.ASIA_EAST)
+                .withNewGroup()
+                .withAccountType(AccountType.PREMIUM_LRS)
+                .provision();
+
         Usages usages = resourceClient.resourceGroups()
                 .get("my-rg")
                 .resourcesInGroup(new StorageResourceConnector.Builder())

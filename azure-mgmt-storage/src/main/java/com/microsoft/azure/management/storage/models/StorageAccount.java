@@ -86,8 +86,7 @@ public interface StorageAccount extends
     StorageAccountKeys regenerateKey(KeyType keyType) throws CloudException, IOException;
 
     /**************************************************************
-     * Setters  (Fluent interface)
-
+     * Fluent interfaces when StorageAccount does not have ResourceGroup context
      **************************************************************/
 
     interface DefinitionBlank extends GroupableResource.DefinitionWithRegion<DefinitionWithGroup> {
@@ -95,6 +94,17 @@ public interface StorageAccount extends
 
     interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionProvisionable> {
     }
+
+    /**************************************************************
+     * Fluent interface when StorageAccount has ResourceGroup context
+     **************************************************************/
+
+    interface DefinitionWithGroupContextBlank extends DefinitionProvisionable {
+    }
+
+    /**************************************************************
+     * Fluent interfaces representing provisionable StorageAccount
+     **************************************************************/
 
     interface DefinitionProvisionable extends Provisionable<StorageAccount> {
         DefinitionProvisionable withAccountType(AccountType accountType);

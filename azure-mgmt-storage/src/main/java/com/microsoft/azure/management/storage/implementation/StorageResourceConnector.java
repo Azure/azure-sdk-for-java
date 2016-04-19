@@ -3,32 +3,35 @@ package com.microsoft.azure.management.storage.implementation;
 import com.microsoft.azure.management.resources.ResourceConnector;
 import com.microsoft.azure.management.resources.implementation.ResourceGroupsImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
-import com.microsoft.azure.management.storage.StorageAccounts;
+import com.microsoft.azure.management.resources.models.ResourceGroup;
+import com.microsoft.azure.management.storage.ResourceGroupContext;
 import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
+import com.microsoft.rest.credentials.ServiceClientCredentials;
 
 public class StorageResourceConnector implements ResourceConnector<StorageResourceConnector> {
     private StorageManagementClientImpl client;
-    private StorageAccounts storageAccounts;
+    private ResourceGroupContext.StorageAccounts storageAccounts;
     private Usages usages;
 
-    private StorageResourceConnector(ResourceManagementClientImpl resourceManagementClient) {
-        this.client = new StorageManagementClientImpl(resourceManagementClient.getCredentials());
-        this.storageAccounts = new StorageAccountsImpl(client, new ResourceGroupsImpl(resourceManagementClient));
+    private StorageResourceConnector(ServiceClientCredentials credentials,  ResourceGroup resourceGroup) {
+        this.client = new StorageManagementClientImpl(credentials);
+        this.storageAccounts = new ResourceGroupContextImpl()
+                .new StorageAccountsImpl(new StorageAccountsImpl(this.client, new ResourceGroupsImpl(new ResourceManagementClientImpl(credentials))), resourceGroup);
         this.usages = new UsagesImpl(client);
     }
 
-    private static StorageResourceConnector create(ResourceManagementClientImpl resourceManagementClient) {
-        return new StorageResourceConnector(resourceManagementClient);
+    private static StorageResourceConnector create(ServiceClientCredentials credentials,  ResourceGroup resourceGroup) {
+        return new StorageResourceConnector(credentials, resourceGroup);
     }
 
     public static class Builder implements ResourceConnector.Builder<StorageResourceConnector> {
-        public StorageResourceConnector create(ResourceManagementClientImpl resourceManagementClient, String resourceGroupName) {
-            return StorageResourceConnector.create(resourceManagementClient);
+        public StorageResourceConnector create(ServiceClientCredentials credentials, ResourceGroup resourceGroup) {
+            return StorageResourceConnector.create(credentials, resourceGroup);
         }
     }
 
-    public StorageAccounts storageAccounts() {
+    public ResourceGroupContext.StorageAccounts storageAccounts() {
         return storageAccounts;
     }
 
