@@ -321,7 +321,7 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
                         JsonNode workerSizeValue = propertiesValue2.get("workerSize");
                         if (workerSizeValue != null && workerSizeValue instanceof NullNode == false) {
                             WorkerSizeOptions workerSizeInstance;
-                            workerSizeInstance = EnumUtility.fromString(WorkerSizeOptions.class, workerSizeValue.getTextValue());
+                            workerSizeInstance = EnumUtility.fromString(WorkerSizeOptions.class, WorkerSizeOptions.values()[workerSizeValue.getIntValue()].name());
                             propertiesInstance.setWorkerSize(workerSizeInstance);
                         }
                         
@@ -665,7 +665,7 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
                         JsonNode workerSizeValue = propertiesValue.get("workerSize");
                         if (workerSizeValue != null && workerSizeValue instanceof NullNode == false) {
                             WorkerSizeOptions workerSizeInstance;
-                            workerSizeInstance = EnumUtility.fromString(WorkerSizeOptions.class, workerSizeValue.getTextValue());
+                            workerSizeInstance = EnumUtility.fromString(WorkerSizeOptions.class, WorkerSizeOptions.values()[workerSizeValue.getIntValue()].name());
                             propertiesInstance.setWorkerSize(workerSizeInstance);
                         }
                         
@@ -1171,7 +1171,7 @@ public class WebHostingPlanOperationsImpl implements ServiceOperations<WebSiteMa
                                 JsonNode workerSizeValue = propertiesValue.get("workerSize");
                                 if (workerSizeValue != null && workerSizeValue instanceof NullNode == false) {
                                     WorkerSizeOptions workerSizeInstance;
-                                    workerSizeInstance = EnumUtility.fromString(WorkerSizeOptions.class, workerSizeValue.getTextValue());
+                                    workerSizeInstance = EnumUtility.fromString(WorkerSizeOptions.class, WorkerSizeOptions.values()[workerSizeValue.getIntValue()].name());
                                     propertiesInstance.setWorkerSize(workerSizeInstance);
                                 }
                                 
