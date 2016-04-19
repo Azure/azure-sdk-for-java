@@ -64,10 +64,5 @@ public class DeploymentsInGroupImpl
     public void delete(String id) throws Exception {
 
     }
-
-    @Override
-    public void deleteAsync(String id, ServiceCallback<Void> callback) throws Exception {
-
-    }
 }
 
