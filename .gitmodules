@@ -1,0 +1,4 @@
+[submodule "autorest-clientruntime-for-java"]
+	path = runtimes
+	url = https://github.com/Azure/autorest-clientruntime-for-java.git
+        branch = javavnext
