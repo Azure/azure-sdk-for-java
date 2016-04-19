@@ -9,7 +9,17 @@ import java.io.IOException;
 import java.util.List;
 
 public class ResourceGroupContextImpl {
-    public class StorageAccountsImpl implements ResourceGroupContext.StorageAccounts {
+    private ResourceGroup resourceGroup;
+
+    public ResourceGroupContextImpl(ResourceGroup resourceGroup) {
+        this.resourceGroup = resourceGroup;
+    }
+
+    public ResourceGroupContext.StorageAccounts storageAccounts(com.microsoft.azure.management.storage.StorageAccounts storageAccounts) {
+        return new StorageAccountsImpl(storageAccounts, resourceGroup);
+    }
+
+    class StorageAccountsImpl implements ResourceGroupContext.StorageAccounts {
         private ResourceGroup resourceGroup;
         private StorageAccounts storageAccounts;
 

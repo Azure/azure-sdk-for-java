@@ -5,19 +5,27 @@ import com.microsoft.azure.management.resources.implementation.ResourceGroupsImp
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.storage.ResourceGroupContext;
+import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
 public class StorageResourceConnector implements ResourceConnector<StorageResourceConnector> {
     private StorageManagementClientImpl client;
-    private ResourceGroupContext.StorageAccounts storageAccounts;
+    private ResourceGroupContext.StorageAccounts storageAccountsWithGroupContext;
     private Usages usages;
 
     private StorageResourceConnector(ServiceClientCredentials credentials,  ResourceGroup resourceGroup) {
         this.client = new StorageManagementClientImpl(credentials);
-        this.storageAccounts = new ResourceGroupContextImpl()
-                .new StorageAccountsImpl(new StorageAccountsImpl(this.client, new ResourceGroupsImpl(new ResourceManagementClientImpl(credentials))), resourceGroup);
+
+        ResourceManagementClientImpl resourceClient = new ResourceManagementClientImpl(credentials);
+
+        StorageAccounts storageAccounts =
+                new StorageAccountsImpl(this.client, new ResourceGroupsImpl(resourceClient));
+
+        this.storageAccountsWithGroupContext = new ResourceGroupContextImpl(resourceGroup)
+                .storageAccounts(storageAccounts);
+
         this.usages = new UsagesImpl(client);
     }
 
@@ -32,7 +40,7 @@ public class StorageResourceConnector implements ResourceConnector<StorageResour
     }
 
     public ResourceGroupContext.StorageAccounts storageAccounts() {
-        return storageAccounts;
+        return storageAccountsWithGroupContext;
     }
 
     public Usages usages() {
