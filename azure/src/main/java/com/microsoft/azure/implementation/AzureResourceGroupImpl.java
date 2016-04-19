@@ -5,7 +5,7 @@ import com.microsoft.azure.management.resources.implementation.ResourceGroupsImp
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.resources.models.implementation.ResourceGroupImpl;
-import com.microsoft.azure.management.storage.ResourceGroupContext;
+import com.microsoft.azure.management.storage.ResourceGroupContextStorage;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.implementation.ResourceGroupContextImpl;
 import com.microsoft.azure.management.storage.implementation.StorageAccountsImpl;
@@ -26,7 +26,7 @@ public class AzureResourceGroupImpl extends ResourceGroupImpl implements Azure.R
 
     // StorageAccount collection having a resource resourceGroupCore context.
     //
-    public ResourceGroupContext.StorageAccounts storageAccounts() {
+    public ResourceGroupContextStorage.StorageAccounts storageAccounts() {
         return new ResourceGroupContextImpl(this.resourceGroupCore).storageAccounts(storageAccountsCore());
     }
 

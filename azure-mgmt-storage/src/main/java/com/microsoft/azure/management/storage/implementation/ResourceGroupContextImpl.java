@@ -2,7 +2,7 @@ package com.microsoft.azure.management.storage.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
-import com.microsoft.azure.management.storage.ResourceGroupContext;
+import com.microsoft.azure.management.storage.ResourceGroupContextStorage;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.models.StorageAccount;
 import java.io.IOException;
@@ -26,13 +26,13 @@ public class ResourceGroupContextImpl {
      *
      * @param storageAccountsCore the storage account collection in subscription context.
      */
-    public ResourceGroupContext.StorageAccounts storageAccounts(StorageAccounts storageAccountsCore) {
+    public ResourceGroupContextStorage.StorageAccounts storageAccounts(StorageAccounts storageAccountsCore) {
         return new StorageAccountsImpl(storageAccountsCore, resourceGroup);
     }
 
     // Implementation of storage account collection with a resource group context.
     //
-    class StorageAccountsImpl implements ResourceGroupContext.StorageAccounts {
+    class StorageAccountsImpl implements ResourceGroupContextStorage.StorageAccounts {
         private ResourceGroup resourceGroup;
         private StorageAccounts storageAccountsCore;
 
