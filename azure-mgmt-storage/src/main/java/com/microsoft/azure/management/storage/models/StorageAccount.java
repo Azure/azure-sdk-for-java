@@ -99,7 +99,7 @@ public interface StorageAccount extends
      * Fluent interface when StorageAccount has ResourceGroup context
      **************************************************************/
 
-    interface DefinitionWithGroupContextBlank extends GroupableResource.DefinitionWithGroupContext<DefinitionProvisionable> {
+    interface DefinitionWithGroupContextBlank extends DefinitionProvisionable {
     }
 
     /**************************************************************
