@@ -939,12 +939,13 @@ public class EventHubClient extends ClientEntity
 			{
 				if (!this.isSenderCreateStarted)
 				{
-					this.isSenderCreateStarted = true;
 					this.createSender = MessageSender.create(this.underlyingFactory, StringUtil.getRandomString(), this.eventHubName)
 							.thenAcceptAsync(new Consumer<MessageSender>()
 							{
 								public void accept(MessageSender a) { EventHubClient.this.sender = a;}
 							});
+					
+					this.isSenderCreateStarted = true;
 				}
 			}
 		}
