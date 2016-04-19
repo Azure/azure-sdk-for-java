@@ -8,30 +8,32 @@ public interface GroupableResource extends
 	
 	public String group();
 
-	/**
-	 * A resource definition allowing a resource group to be selected
-	 */
-	interface DefinitionWithGroup<T> {
-		/**
-		 * Associates the resources with an existing resource group.
-		 * @param groupName The name of an existing resource group to put this resource in.
-		 * @return The next stage of the resource definition
-		 */
-		T withExistingGroup(String groupName);
-		
+	interface DefinitionWithGroupContext<T> {
 		/**
 		 * Associates the resources with an existing resource group.
 		 * @param group An existing resource group to put the resource in
 		 * @return The next stage of the resource definition
 		 */
 		T withExistingGroup(ResourceGroup group);
-		
+
 		/**
 		 * Associates the resources with an existing resource group.
 		 * @param group An existing resource group object as returned by the Azure SDK for Java to put the resource in
 		 * @return The next stage of the resource definition
 		 */
 		T withExistingGroup(ResourceGroupInner group);
+	}
+
+	/**
+	 * A resource definition allowing a resource group to be selected
+	 */
+	interface DefinitionWithGroup<T>  extends DefinitionWithGroupContext<T> {
+		/**
+		 * Associates the resources with an existing resource group.
+		 * @param groupName The name of an existing resource group to put this resource in.
+		 * @return The next stage of the resource definition
+		 */
+		T withExistingGroup(String groupName);
 
 		/**
 		 * Creates a new resource group to put the resource in. The group will be created in the same region as the resource. 
