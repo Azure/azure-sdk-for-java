@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.resources.models.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.implementation.ResourceGroupsImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.models.GenericResource;
 import com.microsoft.azure.management.resources.models.implementation.api.GenericResourceInner;
@@ -10,7 +11,7 @@ public class GenericResourceImpl
     extends GroupableResourceImpl<GenericResource, GenericResourceInner, GenericResourceImpl>
     implements GenericResource {
     public GenericResourceImpl(String id, GenericResourceInner innerObject, ResourceManagementClientImpl serviceClient) {
-        super(id, innerObject, serviceClient);
+        super(id, innerObject, new ResourceGroupsImpl(serviceClient));
     }
 
     @Override

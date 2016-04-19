@@ -9,7 +9,6 @@ import com.microsoft.azure.management.resources.implementation.api.ResourceManag
 import com.microsoft.azure.management.resources.models.Deployment;
 import com.microsoft.azure.management.resources.models.implementation.DeploymentImpl;
 import com.microsoft.azure.management.resources.models.implementation.api.DeploymentExtendedInner;
-import com.microsoft.rest.ServiceCallback;
 
 import java.io.IOException;
 import java.util.List;
@@ -62,11 +61,6 @@ public class DeploymentsInGroupImpl
 
     @Override
     public void delete(String id) throws Exception {
-
-    }
-
-    @Override
-    public void deleteAsync(String id, ServiceCallback<Void> callback) throws Exception {
 
     }
 }
