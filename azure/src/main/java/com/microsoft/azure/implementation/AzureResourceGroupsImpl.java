@@ -10,12 +10,12 @@ import java.util.List;
 
 
 public class AzureResourceGroupsImpl implements Azure.ResourceGroups {
-    private ResourceManagementClientImpl serviceClient;
-    private ResourceGroups resourceGroups;
+    private ResourceManagementClientImpl client;
+    private ResourceGroups resourceGroupsCore;
 
-    public AzureResourceGroupsImpl(ResourceManagementClientImpl serviceClient) {
-        this.serviceClient = serviceClient;
-        this.resourceGroups = new ResourceGroupsImpl(serviceClient);
+    public AzureResourceGroupsImpl(ResourceManagementClientImpl client) {
+        this.client = client;
+        this.resourceGroupsCore = new ResourceGroupsImpl(client);
     }
 
     @Override
@@ -25,22 +25,22 @@ public class AzureResourceGroupsImpl implements Azure.ResourceGroups {
 
     @Override
     public AzureResourceGroupImpl get(String name) throws CloudException, IOException {
-        return new AzureResourceGroupImpl(this.resourceGroups.get(name), this.serviceClient);
+        return new AzureResourceGroupImpl(this.resourceGroupsCore.get(name), this.client);
     }
 
     @Override
     public void delete(String name) throws Exception {
-        this.resourceGroups.delete(name);
+        this.resourceGroupsCore.delete(name);
     }
 
     @Override
     public Azure.ResourceGroup.UpdateBlank update(String name) {
-        return this.resourceGroups.update(name);
+        return this.resourceGroupsCore.update(name);
     }
 
     @Override
     public Azure.ResourceGroup.DefinitionBlank define(String name) throws Exception {
-        return this.resourceGroups.define(name);
+        return this.resourceGroupsCore.define(name);
     }
 
 }

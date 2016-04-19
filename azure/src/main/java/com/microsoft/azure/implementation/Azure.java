@@ -43,6 +43,8 @@ public final class Azure {
 
     public interface ResourceGroup extends com.microsoft.azure.management.resources.models.ResourceGroup {
         ResourceGroupContext.StorageAccounts storageAccounts();
-        // ResourceGroupContext.VirtualMachines virtualMachines();
+        // com.microsoft.azure.management.compute.ResourceGroupContext.VirtualMachines virtualMachines();
+        // com.microsoft.azure.management.compute.ResourceGroupContext.AvailabilitySets availabilitySets();
+        // com.microsoft.azure.management.network.ResourceGroupContext.VirtualNetworks virtualNetworks();
     }
 }

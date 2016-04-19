@@ -5,6 +5,6 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 
 public interface ResourceConnector<T extends ResourceConnector> {
     interface Builder<T> {
-        T create(ServiceClientCredentials credentials, ResourceGroup resourceGroup);
+        T create(ServiceClientCredentials credentials, String subscriptionId, ResourceGroup resourceGroup);
     }
 }
