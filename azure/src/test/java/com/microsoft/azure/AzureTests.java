@@ -3,7 +3,6 @@ package com.microsoft.azure;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.credentials.AzureEnvironment;
 import com.microsoft.azure.implementation.Azure;
-import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
@@ -21,7 +20,7 @@ public class AzureTests {
     private static final String subscriptionId = System.getenv("subscription-id");
 
     private Subscriptions subscriptions;
-    private ResourceGroups resourceGroups;
+    private Azure.ResourceGroups resourceGroups;
     private StorageAccounts storageAccounts;
 
     @Before
@@ -30,6 +29,7 @@ public class AzureTests {
                 .authenticate(credentials)
                 .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
                 .withUserAgent("AzureTests");
+
         subscriptions = azure.subscriptions();
         Azure.Subscription sub = azure.withSubscription(subscriptionId);
         resourceGroups = sub.resourceGroups();
