@@ -8,22 +8,23 @@ package com.microsoft.azure.management.datalake.store.uploader;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.BitSet;
 import java.util.UUID;
 
 /**
- * Created by begoldsm on 4/12/2016.
+ * Represents general metadata pertaining to an upload.
  */
 public class UploadMetadata implements Serializable {
     private static Object SaveSync = new Object();
 
-
-    /// <summary>
-    /// Constructs a new UploadMetadata from the given parameters.
-    /// </summary>
-    /// <param name="metadataFilePath">The file path to assign to this metadata file (for saving purposes).</param>
-    /// <param name="uploadParameters">The parameters to use for constructing this metadata.</param>
+    /**
+     * Constructs a new UploadMetadata from the given parameters.
+     *
+     * @param metadataFilePath The file path to assign to this metadata file (for saving purposes).
+     * @param uploadParameters The parameters to use for constructing this metadata.
+     */
     public UploadMetadata(String metadataFilePath, UploadParameters uploadParameters) {
         this.MetadataFilePath = metadataFilePath;
 
@@ -51,7 +52,7 @@ public class UploadMetadata implements Serializable {
         File fileInfo = new File(uploadParameters.getInputFilePath());
         this.FileLength = fileInfo.length();
 
-        this.EncodingCodePage = uploadParameters.getFileEncoding().name();
+        this.EncodingName = uploadParameters.getFileEncoding().name();
 
         // we are taking the smaller number of segments between segment lengths of 256 and the segment growth logic.
         // this protects us against agressive increase of thread count resulting in far more segments than
@@ -67,113 +68,81 @@ public class UploadMetadata implements Serializable {
         }
     }
 
-    /// <summary>
-    /// Gets or sets a value indicating the unique identifier associated with this upload.
-    /// </summary>
-    /// <value>
-    /// The upload identifier.
-    /// </value>
+    /**
+     * Gets or sets a value indicating the unique identifier associated with this upload.
+     */
     public String UploadId;
 
-    /// <summary>
-    /// /Gets or sets a value indicating the full path to the file to be uploaded.
-    /// </summary>
-    /// <value>
-    /// The input file path.
-    /// </value>
+    /**
+     * Gets or sets a value indicating the full path to the file to be uploaded.
+     */
     public String InputFilePath;
 
-    /// <summary>
-    /// Gets or sets a value indicating the length (in bytes) of the file to be uploaded.
-    /// </summary>
-    /// <value>
-    /// The length of the file.
-    /// </value>
+    /**
+     * Gets or sets a value indicating the length (in bytes) of the file to be uploaded.
+     */
     public long FileLength;
 
-    /// <summary>
-    /// Gets or sets a value indicating the full stream path where the file will be uploaded to.
-    /// </summary>
-    /// <value>
-    /// The target stream path.
-    /// </value>
+    /**
+     * Gets or sets a value indicating the full stream path where the file will be uploaded to.
+     */
     public String TargetStreamPath;
 
-    /// <summary>
-    /// Gets or sets a value indicating the directory path where intermediate segment streams will be stored.
-    /// </summary>
-    /// <value>
-    /// The target stream path.
-    /// </value>
+    /**
+     * Gets or sets a value indicating the directory path where intermediate segment streams will be stored.
+     */
     public String SegmentStreamDirectory;
 
-    /// <summary>
-    /// Gets or sets a value indicating the number of segments this file is split into for purposes of uploading it.
-    /// </summary>
-    /// <value>
-    /// The segment count.
-    /// </value>
+    /**
+     * Gets or sets a value indicating the number of segments this file is split into for purposes of uploading it.
+     */
     public int SegmentCount;
 
-    /// <summary>
-    /// Gets or sets a value indicating the length (in bytes) of each segment of the file (except the last one, which may be less).
-    /// </summary>
-    /// <value>
-    /// The length of the segment.
-    /// </value>
+    /**
+     * Gets or sets a value indicating the length (in bytes) of each segment of the file (except the last one, which may be less).
+     */
     public long SegmentLength;
 
-    /// <summary>
-    /// Gets a pointer to an array of segment metadata. The segments are ordered by their segment number (sequence).
-    /// </summary>
-    /// <value>
-    /// The segments.
-    /// </value>
+    /**
+     * Gets a pointer to an array of segment metadata. The segments are ordered by their segment number (sequence).
+     */
     public UploadSegmentMetadata[] Segments;
 
-    /// <summary>
-    /// Gets a value indicating whether the upload file should be treated as a binary file or not.
-    /// </summary>
-    /// <value>
-    ///   <c>true</c> if this instance is binary; otherwise, <c>false</c>.
-    /// </value>
+    /**
+     * Gets a value indicating whether the upload file should be treated as a binary file or not.
+     */
     public boolean IsBinary;
+    
+    /**
+     * Gets the name of the current encoding being used.
+     */
+    public String EncodingName;
 
-    /// <summary>
-    /// Gets the CodePage of the current encoding being used.
-    /// </summary>
-    /// <value>
-    ///  The CodePage of the current encoding.
-    /// </value>
-    public String EncodingCodePage;
-
-    /// <summary>
-    /// Gets a value indicating the record boundary delimiter for the file, if any.
-    /// </summary>
-    /// <value>
-    /// The record boundary delimiter
-    /// </value>
+    /**
+     * Gets a value indicating the record boundary delimiter for the file, if any.
+     */
     public String Delimiter;
 
-    /// <summary>
-    /// Gets a value indicating the path where this metadata file is located.
-    /// </summary>
-    /// <value>
-    /// The metadata file path.
-    /// </value>
+    /**
+     * Gets a value indicating the path where this metadata file is located.
+     */
     public transient String MetadataFilePath;
 
+    /**
+     * Initializes a new instance of the UploadMetadata class for use with unit testing
+     */
     protected UploadMetadata() {
-
+        this.EncodingName = StandardCharsets.UTF_8.name();
     }
 
-    /// <summary>
-    /// Attempts to load an UploadMetadata object from the given file.
-    /// </summary>
-    /// <param name="filePath">The full path to the file where to load the metadata from</param>
-    /// <returns></returns>
-    /// <exception cref="System.IO.FileNotFoundException">Could not find metadata file</exception>
-    /// <exception cref="Microsoft.Azure.Management.DataLake.StoreUploader.InvalidMetadataException">Unable to parse metadata file</exception>
+    /**
+     * Attempts to load an UploadMetadata object from the given file.
+     *
+     * @param filePath The full path to the file where to load the metadata from
+     * @return A deserialized {@link UploadMetadata} object from the file specified.
+     * @throws FileNotFoundException
+     * @throws InvalidMetadataException
+     */
     public static UploadMetadata LoadFrom(String filePath) throws FileNotFoundException, InvalidMetadataException {
         if (!new File(filePath).exists()) {
             throw new FileNotFoundException("Could not find metadata file: " + filePath);
@@ -193,9 +162,12 @@ public class UploadMetadata implements Serializable {
         }
     }
 
-    /// <summary>
-    /// Saves the given metadata to its canonical location. This method is thread-safe.
-    /// </summary>
+    /**
+     * Saves the given metadata to its canonical location. This method is thread-safe.
+     *
+     * @throws IOException
+     * @throws InvalidMetadataException
+     */
     public void Save() throws IOException, InvalidMetadataException {
         if (this.MetadataFilePath == null || StringUtils.isEmpty(this.MetadataFilePath)) {
             throw new InvalidObjectException("Null or empty MetadataFilePath. Cannot save metadata until this property is set.");
@@ -226,10 +198,11 @@ public class UploadMetadata implements Serializable {
         }
     }
 
-    /// <summary>
-    /// Deletes the metadata file from disk.
-    /// </summary>
-    /// <exception cref="System.InvalidOperationException">Null or empty MetadataFilePath. Cannot delete metadata until this property is set.</exception>
+    /**
+     * Deletes the metadata file from disk.
+     *
+     * @throws InvalidObjectException
+     */
     public void DeleteFile() throws InvalidObjectException {
         if (this.MetadataFilePath == null || StringUtils.isEmpty(this.MetadataFilePath)) {
             throw new InvalidObjectException("Null or empty MetadataFilePath. Cannot delete metadata until this property is set.");
@@ -241,12 +214,14 @@ public class UploadMetadata implements Serializable {
         }
     }
 
-    /// <summary>
-    /// Verifies the given metadata for consistency. Checks include:
-    /// * Completeness
-    /// * Existence and consistency with local file
-    /// * Segment data consistency
-    /// </summary>
+    /**
+     * Verifies the given metadata for consistency. Checks include:
+     *  Completeness
+     *  Existence and consistency with local file
+     *  Segment data consistency
+     *
+     * @throws InvalidMetadataException
+     */
     public void ValidateConsistency() throws InvalidMetadataException {
         if (this.Segments == null || this.Segments.length != this.SegmentCount) {
             throw new InvalidMetadataException("Inconsistent number of segments");
@@ -283,11 +258,11 @@ public class UploadMetadata implements Serializable {
         }
     }
 
-    /// <summary>
-    /// Splits the target stream path, returning the name of the stream and storing the full directory path (if any) in an out variable.
-    /// </summary>
-    /// <param name="targetStreamDirectory">The target stream directory, or null of the stream is at the root.</param>
-    /// <returns></returns>
+    /**
+     * Splits the target stream path, returning the name of the stream and storing the full directory path (if any) in an out variable.
+     *
+     * @return A string array with the stream name is at index 0 and the stream path (if any) at index 1.
+     */
     public String[] SplitTargetStreamPathByName() {
         String[] toReturn = new String[2];
         int numFoldersInPath = this.TargetStreamPath.split("/").length;

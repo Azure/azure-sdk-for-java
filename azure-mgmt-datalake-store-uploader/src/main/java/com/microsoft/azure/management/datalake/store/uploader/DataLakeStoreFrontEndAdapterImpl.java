@@ -12,42 +12,38 @@ import com.microsoft.azure.management.datalake.store.models.FileStatusResult;
 import java.io.IOException;
 
 /**
- * Created by begoldsm on 4/11/2016.
+ * A front end adapter that communicates with the DataLake Store.
+ * This is a syncrhonous call adapter, which has certain efficiency limitations.
+ * In the future, new adapters that are created should consider implementing the methods
+ * asynchronously.
  */
 public class DataLakeStoreFrontEndAdapterImpl implements FrontEndAdapter {
-    /// <summary>
-    /// A front end adapter that communicates with the DataLake Store.
-    /// This is a syncrhonous call adapter, which has certain efficiency limitations.
-    /// In the future, new adapters that are created should consider implementing the methods
-    /// asynchronously.
-    /// </summary>
-
 
     private String _accountName;
 
     private DataLakeStoreFileSystemManagementClient _client;
 
-    private final int PerRequestTimeoutMs = 30000; // 30 seconds and we timeout the request
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="DataLakeStoreFrontEndAdapter"/> class.
-    /// </summary>
-    /// <param name="accountName">Name of the account.</param>
-    /// <param name="client">The client.</param>
-    /// <param name="token">The token.</param>
+    /**
+     * Initializes a new instance of the DataLakeStoreFrontEndAdapter adapter.
+     *
+     * @param accountName The Data Lake Store account name associated with this adapter
+     * @param client the {@link DataLakeStoreFileSystemManagementClient} used by this adapter
+     */
     public DataLakeStoreFrontEndAdapterImpl(String accountName, DataLakeStoreFileSystemManagementClient client) {
         _accountName = accountName;
         _client = client;
     }
 
-
-    /// <summary>
-    /// Creates a new, empty stream at the given path.
-    /// </summary>
-    /// <param name="streamPath">The relative path to the stream.</param>
-    /// <param name="overwrite">Whether to overwrite an existing stream.</param>
-    /// <param name="data"></param>
-    /// <param name="byteCount"></param>
+    /**
+     * Creates a new, empty stream at the given path.
+     *
+     * @param streamPath The relative path to the stream.
+     * @param overwrite  Whether to overwrite an existing stream.
+     * @param data Optionally pass in data to add to the stream during creation. If null is passed in an empty stream is created
+     * @param byteCount If data is passed in, indicates how many bytes of the data passed in should be pushed into the stream
+     * @throws CloudException
+     * @throws IOException
+     */
     public void CreateStream(String streamPath, boolean overwrite, byte[] data, int byteCount) throws CloudException, IOException {
         byte[] toCreate;
         if (data == null) {
@@ -59,35 +55,42 @@ public class DataLakeStoreFrontEndAdapterImpl implements FrontEndAdapter {
         _client.getFileSystemOperations().create(streamPath, _accountName, data, overwrite);
     }
 
-    /// <summary>
-    /// Deletes an existing stream at the given path.
-    /// </summary>
-    /// <param name="streamPath">The relative path to the stream.</param>
-    /// <param name="recurse">if set to <c>true</c> [recurse]. This is used for folder streams only.</param>
+    /**
+     * Deletes an existing stream at the given path.
+     *
+     * @param streamPath The relative path to the stream.
+     * @param recurse    if set to true recursively delete. This is used for folder streams only.
+     * @throws IOException
+     * @throws CloudException
+     */
     public void DeleteStream(String streamPath, boolean recurse) throws IOException, CloudException {
         _client.getFileSystemOperations().delete(streamPath, _accountName, recurse);
     }
 
-    /// <summary>
-    /// Appends to stream.
-    /// </summary>
-    /// <param name="streamPath">The stream path.</param>
-    /// <param name="data">The data.</param>
-    /// <param name="offset">The offset.</param>
-    /// <param name="byteCount">The byte count.</param>
+    /**
+     * Appends to stream.
+     *
+     * @param streamPath The relative path to the stream.
+     * @param data The data to append to the stream
+     * @param offset This parameter is unused by this implementation, and any value put here is ignored
+     * @param byteCount The number of bytes from the data stream to append (starting at offset 0 of data).
+     * @throws IOException
+     * @throws CloudException
+     */
     public void AppendToStream(String streamPath, byte[] data, long offset, int byteCount) throws IOException, CloudException {
         byte[] toAppend = new byte[byteCount];
         System.arraycopy(data, 0, toAppend, 0, byteCount);
         _client.getFileSystemOperations().append(streamPath, _accountName, toAppend);
     }
 
-    /// <summary>
-    /// Determines if the stream with given path exists.
-    /// </summary>
-    /// <param name="streamPath">The relative path to the stream.</param>
-    /// <returns>
-    /// True if the stream exists, false otherwise.
-    /// </returns>
+    /**
+     * Determines if the stream with given path exists.
+     *
+     * @param streamPath The relative path to the stream.
+     * @return True if the stream exists, false otherwise.
+     * @throws IOException
+     * @throws CloudException
+     */
     public boolean StreamExists(String streamPath) throws IOException, CloudException {
         try {
             _client.getFileSystemOperations().getFileStatus(streamPath, _accountName);
@@ -102,24 +105,28 @@ public class DataLakeStoreFrontEndAdapterImpl implements FrontEndAdapter {
         return true;
     }
 
-    /// <summary>
-    /// Gets a value indicating the length of a stream, in bytes.
-    /// </summary>
-    /// <param name="streamPath">The relative path to the stream.</param>
-    /// <returns>
-    /// The length of the stream, in bytes.
-    /// </returns>
+    /**
+     * Gets a value indicating the length of a stream, in bytes.
+     *
+     * @param streamPath The relative path to the stream.
+     * @return The length of the stream, in bytes.
+     * @throws IOException
+     * @throws CloudException
+     */
     public long GetStreamLength(String streamPath) throws IOException, CloudException {
         FileStatusResult fileInfoResponse = _client.getFileSystemOperations().getFileStatus(streamPath, _accountName).getBody();
         return fileInfoResponse.getFileStatus().getLength();
     }
 
-    /// <summary>
-    /// Concatenates the given input streams (in order) into the given target stream.
-    /// At the end of this operation, input streams will be deleted.
-    /// </summary>
-    /// <param name="targetStreamPath">The relative path to the target stream.</param>
-    /// <param name="inputStreamPaths">An ordered array of paths to the input streams.</param>
+    /**
+     * Concatenates the given input streams (in order) into the given target stream.
+     * At the end of this operation, input streams will be deleted.
+     *
+     * @param targetStreamPath The relative path to the target stream.
+     * @param inputStreamPaths An ordered array of paths to the input streams to concatenate into the target stream.
+     * @throws IOException
+     * @throws CloudException
+     */
     public void Concatenate(String targetStreamPath, String[] inputStreamPaths) throws IOException, CloudException {
         // this is required for the current version of the microsoft concatenate
         // TODO: Improve WebHDFS concatenate to take in the list of paths to concatenate

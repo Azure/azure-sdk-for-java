@@ -6,13 +6,13 @@
 package com.microsoft.azure.management.datalake.store.uploader;
 
 /**
- * Created by begoldsm on 4/11/2016.
+ * Represents an exception that is thrown when an upload fails.
  */
 public class UploadFailedException extends Exception {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="UploadFailedException"/> class.
-    /// </summary>
-    /// <param name="message">The message that describes the error.</param>
+    /**
+     * Initializes a new instance of the UploadFailedException exception
+     * @param message The message that describes the error.
+     */
     public UploadFailedException(String message) {
         super(message);
     }

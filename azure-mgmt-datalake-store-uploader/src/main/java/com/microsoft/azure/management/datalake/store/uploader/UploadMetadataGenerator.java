@@ -15,36 +15,41 @@ import java.nio.charset.Charset;
 import java.text.MessageFormat;
 
 /**
- * Created by begoldsm on 4/13/2016.
+ * An internally used class for generating the metadata used for upload.
  */
 public class UploadMetadataGenerator {
 
     private UploadParameters _parameters;
     private int _maxAppendLength;
 
-    /// <summary>
-    /// Creates a new instance of the UploadMetadataGenerator with the given parameters and the default maximum append length.
-    /// </summary>
-    /// <param name="parameters">The parameters.</param>
+    /**
+     * Creates a new instance of the UploadMetadataGenerator with the given parameters and the default maximum append length.
+     *
+     * @param parameters The parameters.
+     */
     public UploadMetadataGenerator(UploadParameters parameters) {
         this(parameters, SingleSegmentUploader.BufferLength);
     }
 
-    /// <summary>
-    /// Creates a new instance of the UploadMetadataGenerator with the given parameters and the given maximum append length.
-    /// </summary>
-    /// <param name="parameters"></param>
-    /// <param name="maxAppendLength"></param>
+    /**
+     * Creates a new instance of the UploadMetadataGenerator with the given parameters and the given maximum append length.
+     *
+     * @param parameters The parameters
+     * @param maxAppendLength The maximum allowed append length when uploading a file.
+     */
     public UploadMetadataGenerator(UploadParameters parameters, int maxAppendLength) {
         _parameters = parameters;
         _maxAppendLength = maxAppendLength;
     }
 
-    /// <summary>
-    /// Attempts to load the metadata from an existing file in its canonical location.
-    /// </summary>
-    /// <param name="metadataFilePath">The metadata file path.</param>
-    /// <returns></returns>
+    /**
+     * Attempts to load the metadata from an existing file in its canonical location.
+     *
+     * @param metadataFilePath The metadata file path.
+     * @return The deserialized {@link UploadMetadata} from the specified file path.
+     * @throws FileNotFoundException
+     * @throws InvalidMetadataException
+     */
     public UploadMetadata GetExistingMetadata(String metadataFilePath) throws FileNotFoundException, InvalidMetadataException {
         //load from file (based on input parameters)
         UploadMetadata metadata = UploadMetadata.LoadFrom(metadataFilePath);
@@ -52,10 +57,15 @@ public class UploadMetadataGenerator {
         return metadata;
     }
 
-    /// <summary>
-    /// Creates a new metadata based on the given input parameters, and saves it to its canonical location.
-    /// </summary>
-    /// <returns></returns>
+    /**
+     * Creates a new metadata based on the given input parameters, and saves it to its canonical location.
+     *
+     * @param metadataFilePath Where the serialized metadata will be saved
+     * @return A new {@link UploadMetadata} object.
+     * @throws IOException
+     * @throws UploadFailedException
+     * @throws InvalidMetadataException
+     */
     public UploadMetadata CreateNewMetadata(String metadataFilePath) throws IOException, UploadFailedException, InvalidMetadataException {
         //determine segment count, segment length and Upload Id
         //create metadata
@@ -71,11 +81,14 @@ public class UploadMetadataGenerator {
         return metadata;
     }
 
-    /// <summary>
-    /// Aligns segments to match record boundaries (where a record boundary = a new line).
-    /// If not possible (max record size = 4MB), throws an exception.
-    /// </summary>
-    /// <param name="metadata"></param>
+    /**
+     * Aligns segments to match record boundaries (where a record boundary = a new line).
+     * If not possible (max record size = 4MB), throws an exception.
+     *
+     * @param metadata The metadata to realign
+     * @throws IOException
+     * @throws UploadFailedException
+     */
     private void AlignSegmentsToRecordBoundaries(UploadMetadata metadata) throws IOException, UploadFailedException {
         int remainingSegments = 0;
 
@@ -97,7 +110,7 @@ public class UploadMetadataGenerator {
                     segment.Length = metadata.FileLength - segment.Offset;
                 } else {
                     //figure out how much do we need to adjust the length of the segment so it ends on a record boundary (this can be negative or positive)
-                    int lengthAdjustment = DetermineLengthAdjustment(segment, stream, Charset.forName(metadata.EncodingCodePage), metadata.Delimiter) + 1;
+                    int lengthAdjustment = DetermineLengthAdjustment(segment, stream, Charset.forName(metadata.EncodingName), metadata.Delimiter) + 1;
 
                     //adjust segment length and offset
                     segment.Length += lengthAdjustment;
@@ -118,16 +131,18 @@ public class UploadMetadataGenerator {
         //NOTE: we are not validating consistency here; this method is called by CreateNewMetadata which calls Save() after this, which validates consistency anyway.
     }
 
-    /// <summary>
-    /// Calculates the value by which we'd need to adjust the length of the given segment, by searching for the nearest newline around it (before and after), 
-    /// and returning the distance to it (which can be positive, if after, or negative, if before).
-    /// </summary>
-    /// <param name="segment"></param>
-    /// <param name="stream"></param>
-    /// <param name="encoding"></param>
-    /// <param name="delimiter"></param>
-    /// <returns></returns>
-    /// <exception cref="Microsoft.Azure.Management.DataLake.StoreUploader.UploadFailedException">If no record boundary could be located on either side of the segment end offset within the allowed distance.</exception>
+    /**
+     * Calculates the value by which we'd need to adjust the length of the given segment, by searching for the nearest newline around it (before and after),
+     * and returning the distance to it (which can be positive, if after, or negative, if before).
+     *
+     * @param segment The segment to do the calculation on.
+     * @param stream The full stream used to figure out the adjustment
+     * @param encoding The encoding to use to determine where the cutoffs are
+     * @param delimiter The delimiter that determines how we adjust. If null then '\\r', \\n' and '\\r\\n' are used.
+     * @return How much to adjust the segment length by.
+     * @throws UploadFailedException
+     * @throws IOException
+     */
     private int DetermineLengthAdjustment(UploadSegmentMetadata segment, RandomAccessFile stream, Charset encoding, String delimiter) throws UploadFailedException, IOException {
         long referenceFileOffset = segment.Offset + segment.Length;
         byte[] buffer = new byte[_maxAppendLength];
@@ -171,14 +186,15 @@ public class UploadMetadataGenerator {
                         _maxAppendLength / 1024 / 1024));
     }
 
-    /// <summary>
-    /// Returns the value (of the given two) that is closest in absolute terms to the center value.
-    /// Values that are negative are ignored (since these are assumed to represent array indices).
-    /// </summary>
-    /// <param name="value1"></param>
-    /// <param name="value2"></param>
-    /// <param name="centerValue"></param>
-    /// <returns></returns>
+    /**
+     * Returns the value (of the given two) that is closest in absolute terms to the center value.
+     * Values that are negative are ignored (since these are assumed to represent array indices).
+     *
+     * @param value1 First value to compare
+     * @param value2 Second value to compare
+     * @param centerValue The center value they are compared against.
+     * @return Either value1 or value2 depending on which is closest to the centerValue
+     */
     private static int FindClosestToCenter(int value1, int value2, int centerValue) {
         if (value1 >= 0) {
             if (value2 >= 0) {
@@ -191,14 +207,15 @@ public class UploadMetadataGenerator {
         }
     }
 
-    /// <summary>
-    /// Reads data from the given file into the given buffer, centered around the given file offset. The first half of the buffer will be 
-    /// filled with data right before the given offset, while the remainder of the buffer will contain data right after it (of course, containing the byte at the given offset).
-    /// </summary>
-    /// <param name="stream"></param>
-    /// <param name="buffer"></param>
-    /// <param name="fileReferenceOffset"></param>
-    /// <returns>The number of bytes reads, which could be less than the length of the input buffer if we can't read due to the beginning or the end of the file.</returns>
+    /**
+     * Reads data from the given file into the given buffer, centered around the given file offset. The first half of the buffer will be
+     * filled with data right before the given offset, while the remainder of the buffer will contain data right after it (of course, containing the byte at the given offset).
+     * @param stream The stream to read from
+     * @param buffer The buffer to read data into
+     * @param fileReferenceOffset The offset to start reading from in the stream.
+     * @return The number of bytes reads, which could be less than the length of the input buffer if we can't read due to the beginning or the end of the file.
+     * @throws IOException
+     */
     private static int ReadIntoBufferAroundReference(RandomAccessFile stream, byte[] buffer, long fileReferenceOffset) throws IOException {
         int length = buffer.length;
         //calculate start offset

@@ -5,17 +5,10 @@
  */
 package com.microsoft.azure.management.datalake.store.uploader;
 
-import com.microsoft.azure.CloudException;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 /**
- * Created by begoldsm on 4/13/2016.
+ * Uploads a local file in parallel by splitting it into several segments, according to the given metadata.
  */
 public class MultipleSegmentUploader implements Runnable {
 
@@ -26,14 +19,13 @@ public class MultipleSegmentUploader implements Runnable {
     private Queue<SegmentQueueItem> _pendingSegments;
     private List<Exception> _exceptions;
 
-    /// <summary>
-    /// Creates a new MultipleSegmentUploader.
-    /// </summary>
-    /// <param name="uploadMetadata">The metadata that keeps track of the file upload.</param>
-    /// <param name="maxThreadCount">The maximum number of threads to use. Note that in some cases, this number may not be reached.</param>
-    /// <param name="frontEnd">A pointer to the Front End interface to perform the upload to.</param>
-    /// <param name="token">The cancellation token to use.</param>
-    /// <param name="progressTracker">(Optional)A tracker that reports progress on each segment.</param>
+    /**
+     * Creates a new MultipleSegmentUploader.
+     *
+     * @param uploadMetadata The metadata that keeps track of the file upload.
+     * @param maxThreadCount The maximum number of threads to use. Note that in some cases, this number may not be reached.
+     * @param frontEnd A pointer to the Front End interface to perform the upload to.
+     */
     public MultipleSegmentUploader(UploadMetadata uploadMetadata, int maxThreadCount, FrontEndAdapter frontEnd) {
         _metadata = uploadMetadata;
         _maxThreadCount = maxThreadCount;
@@ -43,16 +35,18 @@ public class MultipleSegmentUploader implements Runnable {
         this.UseSegmentBlockBackOffRetryStrategy = true;
     }
 
-    /// <summary>
-    /// Gets or sets a value indicating whether to use a back-off (exponenential) in case of individual block failures.
-    /// The MultipleSegmentUploader does not use this directly; it passes it on to SingleSegmentUploader.
-    /// </summary>
+    /**
+     * Gets or sets a value indicating whether to use a back-off (exponenential) in case of individual block failures.
+     * The MultipleSegmentUploader does not use this directly; it passes it on to SingleSegmentUploader.
+     */
     public boolean UseSegmentBlockBackOffRetryStrategy;
 
-    /// <summary>
-    /// Executes the upload of the segments in the file that were not already uploaded (i.e., those that are in a 'Pending' state).
-    /// </summary>
-    /// <returns></returns>
+    /**
+     * Executes the upload of the segments in the file that were not already uploaded (i.e., those that are in a 'Pending' state).
+     *
+     * @throws InterruptedException
+     * @throws AggregateUploadException
+     */
     public void Upload() throws InterruptedException, AggregateUploadException {
         int threadCount = Math.min(_pendingSegments.size(), _maxThreadCount);
         List<Thread> threads = new ArrayList<>(threadCount);
@@ -76,11 +70,11 @@ public class MultipleSegmentUploader implements Runnable {
         }
     }
 
-    /// <summary>
-    /// Processes the pending segments.
-    /// </summary>
-    /// <param name="pendingSegments">The pending segments.</param>
-    /// <param name="exceptions">The exceptions.</param>
+    /**
+     * Processes the pending segments.
+     * @param pendingSegments The pending segments.
+     * @param exceptions The exceptions.
+     */
     private void ProcessPendingSegments(Queue<SegmentQueueItem> pendingSegments, Collection<Exception> exceptions) {
         while (pendingSegments.size() > 0) {
             //get the next item to process
@@ -111,11 +105,13 @@ public class MultipleSegmentUploader implements Runnable {
         }
     }
 
-    /// <summary>
-    /// Uploads the segment.
-    /// </summary>
-    /// <param name="segmentNumber">The segment number.</param>
-    /// <param name="metadata">The metadata.</param>
+    /**
+     * Uploads the segment.
+     *
+     * @param segmentNumber The segment number.
+     * @param metadata The metadata.
+     * @throws Exception
+     */
     private void UploadSegment(int segmentNumber, UploadMetadata metadata) throws Exception {
         //mark the segment as 'InProgress' in the metadata
         UpdateSegmentMetadataStatus(metadata, segmentNumber, SegmentUploadStatus.InProgress);
@@ -135,11 +131,12 @@ public class MultipleSegmentUploader implements Runnable {
         }
     }
 
-    /// <summary>
-    /// Gets the pending segments to upload.
-    /// </summary>
-    /// <param name="metadata">The metadata.</param>
-    /// <returns></returns>
+    /**
+     * Gets the pending segments to upload.
+     *
+     * @param metadata The metadata.
+     * @return A queue containing the remaining pending segments to upload
+     */
     private static Queue<SegmentQueueItem> GetPendingSegmentsToUpload(UploadMetadata metadata) {
         Queue<SegmentQueueItem> result = new LinkedList<>();
         for (UploadSegmentMetadata segment : metadata.Segments) //.Where(segment => segment.Status == SegmentUploadStatus.Pending))
@@ -151,12 +148,13 @@ public class MultipleSegmentUploader implements Runnable {
         return result;
     }
 
-    /// <summary>
-    /// Updates the segment metadata status.
-    /// </summary>
-    /// <param name="metadata">The metadata.</param>
-    /// <param name="segmentNumber">The segment number.</param>
-    /// <param name="newStatus">The new status.</param>
+    /**
+     * Updates the segment metadata status.
+     *
+     * @param metadata The metadata.
+     * @param segmentNumber The segment number.
+     * @param newStatus The new status.
+     */
     private static void UpdateSegmentMetadataStatus(UploadMetadata metadata, int segmentNumber, SegmentUploadStatus newStatus) {
         metadata.Segments[segmentNumber].Status = newStatus;
         try {
@@ -174,6 +172,10 @@ public class MultipleSegmentUploader implements Runnable {
      * The general contract of the method <code>run</code> is that it may
      * take any action whatsoever.
      *
+     * In this run, we are allowing each thread to attempt to process all
+     * of the remaining segments, which will ultimately result in each thread
+     * processing a subset of segments that are still in the queue.
+     *
      * @see Thread#run()
      */
     @Override
@@ -181,9 +183,9 @@ public class MultipleSegmentUploader implements Runnable {
         ProcessPendingSegments(_pendingSegments, _exceptions);
     }
 
-    /// <summary>
-    /// Represents a tuple that pairs a segment number with the number of times it was attempted for upload
-    /// </summary>
+    /**
+     * Represents a tuple that pairs a segment number with the number of times it was attempted for upload
+     */
     private static class SegmentQueueItem {
         public SegmentQueueItem(int segmentNumber, int attemptCount) {
             this.SegmentNumber = segmentNumber;

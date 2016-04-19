@@ -1,7 +1,12 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 package com.microsoft.azure.management.datalake.store.uploader;
 
-import org.junit.Assert;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -11,31 +16,29 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 /**
- * Created by begoldsm on 4/14/2016.
+ * Unit tests for the uploader.
  */
 public class DataLakeUploaderTests {
     private static final int LargeFileLength = 50 * 1024 * 1024; // 50mb
-    private byte[] _largeFileData = new byte[LargeFileLength];
-    private String _largeFilePath;
+    private static byte[] _largeFileData = new byte[LargeFileLength];
+    private static String _largeFilePath;
     private static final int SmallFileLength = 128;
-    private byte[] _smallFileData = new byte[SmallFileLength];
-    private String _smallFilePath;
+    private static byte[] _smallFileData = new byte[SmallFileLength];
+    private static String _smallFilePath;
     private static final int ThreadCount = 1;
     private static final String TargetStreamPath = "1";
 
     private static String curMetadataPath;
-    public DataLakeUploaderTests() throws IOException {
+
+    @BeforeClass
+    public static void Setup() throws IOException {
         _largeFilePath = TestHelpers.GenerateFileData(_largeFileData);
         _smallFilePath = TestHelpers.GenerateFileData(_smallFileData);
     }
 
-    public void Dispose()
+    @AfterClass
+    public static void Teardown()
     {
         File large = new File(_largeFilePath);
         File small = new File(_smallFilePath);
@@ -50,9 +53,11 @@ public class DataLakeUploaderTests {
         }
     }
 
-    /// <summary>
-    /// Tests the case when invalid parameters are being passed to the uploader.
-    /// </summary>
+    /**
+     * Tests the case when invalid parameters are being passed to the uploader.
+     *
+     * @throws Exception
+     */
     @Test
     public void DataLakeUploader_InvalidParameters() throws Exception
     {
@@ -62,7 +67,7 @@ public class DataLakeUploaderTests {
         Assert.assertFalse("Unit test error: generated temp file actually exists", invalidFilePath.exists());
 
         try {
-            new DataLakeStoreUploader(new UploadParameters(invalidFilePath.toString(), "1", "foo", 1, false, false, true, 4 * 1024 * 1024, null, null, null),new InMemoryFrontEnd());
+            new DataLakeStoreUploader(new UploadParameters(invalidFilePath.toString(), "1", "foo", 1, false, false, true, 4 * 1024 * 1024, null),new InMemoryFrontEnd());
             Assert.assertTrue("Expected a file not found exception but no exception was thrown!", false);
         }
         catch (FileNotFoundException e) {
@@ -71,7 +76,7 @@ public class DataLakeUploaderTests {
 
         //no target stream
         try {
-            new DataLakeStoreUploader(new UploadParameters(_largeFilePath, null, "foo", 1, false, false, true, 4 * 1024 * 1024, null, null, null),new InMemoryFrontEnd());
+            new DataLakeStoreUploader(new UploadParameters(_largeFilePath, null, "foo", 1, false, false, true, 4 * 1024 * 1024, null),new InMemoryFrontEnd());
             Assert.assertTrue("Expected a file not found exception but no exception was thrown!", false);
         }
         catch (IllegalArgumentException e) {
@@ -80,7 +85,7 @@ public class DataLakeUploaderTests {
 
         //target stream ends in '/'
         try {
-            new DataLakeStoreUploader(new UploadParameters(_largeFilePath, "1/", "foo", 1, false, false, true, 4 * 1024 * 1024, null, null, null),new InMemoryFrontEnd());
+            new DataLakeStoreUploader(new UploadParameters(_largeFilePath, "1/", "foo", 1, false, false, true, 4 * 1024 * 1024, null),new InMemoryFrontEnd());
             Assert.assertTrue("Expected exception for invalid target stream but no exception was thrown!", false);
         }
         catch (IllegalArgumentException e) {
@@ -89,7 +94,7 @@ public class DataLakeUploaderTests {
 
         //no account name
         try {
-            new DataLakeStoreUploader(new UploadParameters(_largeFilePath, "1", null, 1, false, false, true, 4 * 1024 * 1024, null, null, null),new InMemoryFrontEnd());
+            new DataLakeStoreUploader(new UploadParameters(_largeFilePath, "1", null, 1, false, false, true, 4 * 1024 * 1024, null),new InMemoryFrontEnd());
             Assert.assertTrue("Expected exception for null account name but no exception was thrown!", false);
         }
         catch (IllegalArgumentException e) {
@@ -98,7 +103,7 @@ public class DataLakeUploaderTests {
 
         //bad thread count
         try {
-            new DataLakeStoreUploader(new UploadParameters(_largeFilePath, "1", "foo", 0, false, false, true, 4 * 1024 * 1024, null, null, null),new InMemoryFrontEnd());
+            new DataLakeStoreUploader(new UploadParameters(_largeFilePath, "1", "foo", 0, false, false, true, 4 * 1024 * 1024, null),new InMemoryFrontEnd());
             Assert.assertTrue("Expected an exception for invalid thread count but no exception was thrown!", false);
         }
         catch (IllegalArgumentException e) {
@@ -106,7 +111,7 @@ public class DataLakeUploaderTests {
         }
 
         try {
-            new DataLakeStoreUploader(new UploadParameters(_largeFilePath, "1", "foo", DataLakeStoreUploader.MaxAllowedThreads + 1, false, false, true, 4 * 1024 * 1024, null, null, null),new InMemoryFrontEnd());
+            new DataLakeStoreUploader(new UploadParameters(_largeFilePath, "1", "foo", DataLakeStoreUploader.MaxAllowedThreads + 1, false, false, true, 4 * 1024 * 1024, null),new InMemoryFrontEnd());
             Assert.assertTrue("Expected an exception for invalid thread count but no exception was thrown!", false);
         }
         catch (IllegalArgumentException e) {
@@ -114,9 +119,11 @@ public class DataLakeUploaderTests {
         }
     }
 
-    /// <summary>
-    /// Tests the case when the target stream exists and we haven't set the overwrite flag.
-    /// </summary>
+    /**
+     * Tests the case when the target stream exists and we haven't set the overwrite flag.
+     *
+     * @throws Exception
+     */
     @Test
     public void DataLakeUploader_TargetExistsNoOverwrite() throws Exception {
         InMemoryFrontEnd frontEnd = new InMemoryFrontEnd();
@@ -156,9 +163,11 @@ public class DataLakeUploaderTests {
         uploader.Execute();
     }
 
-    /// <summary>
-    /// Tests the case of a fresh upload with multiple segments.
-    /// </summary>
+    /**
+     * Tests the case of a fresh upload with multiple segments.\
+     *
+     * @throws Exception
+     */
     @Test
     public void DataLakeUploader_FreshUpload() throws Exception {
         InMemoryFrontEnd frontEnd = new InMemoryFrontEnd();
@@ -170,9 +179,11 @@ public class DataLakeUploaderTests {
         VerifyFileUploadedSuccessfully(up, frontEnd);
     }
 
-    /// <summary>
-    /// Tests the resume upload when the metadata indicates all files are uploaded but no files exist on the server.
-    /// </summary>
+    /**
+     * Tests the resume upload when the metadata indicates all files are uploaded but no files exist on the server.
+     *
+     * @throws Exception
+     */
     @Test
     public void DataLakeUploader_ResumeUploadWithAllMissingFiles() throws Exception {
         //this scenario is achieved by refusing to execute the concat command on the front end for the initial upload (which will interrupt it)
@@ -215,9 +226,11 @@ public class DataLakeUploaderTests {
         VerifyFileUploadedSuccessfully(up, frontEnd2);
     }
 
-    /// <summary>
-    /// Tests the resume upload when only some segments were uploaded previously
-    /// </summary>
+    /**
+     * Tests the resume upload when only some segments were uploaded previously
+     *
+     * @throws Exception
+     */
     @Test
     public void DataLakeUploader_ResumePartialUpload() throws Exception {
         //attempt to load the file fully, but only allow creating 1 target stream
@@ -255,6 +268,11 @@ public class DataLakeUploaderTests {
         VerifyFileUploadedSuccessfully(up, backingFrontEnd);
     }
 
+    /**
+     * Tests the upload case with only 1 segment (since that is an optimization of the broader case).
+     *
+     * @throws Exception
+     */
     @Test
     public void DataLakeUploader_UploadSingleSegment() throws Exception {
         InMemoryFrontEnd frontEnd = new InMemoryFrontEnd();
@@ -270,9 +288,7 @@ public class DataLakeUploaderTests {
                 false,
                 true,
                 4 * 1024 * 1024,
-                fileToFolder.getAbsolutePath(),
-                null,
-                null);
+                fileToFolder.getAbsolutePath());
 
         FileOutputStream writer = new FileOutputStream(_smallFilePath);
         writer.write(_smallFileData);
@@ -285,13 +301,16 @@ public class DataLakeUploaderTests {
         VerifyFileUploadedSuccessfully(up, frontEnd, _smallFileData);
     }
 
-    /// <summary>
-    /// Creates a parameter object.
-    /// </summary>
-    /// <param name="isResume">Whether to resume.</param>
-    /// <param name="isOverwrite">Whether to enable overwrite.</param>
-    /// <param name="filePath">The file path.</param>
-    /// <returns></returns>
+    /**
+     * Creates a parameter object.
+     *
+     * @param isResume Whether to resume.
+     * @param isOverwrite Whether to enable overwrite.
+     * @param filePath The file path.
+     * @param createNewFolder indicates that we should create a new folder location where the data should be placed.
+     * @return A {@link UploadParameters} object.
+     * @throws IOException
+     */
     private UploadParameters CreateParameters(boolean isResume, boolean isOverwrite, String filePath, boolean createNewFolder) throws IOException {
         if (filePath == null)
         {
@@ -315,26 +334,27 @@ public class DataLakeUploaderTests {
             isResume,
             true,
             4 * 1024 * 1024,
-                curMetadataPath,
-                null,
-                null);
+            curMetadataPath);
     }
 
-    /// <summary>
-    /// Verifies the file was successfully uploaded.
-    /// </summary>
-    /// <param name="up">The upload parameters.</param>
-    /// <param name="frontEnd">The front end.</param>
+    /**
+     * Verifies the file was successfully uploaded.
+     *
+     * @param up The upload parameters.
+     * @param frontEnd The front end to use.
+     * @throws Exception
+     */
     private void VerifyFileUploadedSuccessfully(UploadParameters up, InMemoryFrontEnd frontEnd) throws Exception {
         VerifyFileUploadedSuccessfully(up, frontEnd, _largeFileData);
     }
 
-    /// <summary>
-    /// Verifies the file was successfully uploaded.
-    /// </summary>
-    /// <param name="up">The upload parameters.</param>
-    /// <param name="frontEnd">The front end.</param>
-    /// <param name="fileContents">The file contents.</param>
+    /**
+     * Verifies the file was successfully uploaded.
+     * @param up The upload parameters.
+     * @param frontEnd The front end to use.
+     * @param fileContents The file contents.
+     * @throws Exception
+     */
     private void VerifyFileUploadedSuccessfully(UploadParameters up, InMemoryFrontEnd frontEnd, byte[] fileContents) throws Exception {
         Assert.assertTrue("Uploaded stream does not exist", frontEnd.StreamExists(up.getTargetStreamPath()));
         Assert.assertEquals(1, frontEnd.getStreamCount());

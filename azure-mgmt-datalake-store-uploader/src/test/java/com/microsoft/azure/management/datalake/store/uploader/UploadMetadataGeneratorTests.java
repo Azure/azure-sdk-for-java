@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 package com.microsoft.azure.management.datalake.store.uploader;
 
 import com.google.common.io.CountingOutputStream;
@@ -5,18 +10,17 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.*;
-import java.nio.file.Path;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import static org.bouncycastle.crypto.tls.CipherType.stream;
-
 /**
- * Created by begoldsm on 4/18/2016.
+ * Unit tests that target the {@link UploadMetadataGenerator} class
  */
 public class UploadMetadataGeneratorTests {
     private static final int MaxAppendLength = 4 * 1024 * 1024;
@@ -48,7 +52,7 @@ public class UploadMetadataGeneratorTests {
                 AppendToFile(filePath.getAbsolutePath(), appendLength, rnd, 0, MaxAppendLength);
                 String metadataFilePath = filePath + ".metadata.txt";
 
-                UploadParameters up = new UploadParameters(filePath.getAbsolutePath(), filePath.getAbsolutePath(), null, 1, false, false, false, 4*1024*1024, null, null, null);
+                UploadParameters up = new UploadParameters(filePath.getAbsolutePath(), filePath.getAbsolutePath(), null, 1, false, false, false, 4*1024*1024, null);
                 UploadMetadataGenerator mg = new UploadMetadataGenerator(up, MaxAppendLength);
                 UploadMetadata metadata = mg.CreateNewMetadata(metadataFilePath);
 
@@ -89,7 +93,7 @@ public class UploadMetadataGeneratorTests {
                     AppendToFile(filePath.getAbsolutePath(), length, rnd, MaxAppendLength + 1, MaxAppendLength + 10);
                     String metadataFilePath = filePath + ".metadata.txt";
 
-                    UploadParameters up = new UploadParameters(filePath.getAbsolutePath(), filePath.getAbsolutePath(), null, 1, false, false, false, 4 * 1024 * 1024, null, null, null);
+                    UploadParameters up = new UploadParameters(filePath.getAbsolutePath(), filePath.getAbsolutePath(), null, 1, false, false, false, 4 * 1024 * 1024, null);
                     UploadMetadataGenerator mg = new UploadMetadataGenerator(up, MaxAppendLength);
 
                     try {

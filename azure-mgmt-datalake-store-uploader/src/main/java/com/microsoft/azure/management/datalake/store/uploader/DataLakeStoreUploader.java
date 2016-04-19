@@ -5,10 +5,9 @@
  */
 package com.microsoft.azure.management.datalake.store.uploader;
 
-import com.microsoft.azure.CloudException;
-
 import org.apache.commons.lang3.StringUtils;
 
+import javax.management.OperationsException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -19,26 +18,26 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import javax.management.OperationsException;
-
 /**
- * Created by begoldsm on 4/13/2016.
+ * Represents a general purpose file uploader into DataLake. Supports the efficient upload of large files.
  */
 public class DataLakeStoreUploader {
-    /// <summary>
-    /// The maximum number of parallel threads to allow.
-    /// </summary>
+
+    /**
+     * The maximum number of parallel threads to allow.
+     */
     public static final int MaxAllowedThreads = 1024;
     private FrontEndAdapter _frontEnd;
     private String _metadataFilePath;
     private int _previousDefaultConnectionLimit;
 
-    /// <summary>
-    /// Creates a new instance of the DataLakeUploader class, by specifying a pointer to the FrontEnd to use for the upload.
-    /// </summary>
-    /// <param name="uploadParameters">The Upload Parameters to use.</param>
-    /// <param name="frontEnd">A pointer to the FrontEnd interface to use for the upload.</param>
-    /// <param name="progressTracker">(Optional) A tracker that reports progress on the upload.</param>
+    /**
+     * Creates a new instance of the DataLakeUploader class, by specifying a pointer to the FrontEnd to use for the upload.
+     *
+     * @param uploadParameters The Upload Parameters to use.
+     * @param frontEnd A pointer to the FrontEnd interface to use for the upload.
+     * @throws FileNotFoundException
+     */
     public DataLakeStoreUploader(UploadParameters uploadParameters, FrontEndAdapter frontEnd) throws FileNotFoundException {
         this.Parameters = uploadParameters;
         _frontEnd = frontEnd;
@@ -48,22 +47,25 @@ public class DataLakeStoreUploader {
         _metadataFilePath = GetCanonicalMetadataFilePath();
     }
 
-    /// <summary>
-    /// Gets the canonical metadata file path.
-    /// </summary>
-    /// <returns></returns>
+    /**
+     * Gets the canonical metadata file path.
+     *
+     * @return A string representation of the canonical metadata file path.
+     */
     private String GetCanonicalMetadataFilePath() {
         return Paths.get(this.Parameters.getLocalMetadataLocation(), MessageFormat.format("{0}.upload.xml", Paths.get(this.Parameters.getInputFilePath()).getFileName())).toString();
     }
 
-    /// <summary>
-    /// Gets the parameters to use for this upload.
-    /// </summary>
+    /**
+     *  Gets the parameters to use for this upload.
+     */
     public UploadParameters Parameters;
 
-    /// <summary>
-    /// Executes the upload as defined by the input parameters.
-    /// </summary>
+    /**
+     * Executes the upload as defined by the input parameters.
+     *
+     * @throws Exception
+     */
     public void Execute() throws Exception {
         //load up existing metadata or create a fresh one
         UploadMetadata metadata = GetMetadata();
@@ -81,18 +83,13 @@ public class DataLakeStoreUploader {
         metadata.DeleteFile();
     }
 
-    /// <summary>
-    /// Validates the parameters.
-    /// </summary>
-    /// <exception cref="System.IO.FileNotFoundException">Could not find input file</exception>
-    /// <exception cref="System.ArgumentNullException">
-    /// TargetStreamPath;Null or empty Target Stream Path
-    /// or
-    /// AccountName;Null or empty Account Name
-    /// </exception>
-    /// <exception cref="System.ArgumentException">Invalid TargetStreamPath, a stream path should not end with /</exception>
-    /// <exception cref="System.ArgumentOutOfRangeException">ThreadCount</exception>
-    private void ValidateParameters() throws FileNotFoundException {
+    /**
+     * Validates the parameters.
+     *
+     * @throws FileNotFoundException Could not find input file
+     * @throws IllegalArgumentException Null or empty account name, stream path should not end with a '/' or the thread count is out of range.
+     */
+    private void ValidateParameters() throws FileNotFoundException, IllegalArgumentException {
         if (!(new File(this.Parameters.getInputFilePath()).exists())) {
             throw new FileNotFoundException("Could not find input file: " + this.Parameters.getInputFilePath());
         }
@@ -114,10 +111,14 @@ public class DataLakeStoreUploader {
         }
     }
 
-    /// <summary>
-    /// Gets the metadata.
-    /// </summary>
-    /// <returns></returns>
+    /**
+     * Gets the metadata.
+     *
+     * @return The {@link UploadMetadata} used by this upload.
+     * @throws IOException
+     * @throws InvalidMetadataException
+     * @throws UploadFailedException
+     */
     private UploadMetadata GetMetadata() throws IOException, InvalidMetadataException, UploadFailedException {
         UploadMetadataGenerator metadataGenerator = new UploadMetadataGenerator(this.Parameters);
         if (this.Parameters.isResume()) {
@@ -127,9 +128,9 @@ public class DataLakeStoreUploader {
         }
     }
 
-    /// <summary>
-    /// Deletes the metadata file from disk.
-    /// </summary>
+    /**
+     * Deletes the metadata file from disk.
+     */
     public void DeleteMetadataFile() {
         File toDelete = new File(_metadataFilePath);
         if (toDelete.exists()) {
@@ -137,11 +138,13 @@ public class DataLakeStoreUploader {
         }
     }
 
-    /// <summary>
-    /// Validates that the metadata is valid for a resume operation, and also updates the internal Segment States to match what the Server looks like.
-    /// If any changes are made, the metadata will be saved to its canonical location.
-    /// </summary>
-    /// <param name="metadata"></param>
+    /**
+     * Validates that the metadata is valid for a resume operation, and also updates the internal Segment States to match what the Server looks like.
+     * If any changes are made, the metadata will be saved to its canonical location.
+     *
+     * @param metadata The {@link UploadMetadata} to resume the upload from.
+     * @throws Exception
+     */
     private void ValidateMetadataForResume(UploadMetadata metadata) throws Exception {
         ValidateMetadataMatchesLocalFile(metadata);
 
@@ -198,10 +201,12 @@ public class DataLakeStoreUploader {
         metadata.Save();
     }
 
-    /// <summary>
-    /// Verifies that the metadata is valid for a fresh upload.
-    /// </summary>
-    /// <param name="metadata"></param>
+    /**
+     * Verifies that the metadata is valid for a fresh upload.
+     *
+     * @param metadata {@link UploadMetadata} to validate for a fresh upload.
+     * @throws Exception
+     */
     private void ValidateMetadataForFreshUpload(UploadMetadata metadata) throws Exception {
         ValidateMetadataMatchesLocalFile(metadata);
 
@@ -211,10 +216,12 @@ public class DataLakeStoreUploader {
         }
     }
 
-    /// <summary>
-    /// Verifies that the metadata is consistent with the local file information.
-    /// </summary>
-    /// <param name="metadata"></param>
+    /**
+     * Verifies that the metadata is consistent with the local file information.
+     *
+     * @param metadata The {@link UploadMetadata} to check against a serialized copy.
+     * @throws OperationsException
+     */
     private void ValidateMetadataMatchesLocalFile(UploadMetadata metadata) throws OperationsException {
         if (!metadata.TargetStreamPath.trim().equalsIgnoreCase(this.Parameters.getTargetStreamPath().trim())) {
             throw new OperationsException("Metadata points to a different target stream than the input parameters");
@@ -237,11 +244,11 @@ public class DataLakeStoreUploader {
         }
     }
 
-    /// <summary>
-    /// Uploads the file using the given metadata.
-    ///
-    /// </summary>
-    /// <param name="metadata"></param>
+    /**
+     * Uploads the file using the given metadata.
+     * @param metadata The {@link UploadMetadata} to use to upload the file.
+     * @throws Exception
+     */
     private void UploadFile(UploadMetadata metadata) throws Exception {
         try {
             //TODO: figure out if we need a ServicePointManager equivalent for the connection limit
@@ -276,10 +283,12 @@ public class DataLakeStoreUploader {
         }
     }
 
-    /// <summary>
-    /// Concatenates all the segments defined in the metadata into a single stream.
-    /// </summary>
-    /// <param name="metadata"></param>
+    /**
+     * Concatenates all the segments defined in the metadata into a single stream.
+     *
+     * @param metadata The {@link UploadMetadata} to determine the segments to concatenate
+     * @throws Exception
+     */
     private void ConcatenateSegments(final UploadMetadata metadata) throws Exception {
         final String[] inputPaths = new String[metadata.SegmentCount];
 

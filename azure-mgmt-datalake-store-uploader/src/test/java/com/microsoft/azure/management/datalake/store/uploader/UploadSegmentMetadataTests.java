@@ -1,16 +1,21 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 package com.microsoft.azure.management.datalake.store.uploader;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Created by begoldsm on 4/18/2016.
+ * Unit tests that target the {@link UploadSegmentMetadata} class.
  */
 public class UploadSegmentMetadataTests {
-    /// <summary>
-    /// Tests that segment count calculation works (it's hard to verify correctness without having access to the data that the base class has, 
-    /// so we'll just check the boundary conditions, that it's monotonically increasing and that it doesn't throw exceptions for various inputs.
-    /// </summary>
+    /**
+     * Tests that segment count calculation works (it's hard to verify correctness without having access to the data that the base class has,
+     * so we'll just check the boundary conditions, that it's monotonically increasing and that it doesn't throw exceptions for various inputs.
+     */
     @Test
     public void UploadMetadata_CalculateSegmentCount()
     {
@@ -36,9 +41,9 @@ public class UploadSegmentMetadataTests {
         }
     }
 
-    /// <summary>
-    /// Tests the correct calculation for a typical segment length.
-    /// </summary>
+    /**
+     * Tests the correct calculation for a typical segment length.
+     */
     @Test
     public void UploadSegmentMetadata_CalculateTypicalSegmentLength()
     {
@@ -75,9 +80,9 @@ public class UploadSegmentMetadataTests {
                 UploadSegmentMetadata.CalculateSegmentLength(fileLength, 0));
     }
 
-    /// <summary>
-    /// Tests the correct calculation for a particular segment length (ending vs non-ending).
-    /// </summary>
+    /**
+     * Tests the correct calculation for a particular segment length (ending vs non-ending).
+     */
     @Test
     public void UploadSegmentMetadata_CalculateParticularSegmentLength()
     {

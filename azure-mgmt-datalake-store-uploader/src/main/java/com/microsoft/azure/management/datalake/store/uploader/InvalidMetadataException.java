@@ -6,22 +6,25 @@
 package com.microsoft.azure.management.datalake.store.uploader;
 
 /**
- * Created by begoldsm on 4/11/2016.
+ * Represents an exception that is thrown when the local metadata is invalid or inconsistent.
  */
 public class InvalidMetadataException extends Exception {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="InvalidMetadataException"/> class.
-    /// </summary>
-    /// <param name="message">The message that describes the error.</param>
+
+    /**
+     * Initializes a new instance of the InvalidMetadataException exception
+     *
+     * @param message The message that describes the error.
+     */
     public InvalidMetadataException(String message) {
         super(message);
     }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="InvalidMetadataException"/> class.
-    /// </summary>
-    /// <param name="message">The error message that explains the reason for the exception.</param>
-    /// <param name="innerException">The exception that is the cause of the current exception, or a null reference (Nothing in Visual Basic) if no inner exception is specified.</param>
+    /**
+     * Initializes a new instance of the InvalidMetadataException exception
+     *
+     * @param message The error message that explains the reason for the exception.
+     * @param innerException The exception that is the cause of the current exception, or a null reference if no inner exception is specified.
+     */
     public InvalidMetadataException(String message, Exception innerException) {
         super(message, innerException);
     }

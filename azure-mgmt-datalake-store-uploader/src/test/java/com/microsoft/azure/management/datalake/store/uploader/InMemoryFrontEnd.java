@@ -1,15 +1,27 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 package com.microsoft.azure.management.datalake.store.uploader;
 
-import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.LinkedList;
 
 /**
- * Created by begoldsm on 4/14/2016.
+ * Test front-end, fully in-memory.
  */
 public class InMemoryFrontEnd implements FrontEndAdapter {
     private Hashtable<String, StreamData> _streams = new Hashtable<>();
 
+    /**
+     *
+     * @param streamPath The relative path to the stream.
+     * @param overwrite  Whether to overwrite an existing stream.
+     * @param data
+     * @param byteCount
+     * @throws Exception
+     */
     public void CreateStream(String streamPath, boolean overwrite, byte[] data, int byteCount) throws Exception {
         if (overwrite)
         {
@@ -43,6 +55,12 @@ public class InMemoryFrontEnd implements FrontEndAdapter {
         }
     }
 
+    /**
+     *
+     * @param streamPath The relative path to the stream.
+     * @param recurse    if set to true recursively delete. This is used for folder streams only.
+     * @throws Exception
+     */
     public void DeleteStream(String streamPath, boolean recurse) throws Exception {
         if (!StreamExists(streamPath))
         {
@@ -51,6 +69,14 @@ public class InMemoryFrontEnd implements FrontEndAdapter {
         _streams.remove(streamPath);
     }
 
+    /**
+     *
+     * @param streamPath The relative path to the stream.
+     * @param data An array of bytes to be appended to the stream.
+     * @param offset The offset at which to append to the stream.
+     * @param byteCount
+     * @throws Exception
+     */
     public void AppendToStream(String streamPath, byte[] data, long offset, int byteCount) throws Exception {
         if (!StreamExists(streamPath))
         {
@@ -75,11 +101,22 @@ public class InMemoryFrontEnd implements FrontEndAdapter {
         stream.Append(toAppend);
     }
 
+    /**
+     *
+     * @param streamPath The relative path to the stream.
+     * @return
+     */
     public boolean StreamExists(String streamPath)
     {
         return _streams.containsKey(streamPath);
     }
 
+    /**
+     *
+     * @param streamPath The relative path to the stream.
+     * @return
+     * @throws Exception
+     */
     public long GetStreamLength(String streamPath) throws Exception {
         if (!StreamExists(streamPath))
         {
@@ -89,6 +126,12 @@ public class InMemoryFrontEnd implements FrontEndAdapter {
         return _streams.get(streamPath).Length;
     }
 
+    /**
+     *
+     * @param targetStreamPath The relative path to the target stream.
+     * @param inputStreamPaths An ordered array of paths to the input streams.
+     * @throws Exception
+     */
     public void Concatenate(String targetStreamPath, String[] inputStreamPaths) throws Exception {
         if (StreamExists(targetStreamPath))
         {
@@ -132,6 +175,12 @@ public class InMemoryFrontEnd implements FrontEndAdapter {
         }
     }
 
+    /**
+     *
+     * @param streamPath
+     * @return
+     * @throws Exception
+     */
     public Iterable<byte[]> GetAppendBlocks(String streamPath) throws Exception {
         if (!StreamExists(streamPath))
         {
@@ -142,6 +191,12 @@ public class InMemoryFrontEnd implements FrontEndAdapter {
         return sd.GetDataChunks();
     }
 
+    /**
+     *
+     * @param streamPath
+     * @return
+     * @throws Exception
+     */
     public byte[] GetStreamContents(String streamPath) throws Exception {
         if (!StreamExists(streamPath))
         {
@@ -166,15 +221,27 @@ public class InMemoryFrontEnd implements FrontEndAdapter {
         return result;
     }
 
+    /**
+     * Returns the number of "streams" that have been created by this adapter.
+     *
+     * @return the number of streams.
+     */
     public int getStreamCount()
     {
         return _streams.size();
     }
 
+    /**
+     * Represents stream data for unit testing purposes.
+     */
     private class StreamData
     {
         private LinkedList<byte[]> _data;
 
+        /**
+         * Initializes new stream data with the given name.
+         * @param name
+         */
         public StreamData(String name)
         {
             _data = new LinkedList<byte[]>();

@@ -6,26 +6,26 @@
 package com.microsoft.azure.management.datalake.store.uploader;
 
 /**
- * Created by begoldsm on 4/12/2016.
+ * Defines various states that a segment upload can have
  */
 public enum SegmentUploadStatus {
-    /// <summary>
-    /// Indicates that the segment is currently scheduled for upload.
-    /// </summary>
+    /**
+    * Indicates that the segment is currently scheduled for upload.
+    */
     Pending,
 
-    /// <summary>
-    /// Indicates that the segment is currently being uploaded.
-    /// </summary>
+    /**
+    * Indicates that the segment is currently being uploaded.
+    */
     InProgress,
 
-    /// <summary>
-    /// Indicates that the segment was not uploaded successfully.
-    /// </summary>
+    /**
+    * Indicates that the segment was not uploaded successfully.
+    */
     Failed,
 
-    /// <summary>
-    /// Indicates that the segment was successfully uploaded.
-    /// </summary>
+    /**
+    * Indicates that the segment was successfully uploaded.
+    */
     Complete
 }

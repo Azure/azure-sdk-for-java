@@ -1,20 +1,23 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 package com.microsoft.azure.management.datalake.store.uploader;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Random;
 
-/**
- * Created by begoldsm on 4/14/2016.
- */
 public class TestHelpers {
-    /// <summary>
-    /// Generates some random data and writes it out to a temp file and to an in-memory array
-    /// </summary>
-    /// <param name="contents">The array to write random data to (the length of this array will be the size of the file).</param>
-    /// <param name="filePath">This will contain the path of the file that will be created.</param>
+    /**
+     * Generates some random data and writes it out to a temp file and to an in-memory array
+     *
+     * @param contents The array to write random data to (the length of this array will be the size of the file).
+     * @return The path of the file that will be created.
+     * @throws IOException
+     */
     static String GenerateFileData(byte[] contents) throws IOException {
         File filePath = File.createTempFile("adlUploader", "test.data");
 
@@ -32,15 +35,17 @@ public class TestHelpers {
         return filePath.toString();
     }
 
-    /// <summary>
-    /// Generates some random data and writes it out to a temp file and to an in-memory array
-    /// </summary>
-    /// <param name="contents">The array to write random data to (the length of this array will be the size of the file).</param>
-    /// <param name="filePath">This will contain the path of the file that will be created.</param>
+    /**
+     * Generates some random data and writes it out to a temp file and to an in-memory array
+     *
+     * @param contents The array to write random data to (the length of this array will be the size of the file).
+     * @param minRecordLength The minimum amount of data to write (inclusive)
+     * @param maxRecordLength The maximum amount of data to write (exclusive)
+     * @return The path of the file that will be created.
+     * @throws IOException
+     */
     static String GenerateTextFileData(byte[] contents, int minRecordLength, int maxRecordLength) throws IOException {
         File filePath = File.createTempFile("adlUploader", "test.data");
-
-
         int offset = 0;
         while (offset < contents.length)
         {

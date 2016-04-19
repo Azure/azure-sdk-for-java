@@ -9,15 +9,23 @@ import java.io.Serializable;
 import java.text.MessageFormat;
 
 /**
- * Created by begoldsm on 4/12/2016.
+ * Represents metadata for a particular file segment.
  */
 public class UploadSegmentMetadata implements Serializable {
 
-    /// <summary>
-    /// Creates a new UploadSegmentMetadata with the given segment number.
-    /// </summary>
-    /// <param name="segmentNumber"></param>
-    /// <param name="metadata"></param>
+    /**
+     * Initializes a new instance of the UploadSegmentMetadata for use with unit tests.
+     */
+    protected UploadSegmentMetadata() {
+        // does nothing, used for unit tests
+    }
+
+    /**
+     * Creates a new UploadSegmentMetadata with the given segment number.
+     *
+     * @param segmentNumber The segment number for this instance.
+     * @param metadata The full metadata associated with this segment.
+     */
     public UploadSegmentMetadata(int segmentNumber, UploadMetadata metadata) {
         this.SegmentNumber = segmentNumber;
         this.Status = SegmentUploadStatus.Pending;
@@ -28,13 +36,13 @@ public class UploadSegmentMetadata implements Serializable {
         this.Length = CalculateSegmentLength(this.SegmentNumber, metadata);
     }
 
-    /// <summary>
-    /// Calculates the length of a typical (non-terminal) segment for a file of the given length that is split into the given number of segments.
-    /// </summary>
-    /// <param name="fileLength">The length of the file, in bytes.</param>
-    /// <param name="segmentCount">The number of segments to split the file into.</param>
-    /// <returns></returns>
-    /// <exception cref="System.ArgumentException">Number of segments must be a positive integer</exception>
+    /**
+     * Calculates the length of a typical (non-terminal) segment for a file of the given length that is split into the given number of segments.
+     *
+     * @param fileLength The length of the file, in bytes.
+     * @param segmentCount The number of segments to split the file into.
+     * @return The length of this segment, in bytes.
+     */
     public static long CalculateSegmentLength(long fileLength, int segmentCount) {
         if (segmentCount < 0) {
             throw new IllegalArgumentException("Number of segments must be a positive integer");
@@ -60,12 +68,12 @@ public class UploadSegmentMetadata implements Serializable {
         return segmentLength;
     }
 
-    /// <summary>
-    /// Calculates the length of the segment with given number for a file with given length that is split into the given number of segments.
-    /// </summary>
-    /// <param name="segmentNumber">The segment number.</param>
-    /// <param name="metadata">The metadata for the current upload.</param>
-    /// <returns></returns>
+    /**
+     * Calculates the length of the segment with given number for a file with given length that is split into the given number of segments.
+     * @param segmentNumber The segment number.
+     * @param metadata The metadata for the current upload.
+     * @return The length of this segment, in bytes.
+     */
     public static long CalculateSegmentLength(int segmentNumber, UploadMetadata metadata) {
         if (segmentNumber < 0 || segmentNumber >= metadata.SegmentCount) {
             throw new IndexOutOfBoundsException("Segment Number must be at least zero and less than the total number of segments");
@@ -99,36 +107,34 @@ public class UploadSegmentMetadata implements Serializable {
         }
     }
 
-    /// <summary>
-    /// </summary>
+    /**
+     * Used to calculate the total number of segments that we should create.
+     */
     private static final int BaseMultiplier = 50;
 
-    /// <summary>
-    /// The Multiplier is the number of times the segment count is inflated when the length of the file increases by a factor of 'Reducer'.
-    /// See class description for more details.
-    /// </summary>
+    /**
+     * The Multiplier is the number of times the segment count is inflated when the length of the file increases by a factor of 'Reducer'.
+     */
     private static final int SegmentCountMultiplier = 2;
 
-    /// <summary>
-    /// The minimum number of bytes in a segment. For best performance, should be sync-ed with the upload buffer length.
-    /// </summary>
+    /**
+     * The minimum number of bytes in a segment. For best performance, should be sync-ed with the upload buffer length.
+     */
     public static final int MinimumSegmentSize = SingleSegmentUploader.BufferLength;
 
-    /// <summary>
-    /// Calculates the number of segments a file of the given length should be split into.
-    /// The method to calculate this is based on some empirical measurements that allows both the number of segments and the length of each segment to grow as the input file size grows.
-    /// They both grow on a logarithmic pattern as the file length increases.
-    /// The formula is roughly this:
-    /// * Multiplier = Min(100, 50 * 2 ^ Log10(FileLengthInGB))
-    /// * SegmentCount = Max(1, Multiplier * 2 ^ Log10(FileLengthInGB)
-    /// Essentially we quadruple the number of segments for each tenfold increase in the file length, with certain caps. The formula is designed to support both small files and
-    /// extremely large files (and not cause very small segment lengths or very large number of segments).
-    /// </summary>
-    /// <param name="fileLength">The length of the file, in bytes.</param>
-    /// <returns>
-    /// The number of segments to split the file into. Returns 0 if fileLength is 0.
-    /// </returns>
-    /// <exception cref="System.ArgumentException">File Length cannot be negative</exception>
+    /**
+     * Calculates the number of segments a file of the given length should be split into.
+     * The method to calculate this is based on some empirical measurements that allows both the number of segments and the length of each segment to grow as the input file size grows.
+     * They both grow on a logarithmic pattern as the file length increases.
+     * The formula is roughly this:
+     *  Multiplier = Min(100, 50 * 2 ^ Log10(FileLengthInGB))
+     *  SegmentCount = Max(1, Multiplier * 2 ^ Log10(FileLengthInGB)
+     * Essentially we quadruple the number of segments for each tenfold increase in the file length, with certain caps. The formula is designed to support both small files and
+     * extremely large files (and not cause very small segment lengths or very large number of segments).
+     *
+     * @param fileLength The length of the file, in bytes.
+     * @return The number of segments to split the file into. Returns 0 if fileLength is 0.
+     */
     public static int CalculateSegmentCount(long fileLength) {
         if (fileLength < 0) {
             throw new IllegalArgumentException("File Length cannot be negative");
@@ -163,43 +169,28 @@ public class UploadSegmentMetadata implements Serializable {
         return Math.min(100, value);
     }
 
-    /// <summary>
-    /// Gets or sets a value indicating the number (sequence) of the segment in the file.
-    /// </summary>
-    /// <value>
-    /// The segment number.
-    /// </value>
+    /**
+     * Gets or sets a value indicating the number (sequence) of the segment in the file.
+     */
     public int SegmentNumber;
 
-    /// <summary>
-    /// Gets or sets a value indicating the starting offset of the segment in the file.
-    /// </summary>
-    /// <value>
-    /// The offset.
-    /// </value>
+    /**
+     * Gets or sets a value indicating the starting offset of the segment in the file.
+     */
     public long Offset;
 
-    /// <summary>
-    /// Gets or sets a value indicating the size of the segment (in bytes).
-    /// </summary>
-    /// <value>
-    /// The length.
-    /// </value>
+    /**
+     * Gets or sets a value indicating the size of the segment (in bytes).
+     */
     public long Length;
 
-    /// <summary>
-    /// Gets or sets a value indicating the current upload status for this segment.
-    /// </summary>
-    /// <value>
-    /// The status.
-    /// </value>
+    /**
+     * Gets or sets a value indicating the current upload status for this segment.
+     */
     public SegmentUploadStatus Status;
 
-    /// <summary>
-    /// Gets or sets a value indicating the stream path assigned to this segment.
-    /// </summary>
-    /// <value>
-    /// The path.
-    /// </value>
+    /**
+     * Gets or sets a value indicating the stream path assigned to this segment.
+     */
     public String Path;
 }

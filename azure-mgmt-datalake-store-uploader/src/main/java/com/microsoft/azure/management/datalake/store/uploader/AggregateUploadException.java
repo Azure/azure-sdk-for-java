@@ -8,8 +8,9 @@ package com.microsoft.azure.management.datalake.store.uploader;
 import java.util.Arrays;
 import java.util.List;
 
-/***
- *
+/**
+ * A wrapper for the exceptions that can be generated during parallel
+ * execution of the uploader.
  */
 public class AggregateUploadException extends Exception {
 
@@ -21,8 +22,9 @@ public class AggregateUploadException extends Exception {
     }
 
     /***
-     *
-     * @return
+     * Returns all of the exceptions (except the first one, which is used to construct this exception)
+     * that are associated with this exception
+     * @return an Array of {@link Throwable} objects that are associated with this exception
      */
     public Throwable[] getAllExceptions() {
 

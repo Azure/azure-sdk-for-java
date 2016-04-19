@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 package com.microsoft.azure.management.datalake.store.uploader;
 
 import org.apache.commons.lang3.tuple.ImmutableTriple;
@@ -9,9 +14,6 @@ import org.junit.Test;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-/**
- * Created by begoldsm on 4/18/2016.
- */
 public class StringExtensionsTests {
     private static final String customDelim = ";";
 

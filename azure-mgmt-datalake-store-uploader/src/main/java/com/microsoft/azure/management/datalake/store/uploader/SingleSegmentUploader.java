@@ -5,8 +5,6 @@
  */
 package com.microsoft.azure.management.datalake.store.uploader;
 
-import com.microsoft.azure.CloudException;
-
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -15,10 +13,9 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
 import java.text.MessageFormat;
-import java.util.Random;
 
 /**
- * Created by begoldsm on 4/12/2016.
+ * Represents an uploader for a single segment of a larger file.
  */
 public class SingleSegmentUploader {
     public static final int BufferLength = 4 * 1024 * 1024;
@@ -35,14 +32,13 @@ public class SingleSegmentUploader {
     private UploadSegmentMetadata _segmentMetadata;
     private UploadMetadata _metadata;
 
-    /// <summary>
-    /// Creates a new uploader for a single segment.
-    /// </summary>
-    /// <param name="segmentNumber">The sequence number of the segment.</param>
-    /// <param name="uploadMetadata">The metadata for the entire upload.</param>
-    /// <param name="frontEnd">A pointer to the front end.</param>
-    /// <param name="token">The cancellation token to use</param>
-    /// <param name="progressTracker">(Optional) A tracker to report progress on this segment.</param>
+    /**
+     * Creates a new uploader for a single segment.
+     *
+     * @param segmentNumber The sequence number of the segment.
+     * @param uploadMetadata The metadata for the entire upload.
+     * @param frontEnd A pointer to the front end.
+     */
     public SingleSegmentUploader(int segmentNumber, UploadMetadata uploadMetadata, FrontEndAdapter frontEnd) {
         _metadata = uploadMetadata;
         _segmentMetadata = uploadMetadata.Segments[segmentNumber];
@@ -50,18 +46,19 @@ public class SingleSegmentUploader {
         this.UseBackOffRetryStrategy = true;
     }
 
-    /// <summary>
-    /// Gets or sets a value indicating whether to use a back-off (exponenential) in case of individual block failures.
-    /// If set to 'false' every retry is handled immediately; otherwise an amount of time is waited between retries, as a function of power of 2.
-    /// </summary>
+    /**
+     * Gets or sets a value indicating whether to use a back-off (exponenential) in case of individual block failures.
+     * If set to 'false' every retry is handled immediately; otherwise an amount of time is waited between retries, as a function of power of 2.
+     */
     public boolean UseBackOffRetryStrategy;
 
-    /// <summary>
-    /// Uploads the portion of the InputFilePath to the given TargetStreamPath, starting at the given StartOffset.
-    /// The segment is further divided into equally-sized blocks which are uploaded in sequence.
-    /// Each such block is attempted a certain number of times; if after that it still cannot be uploaded, the entire segment is aborted (in which case no cleanup is performed on the server).
-    /// </summary>
-    /// <returns></returns>
+    /**
+     * Uploads the portion of the InputFilePath to the given TargetStreamPath, starting at the given StartOffset.
+     * The segment is further divided into equally-sized blocks which are uploaded in sequence.
+     * Each such block is attempted a certain number of times; if after that it still cannot be uploaded, the entire segment is aborted (in which case no cleanup is performed on the server).
+     *
+     * @throws Exception
+     */
     public void Upload() throws Exception {
         File fileInfo = new File(_metadata.InputFilePath);
         if (!(fileInfo.exists())) {
@@ -82,10 +79,11 @@ public class SingleSegmentUploader {
         }
     }
 
-    /// <summary>
-    /// Verifies the uploaded stream.
-    /// </summary>
-    /// <exception cref="UploadFailedException"></exception>
+    /**
+     * Verifies the uploaded stream.
+     *
+     * @throws Exception
+     */
     private void VerifyUploadedStream() throws Exception {
         //verify that the remote stream has the length we expected.
         int retryCount = 0;
@@ -109,11 +107,13 @@ public class SingleSegmentUploader {
         }
     }
 
-    /// <summary>
-    /// Uploads the segment contents.
-    /// </summary>
-    /// <param name="inputStream">The input stream.</param>
-    /// <param name="endPosition">The end position.</param>
+    /**
+     * Uploads the segment contents.
+     *
+     * @param inputStream The input stream.
+     * @param endPosition The end position.
+     * @throws Exception
+     */
     private void UploadSegmentContents(RandomAccessFile inputStream, long endPosition) throws Exception {
         long bytesCopiedSoFar = 0; // we start off with a fresh stream
 
@@ -148,16 +148,18 @@ public class SingleSegmentUploader {
         buffer = null;
     }
 
-    /// <summary>
-    /// Determines the upload cutoff for text file.
-    /// </summary>
-    /// <param name="buffer">The buffer.</param>
-    /// <param name="bufferDataLength">Length of the buffer data.</param>
-    /// <param name="inputStream">The input stream.</param>
-    /// <returns></returns>
-    /// <exception cref="UploadFailedException"></exception>
+    /**
+     * Determines the upload cutoff for text file.
+     *
+     * @param buffer The buffer.
+     * @param bufferDataLength Length of the buffer data.
+     * @param inputStream The input stream.
+     * @return The index within the buffer which indicates a record boundary cutoff for a single append request for a text file.
+     * @throws UploadFailedException
+     * @throws IOException
+     */
     private int DetermineUploadCutoffForTextFile(byte[] buffer, int bufferDataLength, RandomAccessFile inputStream) throws UploadFailedException, IOException {
-        Charset encoding = Charset.forName(_metadata.EncodingCodePage);
+        Charset encoding = Charset.forName(_metadata.EncodingName);
         //NOTE: we return an offset, but everywhere else below we treat it as a byte count; in order for that to work, we need to add 1 to the result of FindNewLine.
         int uploadCutoff = StringExtensions.FindNewline(buffer, bufferDataLength - 1, bufferDataLength, true, encoding, _metadata.Delimiter) + 1;
         if (uploadCutoff <= 0 && (_metadata.SegmentCount > 1 || bufferDataLength >= MaxRecordLength)) {
@@ -176,13 +178,15 @@ public class SingleSegmentUploader {
         return uploadCutoff;
     }
 
-    /// <summary>
-    /// Uploads the buffer.
-    /// </summary>
-    /// <param name="buffer">The buffer.</param>
-    /// <param name="bytesToCopy">The bytes to copy.</param>
-    /// <param name="targetStreamOffset">The target stream offset.</param>
-    /// <returns></returns>
+    /**
+     * Uploads the buffer.
+     *
+     * @param buffer The buffer.
+     * @param bytesToCopy The bytes to copy.
+     * @param targetStreamOffset The target stream offset.
+     * @return The current index within the target stream after uploading the buffer.
+     * @throws Exception
+     */
     private long UploadBuffer(byte[] buffer, int bytesToCopy, long targetStreamOffset) throws Exception {
         //append it to the remote stream
         int attemptCount = 0;
@@ -212,14 +216,16 @@ public class SingleSegmentUploader {
         return targetStreamOffset;
     }
 
-    /// <summary>
-    /// Reads the into buffer.
-    /// </summary>
-    /// <param name="inputStream">The input stream.</param>
-    /// <param name="buffer">The buffer.</param>
-    /// <param name="bufferOffset">The buffer offset.</param>
-    /// <param name="streamEndPosition">The stream end position.</param>
-    /// <returns></returns>
+    /**
+     * Reads the data into the buffer.
+     *
+     * @param inputStream The stream to read data from.
+     * @param buffer The buffer to read data into
+     * @param bufferOffset The offset in the buffer to begin pushing data
+     * @param streamEndPosition The last point in the stream to read.
+     * @return The number of bytes read into the buffer.
+     * @throws IOException
+     */
     private int ReadIntoBuffer(RandomAccessFile inputStream, byte[] buffer, int bufferOffset, long streamEndPosition) throws IOException {
         //read a block of data
         int bytesToRead = buffer.length - bufferOffset;
@@ -240,10 +246,13 @@ public class SingleSegmentUploader {
         return bytesToRead;
     }
 
-    /// <summary>
-    /// Waits for retry.
-    /// </summary>
-    /// <param name="attemptCount">The attempt count.</param>
+    /**
+     * Enables use of a back off retry strategy, allowing a caller to wait before attempting an action again.
+     *
+     * @param attemptCount The number of attempts that have already been done
+     * @param useBackOffRetryStrategy whether to use the back off strategy or not.
+     * @throws InterruptedException
+     */
     public static void WaitForRetry(int attemptCount, boolean useBackOffRetryStrategy) throws InterruptedException {
         if (!useBackOffRetryStrategy) {
             //no need to wait
@@ -254,11 +263,11 @@ public class SingleSegmentUploader {
         Thread.sleep(intervalSeconds * 1000);
     }
 
-    /// <summary>
-    /// Opens the input stream.
-    /// </summary>
-    /// <returns></returns>
-    /// <exception cref="System.ArgumentException">StartOffset is beyond the end of the input file;StartOffset</exception>
+    /**
+     * Opens the input stream.
+     * @return A {@link RandomAccessFile} stream of the file being uploaded.
+     * @throws IOException
+     */
     private RandomAccessFile OpenInputStream() throws IOException {
         RandomAccessFile stream = new RandomAccessFile(_metadata.InputFilePath, "r");
 

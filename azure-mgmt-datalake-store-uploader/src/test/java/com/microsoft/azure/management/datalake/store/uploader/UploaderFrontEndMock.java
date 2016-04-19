@@ -1,9 +1,14 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 package com.microsoft.azure.management.datalake.store.uploader;
 
 import org.junit.Assert;
 
 /**
- * Created by begoldsm on 4/15/2016.
+ * A front end mock used for unit testing {@link DataLakeStoreUploader}
  */
 public class UploaderFrontEndMock implements FrontEndAdapter {
 
@@ -11,10 +16,13 @@ public class UploaderFrontEndMock implements FrontEndAdapter {
     private int createStreamCount;
     private boolean ThrowInConcat;
     private boolean ThrowInCreate;
-    /// <summary>
-    /// Constructor with base front end.
-    /// </summary>
-    /// <param name="baseAdapter">The front end.</param>
+
+    /**
+     * Constructor with base front end.
+     * @param baseAdapter The real front end to use when methods are not mocked.
+     * @param throwInConcat If true, indicates that concatenation implementation should throw instead of doing work.
+     * @param throwInCreate If true, indicates that the create implementation should throw instead of doing work.
+     */
     public UploaderFrontEndMock(FrontEndAdapter baseAdapter, boolean throwInConcat, boolean throwInCreate)
     {
         createStreamCount = 0;

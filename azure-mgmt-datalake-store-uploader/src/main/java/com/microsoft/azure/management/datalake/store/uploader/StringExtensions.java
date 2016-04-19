@@ -11,18 +11,22 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 /**
- * Created by begoldsm on 4/11/2016.
+ * A class of helpers to determine the location of record boundaries within byte arrays.
  */
 public class StringExtensions {
-    /// <summary>
-    /// Finds the index in the given buffer of a newline character, either the first or the last (based on the parameters).
-    /// If a combined newline (\r\n), the index returned is that of the last character in the sequence.
-    /// </summary>
-    /// <param name="buffer">The buffer to search in.</param>
-    /// <param name="startOffset">The index of the first byte to start searching at.</param>
-    /// <param name="length">The number of bytes to search, starting from the given startOffset.</param>
-    /// <param name="reverse">If true, searches from the startOffset down to the beginning of the buffer. If false, searches upwards.</param>
-    /// <returns>The index of the closest newline character in the sequence (based on direction) that was found. Returns -1 if not found. </returns>
+
+    /**
+     * Finds the index in the given buffer of a newline character, either the first or the last (based on the parameters).
+     * If a combined newline (\r\n), the index returned is that of the last character in the sequence.
+     *
+     * @param buffer The buffer to search in.
+     * @param startOffset The index of the first byte to start searching at.
+     * @param length The number of bytes to search, starting from the given startOffset.
+     * @param reverse If true, searches from the startOffset down to the beginning of the buffer. If false, searches upwards.
+     * @param encoding Indicates the type of encoding to use for the buffered bytes.
+     * @param delimiter Optionally indicates the delimiter to consider as the "new line", which MUST BE a single character. If null, the default is '\\r', '\\n' and '\\r\\n'.
+     * @return The index of the closest newline character in the sequence (based on direction) that was found. Returns -1 if not found.
+     */
     public static int FindNewline(byte[] buffer, int startOffset, int length, boolean reverse, Charset encoding, String delimiter) {
         if (buffer.length == 0 || length == 0) {
             return -1;
@@ -132,11 +136,13 @@ public class StringExtensions {
         return result;
     }
 
-    /// <summary>
-    /// Determines whether the specified character is newline.
-    /// </summary>
-    /// <param name="c">The character.</param>
-    /// <returns></returns>
+    /**
+     * Determines whether the specified character is newline.
+     *
+     * @param c The character.
+     * @param delimiter The delimiter to use. If null or empty CR LF characters are used.
+     * @return
+     */
     private static boolean IsNewline(char c, String delimiter) {
         if ((delimiter == null || StringUtils.isEmpty(delimiter))) {
             return c == '\r' || c == '\n';
