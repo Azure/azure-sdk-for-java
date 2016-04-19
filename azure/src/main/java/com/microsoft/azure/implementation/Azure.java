@@ -11,7 +11,7 @@ import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.Tenants;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureBase;
 import com.microsoft.azure.management.resources.fluentcore.collection.*;
-import com.microsoft.azure.management.storage.ResourceGroupContext;
+import com.microsoft.azure.management.storage.ResourceGroupContextStorage;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
@@ -42,9 +42,9 @@ public final class Azure {
     }
 
     public interface ResourceGroup extends com.microsoft.azure.management.resources.models.ResourceGroup {
-        ResourceGroupContext.StorageAccounts storageAccounts();
-        // com.microsoft.azure.management.compute.ResourceGroupContext.VirtualMachines virtualMachines();
-        // com.microsoft.azure.management.compute.ResourceGroupContext.AvailabilitySets availabilitySets();
-        // com.microsoft.azure.management.network.ResourceGroupContext.VirtualNetworks virtualNetworks();
+        ResourceGroupContextStorage.StorageAccounts storageAccounts();
+        // ResourceGroupContextCompute.VirtualMachines virtualMachines();
+        // ResourceGroupContextCompute.AvailabilitySets availabilitySets();
+        // ResourceGroupContextNetwork.VirtualNetworks virtualNetworks();
     }
 }

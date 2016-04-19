@@ -4,7 +4,7 @@ import com.microsoft.azure.management.resources.ResourceConnector;
 import com.microsoft.azure.management.resources.implementation.ResourceGroupsImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
-import com.microsoft.azure.management.storage.ResourceGroupContext;
+import com.microsoft.azure.management.storage.ResourceGroupContextStorage;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
@@ -12,7 +12,7 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 
 public class StorageResourceConnector implements ResourceConnector<StorageResourceConnector> {
     private StorageManagementClientImpl client;
-    private ResourceGroupContext.StorageAccounts storageAccounts;
+    private ResourceGroupContextStorage.StorageAccounts storageAccounts;
     private Usages usages;
     private ResourceGroup resourceGroup;
 
@@ -32,7 +32,7 @@ public class StorageResourceConnector implements ResourceConnector<StorageResour
         }
     }
 
-    public ResourceGroupContext.StorageAccounts storageAccounts() {
+    public ResourceGroupContextStorage.StorageAccounts storageAccounts() {
         if (storageAccounts == null) {
             this.storageAccounts = new ResourceGroupContextImpl(resourceGroup)
                     .storageAccounts(storageAccountsCore());
