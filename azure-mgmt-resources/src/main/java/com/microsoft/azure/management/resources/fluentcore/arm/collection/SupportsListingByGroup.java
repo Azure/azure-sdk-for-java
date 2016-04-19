@@ -20,8 +20,9 @@
 
 package com.microsoft.azure.management.resources.fluentcore.arm.collection;
 
+import com.microsoft.azure.CloudException;
+import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 public interface SupportsListingByGroup<T> {
 	/**
@@ -30,5 +31,5 @@ public interface SupportsListingByGroup<T> {
 	 * @return
 	 * @throws Exception
 	 */
-	List<T> list(String groupName) throws Exception;
+	List<T> list(String groupName) throws CloudException, IOException;;
 }

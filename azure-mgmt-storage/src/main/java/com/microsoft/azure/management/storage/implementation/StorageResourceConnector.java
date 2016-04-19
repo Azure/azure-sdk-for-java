@@ -1,6 +1,8 @@
 package com.microsoft.azure.management.storage.implementation;
 
 import com.microsoft.azure.management.resources.ResourceConnector;
+import com.microsoft.azure.management.resources.implementation.ResourceGroupsImpl;
+import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.storage.ResourceGroupContext;
 import com.microsoft.azure.management.storage.Usages;
@@ -14,7 +16,8 @@ public class StorageResourceConnector implements ResourceConnector<StorageResour
 
     private StorageResourceConnector(ServiceClientCredentials credentials,  ResourceGroup resourceGroup) {
         this.client = new StorageManagementClientImpl(credentials);
-        this.storageAccounts = new StorageAccountsWithGroupContextImpl(client, resourceGroup);
+        this.storageAccounts = new ResourceGroupContextImpl()
+                .new StorageAccountsImpl(new StorageAccountsImpl(this.client, new ResourceGroupsImpl(new ResourceManagementClientImpl(credentials))), resourceGroup);
         this.usages = new UsagesImpl(client);
     }
 

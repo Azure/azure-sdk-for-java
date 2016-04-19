@@ -3,6 +3,7 @@ package com.microsoft.azure.management.storage.implementation;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
 import com.microsoft.azure.management.storage.models.StorageAccount;
@@ -30,7 +31,7 @@ public class StorageAccountsImpl
         return createFluentWrapperList(list.getBody());
     }
 
-    public List<StorageAccount> list(String groupName) throws Exception {
+    public List<StorageAccount> list(String groupName) throws CloudException, IOException {
         ServiceResponse<List<StorageAccountInner>> list = client.storageAccounts().listByResourceGroup(groupName);
         return createFluentWrapperList(list.getBody());
     }
@@ -52,6 +53,10 @@ public class StorageAccountsImpl
         return createFluentWrapper(name);
     }
 
+    public StorageAccount.DefinitionWithGroupContextBlank define(String name, ResourceGroup resourceGroup) {
+        return createFluentWrapper(name, resourceGroup);
+    }
+
     /***************************************************
      * Helpers
      ***************************************************/
@@ -59,6 +64,11 @@ public class StorageAccountsImpl
     private StorageAccountImpl createFluentWrapper(String name) {
         StorageAccountInner storageAccountInner = new StorageAccountInner();
         return new StorageAccountImpl(name, storageAccountInner, this.client, this.resourceGroups);
+    }
+
+    private StorageAccountImpl createFluentWrapper(String name, ResourceGroup resourceGroup) {
+        StorageAccountInner storageAccountInner = new StorageAccountInner();
+        return new StorageAccountImpl(name, storageAccountInner, this.client, resourceGroup);
     }
 
     private StorageAccountImpl createFluentWrapper(StorageAccountInner storageAccountInner) {

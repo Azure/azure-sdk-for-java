@@ -6,6 +6,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.storage.models.StorageAccount;
 
 public interface StorageAccounts extends
@@ -15,4 +16,5 @@ public interface StorageAccounts extends
         SupportsCreating<StorageAccount.DefinitionBlank>,
         SupportsDeleting,
         SupportsDeletingByGroup {
+    StorageAccount.DefinitionWithGroupContextBlank define(String name, ResourceGroup resourceGroup);
 }
