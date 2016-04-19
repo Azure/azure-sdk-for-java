@@ -4,25 +4,28 @@ import com.microsoft.azure.management.resources.Deployments.InGroup;
 import com.microsoft.azure.management.resources.GenericResources;
 import com.microsoft.azure.management.resources.ResourceConnector;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
+import com.microsoft.azure.management.resources.models.ResourceGroup;
+import com.microsoft.rest.credentials.ServiceClientCredentials;
 
 public class ARMResourceConnector implements ResourceConnector<ARMResourceConnector> {
     private ResourceManagementClientImpl client;
     private GenericResources genericResources;
     private InGroup deployments;
 
-    private ARMResourceConnector(ResourceManagementClientImpl resourceManagementClient, String resourceGroupName) {
-        this.client = resourceManagementClient;
-        this.genericResources = new GenericResourcesImpl(this.client, resourceGroupName);
-        this.deployments = new DeploymentsInGroupImpl(resourceManagementClient, resourceGroupName);
+    private ARMResourceConnector(ServiceClientCredentials credentials, String subscriptionId, ResourceGroup resourceGroup) {
+        this.client = new ResourceManagementClientImpl(credentials);
+        this.client.setSubscriptionId(subscriptionId);
+        this.genericResources = new GenericResourcesImpl(this.client, resourceGroup.name());
+        this.deployments = new DeploymentsInGroupImpl(this.client, resourceGroup.name());
     }
 
-    private static ARMResourceConnector create(ResourceManagementClientImpl resourceManagementClient, String resourceGroupName) {
-        return new ARMResourceConnector(resourceManagementClient, resourceGroupName);
+    private static ARMResourceConnector create(ServiceClientCredentials credentials, String subscriptionId, ResourceGroup resourceGroup) {
+        return new ARMResourceConnector(credentials, subscriptionId, resourceGroup);
     }
 
     public static class Builder implements ResourceConnector.Builder<ARMResourceConnector> {
-        public ARMResourceConnector create(ResourceManagementClientImpl resourceManagementClient, String resourceGroupName) {
-            return ARMResourceConnector.create(resourceManagementClient, resourceGroupName);
+        public ARMResourceConnector create(ServiceClientCredentials credentials, String subscriptionId, ResourceGroup resourceGroup) {
+            return ARMResourceConnector.create(credentials, subscriptionId, resourceGroup);
         }
     }
 
