@@ -9,8 +9,8 @@ import java.io.IOException;
 import java.util.List;
 
 
-    // Implementation of storage account collection with a resource group context.
-    //
+// Implementation of storage account collection with a resource group context.
+//
 public class StorageAccountsInGroupImpl implements StorageAccountsInGroup {
     private ResourceGroup resourceGroup;
     private StorageAccounts storageAccountsCore;

@@ -30,6 +30,10 @@ public class AzureResourceGroupImpl extends ResourceGroupImpl implements Azure.R
         return new StorageAccountsInGroupImpl(storageAccountsCore(), resourceGroupCore);
     }
 
+    public ResourceGroup resourceGroupCore() {
+        return resourceGroupCore;
+    }
+
     private ResourceGroups resourceGroupsCore() {
         if (resourceGroupsCore == null) {
             resourceGroupsCore = new ResourceGroupsImpl(this.client);
