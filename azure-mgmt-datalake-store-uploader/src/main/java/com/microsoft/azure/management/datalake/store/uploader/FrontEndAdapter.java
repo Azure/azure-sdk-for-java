@@ -11,6 +11,9 @@ public interface FrontEndAdapter {
      *
      * @param streamPath The relative path to the stream.
      * @param overwrite  Whether to overwrite an existing stream.
+     * @param data The data to include in the stream during creation.
+     * @param byteCount The number of bytes from data to include (starting at 0).
+     * @throws Exception
      */
     void CreateStream(String streamPath, boolean overwrite, byte[] data, int byteCount) throws Exception;
 
@@ -19,6 +22,7 @@ public interface FrontEndAdapter {
      *
      * @param streamPath The relative path to the stream.
      * @param recurse    if set to true recursively delete. This is used for folder streams only.
+     * @throws Exception
      */
     void DeleteStream(String streamPath, boolean recurse) throws Exception;
 
@@ -29,6 +33,7 @@ public interface FrontEndAdapter {
      * @param data An array of bytes to be appended to the stream.
      * @param offset The offset at which to append to the stream.
      * @param length The number of bytes to append (starting at 0).
+     * @throws Exception
      */
     void AppendToStream(String streamPath, byte[] data, long offset, int length) throws Exception;
 
@@ -37,6 +42,7 @@ public interface FrontEndAdapter {
      *
      * @param streamPath The relative path to the stream.
      * @return True if the stream exists, false otherwise.
+     * @throws Exception
      */
     boolean StreamExists(String streamPath) throws Exception;
 
