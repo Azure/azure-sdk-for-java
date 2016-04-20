@@ -28,7 +28,7 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
     public void getStorageAccountFromResource() throws Exception {
         StorageAccount storageAccount1 = resourceClient.resourceGroups()
                 .get("my-rg")
-                .resourcesInGroup(new StorageResourceConnector.Builder())
+                .connectToResource(new StorageResourceConnector.Builder())
                 .storageAccounts()
                 .define("my-stg")
                 .withAccountType(AccountType.PREMIUM_LRS)
@@ -43,7 +43,7 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
 
         Usages usages = resourceClient.resourceGroups()
                 .get("my-rg")
-                .resourcesInGroup(new StorageResourceConnector.Builder())
+                .connectToResource(new StorageResourceConnector.Builder())
                 .usages();
     }
 

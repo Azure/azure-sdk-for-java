@@ -14,4 +14,10 @@ public interface StorageAccounts extends
         SupportsCreating<StorageAccount.DefinitionBlank>,
         SupportsDeleting,
         SupportsDeletingByGroup {
+
+    interface InGroup extends
+            SupportsListing<StorageAccount>,
+            SupportsCreating<StorageAccount.DefinitionProvisionable>,
+            SupportsDeleting {
+    }
 }
