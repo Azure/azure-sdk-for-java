@@ -20,8 +20,10 @@ public class StorageAccountsInGroupImpl implements StorageAccountsInGroup {
         this.resourceGroup = resourceGroup;
     }
 
-    public StorageAccount.DefinitionWithGroupContextBlank define(String name) {
-        return storageAccountsCore.define(name, resourceGroup);
+    public StorageAccount.DefinitionProvisionable define(String name) throws Exception {
+        return storageAccountsCore.define(name)
+                .withRegion(resourceGroup.location())
+                .withExistingGroup(resourceGroup.name());
     }
 
     public void delete(String name) throws Exception {

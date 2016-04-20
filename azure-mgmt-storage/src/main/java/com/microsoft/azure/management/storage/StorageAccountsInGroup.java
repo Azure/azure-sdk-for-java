@@ -8,6 +8,6 @@ import com.microsoft.azure.management.storage.models.StorageAccount;
 // StorageAccount collection in a resource group context.
 public interface StorageAccountsInGroup extends
         SupportsListing<StorageAccount>,
-        SupportsCreating<StorageAccount.DefinitionWithGroupContextBlank>,
+        SupportsCreating<StorageAccount.DefinitionProvisionable>,
         SupportsDeleting {
 }
