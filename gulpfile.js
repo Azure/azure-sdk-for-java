@@ -112,6 +112,9 @@ gulp.task('codegen', function(cb) {
         });
     } else {
         autoRestExe = autoRestVersion + "/binaries/net45/AutoRest.exe";
+        if (process.platform !== 'win32') {
+            autoRestExe = "mono " + autoRestExe;
+        }
         handleInput(projects, cb);
     }
 

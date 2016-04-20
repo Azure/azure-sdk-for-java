@@ -5,13 +5,17 @@ import java.util.regex.Pattern;
 
 public class ResourceUtils {
     public static String groupFromResourceId(String id) {
-        if (id == null) {
-            return null;
+        return extractFromResourceId(id, "resourcegroups");
+    }
+
+    public static String extractFromResourceId(String id, String identifier) {
+        if (id == null || identifier == null) {
+            return id;
         }
-        Pattern pattern = Pattern.compile("resourcegroups\\/[-\\w\\._]+");
+        Pattern pattern = Pattern.compile(identifier + "/[-\\w\\._]+");
         Matcher matcher = pattern.matcher(id);
         if (matcher.find()) {
-            return matcher.group().split("\\/")[1];
+            return matcher.group().split("/")[1];
         } else {
             return null;
         }

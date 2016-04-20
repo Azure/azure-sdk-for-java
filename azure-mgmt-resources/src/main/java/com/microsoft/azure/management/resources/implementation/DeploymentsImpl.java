@@ -7,10 +7,9 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.api.DeploymentsInner;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
-import com.microsoft.azure.management.resources.models.Deployment;
-import com.microsoft.azure.management.resources.models.ResourceGroup;
-import com.microsoft.azure.management.resources.models.implementation.DeploymentImpl;
-import com.microsoft.azure.management.resources.models.implementation.api.DeploymentExtendedInner;
+import com.microsoft.azure.management.resources.Deployment;
+import com.microsoft.azure.management.resources.ResourceGroup;
+import com.microsoft.azure.management.resources.implementation.api.DeploymentExtendedInner;
 import com.microsoft.rest.RestException;
 
 import java.io.IOException;
@@ -24,14 +23,14 @@ public class DeploymentsImpl
     protected ResourceGroups resourceGroups;
     protected PagedListConverter<DeploymentExtendedInner, Deployment> converter;
 
-    public DeploymentsImpl(ResourceManagementClientImpl serviceClient) {
+    public DeploymentsImpl(final ResourceManagementClientImpl serviceClient) {
         this.serviceClient = serviceClient;
         this.deployments = serviceClient.deployments();
         this.resourceGroups = new ResourceGroupsImpl(serviceClient);
         converter = new PagedListConverter<DeploymentExtendedInner, Deployment>() {
             @Override
             public Deployment typeConvert(DeploymentExtendedInner deploymentInner) {
-                return new DeploymentImpl(deploymentInner, deployments, resourceGroups);
+                return new DeploymentImpl(deploymentInner, deployments, resourceGroups, serviceClient);
             }
         };
     }
@@ -65,7 +64,7 @@ public class DeploymentsImpl
     public Deployment.DefinitionBlank define(String name) throws Exception {
         DeploymentExtendedInner deployment = new DeploymentExtendedInner();
         deployment.setName(name);
-        return new DeploymentImpl(deployment, deployments, new ResourceGroupsImpl(serviceClient));
+        return new DeploymentImpl(deployment, deployments, resourceGroups, serviceClient);
     }
 
     @Override
@@ -74,7 +73,7 @@ public class DeploymentsImpl
             try {
                 DeploymentExtendedInner inner = deployments.get(group.name(), name).getBody();
                 if (inner != null) {
-                    return new DeploymentImpl(inner, deployments, resourceGroups);
+                    return new DeploymentImpl(inner, deployments, resourceGroups, serviceClient);
                 }
             } catch (CloudException ex) {
             }

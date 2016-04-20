@@ -3,13 +3,12 @@ package com.microsoft.azure.management.storage.implementation;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
-import com.microsoft.azure.management.resources.models.ResourceGroup;
+import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
-import com.microsoft.azure.management.storage.models.StorageAccount;
-import com.microsoft.azure.management.storage.models.implementation.api.StorageAccountInner;
+import com.microsoft.azure.management.storage.StorageAccount;
+import com.microsoft.azure.management.storage.implementation.api.StorageAccountInner;
 import com.microsoft.rest.ServiceResponse;
-import com.microsoft.azure.management.storage.models.implementation.StorageAccountImpl;
 
 import java.io.IOException;
 import java.util.ArrayList;

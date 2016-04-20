@@ -41,7 +41,7 @@ public final class Azure {
             SupportsUpdating<Azure.ResourceGroup.UpdateBlank> {
     }
 
-    public interface ResourceGroup extends com.microsoft.azure.management.resources.models.ResourceGroup {
+    public interface ResourceGroup extends com.microsoft.azure.management.resources.ResourceGroup {
         StorageAccountsInGroup storageAccounts();
         // VirtualMachinesInGroup virtualMachines();
         // AvailabilitySetsInGroup availabilitySets();

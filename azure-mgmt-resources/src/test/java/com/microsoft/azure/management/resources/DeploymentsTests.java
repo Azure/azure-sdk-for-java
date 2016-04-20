@@ -2,10 +2,7 @@ package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.implementation.ARMResourceConnector;
-import com.microsoft.azure.management.resources.models.Deployment;
-import com.microsoft.azure.management.resources.models.GenericResource;
-import com.microsoft.azure.management.resources.models.ResourceGroup;
-import com.microsoft.azure.management.resources.models.implementation.api.DeploymentMode;
+import com.microsoft.azure.management.resources.implementation.api.DeploymentMode;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;

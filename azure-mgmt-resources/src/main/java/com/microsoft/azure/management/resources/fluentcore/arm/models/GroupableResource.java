@@ -1,7 +1,7 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.models;
 
-import com.microsoft.azure.management.resources.models.ResourceGroup;
-import com.microsoft.azure.management.resources.models.implementation.api.ResourceGroupInner;
+import com.microsoft.azure.management.resources.ResourceGroup;
+import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
 
 public interface GroupableResource extends
 		Resource {
