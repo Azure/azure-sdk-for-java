@@ -82,23 +82,23 @@ public class DataLakeAnalyticsJobOperationsTests extends DataLakeAnalyticsManage
         UUID jobId = UUID.randomUUID();
         UUID secondJobId = UUID.randomUUID();
 
-        JobInformation jobCreateResponse = dataLakeAnalyticsJobManagementClient.getJobOperations().create(jobId, adlaAcct, jobToSubmit).getBody();
+        JobInformation jobCreateResponse = dataLakeAnalyticsJobManagementClient.getJobOperations().create(adlaAcct, jobId, jobToSubmit).getBody();
         Assert.assertNotNull(jobCreateResponse);
 
         // cancel the job
-        dataLakeAnalyticsJobManagementClient.getJobOperations().cancel(jobId, adlaAcct);
+        dataLakeAnalyticsJobManagementClient.getJobOperations().cancel(adlaAcct, jobId);
 
         // Get the job and ensure it was cancelled
-        JobInformation cancelledJobResponse = dataLakeAnalyticsJobManagementClient.getJobOperations().get(jobId, adlaAcct).getBody();
+        JobInformation cancelledJobResponse = dataLakeAnalyticsJobManagementClient.getJobOperations().get(adlaAcct, jobId).getBody();
         Assert.assertEquals(JobResult.CANCELLED, cancelledJobResponse.getResult());
         Assert.assertNotNull(cancelledJobResponse.getErrorMessage());
         Assert.assertTrue(cancelledJobResponse.getErrorMessage().size() >= 1);
 
         // Resubmit and wait for job to finish
-        jobCreateResponse = dataLakeAnalyticsJobManagementClient.getJobOperations().create(secondJobId, adlaAcct, jobToSubmit).getBody();
+        jobCreateResponse = dataLakeAnalyticsJobManagementClient.getJobOperations().create(adlaAcct, secondJobId, jobToSubmit).getBody();
         Assert.assertNotNull(jobCreateResponse);
 
-        JobInformation getJobResponse = dataLakeAnalyticsJobManagementClient.getJobOperations().get(jobCreateResponse.getJobId(), adlaAcct).getBody();
+        JobInformation getJobResponse = dataLakeAnalyticsJobManagementClient.getJobOperations().get(adlaAcct, jobCreateResponse.getJobId()).getBody();
         Assert.assertNotNull(getJobResponse);
 
         int maxWaitInSeconds = 180; // 3 minutes should be long enough
@@ -109,7 +109,7 @@ public class DataLakeAnalyticsJobOperationsTests extends DataLakeAnalyticsManage
             // wait 5 seconds before polling again
             Thread.sleep(5000);
             curWaitInSeconds += 5;
-            getJobResponse = dataLakeAnalyticsJobManagementClient.getJobOperations().get(jobCreateResponse.getJobId(), adlaAcct).getBody();
+            getJobResponse = dataLakeAnalyticsJobManagementClient.getJobOperations().get(adlaAcct, jobCreateResponse.getJobId()).getBody();
             Assert.assertNotNull(getJobResponse);
         }
 

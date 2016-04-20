@@ -25,6 +25,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagementTestBase {
     // constants
@@ -37,7 +38,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
 
     private static String rgName = generateName("javaadlsrg");
     private static String adlsAcct = generateName("javaadlsacct");
-    private static String aclUserId = "027c28d5-c91d-49f0-98c5-d10134b169b3";
+
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -83,31 +84,31 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
         GetAndCompareFileOrFolder(adlsAcct, filePath, FileType.FILE, 0);
 
         // verify it does not have an expiration
-        var fileInfo = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().GetFileInfo(filePath, adlsAcct);
+        var fileInfo = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().GetFileInfo(adlsAcct, filePath);
         Assert.assertTrue(fileInfo.FileInfo.ExpirationTime <= 0 || fileInfo.FileInfo.ExpirationTime == maxTimeInMilliseconds, "Expiration time was not equal to 0 or DateTime.MaxValue.Ticks! Actual value reported: " + fileInfo.FileInfo.ExpirationTime);
 
         // set the expiration time as an absolute value
 
         var toSetAbsolute = ToUnixTimeStampMs(HttpMockServer.GetVariable("absoluteTime", DateTime.Now.AddSeconds(120).ToString()));
-        dataLakeStoreFileSystemManagementClient.getFileSystemOperations().SetFileExpiry(filePath, ExpiryOptionType.Absolute, adlsAcct, toSetAbsolute);
-        fileInfo = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().GetFileInfo(filePath, adlsAcct);
+        dataLakeStoreFileSystemManagementClient.getFileSystemOperations().SetFileExpiry(adlsAcct, filePath, ExpiryOptionType.Absolute, toSetAbsolute);
+        fileInfo = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().GetFileInfo(adlsAcct, filePath);
         VerifyTimeInAcceptableRange(toSetAbsolute, fileInfo.FileInfo.ExpirationTime.Value);
 
         // set the expiration time relative to now
         var toSetRelativeToNow = ToUnixTimeStampMs(HttpMockServer.GetVariable("relativeTime", DateTime.Now.AddSeconds(120).ToString()));
-        dataLakeStoreFileSystemManagementClient.getFileSystemOperations().SetFileExpiry(filePath, ExpiryOptionType.RelativeToNow, adlsAcct, 120 * 1000);
-        fileInfo = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().GetFileInfo(filePath, adlsAcct);
+        dataLakeStoreFileSystemManagementClient.getFileSystemOperations().SetFileExpiry(adlsAcct, filePath, ExpiryOptionType.RelativeToNow, 120 * 1000);
+        fileInfo = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().GetFileInfo(adlsAcct, filePath);
         VerifyTimeInAcceptableRange(toSetRelativeToNow, fileInfo.FileInfo.ExpirationTime.Value);
 
         // set expiration time relative to the creation time
         var toSetRelativeCreationTime = fileInfo.FileInfo.CreationTime.Value + (120 * 1000);
-        dataLakeStoreFileSystemManagementClient.getFileSystemOperations().SetFileExpiry(filePath, ExpiryOptionType.RelativeToCreationDate, adlsAcct, 120 * 1000);
-        fileInfo = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().GetFileInfo(filePath, adlsAcct);
+        dataLakeStoreFileSystemManagementClient.getFileSystemOperations().SetFileExpiry(adlsAcct, filePath, ExpiryOptionType.RelativeToCreationDate, 120 * 1000);
+        fileInfo = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().GetFileInfo(adlsAcct, filePath);
         VerifyTimeInAcceptableRange(toSetRelativeCreationTime, fileInfo.FileInfo.ExpirationTime.Value);
 
         // reset expiration time to never
-        dataLakeStoreFileSystemManagementClient.getFileSystemOperations().SetFileExpiry(filePath, ExpiryOptionType.NeverExpire, adlsAcct);
-        fileInfo = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().GetFileInfo(filePath, adlsAcct);
+        dataLakeStoreFileSystemManagementClient.getFileSystemOperations().SetFileExpiry(adlsAcct, filePath, ExpiryOptionType.NeverExpire);
+        fileInfo = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().GetFileInfo(adlsAcct, filePath);
         Assert.assertTrue(fileInfo.FileInfo.ExpirationTime <= 0 || fileInfo.FileInfo.ExpirationTime == maxTimeInMilliseconds, "Expiration time was not equal to 0 or DateTime.MaxValue.Ticks! Actual value reported: " + fileInfo.FileInfo.ExpirationTime);
     }
 
@@ -119,20 +120,20 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
         GetAndCompareFileOrFolder(adlsAcct, filePath, FileType.FILE, 0);
 
         // verify it does not have an expiration
-        var fileInfo = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().GetFileInfo(filePath, adlsAcct);
+        var fileInfo = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().GetFileInfo(adlsAcct, filePath);
         Assert.assertTrue(fileInfo.FileInfo.ExpirationTime <= 0 || fileInfo.FileInfo.ExpirationTime == maxTimeInMilliseconds, "Expiration time was not equal to 0 or DateTime.MaxValue.Ticks! Actual value reported: " + fileInfo.FileInfo.ExpirationTime);
 
         // set the expiration time as an absolute value that is less than the creation time
         var toSetAbsolute = ToUnixTimeStampMs(HttpMockServer.GetVariable("absoluteNegativeTime", DateTime.Now.AddSeconds(-120).ToString()));
-        Assert.assertThrows<CloudException>(() => dataLakeStoreFileSystemManagementClient.getFileSystemOperations().SetFileExpiry(filePath, ExpiryOptionType.Absolute, adlsAcct, toSetAbsolute));
+        Assert.assertThrows<CloudException>(() => dataLakeStoreFileSystemManagementClient.getFileSystemOperations().SetFileExpiry(adlsAcct, filePath, ExpiryOptionType.Absolute, toSetAbsolute));
 
         // set the expiration time as an absolute value that is greater than max allowed time
         toSetAbsolute = ToUnixTimeStampMs(DateTime.MaxValue.ToString()) + 1000;
-        Assert.assertThrows<CloudException>(() => dataLakeStoreFileSystemManagementClient.getFileSystemOperations().SetFileExpiry(filePath, ExpiryOptionType.Absolute, adlsAcct, toSetAbsolute));
+        Assert.assertThrows<CloudException>(() => dataLakeStoreFileSystemManagementClient.getFileSystemOperations().SetFileExpiry(adlsAcct, filePath, ExpiryOptionType.Absolute, toSetAbsolute));
 
         // reset expiration time to never with a value and confirm the value is not honored
-        dataLakeStoreFileSystemManagementClient.getFileSystemOperations().SetFileExpiry(filePath, ExpiryOptionType.NeverExpire, adlsAcct, 400);
-        fileInfo = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().GetFileInfo(filePath, adlsAcct);
+        dataLakeStoreFileSystemManagementClient.getFileSystemOperations().SetFileExpiry(adlsAcct, filePath, ExpiryOptionType.NeverExpire, 400);
+        fileInfo = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().GetFileInfo(adlsAcct, filePath);
         Assert.assertTrue(fileInfo.FileInfo.ExpirationTime <= 0 || fileInfo.FileInfo.ExpirationTime == maxTimeInMilliseconds, "Expiration time was not equal to 0 or DateTime.MaxValue.Ticks! Actual value reported: " + fileInfo.FileInfo.ExpirationTime);
     }
     */
@@ -148,7 +149,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
         GetAndCompareFileOrFolder(adlsAcct, filePath, FileType.FILE, 0);
 
         // List all the contents in the folder
-        FileStatusesResult listFolderResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().listFileStatus(folderPath, adlsAcct).getBody();
+        FileStatusesResult listFolderResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().listFileStatus(adlsAcct, folderPath).getBody();
 
         // We know that this directory is brand new, so the contents should only be the one file.
         Assert.assertEquals(1, listFolderResponse.getFileStatuses().getFileStatus().size());
@@ -180,9 +181,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
 
         // Append to the file that we created
         String fileContentsToAppend = "More test contents, that were appended!";
-        dataLakeStoreFileSystemManagementClient.getFileSystemOperations().append(filePath,
-            adlsAcct,
-                fileContentsToAppend.getBytes());
+        dataLakeStoreFileSystemManagementClient.getFileSystemOperations().append(adlsAcct, filePath, fileContentsToAppend.getBytes());
 
         GetAndCompareFileOrFolder(adlsAcct, filePath, FileType.FILE,
                 fileContentsToAppend.length());
@@ -202,8 +201,8 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
         String targetFolder = CreateFolder(adlsAcct, true);
 
         dataLakeStoreFileSystemManagementClient.getFileSystemOperations().concat(
-                String.format("%s/%s", targetFolder, fileToConcatTo),
                 adlsAcct,
+                String.format("%s/%s", targetFolder, fileToConcatTo),
                 Arrays.asList(new String[]{filePath1, filePath2})
         );
 
@@ -214,8 +213,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
 
         // Attempt to get the files that were concatted together, which should fail and throw
         try {
-            dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getFileStatus(filePath1,
-                    adlsAcct);
+            dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getFileStatus(adlsAcct, filePath1);
             Assert.assertTrue("Able to get the old file after concat", false);
         }
         catch (Exception e) {
@@ -223,8 +221,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
         }
 
         try {
-            dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getFileStatus(filePath2,
-                    adlsAcct);
+            dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getFileStatus(adlsAcct, filePath2);
             Assert.assertTrue("Able to get the old file after concat", false);
         }
         catch (Exception e) {
@@ -246,8 +243,8 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
         String targetFolder = CreateFolder(adlsAcct, true);
 
         dataLakeStoreFileSystemManagementClient.getFileSystemOperations().msConcat(
-                String.format("%s/%s", targetFolder, fileToConcatTo),
                 adlsAcct,
+                String.format("%s/%s", targetFolder, fileToConcatTo),
                 String.format("sources=%s,%s", filePath1, filePath2).getBytes(),
                 false);
 
@@ -258,8 +255,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
 
         // Attempt to get the files that were concatted together, which should fail and throw
         try {
-            dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getFileStatus(filePath1,
-                    adlsAcct);
+            dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getFileStatus(adlsAcct, filePath1);
             Assert.assertTrue("Able to get the old file after concat", false);
         }
         catch (Exception e) {
@@ -267,8 +263,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
         }
 
         try {
-            dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getFileStatus(filePath2,
-                    adlsAcct);
+            dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getFileStatus(adlsAcct, filePath2);
             Assert.assertTrue("Able to get the old file after concat", false);
         }
         catch (Exception e) {
@@ -296,8 +291,8 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
         String destination = String.format("%s/%s", targetFolder, fileToConcatTo);
 
         dataLakeStoreFileSystemManagementClient.getFileSystemOperations().msConcat(
-                destination,
                 adlsAcct,
+                destination,
                 String.format("sources=%s,%s", filePath1, filePath2).getBytes(),
                 true);
 
@@ -308,7 +303,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
 
         // Attempt to get the files that were concatted together, which should fail and throw
         try {
-            dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getFileStatus(filePath1, adlsAcct);
+            dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getFileStatus(adlsAcct, filePath1);
             Assert.assertTrue("Able to get the old file after concat", false);
         }
         catch (Exception e) {
@@ -316,7 +311,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
         }
 
         try {
-            dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getFileStatus(filePath2, adlsAcct);
+            dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getFileStatus(adlsAcct, filePath2);
             Assert.assertTrue("Able to get the old file after concat", false);
         }
         catch (Exception e) {
@@ -325,7 +320,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
 
         // Attempt to get the folder that was created for concat, which should fail and be deleted.
         try {
-            dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getFileStatus(concatFolderPath, adlsAcct);
+            dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getFileStatus(adlsAcct, concatFolderPath);
             Assert.assertTrue("Able to get the old folder after concat", false);
         }
         catch (Exception e) {
@@ -346,8 +341,9 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
 
         // Move file first
         String fileToMove = "SDKTestMoveFile01.txt";
-        FileOperationResult moveFileResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().rename(filePath,
+        FileOperationResult moveFileResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().rename(
                 adlsAcct,
+                filePath,
                 String.format("%s/%s", targetFolder1, fileToMove)).getBody();
         Assert.assertTrue(moveFileResponse.getOperationResult());
         GetAndCompareFileOrFolder(adlsAcct,
@@ -357,7 +353,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
 
         // Ensure the old file is gone
         try {
-            dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getFileStatus(filePath, adlsAcct);
+            dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getFileStatus(adlsAcct, filePath);
             Assert.assertTrue("Able to get the old file after rename", false);
         }
         catch (Exception e) {
@@ -365,8 +361,9 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
         }
 
         // Now move folder completely.
-        FileOperationResult moveFolderResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().rename(targetFolder1,
-                adlsAcct,
+        FileOperationResult moveFolderResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().rename(
+                adlsAcct, 
+                targetFolder1,
                 targetFolder2).getBody();
         Assert.assertTrue(moveFolderResponse.getOperationResult());
 
@@ -375,15 +372,16 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
 
         // ensure all the contents of the folder moved
         // List all the contents in the folder
-        FileStatusesResult listFolderResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().listFileStatus(targetFolder2,
-                adlsAcct).getBody();
+        FileStatusesResult listFolderResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().listFileStatus(
+                adlsAcct, 
+                targetFolder2).getBody();
 
         // We know that this directory is brand new, so the contents should only be the one file.
         Assert.assertEquals(1, listFolderResponse.getFileStatuses().getFileStatus().size());
         Assert.assertEquals(FileType.FILE, listFolderResponse.getFileStatuses().getFileStatus().get(0).getType());
 
         try {
-            dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getFileStatus(targetFolder1, adlsAcct);
+            dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getFileStatus(adlsAcct, targetFolder1);
             Assert.assertTrue("Able to get the old folder after rename", false);
         }
         catch (Exception e) {
@@ -433,8 +431,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
     @Test
     public void DataLakeStoreFileSystemGetAndSetAcl() throws Exception
     {
-        AclStatusResult currentAcl = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getAclStatus("/",
-                adlsAcct).getBody();
+        AclStatusResult currentAcl = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getAclStatus(adlsAcct, "/").getBody();
 
         List<String> aclToReplaceWith = new ArrayList<String>(currentAcl.getAclStatus().getEntries());
         String originalOther = "";
@@ -452,17 +449,17 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
         Assert.assertFalse(originalOther == null || StringUtils.isEmpty(originalOther));
 
         // Set the other acl to RWX
-        dataLakeStoreFileSystemManagementClient.getFileSystemOperations().setAcl("/",
-                adlsAcct,
-                StringUtils.join(",", aclToReplaceWith));
+        dataLakeStoreFileSystemManagementClient.getFileSystemOperations().setAcl(adlsAcct, "/",
+                StringUtils.join(aclToReplaceWith, ","));
 
-        AclStatusResult newAcl = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getAclStatus("/",
-                adlsAcct).getBody();
+        AclStatusResult newAcl = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getAclStatus(adlsAcct, "/").getBody();
         // verify the ACL actually changed
 
         // Check the access first and assert that it returns OK (note: this is currently only for the user making the request, so it is not testing "other")
-        dataLakeStoreFileSystemManagementClient.getFileSystemOperations().checkAccess("/",
-                adlsAcct, "rwx");
+        dataLakeStoreFileSystemManagementClient.getFileSystemOperations().checkAccess(
+                adlsAcct, 
+                "/",
+                "rwx");
 
         boolean foundIt = false;
         for (String entry: newAcl.getAclStatus().getEntries())
@@ -477,12 +474,13 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
         Assert.assertTrue(foundIt);
 
         // Set it back using specific entry
-        dataLakeStoreFileSystemManagementClient.getFileSystemOperations().modifyAclEntries("/",
-                adlsAcct, originalOther);
+        dataLakeStoreFileSystemManagementClient.getFileSystemOperations().modifyAclEntries(
+                adlsAcct, 
+                "/",
+                originalOther);
 
         // Now confirm that it equals the original ACL
-        List<String> finalEntries = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getAclStatus("/",
-                adlsAcct).getBody()
+        List<String> finalEntries = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getAclStatus(adlsAcct, "/").getBody()
                 .getAclStatus().getEntries();
         for (String entry: finalEntries)
         {
@@ -507,19 +505,17 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
 
         String filePath = CreateFile(adlsAcct, true, true, folderToCreate);
         FileStatusProperties originalFileStatus =
-                dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getFileStatus(filePath,
-                        adlsAcct).getBody().getFileStatus();
+                dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getFileStatus(adlsAcct, filePath).getBody().getFileStatus();
         // TODO: Set replication on file, this has been removed until it is confirmed as a supported API.
             /*
-            var replicationResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().SetReplication(filePath,
-                adlsAcct, 3);
+            var replicationResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().SetReplication(adlsAcct, filePath, 3);
             Assert.assertTrue(replicationResponse.Boolean);
             */
 
             /*
          * This API is available but all values put into it are ignored. Commenting this out until this API is fully functional.
         Assert.assertEquals(3,
-            dataLakeFileSystemClient.FileSystem.getFileStatus(filePath, adlsAcct)
+            dataLakeFileSystemClient.FileSystem.getFileStatus(filePath)
                 .FileStatus.Replication);
         */
 
@@ -527,13 +523,10 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
         // We use a static date for now since we aren't interested in whether the value is set properly, only that the method returns a 200.
             /* TODO: Re enable once supported.
             var timeToSet = new DateTime(2015, 10, 26, 14, 30, 0).Ticks;
-            dataLakeStoreFileSystemManagementClient.getFileSystemOperations().SetTimes(filePath,
-                adlsAcct, timeToSet, timeToSet);
+            dataLakeStoreFileSystemManagementClient.getFileSystemOperations().SetTimes(adlsAcct, filePath, timeToSet, timeToSet);
 
             var fileStatusAfterTime =
-                dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getFileStatus(filePath,
-                    adlsAcct)
-                    .FileStatus;
+                dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getFileStatus(adlsAcct, filePath).FileStatus;
             */
 
             /*
@@ -545,20 +538,18 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
         // TODO: Symlink creation is explicitly not supported, but when it is this should be enabled.
             /*
             var symLinkName = generateName("testPath/symlinktest1");
-            Assert.assertThrows<CloudException>(() => dataLakeStoreFileSystemManagementClient.getFileSystemOperations().CreateSymLink(filePath,
-                adlsAcct, symLinkName, true));
+            Assert.assertThrows<CloudException>(() => dataLakeStoreFileSystemManagementClient.getFileSystemOperations().CreateSymLink(adlsAcct, filePath, symLinkName, true));
             */
 
         // Once symlinks are available, remove the throws test and uncomment out this code.
         // Assert.assertTrue(createSymLinkResponse.StatusCode == HttpStatusCode.OK);
-        // Assert.assertDoesNotThrow(() => dataLakeFileSystemClient.FileSystem.getFileStatus(symLinkName, adlsAcct));
+        // Assert.assertDoesNotThrow(() => dataLakeFileSystemClient.FileSystem.getFileStatus(symLinkName));
     }
 
     @Test
     public void DataLakeStoreFileSystemGetAcl() throws Exception
     {
-        AclStatusResult aclGetResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getAclStatus("/",
-                adlsAcct).getBody();
+        AclStatusResult aclGetResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getAclStatus(adlsAcct, "/").getBody();
 
         Assert.assertNotNull(aclGetResponse.getAclStatus());
         Assert.assertTrue(aclGetResponse.getAclStatus().getEntries().size() > 0);
@@ -569,7 +560,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
     @Test
     public void DataLakeStoreFileSystemSetAcl() throws Exception
     {
-        AclStatusResult aclGetResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getAclStatus("/", adlsAcct).getBody();
+        AclStatusResult aclGetResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getAclStatus(adlsAcct, "/").getBody();
 
         Assert.assertNotNull(aclGetResponse.getAclStatus());
         Assert.assertTrue(aclGetResponse.getAclStatus().getEntries().size() > 0);
@@ -577,16 +568,16 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
         int currentCount = aclGetResponse.getAclStatus().getEntries().size();
 
         // add an entry to the ACL Entries
-        String newAcls = StringUtils.join(",", aclGetResponse.getAclStatus().getEntries());
+        String newAcls = StringUtils.join(aclGetResponse.getAclStatus().getEntries(), ",");
+        String aclUserId = UUID.randomUUID().toString();
         newAcls += String.format(",user:%s:rwx", aclUserId);
 
-        dataLakeStoreFileSystemManagementClient.getFileSystemOperations().setAcl("/",
-                adlsAcct,
+        dataLakeStoreFileSystemManagementClient.getFileSystemOperations().setAcl(adlsAcct, 
+                "/",
                 newAcls);
 
         // retrieve the ACL again and confirm the new entry is present
-        aclGetResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getAclStatus("/",
-                adlsAcct).getBody();
+        aclGetResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getAclStatus(adlsAcct, "/").getBody();
 
         Assert.assertNotNull(aclGetResponse.getAclStatus());
         Assert.assertTrue(aclGetResponse.getAclStatus().getEntries().size() > 0);
@@ -606,22 +597,21 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
     @Test
     public void DataLakeStoreFileSystemSetDeleteAclEntry() throws Exception
     {
-        AclStatusResult aclGetResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getAclStatus("/", adlsAcct).getBody();
+        AclStatusResult aclGetResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getAclStatus(adlsAcct, "/").getBody();
 
         Assert.assertNotNull(aclGetResponse.getAclStatus());
         Assert.assertTrue(aclGetResponse.getAclStatus().getEntries().size() > 0);
 
         int currentCount = aclGetResponse.getAclStatus().getEntries().size();
         // add an entry to the ACL Entries
+        String aclUserId = UUID.randomUUID().toString();
         String newAce = String.format("user:%s:rwx", aclUserId);
 
-        dataLakeStoreFileSystemManagementClient.getFileSystemOperations().modifyAclEntries("",
-                adlsAcct,
+        dataLakeStoreFileSystemManagementClient.getFileSystemOperations().modifyAclEntries(adlsAcct, "",
                 newAce);
 
         // retrieve the ACL again and confirm the new entry is present
-        aclGetResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getAclStatus("/",
-                adlsAcct).getBody();
+        aclGetResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getAclStatus(adlsAcct, "/").getBody();
 
         Assert.assertNotNull(aclGetResponse.getAclStatus());
         Assert.assertTrue(aclGetResponse.getAclStatus().getEntries().size() > 0);
@@ -639,13 +629,13 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
 
         // now remove the entry
         String aceToRemove = String.format(",user:%s", aclUserId);
-        dataLakeStoreFileSystemManagementClient.getFileSystemOperations().removeAclEntries("/",
-                adlsAcct,
+        dataLakeStoreFileSystemManagementClient.getFileSystemOperations().removeAclEntries(
+                adlsAcct, 
+                "/",
                 aceToRemove);
 
         // retrieve the ACL again and confirm the new entry is present
-        aclGetResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getAclStatus("/",
-                adlsAcct).getBody();
+        aclGetResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getAclStatus(adlsAcct, "/").getBody();
 
         Assert.assertNotNull(aclGetResponse.getAclStatus());
         Assert.assertTrue(aclGetResponse.getAclStatus().getEntries().size() > 0);
@@ -670,7 +660,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
                 ? generateName(folderToCreate)
                 : folderToCreate;
 
-        FileOperationResult response = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().mkdirs(folderPath, caboAccountName).getBody();
+        FileOperationResult response = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().mkdirs(caboAccountName, folderPath).getBody();
         Assert.assertTrue(response.getOperationResult());
 
         return folderPath;
@@ -684,16 +674,16 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
         if (!withContents)
         {
             dataLakeStoreFileSystemManagementClient.getFileSystemOperations().create(
-                    filePath,
-                    caboAccountName);
+                    caboAccountName,
+                    filePath);
         }
         else
         {
             dataLakeStoreFileSystemManagementClient.getFileSystemOperations().create(
-                    filePath,
                     caboAccountName,
+                    filePath,
                     fileContentsToAdd.getBytes(),
-                    false); // never overwrite during create, because if it exists we want to fail.
+                    true);
         }
 
         return filePath;
@@ -701,7 +691,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
 
     private FileStatusResult GetAndCompareFileOrFolder(String caboAccountName, String fileOrFolderPath, FileType expectedType, long expectedLength) throws Exception
     {
-        FileStatusResult getResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getFileStatus(fileOrFolderPath, caboAccountName).getBody();
+        FileStatusResult getResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().getFileStatus(caboAccountName, fileOrFolderPath).getBody();
         Assert.assertEquals(expectedLength, (long) getResponse.getFileStatus().getLength());
         Assert.assertEquals(expectedType, getResponse.getFileStatus().getType());
 
@@ -711,7 +701,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
     private void CompareFileContents(String caboAccountName, String filePath, String expectedContents) throws Exception
     {
         // download a file and ensure they are equal
-        InputStream openResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().open(filePath, caboAccountName).getBody();
+        InputStream openResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().open(caboAccountName, filePath).getBody();
         Assert.assertNotNull(openResponse);
         Writer writer = new StringWriter();
         char[] buffer = new char[1024];
@@ -737,7 +727,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
             // try to delete a folder that doesn't exist or should fail
             try
             {
-                FileOperationResult deleteFolderResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().delete(folderPath, caboAccountName, recursive).getBody();
+                FileOperationResult deleteFolderResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().delete(caboAccountName, folderPath, recursive).getBody();
                 Assert.assertTrue(!deleteFolderResponse.getOperationResult());
             }
             catch (Exception e)
@@ -748,7 +738,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
         else
         {
             // Delete a folder
-            FileOperationResult deleteFolderResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().delete(folderPath, caboAccountName, recursive).getBody();
+            FileOperationResult deleteFolderResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().delete(caboAccountName, folderPath, recursive).getBody();
             Assert.assertTrue(deleteFolderResponse.getOperationResult());
         }
     }
@@ -760,7 +750,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
             // try to delete a file that doesn't exist
             try
             {
-                FileOperationResult deleteFileResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().delete(filePath, caboAccountName, false).getBody();
+                FileOperationResult deleteFileResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().delete(caboAccountName, filePath, false).getBody();
                 Assert.assertTrue(!deleteFileResponse.getOperationResult());
             }
             catch (Exception e)
@@ -771,7 +761,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
         else
         {
             // Delete a file
-            FileOperationResult deleteFileResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().delete(filePath, caboAccountName, false).getBody();
+            FileOperationResult deleteFileResponse = dataLakeStoreFileSystemManagementClient.getFileSystemOperations().delete(caboAccountName, filePath, false).getBody();
             Assert.assertTrue(deleteFileResponse.getOperationResult());
         }
     }

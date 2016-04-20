@@ -224,27 +224,27 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Creates the specified secret for use with external data sources in the specified database.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database in which to create the secret.
      * @param secretName The name of the secret.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param parameters The parameters required to create the secret (name and password)
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the USqlSecret object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<USqlSecret> createSecret(String databaseName, String secretName, String accountName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (secretName == null) {
-            throw new IllegalArgumentException("Parameter secretName is required and cannot be null.");
-        }
+    public ServiceResponse<USqlSecret> createSecret(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (secretName == null) {
+            throw new IllegalArgumentException("Parameter secretName is required and cannot be null.");
         }
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
@@ -262,25 +262,17 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Creates the specified secret for use with external data sources in the specified database.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database in which to create the secret.
      * @param secretName The name of the secret.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param parameters The parameters required to create the secret (name and password)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall createSecretAsync(String databaseName, String secretName, String accountName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<USqlSecret> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall createSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<USqlSecret> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (secretName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter secretName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -288,6 +280,14 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (secretName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter secretName is required and cannot be null."));
             return null;
         }
         if (parameters == null) {
@@ -326,27 +326,27 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Modifies the specified secret for use with external data sources in the specified database.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the secret.
      * @param secretName The name of the secret.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param parameters The parameters required to modify the secret (name and password)
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the USqlSecret object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<USqlSecret> updateSecret(String databaseName, String secretName, String accountName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (secretName == null) {
-            throw new IllegalArgumentException("Parameter secretName is required and cannot be null.");
-        }
+    public ServiceResponse<USqlSecret> updateSecret(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (secretName == null) {
+            throw new IllegalArgumentException("Parameter secretName is required and cannot be null.");
         }
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
@@ -364,25 +364,17 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Modifies the specified secret for use with external data sources in the specified database.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the secret.
      * @param secretName The name of the secret.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param parameters The parameters required to modify the secret (name and password)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updateSecretAsync(String databaseName, String secretName, String accountName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<USqlSecret> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall updateSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<USqlSecret> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (secretName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter secretName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -390,6 +382,14 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (secretName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter secretName is required and cannot be null."));
             return null;
         }
         if (parameters == null) {
@@ -428,26 +428,26 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Gets the specified secret in the specified database.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the secret.
      * @param secretName The name of the secret to get
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the USqlSecret object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<USqlSecret> getSecret(String databaseName, String secretName, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (secretName == null) {
-            throw new IllegalArgumentException("Parameter secretName is required and cannot be null.");
-        }
+    public ServiceResponse<USqlSecret> getSecret(String accountName, String databaseName, String secretName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (secretName == null) {
+            throw new IllegalArgumentException("Parameter secretName is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -461,24 +461,16 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Gets the specified secret in the specified database.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the secret.
      * @param secretName The name of the secret to get
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSecretAsync(String databaseName, String secretName, String accountName, final ServiceCallback<USqlSecret> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getSecretAsync(String accountName, String databaseName, String secretName, final ServiceCallback<USqlSecret> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (secretName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter secretName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -486,6 +478,14 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (secretName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter secretName is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -519,26 +519,26 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Deletes the specified secret in the specified database.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the secret.
      * @param secretName The name of the secret to delete
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> deleteSecret(String databaseName, String secretName, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (secretName == null) {
-            throw new IllegalArgumentException("Parameter secretName is required and cannot be null.");
-        }
+    public ServiceResponse<Void> deleteSecret(String accountName, String databaseName, String secretName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (secretName == null) {
+            throw new IllegalArgumentException("Parameter secretName is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -552,24 +552,16 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Deletes the specified secret in the specified database.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the secret.
      * @param secretName The name of the secret to delete
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteSecretAsync(String databaseName, String secretName, String accountName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall deleteSecretAsync(String accountName, String databaseName, String secretName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (secretName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter secretName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -577,6 +569,14 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (secretName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter secretName is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -609,26 +609,26 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the specified external data source from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the external data source.
      * @param externalDataSourceName The name of the external data source.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the USqlExternalDataSource object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<USqlExternalDataSource> getExternalDataSource(String databaseName, String externalDataSourceName, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (externalDataSourceName == null) {
-            throw new IllegalArgumentException("Parameter externalDataSourceName is required and cannot be null.");
-        }
+    public ServiceResponse<USqlExternalDataSource> getExternalDataSource(String accountName, String databaseName, String externalDataSourceName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (externalDataSourceName == null) {
+            throw new IllegalArgumentException("Parameter externalDataSourceName is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -642,24 +642,16 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the specified external data source from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the external data source.
      * @param externalDataSourceName The name of the external data source.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getExternalDataSourceAsync(String databaseName, String externalDataSourceName, String accountName, final ServiceCallback<USqlExternalDataSource> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getExternalDataSourceAsync(String accountName, String databaseName, String externalDataSourceName, final ServiceCallback<USqlExternalDataSource> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (externalDataSourceName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter externalDataSourceName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -667,6 +659,14 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (externalDataSourceName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter externalDataSourceName is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -700,22 +700,22 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of external data sources from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the external data sources.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the external data sources.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlExternalDataSource&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlExternalDataSource>> listExternalDataSources(final String databaseName, final String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlExternalDataSource>> listExternalDataSources(final String accountName, final String databaseName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -743,19 +743,15 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of external data sources from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the external data sources.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the external data sources.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listExternalDataSourcesAsync(final String databaseName, final String accountName, final ListOperationCallback<USqlExternalDataSource> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listExternalDataSourcesAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlExternalDataSource> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -763,6 +759,10 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -803,8 +803,8 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of external data sources from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the external data sources.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the external data sources.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -817,15 +817,15 @@ public final class CatalogOperationsImpl implements CatalogOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlExternalDataSource&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlExternalDataSource>> listExternalDataSources(final String databaseName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlExternalDataSource>> listExternalDataSources(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -846,8 +846,8 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of external data sources from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the external data sources.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the external data sources.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -859,13 +859,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listExternalDataSourcesAsync(final String databaseName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlExternalDataSource> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listExternalDataSourcesAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlExternalDataSource> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -873,6 +869,10 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -913,26 +913,26 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the specified credential from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the schema.
      * @param credentialName The name of the credential.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the USqlCredential object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<USqlCredential> getCredential(String databaseName, String credentialName, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (credentialName == null) {
-            throw new IllegalArgumentException("Parameter credentialName is required and cannot be null.");
-        }
+    public ServiceResponse<USqlCredential> getCredential(String accountName, String databaseName, String credentialName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (credentialName == null) {
+            throw new IllegalArgumentException("Parameter credentialName is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -946,24 +946,16 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the specified credential from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the schema.
      * @param credentialName The name of the credential.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getCredentialAsync(String databaseName, String credentialName, String accountName, final ServiceCallback<USqlCredential> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getCredentialAsync(String accountName, String databaseName, String credentialName, final ServiceCallback<USqlCredential> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (credentialName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter credentialName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -971,6 +963,14 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (credentialName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter credentialName is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -1004,22 +1004,22 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of credentials from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the schema.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the schema.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlCredential&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlCredential>> listCredentials(final String databaseName, final String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlCredential>> listCredentials(final String accountName, final String databaseName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -1047,19 +1047,15 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of credentials from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the schema.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the schema.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listCredentialsAsync(final String databaseName, final String accountName, final ListOperationCallback<USqlCredential> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listCredentialsAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlCredential> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1067,6 +1063,10 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -1107,8 +1107,8 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of credentials from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the schema.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the schema.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -1121,15 +1121,15 @@ public final class CatalogOperationsImpl implements CatalogOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlCredential&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlCredential>> listCredentials(final String databaseName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlCredential>> listCredentials(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -1150,8 +1150,8 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of credentials from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the schema.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the schema.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -1163,13 +1163,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listCredentialsAsync(final String databaseName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlCredential> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listCredentialsAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlCredential> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1177,6 +1173,10 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -1217,16 +1217,22 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the specified procedure from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the procedure.
      * @param schemaName The name of the schema containing the procedure.
      * @param procedureName The name of the procedure.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the USqlProcedure object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<USqlProcedure> getProcedure(String databaseName, String schemaName, String procedureName, String accountName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<USqlProcedure> getProcedure(String accountName, String databaseName, String schemaName, String procedureName) throws CloudException, IOException, IllegalArgumentException {
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.getAdlaCatalogDnsSuffix() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
         if (databaseName == null) {
             throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
@@ -1235,12 +1241,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (procedureName == null) {
             throw new IllegalArgumentException("Parameter procedureName is required and cannot be null.");
-        }
-        if (accountName == null) {
-            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
-        }
-        if (this.client.getAdlaCatalogDnsSuffix() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -1254,17 +1254,25 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the specified procedure from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the procedure.
      * @param schemaName The name of the schema containing the procedure.
      * @param procedureName The name of the procedure.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getProcedureAsync(String databaseName, String schemaName, String procedureName, String accountName, final ServiceCallback<USqlProcedure> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getProcedureAsync(String accountName, String databaseName, String schemaName, String procedureName, final ServiceCallback<USqlProcedure> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (accountName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getAdlaCatalogDnsSuffix() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
         }
         if (databaseName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
@@ -1276,14 +1284,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (procedureName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter procedureName is required and cannot be null."));
-            return null;
-        }
-        if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getAdlaCatalogDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -1317,26 +1317,26 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of procedures from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the procedures.
      * @param schemaName The name of the schema containing the procedures.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlProcedure&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlProcedure>> listProcedures(final String databaseName, final String schemaName, final String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (schemaName == null) {
-            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlProcedure>> listProcedures(final String accountName, final String databaseName, final String schemaName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (schemaName == null) {
+            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -1364,24 +1364,16 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of procedures from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the procedures.
      * @param schemaName The name of the schema containing the procedures.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listProceduresAsync(final String databaseName, final String schemaName, final String accountName, final ListOperationCallback<USqlProcedure> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listProceduresAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlProcedure> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (schemaName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1389,6 +1381,14 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (schemaName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -1429,9 +1429,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of procedures from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the procedures.
      * @param schemaName The name of the schema containing the procedures.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -1444,18 +1444,18 @@ public final class CatalogOperationsImpl implements CatalogOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlProcedure&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlProcedure>> listProcedures(final String databaseName, final String schemaName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (schemaName == null) {
-            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlProcedure>> listProcedures(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (schemaName == null) {
+            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -1476,9 +1476,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of procedures from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the procedures.
      * @param schemaName The name of the schema containing the procedures.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -1490,17 +1490,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listProceduresAsync(final String databaseName, final String schemaName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlProcedure> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listProceduresAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlProcedure> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (schemaName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1508,6 +1500,14 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (schemaName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -1548,16 +1548,22 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the specified table from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the table.
      * @param schemaName The name of the schema containing the table.
      * @param tableName The name of the table.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the USqlTable object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<USqlTable> getTable(String databaseName, String schemaName, String tableName, String accountName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<USqlTable> getTable(String accountName, String databaseName, String schemaName, String tableName) throws CloudException, IOException, IllegalArgumentException {
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.getAdlaCatalogDnsSuffix() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
         if (databaseName == null) {
             throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
@@ -1566,12 +1572,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (tableName == null) {
             throw new IllegalArgumentException("Parameter tableName is required and cannot be null.");
-        }
-        if (accountName == null) {
-            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
-        }
-        if (this.client.getAdlaCatalogDnsSuffix() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -1585,17 +1585,25 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the specified table from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the table.
      * @param schemaName The name of the schema containing the table.
      * @param tableName The name of the table.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getTableAsync(String databaseName, String schemaName, String tableName, String accountName, final ServiceCallback<USqlTable> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getTableAsync(String accountName, String databaseName, String schemaName, String tableName, final ServiceCallback<USqlTable> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (accountName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getAdlaCatalogDnsSuffix() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
         }
         if (databaseName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
@@ -1607,14 +1615,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (tableName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
-            return null;
-        }
-        if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getAdlaCatalogDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -1648,26 +1648,26 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the tables.
      * @param schemaName The name of the schema containing the tables.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlTable&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlTable>> listTables(final String databaseName, final String schemaName, final String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (schemaName == null) {
-            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlTable>> listTables(final String accountName, final String databaseName, final String schemaName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (schemaName == null) {
+            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -1695,24 +1695,16 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the tables.
      * @param schemaName The name of the schema containing the tables.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listTablesAsync(final String databaseName, final String schemaName, final String accountName, final ListOperationCallback<USqlTable> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listTablesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTable> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (schemaName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1720,6 +1712,14 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (schemaName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -1760,9 +1760,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the tables.
      * @param schemaName The name of the schema containing the tables.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -1775,18 +1775,18 @@ public final class CatalogOperationsImpl implements CatalogOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlTable&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlTable>> listTables(final String databaseName, final String schemaName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (schemaName == null) {
-            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlTable>> listTables(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (schemaName == null) {
+            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -1807,9 +1807,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the tables.
      * @param schemaName The name of the schema containing the tables.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -1821,17 +1821,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listTablesAsync(final String databaseName, final String schemaName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTable> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listTablesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTable> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (schemaName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1839,6 +1831,14 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (schemaName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -1879,16 +1879,22 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the specified view from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the view.
      * @param schemaName The name of the schema containing the view.
      * @param viewName The name of the view.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the USqlView object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<USqlView> getView(String databaseName, String schemaName, String viewName, String accountName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<USqlView> getView(String accountName, String databaseName, String schemaName, String viewName) throws CloudException, IOException, IllegalArgumentException {
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.getAdlaCatalogDnsSuffix() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
         if (databaseName == null) {
             throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
@@ -1897,12 +1903,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (viewName == null) {
             throw new IllegalArgumentException("Parameter viewName is required and cannot be null.");
-        }
-        if (accountName == null) {
-            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
-        }
-        if (this.client.getAdlaCatalogDnsSuffix() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -1916,17 +1916,25 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the specified view from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the view.
      * @param schemaName The name of the schema containing the view.
      * @param viewName The name of the view.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getViewAsync(String databaseName, String schemaName, String viewName, String accountName, final ServiceCallback<USqlView> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getViewAsync(String accountName, String databaseName, String schemaName, String viewName, final ServiceCallback<USqlView> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (accountName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getAdlaCatalogDnsSuffix() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
         }
         if (databaseName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
@@ -1938,14 +1946,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (viewName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter viewName is required and cannot be null."));
-            return null;
-        }
-        if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getAdlaCatalogDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -1979,26 +1979,26 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of views from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the views.
      * @param schemaName The name of the schema containing the views.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlView&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlView>> listViews(final String databaseName, final String schemaName, final String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (schemaName == null) {
-            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlView>> listViews(final String accountName, final String databaseName, final String schemaName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (schemaName == null) {
+            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -2026,24 +2026,16 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of views from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the views.
      * @param schemaName The name of the schema containing the views.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listViewsAsync(final String databaseName, final String schemaName, final String accountName, final ListOperationCallback<USqlView> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listViewsAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlView> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (schemaName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -2051,6 +2043,14 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (schemaName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -2091,9 +2091,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of views from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the views.
      * @param schemaName The name of the schema containing the views.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -2106,18 +2106,18 @@ public final class CatalogOperationsImpl implements CatalogOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlView&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlView>> listViews(final String databaseName, final String schemaName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (schemaName == null) {
-            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlView>> listViews(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (schemaName == null) {
+            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -2138,9 +2138,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of views from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the views.
      * @param schemaName The name of the schema containing the views.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -2152,17 +2152,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listViewsAsync(final String databaseName, final String schemaName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlView> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listViewsAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlView> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (schemaName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -2170,6 +2162,14 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (schemaName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -2210,17 +2210,23 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the specified table from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the statistics.
      * @param schemaName The name of the schema containing the statistics.
      * @param tableName The name of the table containing the statistics.
      * @param statisticsName The name of the table statistics.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the USqlTableStatistics object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<USqlTableStatistics> getTableStatistic(String databaseName, String schemaName, String tableName, String statisticsName, String accountName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<USqlTableStatistics> getTableStatistic(String accountName, String databaseName, String schemaName, String tableName, String statisticsName) throws CloudException, IOException, IllegalArgumentException {
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.getAdlaCatalogDnsSuffix() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
         if (databaseName == null) {
             throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
@@ -2232,12 +2238,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (statisticsName == null) {
             throw new IllegalArgumentException("Parameter statisticsName is required and cannot be null.");
-        }
-        if (accountName == null) {
-            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
-        }
-        if (this.client.getAdlaCatalogDnsSuffix() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -2251,18 +2251,26 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the specified table from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the statistics.
      * @param schemaName The name of the schema containing the statistics.
      * @param tableName The name of the table containing the statistics.
      * @param statisticsName The name of the table statistics.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getTableStatisticAsync(String databaseName, String schemaName, String tableName, String statisticsName, String accountName, final ServiceCallback<USqlTableStatistics> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getTableStatisticAsync(String accountName, String databaseName, String schemaName, String tableName, String statisticsName, final ServiceCallback<USqlTableStatistics> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (accountName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getAdlaCatalogDnsSuffix() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
         }
         if (databaseName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
@@ -2278,14 +2286,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (statisticsName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter statisticsName is required and cannot be null."));
-            return null;
-        }
-        if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getAdlaCatalogDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -2319,16 +2319,22 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the statistics.
      * @param schemaName The name of the schema containing the statistics.
      * @param tableName The name of the table containing the statistics.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlTableStatistics&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlTableStatistics>> listTableStatistics(final String databaseName, final String schemaName, final String tableName, final String accountName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<USqlTableStatistics>> listTableStatistics(final String accountName, final String databaseName, final String schemaName, final String tableName) throws CloudException, IOException, IllegalArgumentException {
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.getAdlaCatalogDnsSuffix() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
         if (databaseName == null) {
             throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
@@ -2337,12 +2343,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (tableName == null) {
             throw new IllegalArgumentException("Parameter tableName is required and cannot be null.");
-        }
-        if (accountName == null) {
-            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
-        }
-        if (this.client.getAdlaCatalogDnsSuffix() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -2370,17 +2370,25 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the statistics.
      * @param schemaName The name of the schema containing the statistics.
      * @param tableName The name of the table containing the statistics.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listTableStatisticsAsync(final String databaseName, final String schemaName, final String tableName, final String accountName, final ListOperationCallback<USqlTableStatistics> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listTableStatisticsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final ListOperationCallback<USqlTableStatistics> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (accountName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getAdlaCatalogDnsSuffix() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
         }
         if (databaseName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
@@ -2392,14 +2400,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (tableName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
-            return null;
-        }
-        if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getAdlaCatalogDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -2440,10 +2440,10 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the statistics.
      * @param schemaName The name of the schema containing the statistics.
      * @param tableName The name of the table containing the statistics.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -2456,7 +2456,13 @@ public final class CatalogOperationsImpl implements CatalogOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlTableStatistics&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlTableStatistics>> listTableStatistics(final String databaseName, final String schemaName, final String tableName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<USqlTableStatistics>> listTableStatistics(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.getAdlaCatalogDnsSuffix() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
         if (databaseName == null) {
             throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
@@ -2465,12 +2471,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (tableName == null) {
             throw new IllegalArgumentException("Parameter tableName is required and cannot be null.");
-        }
-        if (accountName == null) {
-            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
-        }
-        if (this.client.getAdlaCatalogDnsSuffix() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -2491,10 +2491,10 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the statistics.
      * @param schemaName The name of the schema containing the statistics.
      * @param tableName The name of the table containing the statistics.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -2506,9 +2506,17 @@ public final class CatalogOperationsImpl implements CatalogOperations {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listTableStatisticsAsync(final String databaseName, final String schemaName, final String tableName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableStatistics> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listTableStatisticsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableStatistics> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (accountName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getAdlaCatalogDnsSuffix() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
         }
         if (databaseName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
@@ -2520,14 +2528,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (tableName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
-            return null;
-        }
-        if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getAdlaCatalogDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -2568,26 +2568,26 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of types within the specified database and schema from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the types.
      * @param schemaName The name of the schema containing the types.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlType&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlType>> listTypes(final String databaseName, final String schemaName, final String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (schemaName == null) {
-            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlType>> listTypes(final String accountName, final String databaseName, final String schemaName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (schemaName == null) {
+            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -2615,24 +2615,16 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of types within the specified database and schema from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the types.
      * @param schemaName The name of the schema containing the types.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listTypesAsync(final String databaseName, final String schemaName, final String accountName, final ListOperationCallback<USqlType> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listTypesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlType> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (schemaName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -2640,6 +2632,14 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (schemaName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -2680,9 +2680,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of types within the specified database and schema from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the types.
      * @param schemaName The name of the schema containing the types.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -2695,18 +2695,18 @@ public final class CatalogOperationsImpl implements CatalogOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlType&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlType>> listTypes(final String databaseName, final String schemaName, final String accountName, final USqlType filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (schemaName == null) {
-            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlType>> listTypes(final String accountName, final String databaseName, final String schemaName, final USqlType filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (schemaName == null) {
+            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -2728,9 +2728,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of types within the specified database and schema from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the types.
      * @param schemaName The name of the schema containing the types.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -2742,17 +2742,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listTypesAsync(final String databaseName, final String schemaName, final String accountName, final USqlType filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlType> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listTypesAsync(final String accountName, final String databaseName, final String schemaName, final USqlType filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlType> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (schemaName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -2760,6 +2752,14 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (schemaName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -2801,16 +2801,22 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the specified table valued function from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the table valued function.
      * @param schemaName The name of the schema containing the table valued function.
      * @param tableValuedFunctionName The name of the tableValuedFunction.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the USqlTableValuedFunction object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<USqlTableValuedFunction> getTableValuedFunction(String databaseName, String schemaName, String tableValuedFunctionName, String accountName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<USqlTableValuedFunction> getTableValuedFunction(String accountName, String databaseName, String schemaName, String tableValuedFunctionName) throws CloudException, IOException, IllegalArgumentException {
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.getAdlaCatalogDnsSuffix() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
         if (databaseName == null) {
             throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
@@ -2819,12 +2825,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (tableValuedFunctionName == null) {
             throw new IllegalArgumentException("Parameter tableValuedFunctionName is required and cannot be null.");
-        }
-        if (accountName == null) {
-            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
-        }
-        if (this.client.getAdlaCatalogDnsSuffix() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -2838,17 +2838,25 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the specified table valued function from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the table valued function.
      * @param schemaName The name of the schema containing the table valued function.
      * @param tableValuedFunctionName The name of the tableValuedFunction.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getTableValuedFunctionAsync(String databaseName, String schemaName, String tableValuedFunctionName, String accountName, final ServiceCallback<USqlTableValuedFunction> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getTableValuedFunctionAsync(String accountName, String databaseName, String schemaName, String tableValuedFunctionName, final ServiceCallback<USqlTableValuedFunction> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (accountName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getAdlaCatalogDnsSuffix() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
         }
         if (databaseName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
@@ -2860,14 +2868,6 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (tableValuedFunctionName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter tableValuedFunctionName is required and cannot be null."));
-            return null;
-        }
-        if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getAdlaCatalogDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -2901,26 +2901,26 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of table valued functions from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the table valued functions.
      * @param schemaName The name of the schema containing the table valued functions.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlTableValuedFunction&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlTableValuedFunction>> listTableValuedFunctions(final String databaseName, final String schemaName, final String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (schemaName == null) {
-            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlTableValuedFunction>> listTableValuedFunctions(final String accountName, final String databaseName, final String schemaName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (schemaName == null) {
+            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -2948,24 +2948,16 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of table valued functions from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the table valued functions.
      * @param schemaName The name of the schema containing the table valued functions.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listTableValuedFunctionsAsync(final String databaseName, final String schemaName, final String accountName, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listTableValuedFunctionsAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (schemaName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -2973,6 +2965,14 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (schemaName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -3013,9 +3013,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of table valued functions from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the table valued functions.
      * @param schemaName The name of the schema containing the table valued functions.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -3028,18 +3028,18 @@ public final class CatalogOperationsImpl implements CatalogOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlTableValuedFunction&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlTableValuedFunction>> listTableValuedFunctions(final String databaseName, final String schemaName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (schemaName == null) {
-            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlTableValuedFunction>> listTableValuedFunctions(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (schemaName == null) {
+            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -3060,9 +3060,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of table valued functions from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the table valued functions.
      * @param schemaName The name of the schema containing the table valued functions.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -3074,17 +3074,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listTableValuedFunctionsAsync(final String databaseName, final String schemaName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listTableValuedFunctionsAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (schemaName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -3092,6 +3084,14 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (schemaName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -3132,26 +3132,26 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the specified assembly from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the assembly.
      * @param assemblyName The name of the assembly.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the USqlAssembly object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<USqlAssembly> getAssembly(String databaseName, String assemblyName, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (assemblyName == null) {
-            throw new IllegalArgumentException("Parameter assemblyName is required and cannot be null.");
-        }
+    public ServiceResponse<USqlAssembly> getAssembly(String accountName, String databaseName, String assemblyName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (assemblyName == null) {
+            throw new IllegalArgumentException("Parameter assemblyName is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -3165,24 +3165,16 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the specified assembly from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the assembly.
      * @param assemblyName The name of the assembly.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getAssemblyAsync(String databaseName, String assemblyName, String accountName, final ServiceCallback<USqlAssembly> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getAssemblyAsync(String accountName, String databaseName, String assemblyName, final ServiceCallback<USqlAssembly> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (assemblyName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter assemblyName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -3190,6 +3182,14 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (assemblyName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter assemblyName is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -3223,22 +3223,22 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of assemblies from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the assembly.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the assembly.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlAssemblyClr&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlAssemblyClr>> listAssemblies(final String databaseName, final String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlAssemblyClr>> listAssemblies(final String accountName, final String databaseName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -3266,19 +3266,15 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of assemblies from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the assembly.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the assembly.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listAssembliesAsync(final String databaseName, final String accountName, final ListOperationCallback<USqlAssemblyClr> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listAssembliesAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlAssemblyClr> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -3286,6 +3282,10 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -3326,8 +3326,8 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of assemblies from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the assembly.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the assembly.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -3340,15 +3340,15 @@ public final class CatalogOperationsImpl implements CatalogOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlAssemblyClr&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlAssemblyClr>> listAssemblies(final String databaseName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlAssemblyClr>> listAssemblies(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -3369,8 +3369,8 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of assemblies from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the assembly.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the assembly.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -3382,13 +3382,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listAssembliesAsync(final String databaseName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlAssemblyClr> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listAssembliesAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlAssemblyClr> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -3396,6 +3392,10 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -3436,26 +3436,26 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the specified schema from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the schema.
      * @param schemaName The name of the schema.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the USqlSchema object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<USqlSchema> getSchema(String databaseName, String schemaName, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (schemaName == null) {
-            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
-        }
+    public ServiceResponse<USqlSchema> getSchema(String accountName, String databaseName, String schemaName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (schemaName == null) {
+            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -3469,24 +3469,16 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the specified schema from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the schema.
      * @param schemaName The name of the schema.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSchemaAsync(String databaseName, String schemaName, String accountName, final ServiceCallback<USqlSchema> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getSchemaAsync(String accountName, String databaseName, String schemaName, final ServiceCallback<USqlSchema> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (schemaName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -3494,6 +3486,14 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (schemaName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -3527,22 +3527,22 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of schemas from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the schema.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the schema.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlSchema&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlSchema>> listSchemas(final String databaseName, final String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlSchema>> listSchemas(final String accountName, final String databaseName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -3570,19 +3570,15 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of schemas from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the schema.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the schema.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listSchemasAsync(final String databaseName, final String accountName, final ListOperationCallback<USqlSchema> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listSchemasAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlSchema> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -3590,6 +3586,10 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -3630,8 +3630,8 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of schemas from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the schema.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the schema.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -3644,15 +3644,15 @@ public final class CatalogOperationsImpl implements CatalogOperations {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlSchema&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlSchema>> listSchemas(final String databaseName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlSchema>> listSchemas(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -3673,8 +3673,8 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the list of schemas from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the schema.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the schema.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -3686,13 +3686,9 @@ public final class CatalogOperationsImpl implements CatalogOperations {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listSchemasAsync(final String databaseName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlSchema> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listSchemasAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlSchema> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -3700,6 +3696,10 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {
@@ -3740,22 +3740,22 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the specified database from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the USqlDatabase object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<USqlDatabase> getDatabase(String databaseName, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
+    public ServiceResponse<USqlDatabase> getDatabase(String accountName, String databaseName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
@@ -3769,19 +3769,15 @@ public final class CatalogOperationsImpl implements CatalogOperations {
     /**
      * Retrieves the specified database from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getDatabaseAsync(String databaseName, String accountName, final ServiceCallback<USqlDatabase> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getDatabaseAsync(String accountName, String databaseName, final ServiceCallback<USqlDatabase> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -3789,6 +3785,10 @@ public final class CatalogOperationsImpl implements CatalogOperations {
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
             return null;
         }
         if (this.client.getApiVersion() == null) {

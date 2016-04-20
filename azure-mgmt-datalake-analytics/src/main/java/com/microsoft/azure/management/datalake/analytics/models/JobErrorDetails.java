@@ -83,7 +83,7 @@ public class JobErrorDetails {
 
     /**
      * Gets the severity level of the failure. Possible values include:
-     * 'Warning', 'Error'.
+     * 'Warning', 'Error', 'Info'.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private SeverityTypes severity;
