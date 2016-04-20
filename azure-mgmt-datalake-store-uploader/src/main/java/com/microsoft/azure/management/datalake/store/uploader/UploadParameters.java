@@ -207,7 +207,7 @@ public class UploadParameters {
     /**
      * Internally sets the number of threads that are allowed for the upload.
      *
-     * @param threadCount
+     * @param threadCount The number of threads to use for the upload.
      */
     protected void setThreadCount(int threadCount) {
         this.threadCount = threadCount;
