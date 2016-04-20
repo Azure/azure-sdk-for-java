@@ -5,10 +5,9 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDe
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.azure.management.storage.models.StorageAccount;
 
-public interface ResourceGroupContext {
-    interface StorageAccounts extends
-            SupportsListing<StorageAccount>,
-            SupportsCreating<StorageAccount.DefinitionWithGroupContextBlank>,
-            SupportsDeleting {
-    }
+// StorageAccount collection in a resource group context.
+public interface StorageAccountsInGroup extends
+        SupportsListing<StorageAccount>,
+        SupportsCreating<StorageAccount.DefinitionProvisionable>,
+        SupportsDeleting {
 }

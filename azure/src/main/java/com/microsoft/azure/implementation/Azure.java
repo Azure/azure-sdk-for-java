@@ -7,11 +7,12 @@
 package com.microsoft.azure.implementation;
 
 import com.microsoft.azure.management.resources.GenericResources;
-import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.Tenants;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureBase;
+import com.microsoft.azure.management.resources.fluentcore.collection.*;
 import com.microsoft.azure.management.storage.StorageAccounts;
+import com.microsoft.azure.management.storage.StorageAccountsInGroup;
 import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
@@ -31,5 +32,19 @@ public final class Azure {
         GenericResources genericResources();
         StorageAccounts storageAccounts();
         Usages usages();
+    }
+
+    public interface  ResourceGroups extends SupportsListing<Azure.ResourceGroup>,
+            SupportsGetting<Azure.ResourceGroup>,
+            SupportsCreating<Azure.ResourceGroup.DefinitionBlank>,
+            SupportsDeleting,
+            SupportsUpdating<Azure.ResourceGroup.UpdateBlank> {
+    }
+
+    public interface ResourceGroup extends com.microsoft.azure.management.resources.models.ResourceGroup {
+        StorageAccountsInGroup storageAccounts();
+        // VirtualMachinesInGroup virtualMachines();
+        // AvailabilitySetsInGroup availabilitySets();
+        // VirtualNetworksInGroup virtualNetworks();
     }
 }

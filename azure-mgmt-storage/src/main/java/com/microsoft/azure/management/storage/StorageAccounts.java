@@ -16,5 +16,4 @@ public interface StorageAccounts extends
         SupportsCreating<StorageAccount.DefinitionBlank>,
         SupportsDeleting,
         SupportsDeletingByGroup {
-    StorageAccount.DefinitionWithGroupContextBlank define(String name, ResourceGroup resourceGroup);
 }

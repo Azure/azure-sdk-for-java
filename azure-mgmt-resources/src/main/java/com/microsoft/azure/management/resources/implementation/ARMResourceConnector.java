@@ -12,19 +12,20 @@ public class ARMResourceConnector implements ResourceConnector<ARMResourceConnec
     private GenericResources genericResources;
     private InGroup deployments;
 
-    private ARMResourceConnector(ResourceManagementClientImpl resourceManagementClient, String resourceGroupName) {
-        this.client = resourceManagementClient;
-        this.genericResources = new GenericResourcesImpl(this.client, resourceGroupName);
-        this.deployments = new DeploymentsInGroupImpl(resourceManagementClient, resourceGroupName);
+    private ARMResourceConnector(ServiceClientCredentials credentials, String subscriptionId, ResourceGroup resourceGroup) {
+        this.client = new ResourceManagementClientImpl(credentials);
+        this.client.setSubscriptionId(subscriptionId);
+        this.genericResources = new GenericResourcesImpl(this.client, resourceGroup.name());
+        this.deployments = new DeploymentsInGroupImpl(this.client, resourceGroup.name());
     }
 
-    private static ARMResourceConnector create(ResourceManagementClientImpl resourceManagementClient, String resourceGroupName) {
-        return new ARMResourceConnector(resourceManagementClient, resourceGroupName);
+    private static ARMResourceConnector create(ServiceClientCredentials credentials, String subscriptionId, ResourceGroup resourceGroup) {
+        return new ARMResourceConnector(credentials, subscriptionId, resourceGroup);
     }
 
     public static class Builder implements ResourceConnector.Builder<ARMResourceConnector> {
-        public ARMResourceConnector create(ServiceClientCredentials credentials, ResourceGroup resourceGroup) {
-            return ARMResourceConnector.create(new ResourceManagementClientImpl(credentials), resourceGroup.name());
+        public ARMResourceConnector create(ServiceClientCredentials credentials, String subscriptionId, ResourceGroup resourceGroup) {
+            return ARMResourceConnector.create(credentials, subscriptionId, resourceGroup);
         }
     }
 
