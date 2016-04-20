@@ -2,8 +2,7 @@ package com.microsoft.azure.management.storage;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.storage.implementation.StorageResourceConnector;
-import com.microsoft.azure.management.storage.models.StorageAccount;
-import com.microsoft.azure.management.storage.models.implementation.api.AccountType;
+import com.microsoft.azure.management.storage.implementation.api.AccountType;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;

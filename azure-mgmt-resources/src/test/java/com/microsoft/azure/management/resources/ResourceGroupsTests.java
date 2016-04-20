@@ -1,7 +1,6 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.models.ResourceGroup;
 import org.junit.Assert;
 import org.junit.Test;
 

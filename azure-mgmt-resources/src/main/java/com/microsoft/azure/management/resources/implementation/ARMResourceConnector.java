@@ -4,7 +4,7 @@ import com.microsoft.azure.management.resources.Deployments.InGroup;
 import com.microsoft.azure.management.resources.GenericResources;
 import com.microsoft.azure.management.resources.ResourceConnector;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
-import com.microsoft.azure.management.resources.models.ResourceGroup;
+import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
 public class ARMResourceConnector implements ResourceConnector<ARMResourceConnector> {

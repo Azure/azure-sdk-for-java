@@ -6,7 +6,7 @@ import com.microsoft.azure.management.resources.fluentcore.utils.WrappedItemTran
 import com.microsoft.azure.management.resources.fluentcore.utils.WrappedList;
 import com.microsoft.azure.management.resources.implementation.ResourceGroupsImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
-import com.microsoft.azure.management.resources.models.ResourceGroup;
+import com.microsoft.azure.management.resources.ResourceGroup;
 import java.io.IOException;
 import java.util.List;
 

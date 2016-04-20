@@ -7,10 +7,9 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.api.DeploymentsInner;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
-import com.microsoft.azure.management.resources.models.Deployment;
-import com.microsoft.azure.management.resources.models.ResourceGroup;
-import com.microsoft.azure.management.resources.models.implementation.DeploymentImpl;
-import com.microsoft.azure.management.resources.models.implementation.api.DeploymentExtendedInner;
+import com.microsoft.azure.management.resources.Deployment;
+import com.microsoft.azure.management.resources.ResourceGroup;
+import com.microsoft.azure.management.resources.implementation.api.DeploymentExtendedInner;
 import com.microsoft.rest.RestException;
 
 import java.io.IOException;

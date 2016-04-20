@@ -9,8 +9,6 @@ package com.microsoft.azure.management.storage.implementation.api;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.storage.models.implementation.api.PageImpl;
-import com.microsoft.azure.management.storage.models.implementation.api.UsageInner;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;

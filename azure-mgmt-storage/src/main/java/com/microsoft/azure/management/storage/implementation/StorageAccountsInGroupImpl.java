@@ -1,10 +1,10 @@
 package com.microsoft.azure.management.storage.implementation;
 
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.resources.models.ResourceGroup;
+import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.StorageAccountsInGroup;
-import com.microsoft.azure.management.storage.models.StorageAccount;
+import com.microsoft.azure.management.storage.StorageAccount;
 import java.io.IOException;
 import java.util.List;
 

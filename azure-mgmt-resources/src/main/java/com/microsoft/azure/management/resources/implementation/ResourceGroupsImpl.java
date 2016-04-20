@@ -5,9 +5,8 @@ import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupsInner;
-import com.microsoft.azure.management.resources.models.ResourceGroup;
-import com.microsoft.azure.management.resources.models.implementation.ResourceGroupImpl;
-import com.microsoft.azure.management.resources.models.implementation.api.ResourceGroupInner;
+import com.microsoft.azure.management.resources.ResourceGroup;
+import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
 
 import java.io.IOException;
 import java.util.List;
