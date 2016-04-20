@@ -28,7 +28,7 @@ public final class Azure {
     }
 
     public interface Subscription extends AzureBase<Subscription> {
-        Azure.ResourceGroups resourceGroups();
+        ResourceGroups resourceGroups();
         GenericResources genericResources();
         StorageAccounts storageAccounts();
         Usages usages();

@@ -56,19 +56,23 @@ public class AzureTests {
 
     @Test
     public void createStorageAccount() throws Exception {
-        StorageAccount storageAccount1 = storageAccounts.define("my-stg1")
+        StorageAccount storageAccount = storageAccounts.define("my-stg1")
                 .withRegion(Region.ASIA_EAST)
                 .withNewGroup()
                 .withAccountType(AccountType.PREMIUM_LRS)
                 .provision();
+
+        Assert.assertSame(storageAccount.name(), "my-stg1");
     }
 
     @Test
     public void createStorageAccountInResourceGroupContext() throws Exception {
-        StorageAccount storageAccount2 = resourceGroups.get("my-grp")
+        StorageAccount storageAccount = resourceGroups.get("my-grp")
                 .storageAccounts()
-                .define("my-grp2")
+                .define("my-stg2")
                 .withAccountType(AccountType.PREMIUM_LRS)
                 .provision();
+
+        Assert.assertSame(storageAccount.name(), "my-stg2");
     }
 }

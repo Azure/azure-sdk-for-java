@@ -2,9 +2,11 @@ package com.microsoft.azure.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.ResourceGroups;
+import com.microsoft.azure.management.resources.fluentcore.utils.WrappedItemTransformer;
+import com.microsoft.azure.management.resources.fluentcore.utils.WrappedList;
 import com.microsoft.azure.management.resources.implementation.ResourceGroupsImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
-import org.apache.commons.lang3.NotImplementedException;
+import com.microsoft.azure.management.resources.models.ResourceGroup;
 import java.io.IOException;
 import java.util.List;
 
@@ -20,7 +22,21 @@ public class AzureResourceGroupsImpl implements Azure.ResourceGroups {
 
     @Override
     public List<Azure.ResourceGroup> list() throws CloudException, IOException {
-        throw new NotImplementedException("list");
+        final ResourceManagementClientImpl client = this.client;
+        WrappedList<ResourceGroup, Azure.ResourceGroup> wrappedList = new WrappedList<>(this.resourceGroupsCore.list(),
+                new WrappedItemTransformer<ResourceGroup, Azure.ResourceGroup>() {
+                    @Override
+                    public Azure.ResourceGroup toWrapped(ResourceGroup source) {
+                        return new AzureResourceGroupImpl(source, client);
+                    }
+
+                    @Override
+                    public ResourceGroup toSource(Azure.ResourceGroup wrapped) {
+                        return ((AzureResourceGroupImpl)wrapped).resourceGroupCore();
+                    }
+                });
+
+        return wrappedList;
     }
 
     @Override
