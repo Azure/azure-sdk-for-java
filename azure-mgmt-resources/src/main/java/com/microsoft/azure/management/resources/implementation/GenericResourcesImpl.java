@@ -2,14 +2,13 @@ package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.GenericResources;
-import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupsInner;
+import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourcesInner;
 import com.microsoft.azure.management.resources.models.GenericResource;
 import com.microsoft.azure.management.resources.models.implementation.GenericResourceImpl;
 import com.microsoft.azure.management.resources.models.implementation.api.GenericResourceInner;
-import com.microsoft.rest.ServiceCallback;
 
 import java.io.IOException;
 import java.util.List;

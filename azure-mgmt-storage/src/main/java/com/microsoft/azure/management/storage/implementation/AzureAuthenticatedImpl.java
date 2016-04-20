@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.storage.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureBaseImpl;
+import com.microsoft.azure.management.resources.implementation.ResourceGroupsImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.Usages;
@@ -22,7 +23,7 @@ class AzureAuthenticatedImpl extends AzureBaseImpl<AzureStorageManager.Authentic
 
     @Override
     public StorageAccounts storageAccounts() {
-        return new StorageAccountsImpl(storageManagementClient(), resourceManagementClient());
+        return new StorageAccountsImpl(storageManagementClient(), new ResourceGroupsImpl(resourceManagementClient()));
     }
 
     @Override

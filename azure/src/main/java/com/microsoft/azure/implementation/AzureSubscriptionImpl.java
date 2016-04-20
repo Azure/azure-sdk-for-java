@@ -33,8 +33,8 @@ final class AzureSubscriptionImpl extends AzureBaseImpl<Azure.Subscription>
     }
 
     @Override
-    public ResourceGroups resourceGroups() {
-        return new ResourceGroupsImpl(resourceManagementClient());
+    public Azure.ResourceGroups resourceGroups() {
+        return new AzureResourceGroupsImpl(resourceManagementClient());
     }
 
     @Override
@@ -44,7 +44,7 @@ final class AzureSubscriptionImpl extends AzureBaseImpl<Azure.Subscription>
 
     @Override
     public StorageAccounts storageAccounts() {
-        return new StorageAccountsImpl(storageManagementClient(), resourceGroups());
+        return new StorageAccountsImpl(storageManagementClient(), resourceGroupsCore());
     }
 
     @Override
@@ -66,5 +66,9 @@ final class AzureSubscriptionImpl extends AzureBaseImpl<Azure.Subscription>
             storageManagementClient.setSubscriptionId(subscriptionId);
         }
         return storageManagementClient;
+    }
+
+    private ResourceGroups resourceGroupsCore() {
+        return new ResourceGroupsImpl(resourceManagementClient());
     }
 }
