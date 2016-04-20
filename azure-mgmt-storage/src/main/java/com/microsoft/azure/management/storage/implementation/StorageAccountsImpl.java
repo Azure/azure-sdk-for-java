@@ -53,10 +53,6 @@ public class StorageAccountsImpl
         return createFluentWrapper(name);
     }
 
-    public StorageAccount.DefinitionWithGroupContextBlank define(String name, ResourceGroup resourceGroup) {
-        return createFluentWrapper(name, resourceGroup);
-    }
-
     /***************************************************
      * Helpers
      ***************************************************/
