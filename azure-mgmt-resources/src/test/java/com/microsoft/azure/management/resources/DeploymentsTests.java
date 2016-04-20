@@ -34,7 +34,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
 
     @Test
     public void canDeployVirtualNetwork() throws Exception {
-        ARMResourceConnector connector = resourceGroup.resourcesInGroup(new ARMResourceConnector.Builder());
+        ARMResourceConnector connector = resourceGroup.connectToResource(new ARMResourceConnector.Builder());
         connector.deployments()
                 .define(deploymentName)
                 .withTemplateLink(templateUri, contentVersion)

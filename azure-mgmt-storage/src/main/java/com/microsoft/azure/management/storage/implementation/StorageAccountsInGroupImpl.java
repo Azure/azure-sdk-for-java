@@ -3,7 +3,6 @@ package com.microsoft.azure.management.storage.implementation;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.storage.StorageAccounts;
-import com.microsoft.azure.management.storage.StorageAccountsInGroup;
 import com.microsoft.azure.management.storage.StorageAccount;
 import java.io.IOException;
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.List;
 
 // Implementation of storage account collection with a resource group context.
 //
-public class StorageAccountsInGroupImpl implements StorageAccountsInGroup {
+public class StorageAccountsInGroupImpl implements StorageAccounts.InGroup {
     private ResourceGroup resourceGroup;
     private StorageAccounts storageAccountsCore;
 

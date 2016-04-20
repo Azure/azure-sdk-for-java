@@ -45,5 +45,5 @@ public interface ResourceGroup extends
      * Adapter to other resources
      **************************************************************/
 
-    <T extends ResourceConnector> T resourcesInGroup(T.Builder<T> adapterBuilder);
+    <T extends ResourceConnector> T connectToResource(T.Builder<T> adapterBuilder);
 }
