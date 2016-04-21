@@ -5,7 +5,10 @@
  */
 package com.microsoft.azure.management.datalake.store.uploader;
 
+import com.microsoft.azure.CloudException;
 import org.junit.Assert;
+
+import java.io.IOException;
 
 /**
  * A front end mock used for unit testing {@link DataLakeStoreUploader}
@@ -31,7 +34,7 @@ public class UploaderFrontEndMock implements FrontEndAdapter {
         BaseAdapter = baseAdapter;
     }
 
-    public void CreateStream(String streamPath, boolean overwrite, byte[] data, int byteCount) throws Exception {
+    public void CreateStream(String streamPath, boolean overwrite, byte[] data, int byteCount) throws CloudException, IOException {
 
         if(ThrowInCreate) {
             createStreamCount++;
@@ -44,23 +47,23 @@ public class UploaderFrontEndMock implements FrontEndAdapter {
         BaseAdapter.CreateStream(streamPath, overwrite, data, byteCount);
     }
 
-    public void DeleteStream(String streamPath, boolean recurse) throws Exception {
+    public void DeleteStream(String streamPath, boolean recurse) throws CloudException, IOException {
         BaseAdapter.DeleteStream(streamPath, recurse);
     }
 
-    public void AppendToStream(String streamPath, byte[] data, long offset, int byteCount) throws Exception {
+    public void AppendToStream(String streamPath, byte[] data, long offset, int byteCount) throws CloudException, IOException {
         BaseAdapter.AppendToStream(streamPath, data, offset, byteCount);
     }
 
-    public boolean StreamExists(String streamPath) throws Exception {
+    public boolean StreamExists(String streamPath) throws CloudException, IOException {
         return BaseAdapter.StreamExists(streamPath);
     }
 
-    public long GetStreamLength(String streamPath) throws Exception {
+    public long GetStreamLength(String streamPath) throws CloudException, IOException {
         return BaseAdapter.GetStreamLength(streamPath);
     }
 
-    public void Concatenate(String targetStreamPath, String[] inputStreamPaths) throws Exception {
+    public void Concatenate(String targetStreamPath, String[] inputStreamPaths) throws CloudException, IOException {
         if(ThrowInConcat) {
             throw new IntentionalException();
         }

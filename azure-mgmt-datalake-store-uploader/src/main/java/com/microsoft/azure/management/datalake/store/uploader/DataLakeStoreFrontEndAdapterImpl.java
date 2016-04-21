@@ -91,7 +91,7 @@ public class DataLakeStoreFrontEndAdapterImpl implements FrontEndAdapter {
      * @throws IOException
      * @throws CloudException
      */
-    public boolean StreamExists(String streamPath) throws IOException, CloudException {
+    public boolean StreamExists(String streamPath) throws CloudException, IOException {
         try {
             _client.getFileSystemOperations().getFileStatus(streamPath, _accountName);
         } catch (CloudException cloudEx) {

@@ -5,7 +5,9 @@
  */
 package com.microsoft.azure.management.datalake.store.uploader;
 
+import com.microsoft.azure.CloudException;
+
 /**
  * An exception that we want our mocks to throw sometimes to test out various code paths.
  */
-public class IntentionalException extends Exception { }
+public class IntentionalException extends CloudException { }

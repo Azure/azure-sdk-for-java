@@ -110,7 +110,7 @@ public class UploadParameters {
      * @param inputFilePath The full path to the file to be uploaded.
      * @param targetStreamPath The full stream path where the file will be uploaded to.
      * @param accountName Name of the account to upload to.
-     * @param useSegmentBlockBackOffRetryStrategy if set to <c>true</c> [use segment block back off retry strategy].
+     * @param useSegmentBlockBackOffRetryStrategy if set to <code>true</code> [use segment block back off retry strategy].
      * @param threadCount The maximum number of parallel threads to use for the upload.
      * @param isOverwrite Whether to overwrite the target stream or not.
      * @param isResume Indicates whether to resume a previously interrupted upload.
@@ -126,7 +126,7 @@ public class UploadParameters {
     /**
      * Gets a value indicating whether [to use segment block back off retry strategy].
      *
-     * @return <c>true</c> if [to use segment block back off retry strategy]; otherwise, <c>false</c>.
+     * @return <code>true</code> if [to use segment block back off retry strategy]; otherwise, <code>false</code>.
      */
     public boolean isUseSegmentBlockBackOffRetryStrategy() {
         return useSegmentBlockBackOffRetryStrategy;
@@ -207,7 +207,7 @@ public class UploadParameters {
     /**
      * Internally sets the number of threads that are allowed for the upload.
      *
-     * @param threadCount
+     * @param threadCount The number of threads to use for the upload.
      */
     protected void setThreadCount(int threadCount) {
         this.threadCount = threadCount;
@@ -216,7 +216,7 @@ public class UploadParameters {
     /**
      * Gets a value indicating whether to overwrite the target stream if it already exists.
      *
-     * @return <c>true</c> if this instance is overwrite; otherwise, <c>false</c>.
+     * @return <code>true</code> if this instance is overwrite; otherwise, <code>false</code>.
      */
     public boolean isOverwrite() {
         return overwrite;
@@ -234,7 +234,7 @@ public class UploadParameters {
     /**
      * Gets a value indicating whether to resume a previously interrupted upload.
      *
-     * @return <c>true</c> if this instance is resume; otherwise, <c>false</c>.
+     * @return <code>true</code> if this instance is resume; otherwise, <code>false</code>.
      */
     public boolean isResume() {
         return resume;
@@ -252,7 +252,7 @@ public class UploadParameters {
     /**
      * Gets a value indicating whether the input file should be treated as a binary (true) or a delimited input (false).
      *
-     * @return <c>true</c> if this instance is binary; otherwise, <c>false</c>.
+     * @return <code>true</code> if this instance is binary; otherwise, <code>false</code>.
      */
     public boolean isBinary() {
         return binary;

@@ -5,6 +5,8 @@
  */
 package com.microsoft.azure.management.datalake.store.uploader;
 
+import com.microsoft.azure.CloudException;
+
 import java.util.Hashtable;
 import java.util.LinkedList;
 
@@ -20,9 +22,9 @@ public class InMemoryFrontEnd implements FrontEndAdapter {
      * @param overwrite  Whether to overwrite an existing stream.
      * @param data
      * @param byteCount
-     * @throws Exception
+     * @Throws CloudException
      */
-    public void CreateStream(String streamPath, boolean overwrite, byte[] data, int byteCount) throws Exception {
+    public void CreateStream(String streamPath, boolean overwrite, byte[] data, int byteCount) throws CloudException {
         if (overwrite)
         {
             _streams.put(streamPath, new StreamData(streamPath));
@@ -31,7 +33,7 @@ public class InMemoryFrontEnd implements FrontEndAdapter {
         {
             if (StreamExists(streamPath))
             {
-                throw new Exception("stream exists");
+                throw new CloudException("stream exists");
             }
 
             _streams.put(streamPath, new StreamData(streamPath));
@@ -42,7 +44,7 @@ public class InMemoryFrontEnd implements FrontEndAdapter {
         {
             if (byteCount > data.length)
             {
-                throw new Exception("invalid byteCount");
+                throw new CloudException("invalid byteCount");
             }
 
             StreamData stream = _streams.get(streamPath);
@@ -59,12 +61,12 @@ public class InMemoryFrontEnd implements FrontEndAdapter {
      *
      * @param streamPath The relative path to the stream.
      * @param recurse    if set to true recursively delete. This is used for folder streams only.
-     * @throws Exception
+     * @Throws CloudException
      */
-    public void DeleteStream(String streamPath, boolean recurse) throws Exception {
+    public void DeleteStream(String streamPath, boolean recurse) throws CloudException {
         if (!StreamExists(streamPath))
         {
-            throw new Exception("stream does not exist");
+            throw new CloudException("stream does not exist");
         }
         _streams.remove(streamPath);
     }
@@ -75,23 +77,23 @@ public class InMemoryFrontEnd implements FrontEndAdapter {
      * @param data An array of bytes to be appended to the stream.
      * @param offset The offset at which to append to the stream.
      * @param byteCount
-     * @throws Exception
+     * @Throws CloudException
      */
-    public void AppendToStream(String streamPath, byte[] data, long offset, int byteCount) throws Exception {
+    public void AppendToStream(String streamPath, byte[] data, long offset, int byteCount) throws CloudException {
         if (!StreamExists(streamPath))
         {
-            throw new Exception("stream does not exist");
+            throw new CloudException("stream does not exist");
         }
 
         if (byteCount > data.length)
         {
-            throw new Exception("invalid byteCount");
+            throw new CloudException("invalid byteCount");
         }
 
         StreamData stream = _streams.get(streamPath);
         if (stream.Length != offset)
         {
-            throw new Exception("offset != stream.length");
+            throw new CloudException("offset != stream.length");
         }
 
         //always make a copy of the original buffer since it is reused
@@ -104,7 +106,7 @@ public class InMemoryFrontEnd implements FrontEndAdapter {
     /**
      *
      * @param streamPath The relative path to the stream.
-     * @return
+     * @return True or false if the stream exists
      */
     public boolean StreamExists(String streamPath)
     {
@@ -115,12 +117,12 @@ public class InMemoryFrontEnd implements FrontEndAdapter {
      *
      * @param streamPath The relative path to the stream.
      * @return
-     * @throws Exception
+     * @Throws CloudException
      */
-    public long GetStreamLength(String streamPath) throws Exception {
+    public long GetStreamLength(String streamPath) throws CloudException {
         if (!StreamExists(streamPath))
         {
-            throw new Exception("stream does not exist");
+            throw new CloudException("stream does not exist");
         }
 
         return _streams.get(streamPath).Length;
@@ -130,12 +132,12 @@ public class InMemoryFrontEnd implements FrontEndAdapter {
      *
      * @param targetStreamPath The relative path to the target stream.
      * @param inputStreamPaths An ordered array of paths to the input streams.
-     * @throws Exception
+     * @Throws CloudException
      */
-    public void Concatenate(String targetStreamPath, String[] inputStreamPaths) throws Exception {
+    public void Concatenate(String targetStreamPath, String[] inputStreamPaths) throws CloudException {
         if (StreamExists(targetStreamPath))
         {
-            throw new Exception("target stream exists");
+            throw new CloudException("target stream exists");
         }
 
         final int bufferSize = 4 * 1024 * 1024;
@@ -150,7 +152,7 @@ public class InMemoryFrontEnd implements FrontEndAdapter {
             {
                 if (!StreamExists(inputStreamPath))
                 {
-                    throw new Exception("input stream does not exist");
+                    throw new CloudException("input stream does not exist");
                 }
 
                 StreamData stream = _streams.get(inputStreamPath);
@@ -160,7 +162,7 @@ public class InMemoryFrontEnd implements FrontEndAdapter {
                 }
             }
         }
-        catch (Exception e)
+        catch (CloudException e)
         {
             if (StreamExists(targetStreamPath))
             {
@@ -179,12 +181,12 @@ public class InMemoryFrontEnd implements FrontEndAdapter {
      *
      * @param streamPath
      * @return
-     * @throws Exception
+     * @Throws CloudException
      */
-    public Iterable<byte[]> GetAppendBlocks(String streamPath) throws Exception {
+    public Iterable<byte[]> GetAppendBlocks(String streamPath) throws CloudException {
         if (!StreamExists(streamPath))
         {
-            throw new Exception("stream does not exist");
+            throw new CloudException("stream does not exist");
         }
 
         StreamData sd = _streams.get(streamPath);
@@ -195,12 +197,12 @@ public class InMemoryFrontEnd implements FrontEndAdapter {
      *
      * @param streamPath
      * @return
-     * @throws Exception
+     * @Throws CloudException
      */
-    public byte[] GetStreamContents(String streamPath) throws Exception {
+    public byte[] GetStreamContents(String streamPath) throws CloudException {
         if (!StreamExists(streamPath))
         {
-            throw new Exception("stream does not exist");
+            throw new CloudException("stream does not exist");
         }
 
         StreamData sd = _streams.get(streamPath);

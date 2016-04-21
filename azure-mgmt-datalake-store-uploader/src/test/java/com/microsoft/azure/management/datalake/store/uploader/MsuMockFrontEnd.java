@@ -5,7 +5,10 @@
  */
 package com.microsoft.azure.management.datalake.store.uploader;
 
+import com.microsoft.azure.CloudException;
 import org.junit.Assert;
+
+import java.io.IOException;
 
 /**
  * A mocked front end for testing out the code paths of the {@link MultipleSegmentUploader}
@@ -31,7 +34,7 @@ public class MsuMockFrontEnd implements FrontEndAdapter {
         CallCount = 0;
     }
 
-    public void CreateStream(String streamPath, boolean overwrite, byte[] data, int byteCount) throws Exception {
+    public void CreateStream(String streamPath, boolean overwrite, byte[] data, int byteCount) throws CloudException, IOException {
         if (TestRetry) {
             CallCount++;
             if (CallCount <= FailCount)
@@ -43,11 +46,11 @@ public class MsuMockFrontEnd implements FrontEndAdapter {
         BaseAdapter.CreateStream(streamPath, overwrite, data, byteCount);
     }
 
-    public void DeleteStream(String streamPath, boolean recurse) throws Exception {
+    public void DeleteStream(String streamPath, boolean recurse) throws IOException, CloudException {
         BaseAdapter.DeleteStream(streamPath, recurse);
     }
 
-    public void AppendToStream(String streamPath, byte[] data, long offset, int byteCount) throws Exception {
+    public void AppendToStream(String streamPath, byte[] data, long offset, int byteCount) throws IOException, CloudException {
         if (TestRetry) {
             CallCount++;
             if (CallCount <= FailCount)
@@ -59,15 +62,15 @@ public class MsuMockFrontEnd implements FrontEndAdapter {
         BaseAdapter.AppendToStream(streamPath, data, offset, byteCount);
     }
 
-    public boolean StreamExists(String streamPath) throws Exception {
+    public boolean StreamExists(String streamPath) throws IOException, CloudException {
         return BaseAdapter.StreamExists(streamPath);
     }
 
-    public long GetStreamLength(String streamPath) throws Exception {
+    public long GetStreamLength(String streamPath) throws IOException, CloudException {
         return BaseAdapter.GetStreamLength(streamPath);
     }
 
-    public void Concatenate(String targetStreamPath, String[] inputStreamPaths) throws Exception {
+    public void Concatenate(String targetStreamPath, String[] inputStreamPaths) throws IOException, CloudException {
         Assert.assertTrue("Concatenate should not be called when using 1 segment", false);
         BaseAdapter.Concatenate(targetStreamPath, inputStreamPaths);
     }
