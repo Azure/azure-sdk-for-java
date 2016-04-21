@@ -14,7 +14,7 @@ public abstract class PagedListConverter<U, V> {
     public PagedList<V> convert(final PagedList<U> uList) {
         Page<U> uPage = uList.currentPage();
         PageImpl<V> vPage = new PageImpl<>();
-        vPage.setNextPageLink(uList.nextPageLink());
+        vPage.setNextPageLink(uPage.getNextPageLink());
         vPage.setItems(new ArrayList<V>());
         for (U u : uPage.getItems()) {
             vPage.getItems().add(typeConvert(u));
@@ -22,9 +22,9 @@ public abstract class PagedListConverter<U, V> {
         return new PagedList<V>(vPage) {
             @Override
             public Page<V> nextPage(String nextPageLink) throws RestException, IOException {
-                Page<U> uPage = uList.currentPage();
+                Page<U> uPage = uList.nextPage(nextPageLink);
                 PageImpl<V> vPage = new PageImpl<>();
-                vPage.setNextPageLink(uList.nextPageLink());
+                vPage.setNextPageLink(uPage.getNextPageLink());
                 vPage.setItems(new ArrayList<V>());
                 for (U u : uPage.getItems()) {
                     vPage.getItems().add(typeConvert(u));
