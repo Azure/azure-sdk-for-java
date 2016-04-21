@@ -1,12 +1,16 @@
 package com.microsoft.azure.implementation;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.ResourceGroups;
-import com.microsoft.azure.management.resources.fluentcore.utils.WrappedItemTransformer;
-import com.microsoft.azure.management.resources.fluentcore.utils.WrappedList;
+import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.ResourceGroupsImpl;
+import com.microsoft.azure.management.resources.implementation.api.PageImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.ResourceGroup;
+import com.microsoft.rest.RestException;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -22,41 +26,41 @@ public class AzureResourceGroupsImpl implements Azure.ResourceGroups {
 
     @Override
     public List<Azure.ResourceGroup> list() throws CloudException, IOException {
-        final ResourceManagementClientImpl client = this.client;
-        WrappedList<ResourceGroup, Azure.ResourceGroup> wrappedList = new WrappedList<>(this.resourceGroupsCore.list(),
-                new WrappedItemTransformer<ResourceGroup, Azure.ResourceGroup>() {
-                    @Override
-                    public Azure.ResourceGroup toWrapped(ResourceGroup source) {
-                        return new AzureResourceGroupImpl(source, client);
-                    }
+        PageImpl<ResourceGroup> page = new PageImpl<>();
+        page.setNextPageLink(null);
+        page.setItems(resourceGroupsCore.list());
 
-                    @Override
-                    public ResourceGroup toSource(Azure.ResourceGroup wrapped) {
-                        return ((AzureResourceGroupImpl)wrapped).resourceGroupCore();
-                    }
-                });
-
-        return wrappedList;
+        return (new PagedListConverter<ResourceGroup, Azure.ResourceGroup>() {
+            @Override
+            public Azure.ResourceGroup typeConvert(ResourceGroup resourceGroup) {
+                return new AzureResourceGroupImpl(resourceGroup, client);
+            }
+        }).convert(new PagedList<ResourceGroup>(page) {
+            @Override
+            public Page<ResourceGroup> nextPage(String nextPageLink) throws RestException, IOException {
+                return null;
+            }
+        });
     }
 
     @Override
     public AzureResourceGroupImpl get(String name) throws CloudException, IOException {
-        return new AzureResourceGroupImpl(this.resourceGroupsCore.get(name), this.client);
+        return new AzureResourceGroupImpl(resourceGroupsCore.get(name), client);
     }
 
     @Override
     public void delete(String name) throws Exception {
-        this.resourceGroupsCore.delete(name);
+        resourceGroupsCore.delete(name);
     }
 
     @Override
     public Azure.ResourceGroup.UpdateBlank update(String name) {
-        return this.resourceGroupsCore.update(name);
+        return resourceGroupsCore.update(name);
     }
 
     @Override
     public Azure.ResourceGroup.DefinitionBlank define(String name) throws Exception {
-        return this.resourceGroupsCore.define(name);
+        return resourceGroupsCore.define(name);
     }
 
 }
