@@ -5,6 +5,10 @@
  */
 package com.microsoft.azure.management.datalake.store.uploader;
 
+import com.microsoft.azure.CloudException;
+
+import java.io.IOException;
+
 public interface FrontEndAdapter {
     /**
      * Creates a new, empty stream at the given path.
@@ -13,18 +17,20 @@ public interface FrontEndAdapter {
      * @param overwrite  Whether to overwrite an existing stream.
      * @param data The data to include in the stream during creation.
      * @param byteCount The number of bytes from data to include (starting at 0).
-     * @throws Exception
+     * @throws IOException
+     * @throws CloudException
      */
-    void CreateStream(String streamPath, boolean overwrite, byte[] data, int byteCount) throws Exception;
+    void CreateStream(String streamPath, boolean overwrite, byte[] data, int byteCount) throws CloudException, IOException;
 
     /**
      * Deletes an existing stream at the given path.
      *
      * @param streamPath The relative path to the stream.
      * @param recurse    if set to true recursively delete. This is used for folder streams only.
-     * @throws Exception
+     * @throws IOException
+     * @throws CloudException
      */
-    void DeleteStream(String streamPath, boolean recurse) throws Exception;
+    void DeleteStream(String streamPath, boolean recurse) throws IOException, CloudException;
 
     /**
      * Appends the given byte array to the end of a given stream.
@@ -33,27 +39,30 @@ public interface FrontEndAdapter {
      * @param data An array of bytes to be appended to the stream.
      * @param offset The offset at which to append to the stream.
      * @param length The number of bytes to append (starting at 0).
-     * @throws Exception
+     * @throws IOException
+     * @throws CloudException
      */
-    void AppendToStream(String streamPath, byte[] data, long offset, int length) throws Exception;
+    void AppendToStream(String streamPath, byte[] data, long offset, int length) throws IOException, CloudException;
 
     /**
      * Determines if the stream with given path exists.
      *
      * @param streamPath The relative path to the stream.
      * @return True if the stream exists, false otherwise.
-     * @throws Exception
+     * @throws IOException
+     * @throws CloudException
      */
-    boolean StreamExists(String streamPath) throws Exception;
+    boolean StreamExists(String streamPath) throws CloudException, IOException;
 
     /**
      * Gets a value indicating the length of a stream, in bytes.
      *
      * @param streamPath The relative path to the stream.
      * @return The length of the stream, in bytes.
-     * @throws Exception
+     * @throws IOException
+     * @throws CloudException
      */
-    long GetStreamLength(String streamPath) throws Exception;
+    long GetStreamLength(String streamPath) throws IOException, CloudException;
 
     /**
      * Concatenates the given input streams (in order) into the given target stream.
@@ -61,7 +70,8 @@ public interface FrontEndAdapter {
      *
      * @param targetStreamPath The relative path to the target stream.
      * @param inputStreamPaths An ordered array of paths to the input streams.
-     * @throws Exception
+     * @throws IOException
+     * @throws CloudException
      */
-    void Concatenate(String targetStreamPath, String[] inputStreamPaths) throws Exception;
+    void Concatenate(String targetStreamPath, String[] inputStreamPaths) throws IOException, CloudException;
 }

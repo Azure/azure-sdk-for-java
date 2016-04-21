@@ -5,6 +5,10 @@
  */
 package com.microsoft.azure.management.datalake.store.uploader;
 
+import com.microsoft.azure.CloudException;
+
+import java.io.IOException;
+
 /**
  * Represents a mocked front end for testing the {@link SingleSegmentUploader}
  */
@@ -36,7 +40,7 @@ public class SsuMockFrontEnd implements FrontEndAdapter {
         FailCount = failCount;
     }
 
-    public void CreateStream(String streamPath, boolean overwrite, byte[] data, int byteCount) throws Exception {
+    public void CreateStream(String streamPath, boolean overwrite, byte[] data, int byteCount) throws CloudException, IOException {
         if (!DoNothing && !TestRetry) {
             BaseAdapter.CreateStream(streamPath, overwrite, data, byteCount);
         }
@@ -50,13 +54,13 @@ public class SsuMockFrontEnd implements FrontEndAdapter {
         }
     }
 
-    public void DeleteStream(String streamPath, boolean recurse) throws Exception {
+    public void DeleteStream(String streamPath, boolean recurse) throws CloudException, IOException {
         if (!DoNothing) {
             BaseAdapter.DeleteStream(streamPath, recurse);
         }
     }
 
-    public void AppendToStream(String streamPath, byte[] data, long offset, int byteCount) throws Exception {
+    public void AppendToStream(String streamPath, byte[] data, long offset, int byteCount) throws CloudException, IOException {
         if (!DoNothing && !TestRetry) {
             BaseAdapter.AppendToStream(streamPath, data, offset, byteCount);
         }
@@ -70,7 +74,7 @@ public class SsuMockFrontEnd implements FrontEndAdapter {
         }
     }
 
-    public boolean StreamExists(String streamPath) throws Exception {
+    public boolean StreamExists(String streamPath) throws CloudException, IOException {
         if (!DoNothing) {
             return BaseAdapter.StreamExists(streamPath);
         }
@@ -78,7 +82,7 @@ public class SsuMockFrontEnd implements FrontEndAdapter {
         return true;
     }
 
-    public long GetStreamLength(String streamPath) throws Exception {
+    public long GetStreamLength(String streamPath) throws CloudException, IOException {
         if (!DoNothing) {
             return BaseAdapter.GetStreamLength(streamPath);
         }
@@ -86,7 +90,7 @@ public class SsuMockFrontEnd implements FrontEndAdapter {
         return 0;
     }
 
-    public void Concatenate(String targetStreamPath, String[] inputStreamPaths) throws Exception {
+    public void Concatenate(String targetStreamPath, String[] inputStreamPaths) throws CloudException, IOException {
         if (!DoNothing) {
             BaseAdapter.Concatenate(targetStreamPath, inputStreamPaths);
         }
