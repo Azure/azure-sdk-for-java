@@ -30,7 +30,7 @@ public final class Azure {
         ResourceGroups resourceGroups();
         GenericResources genericResources();
         StorageAccounts storageAccounts();
-        Usages usages();
+        Usages storageUsages();
     }
 
     public interface  ResourceGroups extends SupportsListing<Azure.ResourceGroup>,

@@ -3,7 +3,6 @@ package com.microsoft.azure.management.storage.implementation;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
 import com.microsoft.azure.management.storage.AccountStatuses;
 import com.microsoft.azure.management.storage.KeyType;
@@ -29,18 +28,12 @@ public class StorageAccountImpl
     private AccountStatuses accountStatuses;
     private String name;
 
-    private final StorageManagementClientImpl storageManagmentClient;
+    private final StorageManagementClientImpl client;
 
-    public StorageAccountImpl(String name, StorageAccountInner innerObject, StorageManagementClientImpl storageManagmentClient, ResourceGroups resourceGroups) {
-        super(innerObject.id(), innerObject, resourceGroups);
+    public StorageAccountImpl(String name, StorageAccountInner inner, StorageAccountsImpl collection) {
+        super(inner.id(), inner, collection.resourceGroups());
         this.name = name;
-        this.storageManagmentClient = storageManagmentClient;
-    }
-
-    public StorageAccountImpl(String name, StorageAccountInner innerObject, StorageManagementClientImpl storageManagmentClient, ResourceGroup resourceGroup) {
-        super(innerObject.id(), innerObject, resourceGroup);
-        this.name = name;
-        this.storageManagmentClient = storageManagmentClient;
+        this.client = collection.client();
     }
 
     @Override
@@ -92,7 +85,7 @@ public class StorageAccountImpl
     @Override
     public StorageAccountKeys getKeys() throws CloudException, IOException {
         ServiceResponse<StorageAccountKeysInner> response =
-                this.storageManagmentClient.storageAccounts().listKeys(this.groupName, this.id);
+                this.client.storageAccounts().listKeys(this.groupName, this.id);
         StorageAccountKeysInner stroageAccountKeysInner = response.getBody();
         return new StorageAccountKeys(stroageAccountKeysInner.key1(), stroageAccountKeysInner.key2());
     }
@@ -100,7 +93,7 @@ public class StorageAccountImpl
     @Override
     public StorageAccountKeys regenerateKey(KeyType keyType) throws CloudException, IOException {
         ServiceResponse<StorageAccountKeysInner> response =
-                this.storageManagmentClient.storageAccounts().regenerateKey(this.groupName, this.id, keyType.toString());
+                this.client.storageAccounts().regenerateKey(this.groupName, this.id, keyType.toString());
         StorageAccountKeysInner stroageAccountKeysInner = response.getBody();
         return new StorageAccountKeys(stroageAccountKeysInner.key1(), stroageAccountKeysInner.key2());
     }
@@ -108,7 +101,7 @@ public class StorageAccountImpl
     @Override
     public StorageAccount refresh() throws Exception {
         ServiceResponse<StorageAccountInner> response =
-            this.storageManagmentClient.storageAccounts().getProperties(this.groupName, this.id);
+            this.client.storageAccounts().getProperties(this.groupName, this.id);
         StorageAccountInner storageAccountInner = response.getBody();
         this.setInner(storageAccountInner);
         clearWrapperProperties();
@@ -124,7 +117,7 @@ public class StorageAccountImpl
         createParameters.setTags(this.inner().getTags());
 
         ServiceResponse<StorageAccountInner> response =
-                this.storageManagmentClient.storageAccounts().create(this.groupName, this.name(), createParameters);
+                this.client.storageAccounts().create(this.groupName, this.name(), createParameters);
         StorageAccountInner storageAccountInner = response.getBody();
         this.setInner(storageAccountInner);
         clearWrapperProperties();
