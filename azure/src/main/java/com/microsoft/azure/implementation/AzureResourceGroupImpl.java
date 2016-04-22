@@ -8,6 +8,7 @@ import com.microsoft.azure.management.storage.implementation.StorageResourceConn
 
 public class AzureResourceGroupImpl extends ResourceGroupImpl implements Azure.ResourceGroup {
     private ResourceGroup resourceGroupCore;
+    private StorageAccounts.InGroup storageAccounts;
 
     public AzureResourceGroupImpl(ResourceGroup resourceGroupCore, ResourceManagementClientImpl client) {
         super(resourceGroupCore.inner(), client);
@@ -17,10 +18,9 @@ public class AzureResourceGroupImpl extends ResourceGroupImpl implements Azure.R
     // StorageAccount collection having a resource resourceGroupCore context.
     //
     public StorageAccounts.InGroup storageAccounts() {
-        return resourceGroupCore.connectToResource(new StorageResourceConnector.Builder()).storageAccounts();
-    }
-
-    public ResourceGroup resourceGroupCore() {
-        return resourceGroupCore;
+        if (storageAccounts == null) {
+            storageAccounts =  resourceGroupCore.connectToResource(new StorageResourceConnector.Builder()).storageAccounts();
+        }
+        return storageAccounts;
     }
 }

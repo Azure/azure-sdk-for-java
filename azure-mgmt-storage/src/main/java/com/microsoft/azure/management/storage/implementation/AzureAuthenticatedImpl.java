@@ -1,5 +1,6 @@
 package com.microsoft.azure.management.storage.implementation;
 
+import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureBaseImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceGroupsImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
@@ -12,9 +13,12 @@ class AzureAuthenticatedImpl extends AzureBaseImpl<AzureStorageManager.Authentic
         implements AzureStorageManager.Authenticated {
     private ServiceClientCredentials credentials;
     private String subscriptionId;
-
+    // The sdk clients
     private ResourceManagementClientImpl resourceManagementClient;
     private StorageManagementClientImpl storageManagementClient;
+    // The collections
+    private StorageAccounts storageAccounts;
+    private Usages storageUsages;
 
     AzureAuthenticatedImpl(ServiceClientCredentials credentials, String subscriptionId) {
         this.credentials = credentials;
@@ -23,12 +27,18 @@ class AzureAuthenticatedImpl extends AzureBaseImpl<AzureStorageManager.Authentic
 
     @Override
     public StorageAccounts storageAccounts() {
-        return new StorageAccountsImpl(storageManagementClient(), new ResourceGroupsImpl(resourceManagementClient()));
+        if (storageAccounts == null) {
+            storageAccounts = new StorageAccountsImpl(storageManagementClient(), resourceGroupsCore());
+        }
+        return storageAccounts;
     }
 
     @Override
     public Usages usages() {
-        return new UsagesImpl(storageManagementClient());
+        if (storageUsages == null) {
+            storageUsages = new UsagesImpl(storageManagementClient());
+        }
+        return storageUsages;
     }
 
     private ResourceManagementClientImpl resourceManagementClient() {
@@ -45,5 +55,9 @@ class AzureAuthenticatedImpl extends AzureBaseImpl<AzureStorageManager.Authentic
             storageManagementClient.setSubscriptionId(subscriptionId);
         }
         return storageManagementClient;
+    }
+
+    private ResourceGroups resourceGroupsCore() {
+        return new ResourceGroupsImpl(resourceManagementClient());
     }
 }

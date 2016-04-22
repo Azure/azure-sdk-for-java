@@ -23,9 +23,14 @@ final class AzureSubscriptionImpl extends AzureBaseImpl<Azure.Subscription>
         implements Azure.Subscription {
     private ServiceClientCredentials credentials;
     private String subscriptionId;
-
+    // SDK Clients
     private ResourceManagementClientImpl resourceManagementClient;
     private StorageManagementClientImpl storageManagementClient;
+    // Fluent Collections
+    private Azure.ResourceGroups azureResourceGroups;
+    private GenericResources genericResources;
+    private StorageAccounts storageAccounts;
+    private Usages storageUsages;
 
     AzureSubscriptionImpl(ServiceClientCredentials credentials, String subscriptionId) {
         this.credentials = credentials;
@@ -34,22 +39,34 @@ final class AzureSubscriptionImpl extends AzureBaseImpl<Azure.Subscription>
 
     @Override
     public Azure.ResourceGroups resourceGroups() {
-        return new AzureResourceGroupsImpl(resourceManagementClient());
+        if (azureResourceGroups == null) {
+            azureResourceGroups = new AzureResourceGroupsImpl(resourceManagementClient());
+        }
+        return azureResourceGroups;
     }
 
     @Override
     public GenericResources genericResources() {
-        return new GenericResourcesImpl(resourceManagementClient());
+        if (genericResources == null) {
+            genericResources = new GenericResourcesImpl(resourceManagementClient());
+        }
+        return genericResources;
     }
 
     @Override
     public StorageAccounts storageAccounts() {
-        return new StorageAccountsImpl(storageManagementClient(), resourceGroupsCore());
+        if (storageAccounts == null) {
+            storageAccounts =  new StorageAccountsImpl(storageManagementClient(), resourceGroupsCore());
+        }
+        return storageAccounts;
     }
 
     @Override
-    public Usages usages() {
-        return new UsagesImpl(storageManagementClient());
+    public Usages storageUsages() {
+        if (storageUsages == null) {
+            storageUsages = new UsagesImpl(storageManagementClient());
+        }
+        return storageUsages;
     }
 
     private ResourceManagementClientImpl resourceManagementClient() {

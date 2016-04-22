@@ -3,7 +3,6 @@ package com.microsoft.azure.management.storage.implementation;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
-import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
@@ -24,20 +23,19 @@ public class StorageAccountsImpl
         this.resourceGroups = resourceGroups;
     }
 
-    @Override
     public List<StorageAccount> list() throws CloudException, IOException {
         ServiceResponse<List<StorageAccountInner>> list = client.storageAccounts().list();
-        return createFluentWrapperList(list.getBody());
+        return createFluentModelList(list.getBody());
     }
 
     public List<StorageAccount> list(String groupName) throws CloudException, IOException {
         ServiceResponse<List<StorageAccountInner>> list = client.storageAccounts().listByResourceGroup(groupName);
-        return createFluentWrapperList(list.getBody());
+        return createFluentModelList(list.getBody());
     }
 
     public StorageAccount get(String groupName, String name) throws Exception {
         ServiceResponse<StorageAccountInner> serviceResponse = this.client.storageAccounts().getProperties(groupName, name);
-        return createFluentWrapper(serviceResponse.getBody());
+        return createFluentModel(serviceResponse.getBody());
     }
 
     public void delete(String id) throws Exception {
@@ -49,31 +47,36 @@ public class StorageAccountsImpl
     }
 
     public StorageAccount.DefinitionBlank define(String name) throws Exception {
-        return createFluentWrapper(name);
+        return createFluentModel(name);
     }
 
-    /***************************************************
-     * Helpers
-     ***************************************************/
+    /** Exposes dependencies for fluent model **/
 
-    private StorageAccountImpl createFluentWrapper(String name) {
+      /** The SDK client **/
+    public StorageManagementClientImpl client() {
+        return this.client;
+    }
+
+      /** The fluent collections that fluent model depends on **/
+    public ResourceGroups resourceGroups() {
+        return this.resourceGroups;
+    }
+
+    /** Fluent model create helpers **/
+
+    private StorageAccountImpl createFluentModel(String name) {
         StorageAccountInner storageAccountInner = new StorageAccountInner();
-        return new StorageAccountImpl(name, storageAccountInner, this.client, this.resourceGroups);
+        return new StorageAccountImpl(name, storageAccountInner, this);
     }
 
-    private StorageAccountImpl createFluentWrapper(String name, ResourceGroup resourceGroup) {
-        StorageAccountInner storageAccountInner = new StorageAccountInner();
-        return new StorageAccountImpl(name, storageAccountInner, this.client, resourceGroup);
+    private StorageAccountImpl createFluentModel(StorageAccountInner storageAccountInner) {
+        return new StorageAccountImpl(storageAccountInner.name(), storageAccountInner,this);
     }
 
-    private StorageAccountImpl createFluentWrapper(StorageAccountInner storageAccountInner) {
-        return new StorageAccountImpl(storageAccountInner.name(), storageAccountInner, this.client, this.resourceGroups);
-    }
-
-    private List<StorageAccount> createFluentWrapperList(List<StorageAccountInner> list) {
+    private List<StorageAccount> createFluentModelList(List<StorageAccountInner> list) {
         List<StorageAccount> result = new ArrayList<>();
         for (StorageAccountInner inner : list) {
-            result.add(createFluentWrapper(inner));
+            result.add(createFluentModel(inner));
         }
         return result;
     }
