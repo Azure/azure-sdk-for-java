@@ -4,12 +4,15 @@
  */
 package com.microsoft.azure.servicebus.amqp;
 
-import java.util.*;
+import java.util.Locale;
 import java.util.logging.Level;
 
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
-import org.apache.qpid.proton.engine.*;
+import org.apache.qpid.proton.engine.Delivery;
+import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.Link;
+import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.Message;
 
 import com.microsoft.azure.servicebus.ClientConstants;
@@ -125,19 +128,19 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
 		{
 			// delivery.pending() should return current deliveries pending bytes to be read.
 			// we ran into an issue with proton-j where delivery.pending() returned lessthan available bytes and hence the below Math.max(...)
-			byte[] buffer = new byte[Math.max(ClientConstants.MAX_FRAME_SIZE_BYTES, delivery.pending())];
-		    int read = receiveLink.recv(buffer, 0, buffer.length);
+			int msgSize = delivery.pending() + ClientConstants.MAX_FRAME_SIZE_BYTES;
+			byte[] buffer = new byte[msgSize];
+		    int read = receiveLink.recv(buffer, 0, msgSize);
+		    
+	        delivery.settle();
 	        
-	        if (read != -1)
-	        {
-	        	Message msg = Proton.message();
+		    if (read != -1)
+		    {
+			    Message msg = Proton.message();
 		        msg.decode(buffer, 0, read);
-		        
-		    	this.amqpReceiver.onReceiveComplete(msg);
-	        }
-	        
-	    	delivery.settle();
-		}
+		        this.amqpReceiver.onReceiveComplete(msg);
+		    }
+	    }
 		
     	if(TRACE_LOGGER.isLoggable(Level.FINEST) && receiveLink != null)
 	    {

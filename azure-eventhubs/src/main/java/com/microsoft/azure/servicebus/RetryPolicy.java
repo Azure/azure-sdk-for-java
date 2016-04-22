@@ -4,8 +4,8 @@
  */
 package com.microsoft.azure.servicebus;
 
-import java.time.*;
-import java.util.concurrent.*;
+import java.time.Duration;
+import java.util.concurrent.ConcurrentHashMap;
 
 // TODO: SIMPLIFY retryPolicy - ConcurrentHashMap is not needed
 public abstract class RetryPolicy
