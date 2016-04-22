@@ -50,27 +50,15 @@ public class StorageAccountsImpl
         return createFluentModel(name);
     }
 
-    /** Exposes dependencies for fluent model **/
-
-      /** The SDK client **/
-    public StorageManagementClientImpl client() {
-        return this.client;
-    }
-
-      /** The fluent collections that fluent model depends on **/
-    public ResourceGroups resourceGroups() {
-        return this.resourceGroups;
-    }
-
     /** Fluent model create helpers **/
 
     private StorageAccountImpl createFluentModel(String name) {
         StorageAccountInner storageAccountInner = new StorageAccountInner();
-        return new StorageAccountImpl(name, storageAccountInner, this);
+        return new StorageAccountImpl(name, storageAccountInner, this.client.storageAccounts(), this.resourceGroups);
     }
 
     private StorageAccountImpl createFluentModel(StorageAccountInner storageAccountInner) {
-        return new StorageAccountImpl(storageAccountInner.name(), storageAccountInner,this);
+        return new StorageAccountImpl(storageAccountInner.name(), storageAccountInner, this.client.storageAccounts(), this.resourceGroups);
     }
 
     private List<StorageAccount> createFluentModelList(List<StorageAccountInner> list) {

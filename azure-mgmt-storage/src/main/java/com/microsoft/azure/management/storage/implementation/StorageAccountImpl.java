@@ -3,7 +3,6 @@ package com.microsoft.azure.management.storage.implementation;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
 import com.microsoft.azure.management.storage.AccountStatuses;
 import com.microsoft.azure.management.storage.KeyType;
 import com.microsoft.azure.management.storage.PublicEndpoints;
@@ -28,12 +27,12 @@ public class StorageAccountImpl
     private AccountStatuses accountStatuses;
     private String name;
 
-    private final StorageManagementClientImpl client;
+    private final StorageAccountsInner client;
 
-    public StorageAccountImpl(String name, StorageAccountInner inner, StorageAccountsImpl collection) {
-        super(inner.id(), inner, collection.resourceGroups());
+    public StorageAccountImpl(String name, StorageAccountInner inner, StorageAccountsInner innerCollection, ResourceGroups resourceGroups) {
+        super(inner.id(), inner, resourceGroups);
         this.name = name;
-        this.client = collection.client();
+        this.client = innerCollection;
     }
 
     @Override
@@ -85,7 +84,7 @@ public class StorageAccountImpl
     @Override
     public StorageAccountKeys getKeys() throws CloudException, IOException {
         ServiceResponse<StorageAccountKeysInner> response =
-                this.client.storageAccounts().listKeys(this.groupName, this.id);
+                this.client.listKeys(this.groupName, this.id);
         StorageAccountKeysInner stroageAccountKeysInner = response.getBody();
         return new StorageAccountKeys(stroageAccountKeysInner.key1(), stroageAccountKeysInner.key2());
     }
@@ -93,7 +92,7 @@ public class StorageAccountImpl
     @Override
     public StorageAccountKeys regenerateKey(KeyType keyType) throws CloudException, IOException {
         ServiceResponse<StorageAccountKeysInner> response =
-                this.client.storageAccounts().regenerateKey(this.groupName, this.id, keyType.toString());
+                this.client.regenerateKey(this.groupName, this.id, keyType.toString());
         StorageAccountKeysInner stroageAccountKeysInner = response.getBody();
         return new StorageAccountKeys(stroageAccountKeysInner.key1(), stroageAccountKeysInner.key2());
     }
@@ -101,7 +100,7 @@ public class StorageAccountImpl
     @Override
     public StorageAccount refresh() throws Exception {
         ServiceResponse<StorageAccountInner> response =
-            this.client.storageAccounts().getProperties(this.groupName, this.id);
+            this.client.getProperties(this.groupName, this.id);
         StorageAccountInner storageAccountInner = response.getBody();
         this.setInner(storageAccountInner);
         clearWrapperProperties();
@@ -117,7 +116,7 @@ public class StorageAccountImpl
         createParameters.setTags(this.inner().getTags());
 
         ServiceResponse<StorageAccountInner> response =
-                this.client.storageAccounts().create(this.groupName, this.name(), createParameters);
+                this.client.create(this.groupName, this.name(), createParameters);
         StorageAccountInner storageAccountInner = response.getBody();
         this.setInner(storageAccountInner);
         clearWrapperProperties();
