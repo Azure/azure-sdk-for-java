@@ -85,46 +85,17 @@ public final class AccountOperationsImpl implements AccountOperations {
         }
         final AccountListNodeAgentSkusOptions accountListNodeAgentSkusOptions = null;
         String filter = null;
-        if (accountListNodeAgentSkusOptions != null) {
-            filter = accountListNodeAgentSkusOptions.getFilter();
-        }
         Integer maxResults = null;
-        if (accountListNodeAgentSkusOptions != null) {
-            maxResults = accountListNodeAgentSkusOptions.getMaxResults();
-        }
         Integer timeout = null;
-        if (accountListNodeAgentSkusOptions != null) {
-            timeout = accountListNodeAgentSkusOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (accountListNodeAgentSkusOptions != null) {
-            clientRequestId = accountListNodeAgentSkusOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (accountListNodeAgentSkusOptions != null) {
-            returnClientRequestId = accountListNodeAgentSkusOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (accountListNodeAgentSkusOptions != null) {
-            ocpDate = accountListNodeAgentSkusOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.listNodeAgentSkus(this.client.getApiVersion(), this.client.getAcceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> response = listNodeAgentSkusDelegate(call.execute());
         PagedList<NodeAgentSku> result = new PagedList<NodeAgentSku>(response.getBody()) {
             @Override
             public Page<NodeAgentSku> nextPage(String nextPageLink) throws BatchErrorException, IOException {
-                AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions = null;
-                if (accountListNodeAgentSkusOptions != null) {
-                    accountListNodeAgentSkusNextOptions = new AccountListNodeAgentSkusNextOptions();
-                    accountListNodeAgentSkusNextOptions.setClientRequestId(accountListNodeAgentSkusOptions.getClientRequestId());
-                    accountListNodeAgentSkusNextOptions.setReturnClientRequestId(accountListNodeAgentSkusOptions.getReturnClientRequestId());
-                    accountListNodeAgentSkusNextOptions.setOcpDate(accountListNodeAgentSkusOptions.getOcpDate());
-                }
-                return listNodeAgentSkusNext(nextPageLink, accountListNodeAgentSkusNextOptions).getBody();
+                return listNodeAgentSkusNext(nextPageLink, null).getBody();
             }
         };
         return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
@@ -147,33 +118,11 @@ public final class AccountOperationsImpl implements AccountOperations {
         }
         final AccountListNodeAgentSkusOptions accountListNodeAgentSkusOptions = null;
         String filter = null;
-        if (accountListNodeAgentSkusOptions != null) {
-            filter = accountListNodeAgentSkusOptions.getFilter();
-        }
         Integer maxResults = null;
-        if (accountListNodeAgentSkusOptions != null) {
-            maxResults = accountListNodeAgentSkusOptions.getMaxResults();
-        }
         Integer timeout = null;
-        if (accountListNodeAgentSkusOptions != null) {
-            timeout = accountListNodeAgentSkusOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (accountListNodeAgentSkusOptions != null) {
-            clientRequestId = accountListNodeAgentSkusOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (accountListNodeAgentSkusOptions != null) {
-            returnClientRequestId = accountListNodeAgentSkusOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (accountListNodeAgentSkusOptions != null) {
-            ocpDate = accountListNodeAgentSkusOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.listNodeAgentSkus(this.client.getApiVersion(), this.client.getAcceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<NodeAgentSku>>(serviceCallback) {
@@ -184,14 +133,7 @@ public final class AccountOperationsImpl implements AccountOperations {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions = null;
-                        if (accountListNodeAgentSkusOptions != null) {
-                            accountListNodeAgentSkusNextOptions = new AccountListNodeAgentSkusNextOptions();
-                            accountListNodeAgentSkusNextOptions.setClientRequestId(accountListNodeAgentSkusOptions.getClientRequestId());
-                            accountListNodeAgentSkusNextOptions.setReturnClientRequestId(accountListNodeAgentSkusOptions.getReturnClientRequestId());
-                            accountListNodeAgentSkusNextOptions.setOcpDate(accountListNodeAgentSkusOptions.getOcpDate());
-                        }
-                        listNodeAgentSkusNextAsync(result.getBody().getNextPageLink(), accountListNodeAgentSkusNextOptions, serviceCall, serviceCallback);
+                        listNodeAgentSkusNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
@@ -359,21 +301,8 @@ public final class AccountOperationsImpl implements AccountOperations {
         }
         final AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions = null;
         String clientRequestId = null;
-        if (accountListNodeAgentSkusNextOptions != null) {
-            clientRequestId = accountListNodeAgentSkusNextOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (accountListNodeAgentSkusNextOptions != null) {
-            returnClientRequestId = accountListNodeAgentSkusNextOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (accountListNodeAgentSkusNextOptions != null) {
-            ocpDate = accountListNodeAgentSkusNextOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.listNodeAgentSkusNext(nextPageLink, this.client.getAcceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
         return listNodeAgentSkusNextDelegate(call.execute());
     }
@@ -397,21 +326,8 @@ public final class AccountOperationsImpl implements AccountOperations {
         }
         final AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions = null;
         String clientRequestId = null;
-        if (accountListNodeAgentSkusNextOptions != null) {
-            clientRequestId = accountListNodeAgentSkusNextOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (accountListNodeAgentSkusNextOptions != null) {
-            returnClientRequestId = accountListNodeAgentSkusNextOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (accountListNodeAgentSkusNextOptions != null) {
-            ocpDate = accountListNodeAgentSkusNextOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.listNodeAgentSkusNext(nextPageLink, this.client.getAcceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<NodeAgentSku>>(serviceCallback) {
@@ -422,7 +338,7 @@ public final class AccountOperationsImpl implements AccountOperations {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNodeAgentSkusNextAsync(result.getBody().getNextPageLink(), accountListNodeAgentSkusNextOptions, serviceCall, serviceCallback);
+                        listNodeAgentSkusNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }

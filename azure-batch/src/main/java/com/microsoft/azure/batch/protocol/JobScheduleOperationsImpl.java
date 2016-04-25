@@ -155,53 +155,14 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         }
         final JobScheduleExistsOptions jobScheduleExistsOptions = null;
         String select = null;
-        if (jobScheduleExistsOptions != null) {
-            select = jobScheduleExistsOptions.getSelect();
-        }
         Integer timeout = null;
-        if (jobScheduleExistsOptions != null) {
-            timeout = jobScheduleExistsOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (jobScheduleExistsOptions != null) {
-            clientRequestId = jobScheduleExistsOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (jobScheduleExistsOptions != null) {
-            returnClientRequestId = jobScheduleExistsOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobScheduleExistsOptions != null) {
-            ocpDate = jobScheduleExistsOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (jobScheduleExistsOptions != null) {
-            ifMatch = jobScheduleExistsOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (jobScheduleExistsOptions != null) {
-            ifNoneMatch = jobScheduleExistsOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (jobScheduleExistsOptions != null) {
-            ifModifiedSince = jobScheduleExistsOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (jobScheduleExistsOptions != null) {
-            ifUnmodifiedSince = jobScheduleExistsOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<Void> call = service.exists(jobScheduleId, this.client.getApiVersion(), this.client.getAcceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return existsDelegate(call.execute());
     }
@@ -228,53 +189,14 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         }
         final JobScheduleExistsOptions jobScheduleExistsOptions = null;
         String select = null;
-        if (jobScheduleExistsOptions != null) {
-            select = jobScheduleExistsOptions.getSelect();
-        }
         Integer timeout = null;
-        if (jobScheduleExistsOptions != null) {
-            timeout = jobScheduleExistsOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (jobScheduleExistsOptions != null) {
-            clientRequestId = jobScheduleExistsOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (jobScheduleExistsOptions != null) {
-            returnClientRequestId = jobScheduleExistsOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobScheduleExistsOptions != null) {
-            ocpDate = jobScheduleExistsOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (jobScheduleExistsOptions != null) {
-            ifMatch = jobScheduleExistsOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (jobScheduleExistsOptions != null) {
-            ifNoneMatch = jobScheduleExistsOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (jobScheduleExistsOptions != null) {
-            ifModifiedSince = jobScheduleExistsOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (jobScheduleExistsOptions != null) {
-            ifUnmodifiedSince = jobScheduleExistsOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<Void> call = service.exists(jobScheduleId, this.client.getApiVersion(), this.client.getAcceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseEmptyCallback<Boolean>(serviceCallback) {
@@ -471,49 +393,13 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         }
         final JobScheduleDeleteOptions jobScheduleDeleteOptions = null;
         Integer timeout = null;
-        if (jobScheduleDeleteOptions != null) {
-            timeout = jobScheduleDeleteOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (jobScheduleDeleteOptions != null) {
-            clientRequestId = jobScheduleDeleteOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (jobScheduleDeleteOptions != null) {
-            returnClientRequestId = jobScheduleDeleteOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobScheduleDeleteOptions != null) {
-            ocpDate = jobScheduleDeleteOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (jobScheduleDeleteOptions != null) {
-            ifMatch = jobScheduleDeleteOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (jobScheduleDeleteOptions != null) {
-            ifNoneMatch = jobScheduleDeleteOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (jobScheduleDeleteOptions != null) {
-            ifModifiedSince = jobScheduleDeleteOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (jobScheduleDeleteOptions != null) {
-            ifUnmodifiedSince = jobScheduleDeleteOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<ResponseBody> call = service.delete(jobScheduleId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return deleteDelegate(call.execute());
     }
@@ -540,49 +426,13 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         }
         final JobScheduleDeleteOptions jobScheduleDeleteOptions = null;
         Integer timeout = null;
-        if (jobScheduleDeleteOptions != null) {
-            timeout = jobScheduleDeleteOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (jobScheduleDeleteOptions != null) {
-            clientRequestId = jobScheduleDeleteOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (jobScheduleDeleteOptions != null) {
-            returnClientRequestId = jobScheduleDeleteOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobScheduleDeleteOptions != null) {
-            ocpDate = jobScheduleDeleteOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (jobScheduleDeleteOptions != null) {
-            ifMatch = jobScheduleDeleteOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (jobScheduleDeleteOptions != null) {
-            ifNoneMatch = jobScheduleDeleteOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (jobScheduleDeleteOptions != null) {
-            ifModifiedSince = jobScheduleDeleteOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (jobScheduleDeleteOptions != null) {
-            ifUnmodifiedSince = jobScheduleDeleteOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<ResponseBody> call = service.delete(jobScheduleId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -770,57 +620,15 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         }
         final JobScheduleGetOptions jobScheduleGetOptions = null;
         String select = null;
-        if (jobScheduleGetOptions != null) {
-            select = jobScheduleGetOptions.getSelect();
-        }
         String expand = null;
-        if (jobScheduleGetOptions != null) {
-            expand = jobScheduleGetOptions.getExpand();
-        }
         Integer timeout = null;
-        if (jobScheduleGetOptions != null) {
-            timeout = jobScheduleGetOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (jobScheduleGetOptions != null) {
-            clientRequestId = jobScheduleGetOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (jobScheduleGetOptions != null) {
-            returnClientRequestId = jobScheduleGetOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobScheduleGetOptions != null) {
-            ocpDate = jobScheduleGetOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (jobScheduleGetOptions != null) {
-            ifMatch = jobScheduleGetOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (jobScheduleGetOptions != null) {
-            ifNoneMatch = jobScheduleGetOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (jobScheduleGetOptions != null) {
-            ifModifiedSince = jobScheduleGetOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (jobScheduleGetOptions != null) {
-            ifUnmodifiedSince = jobScheduleGetOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<ResponseBody> call = service.get(jobScheduleId, this.client.getApiVersion(), this.client.getAcceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return getDelegate(call.execute());
     }
@@ -847,57 +655,15 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         }
         final JobScheduleGetOptions jobScheduleGetOptions = null;
         String select = null;
-        if (jobScheduleGetOptions != null) {
-            select = jobScheduleGetOptions.getSelect();
-        }
         String expand = null;
-        if (jobScheduleGetOptions != null) {
-            expand = jobScheduleGetOptions.getExpand();
-        }
         Integer timeout = null;
-        if (jobScheduleGetOptions != null) {
-            timeout = jobScheduleGetOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (jobScheduleGetOptions != null) {
-            clientRequestId = jobScheduleGetOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (jobScheduleGetOptions != null) {
-            returnClientRequestId = jobScheduleGetOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobScheduleGetOptions != null) {
-            ocpDate = jobScheduleGetOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (jobScheduleGetOptions != null) {
-            ifMatch = jobScheduleGetOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (jobScheduleGetOptions != null) {
-            ifNoneMatch = jobScheduleGetOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (jobScheduleGetOptions != null) {
-            ifModifiedSince = jobScheduleGetOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (jobScheduleGetOptions != null) {
-            ifUnmodifiedSince = jobScheduleGetOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<ResponseBody> call = service.get(jobScheduleId, this.client.getApiVersion(), this.client.getAcceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CloudJobSchedule>(serviceCallback) {
@@ -1106,49 +872,13 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         Validator.validate(jobSchedulePatchParameter);
         final JobSchedulePatchOptions jobSchedulePatchOptions = null;
         Integer timeout = null;
-        if (jobSchedulePatchOptions != null) {
-            timeout = jobSchedulePatchOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (jobSchedulePatchOptions != null) {
-            clientRequestId = jobSchedulePatchOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (jobSchedulePatchOptions != null) {
-            returnClientRequestId = jobSchedulePatchOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobSchedulePatchOptions != null) {
-            ocpDate = jobSchedulePatchOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (jobSchedulePatchOptions != null) {
-            ifMatch = jobSchedulePatchOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (jobSchedulePatchOptions != null) {
-            ifNoneMatch = jobSchedulePatchOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (jobSchedulePatchOptions != null) {
-            ifModifiedSince = jobSchedulePatchOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (jobSchedulePatchOptions != null) {
-            ifUnmodifiedSince = jobSchedulePatchOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<ResponseBody> call = service.patch(jobScheduleId, jobSchedulePatchParameter, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return patchDelegate(call.execute());
     }
@@ -1181,49 +911,13 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         Validator.validate(jobSchedulePatchParameter, serviceCallback);
         final JobSchedulePatchOptions jobSchedulePatchOptions = null;
         Integer timeout = null;
-        if (jobSchedulePatchOptions != null) {
-            timeout = jobSchedulePatchOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (jobSchedulePatchOptions != null) {
-            clientRequestId = jobSchedulePatchOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (jobSchedulePatchOptions != null) {
-            returnClientRequestId = jobSchedulePatchOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobSchedulePatchOptions != null) {
-            ocpDate = jobSchedulePatchOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (jobSchedulePatchOptions != null) {
-            ifMatch = jobSchedulePatchOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (jobSchedulePatchOptions != null) {
-            ifNoneMatch = jobSchedulePatchOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (jobSchedulePatchOptions != null) {
-            ifModifiedSince = jobSchedulePatchOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (jobSchedulePatchOptions != null) {
-            ifUnmodifiedSince = jobSchedulePatchOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<ResponseBody> call = service.patch(jobScheduleId, jobSchedulePatchParameter, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1427,49 +1121,13 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         Validator.validate(jobScheduleUpdateParameter);
         final JobScheduleUpdateOptions jobScheduleUpdateOptions = null;
         Integer timeout = null;
-        if (jobScheduleUpdateOptions != null) {
-            timeout = jobScheduleUpdateOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (jobScheduleUpdateOptions != null) {
-            clientRequestId = jobScheduleUpdateOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (jobScheduleUpdateOptions != null) {
-            returnClientRequestId = jobScheduleUpdateOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobScheduleUpdateOptions != null) {
-            ocpDate = jobScheduleUpdateOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (jobScheduleUpdateOptions != null) {
-            ifMatch = jobScheduleUpdateOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (jobScheduleUpdateOptions != null) {
-            ifNoneMatch = jobScheduleUpdateOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (jobScheduleUpdateOptions != null) {
-            ifModifiedSince = jobScheduleUpdateOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (jobScheduleUpdateOptions != null) {
-            ifUnmodifiedSince = jobScheduleUpdateOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<ResponseBody> call = service.update(jobScheduleId, jobScheduleUpdateParameter, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return updateDelegate(call.execute());
     }
@@ -1502,49 +1160,13 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         Validator.validate(jobScheduleUpdateParameter, serviceCallback);
         final JobScheduleUpdateOptions jobScheduleUpdateOptions = null;
         Integer timeout = null;
-        if (jobScheduleUpdateOptions != null) {
-            timeout = jobScheduleUpdateOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (jobScheduleUpdateOptions != null) {
-            clientRequestId = jobScheduleUpdateOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (jobScheduleUpdateOptions != null) {
-            returnClientRequestId = jobScheduleUpdateOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobScheduleUpdateOptions != null) {
-            ocpDate = jobScheduleUpdateOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (jobScheduleUpdateOptions != null) {
-            ifMatch = jobScheduleUpdateOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (jobScheduleUpdateOptions != null) {
-            ifNoneMatch = jobScheduleUpdateOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (jobScheduleUpdateOptions != null) {
-            ifModifiedSince = jobScheduleUpdateOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (jobScheduleUpdateOptions != null) {
-            ifUnmodifiedSince = jobScheduleUpdateOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<ResponseBody> call = service.update(jobScheduleId, jobScheduleUpdateParameter, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1743,49 +1365,13 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         }
         final JobScheduleDisableOptions jobScheduleDisableOptions = null;
         Integer timeout = null;
-        if (jobScheduleDisableOptions != null) {
-            timeout = jobScheduleDisableOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (jobScheduleDisableOptions != null) {
-            clientRequestId = jobScheduleDisableOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (jobScheduleDisableOptions != null) {
-            returnClientRequestId = jobScheduleDisableOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobScheduleDisableOptions != null) {
-            ocpDate = jobScheduleDisableOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (jobScheduleDisableOptions != null) {
-            ifMatch = jobScheduleDisableOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (jobScheduleDisableOptions != null) {
-            ifNoneMatch = jobScheduleDisableOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (jobScheduleDisableOptions != null) {
-            ifModifiedSince = jobScheduleDisableOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (jobScheduleDisableOptions != null) {
-            ifUnmodifiedSince = jobScheduleDisableOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<ResponseBody> call = service.disable(jobScheduleId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return disableDelegate(call.execute());
     }
@@ -1812,49 +1398,13 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         }
         final JobScheduleDisableOptions jobScheduleDisableOptions = null;
         Integer timeout = null;
-        if (jobScheduleDisableOptions != null) {
-            timeout = jobScheduleDisableOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (jobScheduleDisableOptions != null) {
-            clientRequestId = jobScheduleDisableOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (jobScheduleDisableOptions != null) {
-            returnClientRequestId = jobScheduleDisableOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobScheduleDisableOptions != null) {
-            ocpDate = jobScheduleDisableOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (jobScheduleDisableOptions != null) {
-            ifMatch = jobScheduleDisableOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (jobScheduleDisableOptions != null) {
-            ifNoneMatch = jobScheduleDisableOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (jobScheduleDisableOptions != null) {
-            ifModifiedSince = jobScheduleDisableOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (jobScheduleDisableOptions != null) {
-            ifUnmodifiedSince = jobScheduleDisableOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<ResponseBody> call = service.disable(jobScheduleId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -2042,49 +1592,13 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         }
         final JobScheduleEnableOptions jobScheduleEnableOptions = null;
         Integer timeout = null;
-        if (jobScheduleEnableOptions != null) {
-            timeout = jobScheduleEnableOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (jobScheduleEnableOptions != null) {
-            clientRequestId = jobScheduleEnableOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (jobScheduleEnableOptions != null) {
-            returnClientRequestId = jobScheduleEnableOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobScheduleEnableOptions != null) {
-            ocpDate = jobScheduleEnableOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (jobScheduleEnableOptions != null) {
-            ifMatch = jobScheduleEnableOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (jobScheduleEnableOptions != null) {
-            ifNoneMatch = jobScheduleEnableOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (jobScheduleEnableOptions != null) {
-            ifModifiedSince = jobScheduleEnableOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (jobScheduleEnableOptions != null) {
-            ifUnmodifiedSince = jobScheduleEnableOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<ResponseBody> call = service.enable(jobScheduleId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return enableDelegate(call.execute());
     }
@@ -2111,49 +1625,13 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         }
         final JobScheduleEnableOptions jobScheduleEnableOptions = null;
         Integer timeout = null;
-        if (jobScheduleEnableOptions != null) {
-            timeout = jobScheduleEnableOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (jobScheduleEnableOptions != null) {
-            clientRequestId = jobScheduleEnableOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (jobScheduleEnableOptions != null) {
-            returnClientRequestId = jobScheduleEnableOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobScheduleEnableOptions != null) {
-            ocpDate = jobScheduleEnableOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (jobScheduleEnableOptions != null) {
-            ifMatch = jobScheduleEnableOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (jobScheduleEnableOptions != null) {
-            ifNoneMatch = jobScheduleEnableOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (jobScheduleEnableOptions != null) {
-            ifModifiedSince = jobScheduleEnableOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (jobScheduleEnableOptions != null) {
-            ifUnmodifiedSince = jobScheduleEnableOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<ResponseBody> call = service.enable(jobScheduleId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -2341,49 +1819,13 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         }
         final JobScheduleTerminateOptions jobScheduleTerminateOptions = null;
         Integer timeout = null;
-        if (jobScheduleTerminateOptions != null) {
-            timeout = jobScheduleTerminateOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (jobScheduleTerminateOptions != null) {
-            clientRequestId = jobScheduleTerminateOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (jobScheduleTerminateOptions != null) {
-            returnClientRequestId = jobScheduleTerminateOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobScheduleTerminateOptions != null) {
-            ocpDate = jobScheduleTerminateOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (jobScheduleTerminateOptions != null) {
-            ifMatch = jobScheduleTerminateOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (jobScheduleTerminateOptions != null) {
-            ifNoneMatch = jobScheduleTerminateOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (jobScheduleTerminateOptions != null) {
-            ifModifiedSince = jobScheduleTerminateOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (jobScheduleTerminateOptions != null) {
-            ifUnmodifiedSince = jobScheduleTerminateOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<ResponseBody> call = service.terminate(jobScheduleId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return terminateDelegate(call.execute());
     }
@@ -2410,49 +1852,13 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         }
         final JobScheduleTerminateOptions jobScheduleTerminateOptions = null;
         Integer timeout = null;
-        if (jobScheduleTerminateOptions != null) {
-            timeout = jobScheduleTerminateOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (jobScheduleTerminateOptions != null) {
-            clientRequestId = jobScheduleTerminateOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (jobScheduleTerminateOptions != null) {
-            returnClientRequestId = jobScheduleTerminateOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobScheduleTerminateOptions != null) {
-            ocpDate = jobScheduleTerminateOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (jobScheduleTerminateOptions != null) {
-            ifMatch = jobScheduleTerminateOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (jobScheduleTerminateOptions != null) {
-            ifNoneMatch = jobScheduleTerminateOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (jobScheduleTerminateOptions != null) {
-            ifModifiedSince = jobScheduleTerminateOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (jobScheduleTerminateOptions != null) {
-            ifUnmodifiedSince = jobScheduleTerminateOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<ResponseBody> call = service.terminate(jobScheduleId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -2641,25 +2047,9 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         Validator.validate(cloudJobSchedule);
         final JobScheduleAddOptions jobScheduleAddOptions = null;
         Integer timeout = null;
-        if (jobScheduleAddOptions != null) {
-            timeout = jobScheduleAddOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (jobScheduleAddOptions != null) {
-            clientRequestId = jobScheduleAddOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (jobScheduleAddOptions != null) {
-            returnClientRequestId = jobScheduleAddOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobScheduleAddOptions != null) {
-            ocpDate = jobScheduleAddOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.add(cloudJobSchedule, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         return addDelegate(call.execute());
     }
@@ -2687,25 +2077,9 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         Validator.validate(cloudJobSchedule, serviceCallback);
         final JobScheduleAddOptions jobScheduleAddOptions = null;
         Integer timeout = null;
-        if (jobScheduleAddOptions != null) {
-            timeout = jobScheduleAddOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (jobScheduleAddOptions != null) {
-            clientRequestId = jobScheduleAddOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (jobScheduleAddOptions != null) {
-            returnClientRequestId = jobScheduleAddOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobScheduleAddOptions != null) {
-            ocpDate = jobScheduleAddOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.add(cloudJobSchedule, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -2843,54 +2217,19 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         }
         final JobScheduleListOptions jobScheduleListOptions = null;
         String filter = null;
-        if (jobScheduleListOptions != null) {
-            filter = jobScheduleListOptions.getFilter();
-        }
         String select = null;
-        if (jobScheduleListOptions != null) {
-            select = jobScheduleListOptions.getSelect();
-        }
         String expand = null;
-        if (jobScheduleListOptions != null) {
-            expand = jobScheduleListOptions.getExpand();
-        }
         Integer maxResults = null;
-        if (jobScheduleListOptions != null) {
-            maxResults = jobScheduleListOptions.getMaxResults();
-        }
         Integer timeout = null;
-        if (jobScheduleListOptions != null) {
-            timeout = jobScheduleListOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (jobScheduleListOptions != null) {
-            clientRequestId = jobScheduleListOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (jobScheduleListOptions != null) {
-            returnClientRequestId = jobScheduleListOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobScheduleListOptions != null) {
-            ocpDate = jobScheduleListOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.list(this.client.getApiVersion(), this.client.getAcceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> response = listDelegate(call.execute());
         PagedList<CloudJobSchedule> result = new PagedList<CloudJobSchedule>(response.getBody()) {
             @Override
             public Page<CloudJobSchedule> nextPage(String nextPageLink) throws BatchErrorException, IOException {
-                JobScheduleListNextOptions jobScheduleListNextOptions = null;
-                if (jobScheduleListOptions != null) {
-                    jobScheduleListNextOptions = new JobScheduleListNextOptions();
-                    jobScheduleListNextOptions.setClientRequestId(jobScheduleListOptions.getClientRequestId());
-                    jobScheduleListNextOptions.setReturnClientRequestId(jobScheduleListOptions.getReturnClientRequestId());
-                    jobScheduleListNextOptions.setOcpDate(jobScheduleListOptions.getOcpDate());
-                }
-                return listNext(nextPageLink, jobScheduleListNextOptions).getBody();
+                return listNext(nextPageLink, null).getBody();
             }
         };
         return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
@@ -2913,41 +2252,13 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         }
         final JobScheduleListOptions jobScheduleListOptions = null;
         String filter = null;
-        if (jobScheduleListOptions != null) {
-            filter = jobScheduleListOptions.getFilter();
-        }
         String select = null;
-        if (jobScheduleListOptions != null) {
-            select = jobScheduleListOptions.getSelect();
-        }
         String expand = null;
-        if (jobScheduleListOptions != null) {
-            expand = jobScheduleListOptions.getExpand();
-        }
         Integer maxResults = null;
-        if (jobScheduleListOptions != null) {
-            maxResults = jobScheduleListOptions.getMaxResults();
-        }
         Integer timeout = null;
-        if (jobScheduleListOptions != null) {
-            timeout = jobScheduleListOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (jobScheduleListOptions != null) {
-            clientRequestId = jobScheduleListOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (jobScheduleListOptions != null) {
-            returnClientRequestId = jobScheduleListOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobScheduleListOptions != null) {
-            ocpDate = jobScheduleListOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.list(this.client.getApiVersion(), this.client.getAcceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<CloudJobSchedule>>(serviceCallback) {
@@ -2958,14 +2269,7 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        JobScheduleListNextOptions jobScheduleListNextOptions = null;
-                        if (jobScheduleListOptions != null) {
-                            jobScheduleListNextOptions = new JobScheduleListNextOptions();
-                            jobScheduleListNextOptions.setClientRequestId(jobScheduleListOptions.getClientRequestId());
-                            jobScheduleListNextOptions.setReturnClientRequestId(jobScheduleListOptions.getReturnClientRequestId());
-                            jobScheduleListNextOptions.setOcpDate(jobScheduleListOptions.getOcpDate());
-                        }
-                        listNextAsync(result.getBody().getNextPageLink(), jobScheduleListNextOptions, serviceCall, serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
@@ -3149,21 +2453,8 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         }
         final JobScheduleListNextOptions jobScheduleListNextOptions = null;
         String clientRequestId = null;
-        if (jobScheduleListNextOptions != null) {
-            clientRequestId = jobScheduleListNextOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (jobScheduleListNextOptions != null) {
-            returnClientRequestId = jobScheduleListNextOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobScheduleListNextOptions != null) {
-            ocpDate = jobScheduleListNextOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
         return listNextDelegate(call.execute());
     }
@@ -3187,21 +2478,8 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
         }
         final JobScheduleListNextOptions jobScheduleListNextOptions = null;
         String clientRequestId = null;
-        if (jobScheduleListNextOptions != null) {
-            clientRequestId = jobScheduleListNextOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (jobScheduleListNextOptions != null) {
-            returnClientRequestId = jobScheduleListNextOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (jobScheduleListNextOptions != null) {
-            ocpDate = jobScheduleListNextOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<CloudJobSchedule>>(serviceCallback) {
@@ -3212,7 +2490,7 @@ public final class JobScheduleOperationsImpl implements JobScheduleOperations {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), jobScheduleListNextOptions, serviceCall, serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
