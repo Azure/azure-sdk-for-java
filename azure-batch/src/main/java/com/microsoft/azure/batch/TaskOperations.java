@@ -7,14 +7,14 @@
 package com.microsoft.azure.batch;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.batch.interceptor.BatchClientParallelOptions;
 import com.microsoft.azure.batch.protocol.models.*;
 import com.microsoft.rest.ServiceResponseWithHeaders;
-import com.sun.javafx.tk.Toolkit;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class TaskOperations implements IInheritedBehaviors {
     TaskOperations(BatchClient batchClient, Collection<BatchClientBehavior> customBehaviors) {
@@ -50,48 +50,187 @@ public class TaskOperations implements IInheritedBehaviors {
         this._parentBatchClient.getProtocolLayer().getTaskOperations().add(jobId, taskToAdd, options);
     }
 
-    public void createTasks(String jobId, List<TaskAddParameter> taskList) throws BatchErrorException, IOException {
+    public void createTasks(String jobId, List<TaskAddParameter> taskList) throws BatchErrorException, IOException, InterruptedException {
         createTasks(jobId, taskList, null);
     }
 
-    public void createTasks(String jobId, List<TaskAddParameter> taskList, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+    private static class WorkingThread implements Runnable {
+
         final int MAX_TASKS_PER_REQUEST = 100;
 
-        TaskAddCollectionOptions options = new TaskAddCollectionOptions();
-        BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
-        bhMgr.applyRequestBehaviors(options);
+        private BatchClient client;
+        private BehaviorManager bhMgr;
+        private String jobId;
+        private Queue<TaskAddParameter> pendingList;
+        private List<TaskAddResult> failures;
+        private volatile Exception exception;
+        private final Object lock;
 
-        List<TaskAddParameter> pendingList = new ArrayList<>(taskList);
+        WorkingThread(BatchClient client, BehaviorManager bhMgr, String jobId, Queue<TaskAddParameter> pendingList, List<TaskAddResult> failures, Object lock) {
+            this.client = client;
+            this.bhMgr = bhMgr;
+            this.jobId = jobId;
+            this.pendingList = pendingList;
+            this.failures = failures;
+            this.exception = null;
+            this.lock = lock;
+        }
 
-        while (!pendingList.isEmpty()) {
-            List<TaskAddParameter> currentList = pendingList.subList(0, MAX_TASKS_PER_REQUEST - 1);
-            pendingList.removeAll(currentList);
+        public Exception getException() {
+            return this.exception;
+        }
 
-            ServiceResponseWithHeaders<TaskAddCollectionResult, TaskAddCollectionHeaders> response = this._parentBatchClient.getProtocolLayer().getTaskOperations().addCollection(jobId, currentList, options);
-            if (response.getBody() != null && response.getBody().getValue() != null) {
-                List<TaskAddResult> failures = new ArrayList<>();
+        @Override
+        public void run() {
 
-                for (TaskAddResult result : response.getBody().getValue()) {
-                    if (result.getError() != null){
-                        if (result.getStatus() == TaskAddStatus.SERVERERROR) {
-                            for (TaskAddParameter addParameter : taskList) {
-                                if (addParameter.getId() == result.getTaskId()) {
-                                    pendingList.add(addParameter);
-                                    break;
+            List<TaskAddParameter> taskList = new LinkedList<>();
+
+            // Take the task from the queue up to MAX_TASKS_PER_REQUEST
+            int count = 0;
+            while (count < MAX_TASKS_PER_REQUEST) {
+                TaskAddParameter param = pendingList.poll();
+                if (param != null) {
+                    taskList.add(param);
+                    count++;
+                }
+                else {
+                    break;
+                }
+            }
+
+            if (taskList.size() > 0) {
+                // The option should be different to every server calls (for example, client-request-id)
+                TaskAddCollectionOptions options = new TaskAddCollectionOptions();
+                this.bhMgr.applyRequestBehaviors(options);
+
+                try {
+                    ServiceResponseWithHeaders<TaskAddCollectionResult, TaskAddCollectionHeaders> response = this.client.getProtocolLayer().getTaskOperations().addCollection(this.jobId, taskList, options);
+
+                    if (response.getBody() != null && response.getBody().getValue() != null) {
+                        for (TaskAddResult result : response.getBody().getValue()) {
+                            if (result.getError() != null) {
+                                if (result.getStatus() == TaskAddStatus.SERVERERROR) {
+                                    // Server error will be retried
+                                    for (TaskAddParameter addParameter : taskList) {
+                                        if (addParameter.getId().equals(result.getTaskId())) {
+                                            pendingList.add(addParameter);
+                                            break;
+                                        }
+                                    }
+                                } else if (result.getStatus() == TaskAddStatus.CLIENTERROR && !result.getError().getCode().equals(BatchErrorCodeStrings.TaskExists)) {
+                                    // Client error will be recorded
+                                    failures.add(result);
                                 }
                             }
                         }
-                        else if (result.getStatus() == TaskAddStatus.CLIENTERROR && result.getError().getCode() != BatchErrorCodeStrings.TaskExists) {
-                            failures.add(result);
+                    }
+                } catch (BatchErrorException | IOException e) {
+                    // Any exception will stop further call
+                    exception = e;
+                    pendingList.addAll(taskList);
+                }
+            }
+
+            synchronized (lock) {
+                // Notify main thread that sub thread finished
+                lock.notify();
+            }
+        }
+    }
+
+    public void createTasks(String jobId, List<TaskAddParameter> taskList, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException, InterruptedException {
+
+        BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
+
+        // Default thread number is 1
+        int threadNumber = 1;
+
+        // Get user defined thread number
+        for (BatchClientBehavior op : bhMgr.getMasterListOfBehaviors()) {
+            if (op instanceof BatchClientParallelOptions) {
+                threadNumber = ((BatchClientParallelOptions) op).getMaxDegreeOfParallelism();
+                break;
+            }
+        }
+
+        final Object lock = new Object();
+        ConcurrentLinkedQueue<TaskAddParameter> pendingList = new ConcurrentLinkedQueue<>(taskList);
+        CopyOnWriteArrayList<TaskAddResult> failures = new CopyOnWriteArrayList<>();
+
+        Map<Thread, WorkingThread> threads = new HashMap<>();
+        Exception innerException = null;
+
+        while (!pendingList.isEmpty()) {
+
+            if (threads.size() < threadNumber) {
+                // Kick as many as possible add tasks requests by max allowed threads
+                WorkingThread worker = new WorkingThread(this._parentBatchClient, bhMgr, jobId, pendingList, failures, lock);
+                Thread thread = new Thread(worker);
+                thread.start();
+                threads.put(thread, worker);
+            }
+            else {
+                // Wait any thread finished
+                synchronized (lock) {
+                    lock.wait();
+                }
+
+                List<Thread> finishedThreads = new ArrayList<>();
+                for (Thread t : threads.keySet()) {
+                    if (t.getState() == Thread.State.TERMINATED) {
+                        finishedThreads.add(t);
+                        // If any exception happened, do not care the left requests
+                        innerException = threads.get(t).getException();
+                        if (innerException != null) {
+                            break;
                         }
                     }
                 }
 
-                if (!failures.isEmpty()) {
-                    throw new CreateTasksTerminatedException("At least one task failed to be added.", failures, pendingList);
+                // Free thread pool, so we can start more threads to send the request
+                threads.keySet().removeAll(finishedThreads);
+
+                // Any errors happened, we stop
+                if (innerException != null || !failures.isEmpty()) {
+                    break;
                 }
             }
         }
+
+        // May sure all the left threads finished
+        for (Thread t : threads.keySet()) {
+            t.join();
+        }
+
+        if (innerException == null) {
+            // Anything bad happened at the left threads?
+            for (Thread t : threads.keySet()) {
+                innerException = threads.get(t).getException();
+                if (innerException != null) {
+                    break;
+                }
+            }
+        }
+
+        if (innerException != null) {
+            // We throw any exception happened in sub thread
+            if (innerException instanceof BatchErrorException) {
+                throw (BatchErrorException) innerException;
+            } else {
+                throw (IOException) innerException;
+            }
+        }
+
+        if (!failures.isEmpty()) {
+            // Report any client error with leftover request
+            List<TaskAddParameter> notFinished = new ArrayList<>();
+            for (TaskAddParameter param : pendingList) {
+                notFinished.add(param);
+            }
+            throw new CreateTasksTerminatedException("At least one task failed to be added.", failures, notFinished);
+        }
+
+        // We succeed here
     }
 
     public List<CloudTask> listTasks(String jobId) throws BatchErrorException, IOException {
