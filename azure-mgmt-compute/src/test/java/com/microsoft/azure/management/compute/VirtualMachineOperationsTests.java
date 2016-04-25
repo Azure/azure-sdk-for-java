@@ -1,17 +1,17 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.compute.models.CachingTypes;
-import com.microsoft.azure.management.compute.models.DiskCreateOptionTypes;
-import com.microsoft.azure.management.compute.models.HardwareProfile;
-import com.microsoft.azure.management.compute.models.ImageReference;
-import com.microsoft.azure.management.compute.models.NetworkInterfaceReference;
-import com.microsoft.azure.management.compute.models.NetworkProfile;
-import com.microsoft.azure.management.compute.models.OSDisk;
-import com.microsoft.azure.management.compute.models.OSProfile;
-import com.microsoft.azure.management.compute.models.StorageProfile;
-import com.microsoft.azure.management.compute.models.VirtualHardDisk;
-import com.microsoft.azure.management.compute.models.VirtualMachine;
+import com.microsoft.azure.management.compute.implementation.api.CachingTypes;
+import com.microsoft.azure.management.compute.implementation.api.DiskCreateOptionTypes;
+import com.microsoft.azure.management.compute.implementation.api.HardwareProfile;
+import com.microsoft.azure.management.compute.implementation.api.ImageReference;
+import com.microsoft.azure.management.compute.implementation.api.NetworkInterfaceReference;
+import com.microsoft.azure.management.compute.implementation.api.NetworkProfile;
+import com.microsoft.azure.management.compute.implementation.api.OSDisk;
+import com.microsoft.azure.management.compute.implementation.api.OSProfile;
+import com.microsoft.azure.management.compute.implementation.api.StorageProfile;
+import com.microsoft.azure.management.compute.implementation.api.VirtualHardDisk;
+import com.microsoft.azure.management.compute.implementation.api.VirtualMachineInner;
 import com.microsoft.azure.management.network.models.AddressSpace;
 import com.microsoft.azure.management.network.models.DhcpOptions;
 import com.microsoft.azure.management.network.models.NetworkInterface;
@@ -20,9 +20,9 @@ import com.microsoft.azure.management.network.models.PublicIPAddress;
 import com.microsoft.azure.management.network.models.PublicIPAddressDnsSettings;
 import com.microsoft.azure.management.network.models.Subnet;
 import com.microsoft.azure.management.network.models.VirtualNetwork;
-import com.microsoft.azure.management.resources.models.implementation.api.ResourceGroupInner;
-import com.microsoft.azure.management.storage.models.implementation.api.AccountType;
-import com.microsoft.azure.management.storage.models.implementation.api.StorageAccountCreateParametersInner;
+import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
+import com.microsoft.azure.management.storage.implementation.api.AccountType;
+import com.microsoft.azure.management.storage.implementation.api.StorageAccountCreateParametersInner;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -59,37 +59,37 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
     public void canCreateVirtualMachine() throws Exception {
         // Create
         String vmName = "javavm";
-        VirtualMachine request = new VirtualMachine();
+        VirtualMachineInner request = new VirtualMachineInner();
         request.setLocation(location);
         request.setOsProfile(new OSProfile());
-        request.getOsProfile().setComputerName("javatest");
-        request.getOsProfile().setAdminUsername("Foo12");
-        request.getOsProfile().setAdminPassword("BaR@123" + rgName);
+        request.osProfile().setComputerName("javatest");
+        request.osProfile().setAdminUsername("Foo12");
+        request.osProfile().setAdminPassword("BaR@123" + rgName);
         request.setHardwareProfile(new HardwareProfile());
-        request.getHardwareProfile().setVmSize("Basic_A0");
+        request.hardwareProfile().setVmSize("Basic_A0");
         request.setStorageProfile(new StorageProfile());
-        request.getStorageProfile().setImageReference(getVMImage("MicrosoftWindowsServer", "WindowsServer", "2012-R2-Datacenter"));
-        request.getStorageProfile().setDataDisks(null);
-        request.getStorageProfile().setOsDisk(new OSDisk());
-        request.getStorageProfile().getOsDisk().setCaching(CachingTypes.NONE);
-        request.getStorageProfile().getOsDisk().setCreateOption(DiskCreateOptionTypes.FROMIMAGE);
-        request.getStorageProfile().getOsDisk().setName("javatest");
-        request.getStorageProfile().getOsDisk().setVhd(new VirtualHardDisk());
-        request.getStorageProfile().getOsDisk().getVhd().setUri("https://" + accountName + ".blob.core.windows.net/javacontainer/osjavawindows.vhd");
+        request.storageProfile().setImageReference(getVMImage("MicrosoftWindowsServer", "WindowsServer", "2012-R2-Datacenter"));
+        request.storageProfile().setDataDisks(null);
+        request.storageProfile().setOsDisk(new OSDisk());
+        request.storageProfile().osDisk().setCaching(CachingTypes.NONE);
+        request.storageProfile().osDisk().setCreateOption(DiskCreateOptionTypes.FROMIMAGE);
+        request.storageProfile().osDisk().setName("javatest");
+        request.storageProfile().osDisk().setVhd(new VirtualHardDisk());
+        request.storageProfile().osDisk().vhd().setUri("https://" + accountName + ".blob.core.windows.net/javacontainer/osjavawindows.vhd");
         request.setNetworkProfile(new NetworkProfile());
-        request.getNetworkProfile().setNetworkInterfaces(new ArrayList<NetworkInterfaceReference>());
+        request.networkProfile().setNetworkInterfaces(new ArrayList<NetworkInterfaceReference>());
         NetworkInterfaceReference nir = new NetworkInterfaceReference();
         nir.setPrimary(true);
         PublicIPAddress address = createPublicIP();
         nir.setId(createNIC(createVNET(), address != null ? address.getIpAddress() : null).id());
-        request.getNetworkProfile().getNetworkInterfaces().add(nir);
-        VirtualMachine result = computeManagementClient.virtualMachines().createOrUpdate(rgName, vmName, request).getBody();
+        request.networkProfile().networkInterfaces().add(nir);
+        VirtualMachineInner result = computeManagementClient.virtualMachines().createOrUpdate(rgName, vmName, request).getBody();
         Assert.assertNotNull(result);
         Assert.assertEquals(location, result.location());
         // List
-        List<VirtualMachine> listResult = computeManagementClient.virtualMachines().list(rgName).getBody();
-        VirtualMachine listVM = null;
-        for (VirtualMachine vm : listResult) {
+        List<VirtualMachineInner> listResult = computeManagementClient.virtualMachines().list(rgName).getBody();
+        VirtualMachineInner listVM = null;
+        for (VirtualMachineInner vm : listResult) {
             if (vm.name().equals(vmName)) {
                 listVM = vm;
                 break;
@@ -98,7 +98,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
         Assert.assertNotNull(listVM);
         Assert.assertEquals(location, listVM.location());
         // Get
-        VirtualMachine getResult = computeManagementClient.virtualMachines().get(rgName, vmName, null).getBody();
+        VirtualMachineInner getResult = computeManagementClient.virtualMachines().get(rgName, vmName, null).getBody();
         Assert.assertNotNull(getResult);
         Assert.assertEquals(location, getResult.location());
         // Delete
@@ -106,7 +106,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
     }
 
     private ImageReference getVMImage(String publisher, String offer, String sku) throws CloudException, IOException {
-        String name = computeManagementClient.virtualMachineImages().list(location, publisher, offer, sku, null, 1, null).getBody().get(0).getName();
+        String name = computeManagementClient.virtualMachineImages().list(location, publisher, offer, sku, null, 1, null).getBody().get(0).name();
         ImageReference imageReference = new ImageReference();
         imageReference.setOffer(offer);
         imageReference.setPublisher(publisher);
