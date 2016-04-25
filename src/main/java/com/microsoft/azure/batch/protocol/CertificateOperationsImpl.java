@@ -120,25 +120,9 @@ public final class CertificateOperationsImpl implements CertificateOperations {
         Validator.validate(certificate);
         final CertificateAddOptions certificateAddOptions = null;
         Integer timeout = null;
-        if (certificateAddOptions != null) {
-            timeout = certificateAddOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (certificateAddOptions != null) {
-            clientRequestId = certificateAddOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (certificateAddOptions != null) {
-            returnClientRequestId = certificateAddOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (certificateAddOptions != null) {
-            ocpDate = certificateAddOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.add(certificate, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         return addDelegate(call.execute());
     }
@@ -166,25 +150,9 @@ public final class CertificateOperationsImpl implements CertificateOperations {
         Validator.validate(certificate, serviceCallback);
         final CertificateAddOptions certificateAddOptions = null;
         Integer timeout = null;
-        if (certificateAddOptions != null) {
-            timeout = certificateAddOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (certificateAddOptions != null) {
-            clientRequestId = certificateAddOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (certificateAddOptions != null) {
-            returnClientRequestId = certificateAddOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (certificateAddOptions != null) {
-            ocpDate = certificateAddOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.add(certificate, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -322,50 +290,18 @@ public final class CertificateOperationsImpl implements CertificateOperations {
         }
         final CertificateListOptions certificateListOptions = null;
         String filter = null;
-        if (certificateListOptions != null) {
-            filter = certificateListOptions.getFilter();
-        }
         String select = null;
-        if (certificateListOptions != null) {
-            select = certificateListOptions.getSelect();
-        }
         Integer maxResults = null;
-        if (certificateListOptions != null) {
-            maxResults = certificateListOptions.getMaxResults();
-        }
         Integer timeout = null;
-        if (certificateListOptions != null) {
-            timeout = certificateListOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (certificateListOptions != null) {
-            clientRequestId = certificateListOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (certificateListOptions != null) {
-            returnClientRequestId = certificateListOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (certificateListOptions != null) {
-            ocpDate = certificateListOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.list(this.client.getApiVersion(), this.client.getAcceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> response = listDelegate(call.execute());
         PagedList<Certificate> result = new PagedList<Certificate>(response.getBody()) {
             @Override
             public Page<Certificate> nextPage(String nextPageLink) throws BatchErrorException, IOException {
-                CertificateListNextOptions certificateListNextOptions = null;
-                if (certificateListOptions != null) {
-                    certificateListNextOptions = new CertificateListNextOptions();
-                    certificateListNextOptions.setClientRequestId(certificateListOptions.getClientRequestId());
-                    certificateListNextOptions.setReturnClientRequestId(certificateListOptions.getReturnClientRequestId());
-                    certificateListNextOptions.setOcpDate(certificateListOptions.getOcpDate());
-                }
-                return listNext(nextPageLink, certificateListNextOptions).getBody();
+                return listNext(nextPageLink, null).getBody();
             }
         };
         return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
@@ -388,37 +324,12 @@ public final class CertificateOperationsImpl implements CertificateOperations {
         }
         final CertificateListOptions certificateListOptions = null;
         String filter = null;
-        if (certificateListOptions != null) {
-            filter = certificateListOptions.getFilter();
-        }
         String select = null;
-        if (certificateListOptions != null) {
-            select = certificateListOptions.getSelect();
-        }
         Integer maxResults = null;
-        if (certificateListOptions != null) {
-            maxResults = certificateListOptions.getMaxResults();
-        }
         Integer timeout = null;
-        if (certificateListOptions != null) {
-            timeout = certificateListOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (certificateListOptions != null) {
-            clientRequestId = certificateListOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (certificateListOptions != null) {
-            returnClientRequestId = certificateListOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (certificateListOptions != null) {
-            ocpDate = certificateListOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.list(this.client.getApiVersion(), this.client.getAcceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<Certificate>>(serviceCallback) {
@@ -429,14 +340,7 @@ public final class CertificateOperationsImpl implements CertificateOperations {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        CertificateListNextOptions certificateListNextOptions = null;
-                        if (certificateListOptions != null) {
-                            certificateListNextOptions = new CertificateListNextOptions();
-                            certificateListNextOptions.setClientRequestId(certificateListOptions.getClientRequestId());
-                            certificateListNextOptions.setReturnClientRequestId(certificateListOptions.getReturnClientRequestId());
-                            certificateListNextOptions.setOcpDate(certificateListOptions.getOcpDate());
-                        }
-                        listNextAsync(result.getBody().getNextPageLink(), certificateListNextOptions, serviceCall, serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
@@ -619,25 +523,9 @@ public final class CertificateOperationsImpl implements CertificateOperations {
         }
         final CertificateCancelDeletionOptions certificateCancelDeletionOptions = null;
         Integer timeout = null;
-        if (certificateCancelDeletionOptions != null) {
-            timeout = certificateCancelDeletionOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (certificateCancelDeletionOptions != null) {
-            clientRequestId = certificateCancelDeletionOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (certificateCancelDeletionOptions != null) {
-            returnClientRequestId = certificateCancelDeletionOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (certificateCancelDeletionOptions != null) {
-            ocpDate = certificateCancelDeletionOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.cancelDeletion(thumbprintAlgorithm, thumbprint, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         return cancelDeletionDelegate(call.execute());
     }
@@ -669,25 +557,9 @@ public final class CertificateOperationsImpl implements CertificateOperations {
         }
         final CertificateCancelDeletionOptions certificateCancelDeletionOptions = null;
         Integer timeout = null;
-        if (certificateCancelDeletionOptions != null) {
-            timeout = certificateCancelDeletionOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (certificateCancelDeletionOptions != null) {
-            clientRequestId = certificateCancelDeletionOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (certificateCancelDeletionOptions != null) {
-            returnClientRequestId = certificateCancelDeletionOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (certificateCancelDeletionOptions != null) {
-            ocpDate = certificateCancelDeletionOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.cancelDeletion(thumbprintAlgorithm, thumbprint, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -840,25 +712,9 @@ public final class CertificateOperationsImpl implements CertificateOperations {
         }
         final CertificateDeleteOptions certificateDeleteOptions = null;
         Integer timeout = null;
-        if (certificateDeleteOptions != null) {
-            timeout = certificateDeleteOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (certificateDeleteOptions != null) {
-            clientRequestId = certificateDeleteOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (certificateDeleteOptions != null) {
-            returnClientRequestId = certificateDeleteOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (certificateDeleteOptions != null) {
-            ocpDate = certificateDeleteOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.delete(thumbprintAlgorithm, thumbprint, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         return deleteDelegate(call.execute());
     }
@@ -890,25 +746,9 @@ public final class CertificateOperationsImpl implements CertificateOperations {
         }
         final CertificateDeleteOptions certificateDeleteOptions = null;
         Integer timeout = null;
-        if (certificateDeleteOptions != null) {
-            timeout = certificateDeleteOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (certificateDeleteOptions != null) {
-            clientRequestId = certificateDeleteOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (certificateDeleteOptions != null) {
-            returnClientRequestId = certificateDeleteOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (certificateDeleteOptions != null) {
-            ocpDate = certificateDeleteOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.delete(thumbprintAlgorithm, thumbprint, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1061,29 +901,10 @@ public final class CertificateOperationsImpl implements CertificateOperations {
         }
         final CertificateGetOptions certificateGetOptions = null;
         String select = null;
-        if (certificateGetOptions != null) {
-            select = certificateGetOptions.getSelect();
-        }
         Integer timeout = null;
-        if (certificateGetOptions != null) {
-            timeout = certificateGetOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (certificateGetOptions != null) {
-            clientRequestId = certificateGetOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (certificateGetOptions != null) {
-            returnClientRequestId = certificateGetOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (certificateGetOptions != null) {
-            ocpDate = certificateGetOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.get(thumbprintAlgorithm, thumbprint, this.client.getApiVersion(), this.client.getAcceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         return getDelegate(call.execute());
     }
@@ -1115,29 +936,10 @@ public final class CertificateOperationsImpl implements CertificateOperations {
         }
         final CertificateGetOptions certificateGetOptions = null;
         String select = null;
-        if (certificateGetOptions != null) {
-            select = certificateGetOptions.getSelect();
-        }
         Integer timeout = null;
-        if (certificateGetOptions != null) {
-            timeout = certificateGetOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (certificateGetOptions != null) {
-            clientRequestId = certificateGetOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (certificateGetOptions != null) {
-            returnClientRequestId = certificateGetOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (certificateGetOptions != null) {
-            ocpDate = certificateGetOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.get(thumbprintAlgorithm, thumbprint, this.client.getApiVersion(), this.client.getAcceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Certificate>(serviceCallback) {
@@ -1291,21 +1093,8 @@ public final class CertificateOperationsImpl implements CertificateOperations {
         }
         final CertificateListNextOptions certificateListNextOptions = null;
         String clientRequestId = null;
-        if (certificateListNextOptions != null) {
-            clientRequestId = certificateListNextOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (certificateListNextOptions != null) {
-            returnClientRequestId = certificateListNextOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (certificateListNextOptions != null) {
-            ocpDate = certificateListNextOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
         return listNextDelegate(call.execute());
     }
@@ -1329,21 +1118,8 @@ public final class CertificateOperationsImpl implements CertificateOperations {
         }
         final CertificateListNextOptions certificateListNextOptions = null;
         String clientRequestId = null;
-        if (certificateListNextOptions != null) {
-            clientRequestId = certificateListNextOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (certificateListNextOptions != null) {
-            returnClientRequestId = certificateListNextOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (certificateListNextOptions != null) {
-            ocpDate = certificateListNextOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<Certificate>>(serviceCallback) {
@@ -1354,7 +1130,7 @@ public final class CertificateOperationsImpl implements CertificateOperations {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), certificateListNextOptions, serviceCall, serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
