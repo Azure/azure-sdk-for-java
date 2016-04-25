@@ -4,10 +4,12 @@ import java.util.*;
 
 public class WrappedList<SourceT, WrappedT> implements List<WrappedT> {
     private List<SourceT> sourceList;
-    private WrappedItemTransformer<SourceT, WrappedT> transformer;
+    private List<WrappedT> wrappedList;
+    private Transformer<SourceT, WrappedT> transformer;
 
-    public WrappedList(List<SourceT> sourceList, WrappedItemTransformer<SourceT, WrappedT> transformer) {
+    public WrappedList(List<SourceT> sourceList, Transformer<SourceT, WrappedT> transformer) {
         this.sourceList = sourceList;
+        this.wrappedList = new ArrayList<>();
         this.transformer = transformer;
     }
 
@@ -23,34 +25,35 @@ public class WrappedList<SourceT, WrappedT> implements List<WrappedT> {
 
     @Override
     public boolean contains(Object o) {
-        return sourceList.contains(transformer.toSource((WrappedT) o));
+        return indexOf(o) >= 0;
     }
 
     @Override
     public Iterator<WrappedT> iterator() {
-        return new WrappedIterator();
+        return new WrappedListIterator(0);
     }
 
     @Override
     public Object[] toArray() {
         Object [] array = new Object[size()];
         int i = 0;
-        for (SourceT item: sourceList) {
-            array[i] = transformer.toWrapped(item);
+        for (WrappedT item: this) {
+            array[i] = item;
             i++;
         }
         return array;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <T> T[] toArray(T[] a) {
         if (size() > a.length) {
             a =  (T[]) new Object[size()];
         }
 
         int i = 0;
-        for (SourceT item: sourceList) {
-            a[i] = (T)transformer.toWrapped(item);
+        for (WrappedT item: this) {
+            a[i] = (T)item;
             i++;
         }
 
@@ -61,13 +64,50 @@ public class WrappedList<SourceT, WrappedT> implements List<WrappedT> {
     }
 
     @Override
+    public WrappedT get(int index) {
+        while (index >= wrappedList.size() && index < sourceList.size()) {
+            SourceT source = sourceList.get(index);
+            wrappedList.add(transformer.transform(source));
+        }
+
+        return wrappedList.get(index);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public int indexOf(Object o) {
+        WrappedT o1 = (WrappedT)o;
+        int index = 0;
+        for (WrappedT item : this) {
+            if (item == o1) {
+                return index;
+            }
+            index++;
+        }
+        return -1;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public int lastIndexOf(Object o) {
+        WrappedT o1 = (WrappedT)o;
+        int index = size() - 1;
+        while (index >= 0) {
+            if (get(index) == o1) {
+                break;
+            }
+        }
+        return index;
+    }
+
+    @Override
     public boolean add(WrappedT wrapped) {
-        return sourceList.add(transformer.toSource(wrapped));
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean remove(Object o) {
-        return sourceList.remove(transformer.toSource((WrappedT) o));
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -97,40 +137,22 @@ public class WrappedList<SourceT, WrappedT> implements List<WrappedT> {
 
     @Override
     public void clear() {
-        sourceList.clear();
-    }
-
-    @Override
-    public WrappedT get(int index) {
-        return transformer.toWrapped(sourceList.get(index));
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public WrappedT set(int index, WrappedT element) {
-        SourceT item = transformer.toSource(element);
-        SourceT oldItem = sourceList.set(index, item);
-        return transformer.toWrapped(oldItem);
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void add(int index, WrappedT element) {
-        SourceT item = transformer.toSource(element);
-        sourceList.add(index, item);
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public WrappedT remove(int index) {
-        return transformer.toWrapped(sourceList.remove(index));
-    }
-
-    @Override
-    public int indexOf(Object o) {
-        return sourceList.indexOf(transformer.toSource((WrappedT) o));
-    }
-
-    @Override
-    public int lastIndexOf(Object o) {
-        return sourceList.lastIndexOf(transformer.toSource((WrappedT) o));
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -146,32 +168,10 @@ public class WrappedList<SourceT, WrappedT> implements List<WrappedT> {
     @Override
     public List<WrappedT> subList(int fromIndex, int toIndex) {
         List<WrappedT> list = new ArrayList<>();
-        for(SourceT item: sourceList.subList(fromIndex, toIndex)) {
-            list.add(transformer.toWrapped(item));
+        for(int index = fromIndex; index <= toIndex; index++) {
+            list.add(get(index));
         }
         return list;
-    }
-
-    class WrappedIterator implements Iterator<WrappedT> {
-        private Iterator<SourceT> sourceIterator;
-        public WrappedIterator() {
-            sourceIterator = sourceList.iterator();
-        }
-
-        @Override
-        public boolean hasNext() {
-            return sourceIterator.hasNext();
-        }
-
-        @Override
-        public WrappedT next() {
-            return transformer.toWrapped(sourceIterator.next());
-        }
-
-        @Override
-        public void remove() {
-            sourceIterator.remove();
-        }
     }
 
     class WrappedListIterator implements ListIterator<WrappedT> {
@@ -188,7 +188,9 @@ public class WrappedList<SourceT, WrappedT> implements List<WrappedT> {
 
         @Override
         public WrappedT next() {
-            return transformer.toWrapped(sourceListIterator.next());
+            int index = nextIndex();
+            sourceListIterator.next();
+            return get(index);
         }
 
         @Override
@@ -198,7 +200,9 @@ public class WrappedList<SourceT, WrappedT> implements List<WrappedT> {
 
         @Override
         public WrappedT previous() {
-            return transformer.toWrapped(sourceListIterator.previous());
+            int index = previousIndex();
+            sourceListIterator.previous();
+            return get(index);
         }
 
         @Override
@@ -213,17 +217,21 @@ public class WrappedList<SourceT, WrappedT> implements List<WrappedT> {
 
         @Override
         public void remove() {
-            sourceListIterator.remove();
+            throw new UnsupportedOperationException();
         }
 
         @Override
         public void set(WrappedT wrapped) {
-            sourceListIterator.set(transformer.toSource(wrapped));
+            throw new UnsupportedOperationException();
         }
 
         @Override
         public void add(WrappedT wrapped) {
-            sourceListIterator.add(transformer.toSource(wrapped));
+            throw new UnsupportedOperationException();
         }
+    }
+
+    public interface Transformer<SourceT, WrappedT> {
+        WrappedT transform(SourceT source);
     }
 }

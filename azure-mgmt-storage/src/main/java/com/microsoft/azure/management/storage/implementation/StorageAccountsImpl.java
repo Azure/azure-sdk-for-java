@@ -39,7 +39,7 @@ public class StorageAccountsImpl
     }
 
     public void delete(String id) throws Exception {
-        this.client.storageAccounts().delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+        this.delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
 
     public void delete(String groupName, String name) throws Exception {
