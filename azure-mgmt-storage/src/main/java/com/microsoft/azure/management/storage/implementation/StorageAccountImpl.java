@@ -19,7 +19,6 @@ public class StorageAccountImpl
         StorageAccount,
         StorageAccount.DefinitionBlank,
         StorageAccount.DefinitionWithGroup,
-        StorageAccount.DefinitionWithGroupContextBlank,
         StorageAccount.DefinitionProvisionable
         {
 
@@ -116,7 +115,7 @@ public class StorageAccountImpl
         createParameters.setTags(this.inner().getTags());
 
         ServiceResponse<StorageAccountInner> response =
-                this.client.create(this.groupName, this.name(), createParameters);
+                this.client.create(this.group(), this.name(), createParameters);
         StorageAccountInner storageAccountInner = response.getBody();
         this.setInner(storageAccountInner);
         clearWrapperProperties();
