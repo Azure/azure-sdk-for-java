@@ -1,6 +1,6 @@
 package com.microsoft.azure.management.compute;
 
-import com.microsoft.azure.management.compute.implementation.ComputeManagementClientImpl;
+import com.microsoft.azure.management.compute.implementation.api.ComputeManagementClientImpl;
 import com.microsoft.azure.management.network.NetworkManagementClient;
 import com.microsoft.azure.management.network.NetworkManagementClientImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
@@ -11,7 +11,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 public abstract class ComputeManagementTestBase {
     protected static ResourceManagementClientImpl resourceManagementClient;
     protected static StorageManagementClientImpl storageManagementClient;
-    protected static ComputeManagementClient computeManagementClient;
+    protected static ComputeManagementClientImpl computeManagementClient;
     protected static NetworkManagementClient networkManagementClient;
 
     public static void createClients() {
