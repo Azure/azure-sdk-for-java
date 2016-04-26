@@ -1,22 +1,20 @@
 package com.microsoft.azure.management.storage.implementation;
 
 import com.microsoft.azure.management.resources.ResourceConnector;
-import com.microsoft.azure.management.resources.implementation.ResourceGroupsImpl;
-import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
+import com.microsoft.azure.management.resources.implementation.ResourceConnectorBase;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
-public class StorageResourceConnector implements ResourceConnector<StorageResourceConnector> {
+public class StorageResourceConnector extends ResourceConnectorBase<StorageResourceConnector> {
     private StorageManagementClientImpl client;
     private StorageAccounts.InGroup storageAccounts;
     private Usages usages;
-    private ResourceGroup resourceGroup;
 
     private StorageResourceConnector(ServiceClientCredentials credentials, String subscriptionId,  ResourceGroup resourceGroup) {
-        this.resourceGroup = resourceGroup;
+        super(credentials, subscriptionId, resourceGroup);
         this.client = new StorageManagementClientImpl(credentials);
         this.client.setSubscriptionId(subscriptionId);
     }
@@ -46,17 +44,7 @@ public class StorageResourceConnector implements ResourceConnector<StorageResour
     }
 
     private StorageAccounts storageAccountsCore() {
-        ResourceManagementClientImpl resourceClient = new ResourceManagementClientImpl(credentials());
-        resourceClient.setSubscriptionId(subscriptionId());
-        StorageAccounts storageAccountsCore = new StorageAccountsImpl(this.client, new ResourceGroupsImpl(resourceClient));
+        StorageAccounts storageAccountsCore = new StorageAccountsImpl(this.client, resourceGroups());
         return storageAccountsCore;
-    }
-
-    private ServiceClientCredentials credentials() {
-        return this.client.getCredentials();
-    }
-
-    private String subscriptionId() {
-        return this.client.getSubscriptionId();
     }
 }
