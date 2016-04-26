@@ -3,20 +3,17 @@ package com.microsoft.azure.management.resources.implementation;
 import com.microsoft.azure.management.resources.Deployments.InGroup;
 import com.microsoft.azure.management.resources.GenericResources;
 import com.microsoft.azure.management.resources.ResourceConnector;
-import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
-public class ARMResourceConnector implements ResourceConnector<ARMResourceConnector> {
-    private ResourceManagementClientImpl client;
+public class ARMResourceConnector extends ResourceConnectorBase<ARMResourceConnector> {
     private GenericResources genericResources;
     private InGroup deployments;
 
     private ARMResourceConnector(ServiceClientCredentials credentials, String subscriptionId, ResourceGroup resourceGroup) {
-        this.client = new ResourceManagementClientImpl(credentials);
-        this.client.setSubscriptionId(subscriptionId);
-        this.genericResources = new GenericResourcesImpl(this.client, resourceGroup.name());
-        this.deployments = new DeploymentsInGroupImpl(this.client, resourceGroup.name());
+        super(credentials, subscriptionId, resourceGroup);
+        this.genericResources = new GenericResourcesImpl(resourceManagementClient(), resourceGroup.name());
+        this.deployments = new DeploymentsInGroupImpl(resourceManagementClient(), resourceGroup.name());
     }
 
     private static ARMResourceConnector create(ServiceClientCredentials credentials, String subscriptionId, ResourceGroup resourceGroup) {

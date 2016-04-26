@@ -14,14 +14,41 @@ public interface AvailabilitySet extends
         Refreshable<AvailabilitySet>,
         Wrapper<AvailabilitySetInner> {
 
-    /***********************************************************
-     * Getters
-     ***********************************************************/
-
+    /**
+     * Get the update domain count of availability set, an update domain represents the group of virtual
+     * machines and underlying physical hardware that can be rebooted at the same time.
+     *
+     * @return the platformUpdateDomainCount value
+     */
     Integer updateDomainCount();
+
+    /**
+     * Get the fault domain count of availability set., a fault domain represents the group of virtual
+     * machines that shares common power source and network switch.
+     *
+     * @return the platformUpdateDomainCount value
+     */
     Integer FaultDomainCount();
+
+    /**
+     * Get the list of ids of virtual machines in the availability set.
+     *
+     * @return the virtualMachineIds value
+     */
     List<String> virtualMachineIds();
+
+    /**
+     * Get the list of virtual machines in the availability set.
+     *
+     * @return the virtualMachineIds value
+     */
     List<VirtualMachine> virtualMachines() throws Exception;
+
+    /**
+     * Get the statuses value.
+     *
+     * @return the statuses value
+     */
     List<InstanceViewStatus> statuses();
 
     /**************************************************************
