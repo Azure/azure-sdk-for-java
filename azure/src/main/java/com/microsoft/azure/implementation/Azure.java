@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.implementation;
 
+import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.resources.GenericResources;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.Tenants;
@@ -31,6 +32,7 @@ public final class Azure {
         GenericResources genericResources();
         StorageAccounts storageAccounts();
         Usages storageUsages();
+        AvailabilitySets availabilitySets();
     }
 
     public interface  ResourceGroups extends SupportsListing<Azure.ResourceGroup>,

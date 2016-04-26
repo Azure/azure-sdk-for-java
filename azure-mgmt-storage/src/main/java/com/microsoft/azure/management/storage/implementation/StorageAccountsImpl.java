@@ -4,6 +4,7 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.storage.StorageAccounts;
+import com.microsoft.azure.management.storage.implementation.api.StorageAccountsInner;
 import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.api.StorageAccountInner;
@@ -15,26 +16,26 @@ import java.util.List;
 
 public class StorageAccountsImpl
         implements StorageAccounts {
-    private final StorageManagementClientImpl client;
+    private final StorageAccountsInner client;
     private final ResourceGroups resourceGroups;
 
-    public StorageAccountsImpl(StorageManagementClientImpl client, ResourceGroups resourceGroups) {
+    public StorageAccountsImpl(StorageAccountsInner client, ResourceGroups resourceGroups) {
         this.client = client;
         this.resourceGroups = resourceGroups;
     }
 
     public List<StorageAccount> list() throws CloudException, IOException {
-        ServiceResponse<List<StorageAccountInner>> list = client.storageAccounts().list();
+        ServiceResponse<List<StorageAccountInner>> list = client.list();
         return createFluentModelList(list.getBody());
     }
 
     public List<StorageAccount> list(String groupName) throws CloudException, IOException {
-        ServiceResponse<List<StorageAccountInner>> list = client.storageAccounts().listByResourceGroup(groupName);
+        ServiceResponse<List<StorageAccountInner>> list = client.listByResourceGroup(groupName);
         return createFluentModelList(list.getBody());
     }
 
     public StorageAccount get(String groupName, String name) throws Exception {
-        ServiceResponse<StorageAccountInner> serviceResponse = this.client.storageAccounts().getProperties(groupName, name);
+        ServiceResponse<StorageAccountInner> serviceResponse = this.client.getProperties(groupName, name);
         return createFluentModel(serviceResponse.getBody());
     }
 
@@ -43,7 +44,7 @@ public class StorageAccountsImpl
     }
 
     public void delete(String groupName, String name) throws Exception {
-        this.client.storageAccounts().delete(groupName, name);
+        this.client.delete(groupName, name);
     }
 
     public StorageAccount.DefinitionBlank define(String name) throws Exception {
@@ -54,11 +55,11 @@ public class StorageAccountsImpl
 
     private StorageAccountImpl createFluentModel(String name) {
         StorageAccountInner storageAccountInner = new StorageAccountInner();
-        return new StorageAccountImpl(name, storageAccountInner, this.client.storageAccounts(), this.resourceGroups);
+        return new StorageAccountImpl(name, storageAccountInner, this.client, this.resourceGroups);
     }
 
     private StorageAccountImpl createFluentModel(StorageAccountInner storageAccountInner) {
-        return new StorageAccountImpl(storageAccountInner.name(), storageAccountInner, this.client.storageAccounts(), this.resourceGroups);
+        return new StorageAccountImpl(storageAccountInner.name(), storageAccountInner, this.client, this.resourceGroups);
     }
 
     private List<StorageAccount> createFluentModelList(List<StorageAccountInner> list) {
