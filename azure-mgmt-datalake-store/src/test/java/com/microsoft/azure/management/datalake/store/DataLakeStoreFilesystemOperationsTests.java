@@ -8,7 +8,7 @@ import com.microsoft.azure.management.datalake.store.models.FileStatusProperties
 import com.microsoft.azure.management.datalake.store.models.FileStatusResult;
 import com.microsoft.azure.management.datalake.store.models.FileStatusesResult;
 import com.microsoft.azure.management.datalake.store.models.FileType;
-import com.microsoft.azure.management.resources.models.implementation.api.ResourceGroupInner;
+import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.AfterClass;
 import org.junit.Assert;

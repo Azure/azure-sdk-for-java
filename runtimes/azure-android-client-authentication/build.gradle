@@ -124,5 +124,4 @@ task javadocJar(type: Jar, dependsOn: [javadoc, versionInfo]) {
 artifacts {
     archives sourcesJar
     archives javadocJar
-    archives file: file("${projectDir}/.gitrevision")
 }

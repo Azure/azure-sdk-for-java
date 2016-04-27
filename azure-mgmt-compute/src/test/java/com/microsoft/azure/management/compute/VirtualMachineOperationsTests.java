@@ -12,14 +12,7 @@ import com.microsoft.azure.management.compute.implementation.api.OSProfile;
 import com.microsoft.azure.management.compute.implementation.api.StorageProfile;
 import com.microsoft.azure.management.compute.implementation.api.VirtualHardDisk;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineInner;
-import com.microsoft.azure.management.network.models.AddressSpace;
-import com.microsoft.azure.management.network.models.DhcpOptions;
-import com.microsoft.azure.management.network.models.NetworkInterface;
-import com.microsoft.azure.management.network.models.NetworkInterfaceIPConfiguration;
-import com.microsoft.azure.management.network.models.PublicIPAddress;
-import com.microsoft.azure.management.network.models.PublicIPAddressDnsSettings;
-import com.microsoft.azure.management.network.models.Subnet;
-import com.microsoft.azure.management.network.models.VirtualNetwork;
+import com.microsoft.azure.management.network.implementation.api.*;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
 import com.microsoft.azure.management.storage.implementation.api.AccountType;
 import com.microsoft.azure.management.storage.implementation.api.StorageAccountCreateParametersInner;
@@ -80,8 +73,8 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
         request.networkProfile().setNetworkInterfaces(new ArrayList<NetworkInterfaceReference>());
         NetworkInterfaceReference nir = new NetworkInterfaceReference();
         nir.setPrimary(true);
-        PublicIPAddress address = createPublicIP();
-        nir.setId(createNIC(createVNET(), address != null ? address.getIpAddress() : null).id());
+        PublicIPAddressInner address = createPublicIP();
+        nir.setId(createNIC(createVNET(), address != null ? address.ipAddress() : null).id());
         request.networkProfile().networkInterfaces().add(nir);
         VirtualMachineInner result = computeManagementClient.virtualMachines().createOrUpdate(rgName, vmName, request).getBody();
         Assert.assertNotNull(result);
@@ -115,8 +108,8 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
         return imageReference;
     }
 
-    private NetworkInterface createNIC(Subnet subnet, String publicIP) throws Exception {
-        NetworkInterface nic = new NetworkInterface();
+    private NetworkInterfaceInner createNIC(SubnetInner subnet, String publicIP) throws Exception {
+        NetworkInterfaceInner nic = new NetworkInterfaceInner();
         nic.setLocation(location);
         nic.setIpConfigurations(new ArrayList<NetworkInterfaceIPConfiguration>());
         NetworkInterfaceIPConfiguration configuration = new NetworkInterfaceIPConfiguration();
@@ -126,36 +119,36 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
         if (publicIP != null) {
             configuration.setPublicIPAddress(networkManagementClient.publicIPAddresses().get(rgName, publicIP, null).getBody());
         }
-        nic.getIpConfigurations().add(configuration);
+        nic.ipConfigurations().add(configuration);
         networkManagementClient.networkInterfaces().createOrUpdate(rgName, "javanic", nic);
         return networkManagementClient.networkInterfaces().get(rgName, "javanic", null).getBody();
     }
 
-    private Subnet createVNET() throws Exception {
-        VirtualNetwork vnet = new VirtualNetwork();
+    private SubnetInner createVNET() throws Exception {
+        VirtualNetworkInner vnet = new VirtualNetworkInner();
         vnet.setLocation(location);
         vnet.setAddressSpace(new AddressSpace());
-        vnet.getAddressSpace().setAddressPrefixes(new ArrayList<String>());
-        vnet.getAddressSpace().getAddressPrefixes().add("10.0.0.0/16");
+        vnet.addressSpace().setAddressPrefixes(new ArrayList<String>());
+        vnet.addressSpace().addressPrefixes().add("10.0.0.0/16");
         vnet.setDhcpOptions(new DhcpOptions());
-        vnet.getDhcpOptions().setDnsServers(new ArrayList<String>());
-        vnet.getDhcpOptions().getDnsServers().add("10.1.1.1");
-        vnet.getDhcpOptions().getDnsServers().add("10.1.2.4");
-        vnet.setSubnets(new ArrayList<Subnet>());
-        Subnet subnet = new Subnet();
+        vnet.dhcpOptions().setDnsServers(new ArrayList<String>());
+        vnet.dhcpOptions().dnsServers().add("10.1.1.1");
+        vnet.dhcpOptions().dnsServers().add("10.1.2.4");
+        vnet.setSubnets(new ArrayList<SubnetInner>());
+        SubnetInner subnet = new SubnetInner();
         subnet.setName("javasn");
         subnet.setAddressPrefix("10.0.0.0/24");
-        vnet.getSubnets().add(subnet);
+        vnet.subnets().add(subnet);
         networkManagementClient.virtualNetworks().createOrUpdate(rgName, "javavn", vnet);
         return networkManagementClient.subnets().get(rgName, "javavn", "javasn", null).getBody();
     }
 
-    private PublicIPAddress createPublicIP() throws Exception {
-        PublicIPAddress publicIPAddress = new PublicIPAddress();
+    private PublicIPAddressInner createPublicIP() throws Exception {
+        PublicIPAddressInner publicIPAddress = new PublicIPAddressInner();
         publicIPAddress.setLocation(location);
         publicIPAddress.setPublicIPAllocationMethod("Dynamic");
         publicIPAddress.setDnsSettings(new PublicIPAddressDnsSettings());
-        publicIPAddress.getDnsSettings().setDomainNameLabel("javadn");
+        publicIPAddress.dnsSettings().setDomainNameLabel("javadn");
 
         networkManagementClient.publicIPAddresses().createOrUpdate(rgName, "javapip", publicIPAddress);
         return networkManagementClient.publicIPAddresses().get(rgName, "javapip", null).getBody();
