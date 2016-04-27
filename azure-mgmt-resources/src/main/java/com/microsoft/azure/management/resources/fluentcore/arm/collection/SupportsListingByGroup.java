@@ -21,6 +21,8 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.collection;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.PagedList;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -31,5 +33,5 @@ public interface SupportsListingByGroup<T> {
 	 * @return
 	 * @throws Exception
 	 */
-	List<T> list(String groupName) throws CloudException, IOException;;
+	PagedList<T> list(String groupName) throws CloudException, IOException;;
 }

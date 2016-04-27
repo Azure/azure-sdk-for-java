@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Tenants;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.api.SubscriptionClientImpl;
@@ -22,7 +23,7 @@ public final class TenantsImpl
     }
 
     @Override
-    public List<Tenant> list() throws CloudException, IOException {
+    public PagedList<Tenant> list() throws CloudException, IOException {
         PagedListConverter<TenantIdDescriptionInner, Tenant> converter = new PagedListConverter<TenantIdDescriptionInner, Tenant>() {
             @Override
             public Tenant typeConvert(TenantIdDescriptionInner tenantInner) {

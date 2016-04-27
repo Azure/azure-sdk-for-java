@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.storage.implementation;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.StorageAccount;
@@ -29,7 +30,7 @@ public class StorageAccountsInGroupImpl implements StorageAccounts.InGroup {
         storageAccountsCore.delete(resourceGroup.name(), name);
     }
 
-     public List<StorageAccount> list() throws CloudException, IOException {
+     public PagedList<StorageAccount> list() throws CloudException, IOException {
         return storageAccountsCore.list(resourceGroup.name());
      }
 }

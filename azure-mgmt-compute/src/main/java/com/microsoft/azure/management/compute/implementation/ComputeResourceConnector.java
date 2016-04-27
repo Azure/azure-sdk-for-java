@@ -34,7 +34,6 @@ public class ComputeResourceConnector extends ResourceConnectorBase<ComputeResou
 
     public AvailabilitySets.InGroup availabilitySets() {
         if (availabilitySets == null) {
-
             availabilitySets = new AvailabilitySetsInGroup(availabilitySetsCore(), resourceGroup);
         }
         return availabilitySets;
