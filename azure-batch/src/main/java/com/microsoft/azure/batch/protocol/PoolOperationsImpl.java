@@ -199,54 +199,19 @@ public final class PoolOperationsImpl implements PoolOperations {
         }
         final PoolListPoolUsageMetricsOptions poolListPoolUsageMetricsOptions = null;
         DateTime startTime = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            startTime = poolListPoolUsageMetricsOptions.getStartTime();
-        }
         DateTime endTime = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            endTime = poolListPoolUsageMetricsOptions.getEndTime();
-        }
         String filter = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            filter = poolListPoolUsageMetricsOptions.getFilter();
-        }
         Integer maxResults = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            maxResults = poolListPoolUsageMetricsOptions.getMaxResults();
-        }
         Integer timeout = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            timeout = poolListPoolUsageMetricsOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            clientRequestId = poolListPoolUsageMetricsOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            returnClientRequestId = poolListPoolUsageMetricsOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            ocpDate = poolListPoolUsageMetricsOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.listPoolUsageMetrics(this.client.getApiVersion(), this.client.getAcceptLanguage(), startTime, endTime, filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> response = listPoolUsageMetricsDelegate(call.execute());
         PagedList<PoolUsageMetrics> result = new PagedList<PoolUsageMetrics>(response.getBody()) {
             @Override
             public Page<PoolUsageMetrics> nextPage(String nextPageLink) throws BatchErrorException, IOException {
-                PoolListPoolUsageMetricsNextOptions poolListPoolUsageMetricsNextOptions = null;
-                if (poolListPoolUsageMetricsOptions != null) {
-                    poolListPoolUsageMetricsNextOptions = new PoolListPoolUsageMetricsNextOptions();
-                    poolListPoolUsageMetricsNextOptions.setClientRequestId(poolListPoolUsageMetricsOptions.getClientRequestId());
-                    poolListPoolUsageMetricsNextOptions.setReturnClientRequestId(poolListPoolUsageMetricsOptions.getReturnClientRequestId());
-                    poolListPoolUsageMetricsNextOptions.setOcpDate(poolListPoolUsageMetricsOptions.getOcpDate());
-                }
-                return listPoolUsageMetricsNext(nextPageLink, poolListPoolUsageMetricsNextOptions).getBody();
+                return listPoolUsageMetricsNext(nextPageLink, null).getBody();
             }
         };
         return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
@@ -269,41 +234,13 @@ public final class PoolOperationsImpl implements PoolOperations {
         }
         final PoolListPoolUsageMetricsOptions poolListPoolUsageMetricsOptions = null;
         DateTime startTime = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            startTime = poolListPoolUsageMetricsOptions.getStartTime();
-        }
         DateTime endTime = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            endTime = poolListPoolUsageMetricsOptions.getEndTime();
-        }
         String filter = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            filter = poolListPoolUsageMetricsOptions.getFilter();
-        }
         Integer maxResults = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            maxResults = poolListPoolUsageMetricsOptions.getMaxResults();
-        }
         Integer timeout = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            timeout = poolListPoolUsageMetricsOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            clientRequestId = poolListPoolUsageMetricsOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            returnClientRequestId = poolListPoolUsageMetricsOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolListPoolUsageMetricsOptions != null) {
-            ocpDate = poolListPoolUsageMetricsOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.listPoolUsageMetrics(this.client.getApiVersion(), this.client.getAcceptLanguage(), startTime, endTime, filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<PoolUsageMetrics>>(serviceCallback) {
@@ -314,14 +251,7 @@ public final class PoolOperationsImpl implements PoolOperations {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        PoolListPoolUsageMetricsNextOptions poolListPoolUsageMetricsNextOptions = null;
-                        if (poolListPoolUsageMetricsOptions != null) {
-                            poolListPoolUsageMetricsNextOptions = new PoolListPoolUsageMetricsNextOptions();
-                            poolListPoolUsageMetricsNextOptions.setClientRequestId(poolListPoolUsageMetricsOptions.getClientRequestId());
-                            poolListPoolUsageMetricsNextOptions.setReturnClientRequestId(poolListPoolUsageMetricsOptions.getReturnClientRequestId());
-                            poolListPoolUsageMetricsNextOptions.setOcpDate(poolListPoolUsageMetricsOptions.getOcpDate());
-                        }
-                        listPoolUsageMetricsNextAsync(result.getBody().getNextPageLink(), poolListPoolUsageMetricsNextOptions, serviceCall, serviceCallback);
+                        listPoolUsageMetricsNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
@@ -504,25 +434,9 @@ public final class PoolOperationsImpl implements PoolOperations {
         }
         final PoolGetAllPoolsLifetimeStatisticsOptions poolGetAllPoolsLifetimeStatisticsOptions = null;
         Integer timeout = null;
-        if (poolGetAllPoolsLifetimeStatisticsOptions != null) {
-            timeout = poolGetAllPoolsLifetimeStatisticsOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolGetAllPoolsLifetimeStatisticsOptions != null) {
-            clientRequestId = poolGetAllPoolsLifetimeStatisticsOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolGetAllPoolsLifetimeStatisticsOptions != null) {
-            returnClientRequestId = poolGetAllPoolsLifetimeStatisticsOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolGetAllPoolsLifetimeStatisticsOptions != null) {
-            ocpDate = poolGetAllPoolsLifetimeStatisticsOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.getAllPoolsLifetimeStatistics(this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         return getAllPoolsLifetimeStatisticsDelegate(call.execute());
     }
@@ -544,25 +458,9 @@ public final class PoolOperationsImpl implements PoolOperations {
         }
         final PoolGetAllPoolsLifetimeStatisticsOptions poolGetAllPoolsLifetimeStatisticsOptions = null;
         Integer timeout = null;
-        if (poolGetAllPoolsLifetimeStatisticsOptions != null) {
-            timeout = poolGetAllPoolsLifetimeStatisticsOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolGetAllPoolsLifetimeStatisticsOptions != null) {
-            clientRequestId = poolGetAllPoolsLifetimeStatisticsOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolGetAllPoolsLifetimeStatisticsOptions != null) {
-            returnClientRequestId = poolGetAllPoolsLifetimeStatisticsOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolGetAllPoolsLifetimeStatisticsOptions != null) {
-            ocpDate = poolGetAllPoolsLifetimeStatisticsOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.getAllPoolsLifetimeStatistics(this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<PoolStatistics>(serviceCallback) {
@@ -694,25 +592,9 @@ public final class PoolOperationsImpl implements PoolOperations {
         Validator.validate(pool);
         final PoolAddOptions poolAddOptions = null;
         Integer timeout = null;
-        if (poolAddOptions != null) {
-            timeout = poolAddOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolAddOptions != null) {
-            clientRequestId = poolAddOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolAddOptions != null) {
-            returnClientRequestId = poolAddOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolAddOptions != null) {
-            ocpDate = poolAddOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.add(pool, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         return addDelegate(call.execute());
     }
@@ -740,25 +622,9 @@ public final class PoolOperationsImpl implements PoolOperations {
         Validator.validate(pool, serviceCallback);
         final PoolAddOptions poolAddOptions = null;
         Integer timeout = null;
-        if (poolAddOptions != null) {
-            timeout = poolAddOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolAddOptions != null) {
-            clientRequestId = poolAddOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolAddOptions != null) {
-            returnClientRequestId = poolAddOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolAddOptions != null) {
-            ocpDate = poolAddOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.add(pool, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -896,54 +762,19 @@ public final class PoolOperationsImpl implements PoolOperations {
         }
         final PoolListOptions poolListOptions = null;
         String filter = null;
-        if (poolListOptions != null) {
-            filter = poolListOptions.getFilter();
-        }
         String select = null;
-        if (poolListOptions != null) {
-            select = poolListOptions.getSelect();
-        }
         String expand = null;
-        if (poolListOptions != null) {
-            expand = poolListOptions.getExpand();
-        }
         Integer maxResults = null;
-        if (poolListOptions != null) {
-            maxResults = poolListOptions.getMaxResults();
-        }
         Integer timeout = null;
-        if (poolListOptions != null) {
-            timeout = poolListOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolListOptions != null) {
-            clientRequestId = poolListOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolListOptions != null) {
-            returnClientRequestId = poolListOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolListOptions != null) {
-            ocpDate = poolListOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.list(this.client.getApiVersion(), this.client.getAcceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> response = listDelegate(call.execute());
         PagedList<CloudPool> result = new PagedList<CloudPool>(response.getBody()) {
             @Override
             public Page<CloudPool> nextPage(String nextPageLink) throws BatchErrorException, IOException {
-                PoolListNextOptions poolListNextOptions = null;
-                if (poolListOptions != null) {
-                    poolListNextOptions = new PoolListNextOptions();
-                    poolListNextOptions.setClientRequestId(poolListOptions.getClientRequestId());
-                    poolListNextOptions.setReturnClientRequestId(poolListOptions.getReturnClientRequestId());
-                    poolListNextOptions.setOcpDate(poolListOptions.getOcpDate());
-                }
-                return listNext(nextPageLink, poolListNextOptions).getBody();
+                return listNext(nextPageLink, null).getBody();
             }
         };
         return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
@@ -966,41 +797,13 @@ public final class PoolOperationsImpl implements PoolOperations {
         }
         final PoolListOptions poolListOptions = null;
         String filter = null;
-        if (poolListOptions != null) {
-            filter = poolListOptions.getFilter();
-        }
         String select = null;
-        if (poolListOptions != null) {
-            select = poolListOptions.getSelect();
-        }
         String expand = null;
-        if (poolListOptions != null) {
-            expand = poolListOptions.getExpand();
-        }
         Integer maxResults = null;
-        if (poolListOptions != null) {
-            maxResults = poolListOptions.getMaxResults();
-        }
         Integer timeout = null;
-        if (poolListOptions != null) {
-            timeout = poolListOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolListOptions != null) {
-            clientRequestId = poolListOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolListOptions != null) {
-            returnClientRequestId = poolListOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolListOptions != null) {
-            ocpDate = poolListOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.list(this.client.getApiVersion(), this.client.getAcceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<CloudPool>>(serviceCallback) {
@@ -1011,14 +814,7 @@ public final class PoolOperationsImpl implements PoolOperations {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        PoolListNextOptions poolListNextOptions = null;
-                        if (poolListOptions != null) {
-                            poolListNextOptions = new PoolListNextOptions();
-                            poolListNextOptions.setClientRequestId(poolListOptions.getClientRequestId());
-                            poolListNextOptions.setReturnClientRequestId(poolListOptions.getReturnClientRequestId());
-                            poolListNextOptions.setOcpDate(poolListOptions.getOcpDate());
-                        }
-                        listNextAsync(result.getBody().getNextPageLink(), poolListNextOptions, serviceCall, serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
@@ -1205,49 +1001,13 @@ public final class PoolOperationsImpl implements PoolOperations {
         }
         final PoolDeleteOptions poolDeleteOptions = null;
         Integer timeout = null;
-        if (poolDeleteOptions != null) {
-            timeout = poolDeleteOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolDeleteOptions != null) {
-            clientRequestId = poolDeleteOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolDeleteOptions != null) {
-            returnClientRequestId = poolDeleteOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolDeleteOptions != null) {
-            ocpDate = poolDeleteOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (poolDeleteOptions != null) {
-            ifMatch = poolDeleteOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (poolDeleteOptions != null) {
-            ifNoneMatch = poolDeleteOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (poolDeleteOptions != null) {
-            ifModifiedSince = poolDeleteOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (poolDeleteOptions != null) {
-            ifUnmodifiedSince = poolDeleteOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<ResponseBody> call = service.delete(poolId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return deleteDelegate(call.execute());
     }
@@ -1274,49 +1034,13 @@ public final class PoolOperationsImpl implements PoolOperations {
         }
         final PoolDeleteOptions poolDeleteOptions = null;
         Integer timeout = null;
-        if (poolDeleteOptions != null) {
-            timeout = poolDeleteOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolDeleteOptions != null) {
-            clientRequestId = poolDeleteOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolDeleteOptions != null) {
-            returnClientRequestId = poolDeleteOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolDeleteOptions != null) {
-            ocpDate = poolDeleteOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (poolDeleteOptions != null) {
-            ifMatch = poolDeleteOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (poolDeleteOptions != null) {
-            ifNoneMatch = poolDeleteOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (poolDeleteOptions != null) {
-            ifModifiedSince = poolDeleteOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (poolDeleteOptions != null) {
-            ifUnmodifiedSince = poolDeleteOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<ResponseBody> call = service.delete(poolId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1504,53 +1228,14 @@ public final class PoolOperationsImpl implements PoolOperations {
         }
         final PoolExistsOptions poolExistsOptions = null;
         String select = null;
-        if (poolExistsOptions != null) {
-            select = poolExistsOptions.getSelect();
-        }
         Integer timeout = null;
-        if (poolExistsOptions != null) {
-            timeout = poolExistsOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolExistsOptions != null) {
-            clientRequestId = poolExistsOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolExistsOptions != null) {
-            returnClientRequestId = poolExistsOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolExistsOptions != null) {
-            ocpDate = poolExistsOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (poolExistsOptions != null) {
-            ifMatch = poolExistsOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (poolExistsOptions != null) {
-            ifNoneMatch = poolExistsOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (poolExistsOptions != null) {
-            ifModifiedSince = poolExistsOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (poolExistsOptions != null) {
-            ifUnmodifiedSince = poolExistsOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<Void> call = service.exists(poolId, this.client.getApiVersion(), this.client.getAcceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return existsDelegate(call.execute());
     }
@@ -1577,53 +1262,14 @@ public final class PoolOperationsImpl implements PoolOperations {
         }
         final PoolExistsOptions poolExistsOptions = null;
         String select = null;
-        if (poolExistsOptions != null) {
-            select = poolExistsOptions.getSelect();
-        }
         Integer timeout = null;
-        if (poolExistsOptions != null) {
-            timeout = poolExistsOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolExistsOptions != null) {
-            clientRequestId = poolExistsOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolExistsOptions != null) {
-            returnClientRequestId = poolExistsOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolExistsOptions != null) {
-            ocpDate = poolExistsOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (poolExistsOptions != null) {
-            ifMatch = poolExistsOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (poolExistsOptions != null) {
-            ifNoneMatch = poolExistsOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (poolExistsOptions != null) {
-            ifModifiedSince = poolExistsOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (poolExistsOptions != null) {
-            ifUnmodifiedSince = poolExistsOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<Void> call = service.exists(poolId, this.client.getApiVersion(), this.client.getAcceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseEmptyCallback<Boolean>(serviceCallback) {
@@ -1820,57 +1466,15 @@ public final class PoolOperationsImpl implements PoolOperations {
         }
         final PoolGetOptions poolGetOptions = null;
         String select = null;
-        if (poolGetOptions != null) {
-            select = poolGetOptions.getSelect();
-        }
         String expand = null;
-        if (poolGetOptions != null) {
-            expand = poolGetOptions.getExpand();
-        }
         Integer timeout = null;
-        if (poolGetOptions != null) {
-            timeout = poolGetOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolGetOptions != null) {
-            clientRequestId = poolGetOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolGetOptions != null) {
-            returnClientRequestId = poolGetOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolGetOptions != null) {
-            ocpDate = poolGetOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (poolGetOptions != null) {
-            ifMatch = poolGetOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (poolGetOptions != null) {
-            ifNoneMatch = poolGetOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (poolGetOptions != null) {
-            ifModifiedSince = poolGetOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (poolGetOptions != null) {
-            ifUnmodifiedSince = poolGetOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<ResponseBody> call = service.get(poolId, this.client.getApiVersion(), this.client.getAcceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return getDelegate(call.execute());
     }
@@ -1897,57 +1501,15 @@ public final class PoolOperationsImpl implements PoolOperations {
         }
         final PoolGetOptions poolGetOptions = null;
         String select = null;
-        if (poolGetOptions != null) {
-            select = poolGetOptions.getSelect();
-        }
         String expand = null;
-        if (poolGetOptions != null) {
-            expand = poolGetOptions.getExpand();
-        }
         Integer timeout = null;
-        if (poolGetOptions != null) {
-            timeout = poolGetOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolGetOptions != null) {
-            clientRequestId = poolGetOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolGetOptions != null) {
-            returnClientRequestId = poolGetOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolGetOptions != null) {
-            ocpDate = poolGetOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (poolGetOptions != null) {
-            ifMatch = poolGetOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (poolGetOptions != null) {
-            ifNoneMatch = poolGetOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (poolGetOptions != null) {
-            ifModifiedSince = poolGetOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (poolGetOptions != null) {
-            ifUnmodifiedSince = poolGetOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<ResponseBody> call = service.get(poolId, this.client.getApiVersion(), this.client.getAcceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CloudPool>(serviceCallback) {
@@ -2156,49 +1718,13 @@ public final class PoolOperationsImpl implements PoolOperations {
         Validator.validate(poolPatchParameter);
         final PoolPatchOptions poolPatchOptions = null;
         Integer timeout = null;
-        if (poolPatchOptions != null) {
-            timeout = poolPatchOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolPatchOptions != null) {
-            clientRequestId = poolPatchOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolPatchOptions != null) {
-            returnClientRequestId = poolPatchOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolPatchOptions != null) {
-            ocpDate = poolPatchOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (poolPatchOptions != null) {
-            ifMatch = poolPatchOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (poolPatchOptions != null) {
-            ifNoneMatch = poolPatchOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (poolPatchOptions != null) {
-            ifModifiedSince = poolPatchOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (poolPatchOptions != null) {
-            ifUnmodifiedSince = poolPatchOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<ResponseBody> call = service.patch(poolId, poolPatchParameter, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return patchDelegate(call.execute());
     }
@@ -2231,49 +1757,13 @@ public final class PoolOperationsImpl implements PoolOperations {
         Validator.validate(poolPatchParameter, serviceCallback);
         final PoolPatchOptions poolPatchOptions = null;
         Integer timeout = null;
-        if (poolPatchOptions != null) {
-            timeout = poolPatchOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolPatchOptions != null) {
-            clientRequestId = poolPatchOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolPatchOptions != null) {
-            returnClientRequestId = poolPatchOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolPatchOptions != null) {
-            ocpDate = poolPatchOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (poolPatchOptions != null) {
-            ifMatch = poolPatchOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (poolPatchOptions != null) {
-            ifNoneMatch = poolPatchOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (poolPatchOptions != null) {
-            ifModifiedSince = poolPatchOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (poolPatchOptions != null) {
-            ifUnmodifiedSince = poolPatchOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<ResponseBody> call = service.patch(poolId, poolPatchParameter, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -2472,25 +1962,9 @@ public final class PoolOperationsImpl implements PoolOperations {
         }
         final PoolDisableAutoScaleOptions poolDisableAutoScaleOptions = null;
         Integer timeout = null;
-        if (poolDisableAutoScaleOptions != null) {
-            timeout = poolDisableAutoScaleOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolDisableAutoScaleOptions != null) {
-            clientRequestId = poolDisableAutoScaleOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolDisableAutoScaleOptions != null) {
-            returnClientRequestId = poolDisableAutoScaleOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolDisableAutoScaleOptions != null) {
-            ocpDate = poolDisableAutoScaleOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.disableAutoScale(poolId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         return disableAutoScaleDelegate(call.execute());
     }
@@ -2517,25 +1991,9 @@ public final class PoolOperationsImpl implements PoolOperations {
         }
         final PoolDisableAutoScaleOptions poolDisableAutoScaleOptions = null;
         Integer timeout = null;
-        if (poolDisableAutoScaleOptions != null) {
-            timeout = poolDisableAutoScaleOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolDisableAutoScaleOptions != null) {
-            clientRequestId = poolDisableAutoScaleOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolDisableAutoScaleOptions != null) {
-            returnClientRequestId = poolDisableAutoScaleOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolDisableAutoScaleOptions != null) {
-            ocpDate = poolDisableAutoScaleOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.disableAutoScale(poolId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -2680,49 +2138,13 @@ public final class PoolOperationsImpl implements PoolOperations {
         Validator.validate(poolEnableAutoScaleParameter);
         final PoolEnableAutoScaleOptions poolEnableAutoScaleOptions = null;
         Integer timeout = null;
-        if (poolEnableAutoScaleOptions != null) {
-            timeout = poolEnableAutoScaleOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolEnableAutoScaleOptions != null) {
-            clientRequestId = poolEnableAutoScaleOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolEnableAutoScaleOptions != null) {
-            returnClientRequestId = poolEnableAutoScaleOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolEnableAutoScaleOptions != null) {
-            ocpDate = poolEnableAutoScaleOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (poolEnableAutoScaleOptions != null) {
-            ifMatch = poolEnableAutoScaleOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (poolEnableAutoScaleOptions != null) {
-            ifNoneMatch = poolEnableAutoScaleOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (poolEnableAutoScaleOptions != null) {
-            ifModifiedSince = poolEnableAutoScaleOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (poolEnableAutoScaleOptions != null) {
-            ifUnmodifiedSince = poolEnableAutoScaleOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<ResponseBody> call = service.enableAutoScale(poolId, poolEnableAutoScaleParameter, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return enableAutoScaleDelegate(call.execute());
     }
@@ -2755,49 +2177,13 @@ public final class PoolOperationsImpl implements PoolOperations {
         Validator.validate(poolEnableAutoScaleParameter, serviceCallback);
         final PoolEnableAutoScaleOptions poolEnableAutoScaleOptions = null;
         Integer timeout = null;
-        if (poolEnableAutoScaleOptions != null) {
-            timeout = poolEnableAutoScaleOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolEnableAutoScaleOptions != null) {
-            clientRequestId = poolEnableAutoScaleOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolEnableAutoScaleOptions != null) {
-            returnClientRequestId = poolEnableAutoScaleOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolEnableAutoScaleOptions != null) {
-            ocpDate = poolEnableAutoScaleOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (poolEnableAutoScaleOptions != null) {
-            ifMatch = poolEnableAutoScaleOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (poolEnableAutoScaleOptions != null) {
-            ifNoneMatch = poolEnableAutoScaleOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (poolEnableAutoScaleOptions != null) {
-            ifModifiedSince = poolEnableAutoScaleOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (poolEnableAutoScaleOptions != null) {
-            ifUnmodifiedSince = poolEnableAutoScaleOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<ResponseBody> call = service.enableAutoScale(poolId, poolEnableAutoScaleParameter, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -3000,27 +2386,11 @@ public final class PoolOperationsImpl implements PoolOperations {
         }
         final PoolEvaluateAutoScaleOptions poolEvaluateAutoScaleOptions = null;
         Integer timeout = null;
-        if (poolEvaluateAutoScaleOptions != null) {
-            timeout = poolEvaluateAutoScaleOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolEvaluateAutoScaleOptions != null) {
-            clientRequestId = poolEvaluateAutoScaleOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolEvaluateAutoScaleOptions != null) {
-            returnClientRequestId = poolEvaluateAutoScaleOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolEvaluateAutoScaleOptions != null) {
-            ocpDate = poolEvaluateAutoScaleOptions.getOcpDate();
-        }
+        DateTimeRfc1123 ocpDateConverted = null;
         PoolEvaluateAutoScaleParameter poolEvaluateAutoScaleParameter = new PoolEvaluateAutoScaleParameter();
         poolEvaluateAutoScaleParameter.setAutoScaleFormula(autoScaleFormula);
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.evaluateAutoScale(poolId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, poolEvaluateAutoScaleParameter);
         return evaluateAutoScaleDelegate(call.execute());
     }
@@ -3052,27 +2422,11 @@ public final class PoolOperationsImpl implements PoolOperations {
         }
         final PoolEvaluateAutoScaleOptions poolEvaluateAutoScaleOptions = null;
         Integer timeout = null;
-        if (poolEvaluateAutoScaleOptions != null) {
-            timeout = poolEvaluateAutoScaleOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolEvaluateAutoScaleOptions != null) {
-            clientRequestId = poolEvaluateAutoScaleOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolEvaluateAutoScaleOptions != null) {
-            returnClientRequestId = poolEvaluateAutoScaleOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolEvaluateAutoScaleOptions != null) {
-            ocpDate = poolEvaluateAutoScaleOptions.getOcpDate();
-        }
+        DateTimeRfc1123 ocpDateConverted = null;
         PoolEvaluateAutoScaleParameter poolEvaluateAutoScaleParameter = new PoolEvaluateAutoScaleParameter();
         poolEvaluateAutoScaleParameter.setAutoScaleFormula(autoScaleFormula);
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.evaluateAutoScale(poolId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, poolEvaluateAutoScaleParameter);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<AutoScaleRun>(serviceCallback) {
@@ -3230,49 +2584,13 @@ public final class PoolOperationsImpl implements PoolOperations {
         Validator.validate(poolResizeParameter);
         final PoolResizeOptions poolResizeOptions = null;
         Integer timeout = null;
-        if (poolResizeOptions != null) {
-            timeout = poolResizeOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolResizeOptions != null) {
-            clientRequestId = poolResizeOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolResizeOptions != null) {
-            returnClientRequestId = poolResizeOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolResizeOptions != null) {
-            ocpDate = poolResizeOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (poolResizeOptions != null) {
-            ifMatch = poolResizeOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (poolResizeOptions != null) {
-            ifNoneMatch = poolResizeOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (poolResizeOptions != null) {
-            ifModifiedSince = poolResizeOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (poolResizeOptions != null) {
-            ifUnmodifiedSince = poolResizeOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<ResponseBody> call = service.resize(poolId, poolResizeParameter, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return resizeDelegate(call.execute());
     }
@@ -3305,49 +2623,13 @@ public final class PoolOperationsImpl implements PoolOperations {
         Validator.validate(poolResizeParameter, serviceCallback);
         final PoolResizeOptions poolResizeOptions = null;
         Integer timeout = null;
-        if (poolResizeOptions != null) {
-            timeout = poolResizeOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolResizeOptions != null) {
-            clientRequestId = poolResizeOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolResizeOptions != null) {
-            returnClientRequestId = poolResizeOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolResizeOptions != null) {
-            ocpDate = poolResizeOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (poolResizeOptions != null) {
-            ifMatch = poolResizeOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (poolResizeOptions != null) {
-            ifNoneMatch = poolResizeOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (poolResizeOptions != null) {
-            ifModifiedSince = poolResizeOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (poolResizeOptions != null) {
-            ifUnmodifiedSince = poolResizeOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<ResponseBody> call = service.resize(poolId, poolResizeParameter, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -3546,49 +2828,13 @@ public final class PoolOperationsImpl implements PoolOperations {
         }
         final PoolStopResizeOptions poolStopResizeOptions = null;
         Integer timeout = null;
-        if (poolStopResizeOptions != null) {
-            timeout = poolStopResizeOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolStopResizeOptions != null) {
-            clientRequestId = poolStopResizeOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolStopResizeOptions != null) {
-            returnClientRequestId = poolStopResizeOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolStopResizeOptions != null) {
-            ocpDate = poolStopResizeOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (poolStopResizeOptions != null) {
-            ifMatch = poolStopResizeOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (poolStopResizeOptions != null) {
-            ifNoneMatch = poolStopResizeOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (poolStopResizeOptions != null) {
-            ifModifiedSince = poolStopResizeOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (poolStopResizeOptions != null) {
-            ifUnmodifiedSince = poolStopResizeOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<ResponseBody> call = service.stopResize(poolId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return stopResizeDelegate(call.execute());
     }
@@ -3615,49 +2861,13 @@ public final class PoolOperationsImpl implements PoolOperations {
         }
         final PoolStopResizeOptions poolStopResizeOptions = null;
         Integer timeout = null;
-        if (poolStopResizeOptions != null) {
-            timeout = poolStopResizeOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolStopResizeOptions != null) {
-            clientRequestId = poolStopResizeOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolStopResizeOptions != null) {
-            returnClientRequestId = poolStopResizeOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolStopResizeOptions != null) {
-            ocpDate = poolStopResizeOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (poolStopResizeOptions != null) {
-            ifMatch = poolStopResizeOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (poolStopResizeOptions != null) {
-            ifNoneMatch = poolStopResizeOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (poolStopResizeOptions != null) {
-            ifModifiedSince = poolStopResizeOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (poolStopResizeOptions != null) {
-            ifUnmodifiedSince = poolStopResizeOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<ResponseBody> call = service.stopResize(poolId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -3850,25 +3060,9 @@ public final class PoolOperationsImpl implements PoolOperations {
         Validator.validate(poolUpdatePropertiesParameter);
         final PoolUpdatePropertiesOptions poolUpdatePropertiesOptions = null;
         Integer timeout = null;
-        if (poolUpdatePropertiesOptions != null) {
-            timeout = poolUpdatePropertiesOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolUpdatePropertiesOptions != null) {
-            clientRequestId = poolUpdatePropertiesOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolUpdatePropertiesOptions != null) {
-            returnClientRequestId = poolUpdatePropertiesOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolUpdatePropertiesOptions != null) {
-            ocpDate = poolUpdatePropertiesOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.updateProperties(poolId, poolUpdatePropertiesParameter, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         return updatePropertiesDelegate(call.execute());
     }
@@ -3901,25 +3095,9 @@ public final class PoolOperationsImpl implements PoolOperations {
         Validator.validate(poolUpdatePropertiesParameter, serviceCallback);
         final PoolUpdatePropertiesOptions poolUpdatePropertiesOptions = null;
         Integer timeout = null;
-        if (poolUpdatePropertiesOptions != null) {
-            timeout = poolUpdatePropertiesOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolUpdatePropertiesOptions != null) {
-            clientRequestId = poolUpdatePropertiesOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolUpdatePropertiesOptions != null) {
-            returnClientRequestId = poolUpdatePropertiesOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolUpdatePropertiesOptions != null) {
-            ocpDate = poolUpdatePropertiesOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.updateProperties(poolId, poolUpdatePropertiesParameter, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -4074,51 +3252,15 @@ public final class PoolOperationsImpl implements PoolOperations {
         }
         final PoolUpgradeOSOptions poolUpgradeOSOptions = null;
         Integer timeout = null;
-        if (poolUpgradeOSOptions != null) {
-            timeout = poolUpgradeOSOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolUpgradeOSOptions != null) {
-            clientRequestId = poolUpgradeOSOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolUpgradeOSOptions != null) {
-            returnClientRequestId = poolUpgradeOSOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolUpgradeOSOptions != null) {
-            ocpDate = poolUpgradeOSOptions.getOcpDate();
-        }
+        DateTimeRfc1123 ocpDateConverted = null;
         String ifMatch = null;
-        if (poolUpgradeOSOptions != null) {
-            ifMatch = poolUpgradeOSOptions.getIfMatch();
-        }
         String ifNoneMatch = null;
-        if (poolUpgradeOSOptions != null) {
-            ifNoneMatch = poolUpgradeOSOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (poolUpgradeOSOptions != null) {
-            ifModifiedSince = poolUpgradeOSOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (poolUpgradeOSOptions != null) {
-            ifUnmodifiedSince = poolUpgradeOSOptions.getIfUnmodifiedSince();
-        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
         PoolUpgradeOSParameter poolUpgradeOSParameter = new PoolUpgradeOSParameter();
         poolUpgradeOSParameter.setTargetOSVersion(targetOSVersion);
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<ResponseBody> call = service.upgradeOS(poolId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, poolUpgradeOSParameter);
         return upgradeOSDelegate(call.execute());
     }
@@ -4150,51 +3292,15 @@ public final class PoolOperationsImpl implements PoolOperations {
         }
         final PoolUpgradeOSOptions poolUpgradeOSOptions = null;
         Integer timeout = null;
-        if (poolUpgradeOSOptions != null) {
-            timeout = poolUpgradeOSOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolUpgradeOSOptions != null) {
-            clientRequestId = poolUpgradeOSOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolUpgradeOSOptions != null) {
-            returnClientRequestId = poolUpgradeOSOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolUpgradeOSOptions != null) {
-            ocpDate = poolUpgradeOSOptions.getOcpDate();
-        }
+        DateTimeRfc1123 ocpDateConverted = null;
         String ifMatch = null;
-        if (poolUpgradeOSOptions != null) {
-            ifMatch = poolUpgradeOSOptions.getIfMatch();
-        }
         String ifNoneMatch = null;
-        if (poolUpgradeOSOptions != null) {
-            ifNoneMatch = poolUpgradeOSOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (poolUpgradeOSOptions != null) {
-            ifModifiedSince = poolUpgradeOSOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (poolUpgradeOSOptions != null) {
-            ifUnmodifiedSince = poolUpgradeOSOptions.getIfUnmodifiedSince();
-        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
         PoolUpgradeOSParameter poolUpgradeOSParameter = new PoolUpgradeOSParameter();
         poolUpgradeOSParameter.setTargetOSVersion(targetOSVersion);
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<ResponseBody> call = service.upgradeOS(poolId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, poolUpgradeOSParameter);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -4400,49 +3506,13 @@ public final class PoolOperationsImpl implements PoolOperations {
         Validator.validate(nodeRemoveParameter);
         final PoolRemoveNodesOptions poolRemoveNodesOptions = null;
         Integer timeout = null;
-        if (poolRemoveNodesOptions != null) {
-            timeout = poolRemoveNodesOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolRemoveNodesOptions != null) {
-            clientRequestId = poolRemoveNodesOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolRemoveNodesOptions != null) {
-            returnClientRequestId = poolRemoveNodesOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolRemoveNodesOptions != null) {
-            ocpDate = poolRemoveNodesOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (poolRemoveNodesOptions != null) {
-            ifMatch = poolRemoveNodesOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (poolRemoveNodesOptions != null) {
-            ifNoneMatch = poolRemoveNodesOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (poolRemoveNodesOptions != null) {
-            ifModifiedSince = poolRemoveNodesOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (poolRemoveNodesOptions != null) {
-            ifUnmodifiedSince = poolRemoveNodesOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<ResponseBody> call = service.removeNodes(poolId, nodeRemoveParameter, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         return removeNodesDelegate(call.execute());
     }
@@ -4475,49 +3545,13 @@ public final class PoolOperationsImpl implements PoolOperations {
         Validator.validate(nodeRemoveParameter, serviceCallback);
         final PoolRemoveNodesOptions poolRemoveNodesOptions = null;
         Integer timeout = null;
-        if (poolRemoveNodesOptions != null) {
-            timeout = poolRemoveNodesOptions.getTimeout();
-        }
         String clientRequestId = null;
-        if (poolRemoveNodesOptions != null) {
-            clientRequestId = poolRemoveNodesOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolRemoveNodesOptions != null) {
-            returnClientRequestId = poolRemoveNodesOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolRemoveNodesOptions != null) {
-            ocpDate = poolRemoveNodesOptions.getOcpDate();
-        }
-        String ifMatch = null;
-        if (poolRemoveNodesOptions != null) {
-            ifMatch = poolRemoveNodesOptions.getIfMatch();
-        }
-        String ifNoneMatch = null;
-        if (poolRemoveNodesOptions != null) {
-            ifNoneMatch = poolRemoveNodesOptions.getIfNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (poolRemoveNodesOptions != null) {
-            ifModifiedSince = poolRemoveNodesOptions.getIfModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (poolRemoveNodesOptions != null) {
-            ifUnmodifiedSince = poolRemoveNodesOptions.getIfUnmodifiedSince();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
+        String ifMatch = null;
+        String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
         Call<ResponseBody> call = service.removeNodes(poolId, nodeRemoveParameter, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -4713,21 +3747,8 @@ public final class PoolOperationsImpl implements PoolOperations {
         }
         final PoolListPoolUsageMetricsNextOptions poolListPoolUsageMetricsNextOptions = null;
         String clientRequestId = null;
-        if (poolListPoolUsageMetricsNextOptions != null) {
-            clientRequestId = poolListPoolUsageMetricsNextOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolListPoolUsageMetricsNextOptions != null) {
-            returnClientRequestId = poolListPoolUsageMetricsNextOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolListPoolUsageMetricsNextOptions != null) {
-            ocpDate = poolListPoolUsageMetricsNextOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.listPoolUsageMetricsNext(nextPageLink, this.client.getAcceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
         return listPoolUsageMetricsNextDelegate(call.execute());
     }
@@ -4751,21 +3772,8 @@ public final class PoolOperationsImpl implements PoolOperations {
         }
         final PoolListPoolUsageMetricsNextOptions poolListPoolUsageMetricsNextOptions = null;
         String clientRequestId = null;
-        if (poolListPoolUsageMetricsNextOptions != null) {
-            clientRequestId = poolListPoolUsageMetricsNextOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolListPoolUsageMetricsNextOptions != null) {
-            returnClientRequestId = poolListPoolUsageMetricsNextOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolListPoolUsageMetricsNextOptions != null) {
-            ocpDate = poolListPoolUsageMetricsNextOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.listPoolUsageMetricsNext(nextPageLink, this.client.getAcceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<PoolUsageMetrics>>(serviceCallback) {
@@ -4776,7 +3784,7 @@ public final class PoolOperationsImpl implements PoolOperations {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listPoolUsageMetricsNextAsync(result.getBody().getNextPageLink(), poolListPoolUsageMetricsNextOptions, serviceCall, serviceCallback);
+                        listPoolUsageMetricsNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
@@ -4902,21 +3910,8 @@ public final class PoolOperationsImpl implements PoolOperations {
         }
         final PoolListNextOptions poolListNextOptions = null;
         String clientRequestId = null;
-        if (poolListNextOptions != null) {
-            clientRequestId = poolListNextOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolListNextOptions != null) {
-            returnClientRequestId = poolListNextOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolListNextOptions != null) {
-            ocpDate = poolListNextOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
         return listNextDelegate(call.execute());
     }
@@ -4940,21 +3935,8 @@ public final class PoolOperationsImpl implements PoolOperations {
         }
         final PoolListNextOptions poolListNextOptions = null;
         String clientRequestId = null;
-        if (poolListNextOptions != null) {
-            clientRequestId = poolListNextOptions.getClientRequestId();
-        }
         Boolean returnClientRequestId = null;
-        if (poolListNextOptions != null) {
-            returnClientRequestId = poolListNextOptions.getReturnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolListNextOptions != null) {
-            ocpDate = poolListNextOptions.getOcpDate();
-        }
         DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<CloudPool>>(serviceCallback) {
@@ -4965,7 +3947,7 @@ public final class PoolOperationsImpl implements PoolOperations {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), poolListNextOptions, serviceCall, serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
