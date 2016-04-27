@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.GenericResources;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupsInner;
@@ -35,7 +36,7 @@ public final class GenericResourcesImpl
     }
 
     @Override
-    public List<GenericResource> list() throws CloudException, IOException {
+    public PagedList<GenericResource> list() throws CloudException, IOException {
         PagedListConverter<GenericResourceInner, GenericResource> converter = new PagedListConverter<GenericResourceInner, GenericResource>() {
             @Override
             public GenericResource typeConvert(GenericResourceInner genericResourceInner) {

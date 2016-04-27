@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Deployments;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
@@ -36,7 +37,7 @@ public class DeploymentsInGroupImpl
     }
 
     @Override
-    public List<Deployment> list() throws CloudException, IOException {
+    public PagedList<Deployment> list() throws CloudException, IOException {
         return converter.convert(deployments.list(resourceGroupName).getBody());
     }
 

@@ -20,11 +20,12 @@
 package com.microsoft.azure.management.resources.fluentcore.collection;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.PagedList;
 
 import java.io.IOException;
 import java.util.List;
 
 // Requires class to support listing entities
 public interface SupportsListing<T> {
-	List<T> list() throws CloudException, IOException;
+	PagedList<T> list() throws CloudException, IOException;
 }

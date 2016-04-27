@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.resources.ResourceGroup;
@@ -31,7 +32,7 @@ public class AvailabilitySetsInGroup implements AvailabilitySets.InGroup {
     }
 
     @Override
-    public List<AvailabilitySet> list() throws CloudException, IOException {
+    public PagedList<AvailabilitySet> list() throws CloudException, IOException {
         return this.availabilitySetsCore.list(resourceGroup.name());
     }
 }

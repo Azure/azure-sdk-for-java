@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.DeploymentOperations;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
@@ -44,7 +45,7 @@ public class DeploymentOperationsImpl
     }
 
     @Override
-    public List<DeploymentOperation> list() throws CloudException, IOException {
+    public PagedList<DeploymentOperation> list() throws CloudException, IOException {
         return new GroupPagedList<DeploymentOperation>(resourceGroups.list()) {
             @Override
             public List<DeploymentOperation> listNextGroup(String resourceGroupName) throws RestException, IOException {

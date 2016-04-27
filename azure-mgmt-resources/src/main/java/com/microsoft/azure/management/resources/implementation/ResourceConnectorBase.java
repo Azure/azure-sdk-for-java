@@ -13,7 +13,7 @@ public class ResourceConnectorBase<T extends ResourceConnector> implements Resou
     private ResourceGroups resourceGroups;
     private ResourceManagementClientImpl client;
 
-    public ResourceConnectorBase(ServiceClientCredentials credentials, String subscriptionId, ResourceGroup resourceGroup) {
+    protected ResourceConnectorBase(ServiceClientCredentials credentials, String subscriptionId, ResourceGroup resourceGroup) {
         this.credentials = credentials;
         this.subscriptionId = subscriptionId;
         this.resourceGroup = resourceGroup;

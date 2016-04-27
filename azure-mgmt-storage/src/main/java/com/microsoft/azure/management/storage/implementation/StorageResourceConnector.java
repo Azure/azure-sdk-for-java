@@ -15,12 +15,16 @@ public class StorageResourceConnector extends ResourceConnectorBase<StorageResou
 
     private StorageResourceConnector(ServiceClientCredentials credentials, String subscriptionId,  ResourceGroup resourceGroup) {
         super(credentials, subscriptionId, resourceGroup);
-        this.client = new StorageManagementClientImpl(credentials);
-        this.client.setSubscriptionId(subscriptionId);
+        constructClient();
     }
 
     private static StorageResourceConnector create(ServiceClientCredentials credentials,  String subscriptionId, ResourceGroup resourceGroup) {
         return new StorageResourceConnector(credentials, subscriptionId, resourceGroup);
+    }
+
+    private void constructClient() {
+        client = new StorageManagementClientImpl(credentials);
+        client.setSubscriptionId(subscriptionId);
     }
 
     public static class Builder implements ResourceConnector.Builder<StorageResourceConnector> {
@@ -44,7 +48,7 @@ public class StorageResourceConnector extends ResourceConnectorBase<StorageResou
     }
 
     private StorageAccounts storageAccountsCore() {
-        StorageAccounts storageAccountsCore = new StorageAccountsImpl(this.client, resourceGroups());
+        StorageAccounts storageAccountsCore = new StorageAccountsImpl(this.client.storageAccounts(), resourceGroups());
         return storageAccountsCore;
     }
 }

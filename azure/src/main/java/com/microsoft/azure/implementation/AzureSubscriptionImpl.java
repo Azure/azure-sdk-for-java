@@ -6,6 +6,10 @@
 
 package com.microsoft.azure.implementation;
 
+import com.microsoft.azure.management.compute.AvailabilitySets;
+import com.microsoft.azure.management.compute.VirtualMachines;
+import com.microsoft.azure.management.compute.implementation.AvailabilitySetsImpl;
+import com.microsoft.azure.management.compute.implementation.api.ComputeManagementClientImpl;
 import com.microsoft.azure.management.resources.GenericResources;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
@@ -21,16 +25,18 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 
 final class AzureSubscriptionImpl extends AzureBaseImpl<Azure.Subscription>
         implements Azure.Subscription {
-    private ServiceClientCredentials credentials;
-    private String subscriptionId;
+    private final ServiceClientCredentials credentials;
+    private final String subscriptionId;
     // SDK Clients
     private ResourceManagementClientImpl resourceManagementClient;
     private StorageManagementClientImpl storageManagementClient;
+    private ComputeManagementClientImpl computeManagementClient;
     // Fluent Collections
     private Azure.ResourceGroups azureResourceGroups;
     private GenericResources genericResources;
     private StorageAccounts storageAccounts;
     private Usages storageUsages;
+    private AvailabilitySets availabilitySets;
 
     AzureSubscriptionImpl(ServiceClientCredentials credentials, String subscriptionId) {
         this.credentials = credentials;
@@ -56,7 +62,7 @@ final class AzureSubscriptionImpl extends AzureBaseImpl<Azure.Subscription>
     @Override
     public StorageAccounts storageAccounts() {
         if (storageAccounts == null) {
-            storageAccounts =  new StorageAccountsImpl(storageManagementClient(), resourceGroupsCore());
+            storageAccounts =  new StorageAccountsImpl(storageManagementClient().storageAccounts(), resourceGroupsCore());
         }
         return storageAccounts;
     }
@@ -67,6 +73,19 @@ final class AzureSubscriptionImpl extends AzureBaseImpl<Azure.Subscription>
             storageUsages = new UsagesImpl(storageManagementClient());
         }
         return storageUsages;
+    }
+
+    @Override
+    public AvailabilitySets availabilitySets() {
+        if (availabilitySets == null) {
+            availabilitySets = new AvailabilitySetsImpl(computeManagementClient().availabilitySets(), resourceGroupsCore(), virtualMachines());
+        }
+        return availabilitySets;
+    }
+
+    public VirtualMachines virtualMachines() {
+        // TODO
+        return null;
     }
 
     private ResourceManagementClientImpl resourceManagementClient() {
@@ -83,6 +102,14 @@ final class AzureSubscriptionImpl extends AzureBaseImpl<Azure.Subscription>
             storageManagementClient.setSubscriptionId(subscriptionId);
         }
         return storageManagementClient;
+    }
+
+    private ComputeManagementClientImpl computeManagementClient() {
+        if (computeManagementClient == null) {
+            computeManagementClient = new ComputeManagementClientImpl(credentials);
+            computeManagementClient.setSubscriptionId(subscriptionId);
+        }
+        return computeManagementClient;
     }
 
     private ResourceGroups resourceGroupsCore() {

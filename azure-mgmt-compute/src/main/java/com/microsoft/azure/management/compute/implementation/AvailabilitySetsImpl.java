@@ -49,7 +49,7 @@ public class AvailabilitySetsImpl implements AvailabilitySets {
     }
 
     @Override
-    public List<AvailabilitySet> list(String groupName) throws CloudException, IOException {
+    public PagedList<AvailabilitySet> list(String groupName) throws CloudException, IOException {
         PageImpl<AvailabilitySetInner> page = new PageImpl<>();
         page.setItems(client.list(groupName).getBody());
         page.setNextPageLink(null);
@@ -72,7 +72,7 @@ public class AvailabilitySetsImpl implements AvailabilitySets {
     }
 
     @Override
-    public List<AvailabilitySet> list() throws CloudException, IOException {
+    public PagedList<AvailabilitySet> list() throws CloudException, IOException {
         return new GroupPagedList<AvailabilitySet>(resourceGroups.list()) {
             @Override
             public List<AvailabilitySet> listNextGroup(String resourceGroupName) throws RestException, IOException {

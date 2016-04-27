@@ -28,7 +28,7 @@ class AzureAuthenticatedImpl extends AzureBaseImpl<AzureStorageManager.Authentic
     @Override
     public StorageAccounts storageAccounts() {
         if (storageAccounts == null) {
-            storageAccounts = new StorageAccountsImpl(storageManagementClient(), resourceGroupsCore());
+            storageAccounts = new StorageAccountsImpl(storageManagementClient().storageAccounts(), resourceGroupsCore());
         }
         return storageAccounts;
     }
