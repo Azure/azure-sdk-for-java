@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Represents a general purpose file uploader into DataLake. Supports the efficient upload of large files.
@@ -342,12 +343,25 @@ public class DataLakeStoreUploader {
                         }
 
                         inputPaths[finalI] = remoteStreamPath;
+
                     } catch (Exception ex) {
                         //collect any exceptions, whether we just generated them above or whether they come from the Front End,
-                        exceptions.add(ex);
+                        synchronized (exceptions) {
+                            exceptions.add(ex);
+                        }
                     }
                 }
             });
+        }
+
+        exec.shutdown();
+
+        try {
+            exec.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS); // waits ~292 years for completion or interruption.
+        }
+        catch (InterruptedException e) {
+            // add the exception since it will indicate that it was cancelled.
+            exceptions.add(e);
         }
 
         if (exceptions.size() > 0) {
