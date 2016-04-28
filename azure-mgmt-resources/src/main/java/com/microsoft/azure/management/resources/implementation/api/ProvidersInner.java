@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.resources.implementation.api;
 
+import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
@@ -28,7 +29,6 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -91,13 +91,13 @@ public final class ProvidersInner {
         if (resourceProviderNamespace == null) {
             throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.unregister(resourceProviderNamespace, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.unregister(resourceProviderNamespace, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         return unregisterDelegate(call.execute());
     }
 
@@ -117,15 +117,15 @@ public final class ProvidersInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.unregister(resourceProviderNamespace, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.unregister(resourceProviderNamespace, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ProviderInner>(serviceCallback) {
             @Override
@@ -141,7 +141,7 @@ public final class ProvidersInner {
     }
 
     private ServiceResponse<ProviderInner> unregisterDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ProviderInner, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<ProviderInner, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<ProviderInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -160,13 +160,13 @@ public final class ProvidersInner {
         if (resourceProviderNamespace == null) {
             throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.register(resourceProviderNamespace, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.register(resourceProviderNamespace, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         return registerDelegate(call.execute());
     }
 
@@ -186,15 +186,15 @@ public final class ProvidersInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.register(resourceProviderNamespace, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.register(resourceProviderNamespace, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ProviderInner>(serviceCallback) {
             @Override
@@ -210,7 +210,7 @@ public final class ProvidersInner {
     }
 
     private ServiceResponse<ProviderInner> registerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ProviderInner, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<ProviderInner, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<ProviderInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -225,14 +225,14 @@ public final class ProvidersInner {
      * @return the List&lt;ProviderInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<PagedList<ProviderInner>> list() throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final Integer top = null;
-        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.subscriptionId(), top, this.client.apiVersion(), this.client.acceptLanguage());
         ServiceResponse<PageImpl<ProviderInner>> response = listDelegate(call.execute());
         PagedList<ProviderInner> result = new PagedList<ProviderInner>(response.getBody()) {
             @Override
@@ -254,16 +254,16 @@ public final class ProvidersInner {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
         final Integer top = null;
-        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.subscriptionId(), top, this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<ProviderInner>>(serviceCallback) {
             @Override
@@ -295,13 +295,13 @@ public final class ProvidersInner {
      * @return the List&lt;ProviderInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<PagedList<ProviderInner>> list(final Integer top) throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.subscriptionId(), top, this.client.apiVersion(), this.client.acceptLanguage());
         ServiceResponse<PageImpl<ProviderInner>> response = listDelegate(call.execute());
         PagedList<ProviderInner> result = new PagedList<ProviderInner>(response.getBody()) {
             @Override
@@ -324,15 +324,15 @@ public final class ProvidersInner {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.list(this.client.getSubscriptionId(), top, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.subscriptionId(), top, this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<ProviderInner>>(serviceCallback) {
             @Override
@@ -355,7 +355,7 @@ public final class ProvidersInner {
     }
 
     private ServiceResponse<PageImpl<ProviderInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ProviderInner>, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<ProviderInner>, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<PageImpl<ProviderInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -374,13 +374,13 @@ public final class ProvidersInner {
         if (resourceProviderNamespace == null) {
             throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.get(resourceProviderNamespace, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.get(resourceProviderNamespace, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         return getDelegate(call.execute());
     }
 
@@ -400,15 +400,15 @@ public final class ProvidersInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.get(resourceProviderNamespace, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.get(resourceProviderNamespace, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ProviderInner>(serviceCallback) {
             @Override
@@ -424,7 +424,7 @@ public final class ProvidersInner {
     }
 
     private ServiceResponse<ProviderInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ProviderInner, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<ProviderInner, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<ProviderInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -443,7 +443,7 @@ public final class ProvidersInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage());
         return listNextDelegate(call.execute());
     }
 
@@ -464,7 +464,7 @@ public final class ProvidersInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<ProviderInner>>(serviceCallback) {
             @Override
@@ -487,7 +487,7 @@ public final class ProvidersInner {
     }
 
     private ServiceResponse<PageImpl<ProviderInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ProviderInner>, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<ProviderInner>, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<PageImpl<ProviderInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

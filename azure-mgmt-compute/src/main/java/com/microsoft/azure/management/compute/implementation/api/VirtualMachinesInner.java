@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.compute.implementation.api;
 
+import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
@@ -33,7 +34,6 @@ import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -170,17 +170,17 @@ public final class VirtualMachinesInner {
         if (vmName == null) {
             throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Response<ResponseBody> result = service.capture(resourceGroupName, vmName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
+        Response<ResponseBody> result = service.capture(resourceGroupName, vmName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<VirtualMachineCaptureResultInner>() { }.getType());
     }
 
@@ -204,17 +204,17 @@ public final class VirtualMachinesInner {
         if (vmName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
         Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.capture(resourceGroupName, vmName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.capture(resourceGroupName, vmName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -247,17 +247,17 @@ public final class VirtualMachinesInner {
         if (vmName == null) {
             throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Call<ResponseBody> call = service.beginCapture(resourceGroupName, vmName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginCapture(resourceGroupName, vmName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
         return beginCaptureDelegate(call.execute());
     }
 
@@ -283,20 +283,20 @@ public final class VirtualMachinesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
         if (parameters == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
         Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.beginCapture(resourceGroupName, vmName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginCapture(resourceGroupName, vmName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<VirtualMachineCaptureResultInner>(serviceCallback) {
             @Override
@@ -312,7 +312,7 @@ public final class VirtualMachinesInner {
     }
 
     private ServiceResponse<VirtualMachineCaptureResultInner> beginCaptureDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VirtualMachineCaptureResultInner, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<VirtualMachineCaptureResultInner, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<VirtualMachineCaptureResultInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -338,17 +338,17 @@ public final class VirtualMachinesInner {
         if (vmName == null) {
             throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Response<ResponseBody> result = service.createOrUpdate(resourceGroupName, vmName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
+        Response<ResponseBody> result = service.createOrUpdate(resourceGroupName, vmName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage()).execute();
         return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<VirtualMachineInner>() { }.getType());
     }
 
@@ -372,17 +372,17 @@ public final class VirtualMachinesInner {
         if (vmName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
         Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, vmName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, vmName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -415,17 +415,17 @@ public final class VirtualMachinesInner {
         if (vmName == null) {
             throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, vmName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, vmName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
         return beginCreateOrUpdateDelegate(call.execute());
     }
 
@@ -451,20 +451,20 @@ public final class VirtualMachinesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
         if (parameters == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
         Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, vmName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, vmName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<VirtualMachineInner>(serviceCallback) {
             @Override
@@ -480,7 +480,7 @@ public final class VirtualMachinesInner {
     }
 
     private ServiceResponse<VirtualMachineInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VirtualMachineInner, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<VirtualMachineInner, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<VirtualMachineInner>() { }.getType())
                 .register(201, new TypeToken<VirtualMachineInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -505,13 +505,13 @@ public final class VirtualMachinesInner {
         if (vmName == null) {
             throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Response<ResponseBody> result = service.delete(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
+        Response<ResponseBody> result = service.delete(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
 
@@ -534,13 +534,13 @@ public final class VirtualMachinesInner {
         if (vmName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
-        Call<ResponseBody> call = service.delete(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.delete(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -572,13 +572,13 @@ public final class VirtualMachinesInner {
         if (vmName == null) {
             throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.beginDelete(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginDelete(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         return beginDeleteDelegate(call.execute());
     }
 
@@ -603,15 +603,15 @@ public final class VirtualMachinesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.beginDelete(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginDelete(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -627,7 +627,7 @@ public final class VirtualMachinesInner {
     }
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -650,14 +650,14 @@ public final class VirtualMachinesInner {
         if (vmName == null) {
             throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final InstanceViewTypes expand = null;
-        Call<ResponseBody> call = service.get(resourceGroupName, vmName, this.client.getSubscriptionId(), expand, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.get(resourceGroupName, vmName, this.client.subscriptionId(), expand, this.client.apiVersion(), this.client.acceptLanguage());
         return getDelegate(call.execute());
     }
 
@@ -682,16 +682,16 @@ public final class VirtualMachinesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
         final InstanceViewTypes expand = null;
-        Call<ResponseBody> call = service.get(resourceGroupName, vmName, this.client.getSubscriptionId(), expand, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.get(resourceGroupName, vmName, this.client.subscriptionId(), expand, this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<VirtualMachineInner>(serviceCallback) {
             @Override
@@ -724,13 +724,13 @@ public final class VirtualMachinesInner {
         if (vmName == null) {
             throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.get(resourceGroupName, vmName, this.client.getSubscriptionId(), expand, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.get(resourceGroupName, vmName, this.client.subscriptionId(), expand, this.client.apiVersion(), this.client.acceptLanguage());
         return getDelegate(call.execute());
     }
 
@@ -756,15 +756,15 @@ public final class VirtualMachinesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.get(resourceGroupName, vmName, this.client.getSubscriptionId(), expand, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.get(resourceGroupName, vmName, this.client.subscriptionId(), expand, this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<VirtualMachineInner>(serviceCallback) {
             @Override
@@ -780,7 +780,7 @@ public final class VirtualMachinesInner {
     }
 
     private ServiceResponse<VirtualMachineInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VirtualMachineInner, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<VirtualMachineInner, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<VirtualMachineInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -804,13 +804,13 @@ public final class VirtualMachinesInner {
         if (vmName == null) {
             throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Response<ResponseBody> result = service.deallocate(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
+        Response<ResponseBody> result = service.deallocate(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
 
@@ -833,13 +833,13 @@ public final class VirtualMachinesInner {
         if (vmName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
-        Call<ResponseBody> call = service.deallocate(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.deallocate(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -871,13 +871,13 @@ public final class VirtualMachinesInner {
         if (vmName == null) {
             throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.beginDeallocate(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginDeallocate(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         return beginDeallocateDelegate(call.execute());
     }
 
@@ -902,15 +902,15 @@ public final class VirtualMachinesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.beginDeallocate(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginDeallocate(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -926,7 +926,7 @@ public final class VirtualMachinesInner {
     }
 
     private ServiceResponse<Void> beginDeallocateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -948,13 +948,13 @@ public final class VirtualMachinesInner {
         if (vmName == null) {
             throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.generalize(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.generalize(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         return generalizeDelegate(call.execute());
     }
 
@@ -979,15 +979,15 @@ public final class VirtualMachinesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.generalize(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.generalize(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -1003,7 +1003,7 @@ public final class VirtualMachinesInner {
     }
 
     private ServiceResponse<Void> generalizeDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -1021,13 +1021,13 @@ public final class VirtualMachinesInner {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         ServiceResponse<PageImpl<VirtualMachineInner>> response = listDelegate(call.execute());
         List<VirtualMachineInner> result = response.getBody().getItems();
         return new ServiceResponse<>(result, response.getResponse());
@@ -1049,15 +1049,15 @@ public final class VirtualMachinesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<VirtualMachineInner>>(serviceCallback) {
             @Override
@@ -1074,7 +1074,7 @@ public final class VirtualMachinesInner {
     }
 
     private ServiceResponse<PageImpl<VirtualMachineInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualMachineInner>, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<VirtualMachineInner>, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<PageImpl<VirtualMachineInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1089,13 +1089,13 @@ public final class VirtualMachinesInner {
      * @return the List&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<PagedList<VirtualMachineInner>> listAll() throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         ServiceResponse<PageImpl<VirtualMachineInner>> response = listAllDelegate(call.execute());
         PagedList<VirtualMachineInner> result = new PagedList<VirtualMachineInner>(response.getBody()) {
             @Override
@@ -1117,15 +1117,15 @@ public final class VirtualMachinesInner {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<VirtualMachineInner>>(serviceCallback) {
             @Override
@@ -1148,7 +1148,7 @@ public final class VirtualMachinesInner {
     }
 
     private ServiceResponse<PageImpl<VirtualMachineInner>> listAllDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualMachineInner>, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<VirtualMachineInner>, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<PageImpl<VirtualMachineInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1171,13 +1171,13 @@ public final class VirtualMachinesInner {
         if (vmName == null) {
             throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listAvailableSizes(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAvailableSizes(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         ServiceResponse<PageImpl<VirtualMachineSizeInner>> response = listAvailableSizesDelegate(call.execute());
         List<VirtualMachineSizeInner> result = response.getBody().getItems();
         return new ServiceResponse<>(result, response.getResponse());
@@ -1204,15 +1204,15 @@ public final class VirtualMachinesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listAvailableSizes(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAvailableSizes(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<VirtualMachineSizeInner>>(serviceCallback) {
             @Override
@@ -1229,7 +1229,7 @@ public final class VirtualMachinesInner {
     }
 
     private ServiceResponse<PageImpl<VirtualMachineSizeInner>> listAvailableSizesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualMachineSizeInner>, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<VirtualMachineSizeInner>, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<PageImpl<VirtualMachineSizeInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1253,13 +1253,13 @@ public final class VirtualMachinesInner {
         if (vmName == null) {
             throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Response<ResponseBody> result = service.powerOff(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
+        Response<ResponseBody> result = service.powerOff(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
 
@@ -1282,13 +1282,13 @@ public final class VirtualMachinesInner {
         if (vmName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
-        Call<ResponseBody> call = service.powerOff(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.powerOff(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -1320,13 +1320,13 @@ public final class VirtualMachinesInner {
         if (vmName == null) {
             throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.beginPowerOff(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginPowerOff(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         return beginPowerOffDelegate(call.execute());
     }
 
@@ -1351,15 +1351,15 @@ public final class VirtualMachinesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.beginPowerOff(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginPowerOff(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -1375,7 +1375,7 @@ public final class VirtualMachinesInner {
     }
 
     private ServiceResponse<Void> beginPowerOffDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -1398,13 +1398,13 @@ public final class VirtualMachinesInner {
         if (vmName == null) {
             throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Response<ResponseBody> result = service.restart(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
+        Response<ResponseBody> result = service.restart(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
 
@@ -1427,13 +1427,13 @@ public final class VirtualMachinesInner {
         if (vmName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
-        Call<ResponseBody> call = service.restart(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.restart(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -1465,13 +1465,13 @@ public final class VirtualMachinesInner {
         if (vmName == null) {
             throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.beginRestart(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginRestart(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         return beginRestartDelegate(call.execute());
     }
 
@@ -1496,15 +1496,15 @@ public final class VirtualMachinesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.beginRestart(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginRestart(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -1520,7 +1520,7 @@ public final class VirtualMachinesInner {
     }
 
     private ServiceResponse<Void> beginRestartDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -1543,13 +1543,13 @@ public final class VirtualMachinesInner {
         if (vmName == null) {
             throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Response<ResponseBody> result = service.start(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
+        Response<ResponseBody> result = service.start(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
 
@@ -1572,13 +1572,13 @@ public final class VirtualMachinesInner {
         if (vmName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
-        Call<ResponseBody> call = service.start(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.start(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -1610,13 +1610,13 @@ public final class VirtualMachinesInner {
         if (vmName == null) {
             throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.beginStart(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginStart(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         return beginStartDelegate(call.execute());
     }
 
@@ -1641,15 +1641,15 @@ public final class VirtualMachinesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.beginStart(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginStart(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -1665,7 +1665,7 @@ public final class VirtualMachinesInner {
     }
 
     private ServiceResponse<Void> beginStartDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -1688,13 +1688,13 @@ public final class VirtualMachinesInner {
         if (vmName == null) {
             throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Response<ResponseBody> result = service.redeploy(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
+        Response<ResponseBody> result = service.redeploy(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
 
@@ -1717,13 +1717,13 @@ public final class VirtualMachinesInner {
         if (vmName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
-        Call<ResponseBody> call = service.redeploy(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.redeploy(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -1755,13 +1755,13 @@ public final class VirtualMachinesInner {
         if (vmName == null) {
             throw new IllegalArgumentException("Parameter vmName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.beginRedeploy(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginRedeploy(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         return beginRedeployDelegate(call.execute());
     }
 
@@ -1786,15 +1786,15 @@ public final class VirtualMachinesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.beginRedeploy(resourceGroupName, vmName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginRedeploy(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -1810,7 +1810,7 @@ public final class VirtualMachinesInner {
     }
 
     private ServiceResponse<Void> beginRedeployDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -1828,7 +1828,7 @@ public final class VirtualMachinesInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.acceptLanguage());
         return listAllNextDelegate(call.execute());
     }
 
@@ -1849,7 +1849,7 @@ public final class VirtualMachinesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.acceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<VirtualMachineInner>>(serviceCallback) {
             @Override
@@ -1872,7 +1872,7 @@ public final class VirtualMachinesInner {
     }
 
     private ServiceResponse<PageImpl<VirtualMachineInner>> listAllNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualMachineInner>, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<VirtualMachineInner>, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<PageImpl<VirtualMachineInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

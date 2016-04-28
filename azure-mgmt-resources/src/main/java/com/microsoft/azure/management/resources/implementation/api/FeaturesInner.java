@@ -91,13 +91,13 @@ public final class FeaturesInner {
      * @return the List&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<PagedList<FeatureResultInner>> listAll() throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         ServiceResponse<PageImpl<FeatureResultInner>> response = listAllDelegate(call.execute());
         PagedList<FeatureResultInner> result = new PagedList<FeatureResultInner>(response.getBody()) {
             @Override
@@ -119,15 +119,15 @@ public final class FeaturesInner {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<FeatureResultInner>>(serviceCallback) {
             @Override
@@ -150,7 +150,7 @@ public final class FeaturesInner {
     }
 
     private ServiceResponse<PageImpl<FeatureResultInner>> listAllDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<FeatureResultInner>, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<FeatureResultInner>, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<PageImpl<FeatureResultInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -169,13 +169,13 @@ public final class FeaturesInner {
         if (resourceProviderNamespace == null) {
             throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.list(resourceProviderNamespace, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(resourceProviderNamespace, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         ServiceResponse<PageImpl<FeatureResultInner>> response = listDelegate(call.execute());
         PagedList<FeatureResultInner> result = new PagedList<FeatureResultInner>(response.getBody()) {
             @Override
@@ -202,15 +202,15 @@ public final class FeaturesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.list(resourceProviderNamespace, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(resourceProviderNamespace, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<FeatureResultInner>>(serviceCallback) {
             @Override
@@ -233,7 +233,7 @@ public final class FeaturesInner {
     }
 
     private ServiceResponse<PageImpl<FeatureResultInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<FeatureResultInner>, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<FeatureResultInner>, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<PageImpl<FeatureResultInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -256,13 +256,13 @@ public final class FeaturesInner {
         if (featureName == null) {
             throw new IllegalArgumentException("Parameter featureName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.get(resourceProviderNamespace, featureName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.get(resourceProviderNamespace, featureName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         return getDelegate(call.execute());
     }
 
@@ -287,15 +287,15 @@ public final class FeaturesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter featureName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.get(resourceProviderNamespace, featureName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.get(resourceProviderNamespace, featureName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<FeatureResultInner>(serviceCallback) {
             @Override
@@ -311,7 +311,7 @@ public final class FeaturesInner {
     }
 
     private ServiceResponse<FeatureResultInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<FeatureResultInner, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<FeatureResultInner, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<FeatureResultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -334,13 +334,13 @@ public final class FeaturesInner {
         if (featureName == null) {
             throw new IllegalArgumentException("Parameter featureName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.register(resourceProviderNamespace, featureName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.register(resourceProviderNamespace, featureName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         return registerDelegate(call.execute());
     }
 
@@ -365,15 +365,15 @@ public final class FeaturesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter featureName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.register(resourceProviderNamespace, featureName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.register(resourceProviderNamespace, featureName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<FeatureResultInner>(serviceCallback) {
             @Override
@@ -389,7 +389,7 @@ public final class FeaturesInner {
     }
 
     private ServiceResponse<FeatureResultInner> registerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<FeatureResultInner, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<FeatureResultInner, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<FeatureResultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -408,7 +408,7 @@ public final class FeaturesInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.acceptLanguage());
         return listAllNextDelegate(call.execute());
     }
 
@@ -429,7 +429,7 @@ public final class FeaturesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.acceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<FeatureResultInner>>(serviceCallback) {
             @Override
@@ -452,7 +452,7 @@ public final class FeaturesInner {
     }
 
     private ServiceResponse<PageImpl<FeatureResultInner>> listAllNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<FeatureResultInner>, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<FeatureResultInner>, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<PageImpl<FeatureResultInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -471,7 +471,7 @@ public final class FeaturesInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage());
         return listNextDelegate(call.execute());
     }
 
@@ -492,7 +492,7 @@ public final class FeaturesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<FeatureResultInner>>(serviceCallback) {
             @Override
@@ -515,7 +515,7 @@ public final class FeaturesInner {
     }
 
     private ServiceResponse<PageImpl<FeatureResultInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<FeatureResultInner>, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<FeatureResultInner>, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<PageImpl<FeatureResultInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

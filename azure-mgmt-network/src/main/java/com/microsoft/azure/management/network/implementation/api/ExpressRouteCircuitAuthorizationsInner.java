@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.network.implementation.api;
 
+import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
@@ -32,7 +33,6 @@ import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -112,13 +112,13 @@ public final class ExpressRouteCircuitAuthorizationsInner {
         if (authorizationName == null) {
             throw new IllegalArgumentException("Parameter authorizationName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Response<ResponseBody> result = service.delete(resourceGroupName, circuitName, authorizationName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
+        Response<ResponseBody> result = service.delete(resourceGroupName, circuitName, authorizationName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
 
@@ -145,13 +145,13 @@ public final class ExpressRouteCircuitAuthorizationsInner {
         if (authorizationName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
-        Call<ResponseBody> call = service.delete(resourceGroupName, circuitName, authorizationName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.delete(resourceGroupName, circuitName, authorizationName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -187,13 +187,13 @@ public final class ExpressRouteCircuitAuthorizationsInner {
         if (authorizationName == null) {
             throw new IllegalArgumentException("Parameter authorizationName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.beginDelete(resourceGroupName, circuitName, authorizationName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginDelete(resourceGroupName, circuitName, authorizationName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         return beginDeleteDelegate(call.execute());
     }
 
@@ -223,15 +223,15 @@ public final class ExpressRouteCircuitAuthorizationsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.beginDelete(resourceGroupName, circuitName, authorizationName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginDelete(resourceGroupName, circuitName, authorizationName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -247,7 +247,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
@@ -275,13 +275,13 @@ public final class ExpressRouteCircuitAuthorizationsInner {
         if (authorizationName == null) {
             throw new IllegalArgumentException("Parameter authorizationName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.get(resourceGroupName, circuitName, authorizationName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.get(resourceGroupName, circuitName, authorizationName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         return getDelegate(call.execute());
     }
 
@@ -311,15 +311,15 @@ public final class ExpressRouteCircuitAuthorizationsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.get(resourceGroupName, circuitName, authorizationName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.get(resourceGroupName, circuitName, authorizationName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ExpressRouteCircuitAuthorizationInner>(serviceCallback) {
             @Override
@@ -335,7 +335,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     private ServiceResponse<ExpressRouteCircuitAuthorizationInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ExpressRouteCircuitAuthorizationInner, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<ExpressRouteCircuitAuthorizationInner, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<ExpressRouteCircuitAuthorizationInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -364,17 +364,17 @@ public final class ExpressRouteCircuitAuthorizationsInner {
         if (authorizationName == null) {
             throw new IllegalArgumentException("Parameter authorizationName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (authorizationParameters == null) {
             throw new IllegalArgumentException("Parameter authorizationParameters is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(authorizationParameters);
-        Response<ResponseBody> result = service.createOrUpdate(resourceGroupName, circuitName, authorizationName, this.client.getSubscriptionId(), authorizationParameters, this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
+        Response<ResponseBody> result = service.createOrUpdate(resourceGroupName, circuitName, authorizationName, this.client.subscriptionId(), authorizationParameters, this.client.apiVersion(), this.client.acceptLanguage()).execute();
         return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<ExpressRouteCircuitAuthorizationInner>() { }.getType());
     }
 
@@ -402,17 +402,17 @@ public final class ExpressRouteCircuitAuthorizationsInner {
         if (authorizationName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
         }
         if (authorizationParameters == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter authorizationParameters is required and cannot be null."));
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
         Validator.validate(authorizationParameters, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, circuitName, authorizationName, this.client.getSubscriptionId(), authorizationParameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, circuitName, authorizationName, this.client.subscriptionId(), authorizationParameters, this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -449,17 +449,17 @@ public final class ExpressRouteCircuitAuthorizationsInner {
         if (authorizationName == null) {
             throw new IllegalArgumentException("Parameter authorizationName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (authorizationParameters == null) {
             throw new IllegalArgumentException("Parameter authorizationParameters is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(authorizationParameters);
-        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, circuitName, authorizationName, this.client.getSubscriptionId(), authorizationParameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, circuitName, authorizationName, this.client.subscriptionId(), authorizationParameters, this.client.apiVersion(), this.client.acceptLanguage());
         return beginCreateOrUpdateDelegate(call.execute());
     }
 
@@ -490,20 +490,20 @@ public final class ExpressRouteCircuitAuthorizationsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
         if (authorizationParameters == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter authorizationParameters is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
         Validator.validate(authorizationParameters, serviceCallback);
-        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, circuitName, authorizationName, this.client.getSubscriptionId(), authorizationParameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, circuitName, authorizationName, this.client.subscriptionId(), authorizationParameters, this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ExpressRouteCircuitAuthorizationInner>(serviceCallback) {
             @Override
@@ -519,7 +519,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     private ServiceResponse<ExpressRouteCircuitAuthorizationInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ExpressRouteCircuitAuthorizationInner, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<ExpressRouteCircuitAuthorizationInner, CloudException>(this.client.restClient().mapperAdapter())
                 .register(201, new TypeToken<ExpressRouteCircuitAuthorizationInner>() { }.getType())
                 .register(200, new TypeToken<ExpressRouteCircuitAuthorizationInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -543,13 +543,13 @@ public final class ExpressRouteCircuitAuthorizationsInner {
         if (circuitName == null) {
             throw new IllegalArgumentException("Parameter circuitName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.list(resourceGroupName, circuitName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(resourceGroupName, circuitName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         ServiceResponse<PageImpl<ExpressRouteCircuitAuthorizationInner>> response = listDelegate(call.execute());
         PagedList<ExpressRouteCircuitAuthorizationInner> result = new PagedList<ExpressRouteCircuitAuthorizationInner>(response.getBody()) {
             @Override
@@ -581,15 +581,15 @@ public final class ExpressRouteCircuitAuthorizationsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.list(resourceGroupName, circuitName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(resourceGroupName, circuitName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<ExpressRouteCircuitAuthorizationInner>>(serviceCallback) {
             @Override
@@ -612,7 +612,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuitAuthorizationInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitAuthorizationInner>, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitAuthorizationInner>, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitAuthorizationInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -631,7 +631,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage());
         return listNextDelegate(call.execute());
     }
 
@@ -652,7 +652,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<ExpressRouteCircuitAuthorizationInner>>(serviceCallback) {
             @Override
@@ -675,7 +675,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuitAuthorizationInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitAuthorizationInner>, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitAuthorizationInner>, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitAuthorizationInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

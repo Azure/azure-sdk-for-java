@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.network.implementation.api;
 
+import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
@@ -33,7 +34,6 @@ import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -133,13 +133,13 @@ public final class ApplicationGatewaysInner {
         if (applicationGatewayName == null) {
             throw new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Response<ResponseBody> result = service.delete(resourceGroupName, applicationGatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
+        Response<ResponseBody> result = service.delete(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
 
@@ -162,13 +162,13 @@ public final class ApplicationGatewaysInner {
         if (applicationGatewayName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
-        Call<ResponseBody> call = service.delete(resourceGroupName, applicationGatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.delete(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -200,13 +200,13 @@ public final class ApplicationGatewaysInner {
         if (applicationGatewayName == null) {
             throw new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.beginDelete(resourceGroupName, applicationGatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginDelete(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         return beginDeleteDelegate(call.execute());
     }
 
@@ -231,15 +231,15 @@ public final class ApplicationGatewaysInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.beginDelete(resourceGroupName, applicationGatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginDelete(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -255,7 +255,7 @@ public final class ApplicationGatewaysInner {
     }
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<Void>() { }.getType())
@@ -279,13 +279,13 @@ public final class ApplicationGatewaysInner {
         if (applicationGatewayName == null) {
             throw new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.get(resourceGroupName, applicationGatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.get(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         return getDelegate(call.execute());
     }
 
@@ -310,15 +310,15 @@ public final class ApplicationGatewaysInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.get(resourceGroupName, applicationGatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.get(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ApplicationGatewayInner>(serviceCallback) {
             @Override
@@ -334,7 +334,7 @@ public final class ApplicationGatewaysInner {
     }
 
     private ServiceResponse<ApplicationGatewayInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ApplicationGatewayInner, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<ApplicationGatewayInner, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<ApplicationGatewayInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -359,17 +359,17 @@ public final class ApplicationGatewaysInner {
         if (applicationGatewayName == null) {
             throw new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Response<ResponseBody> result = service.createOrUpdate(resourceGroupName, applicationGatewayName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
+        Response<ResponseBody> result = service.createOrUpdate(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage()).execute();
         return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<ApplicationGatewayInner>() { }.getType());
     }
 
@@ -393,17 +393,17 @@ public final class ApplicationGatewaysInner {
         if (applicationGatewayName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
         Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, applicationGatewayName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -436,17 +436,17 @@ public final class ApplicationGatewaysInner {
         if (applicationGatewayName == null) {
             throw new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, applicationGatewayName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
         return beginCreateOrUpdateDelegate(call.execute());
     }
 
@@ -472,20 +472,20 @@ public final class ApplicationGatewaysInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
         if (parameters == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
         Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, applicationGatewayName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ApplicationGatewayInner>(serviceCallback) {
             @Override
@@ -501,7 +501,7 @@ public final class ApplicationGatewaysInner {
     }
 
     private ServiceResponse<ApplicationGatewayInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ApplicationGatewayInner, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<ApplicationGatewayInner, CloudException>(this.client.restClient().mapperAdapter())
                 .register(201, new TypeToken<ApplicationGatewayInner>() { }.getType())
                 .register(200, new TypeToken<ApplicationGatewayInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -521,13 +521,13 @@ public final class ApplicationGatewaysInner {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         ServiceResponse<PageImpl<ApplicationGatewayInner>> response = listDelegate(call.execute());
         PagedList<ApplicationGatewayInner> result = new PagedList<ApplicationGatewayInner>(response.getBody()) {
             @Override
@@ -554,15 +554,15 @@ public final class ApplicationGatewaysInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<ApplicationGatewayInner>>(serviceCallback) {
             @Override
@@ -585,7 +585,7 @@ public final class ApplicationGatewaysInner {
     }
 
     private ServiceResponse<PageImpl<ApplicationGatewayInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ApplicationGatewayInner>, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<ApplicationGatewayInner>, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<PageImpl<ApplicationGatewayInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -600,13 +600,13 @@ public final class ApplicationGatewaysInner {
      * @return the List&lt;ApplicationGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<PagedList<ApplicationGatewayInner>> listAll() throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         ServiceResponse<PageImpl<ApplicationGatewayInner>> response = listAllDelegate(call.execute());
         PagedList<ApplicationGatewayInner> result = new PagedList<ApplicationGatewayInner>(response.getBody()) {
             @Override
@@ -628,15 +628,15 @@ public final class ApplicationGatewaysInner {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listAll(this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<ApplicationGatewayInner>>(serviceCallback) {
             @Override
@@ -659,7 +659,7 @@ public final class ApplicationGatewaysInner {
     }
 
     private ServiceResponse<PageImpl<ApplicationGatewayInner>> listAllDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ApplicationGatewayInner>, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<ApplicationGatewayInner>, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<PageImpl<ApplicationGatewayInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -683,13 +683,13 @@ public final class ApplicationGatewaysInner {
         if (applicationGatewayName == null) {
             throw new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Response<ResponseBody> result = service.start(resourceGroupName, applicationGatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
+        Response<ResponseBody> result = service.start(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
 
@@ -712,13 +712,13 @@ public final class ApplicationGatewaysInner {
         if (applicationGatewayName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
-        Call<ResponseBody> call = service.start(resourceGroupName, applicationGatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.start(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -750,13 +750,13 @@ public final class ApplicationGatewaysInner {
         if (applicationGatewayName == null) {
             throw new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.beginStart(resourceGroupName, applicationGatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginStart(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         return beginStartDelegate(call.execute());
     }
 
@@ -781,15 +781,15 @@ public final class ApplicationGatewaysInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.beginStart(resourceGroupName, applicationGatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginStart(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -805,7 +805,7 @@ public final class ApplicationGatewaysInner {
     }
 
     private ServiceResponse<Void> beginStartDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -829,13 +829,13 @@ public final class ApplicationGatewaysInner {
         if (applicationGatewayName == null) {
             throw new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Response<ResponseBody> result = service.stop(resourceGroupName, applicationGatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
+        Response<ResponseBody> result = service.stop(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
 
@@ -858,13 +858,13 @@ public final class ApplicationGatewaysInner {
         if (applicationGatewayName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
-        Call<ResponseBody> call = service.stop(resourceGroupName, applicationGatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.stop(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -896,13 +896,13 @@ public final class ApplicationGatewaysInner {
         if (applicationGatewayName == null) {
             throw new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.beginStop(resourceGroupName, applicationGatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginStop(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         return beginStopDelegate(call.execute());
     }
 
@@ -927,15 +927,15 @@ public final class ApplicationGatewaysInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.beginStop(resourceGroupName, applicationGatewayName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginStop(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -951,7 +951,7 @@ public final class ApplicationGatewaysInner {
     }
 
     private ServiceResponse<Void> beginStopDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -970,7 +970,7 @@ public final class ApplicationGatewaysInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage());
         return listNextDelegate(call.execute());
     }
 
@@ -991,7 +991,7 @@ public final class ApplicationGatewaysInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<ApplicationGatewayInner>>(serviceCallback) {
             @Override
@@ -1014,7 +1014,7 @@ public final class ApplicationGatewaysInner {
     }
 
     private ServiceResponse<PageImpl<ApplicationGatewayInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ApplicationGatewayInner>, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<ApplicationGatewayInner>, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<PageImpl<ApplicationGatewayInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1033,7 +1033,7 @@ public final class ApplicationGatewaysInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.acceptLanguage());
         return listAllNextDelegate(call.execute());
     }
 
@@ -1054,7 +1054,7 @@ public final class ApplicationGatewaysInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.acceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<ApplicationGatewayInner>>(serviceCallback) {
             @Override
@@ -1077,7 +1077,7 @@ public final class ApplicationGatewaysInner {
     }
 
     private ServiceResponse<PageImpl<ApplicationGatewayInner>> listAllNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ApplicationGatewayInner>, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<ApplicationGatewayInner>, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<PageImpl<ApplicationGatewayInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

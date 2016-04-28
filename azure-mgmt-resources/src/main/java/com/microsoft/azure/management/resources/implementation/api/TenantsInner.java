@@ -72,10 +72,10 @@ public final class TenantsInner {
      * @return the List&lt;TenantIdDescriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<PagedList<TenantIdDescriptionInner>> list() throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.list(this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage());
         ServiceResponse<PageImpl<TenantIdDescriptionInner>> response = listDelegate(call.execute());
         PagedList<TenantIdDescriptionInner> result = new PagedList<TenantIdDescriptionInner>(response.getBody()) {
             @Override
@@ -97,11 +97,11 @@ public final class TenantsInner {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.list(this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<TenantIdDescriptionInner>>(serviceCallback) {
             @Override
@@ -124,7 +124,7 @@ public final class TenantsInner {
     }
 
     private ServiceResponse<PageImpl<TenantIdDescriptionInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<TenantIdDescriptionInner>, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<TenantIdDescriptionInner>, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<PageImpl<TenantIdDescriptionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -143,7 +143,7 @@ public final class TenantsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage());
         return listNextDelegate(call.execute());
     }
 
@@ -164,7 +164,7 @@ public final class TenantsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<TenantIdDescriptionInner>>(serviceCallback) {
             @Override
@@ -187,7 +187,7 @@ public final class TenantsInner {
     }
 
     private ServiceResponse<PageImpl<TenantIdDescriptionInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<TenantIdDescriptionInner>, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<TenantIdDescriptionInner>, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<PageImpl<TenantIdDescriptionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

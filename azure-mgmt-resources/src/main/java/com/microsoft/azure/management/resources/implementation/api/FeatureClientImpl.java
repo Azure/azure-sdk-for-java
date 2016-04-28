@@ -9,7 +9,9 @@ package com.microsoft.azure.management.resources.implementation.api;
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.CustomHeaderInterceptor;
+import com.microsoft.azure.serializer.AzureJacksonMapperAdapter;
 import com.microsoft.rest.AutoRestBaseUrl;
+import com.microsoft.rest.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import java.util.UUID;
 import okhttp3.OkHttpClient;
@@ -19,19 +21,8 @@ import retrofit2.Retrofit;
  * Initializes a new instance of the FeatureClientImpl class.
  */
 public final class FeatureClientImpl extends AzureServiceClient {
-    /** The URL used as the base for all cloud service requests. */
-    private final AutoRestBaseUrl baseUrl;
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
-
-    /**
-     * Gets the URL used as the base for all cloud service requests.
-     *
-     * @return The BaseUrl value.
-     */
-    public AutoRestBaseUrl getBaseUrl() {
-        return this.baseUrl;
-    }
 
     /**
      * Gets the {@link AzureClient} used for long running operations.
@@ -61,7 +52,7 @@ public final class FeatureClientImpl extends AzureServiceClient {
      *
      * @return the subscriptionId value.
      */
-    public String getSubscriptionId() {
+    public String subscriptionId() {
         return this.subscriptionId;
     }
 
@@ -82,7 +73,7 @@ public final class FeatureClientImpl extends AzureServiceClient {
      *
      * @return the apiVersion value.
      */
-    public String getApiVersion() {
+    public String apiVersion() {
         return this.apiVersion;
     }
 
@@ -94,7 +85,7 @@ public final class FeatureClientImpl extends AzureServiceClient {
      *
      * @return the acceptLanguage value.
      */
-    public String getAcceptLanguage() {
+    public String acceptLanguage() {
         return this.acceptLanguage;
     }
 
@@ -115,7 +106,7 @@ public final class FeatureClientImpl extends AzureServiceClient {
      *
      * @return the longRunningOperationRetryTimeout value.
      */
-    public int getLongRunningOperationRetryTimeout() {
+    public int longRunningOperationRetryTimeout() {
         return this.longRunningOperationRetryTimeout;
     }
 
@@ -136,7 +127,7 @@ public final class FeatureClientImpl extends AzureServiceClient {
      *
      * @return the generateClientRequestId value.
      */
-    public boolean getGenerateClientRequestId() {
+    public boolean generateClientRequestId() {
         return this.generateClientRequestId;
     }
 
@@ -154,7 +145,7 @@ public final class FeatureClientImpl extends AzureServiceClient {
      * @return the FeaturesInner object.
      */
     public FeaturesInner features() {
-        return new FeaturesInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+        return new FeaturesInner(restClient().retrofit(), this);
     }
 
     /**
@@ -173,40 +164,28 @@ public final class FeatureClientImpl extends AzureServiceClient {
      * @param credentials the management credentials for Azure
      */
     public FeatureClientImpl(String baseUrl, ServiceClientCredentials credentials) {
-        super();
-        this.baseUrl = new AutoRestBaseUrl(baseUrl);
-        this.credentials = credentials;
-        initialize();
+        this(new RestClient.Builder(baseUrl)
+                .withMapperAdapter(new AzureJacksonMapperAdapter())
+                .withCredentials(credentials)
+                .build());
     }
 
     /**
      * Initializes an instance of FeatureClient client.
      *
-     * @param baseUrl the base URL of the host
-     * @param credentials the management credentials for Azure
-     * @param clientBuilder the builder for building up an {@link OkHttpClient}
-     * @param retrofitBuilder the builder for building up a {@link Retrofit}
+     * @param restClient the REST client to connect to Azure.
      */
-    public FeatureClientImpl(String baseUrl, ServiceClientCredentials credentials, OkHttpClient.Builder clientBuilder, Retrofit.Builder retrofitBuilder) {
-        super(clientBuilder, retrofitBuilder);
-        this.baseUrl = new AutoRestBaseUrl(baseUrl);
-        this.credentials = credentials;
+    public FeatureClientImpl(RestClient restClient) {
+        super(restClient);
         initialize();
     }
 
-    @Override
     protected void initialize() {
-        this.apiVersion = "2015-12-01";
+        this.apiVersion = "2015-11-01";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
-        this.clientBuilder.interceptors().add(new CustomHeaderInterceptor("x-ms-client-request-id", UUID.randomUUID().toString()));
-        if (this.credentials != null) {
-            this.credentials.applyCredentialsFilter(clientBuilder);
-        }
-        super.initialize();
-        this.azureClient = new AzureClient(clientBuilder, retrofitBuilder, mapperAdapter);
-        this.azureClient.setCredentials(this.credentials);
-        this.retrofitBuilder.baseUrl(baseUrl);
+        restClient().headers().addHeader("x-ms-client-request-id", UUID.randomUUID().toString());
+        this.azureClient = new AzureClient(restClient());
     }
 }

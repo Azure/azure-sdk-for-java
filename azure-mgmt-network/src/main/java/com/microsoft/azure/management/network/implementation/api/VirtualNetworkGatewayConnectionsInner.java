@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.network.implementation.api;
 
+import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
@@ -33,7 +34,6 @@ import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -130,17 +130,17 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (virtualNetworkGatewayConnectionName == null) {
             throw new IllegalArgumentException("Parameter virtualNetworkGatewayConnectionName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Response<ResponseBody> result = service.createOrUpdate(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
+        Response<ResponseBody> result = service.createOrUpdate(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage()).execute();
         return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<VirtualNetworkGatewayConnectionInner>() { }.getType());
     }
 
@@ -164,17 +164,17 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (virtualNetworkGatewayConnectionName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkGatewayConnectionName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
         Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -207,17 +207,17 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (virtualNetworkGatewayConnectionName == null) {
             throw new IllegalArgumentException("Parameter virtualNetworkGatewayConnectionName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
         return beginCreateOrUpdateDelegate(call.execute());
     }
 
@@ -243,20 +243,20 @@ public final class VirtualNetworkGatewayConnectionsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkGatewayConnectionName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
         if (parameters == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
         Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<VirtualNetworkGatewayConnectionInner>(serviceCallback) {
             @Override
@@ -272,7 +272,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
     }
 
     private ServiceResponse<VirtualNetworkGatewayConnectionInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VirtualNetworkGatewayConnectionInner, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<VirtualNetworkGatewayConnectionInner, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<VirtualNetworkGatewayConnectionInner>() { }.getType())
                 .register(201, new TypeToken<VirtualNetworkGatewayConnectionInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -296,13 +296,13 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (virtualNetworkGatewayConnectionName == null) {
             throw new IllegalArgumentException("Parameter virtualNetworkGatewayConnectionName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.get(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.get(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         return getDelegate(call.execute());
     }
 
@@ -327,15 +327,15 @@ public final class VirtualNetworkGatewayConnectionsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkGatewayConnectionName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.get(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.get(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<VirtualNetworkGatewayConnectionInner>(serviceCallback) {
             @Override
@@ -351,7 +351,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
     }
 
     private ServiceResponse<VirtualNetworkGatewayConnectionInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VirtualNetworkGatewayConnectionInner, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<VirtualNetworkGatewayConnectionInner, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<VirtualNetworkGatewayConnectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -375,13 +375,13 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (virtualNetworkGatewayConnectionName == null) {
             throw new IllegalArgumentException("Parameter virtualNetworkGatewayConnectionName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Response<ResponseBody> result = service.delete(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage()).execute();
+        Response<ResponseBody> result = service.delete(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
 
@@ -404,13 +404,13 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (virtualNetworkGatewayConnectionName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkGatewayConnectionName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
-        Call<ResponseBody> call = service.delete(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.delete(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -442,13 +442,13 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (virtualNetworkGatewayConnectionName == null) {
             throw new IllegalArgumentException("Parameter virtualNetworkGatewayConnectionName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.beginDelete(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginDelete(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         return beginDeleteDelegate(call.execute());
     }
 
@@ -473,15 +473,15 @@ public final class VirtualNetworkGatewayConnectionsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkGatewayConnectionName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.beginDelete(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.beginDelete(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -497,7 +497,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
     }
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
@@ -521,13 +521,13 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (connectionSharedKeyName == null) {
             throw new IllegalArgumentException("Parameter connectionSharedKeyName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSharedKey(resourceGroupName, connectionSharedKeyName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getSharedKey(resourceGroupName, connectionSharedKeyName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         return getSharedKeyDelegate(call.execute());
     }
 
@@ -552,15 +552,15 @@ public final class VirtualNetworkGatewayConnectionsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter connectionSharedKeyName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSharedKey(resourceGroupName, connectionSharedKeyName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getSharedKey(resourceGroupName, connectionSharedKeyName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ConnectionSharedKeyResultInner>(serviceCallback) {
             @Override
@@ -576,7 +576,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
     }
 
     private ServiceResponse<ConnectionSharedKeyResultInner> getSharedKeyDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ConnectionSharedKeyResultInner, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<ConnectionSharedKeyResultInner, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<ConnectionSharedKeyResultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -595,13 +595,13 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         ServiceResponse<PageImpl<VirtualNetworkGatewayConnectionInner>> response = listDelegate(call.execute());
         PagedList<VirtualNetworkGatewayConnectionInner> result = new PagedList<VirtualNetworkGatewayConnectionInner>(response.getBody()) {
             @Override
@@ -628,15 +628,15 @@ public final class VirtualNetworkGatewayConnectionsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.list(resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<VirtualNetworkGatewayConnectionInner>>(serviceCallback) {
             @Override
@@ -659,7 +659,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
     }
 
     private ServiceResponse<PageImpl<VirtualNetworkGatewayConnectionInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkGatewayConnectionInner>, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkGatewayConnectionInner>, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<PageImpl<VirtualNetworkGatewayConnectionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -683,16 +683,16 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (virtualNetworkGatewayConnectionName == null) {
             throw new IllegalArgumentException("Parameter virtualNetworkGatewayConnectionName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final Long keyLength = null;
         ConnectionResetSharedKeyInner parameters = new ConnectionResetSharedKeyInner();
         parameters = null;
-        Response<ResponseBody> result = service.resetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), parameters).execute();
+        Response<ResponseBody> result = service.resetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<ConnectionResetSharedKeyInner>() { }.getType());
     }
 
@@ -715,16 +715,16 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (virtualNetworkGatewayConnectionName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkGatewayConnectionName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
         final Long keyLength = null;
         ConnectionResetSharedKeyInner parameters = new ConnectionResetSharedKeyInner();
         parameters = null;
-        Call<ResponseBody> call = service.resetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), parameters);
+        Call<ResponseBody> call = service.resetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -757,15 +757,15 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (virtualNetworkGatewayConnectionName == null) {
             throw new IllegalArgumentException("Parameter virtualNetworkGatewayConnectionName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         ConnectionResetSharedKeyInner parameters = new ConnectionResetSharedKeyInner();
         parameters.setKeyLength(keyLength);
-        Response<ResponseBody> result = service.resetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), parameters).execute();
+        Response<ResponseBody> result = service.resetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<ConnectionResetSharedKeyInner>() { }.getType());
     }
 
@@ -789,15 +789,15 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (virtualNetworkGatewayConnectionName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkGatewayConnectionName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
         ConnectionResetSharedKeyInner parameters = new ConnectionResetSharedKeyInner();
         parameters.setKeyLength(keyLength);
-        Call<ResponseBody> call = service.resetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), parameters);
+        Call<ResponseBody> call = service.resetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -829,16 +829,16 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (virtualNetworkGatewayConnectionName == null) {
             throw new IllegalArgumentException("Parameter virtualNetworkGatewayConnectionName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final Long keyLength = null;
         ConnectionResetSharedKeyInner parameters = new ConnectionResetSharedKeyInner();
         parameters = null;
-        Call<ResponseBody> call = service.beginResetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), parameters);
+        Call<ResponseBody> call = service.beginResetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters);
         return beginResetSharedKeyDelegate(call.execute());
     }
 
@@ -863,18 +863,18 @@ public final class VirtualNetworkGatewayConnectionsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkGatewayConnectionName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
         final Long keyLength = null;
         ConnectionResetSharedKeyInner parameters = new ConnectionResetSharedKeyInner();
         parameters = null;
-        Call<ResponseBody> call = service.beginResetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), parameters);
+        Call<ResponseBody> call = service.beginResetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ConnectionResetSharedKeyInner>(serviceCallback) {
             @Override
@@ -907,15 +907,15 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (virtualNetworkGatewayConnectionName == null) {
             throw new IllegalArgumentException("Parameter virtualNetworkGatewayConnectionName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         ConnectionResetSharedKeyInner parameters = new ConnectionResetSharedKeyInner();
         parameters.setKeyLength(keyLength);
-        Call<ResponseBody> call = service.beginResetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), parameters);
+        Call<ResponseBody> call = service.beginResetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters);
         return beginResetSharedKeyDelegate(call.execute());
     }
 
@@ -941,17 +941,17 @@ public final class VirtualNetworkGatewayConnectionsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkGatewayConnectionName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
         ConnectionResetSharedKeyInner parameters = new ConnectionResetSharedKeyInner();
         parameters.setKeyLength(keyLength);
-        Call<ResponseBody> call = service.beginResetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), parameters);
+        Call<ResponseBody> call = service.beginResetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ConnectionResetSharedKeyInner>(serviceCallback) {
             @Override
@@ -967,7 +967,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
     }
 
     private ServiceResponse<ConnectionResetSharedKeyInner> beginResetSharedKeyDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ConnectionResetSharedKeyInner, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<ConnectionResetSharedKeyInner, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<ConnectionResetSharedKeyInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -992,16 +992,16 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (virtualNetworkGatewayConnectionName == null) {
             throw new IllegalArgumentException("Parameter virtualNetworkGatewayConnectionName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String value = null;
         ConnectionSharedKeyInner parameters = new ConnectionSharedKeyInner();
         parameters = null;
-        Response<ResponseBody> result = service.setSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), parameters).execute();
+        Response<ResponseBody> result = service.setSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters).execute();
         return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<ConnectionSharedKeyInner>() { }.getType());
     }
 
@@ -1024,16 +1024,16 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (virtualNetworkGatewayConnectionName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkGatewayConnectionName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
         final String value = null;
         ConnectionSharedKeyInner parameters = new ConnectionSharedKeyInner();
         parameters = null;
-        Call<ResponseBody> call = service.setSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), parameters);
+        Call<ResponseBody> call = service.setSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -1066,15 +1066,15 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (virtualNetworkGatewayConnectionName == null) {
             throw new IllegalArgumentException("Parameter virtualNetworkGatewayConnectionName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         ConnectionSharedKeyInner parameters = new ConnectionSharedKeyInner();
         parameters.setValue(value);
-        Response<ResponseBody> result = service.setSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), parameters).execute();
+        Response<ResponseBody> result = service.setSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters).execute();
         return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<ConnectionSharedKeyInner>() { }.getType());
     }
 
@@ -1098,15 +1098,15 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (virtualNetworkGatewayConnectionName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkGatewayConnectionName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
         ConnectionSharedKeyInner parameters = new ConnectionSharedKeyInner();
         parameters.setValue(value);
-        Call<ResponseBody> call = service.setSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), parameters);
+        Call<ResponseBody> call = service.setSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -1138,16 +1138,16 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (virtualNetworkGatewayConnectionName == null) {
             throw new IllegalArgumentException("Parameter virtualNetworkGatewayConnectionName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String value = null;
         ConnectionSharedKeyInner parameters = new ConnectionSharedKeyInner();
         parameters = null;
-        Call<ResponseBody> call = service.beginSetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), parameters);
+        Call<ResponseBody> call = service.beginSetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters);
         return beginSetSharedKeyDelegate(call.execute());
     }
 
@@ -1172,18 +1172,18 @@ public final class VirtualNetworkGatewayConnectionsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkGatewayConnectionName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
         final String value = null;
         ConnectionSharedKeyInner parameters = new ConnectionSharedKeyInner();
         parameters = null;
-        Call<ResponseBody> call = service.beginSetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), parameters);
+        Call<ResponseBody> call = service.beginSetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ConnectionSharedKeyInner>(serviceCallback) {
             @Override
@@ -1216,15 +1216,15 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (virtualNetworkGatewayConnectionName == null) {
             throw new IllegalArgumentException("Parameter virtualNetworkGatewayConnectionName is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         ConnectionSharedKeyInner parameters = new ConnectionSharedKeyInner();
         parameters.setValue(value);
-        Call<ResponseBody> call = service.beginSetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), parameters);
+        Call<ResponseBody> call = service.beginSetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters);
         return beginSetSharedKeyDelegate(call.execute());
     }
 
@@ -1250,17 +1250,17 @@ public final class VirtualNetworkGatewayConnectionsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkGatewayConnectionName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
         ConnectionSharedKeyInner parameters = new ConnectionSharedKeyInner();
         parameters.setValue(value);
-        Call<ResponseBody> call = service.beginSetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), this.client.getAcceptLanguage(), parameters);
+        Call<ResponseBody> call = service.beginSetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters);
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ConnectionSharedKeyInner>(serviceCallback) {
             @Override
@@ -1276,7 +1276,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
     }
 
     private ServiceResponse<ConnectionSharedKeyInner> beginSetSharedKeyDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ConnectionSharedKeyInner, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<ConnectionSharedKeyInner, CloudException>(this.client.restClient().mapperAdapter())
                 .register(201, new TypeToken<ConnectionSharedKeyInner>() { }.getType())
                 .register(200, new TypeToken<ConnectionSharedKeyInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -1296,7 +1296,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage());
         return listNextDelegate(call.execute());
     }
 
@@ -1317,7 +1317,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<VirtualNetworkGatewayConnectionInner>>(serviceCallback) {
             @Override
@@ -1340,7 +1340,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
     }
 
     private ServiceResponse<PageImpl<VirtualNetworkGatewayConnectionInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkGatewayConnectionInner>, CloudException>(this.client.getMapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkGatewayConnectionInner>, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<PageImpl<VirtualNetworkGatewayConnectionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
