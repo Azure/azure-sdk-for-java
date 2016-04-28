@@ -5,7 +5,10 @@ import com.microsoft.azure.management.network.implementation.api.NetworkManageme
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
+import com.microsoft.rest.RestClient;
+import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
 
 public abstract class ComputeManagementTestBase {
     protected static ResourceManagementClientImpl resourceManagementClient;
@@ -19,17 +22,21 @@ public abstract class ComputeManagementTestBase {
                 System.getenv("arm.domain"),
                 System.getenv("arm.secret"),
                 null);
-        resourceManagementClient = new ResourceManagementClientImpl(credentials);
+
+        OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
+        Retrofit.Builder retrofitBuilder = new Retrofit.Builder();
+        RestClient.Builder restBuilder = new RestClient.Builder("https://management.azure.com", clientBuilder, retrofitBuilder)
+                .withCredentials(credentials)
+                .withLogLevel(HttpLoggingInterceptor.Level.BODY);
+
+        RestClient restClient = restBuilder.build();
+        resourceManagementClient = new ResourceManagementClientImpl(restClient);
         resourceManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
-        resourceManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);
-        storageManagementClient = new StorageManagementClientImpl(credentials);
+        storageManagementClient = new StorageManagementClientImpl(restClient);
         storageManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
-        storageManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);
-        networkManagementClient = new NetworkManagementClientImpl(credentials);
+        networkManagementClient = new NetworkManagementClientImpl(restClient);
         networkManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
-        networkManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);
-        computeManagementClient = new ComputeManagementClientImpl(credentials);
+        computeManagementClient = new ComputeManagementClientImpl(restClient);
         computeManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
-        computeManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);
     }
 }
