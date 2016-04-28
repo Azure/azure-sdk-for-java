@@ -25,7 +25,7 @@ public class AzureResourceGroupsImpl implements Azure.ResourceGroups {
     }
 
     @Override
-    public List<Azure.ResourceGroup> list() throws CloudException, IOException {
+    public PagedList<Azure.ResourceGroup> list() throws CloudException, IOException {
         PageImpl<ResourceGroup> page = new PageImpl<>();
         page.setNextPageLink(null);
         page.setItems(resourceGroupsCore.list());

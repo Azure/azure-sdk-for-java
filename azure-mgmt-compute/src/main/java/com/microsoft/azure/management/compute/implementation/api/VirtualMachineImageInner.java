@@ -14,7 +14,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
  * Describes a Virtual Machine Image.
  */
 @JsonFlatten
-public class VirtualMachineImageInner extends VirtualMachineImageResource {
+public class VirtualMachineImageInner extends VirtualMachineImageResourceInner {
     /**
      * The plan property.
      */
