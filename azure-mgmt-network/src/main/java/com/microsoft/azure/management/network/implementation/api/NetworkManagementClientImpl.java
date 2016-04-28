@@ -11,17 +11,15 @@ import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.CustomHeaderInterceptor;
-import com.microsoft.rest.AutoRestBaseUrl;
+import com.microsoft.azure.serializer.AzureJacksonMapperAdapter;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.RestClient;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import java.io.IOException;
 import java.util.UUID;
-import okhttp3.logging.HttpLoggingInterceptor.Level;
-import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -30,7 +28,6 @@ import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
  * Initializes a new instance of the NetworkManagementClientImpl class.
@@ -38,19 +35,8 @@ import retrofit2.Retrofit;
 public final class NetworkManagementClientImpl extends AzureServiceClient {
     /** The Retrofit service to perform REST calls. */
     private NetworkManagementClientService service;
-    /** The URL used as the base for all cloud service requests. */
-    private final AutoRestBaseUrl baseUrl;
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
-
-    /**
-     * Gets the URL used as the base for all cloud service requests.
-     *
-     * @return The BaseUrl value.
-     */
-    public AutoRestBaseUrl getBaseUrl() {
-        return this.baseUrl;
-    }
 
     /**
      * Gets the {@link AzureClient} used for long running operations.
@@ -68,7 +54,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      *
      * @return the credentials value.
      */
-    public ServiceClientCredentials getCredentials() {
+    public ServiceClientCredentials credentials() {
         return this.credentials;
     }
 
@@ -80,7 +66,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      *
      * @return the subscriptionId value.
      */
-    public String getSubscriptionId() {
+    public String subscriptionId() {
         return this.subscriptionId;
     }
 
@@ -101,7 +87,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      *
      * @return the apiVersion value.
      */
-    public String getApiVersion() {
+    public String apiVersion() {
         return this.apiVersion;
     }
 
@@ -113,7 +99,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      *
      * @return the acceptLanguage value.
      */
-    public String getAcceptLanguage() {
+    public String acceptLanguage() {
         return this.acceptLanguage;
     }
 
@@ -134,7 +120,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      *
      * @return the longRunningOperationRetryTimeout value.
      */
-    public int getLongRunningOperationRetryTimeout() {
+    public int longRunningOperationRetryTimeout() {
         return this.longRunningOperationRetryTimeout;
     }
 
@@ -155,7 +141,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      *
      * @return the generateClientRequestId value.
      */
-    public boolean getGenerateClientRequestId() {
+    public boolean generateClientRequestId() {
         return this.generateClientRequestId;
     }
 
@@ -173,7 +159,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @return the ApplicationGatewaysInner object.
      */
     public ApplicationGatewaysInner applicationGateways() {
-        return new ApplicationGatewaysInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+        return new ApplicationGatewaysInner(restClient().retrofit(), this);
     }
 
     /**
@@ -181,7 +167,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @return the ExpressRouteCircuitAuthorizationsInner object.
      */
     public ExpressRouteCircuitAuthorizationsInner expressRouteCircuitAuthorizations() {
-        return new ExpressRouteCircuitAuthorizationsInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+        return new ExpressRouteCircuitAuthorizationsInner(restClient().retrofit(), this);
     }
 
     /**
@@ -189,7 +175,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @return the ExpressRouteCircuitPeeringsInner object.
      */
     public ExpressRouteCircuitPeeringsInner expressRouteCircuitPeerings() {
-        return new ExpressRouteCircuitPeeringsInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+        return new ExpressRouteCircuitPeeringsInner(restClient().retrofit(), this);
     }
 
     /**
@@ -197,7 +183,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @return the ExpressRouteCircuitsInner object.
      */
     public ExpressRouteCircuitsInner expressRouteCircuits() {
-        return new ExpressRouteCircuitsInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+        return new ExpressRouteCircuitsInner(restClient().retrofit(), this);
     }
 
     /**
@@ -205,7 +191,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @return the ExpressRouteServiceProvidersInner object.
      */
     public ExpressRouteServiceProvidersInner expressRouteServiceProviders() {
-        return new ExpressRouteServiceProvidersInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+        return new ExpressRouteServiceProvidersInner(restClient().retrofit(), this);
     }
 
     /**
@@ -213,7 +199,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @return the LoadBalancersInner object.
      */
     public LoadBalancersInner loadBalancers() {
-        return new LoadBalancersInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+        return new LoadBalancersInner(restClient().retrofit(), this);
     }
 
     /**
@@ -221,7 +207,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @return the LocalNetworkGatewaysInner object.
      */
     public LocalNetworkGatewaysInner localNetworkGateways() {
-        return new LocalNetworkGatewaysInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+        return new LocalNetworkGatewaysInner(restClient().retrofit(), this);
     }
 
     /**
@@ -229,7 +215,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @return the NetworkInterfacesInner object.
      */
     public NetworkInterfacesInner networkInterfaces() {
-        return new NetworkInterfacesInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+        return new NetworkInterfacesInner(restClient().retrofit(), this);
     }
 
     /**
@@ -237,7 +223,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @return the NetworkSecurityGroupsInner object.
      */
     public NetworkSecurityGroupsInner networkSecurityGroups() {
-        return new NetworkSecurityGroupsInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+        return new NetworkSecurityGroupsInner(restClient().retrofit(), this);
     }
 
     /**
@@ -245,7 +231,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @return the PublicIPAddressesInner object.
      */
     public PublicIPAddressesInner publicIPAddresses() {
-        return new PublicIPAddressesInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+        return new PublicIPAddressesInner(restClient().retrofit(), this);
     }
 
     /**
@@ -253,7 +239,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @return the RouteTablesInner object.
      */
     public RouteTablesInner routeTables() {
-        return new RouteTablesInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+        return new RouteTablesInner(restClient().retrofit(), this);
     }
 
     /**
@@ -261,7 +247,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @return the RoutesInner object.
      */
     public RoutesInner routes() {
-        return new RoutesInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+        return new RoutesInner(restClient().retrofit(), this);
     }
 
     /**
@@ -269,7 +255,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @return the SecurityRulesInner object.
      */
     public SecurityRulesInner securityRules() {
-        return new SecurityRulesInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+        return new SecurityRulesInner(restClient().retrofit(), this);
     }
 
     /**
@@ -277,7 +263,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @return the SubnetsInner object.
      */
     public SubnetsInner subnets() {
-        return new SubnetsInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+        return new SubnetsInner(restClient().retrofit(), this);
     }
 
     /**
@@ -285,7 +271,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @return the UsagesInner object.
      */
     public UsagesInner usages() {
-        return new UsagesInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+        return new UsagesInner(restClient().retrofit(), this);
     }
 
     /**
@@ -293,7 +279,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @return the VirtualNetworkGatewayConnectionsInner object.
      */
     public VirtualNetworkGatewayConnectionsInner virtualNetworkGatewayConnections() {
-        return new VirtualNetworkGatewayConnectionsInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+        return new VirtualNetworkGatewayConnectionsInner(restClient().retrofit(), this);
     }
 
     /**
@@ -301,7 +287,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @return the VirtualNetworkGatewaysInner object.
      */
     public VirtualNetworkGatewaysInner virtualNetworkGateways() {
-        return new VirtualNetworkGatewaysInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+        return new VirtualNetworkGatewaysInner(restClient().retrofit(), this);
     }
 
     /**
@@ -309,7 +295,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @return the VirtualNetworksInner object.
      */
     public VirtualNetworksInner virtualNetworks() {
-        return new VirtualNetworksInner(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+        return new VirtualNetworksInner(restClient().retrofit(), this);
     }
 
     /**
@@ -328,59 +314,34 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @param credentials the management credentials for Azure
      */
     public NetworkManagementClientImpl(String baseUrl, ServiceClientCredentials credentials) {
-        super();
-        this.baseUrl = new AutoRestBaseUrl(baseUrl);
-        this.credentials = credentials;
-        initialize();
+        this(new RestClient.Builder(baseUrl)
+                .withMapperAdapter(new AzureJacksonMapperAdapter())
+                .withCredentials(credentials)
+                .build());
     }
 
     /**
      * Initializes an instance of NetworkManagementClient client.
      *
-     * @param baseUrl the base URL of the host
-     * @param credentials the management credentials for Azure
-     * @param clientBuilder the builder for building up an {@link OkHttpClient}
-     * @param retrofitBuilder the builder for building up a {@link Retrofit}
+     * @param restClient the REST client to connect to Azure.
      */
-    public NetworkManagementClientImpl(String baseUrl, ServiceClientCredentials credentials, OkHttpClient.Builder clientBuilder, Retrofit.Builder retrofitBuilder) {
-        super(clientBuilder, retrofitBuilder);
-        this.baseUrl = new AutoRestBaseUrl(baseUrl);
-        this.credentials = credentials;
+    public NetworkManagementClientImpl(RestClient restClient) {
+        super(restClient);
         initialize();
     }
 
-    @Override
     protected void initialize() {
         this.apiVersion = "2015-06-15";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
-        this.clientBuilder.interceptors().add(new CustomHeaderInterceptor("x-ms-client-request-id", UUID.randomUUID().toString()));
-        if (this.credentials != null) {
-            this.credentials.applyCredentialsFilter(clientBuilder);
-        }
-        super.initialize();
-        this.azureClient = new AzureClient(clientBuilder, retrofitBuilder, mapperAdapter);
-        this.azureClient.setCredentials(this.credentials);
-        this.retrofitBuilder.baseUrl(baseUrl);
+        restClient().headers().addHeader("x-ms-client-request-id", UUID.randomUUID().toString());
+        this.azureClient = new AzureClient(restClient());
         initializeService();
     }
 
     private void initializeService() {
-        service = this.retrofitBuilder.client(this.clientBuilder.build())
-                .build()
-                .create(NetworkManagementClientService.class);
-    }
-
-    /**
-     * Sets the logging level for OkHttp client.
-     *
-     * @param logLevel the logging level enum
-     */
-    @Override
-    public void setLogLevel(Level logLevel) {
-        super.setLogLevel(logLevel);
-        initializeService();
+        service = restClient().retrofit().create(NetworkManagementClientService.class);
     }
 
     /**
@@ -407,14 +368,14 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
-        if (this.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null.");
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
         }
-        if (this.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.getApiVersion() is required and cannot be null.");
+        if (this.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         final String domainNameLabel = null;
-        Call<ResponseBody> call = service.checkDnsNameAvailability(location, this.getSubscriptionId(), domainNameLabel, this.getApiVersion(), this.getAcceptLanguage());
+        Call<ResponseBody> call = service.checkDnsNameAvailability(location, this.subscriptionId(), domainNameLabel, this.apiVersion(), this.acceptLanguage());
         return checkDnsNameAvailabilityDelegate(call.execute());
     }
 
@@ -434,16 +395,16 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter location is required and cannot be null."));
             return null;
         }
-        if (this.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        if (this.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.getApiVersion() is required and cannot be null."));
+        if (this.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null."));
             return null;
         }
         final String domainNameLabel = null;
-        Call<ResponseBody> call = service.checkDnsNameAvailability(location, this.getSubscriptionId(), domainNameLabel, this.getApiVersion(), this.getAcceptLanguage());
+        Call<ResponseBody> call = service.checkDnsNameAvailability(location, this.subscriptionId(), domainNameLabel, this.apiVersion(), this.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<DnsNameAvailabilityResultInner>(serviceCallback) {
             @Override
@@ -472,13 +433,13 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
-        if (this.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null.");
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
         }
-        if (this.getApiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.getApiVersion() is required and cannot be null.");
+        if (this.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.checkDnsNameAvailability(location, this.getSubscriptionId(), domainNameLabel, this.getApiVersion(), this.getAcceptLanguage());
+        Call<ResponseBody> call = service.checkDnsNameAvailability(location, this.subscriptionId(), domainNameLabel, this.apiVersion(), this.acceptLanguage());
         return checkDnsNameAvailabilityDelegate(call.execute());
     }
 
@@ -499,15 +460,15 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter location is required and cannot be null."));
             return null;
         }
-        if (this.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        if (this.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (this.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.getApiVersion() is required and cannot be null."));
+        if (this.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.checkDnsNameAvailability(location, this.getSubscriptionId(), domainNameLabel, this.getApiVersion(), this.getAcceptLanguage());
+        Call<ResponseBody> call = service.checkDnsNameAvailability(location, this.subscriptionId(), domainNameLabel, this.apiVersion(), this.acceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<DnsNameAvailabilityResultInner>(serviceCallback) {
             @Override
@@ -523,7 +484,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
     }
 
     private ServiceResponse<DnsNameAvailabilityResultInner> checkDnsNameAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DnsNameAvailabilityResultInner, CloudException>(this.getMapperAdapter())
+        return new AzureServiceResponseBuilder<DnsNameAvailabilityResultInner, CloudException>(this.restClient().mapperAdapter())
                 .register(200, new TypeToken<DnsNameAvailabilityResultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
