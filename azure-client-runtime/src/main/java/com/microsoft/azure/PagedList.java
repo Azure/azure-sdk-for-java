@@ -47,8 +47,7 @@ public abstract class PagedList<E> implements List<E> {
      * @param page the {@link Page} object.
      */
     public PagedList(Page<E> page) {
-        this();
-        items.addAll(page.getItems());
+        items = page.getItems();
         nextPageLink = page.getNextPageLink();
         currentPage = page;
     }
