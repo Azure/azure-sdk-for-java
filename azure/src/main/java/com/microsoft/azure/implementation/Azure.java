@@ -10,24 +10,32 @@ import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.resources.GenericResources;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.Tenants;
-import com.microsoft.azure.management.resources.fluentcore.arm.AzureBase;
+import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigureBase;
 import com.microsoft.azure.management.resources.fluentcore.collection.*;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
 public final class Azure {
+    public static Configure configure() {
+        return new AzureConfigureImpl();
+    }
+
     public static Authenticated authenticate(ServiceClientCredentials credentials) {
         return new AzureAuthenticatedImpl(credentials);
     }
 
-    public interface Authenticated extends AzureBase<Authenticated> {
+    public interface Configure extends AzureConfigureBase<Configure> {
+        Authenticated authenticate(ServiceClientCredentials credentials);
+    }
+
+    public interface Authenticated {
         Subscriptions subscriptions();
         Tenants tenants();
         Subscription withSubscription(String subscriptionId);
     }
 
-    public interface Subscription extends AzureBase<Subscription> {
+    public interface Subscription {
         ResourceGroups resourceGroups();
         GenericResources genericResources();
         StorageAccounts storageAccounts();

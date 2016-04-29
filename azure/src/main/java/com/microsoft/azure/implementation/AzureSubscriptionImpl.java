@@ -13,7 +13,6 @@ import com.microsoft.azure.management.compute.implementation.api.ComputeManageme
 import com.microsoft.azure.management.resources.GenericResources;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
-import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureBaseImpl;
 import com.microsoft.azure.management.resources.implementation.GenericResourcesImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceGroupsImpl;
 import com.microsoft.azure.management.storage.StorageAccounts;
@@ -21,12 +20,12 @@ import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.azure.management.storage.implementation.StorageAccountsImpl;
 import com.microsoft.azure.management.storage.implementation.UsagesImpl;
 import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
-import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.RestClient;
 
-final class AzureSubscriptionImpl extends AzureBaseImpl<Azure.Subscription>
+final class AzureSubscriptionImpl
         implements Azure.Subscription {
-    private final ServiceClientCredentials credentials;
     private final String subscriptionId;
+    private final RestClient restClient;
     // SDK Clients
     private ResourceManagementClientImpl resourceManagementClient;
     private StorageManagementClientImpl storageManagementClient;
@@ -38,8 +37,8 @@ final class AzureSubscriptionImpl extends AzureBaseImpl<Azure.Subscription>
     private Usages storageUsages;
     private AvailabilitySets availabilitySets;
 
-    AzureSubscriptionImpl(ServiceClientCredentials credentials, String subscriptionId) {
-        this.credentials = credentials;
+    AzureSubscriptionImpl(RestClient restClient, String subscriptionId) {
+        this.restClient = restClient;
         this.subscriptionId = subscriptionId;
     }
 
@@ -90,7 +89,7 @@ final class AzureSubscriptionImpl extends AzureBaseImpl<Azure.Subscription>
 
     private ResourceManagementClientImpl resourceManagementClient() {
         if (resourceManagementClient == null) {
-            resourceManagementClient = new ResourceManagementClientImpl(credentials);
+            resourceManagementClient = new ResourceManagementClientImpl(restClient);
             resourceManagementClient.setSubscriptionId(subscriptionId);
         }
         return resourceManagementClient;
@@ -98,7 +97,7 @@ final class AzureSubscriptionImpl extends AzureBaseImpl<Azure.Subscription>
 
     private StorageManagementClientImpl storageManagementClient() {
         if (storageManagementClient == null) {
-            storageManagementClient = new StorageManagementClientImpl(credentials);
+            storageManagementClient = new StorageManagementClientImpl(restClient);
             storageManagementClient.setSubscriptionId(subscriptionId);
         }
         return storageManagementClient;
@@ -106,7 +105,7 @@ final class AzureSubscriptionImpl extends AzureBaseImpl<Azure.Subscription>
 
     private ComputeManagementClientImpl computeManagementClient() {
         if (computeManagementClient == null) {
-            computeManagementClient = new ComputeManagementClientImpl(credentials);
+            computeManagementClient = new ComputeManagementClientImpl(restClient);
             computeManagementClient.setSubscriptionId(subscriptionId);
         }
         return computeManagementClient;

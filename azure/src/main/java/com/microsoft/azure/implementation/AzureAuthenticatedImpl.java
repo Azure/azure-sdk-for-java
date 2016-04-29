@@ -9,24 +9,31 @@ package com.microsoft.azure.implementation;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.Tenants;
 import com.microsoft.azure.management.resources.implementation.api.SubscriptionClientImpl;
-import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureBaseImpl;
 import com.microsoft.azure.management.resources.implementation.SubscriptionsImpl;
 import com.microsoft.azure.management.resources.implementation.TenantsImpl;
+import com.microsoft.rest.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
-final class AzureAuthenticatedImpl extends AzureBaseImpl<Azure.Authenticated>
+final class AzureAuthenticatedImpl
         implements Azure.Authenticated {
-    private ServiceClientCredentials credentials;
+    private final RestClient restClient;
     private SubscriptionClientImpl subscriptionClient;
 
     AzureAuthenticatedImpl(ServiceClientCredentials credentials) {
-        this.credentials = credentials;
+        this.restClient = new RestClient
+                .Builder("https://management.azure.com")
+                .withCredentials(credentials)
+                .build();
+    }
+
+    AzureAuthenticatedImpl(RestClient restClient) {
+        this.restClient = restClient;
     }
 
     @Override
     public Subscriptions subscriptions() {
         if (subscriptionClient == null) {
-            subscriptionClient = new SubscriptionClientImpl(credentials);
+            subscriptionClient = new SubscriptionClientImpl(restClient);
         }
         return new SubscriptionsImpl(subscriptionClient);
     }
@@ -34,13 +41,13 @@ final class AzureAuthenticatedImpl extends AzureBaseImpl<Azure.Authenticated>
     @Override
     public Tenants tenants() {
         if (subscriptionClient == null) {
-            subscriptionClient = new SubscriptionClientImpl(credentials);
+            subscriptionClient = new SubscriptionClientImpl(restClient);
         }
         return new TenantsImpl(subscriptionClient);
     }
 
     @Override
     public Azure.Subscription withSubscription(String subscriptionId) {
-        return new AzureSubscriptionImpl(credentials, subscriptionId);
+        return new AzureSubscriptionImpl(restClient, subscriptionId);
     }
 }

@@ -28,10 +28,10 @@ public class AzureTests {
 
     @Before
     public void setup() throws Exception {
-        Azure.Authenticated azure = Azure
-                .authenticate(credentials)
+        Azure.Authenticated azure = Azure.configure()
                 .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
-                .withUserAgent("AzureTests");
+                .withUserAgent("AzureTests")
+                .authenticate(credentials);
 
         subscriptions = azure.subscriptions();
         Azure.Subscription sub = azure.withSubscription(subscriptionId);
