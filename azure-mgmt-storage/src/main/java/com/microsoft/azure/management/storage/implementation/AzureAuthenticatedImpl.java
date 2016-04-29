@@ -1,18 +1,18 @@
 package com.microsoft.azure.management.storage.implementation;
 
 import com.microsoft.azure.management.resources.ResourceGroups;
-import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureBaseImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceGroupsImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
+import com.microsoft.rest.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
-class AzureAuthenticatedImpl extends AzureBaseImpl<AzureStorageManager.Authenticated>
+class AzureAuthenticatedImpl
         implements AzureStorageManager.Authenticated {
-    private ServiceClientCredentials credentials;
-    private String subscriptionId;
+    private final RestClient restClient;
+    private final String subscriptionId;
     // The sdk clients
     private ResourceManagementClientImpl resourceManagementClient;
     private StorageManagementClientImpl storageManagementClient;
@@ -21,7 +21,15 @@ class AzureAuthenticatedImpl extends AzureBaseImpl<AzureStorageManager.Authentic
     private Usages storageUsages;
 
     AzureAuthenticatedImpl(ServiceClientCredentials credentials, String subscriptionId) {
-        this.credentials = credentials;
+        this.restClient = new RestClient
+                .Builder("https://management.azure.com")
+                .withCredentials(credentials)
+                .build();
+        this.subscriptionId = subscriptionId;
+    }
+
+    AzureAuthenticatedImpl(RestClient restClient, String subscriptionId) {
+        this.restClient = restClient;
         this.subscriptionId = subscriptionId;
     }
 
@@ -43,7 +51,7 @@ class AzureAuthenticatedImpl extends AzureBaseImpl<AzureStorageManager.Authentic
 
     private ResourceManagementClientImpl resourceManagementClient() {
         if (resourceManagementClient == null) {
-            resourceManagementClient = new ResourceManagementClientImpl(credentials);
+            resourceManagementClient = new ResourceManagementClientImpl(restClient);
             resourceManagementClient.setSubscriptionId(subscriptionId);
         }
         return resourceManagementClient;
@@ -51,7 +59,7 @@ class AzureAuthenticatedImpl extends AzureBaseImpl<AzureStorageManager.Authentic
 
     private StorageManagementClientImpl storageManagementClient() {
         if (storageManagementClient == null) {
-            storageManagementClient = new StorageManagementClientImpl(credentials);
+            storageManagementClient = new StorageManagementClientImpl(restClient);
             storageManagementClient.setSubscriptionId(subscriptionId);
         }
         return storageManagementClient;
