@@ -91,7 +91,7 @@ public final class SubscriptionsInner {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listLocations(subscriptionId, this.client.apiVersion(), this.client.acceptLanguage());
         ServiceResponse<PageImpl<LocationInner>> response = listLocationsDelegate(call.execute());
@@ -121,7 +121,7 @@ public final class SubscriptionsInner {
             return null;
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.listLocations(subscriptionId, this.client.apiVersion(), this.client.acceptLanguage());
@@ -167,7 +167,7 @@ public final class SubscriptionsInner {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.get(subscriptionId, this.client.apiVersion(), this.client.acceptLanguage());
         return getDelegate(call.execute());
@@ -190,7 +190,7 @@ public final class SubscriptionsInner {
             return null;
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.get(subscriptionId, this.client.apiVersion(), this.client.acceptLanguage());
@@ -225,7 +225,7 @@ public final class SubscriptionsInner {
      */
     public ServiceResponse<PagedList<SubscriptionInner>> list() throws CloudException, IOException, IllegalArgumentException {
         if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage());
         ServiceResponse<PageImpl<SubscriptionInner>> response = listDelegate(call.execute());
@@ -250,7 +250,7 @@ public final class SubscriptionsInner {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
         Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage());

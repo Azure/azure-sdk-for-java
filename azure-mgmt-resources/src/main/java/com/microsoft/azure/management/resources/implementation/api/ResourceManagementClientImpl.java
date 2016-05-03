@@ -137,75 +137,120 @@ public final class ResourceManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The DeploymentsInner object to access its operations.
+     */
+    private DeploymentsInner deployments;
+
+    /**
      * Gets the DeploymentsInner object to access its operations.
      * @return the DeploymentsInner object.
      */
     public DeploymentsInner deployments() {
-        return new DeploymentsInner(restClient().retrofit(), this);
+        return this.deployments;
     }
+
+    /**
+     * The ProvidersInner object to access its operations.
+     */
+    private ProvidersInner providers;
 
     /**
      * Gets the ProvidersInner object to access its operations.
      * @return the ProvidersInner object.
      */
     public ProvidersInner providers() {
-        return new ProvidersInner(restClient().retrofit(), this);
+        return this.providers;
     }
+
+    /**
+     * The ResourceGroupsInner object to access its operations.
+     */
+    private ResourceGroupsInner resourceGroups;
 
     /**
      * Gets the ResourceGroupsInner object to access its operations.
      * @return the ResourceGroupsInner object.
      */
     public ResourceGroupsInner resourceGroups() {
-        return new ResourceGroupsInner(restClient().retrofit(), this);
+        return this.resourceGroups;
     }
+
+    /**
+     * The ResourcesInner object to access its operations.
+     */
+    private ResourcesInner resources;
 
     /**
      * Gets the ResourcesInner object to access its operations.
      * @return the ResourcesInner object.
      */
     public ResourcesInner resources() {
-        return new ResourcesInner(restClient().retrofit(), this);
+        return this.resources;
     }
+
+    /**
+     * The TagsInner object to access its operations.
+     */
+    private TagsInner tags;
 
     /**
      * Gets the TagsInner object to access its operations.
      * @return the TagsInner object.
      */
     public TagsInner tags() {
-        return new TagsInner(restClient().retrofit(), this);
+        return this.tags;
     }
+
+    /**
+     * The DeploymentOperationsInner object to access its operations.
+     */
+    private DeploymentOperationsInner deploymentOperations;
 
     /**
      * Gets the DeploymentOperationsInner object to access its operations.
      * @return the DeploymentOperationsInner object.
      */
     public DeploymentOperationsInner deploymentOperations() {
-        return new DeploymentOperationsInner(restClient().retrofit(), this);
+        return this.deploymentOperations;
     }
+
+    /**
+     * The ResourceProviderOperationDetailsInner object to access its operations.
+     */
+    private ResourceProviderOperationDetailsInner resourceProviderOperationDetails;
 
     /**
      * Gets the ResourceProviderOperationDetailsInner object to access its operations.
      * @return the ResourceProviderOperationDetailsInner object.
      */
     public ResourceProviderOperationDetailsInner resourceProviderOperationDetails() {
-        return new ResourceProviderOperationDetailsInner(restClient().retrofit(), this);
+        return this.resourceProviderOperationDetails;
     }
+
+    /**
+     * The PolicyDefinitionsInner object to access its operations.
+     */
+    private PolicyDefinitionsInner policyDefinitions;
 
     /**
      * Gets the PolicyDefinitionsInner object to access its operations.
      * @return the PolicyDefinitionsInner object.
      */
     public PolicyDefinitionsInner policyDefinitions() {
-        return new PolicyDefinitionsInner(restClient().retrofit(), this);
+        return this.policyDefinitions;
     }
+
+    /**
+     * The PolicyAssignmentsInner object to access its operations.
+     */
+    private PolicyAssignmentsInner policyAssignments;
 
     /**
      * Gets the PolicyAssignmentsInner object to access its operations.
      * @return the PolicyAssignmentsInner object.
      */
     public PolicyAssignmentsInner policyAssignments() {
-        return new PolicyAssignmentsInner(restClient().retrofit(), this);
+        return this.policyAssignments;
     }
 
     /**
@@ -245,6 +290,15 @@ public final class ResourceManagementClientImpl extends AzureServiceClient {
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
+        this.deployments = new DeploymentsInner(restClient().retrofit(), this);
+        this.providers = new ProvidersInner(restClient().retrofit(), this);
+        this.resourceGroups = new ResourceGroupsInner(restClient().retrofit(), this);
+        this.resources = new ResourcesInner(restClient().retrofit(), this);
+        this.tags = new TagsInner(restClient().retrofit(), this);
+        this.deploymentOperations = new DeploymentOperationsInner(restClient().retrofit(), this);
+        this.resourceProviderOperationDetails = new ResourceProviderOperationDetailsInner(restClient().retrofit(), this);
+        this.policyDefinitions = new PolicyDefinitionsInner(restClient().retrofit(), this);
+        this.policyAssignments = new PolicyAssignmentsInner(restClient().retrofit(), this);
         restClient().headers().addHeader("x-ms-client-request-id", UUID.randomUUID().toString());
         this.azureClient = new AzureClient(restClient());
     }
