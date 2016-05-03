@@ -4,9 +4,17 @@
  */
 package com.microsoft.azure.servicebus;
 
-import java.util.concurrent.*;
-import org.apache.qpid.proton.amqp.transport.*;
-import com.microsoft.azure.servicebus.amqp.*;
+import java.time.ZonedDateTime;
+import java.util.Locale;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeoutException;
+
+import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
+
+import com.microsoft.azure.servicebus.amqp.AmqpErrorCode;
+import com.microsoft.azure.servicebus.amqp.AmqpException;
 
 final class ExceptionUtil
 {
@@ -94,5 +102,18 @@ final class ExceptionUtil
 		}
 		
 		future.completeExceptionally(exception);
+	}
+	
+	// not a specific message related error
+	static boolean isGeneralSendError(Symbol amqpError)
+	{
+		return (amqpError == ClientConstants.SERVER_BUSY_ERROR 
+				|| amqpError == ClientConstants.TIMEOUT_ERROR 
+				|| amqpError == AmqpErrorCode.ResourceLimitExceeded);
+	}
+	
+	static String getTrackingIDAndTimeToLog()
+	{
+		return String.format(Locale.US, "TrackingId: %s, at: %s", UUID.randomUUID().toString(), ZonedDateTime.now()); 
 	}
 }

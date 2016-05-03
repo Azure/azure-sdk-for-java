@@ -6,6 +6,7 @@ package com.microsoft.azure.servicebus;
 
 import java.net.*;
 import java.time.*;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.regex.*;
 import com.microsoft.azure.eventhubs.*;
@@ -41,11 +42,12 @@ public class ConnectionStringBuilder
 	final static String SharedAccessKeyNameConfigName = "SharedAccessKeyName";
 	final static String SharedAccessKeyConfigName = "SharedAccessKey";
 	final static String EntityPathConfigName = "EntityPath";
+	final static String OperationTimeoutConfigName = "OperationTimeout";
 	final static String KeyValueSeparator = "=";
 	final static String KeyValuePairDelimiter = ";";
 
 	private static final String AllKeyEnumerateRegex = "(" + EndpointConfigName + "|" + SharedAccessKeyNameConfigName
-			+ "|" + SharedAccessKeyConfigName + "|" + EntityPathConfigName + ")";
+			+ "|" + SharedAccessKeyConfigName + "|" + EntityPathConfigName + "|" + OperationTimeoutConfigName + ")";
 
 	private static final String KeysWithDelimitersRegex = KeyValuePairDelimiter + AllKeyEnumerateRegex
 			+ KeyValueSeparator;
@@ -150,6 +152,15 @@ public class ConnectionStringBuilder
 	}
 	
 	/**
+	 * Set the OperationTimeout value in the Connection String. This value will be used by all operations which uses this {@link ConnectionStringBuilder}, unless explicitly over-ridden.
+	 * @param operationTimeout Operation Timeout
+	 */
+	public void setOperationTimeout(final Duration operationTimeout)
+	{
+		this.operationTimeout = operationTimeout;
+	}
+	
+	/**
 	 * Get the retry policy instance that was created as part of this builder's creation.
 	 * @return RetryPolicy applied for any operation performed using this ConnectionString
 	 */
@@ -190,6 +201,12 @@ public class ConnectionStringBuilder
 			{
 				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s", SharedAccessKeyConfigName,
 					KeyValueSeparator, this.sharedAccessKey));
+			}
+			
+			if (this.operationTimeout != null)
+			{
+				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", KeyValuePairDelimiter, OperationTimeoutConfigName,
+						KeyValueSeparator, this.operationTimeout.toString()));
 			}
 			
 			this.connectionString = connectionStringBuilder.toString();
@@ -261,6 +278,17 @@ public class ConnectionStringBuilder
 			else if (key.equalsIgnoreCase(EntityPathConfigName))
 			{
 				this.entityPath = values[valueIndex];
+			}
+			else if (key.equalsIgnoreCase(OperationTimeoutConfigName))
+			{
+				try
+				{
+					this.operationTimeout = Duration.parse(values[valueIndex]);
+				}
+				catch(DateTimeParseException exception)
+				{
+					throw new IllegalConnectionStringFormatException("Invalid value specified for property 'Duration' in the ConnectionString.", exception);
+				}
 			}
 			else
 			{

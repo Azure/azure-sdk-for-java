@@ -5,6 +5,8 @@
 package com.microsoft.azure.servicebus;
 
 import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.concurrent.ConcurrentHashMap;
 
 // TODO: SIMPLIFY retryPolicy - ConcurrentHashMap is not needed
@@ -12,10 +14,16 @@ public abstract class RetryPolicy
 {
 	private static final RetryPolicy NO_RETRY = new RetryExponential(Duration.ofSeconds(0), Duration.ofSeconds(0), 0);
 	private ConcurrentHashMap<String, Integer> retryCounts;
+	private boolean isServerBusy;
+	private Instant lastServerBusyReportedTime;
+	private Object serverBusySync;
 	
 	protected RetryPolicy()
 	{
 		this.retryCounts = new ConcurrentHashMap<String, Integer>();
+		this.isServerBusy = false;
+		this.lastServerBusyReportedTime = Instant.EPOCH;
+		this.serverBusySync = new Object();
 	}
 	
 	public void incrementRetryCount(String clientId)
@@ -75,5 +83,29 @@ public abstract class RetryPolicy
 	 * @param remainingTime remainingTime to retry
 	 * @return returns 'null' Duration when not Allowed
 	 */
-	public abstract Duration getNextRetryInterval(String clientId, Exception lastException, Duration remainingTime);
+	public Duration getNextRetryInterval(String clientId, Exception lastException, Duration remainingTime)
+	{
+		synchronized (this.serverBusySync)
+		{
+			if (lastException != null &&
+					(lastException instanceof ServerBusyException || (lastException.getCause() != null && lastException.getCause() instanceof ServerBusyException)))
+			{
+				this.isServerBusy = true;
+				this.lastServerBusyReportedTime = Instant.now();
+			}
+		}
+		
+		return this.onGetNextRetryInterval(clientId, lastException, remainingTime);
+	}
+	
+	public boolean isServerBusy()
+	{
+		synchronized (this.serverBusySync)
+		{
+			return (this.isServerBusy &&
+					Instant.now().isBefore(this.lastServerBusyReportedTime.plus(ClientConstants.SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS, ChronoUnit.SECONDS)));
+		}	
+	}
+	
+	protected abstract Duration onGetNextRetryInterval(String clientId, Exception lastException, Duration remainingTime);
 }

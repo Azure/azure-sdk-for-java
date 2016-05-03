@@ -6,6 +6,7 @@ package com.microsoft.azure.servicebus;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -16,7 +17,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -144,6 +144,10 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 				{
 					// workaround to push the sendflow-performative to reactor
 					MessageReceiver.this.receiveLink.flow(0);
+					
+					// we have a known issue with proton libraries where transport layer is stuck while Sending Flow
+					// to workaround this - we built a mechanism to reset the transport whenever we encounter this
+					// https://issues.apache.org/jira/browse/PROTON-1185
 					MessageReceiver.this.stuckTransportHandler.reportTimeoutError();
 				}
 			}
@@ -388,9 +392,9 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 			
 			return null;
 		}
-        catch (TimeoutException exception)
+        catch (java.util.concurrent.TimeoutException exception)
         {
-        	this.onError(new ServiceBusException(false, "Connection creation timed out.", exception));
+        	this.onError(new TimeoutException("Connection creation timed out.", exception));
         	return null;
         }
         
@@ -467,13 +471,13 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
         return receiver;
 	}
 	
+	// CONTRACT: message should be delivered to the caller of MessageReceiver.receive() only via Poll on prefetchqueue
 	private Message pollPrefetchQueue()
 	{
-		// message should be delivered only via Poll on prefetchqueue
-		// message lastReceivedOffset should be update upon each poll - as recreateLink will depend on this 
 		Message message = this.prefetchedMessages.poll();
 		if (message != null)
 		{
+			// message lastReceivedOffset should be up-to-date upon each poll - as recreateLink will depend on this 
 			this.lastReceivedOffset = message.getMessageAnnotations().getValue().get(AmqpConstants.OFFSET).toString();
 			this.sendFlow(1);
 		}
@@ -567,11 +571,9 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 					{
 						if (!linkOpen.getWork().isDone())
 						{
-							Exception cause = MessageReceiver.this.lastKnownLinkError;
-							Exception operationTimedout = new ServiceBusException(
-									cause != null && cause instanceof ServiceBusException ? ((ServiceBusException) cause).getIsTransient() : ClientConstants.DEFAULT_IS_TRANSIENT,
-									String.format(Locale.US, "ReceiveLink(%s) %s() on path(%s) timed out", MessageReceiver.this.receiveLink.getName(), "Open", MessageReceiver.this.receivePath),
-									cause);
+							Exception operationTimedout = new TimeoutException(
+									String.format(Locale.US, "%s operation on ReceiveLink(%s) to path(%s) timed out at %s.", "Open", MessageReceiver.this.receiveLink.getName(), MessageReceiver.this.receivePath, ZonedDateTime.now()),
+									MessageReceiver.this.lastKnownLinkError);
 							if (TRACE_LOGGER.isLoggable(Level.WARNING))
 							{
 								TRACE_LOGGER.log(Level.WARNING, 
@@ -599,7 +601,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 						{
 							if (!linkClose.isDone())
 							{
-								Exception operationTimedout = new TimeoutException(String.format(Locale.US, "Receive Link(%s) %s() timed out", MessageReceiver.this.receiveLink.getName(), "Close"));
+								Exception operationTimedout = new TimeoutException(String.format(Locale.US, "%s operation on Receive Link(%s) timed out at %s", "Close", MessageReceiver.this.receiveLink.getName(), ZonedDateTime.now()));
 								if (TRACE_LOGGER.isLoggable(Level.WARNING))
 								{
 									TRACE_LOGGER.log(Level.WARNING, 

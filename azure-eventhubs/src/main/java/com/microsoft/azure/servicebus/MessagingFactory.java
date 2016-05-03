@@ -10,6 +10,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,7 +37,6 @@ import com.microsoft.azure.servicebus.amqp.ReactorHandler;
  */
 public class MessagingFactory extends ClientEntity implements IAmqpConnection, IConnectionFactory, ITimeoutErrorHandler
 {
-	
 	public static final Duration DefaultOperationTimeout = Duration.ofSeconds(60); 
 	
 	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
@@ -57,6 +57,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	private LinkedList<Link> registeredLinks;
 	private TimeoutTracker connectionCreateTracker;
 	private Instant timeoutErrorStart;
+	private Object resetConnectionSync;
 	
 	/**
 	 * @param reactor parameter reactor is purely for testing purposes and the SDK code should always set it to null
@@ -65,7 +66,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	{
 		super("MessagingFactory".concat(StringUtil.getRandomString()));
 		this.hostName = builder.getEndpoint().getHost();
-		this.timeoutErrorStart = null;
+		this.timeoutErrorStart = Instant.MAX;
 		
 		this.startReactor(new ReactorHandler()
 		{
@@ -73,13 +74,14 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 			public void onReactorFinal(Event e)
 		    {
 				super.onReactorFinal(e);
-				MessagingFactory.this.onReactorError(new ServiceBusException(true, "Reactor finalized."));
+				MessagingFactory.this.onReactorError(new ServiceBusException(true, String.format(Locale.US, "Reactor finalized, %s", ExceptionUtil.getTrackingIDAndTimeToLog())));
 		    }
 		});
 		
 		this.operationTimeout = builder.getOperationTimeout();
 		this.retryPolicy = builder.getRetryPolicy();
 		this.registeredLinks = new LinkedList<Link>();
+		this.resetConnectionSync = new Object();
 	}
 	
 	String getHostName()
@@ -133,7 +135,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 							public void onReactorFinal(Event e)
 						    {
 								super.onReactorFinal(e);
-								MessagingFactory.this.onReactorError(new ServiceBusException(true, "Reactor finalized."));
+								MessagingFactory.this.onReactorError(new ServiceBusException(true, String.format(Locale.US, "Reactor finalized, %s", ExceptionUtil.getTrackingIDAndTimeToLog())));
 						    }
 						});
 					}
@@ -144,7 +146,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 					
 					if(this.openConnection != null && !this.openConnection.isDone())
 					{
-						this.openConnection.completeExceptionally(new ServiceBusException(false, "Connection creation timedout."));
+						this.openConnection.completeExceptionally(new TimeoutException(String.format(Locale.US, "Connection creation timedout, %s", ExceptionUtil.getTrackingIDAndTimeToLog())));
 					}
 
 					this.openConnection = new CompletableFuture<Connection>();
@@ -245,13 +247,22 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	
 	private void onReactorError(Exception cause)
 	{
+		Connection currentConnection = this.connection;
+		
 		if (!this.open.isDone())
 		{
-			this.onOpenComplete(cause);
+			try
+			{
+				this.onOpenComplete(cause);
+			}
+			finally
+			{
+				currentConnection.free();
+			}
+			
 			return;
 		}
 
-		Connection currentConnection = this.connection;
 		
 		Iterator<Link> literator = this.registeredLinks.iterator();
 		while (literator.hasNext())
@@ -291,7 +302,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	void resetConnection()
 	{		
 		this.reactor.free();
-		this.onReactorError(new ServiceBusException(true, "Client invoked connection reset."));
+		this.onReactorError(new ServiceBusException(true, String.format(Locale.US, "Client invoked connection reset, %s", ExceptionUtil.getTrackingIDAndTimeToLog())));
 	}
 	
 	@Override
@@ -343,16 +354,36 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 				
 				if(TRACE_LOGGER.isLoggable(Level.WARNING))
 			    {
-					TRACE_LOGGER.log(Level.WARNING, "UnHandled exception while processing events in reactor:");
-					TRACE_LOGGER.log(Level.WARNING, handlerException.getMessage());
+					StringBuilder builder = new StringBuilder();
+					builder.append("UnHandled exception while processing events in reactor:");
+					builder.append(System.lineSeparator());
+					builder.append(handlerException.getMessage());
 					if (handlerException.getStackTrace() != null)
 						for (StackTraceElement ste: handlerException.getStackTrace())
 						{
-							TRACE_LOGGER.log(Level.WARNING, ste.toString());
+							builder.append(System.lineSeparator());
+							builder.append(ste.toString());
 						}
+					
+					Throwable innerException = handlerException.getCause();
+					if (innerException != null)
+					{
+						builder.append("Cause: " + innerException.getMessage());
+						if (innerException.getStackTrace() != null)
+							for (StackTraceElement ste: innerException.getStackTrace())
+							{
+								builder.append(System.lineSeparator());
+								builder.append(ste.toString());
+							}
+					}
+					
+					TRACE_LOGGER.log(Level.WARNING, builder.toString());
 			    }
 				
-				MessagingFactory.this.onReactorError(new ServiceBusException(true, cause));
+				MessagingFactory.this.onReactorError(new ServiceBusException(
+						true,
+						String.format(Locale.US, "%s, %s", StringUtil.isNullOrEmpty(cause.getMessage()) ? "Reactor encountered unrecoverable error" : cause.getMessage(), ExceptionUtil.getTrackingIDAndTimeToLog()),
+						cause));
 			}
 		}
 	}
@@ -372,18 +403,26 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	@Override
 	public void reportTimeoutError()
 	{
-		if (this.timeoutErrorStart == null)
+		if (this.timeoutErrorStart.equals(Instant.MAX))
+		{
 			this.timeoutErrorStart = Instant.now();
+		}
 		else if (this.timeoutErrorStart.isBefore(Instant.now().minus(TIMEOUT_ERROR_THRESHOLD_IN_SECS, ChronoUnit.SECONDS)))
 		{
-			this.resetConnection();
-			this.resetTimeoutErrorTracking();
+			synchronized (this.resetConnectionSync)
+			{
+				if (this.timeoutErrorStart.isBefore(Instant.now().minus(TIMEOUT_ERROR_THRESHOLD_IN_SECS, ChronoUnit.SECONDS)))
+				{
+					this.resetTimeoutErrorTracking();
+					this.resetConnection();
+				}
+			}
 		}
 	}
 
 	@Override
 	public void resetTimeoutErrorTracking()
 	{
-		this.timeoutErrorStart = null;
+		this.timeoutErrorStart = Instant.MAX;
 	}	
 }

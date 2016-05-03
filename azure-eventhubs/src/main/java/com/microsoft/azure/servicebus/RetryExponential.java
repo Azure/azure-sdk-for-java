@@ -4,10 +4,10 @@
  */
 package com.microsoft.azure.servicebus;
 
-import java.time.*;
+import java.time.Duration;
 
 /**
- *  RetryPolicy implementation where the delay between retries will grow in a staggered exponential manner.
+ *  RetryPolicy implementation where the delay between retries will grow in an exponential manner.
  *  RetryPolicy can be set on the client operations using {@link ConnectionStringBuilder}.
  *  RetryIntervals will be computed using a retryFactor which is a function of deltaBackOff (MaximumBackoff - MinimumBackoff) and MaximumRetryCount
  */
@@ -27,7 +27,7 @@ public final class RetryExponential extends RetryPolicy
 	}
 
 	@Override
-	public Duration getNextRetryInterval(String clientId, Exception lastException, Duration remainingTime)
+	protected Duration onGetNextRetryInterval(String clientId, Exception lastException, Duration remainingTime)
 	{
 		int currentRetryCount = this.getRetryCount(clientId);
 	
@@ -41,7 +41,7 @@ public final class RetryExponential extends RetryPolicy
 		{
 			return null;
 		}
-	
+		
 		double nextRetryInterval = Math.pow(this.retryFactor, (double)currentRetryCount);
 		long nextRetryIntervalSeconds = (long) nextRetryInterval ;
 		long nextRetryIntervalNano = (long)((nextRetryInterval - (double)nextRetryIntervalSeconds) * 1000000000);
@@ -51,13 +51,17 @@ public final class RetryExponential extends RetryPolicy
 		}
 		
 		Duration retryAfter = this.minimumBackoff.plus(Duration.ofSeconds(nextRetryIntervalSeconds, nextRetryIntervalNano));
+		if (this.isServerBusy())
+			retryAfter = retryAfter.plus(Duration.ofSeconds(ClientConstants.SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS));
+
 		return retryAfter;
 	}
 	
 	private double computeRetryFactor()
 	{
 		long deltaBackoff = this.maximumBackoff.minus(this.minimumBackoff).getSeconds();
-		if (deltaBackoff <= 0 || this.maximumRetryCount <= 0) {
+		if (deltaBackoff <= 0 || this.maximumRetryCount <= 0)
+		{
 			return 0;
 		}
 		

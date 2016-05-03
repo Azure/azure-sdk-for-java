@@ -5,12 +5,13 @@
 package com.microsoft.azure.servicebus.amqp;
 
 import java.util.Locale;
-import java.util.logging.*;
+import java.util.logging.Level;
 
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
-import org.apache.qpid.proton.engine.*;
-
-import com.microsoft.azure.servicebus.*;
+import org.apache.qpid.proton.engine.Delivery;
+import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.Link;
+import org.apache.qpid.proton.engine.Sender;
 
 public class SendLinkHandler extends BaseLinkHandler
 {
@@ -62,10 +63,10 @@ public class SendLinkHandler extends BaseLinkHandler
     public void onDelivery(Event event)
 	{		
 		Delivery delivery = event.getDelivery();
-		Sender sender = (Sender) delivery.getLink();
 		if(TRACE_LOGGER.isLoggable(Level.FINEST))
         {
-            TRACE_LOGGER.log(Level.FINEST, 
+			Sender sender = (Sender) delivery.getLink();
+			TRACE_LOGGER.log(Level.FINEST, 
             		"linkName[" + sender.getName() + 
             		"], unsettled[" + sender.getUnsettled() + "], credit[" + sender.getCredit()+ "], deliveryState[" + delivery.getRemoteState() + 
             		"], delivery.isBuffered[" + delivery.isBuffered() +"], delivery.id[" + delivery.getTag() + "]");
@@ -103,11 +104,8 @@ public class SendLinkHandler extends BaseLinkHandler
     public void onLinkRemoteClose(Event event)
 	{
 		Link link = event.getLink();
-        if (link instanceof Sender)
-        {
-        	ErrorCondition condition = link.getRemoteCondition();
-    		this.processOnClose(link, condition);
-        }
+    	ErrorCondition condition = link.getRemoteCondition();
+		this.processOnClose(link, condition);
 	}
 	
 	@Override

@@ -4,13 +4,23 @@
  */
 package com.microsoft.azure.eventhubs;
 
-import java.time.*;
-import java.util.*;
-import java.util.concurrent.*;
-import java.util.function.*;
+import java.time.Instant;
+import java.util.Collection;
+import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 import org.apache.qpid.proton.message.Message;
-import com.microsoft.azure.servicebus.*;
+
+import com.microsoft.azure.servicebus.ClientEntity;
+import com.microsoft.azure.servicebus.MessageReceiver;
+import com.microsoft.azure.servicebus.MessagingFactory;
+import com.microsoft.azure.servicebus.ServiceBusException;
+import com.microsoft.azure.servicebus.StringUtil;
 
 /**
  * This is a logical representation of receiving from a EventHub partition.

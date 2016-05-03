@@ -7,8 +7,6 @@ package com.microsoft.azure.servicebus;
 import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 
-import org.apache.qpid.proton.message.Message;
-
 public class ReplayableWorkItem<T> extends WorkItem<T>
 {
 	private byte[] amqpMessage;

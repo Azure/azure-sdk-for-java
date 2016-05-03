@@ -1,7 +1,6 @@
 package com.microsoft.azure.eventhubs.exceptioncontracts;
 
-import java.util.*;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutionException;
 
 import org.junit.Test;
 

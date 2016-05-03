@@ -4,10 +4,25 @@
  */
 package com.microsoft.azure.servicebus;
 
-import com.microsoft.azure.servicebus.amqp.AmqpConstants;
-import com.microsoft.azure.servicebus.amqp.IAmqpSender;
-import com.microsoft.azure.servicebus.amqp.SendLinkHandler;
-import com.microsoft.azure.servicebus.amqp.SessionHandler;
+import java.nio.BufferOverflowException;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
@@ -28,23 +43,10 @@ import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.engine.impl.DeliveryImpl;
 import org.apache.qpid.proton.message.Message;
 
-import java.nio.BufferOverflowException;
-import java.time.Duration;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.function.Consumer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.microsoft.azure.servicebus.amqp.AmqpConstants;
+import com.microsoft.azure.servicebus.amqp.IAmqpSender;
+import com.microsoft.azure.servicebus.amqp.SendLinkHandler;
+import com.microsoft.azure.servicebus.amqp.SessionHandler;
 
 /**
  * Abstracts all amqp related details
@@ -53,9 +55,10 @@ import java.util.logging.Logger;
 public class MessageSender extends ClientEntity implements IAmqpSender, IErrorContextProvider
 {
 	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
-	private static final String SEND_TIMED_OUT = "Send operation timed out.";
+	private static final String SEND_TIMED_OUT = "Send operation timed out";
 	
 	private final MessagingFactory underlyingFactory;
+	private final ITimeoutErrorHandler timeoutErrorHandler;
 	private final String sendPath;
 	private final Duration operationTimeout;
 	private final RetryPolicy retryPolicy;
@@ -73,6 +76,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 	private boolean linkCreateScheduled;
 	private Object linkCreateLock;
 	private Exception lastKnownLinkError;
+	private Instant lastKnownErrorReportedAt;
 	private Object sendCall;
 	
 	public static CompletableFuture<MessageSender> create(
@@ -80,7 +84,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 			final String sendLinkName,
 			final String senderPath)
 	{
-		final MessageSender msgSender = new MessageSender(factory, sendLinkName, senderPath);
+		final MessageSender msgSender = new MessageSender(factory, factory, sendLinkName, senderPath);
 		msgSender.openLinkTracker = TimeoutTracker.create(factory.getOperationTimeout());
 		msgSender.initializeLinkOpen(msgSender.openLinkTracker);
 		msgSender.linkCreateScheduled = true;
@@ -95,14 +99,16 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		return msgSender.linkFirstOpen;
 	}
 	
-	private MessageSender(final MessagingFactory factory, final String sendLinkName, final String senderPath)
+	private MessageSender(final MessagingFactory factory, final ITimeoutErrorHandler timeoutErrorHandler, final String sendLinkName, final String senderPath)
 	{
 		super(sendLinkName);
 		this.sendPath = senderPath;
 		this.underlyingFactory = factory;
+		this.timeoutErrorHandler = timeoutErrorHandler;
 		this.operationTimeout = factory.getOperationTimeout();
 		this.timerTimeout = this.operationTimeout.getSeconds() > 9 ? this.operationTimeout.dividedBy(3) : Duration.ofSeconds(5);
 		this.lastKnownLinkError = null;
+		this.lastKnownErrorReportedAt = Instant.EPOCH;
 		
 		this.retryPolicy = factory.getRetryPolicy();
 		
@@ -192,12 +198,10 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		byte[] tag = deliveryTag == null ? this.getNextDeliveryTag() : deliveryTag;
 		boolean messageSent = false;
 		
-		if (this.sendLink.getLocalState() == EndpointState.CLOSED)
-		{
-			this.scheduleRecreate(Duration.ofMillis(1));
-		}
-		else if (this.linkCredit.get() > 0 && 
-				(this.pendingSendsWaitingForCredit.isEmpty() || this.pendingSendsWaitingForCredit.peek() == deliveryTag))
+		if (this.sendLink != null 
+				&& this.sendLink.getLocalState() != EndpointState.CLOSED && this.sendLink.getRemoteState() != EndpointState.CLOSED
+				&& this.linkCredit.get() > 0
+				&& (this.pendingSendsWaitingForCredit.isEmpty() || this.pendingSendsWaitingForCredit.peek() == deliveryTag))
         {
 			synchronized (this.sendCall)
 			{
@@ -366,9 +370,12 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		if (completionException == null)
 		{
 			this.openLinkTracker = null;
+
+			this.lastKnownLinkError = null;
 			this.retryPolicy.resetRetryCount(this.getClientId());
 			
-			this.lastKnownLinkError = null;
+			// assumption here is that TimeoutErrorHandler reset's the link
+			this.timeoutErrorHandler.resetTimeoutErrorTracking();
 			
 			if (!this.linkFirstOpen.isDone())
 			{
@@ -428,6 +435,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		if (completionException != null)
 		{
 			this.lastKnownLinkError = completionException;
+			this.lastKnownErrorReportedAt = Instant.now();
 		}
 		
 		if (retryInterval != null)
@@ -497,7 +505,9 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 			CompletableFuture<Void> pendingSend = pendingSendWorkItem.getWork();
 			if (outcome instanceof Accepted)
 			{
+				this.lastKnownLinkError = null;
 				this.retryPolicy.resetRetryCount(this.getClientId());
+				this.timeoutErrorHandler.resetTimeoutErrorTracking();
 				this.pendingSendWaiters.remove(deliveryTag);
 				pendingSend.complete(null);
 			}
@@ -507,6 +517,12 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 				ErrorCondition error = rejected.getError();
 				Exception exception = ExceptionUtil.toException(error);
 
+				if (ExceptionUtil.isGeneralSendError(error.getCondition()))
+				{
+					this.lastKnownLinkError = exception;
+					this.lastKnownErrorReportedAt = Instant.now();
+				}
+				
 				Duration retryInterval = this.retryPolicy.getNextRetryInterval(
 						this.getClientId(), exception, pendingSendWorkItem.getTimeoutTracker().remaining());
 				if (retryInterval == null)
@@ -573,9 +589,9 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 			
 			return null;
 		}
-		catch (TimeoutException exception)
+		catch (java.util.concurrent.TimeoutException exception)
         {
-        	this.onError(new ServiceBusException(false, "Connection creation timed out.", exception));
+        	this.onError(new TimeoutException("Connection creation timed out.", exception));
         	return null;
         }
 		
@@ -624,9 +640,9 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 					{
 						if (!MessageSender.this.linkFirstOpen.isDone())
 						{
-							Exception operationTimedout = new ServiceBusException(true,
-									String.format(Locale.US, "SendLink(%s).open() on Entity(%s) timed out",
-											MessageSender.this.sendLink.getName(), MessageSender.this.getSendPath()));
+							Exception operationTimedout = new TimeoutException(
+									String.format(Locale.US, "Open operation on SendLink(%s) on Entity(%s) timed out at %s.",	MessageSender.this.sendLink.getName(), MessageSender.this.getSendPath(), ZonedDateTime.now().toString()),
+									MessageSender.this.lastKnownErrorReportedAt.isAfter(Instant.now().minusSeconds(ClientConstants.SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS)) ? MessageSender.this.lastKnownLinkError : null);
 
 							if (TRACE_LOGGER.isLoggable(Level.WARNING))
 							{
@@ -673,6 +689,9 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 	@Override
 	public void onFlow()
 	{
+		this.timeoutErrorHandler.resetTimeoutErrorTracking();
+		this.lastKnownLinkError = null;
+		
 		int updatedCredit = 0;
 		synchronized (this.sendCall)
 		{
@@ -701,10 +720,25 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 	
 	private void throwSenderTimeout(CompletableFuture<Void> pendingSendWork, Exception lastKnownException)
 	{
-		Exception cause = lastKnownException == null ? this.lastKnownLinkError : lastKnownException;
-		ServiceBusException exception = new ServiceBusException(
-				cause != null && cause instanceof ServiceBusException ? ((ServiceBusException) cause).getIsTransient() : ClientConstants.DEFAULT_IS_TRANSIENT, 
-				MessageSender.SEND_TIMED_OUT, cause);
+		Exception cause = lastKnownException;
+		if (lastKnownException == null && this.lastKnownLinkError != null)
+		{
+			boolean isServerBusy = ((this.lastKnownLinkError instanceof ServerBusyException) 
+					&& (this.lastKnownErrorReportedAt.isAfter(Instant.now().minusSeconds(ClientConstants.SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS))));  
+			cause = isServerBusy || (this.lastKnownErrorReportedAt.isAfter(Instant.now().minusMillis(this.operationTimeout.toMillis()))) 
+					? this.lastKnownLinkError 
+					: null;
+		}
+				
+		boolean isClientSideTimeout = (cause == null || !(cause instanceof ServiceBusException));
+		ServiceBusException exception = isClientSideTimeout
+				? new TimeoutException(String.format(Locale.US, "%s %s %s.", MessageSender.SEND_TIMED_OUT, " at ", ZonedDateTime.now(), cause)) 
+				: (ServiceBusException) cause;
+		if (isClientSideTimeout)
+		{
+			this.timeoutErrorHandler.reportTimeoutError();
+		}
+		
 		ExceptionUtil.completeExceptionally(pendingSendWork, exception, this);
 	}
 }

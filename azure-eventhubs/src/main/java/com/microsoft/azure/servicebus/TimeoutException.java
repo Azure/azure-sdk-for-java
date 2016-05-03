@@ -4,26 +4,26 @@
  */
 package com.microsoft.azure.servicebus;
 
-public class ServerBusyException extends ServiceBusException 
+public class TimeoutException extends ServiceBusException
 {
 	private static final long serialVersionUID = 1L;
 
-	public ServerBusyException()
+	public TimeoutException()
 	{
 		super(true);
 	}
 
-	ServerBusyException(final String message)
+	public TimeoutException(final String message)
 	{
 		super(true, message);
 	}
 
-	ServerBusyException(final Throwable cause)
+	public TimeoutException(final Throwable cause)
 	{
 		super(true, cause);
 	}
 
-	ServerBusyException(final String message, final Throwable cause)
+	public TimeoutException(final String message, final Throwable cause)
 	{
 		super(true, message, cause);
 	}

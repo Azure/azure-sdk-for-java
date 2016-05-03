@@ -6,6 +6,8 @@ package com.microsoft.azure.servicebus;
 
 public class AuthorizationFailedException extends ServiceBusException
 {
+	private static final long serialVersionUID = 1L;
+
 	AuthorizationFailedException()
 	{
 		super(false);
