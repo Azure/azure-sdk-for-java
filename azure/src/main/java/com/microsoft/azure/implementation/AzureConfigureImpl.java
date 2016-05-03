@@ -8,8 +8,8 @@ final class AzureConfigureImpl extends AzureConfigureBaseImpl<Azure.Configure>
     AzureConfigureImpl() {}
 
     @Override
-    public Azure.Authenticated authenticate(ServiceClientCredentials credentials) {
+    public Azure authenticate(ServiceClientCredentials credentials) {
         this.restClient = this.restClientBuilder.withCredentials(credentials).build();
-        return new AzureAuthenticatedImpl(this.restClient);
+        return Azure.authenticate(this.restClient);
     }
 }

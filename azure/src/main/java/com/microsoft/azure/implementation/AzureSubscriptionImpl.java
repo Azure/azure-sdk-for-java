@@ -12,29 +12,27 @@ import com.microsoft.azure.management.compute.implementation.AvailabilitySetsImp
 import com.microsoft.azure.management.compute.implementation.api.ComputeManagementClientImpl;
 import com.microsoft.azure.management.resources.GenericResources;
 import com.microsoft.azure.management.resources.ResourceGroups;
+import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
-import com.microsoft.azure.management.resources.implementation.GenericResourcesImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceGroupsImpl;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.Usages;
-import com.microsoft.azure.management.storage.implementation.StorageAccountsImpl;
-import com.microsoft.azure.management.storage.implementation.UsagesImpl;
-import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
+import com.microsoft.azure.management.storage.implementation.StorageManager;
 import com.microsoft.rest.RestClient;
 
 final class AzureSubscriptionImpl
         implements Azure.Subscription {
     private final String subscriptionId;
     private final RestClient restClient;
+    // service specific managers in subscription level.
+    private ResourceManager.Subscription resourceClient;
+    private StorageManager.Subscription storageClient;
     // SDK Clients
-    private ResourceManagementClientImpl resourceManagementClient;
-    private StorageManagementClientImpl storageManagementClient;
+    // TODO: Get rid of these
     private ComputeManagementClientImpl computeManagementClient;
+    private ResourceManagementClientImpl resourceManagementClient;
     // Fluent Collections
     private Azure.ResourceGroups azureResourceGroups;
-    private GenericResources genericResources;
-    private StorageAccounts storageAccounts;
-    private Usages storageUsages;
     private AvailabilitySets availabilitySets;
 
     AzureSubscriptionImpl(RestClient restClient, String subscriptionId) {
@@ -52,26 +50,17 @@ final class AzureSubscriptionImpl
 
     @Override
     public GenericResources genericResources() {
-        if (genericResources == null) {
-            genericResources = new GenericResourcesImpl(resourceManagementClient());
-        }
-        return genericResources;
+        return resourceClient().genericResources();
     }
 
     @Override
     public StorageAccounts storageAccounts() {
-        if (storageAccounts == null) {
-            storageAccounts =  new StorageAccountsImpl(storageManagementClient().storageAccounts(), resourceGroupsCore());
-        }
-        return storageAccounts;
+        return storageClient().storageAccounts();
     }
 
     @Override
     public Usages storageUsages() {
-        if (storageUsages == null) {
-            storageUsages = new UsagesImpl(storageManagementClient());
-        }
-        return storageUsages;
+        return storageClient().usages();
     }
 
     @Override
@@ -87,20 +76,30 @@ final class AzureSubscriptionImpl
         return null;
     }
 
+    private ResourceManager.Subscription resourceClient() {
+        if (resourceClient == null) {
+            resourceClient = ResourceManager
+                    .authenticate(restClient)
+                    .withSubscription(subscriptionId);
+        }
+        return resourceClient;
+    }
+
+    private StorageManager.Subscription storageClient() {
+        if (storageClient == null) {
+            storageClient = StorageManager
+                    .authenticate(restClient)
+                    .withSubscription(subscriptionId);
+        }
+        return storageClient;
+    }
+
     private ResourceManagementClientImpl resourceManagementClient() {
         if (resourceManagementClient == null) {
             resourceManagementClient = new ResourceManagementClientImpl(restClient);
             resourceManagementClient.setSubscriptionId(subscriptionId);
         }
         return resourceManagementClient;
-    }
-
-    private StorageManagementClientImpl storageManagementClient() {
-        if (storageManagementClient == null) {
-            storageManagementClient = new StorageManagementClientImpl(restClient);
-            storageManagementClient.setSubscriptionId(subscriptionId);
-        }
-        return storageManagementClient;
     }
 
     private ComputeManagementClientImpl computeManagementClient() {
