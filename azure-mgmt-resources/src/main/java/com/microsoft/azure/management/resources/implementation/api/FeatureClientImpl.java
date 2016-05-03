@@ -8,14 +8,10 @@ package com.microsoft.azure.management.resources.implementation.api;
 
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
-import com.microsoft.azure.CustomHeaderInterceptor;
 import com.microsoft.azure.serializer.AzureJacksonMapperAdapter;
-import com.microsoft.rest.AutoRestBaseUrl;
-import com.microsoft.rest.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.RestClient;
 import java.util.UUID;
-import okhttp3.OkHttpClient;
-import retrofit2.Retrofit;
 
 /**
  * Initializes a new instance of the FeatureClientImpl class.
@@ -40,7 +36,7 @@ public final class FeatureClientImpl extends AzureServiceClient {
      *
      * @return the credentials value.
      */
-    public ServiceClientCredentials getCredentials() {
+    public ServiceClientCredentials credentials() {
         return this.credentials;
     }
 
@@ -141,11 +137,16 @@ public final class FeatureClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The FeaturesInner object to access its operations.
+     */
+    private FeaturesInner features;
+
+    /**
      * Gets the FeaturesInner object to access its operations.
      * @return the FeaturesInner object.
      */
     public FeaturesInner features() {
-        return new FeaturesInner(restClient().retrofit(), this);
+        return this.features;
     }
 
     /**
@@ -181,10 +182,11 @@ public final class FeatureClientImpl extends AzureServiceClient {
     }
 
     protected void initialize() {
-        this.apiVersion = "2015-11-01";
+        this.apiVersion = "2015-12-01";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
+        this.features = new FeaturesInner(restClient().retrofit(), this);
         restClient().headers().addHeader("x-ms-client-request-id", UUID.randomUUID().toString());
         this.azureClient = new AzureClient(restClient());
     }

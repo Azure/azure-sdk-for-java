@@ -9,8 +9,8 @@ package com.microsoft.azure.management.resources.implementation.api;
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.serializer.AzureJacksonMapperAdapter;
-import com.microsoft.rest.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.RestClient;
 import java.util.UUID;
 
 /**
@@ -116,19 +116,29 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The SubscriptionsInner object to access its operations.
+     */
+    private SubscriptionsInner subscriptions;
+
+    /**
      * Gets the SubscriptionsInner object to access its operations.
      * @return the SubscriptionsInner object.
      */
     public SubscriptionsInner subscriptions() {
-        return new SubscriptionsInner(restClient().retrofit(), this);
+        return this.subscriptions;
     }
+
+    /**
+     * The TenantsInner object to access its operations.
+     */
+    private TenantsInner tenants;
 
     /**
      * Gets the TenantsInner object to access its operations.
      * @return the TenantsInner object.
      */
     public TenantsInner tenants() {
-        return new TenantsInner(restClient().retrofit(), this);
+        return this.tenants;
     }
 
     /**
@@ -168,6 +178,8 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
+        this.subscriptions = new SubscriptionsInner(restClient().retrofit(), this);
+        this.tenants = new TenantsInner(restClient().retrofit(), this);
         restClient().headers().addHeader("x-ms-client-request-id", UUID.randomUUID().toString());
         this.azureClient = new AzureClient(restClient());
     }

@@ -84,7 +84,7 @@ public final class UsagesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(location, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
-        ServiceResponse<PageImpl<UsageInner>> response = listDelegate(call.execute());
+        ServiceResponse<PageImpl1<UsageInner>> response = listDelegate(call.execute());
         PagedList<UsageInner> result = new PagedList<UsageInner>(response.getBody()) {
             @Override
             public Page<UsageInner> nextPage(String nextPageLink) throws CloudException, IOException {
@@ -124,7 +124,7 @@ public final class UsagesInner {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<UsageInner>> result = listDelegate(response);
+                    ServiceResponse<PageImpl1<UsageInner>> result = listDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
@@ -140,9 +140,9 @@ public final class UsagesInner {
         return serviceCall;
     }
 
-    private ServiceResponse<PageImpl<UsageInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<UsageInner>, CloudException>(this.client.restClient().mapperAdapter())
-                .register(200, new TypeToken<PageImpl<UsageInner>>() { }.getType())
+    private ServiceResponse<PageImpl1<UsageInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl1<UsageInner>, CloudException>(this.client.restClient().mapperAdapter())
+                .register(200, new TypeToken<PageImpl1<UsageInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -156,7 +156,7 @@ public final class UsagesInner {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<UsageInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl1<UsageInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -187,7 +187,7 @@ public final class UsagesInner {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<UsageInner>> result = listNextDelegate(response);
+                    ServiceResponse<PageImpl1<UsageInner>> result = listNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
@@ -203,9 +203,9 @@ public final class UsagesInner {
         return serviceCall;
     }
 
-    private ServiceResponse<PageImpl<UsageInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<UsageInner>, CloudException>(this.client.restClient().mapperAdapter())
-                .register(200, new TypeToken<PageImpl<UsageInner>>() { }.getType())
+    private ServiceResponse<PageImpl1<UsageInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl1<UsageInner>, CloudException>(this.client.restClient().mapperAdapter())
+                .register(200, new TypeToken<PageImpl1<UsageInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
