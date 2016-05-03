@@ -1,14 +1,14 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
-import com.microsoft.azure.management.resources.implementation.AzureResourceManager;
+import com.microsoft.azure.management.resources.implementation.ResourceManager;
 
 public abstract class ResourceManagerTestBase {
-    protected static AzureResourceManager.Authenticated resourceClient;
-    protected static AzureResourceManager.Subscription subscription;
+    protected static ResourceManager.Authenticated resourceClient;
+    protected static ResourceManager.Subscription subscription;
 
     public static void createClient() throws Exception {
-        resourceClient = AzureResourceManager.authenticate(
+        resourceClient = ResourceManager.authenticate(
                 new ApplicationTokenCredentials(
                         System.getenv("arm.clientid"),
                         System.getenv("arm.domain"),

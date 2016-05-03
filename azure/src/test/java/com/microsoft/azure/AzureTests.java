@@ -28,7 +28,7 @@ public class AzureTests {
 
     @Before
     public void setup() throws Exception {
-        Azure.Authenticated azure = Azure.configure()
+        Azure azure = Azure.configure()
                 .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
                 .withUserAgent("AzureTests")
                 .authenticate(credentials);

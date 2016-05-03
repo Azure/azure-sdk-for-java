@@ -12,11 +12,16 @@ import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.rest.RestClient;
 
-final class AzureSubscriptionImpl implements AzureResourceManager.Subscription {
+final class AzureSubscriptionImpl implements ResourceManager.Subscription {
     private final RestClient restClient;
     private String subscriptionId;
-
+    // The sdk clients
     private ResourceManagementClientImpl resourceManagementClient;
+    // The collections
+    ResourceGroups resourceGroups;
+    GenericResources genericResources;
+    Deployments deployments;
+    Deployments.InGroup deploymentsInGroup;
 
     AzureSubscriptionImpl(RestClient restClient, String subscriptionId) {
         this.restClient = restClient;
@@ -25,37 +30,41 @@ final class AzureSubscriptionImpl implements AzureResourceManager.Subscription {
 
     @Override
     public ResourceGroups resourceGroups() {
-        if (resourceManagementClient == null) {
-            resourceManagementClient = new ResourceManagementClientImpl(restClient);
-            resourceManagementClient.setSubscriptionId(subscriptionId);
+        if (resourceGroups == null) {
+            resourceGroups = new ResourceGroupsImpl(resourceManagementClient());
         }
-        return new ResourceGroupsImpl(resourceManagementClient);
+        return resourceGroups;
     }
 
     @Override
     public GenericResources genericResources() {
-        if (resourceManagementClient == null) {
-            resourceManagementClient = new ResourceManagementClientImpl(restClient);
-            resourceManagementClient.setSubscriptionId(subscriptionId);
+        if (genericResources == null) {
+            genericResources = new GenericResourcesImpl(resourceManagementClient());
         }
-        return new GenericResourcesImpl(resourceManagementClient);
+        return genericResources;
     }
 
     @Override
     public Deployments deployments() {
-        if (resourceManagementClient == null) {
-            resourceManagementClient = new ResourceManagementClientImpl(restClient);
-            resourceManagementClient.setSubscriptionId(subscriptionId);
+        if (deployments == null) {
+            deployments = new DeploymentsImpl(resourceManagementClient());
         }
-        return new DeploymentsImpl(resourceManagementClient);
+        return deployments;
     }
 
     @Override
     public Deployments.InGroup deployments(String resourceGroupName) {
+        if (deploymentsInGroup == null) {
+            deploymentsInGroup = new DeploymentsInGroupImpl(resourceManagementClient(), resourceGroupName);
+        }
+        return deploymentsInGroup;
+    }
+
+    private ResourceManagementClientImpl resourceManagementClient() {
         if (resourceManagementClient == null) {
             resourceManagementClient = new ResourceManagementClientImpl(restClient);
             resourceManagementClient.setSubscriptionId(subscriptionId);
         }
-        return new DeploymentsInGroupImpl(resourceManagementClient, resourceGroupName);
+        return resourceManagementClient;
     }
 }
