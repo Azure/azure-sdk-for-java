@@ -6,31 +6,30 @@ import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.StorageAccount;
 import java.io.IOException;
-import java.util.List;
 
 
 // Implementation of storage account collection with a resource group context.
 //
 public class StorageAccountsInGroupImpl implements StorageAccounts.InGroup {
     private ResourceGroup resourceGroup;
-    private StorageAccounts storageAccountsCore;
+    private StorageAccounts storageAccounts;
 
-    public StorageAccountsInGroupImpl(StorageAccounts storageAccountsCore, ResourceGroup resourceGroup) {
-        this.storageAccountsCore = storageAccountsCore;
+    public StorageAccountsInGroupImpl(StorageAccounts storageAccounts, ResourceGroup resourceGroup) {
+        this.storageAccounts = storageAccounts;
         this.resourceGroup = resourceGroup;
     }
 
     public StorageAccount.DefinitionProvisionable define(String name) throws Exception {
-        return storageAccountsCore.define(name)
+        return storageAccounts.define(name)
                 .withRegion(resourceGroup.location())
                 .withExistingGroup(resourceGroup.name());
     }
 
     public void delete(String name) throws Exception {
-        storageAccountsCore.delete(resourceGroup.name(), name);
+        storageAccounts.delete(resourceGroup.name(), name);
     }
 
      public PagedList<StorageAccount> list() throws CloudException, IOException {
-        return storageAccountsCore.list(resourceGroup.name());
+        return storageAccounts.list(resourceGroup.name());
      }
 }

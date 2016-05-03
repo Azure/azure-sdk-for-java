@@ -1,9 +1,7 @@
 package com.microsoft.azure.management.storage.implementation;
 
 
-import com.microsoft.azure.management.resources.ResourceGroups;
-import com.microsoft.azure.management.resources.implementation.ResourceGroupsImpl;
-import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
+import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
@@ -12,8 +10,9 @@ import com.microsoft.rest.RestClient;
 class AzureSubscriptionImpl  implements StorageManager.Subscription {
     private final RestClient restClient;
     private final String subscriptionId;
+    // The service managers
+    private ResourceManager.Subscription resourceClient;
     // The sdk clients
-    private ResourceManagementClientImpl resourceManagementClient;
     private StorageManagementClientImpl storageManagementClient;
     // The collections
     private StorageAccounts storageAccounts;
@@ -26,7 +25,7 @@ class AzureSubscriptionImpl  implements StorageManager.Subscription {
 
     public StorageAccounts storageAccounts() {
         if (storageAccounts == null) {
-            storageAccounts = new StorageAccountsImpl(storageManagementClient().storageAccounts(), resourceGroups());
+            storageAccounts = new StorageAccountsImpl(storageManagementClient().storageAccounts(), resourceClient().resourceGroups());
         }
         return storageAccounts;
     }
@@ -38,14 +37,6 @@ class AzureSubscriptionImpl  implements StorageManager.Subscription {
         return storageUsages;
     }
 
-    private ResourceManagementClientImpl resourceManagementClient() {
-        if (resourceManagementClient == null) {
-            resourceManagementClient = new ResourceManagementClientImpl(restClient);
-            resourceManagementClient.setSubscriptionId(subscriptionId);
-        }
-        return resourceManagementClient;
-    }
-
     private StorageManagementClientImpl storageManagementClient() {
         if (storageManagementClient == null) {
             storageManagementClient = new StorageManagementClientImpl(restClient);
@@ -54,7 +45,12 @@ class AzureSubscriptionImpl  implements StorageManager.Subscription {
         return storageManagementClient;
     }
 
-    private ResourceGroups resourceGroups() {
-        return new ResourceGroupsImpl(resourceManagementClient());
+    private ResourceManager.Subscription resourceClient() {
+        if (restClient == null) {
+            resourceClient = ResourceManager
+                    .authenticate(restClient)
+                    .withSubscription(subscriptionId);
+        }
+        return resourceClient;
     }
 }

@@ -7,6 +7,7 @@
 package com.microsoft.azure.implementation;
 
 import com.microsoft.azure.management.compute.AvailabilitySets;
+import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.resources.GenericResources;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.Tenants;
@@ -49,6 +50,7 @@ public final class Azure {
         StorageAccounts storageAccounts();
         Usages storageUsages();
         AvailabilitySets availabilitySets();
+        VirtualMachines virtualMachines();
     }
 
     public interface  ResourceGroups extends SupportsListing<Azure.ResourceGroup>,

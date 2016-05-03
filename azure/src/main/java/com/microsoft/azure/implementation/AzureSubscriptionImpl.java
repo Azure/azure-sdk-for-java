@@ -8,13 +8,10 @@ package com.microsoft.azure.implementation;
 
 import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.VirtualMachines;
-import com.microsoft.azure.management.compute.implementation.AvailabilitySetsImpl;
-import com.microsoft.azure.management.compute.implementation.api.ComputeManagementClientImpl;
+import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.resources.GenericResources;
-import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
-import com.microsoft.azure.management.resources.implementation.ResourceGroupsImpl;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
@@ -27,9 +24,9 @@ final class AzureSubscriptionImpl
     // service specific managers in subscription level.
     private ResourceManager.Subscription resourceClient;
     private StorageManager.Subscription storageClient;
+    private ComputeManager.Subscription computeClient;
     // SDK Clients
     // TODO: Get rid of these
-    private ComputeManagementClientImpl computeManagementClient;
     private ResourceManagementClientImpl resourceManagementClient;
     // Fluent Collections
     private Azure.ResourceGroups azureResourceGroups;
@@ -65,15 +62,12 @@ final class AzureSubscriptionImpl
 
     @Override
     public AvailabilitySets availabilitySets() {
-        if (availabilitySets == null) {
-            availabilitySets = new AvailabilitySetsImpl(computeManagementClient().availabilitySets(), resourceGroupsCore(), virtualMachines());
-        }
-        return availabilitySets;
+        return computeClient().availabilitySets();
     }
 
+    @Override
     public VirtualMachines virtualMachines() {
-        // TODO
-        return null;
+        return computeClient().virtualMachines();
     }
 
     private ResourceManager.Subscription resourceClient() {
@@ -94,23 +88,20 @@ final class AzureSubscriptionImpl
         return storageClient;
     }
 
+    private ComputeManager.Subscription computeClient() {
+        if (computeClient == null) {
+            computeClient = ComputeManager
+                    .authenticate(restClient)
+                    .withSubscription(subscriptionId);
+        }
+        return computeClient;
+    }
+
     private ResourceManagementClientImpl resourceManagementClient() {
         if (resourceManagementClient == null) {
             resourceManagementClient = new ResourceManagementClientImpl(restClient);
             resourceManagementClient.setSubscriptionId(subscriptionId);
         }
         return resourceManagementClient;
-    }
-
-    private ComputeManagementClientImpl computeManagementClient() {
-        if (computeManagementClient == null) {
-            computeManagementClient = new ComputeManagementClientImpl(restClient);
-            computeManagementClient.setSubscriptionId(subscriptionId);
-        }
-        return computeManagementClient;
-    }
-
-    private ResourceGroups resourceGroupsCore() {
-        return new ResourceGroupsImpl(resourceManagementClient());
     }
 }
