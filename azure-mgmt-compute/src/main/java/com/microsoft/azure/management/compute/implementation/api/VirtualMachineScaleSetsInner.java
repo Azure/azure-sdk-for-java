@@ -1156,7 +1156,7 @@ public final class VirtualMachineScaleSetsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
-        ServiceResponse<PageImpl<VirtualMachineScaleSetInner>> response = listDelegate(call.execute());
+        ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> response = listDelegate(call.execute());
         PagedList<VirtualMachineScaleSetInner> result = new PagedList<VirtualMachineScaleSetInner>(response.getBody()) {
             @Override
             public Page<VirtualMachineScaleSetInner> nextPage(String nextPageLink) throws CloudException, IOException {
@@ -1196,7 +1196,7 @@ public final class VirtualMachineScaleSetsInner {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<VirtualMachineScaleSetInner>> result = listDelegate(response);
+                    ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> result = listDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
@@ -1212,9 +1212,9 @@ public final class VirtualMachineScaleSetsInner {
         return serviceCall;
     }
 
-    private ServiceResponse<PageImpl<VirtualMachineScaleSetInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualMachineScaleSetInner>, CloudException>(this.client.restClient().mapperAdapter())
-                .register(200, new TypeToken<PageImpl<VirtualMachineScaleSetInner>>() { }.getType())
+    private ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl1<VirtualMachineScaleSetInner>, CloudException>(this.client.restClient().mapperAdapter())
+                .register(200, new TypeToken<PageImpl1<VirtualMachineScaleSetInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1235,7 +1235,7 @@ public final class VirtualMachineScaleSetsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
-        ServiceResponse<PageImpl<VirtualMachineScaleSetInner>> response = listAllDelegate(call.execute());
+        ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> response = listAllDelegate(call.execute());
         PagedList<VirtualMachineScaleSetInner> result = new PagedList<VirtualMachineScaleSetInner>(response.getBody()) {
             @Override
             public Page<VirtualMachineScaleSetInner> nextPage(String nextPageLink) throws CloudException, IOException {
@@ -1270,7 +1270,7 @@ public final class VirtualMachineScaleSetsInner {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<VirtualMachineScaleSetInner>> result = listAllDelegate(response);
+                    ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> result = listAllDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
@@ -1286,9 +1286,9 @@ public final class VirtualMachineScaleSetsInner {
         return serviceCall;
     }
 
-    private ServiceResponse<PageImpl<VirtualMachineScaleSetInner>> listAllDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualMachineScaleSetInner>, CloudException>(this.client.restClient().mapperAdapter())
-                .register(200, new TypeToken<PageImpl<VirtualMachineScaleSetInner>>() { }.getType())
+    private ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> listAllDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl1<VirtualMachineScaleSetInner>, CloudException>(this.client.restClient().mapperAdapter())
+                .register(200, new TypeToken<PageImpl1<VirtualMachineScaleSetInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1317,7 +1317,7 @@ public final class VirtualMachineScaleSetsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSkus(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
-        ServiceResponse<PageImpl<VirtualMachineScaleSetSkuInner>> response = listSkusDelegate(call.execute());
+        ServiceResponse<PageImpl1<VirtualMachineScaleSetSkuInner>> response = listSkusDelegate(call.execute());
         PagedList<VirtualMachineScaleSetSkuInner> result = new PagedList<VirtualMachineScaleSetSkuInner>(response.getBody()) {
             @Override
             public Page<VirtualMachineScaleSetSkuInner> nextPage(String nextPageLink) throws CloudException, IOException {
@@ -1362,7 +1362,7 @@ public final class VirtualMachineScaleSetsInner {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<VirtualMachineScaleSetSkuInner>> result = listSkusDelegate(response);
+                    ServiceResponse<PageImpl1<VirtualMachineScaleSetSkuInner>> result = listSkusDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
@@ -1378,9 +1378,9 @@ public final class VirtualMachineScaleSetsInner {
         return serviceCall;
     }
 
-    private ServiceResponse<PageImpl<VirtualMachineScaleSetSkuInner>> listSkusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualMachineScaleSetSkuInner>, CloudException>(this.client.restClient().mapperAdapter())
-                .register(200, new TypeToken<PageImpl<VirtualMachineScaleSetSkuInner>>() { }.getType())
+    private ServiceResponse<PageImpl1<VirtualMachineScaleSetSkuInner>> listSkusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl1<VirtualMachineScaleSetSkuInner>, CloudException>(this.client.restClient().mapperAdapter())
+                .register(200, new TypeToken<PageImpl1<VirtualMachineScaleSetSkuInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -2682,7 +2682,7 @@ public final class VirtualMachineScaleSetsInner {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineScaleSetInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<VirtualMachineScaleSetInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -2713,7 +2713,7 @@ public final class VirtualMachineScaleSetsInner {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<VirtualMachineScaleSetInner>> result = listNextDelegate(response);
+                    ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> result = listNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
@@ -2729,9 +2729,9 @@ public final class VirtualMachineScaleSetsInner {
         return serviceCall;
     }
 
-    private ServiceResponse<PageImpl<VirtualMachineScaleSetInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualMachineScaleSetInner>, CloudException>(this.client.restClient().mapperAdapter())
-                .register(200, new TypeToken<PageImpl<VirtualMachineScaleSetInner>>() { }.getType())
+    private ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl1<VirtualMachineScaleSetInner>, CloudException>(this.client.restClient().mapperAdapter())
+                .register(200, new TypeToken<PageImpl1<VirtualMachineScaleSetInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -2745,7 +2745,7 @@ public final class VirtualMachineScaleSetsInner {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineScaleSetInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<VirtualMachineScaleSetInner>> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -2776,7 +2776,7 @@ public final class VirtualMachineScaleSetsInner {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<VirtualMachineScaleSetInner>> result = listAllNextDelegate(response);
+                    ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> result = listAllNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
@@ -2792,9 +2792,9 @@ public final class VirtualMachineScaleSetsInner {
         return serviceCall;
     }
 
-    private ServiceResponse<PageImpl<VirtualMachineScaleSetInner>> listAllNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualMachineScaleSetInner>, CloudException>(this.client.restClient().mapperAdapter())
-                .register(200, new TypeToken<PageImpl<VirtualMachineScaleSetInner>>() { }.getType())
+    private ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> listAllNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl1<VirtualMachineScaleSetInner>, CloudException>(this.client.restClient().mapperAdapter())
+                .register(200, new TypeToken<PageImpl1<VirtualMachineScaleSetInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -2808,7 +2808,7 @@ public final class VirtualMachineScaleSetsInner {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineScaleSetSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<VirtualMachineScaleSetSkuInner>> listSkusNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl1<VirtualMachineScaleSetSkuInner>> listSkusNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -2839,7 +2839,7 @@ public final class VirtualMachineScaleSetsInner {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<VirtualMachineScaleSetSkuInner>> result = listSkusNextDelegate(response);
+                    ServiceResponse<PageImpl1<VirtualMachineScaleSetSkuInner>> result = listSkusNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
@@ -2855,9 +2855,9 @@ public final class VirtualMachineScaleSetsInner {
         return serviceCall;
     }
 
-    private ServiceResponse<PageImpl<VirtualMachineScaleSetSkuInner>> listSkusNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualMachineScaleSetSkuInner>, CloudException>(this.client.restClient().mapperAdapter())
-                .register(200, new TypeToken<PageImpl<VirtualMachineScaleSetSkuInner>>() { }.getType())
+    private ServiceResponse<PageImpl1<VirtualMachineScaleSetSkuInner>> listSkusNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl1<VirtualMachineScaleSetSkuInner>, CloudException>(this.client.restClient().mapperAdapter())
+                .register(200, new TypeToken<PageImpl1<VirtualMachineScaleSetSkuInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

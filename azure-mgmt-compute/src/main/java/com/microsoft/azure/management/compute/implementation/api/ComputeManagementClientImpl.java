@@ -137,75 +137,120 @@ public final class ComputeManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The AvailabilitySetsInner object to access its operations.
+     */
+    private AvailabilitySetsInner availabilitySets;
+
+    /**
      * Gets the AvailabilitySetsInner object to access its operations.
      * @return the AvailabilitySetsInner object.
      */
     public AvailabilitySetsInner availabilitySets() {
-        return new AvailabilitySetsInner(restClient().retrofit(), this);
+        return this.availabilitySets;
     }
+
+    /**
+     * The VirtualMachineExtensionImagesInner object to access its operations.
+     */
+    private VirtualMachineExtensionImagesInner virtualMachineExtensionImages;
 
     /**
      * Gets the VirtualMachineExtensionImagesInner object to access its operations.
      * @return the VirtualMachineExtensionImagesInner object.
      */
     public VirtualMachineExtensionImagesInner virtualMachineExtensionImages() {
-        return new VirtualMachineExtensionImagesInner(restClient().retrofit(), this);
+        return this.virtualMachineExtensionImages;
     }
+
+    /**
+     * The VirtualMachineExtensionsInner object to access its operations.
+     */
+    private VirtualMachineExtensionsInner virtualMachineExtensions;
 
     /**
      * Gets the VirtualMachineExtensionsInner object to access its operations.
      * @return the VirtualMachineExtensionsInner object.
      */
     public VirtualMachineExtensionsInner virtualMachineExtensions() {
-        return new VirtualMachineExtensionsInner(restClient().retrofit(), this);
+        return this.virtualMachineExtensions;
     }
+
+    /**
+     * The VirtualMachineImagesInner object to access its operations.
+     */
+    private VirtualMachineImagesInner virtualMachineImages;
 
     /**
      * Gets the VirtualMachineImagesInner object to access its operations.
      * @return the VirtualMachineImagesInner object.
      */
     public VirtualMachineImagesInner virtualMachineImages() {
-        return new VirtualMachineImagesInner(restClient().retrofit(), this);
+        return this.virtualMachineImages;
     }
+
+    /**
+     * The UsagesInner object to access its operations.
+     */
+    private UsagesInner usages;
 
     /**
      * Gets the UsagesInner object to access its operations.
      * @return the UsagesInner object.
      */
     public UsagesInner usages() {
-        return new UsagesInner(restClient().retrofit(), this);
+        return this.usages;
     }
+
+    /**
+     * The VirtualMachineSizesInner object to access its operations.
+     */
+    private VirtualMachineSizesInner virtualMachineSizes;
 
     /**
      * Gets the VirtualMachineSizesInner object to access its operations.
      * @return the VirtualMachineSizesInner object.
      */
     public VirtualMachineSizesInner virtualMachineSizes() {
-        return new VirtualMachineSizesInner(restClient().retrofit(), this);
+        return this.virtualMachineSizes;
     }
+
+    /**
+     * The VirtualMachinesInner object to access its operations.
+     */
+    private VirtualMachinesInner virtualMachines;
 
     /**
      * Gets the VirtualMachinesInner object to access its operations.
      * @return the VirtualMachinesInner object.
      */
     public VirtualMachinesInner virtualMachines() {
-        return new VirtualMachinesInner(restClient().retrofit(), this);
+        return this.virtualMachines;
     }
+
+    /**
+     * The VirtualMachineScaleSetsInner object to access its operations.
+     */
+    private VirtualMachineScaleSetsInner virtualMachineScaleSets;
 
     /**
      * Gets the VirtualMachineScaleSetsInner object to access its operations.
      * @return the VirtualMachineScaleSetsInner object.
      */
     public VirtualMachineScaleSetsInner virtualMachineScaleSets() {
-        return new VirtualMachineScaleSetsInner(restClient().retrofit(), this);
+        return this.virtualMachineScaleSets;
     }
+
+    /**
+     * The VirtualMachineScaleSetVMsInner object to access its operations.
+     */
+    private VirtualMachineScaleSetVMsInner virtualMachineScaleSetVMs;
 
     /**
      * Gets the VirtualMachineScaleSetVMsInner object to access its operations.
      * @return the VirtualMachineScaleSetVMsInner object.
      */
     public VirtualMachineScaleSetVMsInner virtualMachineScaleSetVMs() {
-        return new VirtualMachineScaleSetVMsInner(restClient().retrofit(), this);
+        return this.virtualMachineScaleSetVMs;
     }
 
     /**
@@ -245,6 +290,15 @@ public final class ComputeManagementClientImpl extends AzureServiceClient {
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
+        this.availabilitySets = new AvailabilitySetsInner(restClient().retrofit(), this);
+        this.virtualMachineExtensionImages = new VirtualMachineExtensionImagesInner(restClient().retrofit(), this);
+        this.virtualMachineExtensions = new VirtualMachineExtensionsInner(restClient().retrofit(), this);
+        this.virtualMachineImages = new VirtualMachineImagesInner(restClient().retrofit(), this);
+        this.usages = new UsagesInner(restClient().retrofit(), this);
+        this.virtualMachineSizes = new VirtualMachineSizesInner(restClient().retrofit(), this);
+        this.virtualMachines = new VirtualMachinesInner(restClient().retrofit(), this);
+        this.virtualMachineScaleSets = new VirtualMachineScaleSetsInner(restClient().retrofit(), this);
+        this.virtualMachineScaleSetVMs = new VirtualMachineScaleSetVMsInner(restClient().retrofit(), this);
         restClient().headers().addHeader("x-ms-client-request-id", UUID.randomUUID().toString());
         this.azureClient = new AzureClient(restClient());
     }
