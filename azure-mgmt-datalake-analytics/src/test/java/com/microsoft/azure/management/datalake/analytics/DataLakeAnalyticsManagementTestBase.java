@@ -110,7 +110,7 @@ public abstract class DataLakeAnalyticsManagementTestBase {
         JobInformation getJobResponse = jobClient.getJobOperations().get(adlaAcct, jobCreateResponse.getJobId()).getBody();
         Assert.assertNotNull(getJobResponse);
 
-        int maxWaitInSeconds = 180; // 3 minutes should be long enough
+        int maxWaitInSeconds = 2700; // giving it 45 minutes for now.
         int curWaitInSeconds = 0;
 
         while (getJobResponse.getState() != JobState.ENDED && curWaitInSeconds < maxWaitInSeconds)

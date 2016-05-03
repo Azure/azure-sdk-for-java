@@ -40,95 +40,97 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
     private static String credentialName = generateName("testcred1");
     private static String secretName = generateName("testsecret1");
     private static String secretPwd = generateName("testsecretpwd1");
-
-    private static String catalogCreationScript = MessageFormat.format("DROP DATABASE IF EXISTS {0}; CREATE DATABASE {0}; " +
-            "//Create Table" +
-            "CREATE TABLE {0}.dbo.{1}" +
-            "(" +
-            "        //Define schema of table" +
-            "        UserId          int, " +
-            "        Start           DateTime, " +
-            "        Region          string, " +
-            "        Query           string, " +
-            "        Duration        int, " +
-            "        Urls            string, " +
-            "        ClickedUrls     string," +
-            "    INDEX idx1 //Name of index" +
-            "    CLUSTERED (Region ASC) //Column to cluster by" +
-            "    PARTITIONED BY HASH (Region) //Column to partition by" +
-            ");" +
-            "DROP FUNCTION IF EXISTS {0}.dbo.{2};" +
-            "" +
-            "//create table weblogs on space-delimited website log data" +
-            "CREATE FUNCTION {0}.dbo.{2}()" +
-            "RETURNS @result TABLE" +
-            "(" +
-            "    s_date DateTime," +
-            "    s_time string," +
-            "    s_sitename string," +
-            "    cs_method string, " +
-            "    cs_uristem string," +
-            "    cs_uriquery string," +
-            "    s_port int," +
-            "    cs_username string, " +
-            "    c_ip string," +
-            "    cs_useragent string," +
-            "    cs_cookie string," +
-            "    cs_referer string, " +
-            "    cs_host string," +
-            "    sc_status int," +
-            "    sc_substatus int," +
-            "    sc_win32status int, " +
-            "    sc_bytes int," +
-            "    cs_bytes int," +
-            "    s_timetaken int" +
-            ")" +
-            "AS" +
-            "BEGIN" +
-            "" +
-            "    @result = EXTRACT" +
-            "        s_date DateTime," +
-            "        s_time string," +
-            "        s_sitename string," +
-            "        cs_method string," +
-            "        cs_uristem string," +
-            "        cs_uriquery string," +
-            "        s_port int," +
-            "        cs_username string," +
-            "        c_ip string," +
-            "        cs_useragent string," +
-            "        cs_cookie string," +
-            "        cs_referer string," +
-            "        cs_host string," +
-            "        sc_status int," +
-            "        sc_substatus int," +
-            "        sc_win32status int," +
-            "        sc_bytes int," +
-            "        cs_bytes int," +
-            "        s_timetaken int" +
-            "    FROM @\"/Samples/Data/WebLog.log\"" +
-            "    USING Extractors.Text(delimiter:' ');" +
-            "" +
-            "RETURN;" +
-            "END;" +
-            "CREATE VIEW {0}.dbo.{3} " +
-            "AS " +
-            "    SELECT * FROM " +
-            "    (" +
-            "        VALUES(1,2),(2,4)" +
-            "    ) " +
-            "AS " +
-            "T(a, b);" +
-            "CREATE PROCEDURE {0}.dbo.{4}()" +
-            "AS BEGIN" +
-            "  CREATE VIEW {0}.dbo.{3} " +
-            "  AS " +
-            "    SELECT * FROM " +
-            "    (" +
-            "        VALUES(1,2),(2,4)" +
-            "    ) " +
-            "  AS " +
-            "  T(a, b);" +
+    private static String catalogCreationScript = MessageFormat.format("DROP DATABASE IF EXISTS {0}; CREATE DATABASE {0}; \r\n" +
+            "//Create Table\r\n" +
+            "CREATE TABLE {0}.dbo.{1}\r\n" +
+            "(\r\n" +
+            "        //Define schema of table\r\n" +
+            "        UserId          int, \r\n" +
+            "        Start           DateTime, \r\n" +
+            "        Region          string, \r\n" +
+            "        Query           string, \r\n" +
+            "        Duration        int, \r\n" +
+            "        Urls            string, \r\n" +
+            "        ClickedUrls     string,\r\n" +
+            "    INDEX idx1 //Name of index\r\n" +
+            "    CLUSTERED (Region ASC) //Column to cluster by\r\n" +
+            "    PARTITIONED BY BUCKETS (UserId) HASH (Region) //Column to partition by\r\n" +
+            ");\r\n" +
+            "\r\n" +
+            "ALTER TABLE {0}.dbo.{1} ADD IF NOT EXISTS PARTITION (1);\r\n" +
+            "\r\n" +
+            "DROP FUNCTION IF EXISTS {0}.dbo.{2};\r\n" +
+            "\r\n" +
+            "//create table weblogs on space-delimited website log data\r\n" +
+            "CREATE FUNCTION {0}.dbo.{2}()\r\n" +
+            "RETURNS @result TABLE\r\n" +
+            "(\r\n" +
+            "    s_date DateTime,\r\n" +
+            "    s_time string,\r\n" +
+            "    s_sitename string,\r\n" +
+            "    cs_method string, \r\n" +
+            "    cs_uristem string,\r\n" +
+            "    cs_uriquery string,\r\n" +
+            "    s_port int,\r\n" +
+            "    cs_username string, \r\n" +
+            "    c_ip string,\r\n" +
+            "    cs_useragent string,\r\n" +
+            "    cs_cookie string,\r\n" +
+            "    cs_referer string, \r\n" +
+            "    cs_host string,\r\n" +
+            "    sc_status int,\r\n" +
+            "    sc_substatus int,\r\n" +
+            "    sc_win32status int, \r\n" +
+            "    sc_bytes int,\r\n" +
+            "    cs_bytes int,\r\n" +
+            "    s_timetaken int\r\n" +
+            ")\r\n" +
+            "AS\r\n" +
+            "BEGIN\r\n" +
+            "\r\n" +
+            "    @result = EXTRACT\r\n" +
+            "        s_date DateTime,\r\n" +
+            "        s_time string,\r\n" +
+            "        s_sitename string,\r\n" +
+            "        cs_method string,\r\n" +
+            "        cs_uristem string,\r\n" +
+            "        cs_uriquery string,\r\n" +
+            "        s_port int,\r\n" +
+            "        cs_username string,\r\n" +
+            "        c_ip string,\r\n" +
+            "        cs_useragent string,\r\n" +
+            "        cs_cookie string,\r\n" +
+            "        cs_referer string,\r\n" +
+            "        cs_host string,\r\n" +
+            "        sc_status int,\r\n" +
+            "        sc_substatus int,\r\n" +
+            "        sc_win32status int,\r\n" +
+            "        sc_bytes int,\r\n" +
+            "        cs_bytes int,\r\n" +
+            "        s_timetaken int\r\n" +
+            "    FROM @\"/Samples/Data/WebLog.log\"\r\n" +
+            "    USING Extractors.Text(delimiter:''' ''');\r\n" +
+            "\r\n" +
+            "RETURN;\r\n" +
+            "END;\r\n" +
+            "CREATE VIEW {0}.dbo.{3} \r\n" +
+            "AS \r\n" +
+            "    SELECT * FROM \r\n" +
+            "    (\r\n" +
+            "        VALUES(1,2),(2,4)\r\n" +
+            "    ) \r\n" +
+            "AS \r\n" +
+            "T(a, b);\r\n" +
+            "CREATE PROCEDURE {0}.dbo.{4}()\r\n" +
+            "AS BEGIN\r\n" +
+            "  CREATE VIEW {0}.dbo.{3} \r\n" +
+            "  AS \r\n" +
+            "    SELECT * FROM \r\n" +
+            "    (\r\n" +
+            "        VALUES(1,2),(2,4)\r\n" +
+            "    ) \r\n" +
+            "  AS \r\n" +
+            "  T(a, b);\r\n" +
             "END;", dbName, tableName, tvfName, viewName, procName);
 
     @BeforeClass
@@ -318,12 +320,6 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         USqlSecret secretCreateResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().createSecret(
                 adlaAcct, dbName, secretName,
                 createParams).getBody();
-        try {
-
-        }
-        catch(Exception e) {
-
-        }
         
         // Attempt to create the secret again, which should throw
         try {

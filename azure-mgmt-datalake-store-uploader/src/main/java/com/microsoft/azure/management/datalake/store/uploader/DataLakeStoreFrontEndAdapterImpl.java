@@ -9,7 +9,11 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.datalake.store.DataLakeStoreFileSystemManagementClient;
 import com.microsoft.azure.management.datalake.store.models.FileStatusResult;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 
 /**
  * A front end adapter that communicates with the DataLake Store.
@@ -52,7 +56,7 @@ public class DataLakeStoreFrontEndAdapterImpl implements FrontEndAdapter {
             toCreate = new byte[byteCount];
             System.arraycopy(data, 0, toCreate, 0, byteCount);
         }
-        _client.getFileSystemOperations().create(streamPath, _accountName, data, overwrite);
+        _client.getFileSystemOperations().create(_accountName, streamPath , data, overwrite);
     }
 
     /**
@@ -64,7 +68,7 @@ public class DataLakeStoreFrontEndAdapterImpl implements FrontEndAdapter {
      * @throws CloudException
      */
     public void DeleteStream(String streamPath, boolean recurse) throws IOException, CloudException {
-        _client.getFileSystemOperations().delete(streamPath, _accountName, recurse);
+        _client.getFileSystemOperations().delete(_accountName, streamPath, recurse);
     }
 
     /**
@@ -80,7 +84,7 @@ public class DataLakeStoreFrontEndAdapterImpl implements FrontEndAdapter {
     public void AppendToStream(String streamPath, byte[] data, long offset, int byteCount) throws IOException, CloudException {
         byte[] toAppend = new byte[byteCount];
         System.arraycopy(data, 0, toAppend, 0, byteCount);
-        _client.getFileSystemOperations().append(streamPath, _accountName, toAppend);
+        _client.getFileSystemOperations().append(_accountName, streamPath, toAppend);
     }
 
     /**
@@ -93,7 +97,7 @@ public class DataLakeStoreFrontEndAdapterImpl implements FrontEndAdapter {
      */
     public boolean StreamExists(String streamPath) throws CloudException, IOException {
         try {
-            _client.getFileSystemOperations().getFileStatus(streamPath, _accountName);
+            _client.getFileSystemOperations().getFileStatus(_accountName, streamPath);
         } catch (CloudException cloudEx) {
             if (cloudEx.getResponse().code() == 404) {
                 return false;
@@ -114,7 +118,7 @@ public class DataLakeStoreFrontEndAdapterImpl implements FrontEndAdapter {
      * @throws CloudException
      */
     public long GetStreamLength(String streamPath) throws IOException, CloudException {
-        FileStatusResult fileInfoResponse = _client.getFileSystemOperations().getFileStatus(streamPath, _accountName).getBody();
+        FileStatusResult fileInfoResponse = _client.getFileSystemOperations().getFileStatus(_accountName, streamPath).getBody();
         return fileInfoResponse.getFileStatus().getLength();
     }
 
@@ -131,9 +135,9 @@ public class DataLakeStoreFrontEndAdapterImpl implements FrontEndAdapter {
         // this is required for the current version of the microsoft concatenate
         // TODO: Improve WebHDFS concatenate to take in the list of paths to concatenate
         // in the request body.
-        String paths = "sources=" + String.join(",", inputStreamPaths);
+        String paths = MessageFormat.format("sources={0}", StringUtils.join(inputStreamPaths, ','));
 
         // For the current implementation, we require UTF8 encoding.
-        _client.getFileSystemOperations().msConcat(targetStreamPath, _accountName, paths.getBytes(), true);
+        _client.getFileSystemOperations().msConcat(_accountName, targetStreamPath, paths.getBytes(StandardCharsets.UTF_8), true);
     }
 }
