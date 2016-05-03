@@ -11,7 +11,6 @@ import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.implementation.api.DeploymentExtendedInner;
 
 import java.io.IOException;
-import java.util.List;
 
 public class DeploymentsInGroupImpl
         implements Deployments.InGroup {

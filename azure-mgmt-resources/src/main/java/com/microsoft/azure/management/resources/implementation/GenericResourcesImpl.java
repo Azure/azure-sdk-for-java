@@ -43,9 +43,6 @@ public final class GenericResourcesImpl
                 return new GenericResourceImpl(genericResourceInner.id(), genericResourceInner, serviceClient);
             }
         };
-        if (resourceGroupName == null) {
-
-        }
         return converter.convert(resourceGroups.listResources(resourceGroupName).getBody());
     }
 

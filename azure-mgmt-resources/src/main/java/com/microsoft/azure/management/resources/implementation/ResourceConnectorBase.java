@@ -19,6 +19,14 @@ public class ResourceConnectorBase<T extends ResourceConnector> implements Resou
         this.resourceGroup = resourceGroup;
     }
 
+    protected ServiceClientCredentials credentials() {
+        return this.credentials;
+    }
+
+    protected String subscriptionId() {
+        return this.subscriptionId;
+    }
+
     protected ResourceGroups resourceGroups() {
         if (resourceGroups == null) {
             resourceGroups = new ResourceGroupsImpl(resourceManagementClient());
