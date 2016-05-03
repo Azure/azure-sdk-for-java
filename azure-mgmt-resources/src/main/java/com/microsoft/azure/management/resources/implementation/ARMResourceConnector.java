@@ -1,6 +1,6 @@
 package com.microsoft.azure.management.resources.implementation;
 
-import com.microsoft.azure.management.resources.Deployments.InGroup;
+import com.microsoft.azure.management.resources.Deployments;
 import com.microsoft.azure.management.resources.GenericResources;
 import com.microsoft.azure.management.resources.ResourceConnector;
 import com.microsoft.azure.management.resources.ResourceGroup;
@@ -8,7 +8,7 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 
 public class ARMResourceConnector extends ResourceConnectorBase<ARMResourceConnector> {
     private GenericResources genericResources;
-    private InGroup deployments;
+    private Deployments.InGroup deployments;
 
     private ARMResourceConnector(ServiceClientCredentials credentials, String subscriptionId, ResourceGroup resourceGroup) {
         super(credentials, subscriptionId, resourceGroup);
@@ -30,7 +30,7 @@ public class ARMResourceConnector extends ResourceConnectorBase<ARMResourceConne
         return genericResources;
     }
 
-    public InGroup deployments() {
+    public Deployments.InGroup deployments() {
         return deployments;
     }
 }
