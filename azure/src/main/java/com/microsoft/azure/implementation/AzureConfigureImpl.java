@@ -1,9 +1,9 @@
 package com.microsoft.azure.implementation;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigureBaseImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
-final class AzureConfigureImpl extends AzureConfigureBaseImpl<Azure.Configure>
+final class AzureConfigureImpl extends AzureConfigurableImpl<Azure.Configure>
     implements Azure.Configure {
     AzureConfigureImpl() {}
 

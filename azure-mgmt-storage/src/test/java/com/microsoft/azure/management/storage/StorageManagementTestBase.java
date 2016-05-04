@@ -3,6 +3,7 @@ package com.microsoft.azure.management.storage;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 public abstract class StorageManagementTestBase {
     protected static ResourceManager resourceClient;

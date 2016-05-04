@@ -3,14 +3,15 @@ package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.compute.implementation.api.ComputeManagementClientImpl;
-import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigureBaseAuthImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
+import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
 public final class ComputeManager {
-    private final RestClient restClient;
-    private final String subscriptionId;
+    private RestClient restClient;
+    private String subscriptionId;
     // The service managers
     private ResourceManager resourceClient;
     // The sdk clients
@@ -19,13 +20,8 @@ public final class ComputeManager {
     private AvailabilitySets availabilitySets;
     private VirtualMachines virtualMachines;
 
-    public static AzureConfigureBaseAuthImpl<ComputeManager> configure() {
-        return new AzureConfigureBaseAuthImpl<ComputeManager>() {
-            public ComputeManager authenticate(ServiceClientCredentials credentials, String subscriptionId) {
-                buildRestClient(credentials);
-                return ComputeManager.authenticate(this.restClient, subscriptionId);
-            }
-        };
+    public static Configurable configurable() {
+        return new ComputeManager().new ConfigurableImpl();
     }
 
     public static ComputeManager authenticate(ServiceClientCredentials credentials, String subscriptionId) {
@@ -34,6 +30,17 @@ public final class ComputeManager {
 
     public static ComputeManager authenticate(RestClient restClient, String subscriptionId) {
         return new ComputeManager(restClient, subscriptionId);
+    }
+
+    public interface Configurable extends AzureConfigurable<Configurable> {
+        ComputeManager authenticate(ServiceClientCredentials credentials, String subscriptionId);
+    }
+
+    final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements  Configurable {
+        public ComputeManager authenticate(ServiceClientCredentials credentials, String subscriptionId) {
+            buildRestClient(credentials);
+            return ComputeManager.authenticate(restClient, subscriptionId);
+        }
     }
 
     private ComputeManager(ServiceClientCredentials credentials, String subscriptionId) {
@@ -48,6 +55,8 @@ public final class ComputeManager {
         this.restClient = restClient;
         this.subscriptionId = subscriptionId;
     }
+
+    private ComputeManager() {}
 
     public AvailabilitySets availabilitySets() {
         if (availabilitySets == null) {

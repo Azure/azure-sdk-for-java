@@ -1,16 +1,17 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.implementation;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigureBase;
+import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.rest.RestClient;
+import com.microsoft.rest.credentials.ServiceClientCredentials;
 import okhttp3.Interceptor;
 import okhttp3.logging.HttpLoggingInterceptor;
 
-public class AzureConfigureBaseImpl<T extends AzureConfigureBase<T>>
-        implements AzureConfigureBase<T> {
+public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
+        implements AzureConfigurable<T> {
     protected RestClient.Builder restClientBuilder;
     protected RestClient restClient;
 
-    protected AzureConfigureBaseImpl() {
+    protected AzureConfigurableImpl() {
         this.restClientBuilder = new RestClient.Builder("https://management.azure.com");
     }
 
@@ -30,5 +31,9 @@ public class AzureConfigureBaseImpl<T extends AzureConfigureBase<T>>
     public T withUserAgent(String userAgent) {
         this.restClientBuilder = this.restClientBuilder.withUserAgent(userAgent);
         return (T) this;
+    }
+
+    protected void buildRestClient(ServiceClientCredentials credentials) {
+        restClient = restClientBuilder.withCredentials(credentials).build();
     }
 }
