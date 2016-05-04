@@ -83,10 +83,10 @@ public class JobErrorDetails {
 
     /**
      * Gets the severity level of the failure. Possible values include:
-     * 'Warning', 'Error'.
+     * 'Warning', 'Error', 'Info'.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String severity;
+    private SeverityTypes severity;
 
     /**
      * Gets the ultimate source of the failure (usually either SYSTEM or USER).
@@ -204,7 +204,7 @@ public class JobErrorDetails {
      *
      * @return the severity value
      */
-    public String getSeverity() {
+    public SeverityTypes getSeverity() {
         return this.severity;
     }
 

@@ -22,6 +22,9 @@ import com.microsoft.azure.batch.protocol.models.ComputeNodeGetHeaders;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeGetOptions;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeGetRemoteDesktopHeaders;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeGetRemoteDesktopOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeGetRemoteLoginSettingsHeaders;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeGetRemoteLoginSettingsOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeGetRemoteLoginSettingsResult;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeListHeaders;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeListNextOptions;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeListOptions;
@@ -126,6 +129,10 @@ public final class ComputeNodesImpl implements ComputeNodes {
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @POST("pools/{poolId}/nodes/{nodeId}/enablescheduling")
         Call<ResponseBody> enableScheduling(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate);
+
+        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @GET("pools/{poolId}/nodes/{nodeId}/remoteloginsettings")
+        Call<ResponseBody> getRemoteLoginSettings(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @GET("pools/{poolId}/nodes/{nodeId}/rdp")
@@ -1796,6 +1803,195 @@ public final class ComputeNodesImpl implements ComputeNodes {
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, ComputeNodeEnableSchedulingHeaders.class);
+    }
+
+    /**
+     * Gets the settings required for remote login to a compute node.
+     *
+     * @param poolId The id of the pool that contains the compute node.
+     * @param nodeId The id of the compute node for which to obtain the remote login settings.
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ComputeNodeGetRemoteLoginSettingsResult object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders> getRemoteLoginSettings(String poolId, String nodeId) throws BatchErrorException, IOException, IllegalArgumentException {
+        if (poolId == null) {
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
+        }
+        if (nodeId == null) {
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        final ComputeNodeGetRemoteLoginSettingsOptions computeNodeGetRemoteLoginSettingsOptions = null;
+        Integer timeout = null;
+        String clientRequestId = null;
+        Boolean returnClientRequestId = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        Call<ResponseBody> call = service.getRemoteLoginSettings(poolId, nodeId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
+        return getRemoteLoginSettingsDelegate(call.execute());
+    }
+
+    /**
+     * Gets the settings required for remote login to a compute node.
+     *
+     * @param poolId The id of the pool that contains the compute node.
+     * @param nodeId The id of the compute node for which to obtain the remote login settings.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getRemoteLoginSettingsAsync(String poolId, String nodeId, final ServiceCallback<ComputeNodeGetRemoteLoginSettingsResult> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (poolId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
+            return null;
+        }
+        if (nodeId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        final ComputeNodeGetRemoteLoginSettingsOptions computeNodeGetRemoteLoginSettingsOptions = null;
+        Integer timeout = null;
+        String clientRequestId = null;
+        Boolean returnClientRequestId = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        Call<ResponseBody> call = service.getRemoteLoginSettings(poolId, nodeId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<ComputeNodeGetRemoteLoginSettingsResult>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getRemoteLoginSettingsDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Gets the settings required for remote login to a compute node.
+     *
+     * @param poolId The id of the pool that contains the compute node.
+     * @param nodeId The id of the compute node for which to obtain the remote login settings.
+     * @param computeNodeGetRemoteLoginSettingsOptions Additional parameters for the operation
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ComputeNodeGetRemoteLoginSettingsResult object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders> getRemoteLoginSettings(String poolId, String nodeId, ComputeNodeGetRemoteLoginSettingsOptions computeNodeGetRemoteLoginSettingsOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+        if (poolId == null) {
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
+        }
+        if (nodeId == null) {
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        Validator.validate(computeNodeGetRemoteLoginSettingsOptions);
+        Integer timeout = null;
+        if (computeNodeGetRemoteLoginSettingsOptions != null) {
+            timeout = computeNodeGetRemoteLoginSettingsOptions.getTimeout();
+        }
+        String clientRequestId = null;
+        if (computeNodeGetRemoteLoginSettingsOptions != null) {
+            clientRequestId = computeNodeGetRemoteLoginSettingsOptions.getClientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (computeNodeGetRemoteLoginSettingsOptions != null) {
+            returnClientRequestId = computeNodeGetRemoteLoginSettingsOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (computeNodeGetRemoteLoginSettingsOptions != null) {
+            ocpDate = computeNodeGetRemoteLoginSettingsOptions.getOcpDate();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.getRemoteLoginSettings(poolId, nodeId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
+        return getRemoteLoginSettingsDelegate(call.execute());
+    }
+
+    /**
+     * Gets the settings required for remote login to a compute node.
+     *
+     * @param poolId The id of the pool that contains the compute node.
+     * @param nodeId The id of the compute node for which to obtain the remote login settings.
+     * @param computeNodeGetRemoteLoginSettingsOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getRemoteLoginSettingsAsync(String poolId, String nodeId, ComputeNodeGetRemoteLoginSettingsOptions computeNodeGetRemoteLoginSettingsOptions, final ServiceCallback<ComputeNodeGetRemoteLoginSettingsResult> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (poolId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
+            return null;
+        }
+        if (nodeId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(computeNodeGetRemoteLoginSettingsOptions, serviceCallback);
+        Integer timeout = null;
+        if (computeNodeGetRemoteLoginSettingsOptions != null) {
+            timeout = computeNodeGetRemoteLoginSettingsOptions.getTimeout();
+        }
+        String clientRequestId = null;
+        if (computeNodeGetRemoteLoginSettingsOptions != null) {
+            clientRequestId = computeNodeGetRemoteLoginSettingsOptions.getClientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (computeNodeGetRemoteLoginSettingsOptions != null) {
+            returnClientRequestId = computeNodeGetRemoteLoginSettingsOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (computeNodeGetRemoteLoginSettingsOptions != null) {
+            ocpDate = computeNodeGetRemoteLoginSettingsOptions.getOcpDate();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.getRemoteLoginSettings(poolId, nodeId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<ComputeNodeGetRemoteLoginSettingsResult>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getRemoteLoginSettingsDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders> getRemoteLoginSettingsDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<ComputeNodeGetRemoteLoginSettingsResult, BatchErrorException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<ComputeNodeGetRemoteLoginSettingsResult>() { }.getType())
+                .registerError(BatchErrorException.class)
+                .buildWithHeaders(response, ComputeNodeGetRemoteLoginSettingsHeaders.class);
     }
 
     /**

@@ -53,27 +53,6 @@ public final class DataLakeStoreFileSystemManagementClientImpl extends AzureServ
         return this.credentials;
     }
 
-    /** Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. */
-    private String subscriptionId;
-
-    /**
-     * Gets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
-     *
-     * @return the subscriptionId value.
-     */
-    public String getSubscriptionId() {
-        return this.subscriptionId;
-    }
-
-    /**
-     * Sets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
-     *
-     * @param subscriptionId the subscriptionId value.
-     */
-    public void setSubscriptionId(String subscriptionId) {
-        this.subscriptionId = subscriptionId;
-    }
-
     /** Client Api Version. */
     private String apiVersion;
 

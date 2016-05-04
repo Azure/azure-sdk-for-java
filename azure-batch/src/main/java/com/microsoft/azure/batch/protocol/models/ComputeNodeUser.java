@@ -34,8 +34,13 @@ public class ComputeNodeUser {
     /**
      * Gets or sets the password of the account.
      */
-    @JsonProperty(required = true)
     private String password;
+
+    /**
+     * Gets or sets the SSH public key that can be used for remote login to
+     * the compute node.
+     */
+    private String sshPublicKey;
 
     /**
      * Get the name value.
@@ -107,6 +112,24 @@ public class ComputeNodeUser {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    /**
+     * Get the sshPublicKey value.
+     *
+     * @return the sshPublicKey value
+     */
+    public String getSshPublicKey() {
+        return this.sshPublicKey;
+    }
+
+    /**
+     * Set the sshPublicKey value.
+     *
+     * @param sshPublicKey the sshPublicKey value to set
+     */
+    public void setSshPublicKey(String sshPublicKey) {
+        this.sshPublicKey = sshPublicKey;
     }
 
 }

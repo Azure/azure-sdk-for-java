@@ -13,19 +13,21 @@ import com.microsoft.azure.management.datalake.analytics.models.USqlTableValuedF
 import com.microsoft.azure.management.datalake.analytics.models.USqlType;
 import com.microsoft.azure.management.datalake.analytics.models.USqlView;
 import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccount;
-import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
+import com.microsoft.azure.management.resources.models.ResourceGroup;
+
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsManagementTestBase {
     private static String rgName = generateName("javaadlarg");
-    private static String location = "eastus2";
+    private static String location;
     private static String adlsAcct = generateName("javaadlsacct");
     private static String adlaAcct = generateName("javaadlaacct");
 
@@ -38,109 +40,111 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
     private static String credentialName = generateName("testcred1");
     private static String secretName = generateName("testsecret1");
     private static String secretPwd = generateName("testsecretpwd1");
-
-    private static String catalogCreationScript = String.format("\n" +
-            "DROP DATABASE IF EXISTS %s; CREATE DATABASE %s; \n" +
-            "//Create Table\n" +
-            "CREATE TABLE %s.dbo.%s\n" +
-            "(\n" +
-            "        //Define schema of table\n" +
-            "        UserId          int, \n" +
-            "        Start           DateTime, \n" +
-            "        Region          string, \n" +
-            "        Query           string, \n" +
-            "        Duration        int, \n" +
-            "        Urls            string, \n" +
-            "        ClickedUrls     string,\n" +
-            "    INDEX idx1 //Name of index\n" +
-            "    CLUSTERED (Region ASC) //Column to cluster by\n" +
-            "    PARTITIONED BY HASH (Region) //Column to partition by\n" +
-            ");\n" +
-            "DROP FUNCTION IF EXISTS %s.dbo.%s;\n" +
-            "\n" +
-            "//create table weblogs on space-delimited website log data\n" +
-            "CREATE FUNCTION %s.dbo.%s()\n" +
-            "RETURNS @result TABLE\n" +
-            "(\n" +
-            "    s_date DateTime,\n" +
-            "    s_time string,\n" +
-            "    s_sitename string,\n" +
-            "    cs_method string, \n" +
-            "    cs_uristem string,\n" +
-            "    cs_uriquery string,\n" +
-            "    s_port int,\n" +
-            "    cs_username string, \n" +
-            "    c_ip string,\n" +
-            "    cs_useragent string,\n" +
-            "    cs_cookie string,\n" +
-            "    cs_referer string, \n" +
-            "    cs_host string,\n" +
-            "    sc_status int,\n" +
-            "    sc_substatus int,\n" +
-            "    sc_win32status int, \n" +
-            "    sc_bytes int,\n" +
-            "    cs_bytes int,\n" +
-            "    s_timetaken int\n" +
-            ")\n" +
-            "AS\n" +
-            "BEGIN\n" +
-            "\n" +
-            "    @result = EXTRACT\n" +
-            "        s_date DateTime,\n" +
-            "        s_time string,\n" +
-            "        s_sitename string,\n" +
-            "        cs_method string,\n" +
-            "        cs_uristem string,\n" +
-            "        cs_uriquery string,\n" +
-            "        s_port int,\n" +
-            "        cs_username string,\n" +
-            "        c_ip string,\n" +
-            "        cs_useragent string,\n" +
-            "        cs_cookie string,\n" +
-            "        cs_referer string,\n" +
-            "        cs_host string,\n" +
-            "        sc_status int,\n" +
-            "        sc_substatus int,\n" +
-            "        sc_win32status int,\n" +
-            "        sc_bytes int,\n" +
-            "        cs_bytes int,\n" +
-            "        s_timetaken int\n" +
-            "    FROM @\"\"/Samples/Data/WebLog.log\"\"\n" +
-            "    USING Extractors.Text(delimiter:' ');\n" +
-            "\n" +
-            "RETURN;\n" +
-            "END;\n" +
-            "CREATE VIEW %s.dbo.%s \n" +
-            "AS \n" +
-            "    SELECT * FROM \n" +
-            "    (\n" +
-            "        VALUES(1,2),(2,4)\n" +
-            "    ) \n" +
-            "AS \n" +
-            "T(a, b);\n" +
-            "CREATE PROCEDURE %s.dbo.%s()\n" +
-            "AS BEGIN\n" +
-            "  CREATE VIEW %s.dbo.%s \n" +
-            "  AS \n" +
-            "    SELECT * FROM \n" +
-            "    (\n" +
-            "        VALUES(1,2),(2,4)\n" +
-            "    ) \n" +
-            "  AS \n" +
-            "  T(a, b);\n" +
+    private static String catalogCreationScript = MessageFormat.format("DROP DATABASE IF EXISTS {0}; CREATE DATABASE {0}; \r\n" +
+            "//Create Table\r\n" +
+            "CREATE TABLE {0}.dbo.{1}\r\n" +
+            "(\r\n" +
+            "        //Define schema of table\r\n" +
+            "        UserId          int, \r\n" +
+            "        Start           DateTime, \r\n" +
+            "        Region          string, \r\n" +
+            "        Query           string, \r\n" +
+            "        Duration        int, \r\n" +
+            "        Urls            string, \r\n" +
+            "        ClickedUrls     string,\r\n" +
+            "    INDEX idx1 //Name of index\r\n" +
+            "    CLUSTERED (Region ASC) //Column to cluster by\r\n" +
+            "    PARTITIONED BY BUCKETS (UserId) HASH (Region) //Column to partition by\r\n" +
+            ");\r\n" +
+            "\r\n" +
+            "ALTER TABLE {0}.dbo.{1} ADD IF NOT EXISTS PARTITION (1);\r\n" +
+            "\r\n" +
+            "DROP FUNCTION IF EXISTS {0}.dbo.{2};\r\n" +
+            "\r\n" +
+            "//create table weblogs on space-delimited website log data\r\n" +
+            "CREATE FUNCTION {0}.dbo.{2}()\r\n" +
+            "RETURNS @result TABLE\r\n" +
+            "(\r\n" +
+            "    s_date DateTime,\r\n" +
+            "    s_time string,\r\n" +
+            "    s_sitename string,\r\n" +
+            "    cs_method string, \r\n" +
+            "    cs_uristem string,\r\n" +
+            "    cs_uriquery string,\r\n" +
+            "    s_port int,\r\n" +
+            "    cs_username string, \r\n" +
+            "    c_ip string,\r\n" +
+            "    cs_useragent string,\r\n" +
+            "    cs_cookie string,\r\n" +
+            "    cs_referer string, \r\n" +
+            "    cs_host string,\r\n" +
+            "    sc_status int,\r\n" +
+            "    sc_substatus int,\r\n" +
+            "    sc_win32status int, \r\n" +
+            "    sc_bytes int,\r\n" +
+            "    cs_bytes int,\r\n" +
+            "    s_timetaken int\r\n" +
+            ")\r\n" +
+            "AS\r\n" +
+            "BEGIN\r\n" +
+            "\r\n" +
+            "    @result = EXTRACT\r\n" +
+            "        s_date DateTime,\r\n" +
+            "        s_time string,\r\n" +
+            "        s_sitename string,\r\n" +
+            "        cs_method string,\r\n" +
+            "        cs_uristem string,\r\n" +
+            "        cs_uriquery string,\r\n" +
+            "        s_port int,\r\n" +
+            "        cs_username string,\r\n" +
+            "        c_ip string,\r\n" +
+            "        cs_useragent string,\r\n" +
+            "        cs_cookie string,\r\n" +
+            "        cs_referer string,\r\n" +
+            "        cs_host string,\r\n" +
+            "        sc_status int,\r\n" +
+            "        sc_substatus int,\r\n" +
+            "        sc_win32status int,\r\n" +
+            "        sc_bytes int,\r\n" +
+            "        cs_bytes int,\r\n" +
+            "        s_timetaken int\r\n" +
+            "    FROM @\"/Samples/Data/WebLog.log\"\r\n" +
+            "    USING Extractors.Text(delimiter:''' ''');\r\n" +
+            "\r\n" +
+            "RETURN;\r\n" +
+            "END;\r\n" +
+            "CREATE VIEW {0}.dbo.{3} \r\n" +
+            "AS \r\n" +
+            "    SELECT * FROM \r\n" +
+            "    (\r\n" +
+            "        VALUES(1,2),(2,4)\r\n" +
+            "    ) \r\n" +
+            "AS \r\n" +
+            "T(a, b);\r\n" +
+            "CREATE PROCEDURE {0}.dbo.{4}()\r\n" +
+            "AS BEGIN\r\n" +
+            "  CREATE VIEW {0}.dbo.{3} \r\n" +
+            "  AS \r\n" +
+            "    SELECT * FROM \r\n" +
+            "    (\r\n" +
+            "        VALUES(1,2),(2,4)\r\n" +
+            "    ) \r\n" +
+            "  AS \r\n" +
+            "  T(a, b);\r\n" +
             "END;", dbName, tableName, tvfName, viewName, procName);
 
     @BeforeClass
     public static void setup() throws Exception {
         createClients();
-        ResourceGroupInner group = new ResourceGroupInner();
+        location = environmentLocation;
+        ResourceGroup group = new ResourceGroup();
         group.setLocation(location);
-        resourceManagementClient.resourceGroups().createOrUpdate(rgName, group);
+        resourceManagementClient.getResourceGroupsOperations().createOrUpdate(rgName, group);
         // create storage and ADLS accounts, setting the accessKey
         DataLakeStoreAccount adlsAccount = new DataLakeStoreAccount();
         adlsAccount.setLocation(location);
         adlsAccount.setName(adlsAcct);
-        dataLakeStoreAccountManagementClient.accounts().create(rgName, adlsAcct, adlsAccount);
+        dataLakeStoreAccountManagementClient.getAccountOperations().create(rgName, adlsAcct, adlsAccount);
 
         // Create the ADLA acct to use.
         DataLakeAnalyticsAccountProperties createProperties = new DataLakeAnalyticsAccountProperties();
@@ -156,7 +160,7 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         createParams.setLocation(location);
         createParams.setName(adlaAcct);
         createParams.setProperties(createProperties);
-        dataLakeAnalyticsAccountManagementClient.accounts().create(rgName, adlaAcct, createParams);
+        dataLakeAnalyticsAccountManagementClient.getAccountOperations().create(rgName, adlaAcct, createParams);
         // Sleep for two minutes to ensure the account is totally provisioned.
         Thread.sleep(120000);
 
@@ -168,8 +172,8 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
     public static void cleanup() throws Exception {
         // delete the ADLA account first
         try {
-            dataLakeAnalyticsAccountManagementClient.accounts().delete(rgName, adlaAcct);
-            resourceManagementClient.resourceGroups().delete(rgName);
+            dataLakeAnalyticsAccountManagementClient.getAccountOperations().delete(rgName, adlaAcct);
+            resourceManagementClient.getResourceGroupsOperations().delete(rgName);
         }
         catch (Exception e) {
             // ignore failures during cleanup, as it is best effort
@@ -177,7 +181,7 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
     }
     @Test
     public void canGetCatalogItems() throws Exception {
-        List<USqlDatabase> dbListResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().listDatabases(adlaAcct).getBody();
+        List<USqlDatabase> dbListResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().listDatabases(adlaAcct).getBody();
         Assert.assertTrue(dbListResponse.size() >= 1);
 
         // look for the DB we created
@@ -191,12 +195,12 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         Assert.assertTrue(foundCatalogElement);
 
         // Get the specific Database as well
-        USqlDatabase dbGetResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().getDatabase(dbName, adlaAcct).getBody();
+        USqlDatabase dbGetResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().getDatabase(adlaAcct, dbName).getBody();
 
         Assert.assertEquals(dbName, dbGetResponse.getName());
 
         // Get the table list
-        List<USqlTable> tableListResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().listTables(dbName, "dbo", adlaAcct).getBody();
+        List<USqlTable> tableListResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().listTables(adlaAcct, dbName, "dbo").getBody();
 
         Assert.assertTrue(tableListResponse.size() >= 1);
 
@@ -211,13 +215,13 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         Assert.assertTrue(foundCatalogElement);
 
         // Get the specific table as well
-        USqlTable tableGetResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().getTable(
-                dbName, "dbo", tableName, adlaAcct).getBody();
+        USqlTable tableGetResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().getTable(
+                adlaAcct, dbName, "dbo", tableName).getBody();
 
         Assert.assertEquals(tableName, tableGetResponse.getName());
 
         // Get the TVF list
-        List<USqlTableValuedFunction> tvfListResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().listTableValuedFunctions(dbName, "dbo", adlaAcct).getBody();
+        List<USqlTableValuedFunction> tvfListResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().listTableValuedFunctions(adlaAcct, dbName, "dbo").getBody();
 
         Assert.assertTrue(tvfListResponse.size() >= 1);
 
@@ -232,13 +236,13 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         Assert.assertTrue(foundCatalogElement);
 
         // Get the specific TVF as well
-        USqlTableValuedFunction tvfGetResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().getTableValuedFunction(
-                dbName, "dbo", tvfName, adlaAcct).getBody();
+        USqlTableValuedFunction tvfGetResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().getTableValuedFunction(
+                adlaAcct, dbName, "dbo", tvfName).getBody();
 
         Assert.assertEquals(tvfName, tvfGetResponse.getName());
 
         // Get the View list
-        List<USqlView> viewListResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().listViews(dbName, "dbo", adlaAcct).getBody();
+        List<USqlView> viewListResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().listViews(adlaAcct, dbName, "dbo").getBody();
 
         Assert.assertTrue(viewListResponse.size() >= 1);
 
@@ -253,14 +257,14 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         Assert.assertTrue(foundCatalogElement);
 
         // Get the specific view as well
-        USqlView viewGetResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().getView(
-                dbName, "dbo", viewName, adlaAcct).getBody();
+        USqlView viewGetResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().getView(
+                adlaAcct, dbName, "dbo", viewName).getBody();
 
         Assert.assertEquals(viewName, viewGetResponse.getName());
 
         // Get the Procedure list
-        List<USqlProcedure> procListResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().listProcedures(
-                dbName, "dbo", adlaAcct).getBody();
+        List<USqlProcedure> procListResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().listProcedures(
+                adlaAcct, dbName, "dbo").getBody();
 
         Assert.assertTrue(procListResponse.size() >= 1);
 
@@ -275,14 +279,14 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         Assert.assertTrue(foundCatalogElement);
 
         // Get the specific procedure as well
-        USqlProcedure procGetResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().getProcedure(
-                dbName, "dbo", procName, adlaAcct).getBody();
+        USqlProcedure procGetResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().getProcedure(
+                adlaAcct, dbName, "dbo", procName).getBody();
 
         Assert.assertEquals(procName, procGetResponse.getName());
 
         // Get all the types
-        List<USqlType> typeGetResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().listTypes(
-                dbName, "dbo", adlaAcct).getBody();
+        List<USqlType> typeGetResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().listTypes(
+                adlaAcct, dbName, "dbo").getBody();
 
 
         Assert.assertNotNull(typeGetResponse);
@@ -291,8 +295,8 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         // Get all the types that are not complex
         USqlType filterOn = new USqlType();
         filterOn.setIsComplexType(false);
-        typeGetResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().listTypes(
-                dbName, "dbo", adlaAcct, filterOn, null, null, null, null, null, null).getBody();
+        typeGetResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().listTypes(
+                adlaAcct, dbName, "dbo", filterOn, null, null, null, null, null, null).getBody();
 
 
         Assert.assertNotNull(typeGetResponse);
@@ -313,23 +317,15 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters createParams = new DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters();
         createParams.setPassword(secretPwd);
         createParams.setUri("https://adlasecrettest.contoso.com:443");
-        USqlSecret secretCreateResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().createSecret(
-                dbName, secretName,
-                adlaAcct,
+        USqlSecret secretCreateResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().createSecret(
+                adlaAcct, dbName, secretName,
                 createParams).getBody();
-        try {
-
-        }
-        catch(Exception e) {
-
-        }
-        /*
-         * TODO: Enable once confirmed that we throw 409s when a secret already exists
+        
         // Attempt to create the secret again, which should throw
         try {
-            USqlSecret secondTry = dataLakeAnalyticsCatalogManagementClient.catalogs().createSecret(
-                dbName, secretName,
+            USqlSecret secondTry = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().createSecret(
                 adlaAcct,
+                dbName, secretName,
                 createParams).getBody();
             // should never make it here
             Assert.assertTrue(false);
@@ -337,11 +333,10 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         catch(Exception e) {
             // expected.
         }
-        */
 
         // Get the secret and ensure the response contains a date.
-        USqlSecret secretGetResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().getSecret(
-                dbName, secretName, adlaAcct).getBody();
+        USqlSecret secretGetResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().getSecret(
+                adlaAcct, dbName, secretName).getBody();
 
         Assert.assertNotNull(secretGetResponse);
         Assert.assertNotNull(secretGetResponse.getCreationTime());
@@ -354,8 +349,8 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         runJobToCompletion(dataLakeAnalyticsJobManagementClient, adlaAcct, UUID.randomUUID(), credentialCreationScript);
 
         // Get the Credential list
-        List<USqlCredential> credListResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().listCredentials(
-                dbName, adlaAcct).getBody();
+        List<USqlCredential> credListResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().listCredentials(
+                adlaAcct, dbName).getBody();
         Assert.assertTrue(credListResponse.size() >= 1);
 
         // look for the credential we created
@@ -369,8 +364,8 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         Assert.assertTrue(foundCatalogElement);
 
         // Get the specific credential as well
-        USqlCredential credGetResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().getCredential(
-                dbName, credentialName, adlaAcct).getBody();
+        USqlCredential credGetResponse = dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().getCredential(
+                adlaAcct, dbName, credentialName).getBody();
         Assert.assertEquals(credentialName, credGetResponse.getName());
 
         // Drop the credential (to enable secret deletion)
@@ -381,13 +376,13 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
                 credentialDropScript);
 
         // Delete the secret
-        dataLakeAnalyticsCatalogManagementClient.catalogs().deleteSecret(
-                dbName, secretName, adlaAcct);
+        dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().deleteSecret(
+                adlaAcct, dbName, secretName);
 
         // Try to get the secret which should throw
         try {
-            dataLakeAnalyticsCatalogManagementClient.catalogs().getSecret(
-                    dbName, secretName, adlaAcct);
+            dataLakeAnalyticsCatalogManagementClient.getCatalogOperations().getSecret(
+                    adlaAcct, dbName, secretName);
 
             // should never make it here
             Assert.assertTrue("Was able to retrieve a deleted secret", false);

@@ -36,6 +36,12 @@ public class FileProperties {
     private String contentType;
 
     /**
+     * Gets or sets the file mode attribute in octal format. This property
+     * will be returned only from a Linux compute node.
+     */
+    private String fileMode;
+
+    /**
      * Get the creationTime value.
      *
      * @return the creationTime value
@@ -105,6 +111,24 @@ public class FileProperties {
      */
     public void setContentType(String contentType) {
         this.contentType = contentType;
+    }
+
+    /**
+     * Get the fileMode value.
+     *
+     * @return the fileMode value
+     */
+    public String getFileMode() {
+        return this.fileMode;
+    }
+
+    /**
+     * Set the fileMode value.
+     *
+     * @param fileMode the fileMode value to set
+     */
+    public void setFileMode(String fileMode) {
+        this.fileMode = fileMode;
     }
 
 }

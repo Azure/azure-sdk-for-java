@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.datalake.analytics.models;
 
+import org.joda.time.Period;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -118,7 +119,7 @@ public class JobStatisticsVertexStage {
      * Gets the amount of time that failed vertices took up in this stage.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String totalFailedTime;
+    private Period totalFailedTime;
 
     /**
      * Gets the current progress of this stage, as a percentage.
@@ -130,7 +131,7 @@ public class JobStatisticsVertexStage {
      * Gets the amount of time all successful vertices took in this stage.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String totalSucceededTime;
+    private Period totalSucceededTime;
 
     /**
      * Get the dataRead value.
@@ -290,7 +291,7 @@ public class JobStatisticsVertexStage {
      *
      * @return the totalFailedTime value
      */
-    public String getTotalFailedTime() {
+    public Period getTotalFailedTime() {
         return this.totalFailedTime;
     }
 
@@ -308,7 +309,7 @@ public class JobStatisticsVertexStage {
      *
      * @return the totalSucceededTime value
      */
-    public String getTotalSucceededTime() {
+    public Period getTotalSucceededTime() {
         return this.totalSucceededTime;
     }
 

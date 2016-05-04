@@ -10,6 +10,9 @@ import com.microsoft.azure.batch.protocol.models.BatchErrorException;
 import com.microsoft.azure.batch.protocol.models.CloudTask;
 import com.microsoft.azure.batch.protocol.models.CloudTaskListSubtasksResult;
 import com.microsoft.azure.batch.protocol.models.PageImpl;
+import com.microsoft.azure.batch.protocol.models.TaskAddCollectionHeaders;
+import com.microsoft.azure.batch.protocol.models.TaskAddCollectionOptions;
+import com.microsoft.azure.batch.protocol.models.TaskAddCollectionResult;
 import com.microsoft.azure.batch.protocol.models.TaskAddHeaders;
 import com.microsoft.azure.batch.protocol.models.TaskAddOptions;
 import com.microsoft.azure.batch.protocol.models.TaskAddParameter;
@@ -33,6 +36,7 @@ import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -128,6 +132,53 @@ public interface Tasks {
      * @return the {@link ServiceCall} object
      */
     ServiceCall listAsync(final String jobId, final TaskListOptions taskListOptions, final ListOperationCallback<CloudTask> serviceCallback) throws IllegalArgumentException;
+
+    /**
+     * Adds a collection of tasks to the specified job.
+     *
+     * @param jobId The id of the job to which the task collection is to be added.
+     * @param value The collection of tasks to add.
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the TaskAddCollectionResult object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    ServiceResponseWithHeaders<TaskAddCollectionResult, TaskAddCollectionHeaders> addCollection(String jobId, List<TaskAddParameter> value) throws BatchErrorException, IOException, IllegalArgumentException;
+
+    /**
+     * Adds a collection of tasks to the specified job.
+     *
+     * @param jobId The id of the job to which the task collection is to be added.
+     * @param value The collection of tasks to add.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall addCollectionAsync(String jobId, List<TaskAddParameter> value, final ServiceCallback<TaskAddCollectionResult> serviceCallback) throws IllegalArgumentException;
+    /**
+     * Adds a collection of tasks to the specified job.
+     *
+     * @param jobId The id of the job to which the task collection is to be added.
+     * @param value The collection of tasks to add.
+     * @param taskAddCollectionOptions Additional parameters for the operation
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the TaskAddCollectionResult object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    ServiceResponseWithHeaders<TaskAddCollectionResult, TaskAddCollectionHeaders> addCollection(String jobId, List<TaskAddParameter> value, TaskAddCollectionOptions taskAddCollectionOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+
+    /**
+     * Adds a collection of tasks to the specified job.
+     *
+     * @param jobId The id of the job to which the task collection is to be added.
+     * @param value The collection of tasks to add.
+     * @param taskAddCollectionOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall addCollectionAsync(String jobId, List<TaskAddParameter> value, TaskAddCollectionOptions taskAddCollectionOptions, final ServiceCallback<TaskAddCollectionResult> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Deletes a task from the specified job.

@@ -60,20 +60,6 @@ public interface DataLakeAnalyticsJobManagementClient {
     ServiceClientCredentials getCredentials();
 
     /**
-     * Gets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call..
-     *
-     * @return the subscriptionId value.
-     */
-    String getSubscriptionId();
-
-    /**
-     * Sets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call..
-     *
-     * @param subscriptionId the subscriptionId value.
-     */
-    void setSubscriptionId(String subscriptionId);
-
-    /**
      * Gets Client Api Version..
      *
      * @return the apiVersion value.

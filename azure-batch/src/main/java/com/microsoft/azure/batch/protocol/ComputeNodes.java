@@ -20,6 +20,9 @@ import com.microsoft.azure.batch.protocol.models.ComputeNodeGetHeaders;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeGetOptions;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeGetRemoteDesktopHeaders;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeGetRemoteDesktopOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeGetRemoteLoginSettingsHeaders;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeGetRemoteLoginSettingsOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeGetRemoteLoginSettingsResult;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeListHeaders;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeListNextOptions;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeListOptions;
@@ -445,6 +448,53 @@ public interface ComputeNodes {
      * @return the {@link ServiceCall} object
      */
     ServiceCall enableSchedulingAsync(String poolId, String nodeId, ComputeNodeEnableSchedulingOptions computeNodeEnableSchedulingOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+
+    /**
+     * Gets the settings required for remote login to a compute node.
+     *
+     * @param poolId The id of the pool that contains the compute node.
+     * @param nodeId The id of the compute node for which to obtain the remote login settings.
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ComputeNodeGetRemoteLoginSettingsResult object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders> getRemoteLoginSettings(String poolId, String nodeId) throws BatchErrorException, IOException, IllegalArgumentException;
+
+    /**
+     * Gets the settings required for remote login to a compute node.
+     *
+     * @param poolId The id of the pool that contains the compute node.
+     * @param nodeId The id of the compute node for which to obtain the remote login settings.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall getRemoteLoginSettingsAsync(String poolId, String nodeId, final ServiceCallback<ComputeNodeGetRemoteLoginSettingsResult> serviceCallback) throws IllegalArgumentException;
+    /**
+     * Gets the settings required for remote login to a compute node.
+     *
+     * @param poolId The id of the pool that contains the compute node.
+     * @param nodeId The id of the compute node for which to obtain the remote login settings.
+     * @param computeNodeGetRemoteLoginSettingsOptions Additional parameters for the operation
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ComputeNodeGetRemoteLoginSettingsResult object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders> getRemoteLoginSettings(String poolId, String nodeId, ComputeNodeGetRemoteLoginSettingsOptions computeNodeGetRemoteLoginSettingsOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+
+    /**
+     * Gets the settings required for remote login to a compute node.
+     *
+     * @param poolId The id of the pool that contains the compute node.
+     * @param nodeId The id of the compute node for which to obtain the remote login settings.
+     * @param computeNodeGetRemoteLoginSettingsOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall getRemoteLoginSettingsAsync(String poolId, String nodeId, ComputeNodeGetRemoteLoginSettingsOptions computeNodeGetRemoteLoginSettingsOptions, final ServiceCallback<ComputeNodeGetRemoteLoginSettingsResult> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets the Remote Desktop Protocol file for the specified compute node.

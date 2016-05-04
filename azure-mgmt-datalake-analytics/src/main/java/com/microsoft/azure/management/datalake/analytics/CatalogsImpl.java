@@ -77,174 +77,174 @@ public final class CatalogsImpl implements Catalogs {
     interface CatalogsService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("catalog/usql/databases/{databaseName}/secrets/{secretName}")
-        Call<ResponseBody> createSecret(@Path("databaseName") String databaseName, @Path("secretName") String secretName, @Body DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> createSecret(@Path("databaseName") String databaseName, @Path("secretName") String secretName, @Body DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("catalog/usql/databases/{databaseName}/secrets/{secretName}")
-        Call<ResponseBody> updateSecret(@Path("databaseName") String databaseName, @Path("secretName") String secretName, @Body DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> updateSecret(@Path("databaseName") String databaseName, @Path("secretName") String secretName, @Body DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/secrets/{secretName}")
-        Call<ResponseBody> getSecret(@Path("databaseName") String databaseName, @Path("secretName") String secretName, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSecret(@Path("databaseName") String databaseName, @Path("secretName") String secretName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "catalog/usql/databases/{databaseName}/secrets/{secretName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteSecret(@Path("databaseName") String databaseName, @Path("secretName") String secretName, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> deleteSecret(@Path("databaseName") String databaseName, @Path("secretName") String secretName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/externaldatasources/{externalDataSourceName}")
-        Call<ResponseBody> getExternalDataSource(@Path("databaseName") String databaseName, @Path("externalDataSourceName") String externalDataSourceName, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getExternalDataSource(@Path("databaseName") String databaseName, @Path("externalDataSourceName") String externalDataSourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/externaldatasources")
-        Call<ResponseBody> listExternalDataSources(@Path("databaseName") String databaseName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listExternalDataSources(@Path("databaseName") String databaseName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/credentials/{credentialName}")
-        Call<ResponseBody> getCredential(@Path("databaseName") String databaseName, @Path("credentialName") String credentialName, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getCredential(@Path("databaseName") String databaseName, @Path("credentialName") String credentialName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/credentials")
-        Call<ResponseBody> listCredentials(@Path("databaseName") String databaseName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listCredentials(@Path("databaseName") String databaseName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/procedures/{procedureName}")
-        Call<ResponseBody> getProcedure(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("procedureName") String procedureName, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getProcedure(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("procedureName") String procedureName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/procedures")
-        Call<ResponseBody> listProcedures(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listProcedures(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}")
-        Call<ResponseBody> getTable(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("tableName") String tableName, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getTable(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("tableName") String tableName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables")
-        Call<ResponseBody> listTables(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listTables(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/views/{viewName}")
-        Call<ResponseBody> getView(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("viewName") String viewName, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getView(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("viewName") String viewName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/views")
-        Call<ResponseBody> listViews(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listViews(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/statistics/{statisticsName}")
-        Call<ResponseBody> getTableStatistic(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("tableName") String tableName, @Path("statisticsName") String statisticsName, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getTableStatistic(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("tableName") String tableName, @Path("statisticsName") String statisticsName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/statistics")
-        Call<ResponseBody> listTableStatistics(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("tableName") String tableName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listTableStatistics(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("tableName") String tableName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/types")
-        Call<ResponseBody> listTypes(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("$filter") USqlType filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listTypes(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("$filter") USqlType filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/tablevaluedfunctions/{tableValuedFunctionName}")
-        Call<ResponseBody> getTableValuedFunction(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("tableValuedFunctionName") String tableValuedFunctionName, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getTableValuedFunction(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("tableValuedFunctionName") String tableValuedFunctionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/tablevaluedfunctions")
-        Call<ResponseBody> listTableValuedFunctions(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listTableValuedFunctions(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/assemblies/{assemblyName}")
-        Call<ResponseBody> getAssembly(@Path("databaseName") String databaseName, @Path("assemblyName") String assemblyName, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getAssembly(@Path("databaseName") String databaseName, @Path("assemblyName") String assemblyName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/assemblies")
-        Call<ResponseBody> listAssemblies(@Path("databaseName") String databaseName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listAssemblies(@Path("databaseName") String databaseName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}")
-        Call<ResponseBody> getSchema(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSchema(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/schemas")
-        Call<ResponseBody> listSchemas(@Path("databaseName") String databaseName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listSchemas(@Path("databaseName") String databaseName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}")
-        Call<ResponseBody> getDatabase(@Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getDatabase(@Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases")
-        Call<ResponseBody> listDatabases(@Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listDatabases(@Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listExternalDataSourcesNext(@Url String nextPageLink, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listExternalDataSourcesNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listCredentialsNext(@Url String nextPageLink, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listCredentialsNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listProceduresNext(@Url String nextPageLink, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listProceduresNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listTablesNext(@Url String nextPageLink, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listTablesNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listViewsNext(@Url String nextPageLink, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listViewsNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listTableStatisticsNext(@Url String nextPageLink, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listTableStatisticsNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listTypesNext(@Url String nextPageLink, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listTypesNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listTableValuedFunctionsNext(@Url String nextPageLink, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listTableValuedFunctionsNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listAssembliesNext(@Url String nextPageLink, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listAssembliesNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listSchemasNext(@Url String nextPageLink, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listSchemasNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listDatabasesNext(@Url String nextPageLink, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listDatabasesNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 
     }
 
     /**
      * Creates the specified secret for use with external data sources in the specified database.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database in which to create the secret.
      * @param secretName The name of the secret.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param parameters The parameters required to create the secret (name and password)
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the USqlSecret object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<USqlSecret> createSecret(String databaseName, String secretName, String accountName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (secretName == null) {
-            throw new IllegalArgumentException("Parameter secretName is required and cannot be null.");
-        }
+    public ServiceResponse<USqlSecret> createSecret(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (secretName == null) {
+            throw new IllegalArgumentException("Parameter secretName is required and cannot be null.");
         }
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
@@ -252,38 +252,27 @@ public final class CatalogsImpl implements Catalogs {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         Validator.validate(parameters);
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.createSecret(databaseName, secretName, parameters, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.createSecret(databaseName, secretName, parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return createSecretDelegate(call.execute());
     }
 
     /**
      * Creates the specified secret for use with external data sources in the specified database.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database in which to create the secret.
      * @param secretName The name of the secret.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param parameters The parameters required to create the secret (name and password)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall createSecretAsync(String databaseName, String secretName, String accountName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<USqlSecret> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall createSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<USqlSecret> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (secretName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter secretName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -291,6 +280,14 @@ public final class CatalogsImpl implements Catalogs {
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (secretName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter secretName is required and cannot be null."));
             return null;
         }
         if (parameters == null) {
@@ -301,14 +298,10 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         Validator.validate(parameters, serviceCallback);
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.createSecret(databaseName, secretName, parameters, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.createSecret(databaseName, secretName, parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlSecret>(serviceCallback) {
             @Override
@@ -333,27 +326,27 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Modifies the specified secret for use with external data sources in the specified database.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the secret.
      * @param secretName The name of the secret.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param parameters The parameters required to modify the secret (name and password)
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the USqlSecret object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<USqlSecret> updateSecret(String databaseName, String secretName, String accountName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (secretName == null) {
-            throw new IllegalArgumentException("Parameter secretName is required and cannot be null.");
-        }
+    public ServiceResponse<USqlSecret> updateSecret(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (secretName == null) {
+            throw new IllegalArgumentException("Parameter secretName is required and cannot be null.");
         }
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
@@ -361,38 +354,27 @@ public final class CatalogsImpl implements Catalogs {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         Validator.validate(parameters);
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.updateSecret(databaseName, secretName, parameters, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.updateSecret(databaseName, secretName, parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return updateSecretDelegate(call.execute());
     }
 
     /**
      * Modifies the specified secret for use with external data sources in the specified database.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the secret.
      * @param secretName The name of the secret.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param parameters The parameters required to modify the secret (name and password)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updateSecretAsync(String databaseName, String secretName, String accountName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<USqlSecret> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall updateSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<USqlSecret> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (secretName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter secretName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -400,6 +382,14 @@ public final class CatalogsImpl implements Catalogs {
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (secretName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter secretName is required and cannot be null."));
             return null;
         }
         if (parameters == null) {
@@ -410,14 +400,10 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         Validator.validate(parameters, serviceCallback);
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.updateSecret(databaseName, secretName, parameters, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.updateSecret(databaseName, secretName, parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlSecret>(serviceCallback) {
             @Override
@@ -442,60 +428,49 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Gets the specified secret in the specified database.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the secret.
      * @param secretName The name of the secret to get
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the USqlSecret object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<USqlSecret> getSecret(String databaseName, String secretName, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (secretName == null) {
-            throw new IllegalArgumentException("Parameter secretName is required and cannot be null.");
-        }
+    public ServiceResponse<USqlSecret> getSecret(String accountName, String databaseName, String secretName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (secretName == null) {
+            throw new IllegalArgumentException("Parameter secretName is required and cannot be null.");
+        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getSecret(databaseName, secretName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getSecret(databaseName, secretName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getSecretDelegate(call.execute());
     }
 
     /**
      * Gets the specified secret in the specified database.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the secret.
      * @param secretName The name of the secret to get
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSecretAsync(String databaseName, String secretName, String accountName, final ServiceCallback<USqlSecret> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getSecretAsync(String accountName, String databaseName, String secretName, final ServiceCallback<USqlSecret> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (secretName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter secretName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -505,17 +480,21 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (secretName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter secretName is required and cannot be null."));
+            return null;
+        }
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getSecret(databaseName, secretName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getSecret(databaseName, secretName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlSecret>(serviceCallback) {
             @Override
@@ -540,60 +519,49 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Deletes the specified secret in the specified database.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the secret.
      * @param secretName The name of the secret to delete
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> deleteSecret(String databaseName, String secretName, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (secretName == null) {
-            throw new IllegalArgumentException("Parameter secretName is required and cannot be null.");
-        }
+    public ServiceResponse<Void> deleteSecret(String accountName, String databaseName, String secretName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (secretName == null) {
+            throw new IllegalArgumentException("Parameter secretName is required and cannot be null.");
+        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.deleteSecret(databaseName, secretName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.deleteSecret(databaseName, secretName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return deleteSecretDelegate(call.execute());
     }
 
     /**
      * Deletes the specified secret in the specified database.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the secret.
      * @param secretName The name of the secret to delete
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteSecretAsync(String databaseName, String secretName, String accountName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall deleteSecretAsync(String accountName, String databaseName, String secretName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (secretName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter secretName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -603,17 +571,21 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (secretName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter secretName is required and cannot be null."));
+            return null;
+        }
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.deleteSecret(databaseName, secretName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.deleteSecret(databaseName, secretName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -637,60 +609,49 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the specified external data source from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the external data source.
      * @param externalDataSourceName The name of the external data source.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the USqlExternalDataSource object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<USqlExternalDataSource> getExternalDataSource(String databaseName, String externalDataSourceName, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (externalDataSourceName == null) {
-            throw new IllegalArgumentException("Parameter externalDataSourceName is required and cannot be null.");
-        }
+    public ServiceResponse<USqlExternalDataSource> getExternalDataSource(String accountName, String databaseName, String externalDataSourceName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (externalDataSourceName == null) {
+            throw new IllegalArgumentException("Parameter externalDataSourceName is required and cannot be null.");
+        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getExternalDataSource(databaseName, externalDataSourceName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getExternalDataSource(databaseName, externalDataSourceName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getExternalDataSourceDelegate(call.execute());
     }
 
     /**
      * Retrieves the specified external data source from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the external data source.
      * @param externalDataSourceName The name of the external data source.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getExternalDataSourceAsync(String databaseName, String externalDataSourceName, String accountName, final ServiceCallback<USqlExternalDataSource> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getExternalDataSourceAsync(String accountName, String databaseName, String externalDataSourceName, final ServiceCallback<USqlExternalDataSource> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (externalDataSourceName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter externalDataSourceName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -700,17 +661,21 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (externalDataSourceName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter externalDataSourceName is required and cannot be null."));
+            return null;
+        }
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getExternalDataSource(databaseName, externalDataSourceName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getExternalDataSource(databaseName, externalDataSourceName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlExternalDataSource>(serviceCallback) {
             @Override
@@ -735,28 +700,25 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of external data sources from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the external data sources.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the external data sources.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlExternalDataSource&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlExternalDataSource>> listExternalDataSources(final String databaseName, final String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlExternalDataSource>> listExternalDataSources(final String accountName, final String databaseName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         final String filter = null;
         final Integer top = null;
@@ -767,7 +729,7 @@ public final class CatalogsImpl implements Catalogs {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listExternalDataSources(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listExternalDataSources(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlExternalDataSource>> response = listExternalDataSourcesDelegate(call.execute());
         PagedList<USqlExternalDataSource> result = new PagedList<USqlExternalDataSource>(response.getBody()) {
             @Override
@@ -781,19 +743,15 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of external data sources from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the external data sources.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the external data sources.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listExternalDataSourcesAsync(final String databaseName, final String accountName, final ListOperationCallback<USqlExternalDataSource> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listExternalDataSourcesAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlExternalDataSource> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -803,12 +761,12 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         final String filter = null;
@@ -820,7 +778,7 @@ public final class CatalogsImpl implements Catalogs {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listExternalDataSources(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listExternalDataSources(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlExternalDataSource>>(serviceCallback) {
             @Override
@@ -845,8 +803,8 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of external data sources from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the external data sources.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the external data sources.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -859,25 +817,22 @@ public final class CatalogsImpl implements Catalogs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlExternalDataSource&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlExternalDataSource>> listExternalDataSources(final String databaseName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlExternalDataSource>> listExternalDataSources(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listExternalDataSources(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listExternalDataSources(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlExternalDataSource>> response = listExternalDataSourcesDelegate(call.execute());
         PagedList<USqlExternalDataSource> result = new PagedList<USqlExternalDataSource>(response.getBody()) {
             @Override
@@ -891,8 +846,8 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of external data sources from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the external data sources.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the external data sources.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -904,13 +859,9 @@ public final class CatalogsImpl implements Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listExternalDataSourcesAsync(final String databaseName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlExternalDataSource> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listExternalDataSourcesAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlExternalDataSource> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -920,17 +871,17 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listExternalDataSources(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listExternalDataSources(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlExternalDataSource>>(serviceCallback) {
             @Override
@@ -962,60 +913,49 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the specified credential from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the schema.
      * @param credentialName The name of the credential.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the USqlCredential object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<USqlCredential> getCredential(String databaseName, String credentialName, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (credentialName == null) {
-            throw new IllegalArgumentException("Parameter credentialName is required and cannot be null.");
-        }
+    public ServiceResponse<USqlCredential> getCredential(String accountName, String databaseName, String credentialName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (credentialName == null) {
+            throw new IllegalArgumentException("Parameter credentialName is required and cannot be null.");
+        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getCredential(databaseName, credentialName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getCredential(databaseName, credentialName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getCredentialDelegate(call.execute());
     }
 
     /**
      * Retrieves the specified credential from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the schema.
      * @param credentialName The name of the credential.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getCredentialAsync(String databaseName, String credentialName, String accountName, final ServiceCallback<USqlCredential> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getCredentialAsync(String accountName, String databaseName, String credentialName, final ServiceCallback<USqlCredential> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (credentialName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter credentialName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1025,17 +965,21 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (credentialName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter credentialName is required and cannot be null."));
+            return null;
+        }
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getCredential(databaseName, credentialName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getCredential(databaseName, credentialName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlCredential>(serviceCallback) {
             @Override
@@ -1060,28 +1004,25 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of credentials from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the schema.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the schema.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlCredential&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlCredential>> listCredentials(final String databaseName, final String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlCredential>> listCredentials(final String accountName, final String databaseName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         final String filter = null;
         final Integer top = null;
@@ -1092,7 +1033,7 @@ public final class CatalogsImpl implements Catalogs {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listCredentials(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listCredentials(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlCredential>> response = listCredentialsDelegate(call.execute());
         PagedList<USqlCredential> result = new PagedList<USqlCredential>(response.getBody()) {
             @Override
@@ -1106,19 +1047,15 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of credentials from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the schema.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the schema.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listCredentialsAsync(final String databaseName, final String accountName, final ListOperationCallback<USqlCredential> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listCredentialsAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlCredential> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1128,12 +1065,12 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         final String filter = null;
@@ -1145,7 +1082,7 @@ public final class CatalogsImpl implements Catalogs {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listCredentials(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listCredentials(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlCredential>>(serviceCallback) {
             @Override
@@ -1170,8 +1107,8 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of credentials from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the schema.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the schema.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -1184,25 +1121,22 @@ public final class CatalogsImpl implements Catalogs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlCredential&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlCredential>> listCredentials(final String databaseName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlCredential>> listCredentials(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listCredentials(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listCredentials(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlCredential>> response = listCredentialsDelegate(call.execute());
         PagedList<USqlCredential> result = new PagedList<USqlCredential>(response.getBody()) {
             @Override
@@ -1216,8 +1150,8 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of credentials from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the schema.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the schema.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -1229,13 +1163,9 @@ public final class CatalogsImpl implements Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listCredentialsAsync(final String databaseName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlCredential> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listCredentialsAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlCredential> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1245,17 +1175,17 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listCredentials(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listCredentials(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlCredential>>(serviceCallback) {
             @Override
@@ -1287,16 +1217,22 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the specified procedure from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the procedure.
      * @param schemaName The name of the schema containing the procedure.
      * @param procedureName The name of the procedure.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the USqlProcedure object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<USqlProcedure> getProcedure(String databaseName, String schemaName, String procedureName, String accountName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<USqlProcedure> getProcedure(String accountName, String databaseName, String schemaName, String procedureName) throws CloudException, IOException, IllegalArgumentException {
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.getAdlaCatalogDnsSuffix() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
         if (databaseName == null) {
             throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
@@ -1306,38 +1242,37 @@ public final class CatalogsImpl implements Catalogs {
         if (procedureName == null) {
             throw new IllegalArgumentException("Parameter procedureName is required and cannot be null.");
         }
-        if (accountName == null) {
-            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
-        }
-        if (this.client.getAdlaCatalogDnsSuffix() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
-        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getProcedure(databaseName, schemaName, procedureName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getProcedure(databaseName, schemaName, procedureName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getProcedureDelegate(call.execute());
     }
 
     /**
      * Retrieves the specified procedure from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the procedure.
      * @param schemaName The name of the schema containing the procedure.
      * @param procedureName The name of the procedure.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getProcedureAsync(String databaseName, String schemaName, String procedureName, String accountName, final ServiceCallback<USqlProcedure> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getProcedureAsync(String accountName, String databaseName, String schemaName, String procedureName, final ServiceCallback<USqlProcedure> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (accountName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getAdlaCatalogDnsSuffix() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
         }
         if (databaseName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
@@ -1351,25 +1286,13 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter procedureName is required and cannot be null."));
             return null;
         }
-        if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getAdlaCatalogDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
-            return null;
-        }
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getProcedure(databaseName, schemaName, procedureName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getProcedure(databaseName, schemaName, procedureName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlProcedure>(serviceCallback) {
             @Override
@@ -1394,32 +1317,29 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of procedures from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the procedures.
      * @param schemaName The name of the schema containing the procedures.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlProcedure&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlProcedure>> listProcedures(final String databaseName, final String schemaName, final String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (schemaName == null) {
-            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlProcedure>> listProcedures(final String accountName, final String databaseName, final String schemaName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (schemaName == null) {
+            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
+        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         final String filter = null;
         final Integer top = null;
@@ -1430,7 +1350,7 @@ public final class CatalogsImpl implements Catalogs {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listProcedures(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listProcedures(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlProcedure>> response = listProceduresDelegate(call.execute());
         PagedList<USqlProcedure> result = new PagedList<USqlProcedure>(response.getBody()) {
             @Override
@@ -1444,24 +1364,16 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of procedures from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the procedures.
      * @param schemaName The name of the schema containing the procedures.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listProceduresAsync(final String databaseName, final String schemaName, final String accountName, final ListOperationCallback<USqlProcedure> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listProceduresAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlProcedure> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (schemaName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1471,12 +1383,16 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (schemaName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         final String filter = null;
@@ -1488,7 +1404,7 @@ public final class CatalogsImpl implements Catalogs {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listProcedures(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listProcedures(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlProcedure>>(serviceCallback) {
             @Override
@@ -1513,9 +1429,9 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of procedures from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the procedures.
      * @param schemaName The name of the schema containing the procedures.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -1528,28 +1444,25 @@ public final class CatalogsImpl implements Catalogs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlProcedure&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlProcedure>> listProcedures(final String databaseName, final String schemaName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (schemaName == null) {
-            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlProcedure>> listProcedures(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (schemaName == null) {
+            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
+        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listProcedures(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listProcedures(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlProcedure>> response = listProceduresDelegate(call.execute());
         PagedList<USqlProcedure> result = new PagedList<USqlProcedure>(response.getBody()) {
             @Override
@@ -1563,9 +1476,9 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of procedures from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the procedures.
      * @param schemaName The name of the schema containing the procedures.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -1577,17 +1490,9 @@ public final class CatalogsImpl implements Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listProceduresAsync(final String databaseName, final String schemaName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlProcedure> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listProceduresAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlProcedure> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (schemaName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1597,17 +1502,21 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (schemaName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
+            return null;
+        }
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listProcedures(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listProcedures(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlProcedure>>(serviceCallback) {
             @Override
@@ -1639,16 +1548,22 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the specified table from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the table.
      * @param schemaName The name of the schema containing the table.
      * @param tableName The name of the table.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the USqlTable object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<USqlTable> getTable(String databaseName, String schemaName, String tableName, String accountName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<USqlTable> getTable(String accountName, String databaseName, String schemaName, String tableName) throws CloudException, IOException, IllegalArgumentException {
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.getAdlaCatalogDnsSuffix() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
         if (databaseName == null) {
             throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
@@ -1658,38 +1573,37 @@ public final class CatalogsImpl implements Catalogs {
         if (tableName == null) {
             throw new IllegalArgumentException("Parameter tableName is required and cannot be null.");
         }
-        if (accountName == null) {
-            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
-        }
-        if (this.client.getAdlaCatalogDnsSuffix() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
-        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getTable(databaseName, schemaName, tableName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getTable(databaseName, schemaName, tableName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getTableDelegate(call.execute());
     }
 
     /**
      * Retrieves the specified table from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the table.
      * @param schemaName The name of the schema containing the table.
      * @param tableName The name of the table.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getTableAsync(String databaseName, String schemaName, String tableName, String accountName, final ServiceCallback<USqlTable> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getTableAsync(String accountName, String databaseName, String schemaName, String tableName, final ServiceCallback<USqlTable> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (accountName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getAdlaCatalogDnsSuffix() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
         }
         if (databaseName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
@@ -1703,25 +1617,13 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
             return null;
         }
-        if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getAdlaCatalogDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
-            return null;
-        }
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getTable(databaseName, schemaName, tableName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getTable(databaseName, schemaName, tableName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlTable>(serviceCallback) {
             @Override
@@ -1746,32 +1648,29 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the tables.
      * @param schemaName The name of the schema containing the tables.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlTable&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlTable>> listTables(final String databaseName, final String schemaName, final String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (schemaName == null) {
-            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlTable>> listTables(final String accountName, final String databaseName, final String schemaName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (schemaName == null) {
+            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
+        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         final String filter = null;
         final Integer top = null;
@@ -1782,7 +1681,7 @@ public final class CatalogsImpl implements Catalogs {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTables(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTables(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlTable>> response = listTablesDelegate(call.execute());
         PagedList<USqlTable> result = new PagedList<USqlTable>(response.getBody()) {
             @Override
@@ -1796,24 +1695,16 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the tables.
      * @param schemaName The name of the schema containing the tables.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listTablesAsync(final String databaseName, final String schemaName, final String accountName, final ListOperationCallback<USqlTable> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listTablesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTable> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (schemaName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1823,12 +1714,16 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (schemaName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         final String filter = null;
@@ -1840,7 +1735,7 @@ public final class CatalogsImpl implements Catalogs {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTables(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTables(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTable>>(serviceCallback) {
             @Override
@@ -1865,9 +1760,9 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the tables.
      * @param schemaName The name of the schema containing the tables.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -1880,28 +1775,25 @@ public final class CatalogsImpl implements Catalogs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlTable&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlTable>> listTables(final String databaseName, final String schemaName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (schemaName == null) {
-            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlTable>> listTables(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (schemaName == null) {
+            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
+        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTables(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTables(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlTable>> response = listTablesDelegate(call.execute());
         PagedList<USqlTable> result = new PagedList<USqlTable>(response.getBody()) {
             @Override
@@ -1915,9 +1807,9 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the tables.
      * @param schemaName The name of the schema containing the tables.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -1929,17 +1821,9 @@ public final class CatalogsImpl implements Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listTablesAsync(final String databaseName, final String schemaName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTable> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listTablesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTable> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (schemaName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1949,17 +1833,21 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (schemaName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
+            return null;
+        }
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTables(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTables(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTable>>(serviceCallback) {
             @Override
@@ -1991,16 +1879,22 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the specified view from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the view.
      * @param schemaName The name of the schema containing the view.
      * @param viewName The name of the view.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the USqlView object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<USqlView> getView(String databaseName, String schemaName, String viewName, String accountName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<USqlView> getView(String accountName, String databaseName, String schemaName, String viewName) throws CloudException, IOException, IllegalArgumentException {
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.getAdlaCatalogDnsSuffix() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
         if (databaseName == null) {
             throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
@@ -2010,38 +1904,37 @@ public final class CatalogsImpl implements Catalogs {
         if (viewName == null) {
             throw new IllegalArgumentException("Parameter viewName is required and cannot be null.");
         }
-        if (accountName == null) {
-            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
-        }
-        if (this.client.getAdlaCatalogDnsSuffix() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
-        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getView(databaseName, schemaName, viewName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getView(databaseName, schemaName, viewName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getViewDelegate(call.execute());
     }
 
     /**
      * Retrieves the specified view from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the view.
      * @param schemaName The name of the schema containing the view.
      * @param viewName The name of the view.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getViewAsync(String databaseName, String schemaName, String viewName, String accountName, final ServiceCallback<USqlView> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getViewAsync(String accountName, String databaseName, String schemaName, String viewName, final ServiceCallback<USqlView> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (accountName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getAdlaCatalogDnsSuffix() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
         }
         if (databaseName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
@@ -2055,25 +1948,13 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter viewName is required and cannot be null."));
             return null;
         }
-        if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getAdlaCatalogDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
-            return null;
-        }
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getView(databaseName, schemaName, viewName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getView(databaseName, schemaName, viewName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlView>(serviceCallback) {
             @Override
@@ -2098,32 +1979,29 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of views from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the views.
      * @param schemaName The name of the schema containing the views.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlView&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlView>> listViews(final String databaseName, final String schemaName, final String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (schemaName == null) {
-            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlView>> listViews(final String accountName, final String databaseName, final String schemaName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (schemaName == null) {
+            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
+        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         final String filter = null;
         final Integer top = null;
@@ -2134,7 +2012,7 @@ public final class CatalogsImpl implements Catalogs {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listViews(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listViews(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlView>> response = listViewsDelegate(call.execute());
         PagedList<USqlView> result = new PagedList<USqlView>(response.getBody()) {
             @Override
@@ -2148,24 +2026,16 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of views from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the views.
      * @param schemaName The name of the schema containing the views.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listViewsAsync(final String databaseName, final String schemaName, final String accountName, final ListOperationCallback<USqlView> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listViewsAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlView> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (schemaName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -2175,12 +2045,16 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (schemaName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         final String filter = null;
@@ -2192,7 +2066,7 @@ public final class CatalogsImpl implements Catalogs {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listViews(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listViews(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlView>>(serviceCallback) {
             @Override
@@ -2217,9 +2091,9 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of views from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the views.
      * @param schemaName The name of the schema containing the views.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -2232,28 +2106,25 @@ public final class CatalogsImpl implements Catalogs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlView&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlView>> listViews(final String databaseName, final String schemaName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (schemaName == null) {
-            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlView>> listViews(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (schemaName == null) {
+            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
+        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listViews(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listViews(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlView>> response = listViewsDelegate(call.execute());
         PagedList<USqlView> result = new PagedList<USqlView>(response.getBody()) {
             @Override
@@ -2267,9 +2138,9 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of views from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the views.
      * @param schemaName The name of the schema containing the views.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -2281,17 +2152,9 @@ public final class CatalogsImpl implements Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listViewsAsync(final String databaseName, final String schemaName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlView> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listViewsAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlView> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (schemaName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -2301,17 +2164,21 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (schemaName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
+            return null;
+        }
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listViews(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listViews(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlView>>(serviceCallback) {
             @Override
@@ -2343,17 +2210,23 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the specified table from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the statistics.
      * @param schemaName The name of the schema containing the statistics.
      * @param tableName The name of the table containing the statistics.
      * @param statisticsName The name of the table statistics.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the USqlTableStatistics object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<USqlTableStatistics> getTableStatistic(String databaseName, String schemaName, String tableName, String statisticsName, String accountName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<USqlTableStatistics> getTableStatistic(String accountName, String databaseName, String schemaName, String tableName, String statisticsName) throws CloudException, IOException, IllegalArgumentException {
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.getAdlaCatalogDnsSuffix() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
         if (databaseName == null) {
             throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
@@ -2366,39 +2239,38 @@ public final class CatalogsImpl implements Catalogs {
         if (statisticsName == null) {
             throw new IllegalArgumentException("Parameter statisticsName is required and cannot be null.");
         }
-        if (accountName == null) {
-            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
-        }
-        if (this.client.getAdlaCatalogDnsSuffix() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
-        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getTableStatistic(databaseName, schemaName, tableName, statisticsName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getTableStatistic(databaseName, schemaName, tableName, statisticsName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getTableStatisticDelegate(call.execute());
     }
 
     /**
      * Retrieves the specified table from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the statistics.
      * @param schemaName The name of the schema containing the statistics.
      * @param tableName The name of the table containing the statistics.
      * @param statisticsName The name of the table statistics.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getTableStatisticAsync(String databaseName, String schemaName, String tableName, String statisticsName, String accountName, final ServiceCallback<USqlTableStatistics> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getTableStatisticAsync(String accountName, String databaseName, String schemaName, String tableName, String statisticsName, final ServiceCallback<USqlTableStatistics> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (accountName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getAdlaCatalogDnsSuffix() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
         }
         if (databaseName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
@@ -2416,25 +2288,13 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter statisticsName is required and cannot be null."));
             return null;
         }
-        if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getAdlaCatalogDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
-            return null;
-        }
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getTableStatistic(databaseName, schemaName, tableName, statisticsName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getTableStatistic(databaseName, schemaName, tableName, statisticsName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlTableStatistics>(serviceCallback) {
             @Override
@@ -2459,16 +2319,22 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the statistics.
      * @param schemaName The name of the schema containing the statistics.
      * @param tableName The name of the table containing the statistics.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlTableStatistics&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlTableStatistics>> listTableStatistics(final String databaseName, final String schemaName, final String tableName, final String accountName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<USqlTableStatistics>> listTableStatistics(final String accountName, final String databaseName, final String schemaName, final String tableName) throws CloudException, IOException, IllegalArgumentException {
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.getAdlaCatalogDnsSuffix() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
         if (databaseName == null) {
             throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
@@ -2478,17 +2344,8 @@ public final class CatalogsImpl implements Catalogs {
         if (tableName == null) {
             throw new IllegalArgumentException("Parameter tableName is required and cannot be null.");
         }
-        if (accountName == null) {
-            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
-        }
-        if (this.client.getAdlaCatalogDnsSuffix() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
-        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         final String filter = null;
         final Integer top = null;
@@ -2499,7 +2356,7 @@ public final class CatalogsImpl implements Catalogs {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTableStatistics(databaseName, schemaName, tableName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTableStatistics(databaseName, schemaName, tableName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlTableStatistics>> response = listTableStatisticsDelegate(call.execute());
         PagedList<USqlTableStatistics> result = new PagedList<USqlTableStatistics>(response.getBody()) {
             @Override
@@ -2513,17 +2370,25 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the statistics.
      * @param schemaName The name of the schema containing the statistics.
      * @param tableName The name of the table containing the statistics.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listTableStatisticsAsync(final String databaseName, final String schemaName, final String tableName, final String accountName, final ListOperationCallback<USqlTableStatistics> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listTableStatisticsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final ListOperationCallback<USqlTableStatistics> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (accountName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getAdlaCatalogDnsSuffix() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
         }
         if (databaseName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
@@ -2537,20 +2402,8 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
             return null;
         }
-        if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getAdlaCatalogDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
-            return null;
-        }
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
             return null;
         }
         final String filter = null;
@@ -2562,7 +2415,7 @@ public final class CatalogsImpl implements Catalogs {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTableStatistics(databaseName, schemaName, tableName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTableStatistics(databaseName, schemaName, tableName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTableStatistics>>(serviceCallback) {
             @Override
@@ -2587,10 +2440,10 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the statistics.
      * @param schemaName The name of the schema containing the statistics.
      * @param tableName The name of the table containing the statistics.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -2603,7 +2456,13 @@ public final class CatalogsImpl implements Catalogs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlTableStatistics&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlTableStatistics>> listTableStatistics(final String databaseName, final String schemaName, final String tableName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<USqlTableStatistics>> listTableStatistics(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.getAdlaCatalogDnsSuffix() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
         if (databaseName == null) {
             throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
@@ -2613,21 +2472,12 @@ public final class CatalogsImpl implements Catalogs {
         if (tableName == null) {
             throw new IllegalArgumentException("Parameter tableName is required and cannot be null.");
         }
-        if (accountName == null) {
-            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
-        }
-        if (this.client.getAdlaCatalogDnsSuffix() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
-        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTableStatistics(databaseName, schemaName, tableName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTableStatistics(databaseName, schemaName, tableName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlTableStatistics>> response = listTableStatisticsDelegate(call.execute());
         PagedList<USqlTableStatistics> result = new PagedList<USqlTableStatistics>(response.getBody()) {
             @Override
@@ -2641,10 +2491,10 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the statistics.
      * @param schemaName The name of the schema containing the statistics.
      * @param tableName The name of the table containing the statistics.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -2656,9 +2506,17 @@ public final class CatalogsImpl implements Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listTableStatisticsAsync(final String databaseName, final String schemaName, final String tableName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableStatistics> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listTableStatisticsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableStatistics> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (accountName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getAdlaCatalogDnsSuffix() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
         }
         if (databaseName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
@@ -2672,25 +2530,13 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
             return null;
         }
-        if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getAdlaCatalogDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
-            return null;
-        }
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTableStatistics(databaseName, schemaName, tableName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTableStatistics(databaseName, schemaName, tableName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTableStatistics>>(serviceCallback) {
             @Override
@@ -2722,32 +2568,29 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of types within the specified database and schema from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the types.
      * @param schemaName The name of the schema containing the types.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlType&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlType>> listTypes(final String databaseName, final String schemaName, final String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (schemaName == null) {
-            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlType>> listTypes(final String accountName, final String databaseName, final String schemaName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (schemaName == null) {
+            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
+        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         final USqlType filter = null;
         final Integer top = null;
@@ -2758,7 +2601,7 @@ public final class CatalogsImpl implements Catalogs {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTypes(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTypes(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlType>> response = listTypesDelegate(call.execute());
         PagedList<USqlType> result = new PagedList<USqlType>(response.getBody()) {
             @Override
@@ -2772,24 +2615,16 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of types within the specified database and schema from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the types.
      * @param schemaName The name of the schema containing the types.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listTypesAsync(final String databaseName, final String schemaName, final String accountName, final ListOperationCallback<USqlType> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listTypesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlType> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (schemaName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -2799,12 +2634,16 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (schemaName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         final USqlType filter = null;
@@ -2816,7 +2655,7 @@ public final class CatalogsImpl implements Catalogs {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTypes(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTypes(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlType>>(serviceCallback) {
             @Override
@@ -2841,9 +2680,9 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of types within the specified database and schema from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the types.
      * @param schemaName The name of the schema containing the types.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -2856,29 +2695,26 @@ public final class CatalogsImpl implements Catalogs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlType&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlType>> listTypes(final String databaseName, final String schemaName, final String accountName, final USqlType filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (schemaName == null) {
-            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlType>> listTypes(final String accountName, final String databaseName, final String schemaName, final USqlType filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (schemaName == null) {
+            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
+        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         Validator.validate(filter);
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTypes(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTypes(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlType>> response = listTypesDelegate(call.execute());
         PagedList<USqlType> result = new PagedList<USqlType>(response.getBody()) {
             @Override
@@ -2892,9 +2728,9 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of types within the specified database and schema from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the types.
      * @param schemaName The name of the schema containing the types.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -2906,17 +2742,9 @@ public final class CatalogsImpl implements Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listTypesAsync(final String databaseName, final String schemaName, final String accountName, final USqlType filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlType> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listTypesAsync(final String accountName, final String databaseName, final String schemaName, final USqlType filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlType> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (schemaName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -2926,18 +2754,22 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (schemaName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         Validator.validate(filter, serviceCallback);
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTypes(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTypes(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlType>>(serviceCallback) {
             @Override
@@ -2969,16 +2801,22 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the specified table valued function from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the table valued function.
      * @param schemaName The name of the schema containing the table valued function.
      * @param tableValuedFunctionName The name of the tableValuedFunction.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the USqlTableValuedFunction object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<USqlTableValuedFunction> getTableValuedFunction(String databaseName, String schemaName, String tableValuedFunctionName, String accountName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<USqlTableValuedFunction> getTableValuedFunction(String accountName, String databaseName, String schemaName, String tableValuedFunctionName) throws CloudException, IOException, IllegalArgumentException {
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.getAdlaCatalogDnsSuffix() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
+        }
         if (databaseName == null) {
             throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
@@ -2988,38 +2826,37 @@ public final class CatalogsImpl implements Catalogs {
         if (tableValuedFunctionName == null) {
             throw new IllegalArgumentException("Parameter tableValuedFunctionName is required and cannot be null.");
         }
-        if (accountName == null) {
-            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
-        }
-        if (this.client.getAdlaCatalogDnsSuffix() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
-        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getTableValuedFunction(databaseName, schemaName, tableValuedFunctionName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getTableValuedFunction(databaseName, schemaName, tableValuedFunctionName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getTableValuedFunctionDelegate(call.execute());
     }
 
     /**
      * Retrieves the specified table valued function from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the table valued function.
      * @param schemaName The name of the schema containing the table valued function.
      * @param tableValuedFunctionName The name of the tableValuedFunction.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getTableValuedFunctionAsync(String databaseName, String schemaName, String tableValuedFunctionName, String accountName, final ServiceCallback<USqlTableValuedFunction> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getTableValuedFunctionAsync(String accountName, String databaseName, String schemaName, String tableValuedFunctionName, final ServiceCallback<USqlTableValuedFunction> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (accountName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getAdlaCatalogDnsSuffix() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
         }
         if (databaseName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
@@ -3033,25 +2870,13 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter tableValuedFunctionName is required and cannot be null."));
             return null;
         }
-        if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.getAdlaCatalogDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
-            return null;
-        }
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getTableValuedFunction(databaseName, schemaName, tableValuedFunctionName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getTableValuedFunction(databaseName, schemaName, tableValuedFunctionName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlTableValuedFunction>(serviceCallback) {
             @Override
@@ -3076,32 +2901,29 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of table valued functions from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the table valued functions.
      * @param schemaName The name of the schema containing the table valued functions.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlTableValuedFunction&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlTableValuedFunction>> listTableValuedFunctions(final String databaseName, final String schemaName, final String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (schemaName == null) {
-            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlTableValuedFunction>> listTableValuedFunctions(final String accountName, final String databaseName, final String schemaName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (schemaName == null) {
+            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
+        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         final String filter = null;
         final Integer top = null;
@@ -3112,7 +2934,7 @@ public final class CatalogsImpl implements Catalogs {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTableValuedFunctions(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTableValuedFunctions(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlTableValuedFunction>> response = listTableValuedFunctionsDelegate(call.execute());
         PagedList<USqlTableValuedFunction> result = new PagedList<USqlTableValuedFunction>(response.getBody()) {
             @Override
@@ -3126,24 +2948,16 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of table valued functions from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the table valued functions.
      * @param schemaName The name of the schema containing the table valued functions.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listTableValuedFunctionsAsync(final String databaseName, final String schemaName, final String accountName, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listTableValuedFunctionsAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (schemaName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -3153,12 +2967,16 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (schemaName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         final String filter = null;
@@ -3170,7 +2988,7 @@ public final class CatalogsImpl implements Catalogs {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTableValuedFunctions(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTableValuedFunctions(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTableValuedFunction>>(serviceCallback) {
             @Override
@@ -3195,9 +3013,9 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of table valued functions from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the table valued functions.
      * @param schemaName The name of the schema containing the table valued functions.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -3210,28 +3028,25 @@ public final class CatalogsImpl implements Catalogs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlTableValuedFunction&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlTableValuedFunction>> listTableValuedFunctions(final String databaseName, final String schemaName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (schemaName == null) {
-            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlTableValuedFunction>> listTableValuedFunctions(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (schemaName == null) {
+            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
+        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTableValuedFunctions(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTableValuedFunctions(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlTableValuedFunction>> response = listTableValuedFunctionsDelegate(call.execute());
         PagedList<USqlTableValuedFunction> result = new PagedList<USqlTableValuedFunction>(response.getBody()) {
             @Override
@@ -3245,9 +3060,9 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of table valued functions from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the table valued functions.
      * @param schemaName The name of the schema containing the table valued functions.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -3259,17 +3074,9 @@ public final class CatalogsImpl implements Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listTableValuedFunctionsAsync(final String databaseName, final String schemaName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listTableValuedFunctionsAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (schemaName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -3279,17 +3086,21 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (schemaName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
+            return null;
+        }
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listTableValuedFunctions(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTableValuedFunctions(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTableValuedFunction>>(serviceCallback) {
             @Override
@@ -3321,60 +3132,49 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the specified assembly from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the assembly.
      * @param assemblyName The name of the assembly.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the USqlAssembly object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<USqlAssembly> getAssembly(String databaseName, String assemblyName, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (assemblyName == null) {
-            throw new IllegalArgumentException("Parameter assemblyName is required and cannot be null.");
-        }
+    public ServiceResponse<USqlAssembly> getAssembly(String accountName, String databaseName, String assemblyName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (assemblyName == null) {
+            throw new IllegalArgumentException("Parameter assemblyName is required and cannot be null.");
+        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getAssembly(databaseName, assemblyName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getAssembly(databaseName, assemblyName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getAssemblyDelegate(call.execute());
     }
 
     /**
      * Retrieves the specified assembly from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the assembly.
      * @param assemblyName The name of the assembly.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getAssemblyAsync(String databaseName, String assemblyName, String accountName, final ServiceCallback<USqlAssembly> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getAssemblyAsync(String accountName, String databaseName, String assemblyName, final ServiceCallback<USqlAssembly> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (assemblyName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter assemblyName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -3384,17 +3184,21 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (assemblyName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter assemblyName is required and cannot be null."));
+            return null;
+        }
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getAssembly(databaseName, assemblyName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getAssembly(databaseName, assemblyName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlAssembly>(serviceCallback) {
             @Override
@@ -3419,28 +3223,25 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of assemblies from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the assembly.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the assembly.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlAssemblyClr&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlAssemblyClr>> listAssemblies(final String databaseName, final String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlAssemblyClr>> listAssemblies(final String accountName, final String databaseName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         final String filter = null;
         final Integer top = null;
@@ -3451,7 +3252,7 @@ public final class CatalogsImpl implements Catalogs {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listAssemblies(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAssemblies(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlAssemblyClr>> response = listAssembliesDelegate(call.execute());
         PagedList<USqlAssemblyClr> result = new PagedList<USqlAssemblyClr>(response.getBody()) {
             @Override
@@ -3465,19 +3266,15 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of assemblies from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the assembly.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the assembly.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listAssembliesAsync(final String databaseName, final String accountName, final ListOperationCallback<USqlAssemblyClr> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listAssembliesAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlAssemblyClr> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -3487,12 +3284,12 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         final String filter = null;
@@ -3504,7 +3301,7 @@ public final class CatalogsImpl implements Catalogs {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listAssemblies(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAssemblies(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlAssemblyClr>>(serviceCallback) {
             @Override
@@ -3529,8 +3326,8 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of assemblies from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the assembly.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the assembly.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -3543,25 +3340,22 @@ public final class CatalogsImpl implements Catalogs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlAssemblyClr&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlAssemblyClr>> listAssemblies(final String databaseName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlAssemblyClr>> listAssemblies(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listAssemblies(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAssemblies(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlAssemblyClr>> response = listAssembliesDelegate(call.execute());
         PagedList<USqlAssemblyClr> result = new PagedList<USqlAssemblyClr>(response.getBody()) {
             @Override
@@ -3575,8 +3369,8 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of assemblies from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the assembly.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the assembly.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -3588,13 +3382,9 @@ public final class CatalogsImpl implements Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listAssembliesAsync(final String databaseName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlAssemblyClr> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listAssembliesAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlAssemblyClr> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -3604,17 +3394,17 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listAssemblies(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAssemblies(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlAssemblyClr>>(serviceCallback) {
             @Override
@@ -3646,60 +3436,49 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the specified schema from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the schema.
      * @param schemaName The name of the schema.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the USqlSchema object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<USqlSchema> getSchema(String databaseName, String schemaName, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (schemaName == null) {
-            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
-        }
+    public ServiceResponse<USqlSchema> getSchema(String accountName, String databaseName, String schemaName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (schemaName == null) {
+            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
+        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getSchema(databaseName, schemaName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getSchema(databaseName, schemaName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getSchemaDelegate(call.execute());
     }
 
     /**
      * Retrieves the specified schema from the Data Lake Analytics catalog.
      *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the schema.
      * @param schemaName The name of the schema.
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSchemaAsync(String databaseName, String schemaName, String accountName, final ServiceCallback<USqlSchema> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getSchemaAsync(String accountName, String databaseName, String schemaName, final ServiceCallback<USqlSchema> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
-        }
-        if (schemaName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -3709,17 +3488,21 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (schemaName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
+            return null;
+        }
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getSchema(databaseName, schemaName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getSchema(databaseName, schemaName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlSchema>(serviceCallback) {
             @Override
@@ -3744,28 +3527,25 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of schemas from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the schema.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the schema.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlSchema&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlSchema>> listSchemas(final String databaseName, final String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlSchema>> listSchemas(final String accountName, final String databaseName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
         }
         final String filter = null;
         final Integer top = null;
@@ -3776,7 +3556,7 @@ public final class CatalogsImpl implements Catalogs {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listSchemas(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listSchemas(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlSchema>> response = listSchemasDelegate(call.execute());
         PagedList<USqlSchema> result = new PagedList<USqlSchema>(response.getBody()) {
             @Override
@@ -3790,19 +3570,15 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of schemas from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the schema.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the schema.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listSchemasAsync(final String databaseName, final String accountName, final ListOperationCallback<USqlSchema> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listSchemasAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlSchema> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -3812,12 +3588,12 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
-        if (this.client.getApiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
         final String filter = null;
@@ -3829,7 +3605,7 @@ public final class CatalogsImpl implements Catalogs {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listSchemas(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listSchemas(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlSchema>>(serviceCallback) {
             @Override
@@ -3854,8 +3630,8 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of schemas from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the schema.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the schema.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -3868,25 +3644,22 @@ public final class CatalogsImpl implements Catalogs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlSchema&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<USqlSchema>> listSchemas(final String databaseName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
+    public ServiceResponse<PagedList<USqlSchema>> listSchemas(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listSchemas(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listSchemas(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlSchema>> response = listSchemasDelegate(call.execute());
         PagedList<USqlSchema> result = new PagedList<USqlSchema>(response.getBody()) {
             @Override
@@ -3900,8 +3673,8 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of schemas from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database containing the schema.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the schema.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
@@ -3913,13 +3686,9 @@ public final class CatalogsImpl implements Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listSchemasAsync(final String databaseName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlSchema> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listSchemasAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlSchema> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -3929,17 +3698,17 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listSchemas(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listSchemas(databaseName, filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlSchema>>(serviceCallback) {
             @Override
@@ -3971,51 +3740,44 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the specified database from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the USqlDatabase object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<USqlDatabase> getDatabase(String databaseName, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
+    public ServiceResponse<USqlDatabase> getDatabase(String accountName, String databaseName) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaCatalogDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null.");
         }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getDatabase(databaseName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getDatabase(databaseName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getDatabaseDelegate(call.execute());
     }
 
     /**
      * Retrieves the specified database from the Data Lake Analytics catalog.
      *
-     * @param databaseName The name of the database.
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getDatabaseAsync(String databaseName, String accountName, final ServiceCallback<USqlDatabase> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getDatabaseAsync(String accountName, String databaseName, final ServiceCallback<USqlDatabase> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (databaseName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -4025,17 +3787,17 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaCatalogDnsSuffix() is required and cannot be null."));
             return null;
         }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.getDatabase(databaseName, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getDatabase(databaseName, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlDatabase>(serviceCallback) {
             @Override
@@ -4076,9 +3838,6 @@ public final class CatalogsImpl implements Catalogs {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -4088,7 +3847,7 @@ public final class CatalogsImpl implements Catalogs {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listDatabases(filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listDatabases(filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlDatabase>> response = listDatabasesDelegate(call.execute());
         PagedList<USqlDatabase> result = new PagedList<USqlDatabase>(response.getBody()) {
             @Override
@@ -4123,10 +3882,6 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -4136,7 +3891,7 @@ public final class CatalogsImpl implements Catalogs {
         final Boolean count = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listDatabases(filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listDatabases(filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlDatabase>>(serviceCallback) {
             @Override
@@ -4184,12 +3939,9 @@ public final class CatalogsImpl implements Catalogs {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listDatabases(filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listDatabases(filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<USqlDatabase>> response = listDatabasesDelegate(call.execute());
         PagedList<USqlDatabase> result = new PagedList<USqlDatabase>(response.getBody()) {
             @Override
@@ -4231,13 +3983,9 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaCatalogDnsSuffix}", this.client.getAdlaCatalogDnsSuffix());
-        Call<ResponseBody> call = service.listDatabases(filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listDatabases(filter, top, skip, expand, select, orderby, count, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlDatabase>>(serviceCallback) {
             @Override
@@ -4279,10 +4027,7 @@ public final class CatalogsImpl implements Catalogs {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listExternalDataSourcesNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listExternalDataSourcesNext(nextPageLink, this.client.getAcceptLanguage());
         return listExternalDataSourcesNextDelegate(call.execute());
     }
 
@@ -4303,11 +4048,7 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listExternalDataSourcesNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listExternalDataSourcesNext(nextPageLink, this.client.getAcceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlExternalDataSource>>(serviceCallback) {
             @Override
@@ -4349,10 +4090,7 @@ public final class CatalogsImpl implements Catalogs {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listCredentialsNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listCredentialsNext(nextPageLink, this.client.getAcceptLanguage());
         return listCredentialsNextDelegate(call.execute());
     }
 
@@ -4373,11 +4111,7 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listCredentialsNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listCredentialsNext(nextPageLink, this.client.getAcceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlCredential>>(serviceCallback) {
             @Override
@@ -4419,10 +4153,7 @@ public final class CatalogsImpl implements Catalogs {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listProceduresNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listProceduresNext(nextPageLink, this.client.getAcceptLanguage());
         return listProceduresNextDelegate(call.execute());
     }
 
@@ -4443,11 +4174,7 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listProceduresNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listProceduresNext(nextPageLink, this.client.getAcceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlProcedure>>(serviceCallback) {
             @Override
@@ -4489,10 +4216,7 @@ public final class CatalogsImpl implements Catalogs {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listTablesNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTablesNext(nextPageLink, this.client.getAcceptLanguage());
         return listTablesNextDelegate(call.execute());
     }
 
@@ -4513,11 +4237,7 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listTablesNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTablesNext(nextPageLink, this.client.getAcceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTable>>(serviceCallback) {
             @Override
@@ -4559,10 +4279,7 @@ public final class CatalogsImpl implements Catalogs {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listViewsNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listViewsNext(nextPageLink, this.client.getAcceptLanguage());
         return listViewsNextDelegate(call.execute());
     }
 
@@ -4583,11 +4300,7 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listViewsNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listViewsNext(nextPageLink, this.client.getAcceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlView>>(serviceCallback) {
             @Override
@@ -4629,10 +4342,7 @@ public final class CatalogsImpl implements Catalogs {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listTableStatisticsNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTableStatisticsNext(nextPageLink, this.client.getAcceptLanguage());
         return listTableStatisticsNextDelegate(call.execute());
     }
 
@@ -4653,11 +4363,7 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listTableStatisticsNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTableStatisticsNext(nextPageLink, this.client.getAcceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTableStatistics>>(serviceCallback) {
             @Override
@@ -4699,10 +4405,7 @@ public final class CatalogsImpl implements Catalogs {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listTypesNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTypesNext(nextPageLink, this.client.getAcceptLanguage());
         return listTypesNextDelegate(call.execute());
     }
 
@@ -4723,11 +4426,7 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listTypesNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTypesNext(nextPageLink, this.client.getAcceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlType>>(serviceCallback) {
             @Override
@@ -4769,10 +4468,7 @@ public final class CatalogsImpl implements Catalogs {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listTableValuedFunctionsNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTableValuedFunctionsNext(nextPageLink, this.client.getAcceptLanguage());
         return listTableValuedFunctionsNextDelegate(call.execute());
     }
 
@@ -4793,11 +4489,7 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listTableValuedFunctionsNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listTableValuedFunctionsNext(nextPageLink, this.client.getAcceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTableValuedFunction>>(serviceCallback) {
             @Override
@@ -4839,10 +4531,7 @@ public final class CatalogsImpl implements Catalogs {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listAssembliesNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAssembliesNext(nextPageLink, this.client.getAcceptLanguage());
         return listAssembliesNextDelegate(call.execute());
     }
 
@@ -4863,11 +4552,7 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listAssembliesNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listAssembliesNext(nextPageLink, this.client.getAcceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlAssemblyClr>>(serviceCallback) {
             @Override
@@ -4909,10 +4594,7 @@ public final class CatalogsImpl implements Catalogs {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listSchemasNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listSchemasNext(nextPageLink, this.client.getAcceptLanguage());
         return listSchemasNextDelegate(call.execute());
     }
 
@@ -4933,11 +4615,7 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listSchemasNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listSchemasNext(nextPageLink, this.client.getAcceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlSchema>>(serviceCallback) {
             @Override
@@ -4979,10 +4657,7 @@ public final class CatalogsImpl implements Catalogs {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listDatabasesNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listDatabasesNext(nextPageLink, this.client.getAcceptLanguage());
         return listDatabasesNextDelegate(call.execute());
     }
 
@@ -5003,11 +4678,7 @@ public final class CatalogsImpl implements Catalogs {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listDatabasesNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listDatabasesNext(nextPageLink, this.client.getAcceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlDatabase>>(serviceCallback) {
             @Override

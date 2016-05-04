@@ -269,5 +269,6 @@
     <module>./azure-mgmt-website</module>
     <module>./azure-mgmt-datalake-analytics</module>
     <module>./azure-mgmt-datalake-store</module>
+    <module>./azure-mgmt-datalake-store-uploader</module>
   </modules>
 </project>

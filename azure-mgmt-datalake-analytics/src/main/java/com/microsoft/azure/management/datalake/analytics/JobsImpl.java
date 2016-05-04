@@ -66,86 +66,79 @@ public final class JobsImpl implements Jobs {
     interface JobsService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("Jobs/{jobIdentity}/GetStatistics")
-        Call<ResponseBody> getStatistics(@Path("jobIdentity") UUID jobIdentity, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getStatistics(@Path("jobIdentity") UUID jobIdentity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("Jobs/{jobIdentity}/GetDebugDataPath")
-        Call<ResponseBody> getDebugDataPath(@Path("jobIdentity") UUID jobIdentity, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getDebugDataPath(@Path("jobIdentity") UUID jobIdentity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("BuildJob")
-        Call<ResponseBody> build(@Body JobInformation parameters, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> build(@Body JobInformation parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("Jobs/{jobIdentity}/CancelJob")
-        Call<ResponseBody> cancel(@Path("jobIdentity") UUID jobIdentity, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> cancel(@Path("jobIdentity") UUID jobIdentity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("Jobs/{jobIdentity}")
-        Call<ResponseBody> get(@Path("jobIdentity") UUID jobIdentity, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> get(@Path("jobIdentity") UUID jobIdentity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("Jobs/{jobIdentity}")
-        Call<ResponseBody> create(@Path("jobIdentity") UUID jobIdentity, @Body JobInformation parameters, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> create(@Path("jobIdentity") UUID jobIdentity, @Body JobInformation parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("Jobs")
-        Call<ResponseBody> list(@Query("$filter") JobInformation filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("$search") String search, @Query("$format") String format, @Query("api-version") String apiVersion, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> list(@Query("$filter") JobInformation filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("$search") String search, @Query("$format") String format, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 
     }
 
     /**
      * Gets statistics of the specified job.
      *
-     * @param jobIdentity JobInfo ID.
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @param jobIdentity JobInfo ID.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the JobStatistics object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<JobStatistics> getStatistics(UUID jobIdentity, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (jobIdentity == null) {
-            throw new IllegalArgumentException("Parameter jobIdentity is required and cannot be null.");
-        }
+    public ServiceResponse<JobStatistics> getStatistics(String accountName, UUID jobIdentity) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaJobDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaJobDnsSuffix() is required and cannot be null.");
         }
+        if (jobIdentity == null) {
+            throw new IllegalArgumentException("Parameter jobIdentity is required and cannot be null.");
+        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.getStatistics(jobIdentity, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getStatistics(jobIdentity, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getStatisticsDelegate(call.execute());
     }
 
     /**
      * Gets statistics of the specified job.
      *
-     * @param jobIdentity JobInfo ID.
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @param jobIdentity JobInfo ID.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getStatisticsAsync(UUID jobIdentity, String accountName, final ServiceCallback<JobStatistics> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getStatisticsAsync(String accountName, UUID jobIdentity, final ServiceCallback<JobStatistics> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobIdentity == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobIdentity is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -155,17 +148,17 @@ public final class JobsImpl implements Jobs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaJobDnsSuffix() is required and cannot be null."));
             return null;
         }
+        if (jobIdentity == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter jobIdentity is required and cannot be null."));
+            return null;
+        }
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.getStatistics(jobIdentity, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getStatistics(jobIdentity, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<JobStatistics>(serviceCallback) {
             @Override
@@ -190,51 +183,44 @@ public final class JobsImpl implements Jobs {
     /**
      * Gets the U-SQL job debug data information specified by the job ID.
      *
-     * @param jobIdentity JobInfo ID.
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @param jobIdentity JobInfo ID.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the JobDataPath object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<JobDataPath> getDebugDataPath(UUID jobIdentity, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (jobIdentity == null) {
-            throw new IllegalArgumentException("Parameter jobIdentity is required and cannot be null.");
-        }
+    public ServiceResponse<JobDataPath> getDebugDataPath(String accountName, UUID jobIdentity) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaJobDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaJobDnsSuffix() is required and cannot be null.");
         }
+        if (jobIdentity == null) {
+            throw new IllegalArgumentException("Parameter jobIdentity is required and cannot be null.");
+        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.getDebugDataPath(jobIdentity, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getDebugDataPath(jobIdentity, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getDebugDataPathDelegate(call.execute());
     }
 
     /**
      * Gets the U-SQL job debug data information specified by the job ID.
      *
-     * @param jobIdentity JobInfo ID.
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @param jobIdentity JobInfo ID.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getDebugDataPathAsync(UUID jobIdentity, String accountName, final ServiceCallback<JobDataPath> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getDebugDataPathAsync(String accountName, UUID jobIdentity, final ServiceCallback<JobDataPath> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobIdentity == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobIdentity is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -244,17 +230,17 @@ public final class JobsImpl implements Jobs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaJobDnsSuffix() is required and cannot be null."));
             return null;
         }
+        if (jobIdentity == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter jobIdentity is required and cannot be null."));
+            return null;
+        }
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.getDebugDataPath(jobIdentity, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.getDebugDataPath(jobIdentity, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<JobDataPath>(serviceCallback) {
             @Override
@@ -299,13 +285,10 @@ public final class JobsImpl implements Jobs {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         Validator.validate(parameters);
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.build(parameters, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.build(parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return buildDelegate(call.execute());
     }
 
@@ -338,14 +321,10 @@ public final class JobsImpl implements Jobs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         Validator.validate(parameters, serviceCallback);
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.build(parameters, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.build(parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<JobInformation>(serviceCallback) {
             @Override
@@ -370,51 +349,44 @@ public final class JobsImpl implements Jobs {
     /**
      * Cancels the running job specified by the job ID.
      *
-     * @param jobIdentity JobInfo ID to cancel.
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @param jobIdentity JobInfo ID to cancel.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> cancel(UUID jobIdentity, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (jobIdentity == null) {
-            throw new IllegalArgumentException("Parameter jobIdentity is required and cannot be null.");
-        }
+    public ServiceResponse<Void> cancel(String accountName, UUID jobIdentity) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaJobDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaJobDnsSuffix() is required and cannot be null.");
         }
+        if (jobIdentity == null) {
+            throw new IllegalArgumentException("Parameter jobIdentity is required and cannot be null.");
+        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.cancel(jobIdentity, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.cancel(jobIdentity, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return cancelDelegate(call.execute());
     }
 
     /**
      * Cancels the running job specified by the job ID.
      *
-     * @param jobIdentity JobInfo ID to cancel.
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @param jobIdentity JobInfo ID to cancel.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall cancelAsync(UUID jobIdentity, String accountName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall cancelAsync(String accountName, UUID jobIdentity, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobIdentity == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobIdentity is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -424,17 +396,17 @@ public final class JobsImpl implements Jobs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaJobDnsSuffix() is required and cannot be null."));
             return null;
         }
+        if (jobIdentity == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter jobIdentity is required and cannot be null."));
+            return null;
+        }
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.cancel(jobIdentity, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.cancel(jobIdentity, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -458,51 +430,44 @@ public final class JobsImpl implements Jobs {
     /**
      * Gets the job information for the specified job ID.
      *
-     * @param jobIdentity JobInfo ID.
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @param jobIdentity JobInfo ID.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the JobInformation object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<JobInformation> get(UUID jobIdentity, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        if (jobIdentity == null) {
-            throw new IllegalArgumentException("Parameter jobIdentity is required and cannot be null.");
-        }
+    public ServiceResponse<JobInformation> get(String accountName, UUID jobIdentity) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaJobDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaJobDnsSuffix() is required and cannot be null.");
         }
+        if (jobIdentity == null) {
+            throw new IllegalArgumentException("Parameter jobIdentity is required and cannot be null.");
+        }
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.get(jobIdentity, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.get(jobIdentity, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return getDelegate(call.execute());
     }
 
     /**
      * Gets the job information for the specified job ID.
      *
-     * @param jobIdentity JobInfo ID.
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @param jobIdentity JobInfo ID.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getAsync(UUID jobIdentity, String accountName, final ServiceCallback<JobInformation> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getAsync(String accountName, UUID jobIdentity, final ServiceCallback<JobInformation> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobIdentity == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobIdentity is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -512,17 +477,17 @@ public final class JobsImpl implements Jobs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaJobDnsSuffix() is required and cannot be null."));
             return null;
         }
+        if (jobIdentity == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter jobIdentity is required and cannot be null."));
+            return null;
+        }
         if (this.client.getApiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.get(jobIdentity, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.get(jobIdentity, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<JobInformation>(serviceCallback) {
             @Override
@@ -547,23 +512,23 @@ public final class JobsImpl implements Jobs {
     /**
      * Submits a job to the specified Data Lake Analytics account.
      *
-     * @param jobIdentity The job ID (a GUID) for the job being submitted.
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @param jobIdentity The job ID (a GUID) for the job being submitted.
      * @param parameters The parameters to submit a job.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the JobInformation object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<JobInformation> create(UUID jobIdentity, String accountName, JobInformation parameters) throws CloudException, IOException, IllegalArgumentException {
-        if (jobIdentity == null) {
-            throw new IllegalArgumentException("Parameter jobIdentity is required and cannot be null.");
-        }
+    public ServiceResponse<JobInformation> create(String accountName, UUID jobIdentity, JobInformation parameters) throws CloudException, IOException, IllegalArgumentException {
         if (accountName == null) {
             throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.getAdlaJobDnsSuffix() == null) {
             throw new IllegalArgumentException("Parameter this.client.getAdlaJobDnsSuffix() is required and cannot be null.");
+        }
+        if (jobIdentity == null) {
+            throw new IllegalArgumentException("Parameter jobIdentity is required and cannot be null.");
         }
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
@@ -571,33 +536,26 @@ public final class JobsImpl implements Jobs {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         Validator.validate(parameters);
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.create(jobIdentity, parameters, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.create(jobIdentity, parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         return createDelegate(call.execute());
     }
 
     /**
      * Submits a job to the specified Data Lake Analytics account.
      *
-     * @param jobIdentity The job ID (a GUID) for the job being submitted.
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @param jobIdentity The job ID (a GUID) for the job being submitted.
      * @param parameters The parameters to submit a job.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall createAsync(UUID jobIdentity, String accountName, JobInformation parameters, final ServiceCallback<JobInformation> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall createAsync(String accountName, UUID jobIdentity, JobInformation parameters, final ServiceCallback<JobInformation> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (jobIdentity == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobIdentity is required and cannot be null."));
-            return null;
         }
         if (accountName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -605,6 +563,10 @@ public final class JobsImpl implements Jobs {
         }
         if (this.client.getAdlaJobDnsSuffix() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getAdlaJobDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (jobIdentity == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter jobIdentity is required and cannot be null."));
             return null;
         }
         if (parameters == null) {
@@ -615,14 +577,10 @@ public final class JobsImpl implements Jobs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         Validator.validate(parameters, serviceCallback);
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.create(jobIdentity, parameters, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.create(jobIdentity, parameters, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<JobInformation>(serviceCallback) {
             @Override
@@ -663,9 +621,6 @@ public final class JobsImpl implements Jobs {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         final JobInformation filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -677,7 +632,7 @@ public final class JobsImpl implements Jobs {
         final String format = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.list(filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<JobInformation>> response = listDelegate(call.execute());
         PagedList<JobInformation> result = new PagedList<JobInformation>(response.getBody()) {
             @Override
@@ -712,10 +667,6 @@ public final class JobsImpl implements Jobs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         final JobInformation filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -727,7 +678,7 @@ public final class JobsImpl implements Jobs {
         final String format = null;
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.list(filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<JobInformation>>(serviceCallback) {
             @Override
@@ -777,13 +728,10 @@ public final class JobsImpl implements Jobs {
         if (this.client.getApiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
         Validator.validate(filter);
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.list(filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
         ServiceResponse<PageImpl<JobInformation>> response = listDelegate(call.execute());
         PagedList<JobInformation> result = new PagedList<JobInformation>(response.getBody()) {
             @Override
@@ -827,14 +775,10 @@ public final class JobsImpl implements Jobs {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
         Validator.validate(filter, serviceCallback);
         this.client.getBaseUrl().set("{accountName}", accountName);
         this.client.getBaseUrl().set("{adlaJobDnsSuffix}", this.client.getAdlaJobDnsSuffix());
-        Call<ResponseBody> call = service.list(filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.list(filter, top, skip, expand, select, orderby, count, search, format, this.client.getApiVersion(), this.client.getAcceptLanguage());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<JobInformation>>(serviceCallback) {
             @Override
@@ -876,10 +820,7 @@ public final class JobsImpl implements Jobs {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        if (this.client.getSubscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
         return listNextDelegate(call.execute());
     }
 
@@ -900,11 +841,7 @@ public final class JobsImpl implements Jobs {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        if (this.client.getSubscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getSubscriptionId(), this.client.getAcceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.getAcceptLanguage());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<JobInformation>>(serviceCallback) {
             @Override

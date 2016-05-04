@@ -7,7 +7,6 @@
 package com.microsoft.azure.batch.protocol.models;
 
 import org.joda.time.DateTime;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Parameters for a ComputeNodeOperations.UpdateUser request.
@@ -16,7 +15,6 @@ public class NodeUpdateUserParameter {
     /**
      * Sets the password of the account.
      */
-    @JsonProperty(required = true)
     private String password;
 
     /**
@@ -24,6 +22,12 @@ public class NodeUpdateUserParameter {
      * default is 1 day from the current time.
      */
     private DateTime expiryTime;
+
+    /**
+     * Gets or sets the SSH public key that can be used for remote login to
+     * the compute node.
+     */
+    private String sshPublicKey;
 
     /**
      * Get the password value.
@@ -59,6 +63,24 @@ public class NodeUpdateUserParameter {
      */
     public void setExpiryTime(DateTime expiryTime) {
         this.expiryTime = expiryTime;
+    }
+
+    /**
+     * Get the sshPublicKey value.
+     *
+     * @return the sshPublicKey value
+     */
+    public String getSshPublicKey() {
+        return this.sshPublicKey;
+    }
+
+    /**
+     * Set the sshPublicKey value.
+     *
+     * @param sshPublicKey the sshPublicKey value to set
+     */
+    public void setSshPublicKey(String sshPublicKey) {
+        this.sshPublicKey = sshPublicKey;
     }
 
 }

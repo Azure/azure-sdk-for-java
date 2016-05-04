@@ -20,10 +20,10 @@ public class JobInnerError {
 
     /**
      * Gets the severity level of the failure. Possible values include:
-     * 'Warning', 'Error'.
+     * 'Warning', 'Error', 'Info'.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String severity;
+    private SeverityTypes severity;
 
     /**
      * Gets the details of the error message.
@@ -96,7 +96,7 @@ public class JobInnerError {
      *
      * @return the severity value
      */
-    public String getSeverity() {
+    public SeverityTypes getSeverity() {
         return this.severity;
     }
 
