@@ -21,8 +21,7 @@ public class DeploymentOperationsImpl
     private final DeploymentOperationsInner client;
     private final Deployment deployment;
     private final ResourceGroups resourceGroups;
-
-    private PagedListConverter<DeploymentOperationInner, DeploymentOperation> converter;
+    private final PagedListConverter<DeploymentOperationInner, DeploymentOperation> converter;
 
     public DeploymentOperationsImpl(final DeploymentOperationsInner client,
                                     final Deployment deployment,
