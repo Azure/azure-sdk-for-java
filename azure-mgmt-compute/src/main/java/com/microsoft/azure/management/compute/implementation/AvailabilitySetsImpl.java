@@ -25,7 +25,9 @@ public class AvailabilitySetsImpl implements AvailabilitySets {
     private final VirtualMachines virtualMachines;
     private final PagedListConverter<AvailabilitySetInner, AvailabilitySet> converter;
 
-    public AvailabilitySetsImpl(AvailabilitySetsInner client, ResourceGroups resourceGroups, VirtualMachines virtualMachines) {
+    public AvailabilitySetsImpl(final AvailabilitySetsInner client,
+                                final ResourceGroups resourceGroups,
+                                final VirtualMachines virtualMachines) {
         this.client = client;
         this.resourceGroups = resourceGroups;
         this.virtualMachines = virtualMachines;
