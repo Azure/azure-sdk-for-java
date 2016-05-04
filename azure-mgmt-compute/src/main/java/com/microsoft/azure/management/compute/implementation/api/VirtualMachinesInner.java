@@ -1096,7 +1096,7 @@ public final class VirtualMachinesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
-        ServiceResponse<PageImpl<VirtualMachineInner>> response = listAllDelegate(call.execute());
+        ServiceResponse<PageImpl1<VirtualMachineInner>> response = listAllDelegate(call.execute());
         PagedList<VirtualMachineInner> result = new PagedList<VirtualMachineInner>(response.getBody()) {
             @Override
             public Page<VirtualMachineInner> nextPage(String nextPageLink) throws CloudException, IOException {
@@ -1131,7 +1131,7 @@ public final class VirtualMachinesInner {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<VirtualMachineInner>> result = listAllDelegate(response);
+                    ServiceResponse<PageImpl1<VirtualMachineInner>> result = listAllDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
@@ -1147,9 +1147,9 @@ public final class VirtualMachinesInner {
         return serviceCall;
     }
 
-    private ServiceResponse<PageImpl<VirtualMachineInner>> listAllDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualMachineInner>, CloudException>(this.client.restClient().mapperAdapter())
-                .register(200, new TypeToken<PageImpl<VirtualMachineInner>>() { }.getType())
+    private ServiceResponse<PageImpl1<VirtualMachineInner>> listAllDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl1<VirtualMachineInner>, CloudException>(this.client.restClient().mapperAdapter())
+                .register(200, new TypeToken<PageImpl1<VirtualMachineInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1824,7 +1824,7 @@ public final class VirtualMachinesInner {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<VirtualMachineInner>> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl1<VirtualMachineInner>> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -1855,7 +1855,7 @@ public final class VirtualMachinesInner {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<VirtualMachineInner>> result = listAllNextDelegate(response);
+                    ServiceResponse<PageImpl1<VirtualMachineInner>> result = listAllNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
@@ -1871,9 +1871,9 @@ public final class VirtualMachinesInner {
         return serviceCall;
     }
 
-    private ServiceResponse<PageImpl<VirtualMachineInner>> listAllNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualMachineInner>, CloudException>(this.client.restClient().mapperAdapter())
-                .register(200, new TypeToken<PageImpl<VirtualMachineInner>>() { }.getType())
+    private ServiceResponse<PageImpl1<VirtualMachineInner>> listAllNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl1<VirtualMachineInner>, CloudException>(this.client.restClient().mapperAdapter())
+                .register(200, new TypeToken<PageImpl1<VirtualMachineInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

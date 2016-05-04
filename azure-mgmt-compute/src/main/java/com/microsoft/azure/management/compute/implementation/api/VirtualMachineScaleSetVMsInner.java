@@ -813,7 +813,7 @@ public final class VirtualMachineScaleSetVMsInner {
         final String select = null;
         final String expand = null;
         Call<ResponseBody> call = service.list(resourceGroupName, virtualMachineScaleSetName, this.client.subscriptionId(), filter, select, expand, this.client.apiVersion(), this.client.acceptLanguage());
-        ServiceResponse<PageImpl<VirtualMachineScaleSetVMInner>> response = listDelegate(call.execute());
+        ServiceResponse<PageImpl1<VirtualMachineScaleSetVMInner>> response = listDelegate(call.execute());
         PagedList<VirtualMachineScaleSetVMInner> result = new PagedList<VirtualMachineScaleSetVMInner>(response.getBody()) {
             @Override
             public Page<VirtualMachineScaleSetVMInner> nextPage(String nextPageLink) throws CloudException, IOException {
@@ -861,7 +861,7 @@ public final class VirtualMachineScaleSetVMsInner {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<VirtualMachineScaleSetVMInner>> result = listDelegate(response);
+                    ServiceResponse<PageImpl1<VirtualMachineScaleSetVMInner>> result = listDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
@@ -904,7 +904,7 @@ public final class VirtualMachineScaleSetVMsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(resourceGroupName, virtualMachineScaleSetName, this.client.subscriptionId(), filter, select, expand, this.client.apiVersion(), this.client.acceptLanguage());
-        ServiceResponse<PageImpl<VirtualMachineScaleSetVMInner>> response = listDelegate(call.execute());
+        ServiceResponse<PageImpl1<VirtualMachineScaleSetVMInner>> response = listDelegate(call.execute());
         PagedList<VirtualMachineScaleSetVMInner> result = new PagedList<VirtualMachineScaleSetVMInner>(response.getBody()) {
             @Override
             public Page<VirtualMachineScaleSetVMInner> nextPage(String nextPageLink) throws CloudException, IOException {
@@ -952,7 +952,7 @@ public final class VirtualMachineScaleSetVMsInner {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<VirtualMachineScaleSetVMInner>> result = listDelegate(response);
+                    ServiceResponse<PageImpl1<VirtualMachineScaleSetVMInner>> result = listDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
@@ -968,9 +968,9 @@ public final class VirtualMachineScaleSetVMsInner {
         return serviceCall;
     }
 
-    private ServiceResponse<PageImpl<VirtualMachineScaleSetVMInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualMachineScaleSetVMInner>, CloudException>(this.client.restClient().mapperAdapter())
-                .register(200, new TypeToken<PageImpl<VirtualMachineScaleSetVMInner>>() { }.getType())
+    private ServiceResponse<PageImpl1<VirtualMachineScaleSetVMInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl1<VirtualMachineScaleSetVMInner>, CloudException>(this.client.restClient().mapperAdapter())
+                .register(200, new TypeToken<PageImpl1<VirtualMachineScaleSetVMInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1470,7 +1470,7 @@ public final class VirtualMachineScaleSetVMsInner {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineScaleSetVMInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<VirtualMachineScaleSetVMInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl1<VirtualMachineScaleSetVMInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -1501,7 +1501,7 @@ public final class VirtualMachineScaleSetVMsInner {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<VirtualMachineScaleSetVMInner>> result = listNextDelegate(response);
+                    ServiceResponse<PageImpl1<VirtualMachineScaleSetVMInner>> result = listNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
@@ -1517,9 +1517,9 @@ public final class VirtualMachineScaleSetVMsInner {
         return serviceCall;
     }
 
-    private ServiceResponse<PageImpl<VirtualMachineScaleSetVMInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualMachineScaleSetVMInner>, CloudException>(this.client.restClient().mapperAdapter())
-                .register(200, new TypeToken<PageImpl<VirtualMachineScaleSetVMInner>>() { }.getType())
+    private ServiceResponse<PageImpl1<VirtualMachineScaleSetVMInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl1<VirtualMachineScaleSetVMInner>, CloudException>(this.client.restClient().mapperAdapter())
+                .register(200, new TypeToken<PageImpl1<VirtualMachineScaleSetVMInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
