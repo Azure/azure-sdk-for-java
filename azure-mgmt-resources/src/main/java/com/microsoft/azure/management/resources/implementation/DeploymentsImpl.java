@@ -7,8 +7,8 @@ import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
+import com.microsoft.azure.management.resources.implementation.api.DeploymentOperationsInner;
 import com.microsoft.azure.management.resources.implementation.api.DeploymentsInner;
-import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.implementation.api.DeploymentExtendedInner;
@@ -20,15 +20,17 @@ import java.util.List;
 public class DeploymentsImpl
     implements Deployments {
 
-    protected ResourceManagementClientImpl serviceClient;
-    protected DeploymentsInner deployments;
-    protected ResourceGroups resourceGroups;
-    protected PagedListConverter<DeploymentExtendedInner, Deployment> converter;
+    private final DeploymentsInner client;
+    private final DeploymentOperationsInner deploymentOperationsClient;
+    private final ResourceGroups resourceGroups;
+    private PagedListConverter<DeploymentExtendedInner, Deployment> converter;
 
-    public DeploymentsImpl(final ResourceManagementClientImpl serviceClient) {
-        this.serviceClient = serviceClient;
-        this.deployments = serviceClient.deployments();
-        this.resourceGroups = new ResourceGroupsImpl(serviceClient);
+    public DeploymentsImpl(final DeploymentsInner client,
+                           final DeploymentOperationsInner deploymentOperationsClient,
+                           final ResourceGroups resourceGroups) {
+        this.client = client;
+        this.deploymentOperationsClient = deploymentOperationsClient;
+        this.resourceGroups = resourceGroups;
         converter = new PagedListConverter<DeploymentExtendedInner, Deployment>() {
             @Override
             public Deployment typeConvert(DeploymentExtendedInner deploymentInner) {
@@ -47,21 +49,21 @@ public class DeploymentsImpl
         return new GroupPagedList<Deployment>(resourceGroups.list()) {
             @Override
             public List<Deployment> listNextGroup(String resourceGroupName) throws RestException, IOException {
-                return converter.convert(deployments.list(resourceGroupName).getBody());
+                return converter.convert(client.list(resourceGroupName).getBody());
             }
         };
     }
 
     @Override
     public PagedList<Deployment> list(String groupName) throws CloudException, IOException {
-        return converter.convert(deployments.list(groupName).getBody());
+        return converter.convert(client.list(groupName).getBody());
     }
 
     @Override
     public Deployment get(String name) throws IOException, CloudException {
         for (ResourceGroup group : resourceGroups.list()) {
             try {
-                DeploymentExtendedInner inner = deployments.get(group.name(), name).getBody();
+                DeploymentExtendedInner inner = client.get(group.name(), name).getBody();
                 if (inner != null) {
                     return createFluentModel(inner);
                 }
@@ -73,7 +75,7 @@ public class DeploymentsImpl
 
     @Override
     public Deployment get(String groupName, String name) throws IOException, CloudException {
-        DeploymentExtendedInner inner = deployments.get(groupName, name).getBody();
+        DeploymentExtendedInner inner = client.get(groupName, name).getBody();
         return createFluentModel(inner);
     }
 
@@ -84,7 +86,7 @@ public class DeploymentsImpl
 
     @Override
     public void delete(String groupName, String name) throws Exception {
-        deployments.delete(groupName, name);
+        client.delete(groupName, name);
     }
 
     @Override
@@ -95,7 +97,7 @@ public class DeploymentsImpl
     @Override
     public boolean checkExistence(String deploymentName) throws IOException, CloudException {
         for (ResourceGroup group : resourceGroups.list()) {
-            if (deployments.checkExistence(group.name(), deploymentName).getBody()) {
+            if (client.checkExistence(group.name(), deploymentName).getBody()) {
                 return true;
             }
         }
@@ -104,7 +106,7 @@ public class DeploymentsImpl
 
     @Override
     public boolean checkExistence(String groupName, String deploymentName) throws IOException, CloudException {
-        if (deployments.checkExistence(groupName, deploymentName).getBody()) {
+        if (client.checkExistence(groupName, deploymentName).getBody()) {
             return true;
         }
         return false;
@@ -113,12 +115,12 @@ public class DeploymentsImpl
     /** Fluent model create helpers **/
 
     private DeploymentImpl createFluentModel(String name) {
-        DeploymentExtendedInner deployment = new DeploymentExtendedInner();
-        deployment.setName(name);
-        return new DeploymentImpl(deployment, deployments, resourceGroups, serviceClient);
+        DeploymentExtendedInner deploymentExtendedInner = new DeploymentExtendedInner();
+        deploymentExtendedInner.setName(name);
+        return new DeploymentImpl(deploymentExtendedInner, client, deploymentOperationsClient, resourceGroups);
     }
 
-    private DeploymentImpl createFluentModel(DeploymentExtendedInner deploymentInner) {
-        return new DeploymentImpl(deploymentInner, deployments, resourceGroups, serviceClient);
+    private DeploymentImpl createFluentModel(DeploymentExtendedInner deploymentExtendedInner) {
+        return new DeploymentImpl(deploymentExtendedInner, client, deploymentOperationsClient, resourceGroups);
     }
 }

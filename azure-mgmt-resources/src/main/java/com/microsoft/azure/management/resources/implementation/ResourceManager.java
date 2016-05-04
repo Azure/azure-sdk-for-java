@@ -118,7 +118,8 @@ public final class ResourceManager {
 
     public Deployments deployments() {
         if (deployments == null) {
-            deployments = new DeploymentsImpl(resourceManagementClient());
+            ResourceManagementClientImpl client = resourceManagementClient();
+            deployments = new DeploymentsImpl(client.deployments(), client.deploymentOperations(), resourceGroups());
         }
         return deployments;
     }

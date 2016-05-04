@@ -23,7 +23,7 @@ public class StorageAccountsImpl
     private final ResourceGroups resourceGroups;
     private final PagedListConverter<StorageAccountInner, StorageAccount> converter;
 
-    public StorageAccountsImpl(StorageAccountsInner client, ResourceGroups resourceGroups) {
+    public StorageAccountsImpl(final StorageAccountsInner client, final ResourceGroups resourceGroups) {
         this.client = client;
         this.resourceGroups = resourceGroups;
         this.converter = new PagedListConverter<StorageAccountInner, StorageAccount>() {

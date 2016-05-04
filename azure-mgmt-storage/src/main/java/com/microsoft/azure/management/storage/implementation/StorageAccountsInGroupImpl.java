@@ -14,7 +14,7 @@ public class StorageAccountsInGroupImpl implements StorageAccounts.InGroup {
     private final StorageAccounts storageAccounts;
     private final ResourceGroup resourceGroup;
 
-    public StorageAccountsInGroupImpl(StorageAccounts storageAccounts, ResourceGroup resourceGroup) {
+    public StorageAccountsInGroupImpl(final StorageAccounts storageAccounts, final ResourceGroup resourceGroup) {
         this.storageAccounts = storageAccounts;
         this.resourceGroup = resourceGroup;
     }
