@@ -11,7 +11,7 @@ import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.resources.GenericResources;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.Tenants;
-import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigureBase;
+import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.collection.*;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.storage.StorageAccounts;
@@ -36,7 +36,7 @@ public final class Azure {
         return new Azure(restClient);
     }
 
-    public interface Configure extends AzureConfigureBase<Configure> {
+    public interface Configure extends AzureConfigurable<Configure> {
         Azure authenticate(ServiceClientCredentials credentials);
     }
 
