@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var args = require('yargs').argv;
 var colors = require('colors');
 var exec = require('child_process').exec;
+var fs = require('fs');
 
 var mappings = {
     'compute': {
@@ -24,11 +25,6 @@ var mappings = {
     'subscriptions': {
         'dir': 'azure-mgmt-resources',
         'source': 'arm-resources/subscriptions/2015-11-01/swagger/subscriptions.json',
-        'package': 'com.microsoft.azure.management.resources'
-    },
-    'authorization': {
-        'dir': 'azure-mgmt-resources',
-        'source': 'arm-authorization/2015-07-01/swagger/authorization.json',
         'package': 'com.microsoft.azure.management.resources'
     },
     'features': {
@@ -111,6 +107,9 @@ gulp.task('codegen', function(cb) {
         });
     } else {
         autoRestExe = autoRestVersion + "/binaries/net45/AutoRest.exe";
+        if (process.platform !== 'win32') {
+            autoRestExe = "mono " + autoRestExe;
+        }
         handleInput(projects, cb);
     }
 
@@ -134,6 +133,9 @@ var handleInput = function(projects, cb) {
 }
 
 var codegen = function(project, cb) {
+    var outputDir = mappings[project].dir + '/src/main/java/' + mappings[project].package.replace(/\./g, '/');
+    deleteFolderRecursive(outputDir + "/models/implementation/api");
+    deleteFolderRecursive(outputDir + "/implementation/api");
     console.log('Generating "' + project + '" from spec file ' + specRoot + '/' + mappings[project].source);
     cmd = autoRestExe + ' -Modeler Swagger -CodeGenerator Azure.Java -Namespace ' + mappings[project].package + ' -Input ' + specRoot + '/' + mappings[project].source + 
             ' -outputDirectory ' + mappings[project].dir + '/src/main/java/' + mappings[project].package.replace(/\./g, '/') + ' -Header MICROSOFT_MIT_NO_CODEGEN';
@@ -145,4 +147,18 @@ var codegen = function(project, cb) {
         console.log(stdout);
         console.error(stderr);
     });
+};
+
+var deleteFolderRecursive = function(path) {
+    if(fs.existsSync(path)) {
+        fs.readdirSync(path).forEach(function(file, index) {
+            var curPath = path + "/" + file;
+            if(fs.lstatSync(curPath).isDirectory()) { // recurse
+                deleteFolderRecursive(curPath);
+            } else { // delete file
+                fs.unlinkSync(curPath);
+            }
+        });
+        fs.rmdirSync(path);
+    }
 };

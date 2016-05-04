@@ -4,29 +4,29 @@
 This project provides a client library in Java that makes it easy to consume Microsoft Azure services. For documentation please see the [JavaDocs](http://azure.github.io/azure-sdk-for-java). For a list of libraries and how they are organized, please see the [Azure SDK for Java Features Wiki page] (https://github.com/Azure/azure-sdk-for-java/wiki/Azure-SDK-for-Java-Features).
 
 #Download
-Download via Maven:
+To compile either this repo or your project depending on this, you need snapshot builds in private internal maven repo. Go to http://azuresdkci.cloudapp.net/view/4-Java/job/register-internal-maven/ and register. And then add these to your `$MAVEN_HOME/conf/settings.xml`.
 ```xml
-<dependency>
-  <groupId>com.microsoft.azure</groupId>
-  <artifactId>azure</artifactId>
-  <version>1.0.0-beta1</version>
-</dependency>
+<servers>
+  <!-- other server settings -->
+  <server>
+    <id>azureoss-snapshots-pr</id>
+    <username>your username</username>
+    <password>your password</password>
+  </server>
+</servers>
 ```
-or Gradle:
-```groovy
-repositories {
-    mavenCentral()
-    ....
-}
-...
-dependencies {
-    compile 'com.microsoft.azure:azure:1.0.0-beta1'
-    ....
-}
-```
-To use the latest snapshot build,
+and add the following to your pom:
 ```xml
 <repositories>
+  <repository>
+    <id>azureoss-snapshots-pr</id>
+    <name>Azure Internal Snapshots</name>
+    <url>http://azureoss.westus.cloudapp.azure.com:8080/nexus/content/repositories/snapshots-pr/</url>
+    <layout>default</layout>
+    <snapshots>
+      <enabled>true</enabled>
+    </snapshots>
+  </repository>
   <repository>
     <id>adx-snapshots</id>
     <name>Azure ADX Snapshots</name>

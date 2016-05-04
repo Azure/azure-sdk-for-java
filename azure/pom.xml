@@ -7,15 +7,16 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <artifactId>azure-bom</artifactId>
+    <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>azure</artifactId>
-  <packaging>pom</packaging>
+  <packaging>jar</packaging>
 
-  <name>Microsoft Azure SDK Parent</name>
-  <description>This package contains the parent module of Microsoft Azure SDK.</description>
+  <name>Microsoft Azure SDK</name>
+  <description>This package contains Microsoft Azure SDK.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -35,7 +36,6 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
-    <testMode>playback</testMode>
   </properties>
 
   <developers>
@@ -45,102 +45,51 @@
     </developer>
   </developers>
 
-  <repositories>
-    <repository>
-      <id>adx-snapshots</id>
-      <name>Azure ADX Snapshots</name>
-      <url>http://adxsnapshots.azurewebsites.net</url>
-      <layout>default</layout>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>always</updatePolicy>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>oss-snapshots</id>
-      <name>Open Source Snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-      <layout>default</layout>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>always</updatePolicy>
-      </snapshots>
-    </repository>
-  </repositories>
-
-  <distributionManagement>
-    <snapshotRepository>
-      <id>adx-snapshots</id>
-      <name>Azure ADX Snapshots</name>
-      <url>ftp://waws-prod-bay-005.ftp.azurewebsites.windows.net/site/wwwroot</url>
-      <uniqueVersion>true</uniqueVersion>
-      <layout>default</layout>
-    </snapshotRepository>
-  </distributionManagement>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-client-runtime</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-core</artifactId>
-        <version>2.6.3</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-databind</artifactId>
-        <version>2.6.3</version>
-      </dependency>
-      <dependency>
-        <groupId>commons-codec</groupId>
-        <artifactId>commons-codec</artifactId>
-        <version>1.10</version>
-      </dependency>
-      <!-- Test dependencies -->
-      <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>4.12</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-client-authentication</artifactId>
-        <version>1.0.0-beta1</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.mockito</groupId>
-        <artifactId>mockito-core</artifactId>
-        <version>1.10.19</version>
-        <scope>test</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
+  <dependencies>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-client-runtime</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-client-authentication</artifactId>
+      <version>1.0.0-beta1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-mgmt-resources</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-mgmt-storage</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-mgmt-network</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-mgmt-compute</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>1.10.19</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-help-plugin</artifactId>
-        <version>2.1.1</version>
-        <executions>
-          <execution>
-            <phase>validate</phase>
-            <goals>
-              <goal>evaluate</goal>
-            </goals>
-            <configuration>
-              <expression>legal</expression>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -148,10 +97,17 @@
         <configuration>
           <source>1.7</source>
           <target>1.7</target>
-          <showWarnings>true</showWarnings>
-          <showDeprecation>true</showDeprecation>
-          <compilerArgument>-Xlint:unchecked</compilerArgument>
         </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
       </plugin>
 
       <plugin>
@@ -168,151 +124,6 @@
         </configuration>
       </plugin>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-release-plugin</artifactId>
-        <version>2.5.3</version>
-      </plugin>
     </plugins>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-checkstyle-plugin</artifactId>
-          <version>2.17</version>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-resources-plugin</artifactId>
-          <version>2.4.3</version>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.18.1</version>
-          <configuration>
-            <includes>
-              <include>**/Test*.java</include>
-              <include>**/*Test.java</include>
-              <include>**/*Tests.java</include>
-              <include>**/*TestCase.java</include>
-            </includes>
-            <environmentVariables>
-              <test.mode>${testMode}</test.mode>
-            </environmentVariables>
-          </configuration>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-release-plugin</artifactId>
-          <version>2.5.2</version>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-antrun-plugin</artifactId>
-          <version>1.8</version>
-          <executions>
-            <execution>
-              <phase>package</phase>
-              <configuration>
-                <target name="generateGitRevision">
-                  <touch file="target/.gitrevision" />
-                  <exec executable="git" outputproperty="git.revision" failifexecutionfails="true" errorproperty="">
-                    <arg value="rev-parse"/>
-                    <arg value="HEAD"/>
-                  </exec>
-                  <echo file="target/.gitrevision" append="false">Azure/azure-sdk-for-java#</echo>
-                  <echo file="target/.gitrevision" append="true">${git.revision}</echo>
-                </target>
-              </configuration>
-              <goals>
-                <goal>run</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>build-helper-maven-plugin</artifactId>
-          <version>1.10</version>
-          <executions>
-            <execution>
-              <id>attach-artifacts</id>
-              <phase>package</phase>
-              <goals>
-                <goal>attach-artifact</goal>
-              </goals>
-              <configuration>
-                <artifacts>
-                  <artifact>
-                    <file>target/.gitrevision</file>
-                    <type>gitrevision</type>
-                  </artifact>
-                </artifacts>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
-      </plugins>
-    </pluginManagement>
   </build>
-  <profiles>
-    <profile>
-      <id>run-shade-plugin</id>
-      <activation>
-        <property><name>runShadePlugin</name></property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-shade-plugin</artifactId>
-            <version>2.4.1</version>
-            <configuration>
-            </configuration>
-            <executions>
-              <execution>
-                <id>shade-plugin</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>shade</goal>
-                </goals>
-                <configuration>
-                  <filters>
-                    <filter>
-                      <artifact>*:*</artifact>
-                      <excludes>
-                        <exclude>META-INF/*.SF</exclude>
-                        <exclude>META-INF/*.DSA</exclude>
-                        <exclude>META-INF/*.RSA</exclude>
-                      </excludes>
-                    </filter>
-                  </filters>
-                  <transformers>
-                    <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
-                  </transformers>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
-  <modules>
-    <module>../azure-batch</module>
-    <module>../azure-mgmt-compute</module>
-    <module>../azure-mgmt-resources</module>
-    <module>../azure-mgmt-storage</module>
-    <module>../azure-mgmt-network</module>
-    <module>../azure-mgmt-website</module>
-    <module>../azure-mgmt-datalake-analytics</module>
-    <module>../azure-mgmt-datalake-store</module>
-    <module>../azure-mgmt-datalake-store-uploader</module>
-  </modules>
 </project>

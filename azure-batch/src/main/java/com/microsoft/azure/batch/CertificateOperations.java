@@ -7,17 +7,17 @@
 package com.microsoft.azure.batch;
 
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.batch.protocol.models.BatchErrorException;
-import com.microsoft.azure.batch.protocol.models.Certificate;
-import com.microsoft.azure.batch.protocol.models.CertificateAddOptions;
-import com.microsoft.azure.batch.protocol.models.CertificateAddParameter;
-import com.microsoft.azure.batch.protocol.models.CertificateCancelDeletionOptions;
-import com.microsoft.azure.batch.protocol.models.CertificateDeleteOptions;
-import com.microsoft.azure.batch.protocol.models.CertificateFormat;
-import com.microsoft.azure.batch.protocol.models.CertificateGetHeaders;
-import com.microsoft.azure.batch.protocol.models.CertificateGetOptions;
-import com.microsoft.azure.batch.protocol.models.CertificateListHeaders;
-import com.microsoft.azure.batch.protocol.models.CertificateListOptions;
+import com.microsoft.azure.batch.protocol.implementation.api.BatchErrorException;
+import com.microsoft.azure.batch.protocol.implementation.api.CertificateInner;
+import com.microsoft.azure.batch.protocol.implementation.api.CertificateAddOptionsInner;
+import com.microsoft.azure.batch.protocol.implementation.api.CertificateAddParameterInner;
+import com.microsoft.azure.batch.protocol.implementation.api.CertificateCancelDeletionOptionsInner;
+import com.microsoft.azure.batch.protocol.implementation.api.CertificateDeleteOptionsInner;
+import com.microsoft.azure.batch.protocol.implementation.api.CertificateFormat;
+import com.microsoft.azure.batch.protocol.implementation.api.CertificateGetHeadersInner;
+import com.microsoft.azure.batch.protocol.implementation.api.CertificateGetOptionsInner;
+import com.microsoft.azure.batch.protocol.implementation.api.CertificateListHeadersInner;
+import com.microsoft.azure.batch.protocol.implementation.api.CertificateListOptionsInner;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import org.apache.commons.codec.binary.Base64;
 
@@ -86,7 +86,7 @@ public class CertificateOperations implements IInheritedBehaviors {
         CertificateFactory x509CertFact = CertificateFactory.getInstance("X.509");
         X509Certificate cert = (X509Certificate)x509CertFact.generateCertificate(certStream);
 
-        CertificateAddParameter addParam = new CertificateAddParameter();
+        CertificateAddParameterInner addParam = new CertificateAddParameterInner();
         addParam.setCertificateFormat(CertificateFormat.CER);
         addParam.setThumbprintAlgorithm(SHA1_CERTIFICATE_ALGORITHM);
         addParam.setThumbprint(getThumbPrint(cert));
@@ -98,7 +98,7 @@ public class CertificateOperations implements IInheritedBehaviors {
     public void createCertificate(InputStream certStream, String password, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException, CertificateException, NoSuchAlgorithmException {
         // Need load cert to Keystore first
 
-        CertificateAddParameter addParam = new CertificateAddParameter();
+        CertificateAddParameterInner addParam = new CertificateAddParameterInner();
         addParam.setCertificateFormat(CertificateFormat.PFX);
         addParam.setThumbprintAlgorithm(SHA1_CERTIFICATE_ALGORITHM);
         //addParam.setThumbprint(getThumbPrint(cert));
@@ -108,16 +108,16 @@ public class CertificateOperations implements IInheritedBehaviors {
         createCertificate(addParam, additionalBehaviors);
     }
 
-    public void createCertificate(CertificateAddParameter certificate) throws BatchErrorException, IOException {
+    public void createCertificate(CertificateAddParameterInner certificate) throws BatchErrorException, IOException {
         createCertificate(certificate, null);
     }
 
-    public void createCertificate(CertificateAddParameter certificate, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        CertificateAddOptions options = new CertificateAddOptions();
+    public void createCertificate(CertificateAddParameterInner certificate, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+        CertificateAddOptionsInner options = new CertificateAddOptionsInner();
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.getProtocolLayer().getCertificateOperations().add(certificate, options);
+        this._parentBatchClient.getProtocolLayer().certificates().add(certificate, options);
     }
 
     public void cancelDeleteCertificate(String thumbprintAlgorithm, String thumbprint) throws BatchErrorException, IOException {
@@ -125,11 +125,11 @@ public class CertificateOperations implements IInheritedBehaviors {
     }
 
     public void cancelDeleteCertificate(String thumbprintAlgorithm, String thumbprint, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        CertificateCancelDeletionOptions options = new CertificateCancelDeletionOptions();
+        CertificateCancelDeletionOptionsInner options = new CertificateCancelDeletionOptionsInner();
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.getProtocolLayer().getCertificateOperations().cancelDeletion(thumbprintAlgorithm, thumbprint, options);
+        this._parentBatchClient.getProtocolLayer().certificates().cancelDeletion(thumbprintAlgorithm, thumbprint, options);
     }
 
     public void deleteCertificate(String thumbprintAlgorithm, String thumbprint) throws BatchErrorException, IOException {
@@ -137,47 +137,47 @@ public class CertificateOperations implements IInheritedBehaviors {
     }
 
     public void deleteCertificate(String thumbprintAlgorithm, String thumbprint, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        CertificateDeleteOptions options = new CertificateDeleteOptions();
+        CertificateDeleteOptionsInner options = new CertificateDeleteOptionsInner();
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.getProtocolLayer().getCertificateOperations().delete(thumbprintAlgorithm, thumbprint, options);
+        this._parentBatchClient.getProtocolLayer().certificates().delete(thumbprintAlgorithm, thumbprint, options);
     }
 
-    public Certificate getCertificate(String thumbprintAlgorithm, String thumbprint) throws BatchErrorException, IOException {
+    public CertificateInner getCertificate(String thumbprintAlgorithm, String thumbprint) throws BatchErrorException, IOException {
         return getCertificate(thumbprintAlgorithm, thumbprint, null, null);
     }
 
-    public Certificate getCertificate(String thumbprintAlgorithm, String thumbprint, DetailLevel detailLevel) throws BatchErrorException, IOException {
+    public CertificateInner getCertificate(String thumbprintAlgorithm, String thumbprint, DetailLevel detailLevel) throws BatchErrorException, IOException {
         return getCertificate(thumbprintAlgorithm, thumbprint, detailLevel, null);
     }
 
-    public Certificate getCertificate(String thumbprintAlgorithm, String thumbprint, DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        CertificateGetOptions getCertificateOptions = new CertificateGetOptions();
+    public CertificateInner getCertificate(String thumbprintAlgorithm, String thumbprint, DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+        CertificateGetOptionsInner getCertificateOptions = new CertificateGetOptionsInner();
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(getCertificateOptions);
 
-        ServiceResponseWithHeaders<Certificate, CertificateGetHeaders> response = this._parentBatchClient.getProtocolLayer().getCertificateOperations().get(thumbprintAlgorithm, thumbprint, getCertificateOptions);
+        ServiceResponseWithHeaders<CertificateInner, CertificateGetHeadersInner> response = this._parentBatchClient.getProtocolLayer().certificates().get(thumbprintAlgorithm, thumbprint, getCertificateOptions);
         return response.getBody();
     }
 
-    public List<Certificate> listCertificates() throws BatchErrorException, IOException {
+    public List<CertificateInner> listCertificates() throws BatchErrorException, IOException {
         return listCertificates(null, null);
     }
 
-    public List<Certificate> listCertificates(DetailLevel detailLevel) throws BatchErrorException, IOException {
+    public List<CertificateInner> listCertificates(DetailLevel detailLevel) throws BatchErrorException, IOException {
         return listCertificates(detailLevel, null);
     }
 
-    public List<Certificate> listCertificates(DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+    public List<CertificateInner> listCertificates(DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
 
-        CertificateListOptions certificateListOptions = new CertificateListOptions();
+        CertificateListOptionsInner certificateListOptions = new CertificateListOptionsInner();
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(certificateListOptions);
 
-        ServiceResponseWithHeaders<PagedList<Certificate>, CertificateListHeaders> response = this._parentBatchClient.getProtocolLayer().getCertificateOperations().list(certificateListOptions);
+        ServiceResponseWithHeaders<PagedList<CertificateInner>, CertificateListHeadersInner> response = this._parentBatchClient.getProtocolLayer().certificates().list(certificateListOptions);
 
         return response.getBody();
     }

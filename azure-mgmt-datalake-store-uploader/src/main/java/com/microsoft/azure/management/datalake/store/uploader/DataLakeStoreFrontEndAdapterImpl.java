@@ -6,9 +6,8 @@
 package com.microsoft.azure.management.datalake.store.uploader;
 
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.datalake.store.DataLakeStoreFileSystemManagementClient;
-import com.microsoft.azure.management.datalake.store.models.FileStatusResult;
-
+import com.microsoft.azure.management.datalake.store.implementation.api.DataLakeStoreFileSystemManagementClientImpl;
+import com.microsoft.azure.management.datalake.store.implementation.api.FileStatusResultInner;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
@@ -25,15 +24,15 @@ public class DataLakeStoreFrontEndAdapterImpl implements FrontEndAdapter {
 
     private String _accountName;
 
-    private DataLakeStoreFileSystemManagementClient _client;
+    private DataLakeStoreFileSystemManagementClientImpl _client;
 
     /**
      * Initializes a new instance of the DataLakeStoreFrontEndAdapter adapter.
      *
      * @param accountName The Data Lake Store account name associated with this adapter
-     * @param client the {@link DataLakeStoreFileSystemManagementClient} used by this adapter
+     * @param client the {@link DataLakeStoreFileSystemManagementClientImpl} used by this adapter
      */
-    public DataLakeStoreFrontEndAdapterImpl(String accountName, DataLakeStoreFileSystemManagementClient client) {
+    public DataLakeStoreFrontEndAdapterImpl(String accountName, DataLakeStoreFileSystemManagementClientImpl client) {
         _accountName = accountName;
         _client = client;
     }
@@ -56,7 +55,7 @@ public class DataLakeStoreFrontEndAdapterImpl implements FrontEndAdapter {
             toCreate = new byte[byteCount];
             System.arraycopy(data, 0, toCreate, 0, byteCount);
         }
-        _client.getFileSystemOperations().create(_accountName, streamPath , data, overwrite);
+        _client.fileSystems().create(_accountName, streamPath , data, overwrite);
     }
 
     /**
@@ -68,7 +67,7 @@ public class DataLakeStoreFrontEndAdapterImpl implements FrontEndAdapter {
      * @throws CloudException
      */
     public void DeleteStream(String streamPath, boolean recurse) throws IOException, CloudException {
-        _client.getFileSystemOperations().delete(_accountName, streamPath, recurse);
+        _client.fileSystems().delete(_accountName, streamPath, recurse);
     }
 
     /**
@@ -84,7 +83,7 @@ public class DataLakeStoreFrontEndAdapterImpl implements FrontEndAdapter {
     public void AppendToStream(String streamPath, byte[] data, long offset, int byteCount) throws IOException, CloudException {
         byte[] toAppend = new byte[byteCount];
         System.arraycopy(data, 0, toAppend, 0, byteCount);
-        _client.getFileSystemOperations().append(_accountName, streamPath, toAppend);
+        _client.fileSystems().append(_accountName, streamPath, toAppend);
     }
 
     /**
@@ -97,7 +96,7 @@ public class DataLakeStoreFrontEndAdapterImpl implements FrontEndAdapter {
      */
     public boolean StreamExists(String streamPath) throws CloudException, IOException {
         try {
-            _client.getFileSystemOperations().getFileStatus(_accountName, streamPath);
+            _client.fileSystems().getFileStatus(_accountName, streamPath);
         } catch (CloudException cloudEx) {
             if (cloudEx.getResponse().code() == 404) {
                 return false;
@@ -118,8 +117,8 @@ public class DataLakeStoreFrontEndAdapterImpl implements FrontEndAdapter {
      * @throws CloudException
      */
     public long GetStreamLength(String streamPath) throws IOException, CloudException {
-        FileStatusResult fileInfoResponse = _client.getFileSystemOperations().getFileStatus(_accountName, streamPath).getBody();
-        return fileInfoResponse.getFileStatus().getLength();
+        FileStatusResultInner fileInfoResponse = _client.fileSystems().getFileStatus(_accountName, streamPath).getBody();
+        return fileInfoResponse.fileStatus().length();
     }
 
     /**
@@ -138,6 +137,6 @@ public class DataLakeStoreFrontEndAdapterImpl implements FrontEndAdapter {
         String paths = MessageFormat.format("sources={0}", StringUtils.join(inputStreamPaths, ','));
 
         // For the current implementation, we require UTF8 encoding.
-        _client.getFileSystemOperations().msConcat(_accountName, targetStreamPath, paths.getBytes(StandardCharsets.UTF_8), true);
+        _client.fileSystems().msConcat(_accountName, targetStreamPath, paths.getBytes(StandardCharsets.UTF_8), true);
     }
 }

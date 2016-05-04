@@ -1,13 +1,13 @@
 package com.microsoft.azure.management.storage;
 
-import com.microsoft.azure.management.resources.ResourceManagementClient;
-import com.microsoft.azure.management.resources.ResourceManagementClientImpl;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
-import okhttp3.logging.HttpLoggingInterceptor;
+import com.microsoft.azure.management.resources.implementation.AzureResourceManager;
+import com.microsoft.azure.management.storage.implementation.AzureStorageManager;
 
 public abstract class StorageManagementTestBase {
-    protected static ResourceManagementClient resourceManagementClient;
-    protected static StorageManagementClient storageManagementClient;
+    protected static AzureResourceManager.Authenticated subscriptionClient;
+    protected static AzureResourceManager.Subscription resourceClient;
+    protected static AzureStorageManager.Authenticated storageClient;
 
     public static void createClients() {
         ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(
@@ -15,11 +15,11 @@ public abstract class StorageManagementTestBase {
                 System.getenv("arm.domain"),
                 System.getenv("arm.secret"),
                 null);
-        resourceManagementClient = new ResourceManagementClientImpl(credentials);
-        resourceManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
-        resourceManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);
-        storageManagementClient = new StorageManagementClientImpl(credentials);
-        storageManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
-        storageManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);
+
+        subscriptionClient = AzureResourceManager.authenticate(credentials);
+        resourceClient = subscriptionClient.withSubscription(System.getenv("arm.subscriptionid"));
+        storageClient = AzureStorageManager.authenticate(credentials, System.getenv("arm.subscriptionid"));
+        // resourceManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);
+        // storageManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);
     }
 }

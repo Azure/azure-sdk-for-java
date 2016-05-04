@@ -7,9 +7,9 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure</artifactId>
+    <artifactId>azure-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <relativePath>../azure/pom.xml</relativePath>
+    <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>azure-batch</artifactId>
@@ -49,6 +49,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-runtime</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>commons-codec</groupId>
@@ -63,6 +64,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-authentication</artifactId>
+      <version>1.0.0-beta1</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

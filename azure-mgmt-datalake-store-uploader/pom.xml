@@ -7,9 +7,9 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure</artifactId>
+    <artifactId>azure-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <relativePath>../azure/pom.xml</relativePath>
+    <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>azure-mgmt-datalake-store-uploader</artifactId>

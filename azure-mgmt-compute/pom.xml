@@ -7,9 +7,9 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure</artifactId>
+    <artifactId>azure-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <relativePath>../azure/pom.xml</relativePath>
+    <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>azure-mgmt-compute</artifactId>
@@ -49,23 +49,23 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-runtime</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>azure-mgmt-resources</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
+      <version>1.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>azure-mgmt-storage</artifactId>
-      <version>${project.version}</version>
+      <version>1.0.0-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>azure-mgmt-network</artifactId>
-      <version>${project.version}</version>
+      <version>1.0.0-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -76,6 +76,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-authentication</artifactId>
+      <version>1.0.0-beta1</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

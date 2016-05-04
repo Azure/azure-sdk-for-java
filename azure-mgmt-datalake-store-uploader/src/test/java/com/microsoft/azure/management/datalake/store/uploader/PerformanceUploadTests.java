@@ -6,21 +6,18 @@
 package com.microsoft.azure.management.datalake.store.uploader;
 
 import com.google.common.base.Stopwatch;
-import com.microsoft.azure.management.datalake.store.DataLakeStoreFileSystemManagementClient;
-import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccount;
-import com.microsoft.azure.management.resources.models.ResourceGroup;
-import com.sun.jndi.toolkit.url.Uri;
+import com.microsoft.azure.management.datalake.store.implementation.api.DataLakeStoreAccountInner;
+import com.microsoft.azure.management.datalake.store.implementation.api.DataLakeStoreFileSystemManagementClientImpl;
+import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class PerformanceUploadTests extends DataLakeUploaderTestBase {
@@ -39,16 +36,16 @@ public class PerformanceUploadTests extends DataLakeUploaderTestBase {
     public static void Setup() throws Exception {
         createClients();
 
-        ResourceGroup group = new ResourceGroup();
+        ResourceGroupInner group = new ResourceGroupInner();
         String location = "eastus2";
         group.setLocation(location);
-        resourceManagementClient.getResourceGroupsOperations().createOrUpdate(rgName, group);
+        resourceManagementClient.resourceGroups().createOrUpdate(rgName, group);
 
         // create storage and ADLS accounts, setting the accessKey
-        DataLakeStoreAccount adlsAccount = new DataLakeStoreAccount();
+        DataLakeStoreAccountInner adlsAccount = new DataLakeStoreAccountInner();
         adlsAccount.setLocation(location);
         adlsAccount.setName(adlsAcct);
-        dataLakeStoreAccountManagementClient.getAccountOperations().create(rgName, adlsAcct, adlsAccount);
+        dataLakeStoreAccountManagementClient.accounts().create(rgName, adlsAcct, adlsAccount);
 
         File smallFile = new File(localFileName);
         if (!smallFile.exists()) {
@@ -84,7 +81,7 @@ public class PerformanceUploadTests extends DataLakeUploaderTestBase {
     @AfterClass
     public static void cleanup() throws Exception {
         try {
-            resourceManagementClient.getResourceGroupsOperations().delete(rgName);
+            resourceManagementClient.resourceGroups().delete(rgName);
         }
         catch (Exception e) {
             // ignore failures during cleanup, as it is best effort
@@ -160,7 +157,7 @@ public class PerformanceUploadTests extends DataLakeUploaderTestBase {
         }
     }
 
-    public static boolean UploadFile(DataLakeStoreFileSystemManagementClient dataLakeStoreFileSystemClient, String dlAccountName, String srcPath, String destPath, boolean force) throws Exception {
+    public static boolean UploadFile(DataLakeStoreFileSystemManagementClientImpl dataLakeStoreFileSystemClient, String dlAccountName, String srcPath, String destPath, boolean force) throws Exception {
         UploadParameters parameters = new UploadParameters(srcPath, destPath, dlAccountName, 40, force, false);
         FrontEndAdapter frontend = new DataLakeStoreFrontEndAdapterImpl(dlAccountName, dataLakeStoreFileSystemClient);
         DataLakeStoreUploader uploader = new DataLakeStoreUploader(parameters, frontend);
