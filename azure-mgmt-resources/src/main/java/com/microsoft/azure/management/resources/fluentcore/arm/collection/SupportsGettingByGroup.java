@@ -20,7 +20,11 @@
 
 package com.microsoft.azure.management.resources.fluentcore.arm.collection;
 
+import com.microsoft.azure.CloudException;
+
+import java.io.IOException;
+
 // Requires class to support reading entities with a supplied group name
 public interface SupportsGettingByGroup<T> {
-	T get(String groupName, String name) throws Exception;
+	T get(String groupName, String name) throws CloudException, IOException;
 }

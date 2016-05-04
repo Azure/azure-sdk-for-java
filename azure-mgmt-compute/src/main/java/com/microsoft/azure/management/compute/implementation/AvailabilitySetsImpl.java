@@ -38,14 +38,21 @@ public class AvailabilitySetsImpl implements AvailabilitySets {
     }
 
     @Override
-    public void delete(String groupName, String name) throws Exception {
-        this.client.delete(groupName, name);
-    }
-
-    @Override
-    public AvailabilitySet get(String groupName, String name) throws Exception {
-        ServiceResponse<AvailabilitySetInner> response = this.client.get(groupName, name);
-        return createFluentModel(response.getBody());
+    public PagedList<AvailabilitySet> list() throws CloudException, IOException {
+        return new GroupPagedList<AvailabilitySet>(resourceGroups.list()) {
+            @Override
+            public List<AvailabilitySet> listNextGroup(String resourceGroupName) throws RestException, IOException {
+                PageImpl<AvailabilitySetInner> page = new PageImpl<>();
+                page.setItems(client.list(resourceGroupName).getBody());
+                page.setNextPageLink(null);
+                return converter.convert(new PagedList<AvailabilitySetInner>(page) {
+                    @Override
+                    public Page<AvailabilitySetInner> nextPage(String nextPageLink) throws RestException, IOException {
+                        return null;
+                    }
+                });
+            }
+        };
     }
 
     @Override
@@ -62,6 +69,12 @@ public class AvailabilitySetsImpl implements AvailabilitySets {
     }
 
     @Override
+    public AvailabilitySet get(String groupName, String name) throws CloudException, IOException {
+        ServiceResponse<AvailabilitySetInner> response = this.client.get(groupName, name);
+        return createFluentModel(response.getBody());
+    }
+
+    @Override
     public AvailabilitySet.DefinitionBlank define(String name) throws Exception {
         return createFluentModel(name);
     }
@@ -72,21 +85,8 @@ public class AvailabilitySetsImpl implements AvailabilitySets {
     }
 
     @Override
-    public PagedList<AvailabilitySet> list() throws CloudException, IOException {
-        return new GroupPagedList<AvailabilitySet>(resourceGroups.list()) {
-            @Override
-            public List<AvailabilitySet> listNextGroup(String resourceGroupName) throws RestException, IOException {
-                PageImpl<AvailabilitySetInner> page = new PageImpl<>();
-                page.setItems(client.list(resourceGroupName).getBody());
-                page.setNextPageLink(null);
-                return converter.convert(new PagedList<AvailabilitySetInner>(page) {
-                    @Override
-                    public Page<AvailabilitySetInner> nextPage(String nextPageLink) throws RestException, IOException {
-                        return null;
-                    }
-                });
-            }
-        };
+    public void delete(String groupName, String name) throws Exception {
+        this.client.delete(groupName, name);
     }
 
     /** Fluent model create helpers **/

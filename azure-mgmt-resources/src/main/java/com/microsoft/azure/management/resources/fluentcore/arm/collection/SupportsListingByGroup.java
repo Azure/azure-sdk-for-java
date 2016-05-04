@@ -33,5 +33,5 @@ public interface SupportsListingByGroup<T> {
 	 * @return
 	 * @throws Exception
 	 */
-	PagedList<T> list(String groupName) throws CloudException, IOException;;
+	PagedList<T> list(String groupName) throws CloudException, IOException;
 }
