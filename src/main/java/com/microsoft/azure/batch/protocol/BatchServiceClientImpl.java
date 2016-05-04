@@ -129,67 +129,75 @@ public final class BatchServiceClientImpl extends AzureServiceClient implements 
     }
 
     /**
-     * Gets the Applications object to access its operations.
-     * @return the Applications object.
+     * Gets the ApplicationOperations object to access its operations.
+     * @return the ApplicationOperations object.
      */
-    public Applications applications() {
-        return new ApplicationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public ApplicationOperations getApplicationOperations() {
+        return new ApplicationOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the Pools object to access its operations.
-     * @return the Pools object.
+     * Gets the PoolOperations object to access its operations.
+     * @return the PoolOperations object.
      */
-    public Pools pools() {
-        return new PoolsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public PoolOperations getPoolOperations() {
+        return new PoolOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the Jobs object to access its operations.
-     * @return the Jobs object.
+     * Gets the AccountOperations object to access its operations.
+     * @return the AccountOperations object.
      */
-    public Jobs jobs() {
-        return new JobsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public AccountOperations getAccountOperations() {
+        return new AccountOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the Certificates object to access its operations.
-     * @return the Certificates object.
+     * Gets the JobOperations object to access its operations.
+     * @return the JobOperations object.
      */
-    public Certificates certificates() {
-        return new CertificatesImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public JobOperations getJobOperations() {
+        return new JobOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the Files object to access its operations.
-     * @return the Files object.
+     * Gets the CertificateOperations object to access its operations.
+     * @return the CertificateOperations object.
      */
-    public Files files() {
-        return new FilesImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public CertificateOperations getCertificateOperations() {
+        return new CertificateOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the JobSchedules object to access its operations.
-     * @return the JobSchedules object.
+     * Gets the FileOperations object to access its operations.
+     * @return the FileOperations object.
      */
-    public JobSchedules jobSchedules() {
-        return new JobSchedulesImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public FileOperations getFileOperations() {
+        return new FileOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the Tasks object to access its operations.
-     * @return the Tasks object.
+     * Gets the JobScheduleOperations object to access its operations.
+     * @return the JobScheduleOperations object.
      */
-    public Tasks tasks() {
-        return new TasksImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public JobScheduleOperations getJobScheduleOperations() {
+        return new JobScheduleOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
-     * Gets the ComputeNodes object to access its operations.
-     * @return the ComputeNodes object.
+     * Gets the TaskOperations object to access its operations.
+     * @return the TaskOperations object.
      */
-    public ComputeNodes computeNodes() {
-        return new ComputeNodesImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    public TaskOperations getTaskOperations() {
+        return new TaskOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
+    }
+
+    /**
+     * Gets the ComputeNodeOperations object to access its operations.
+     * @return the ComputeNodeOperations object.
+     */
+    public ComputeNodeOperations getComputeNodeOperations() {
+        return new ComputeNodeOperationsImpl(this.retrofitBuilder.client(clientBuilder.build()).build(), this);
     }
 
     /**
@@ -231,7 +239,7 @@ public final class BatchServiceClientImpl extends AzureServiceClient implements 
 
     @Override
     protected void initialize() {
-        this.apiVersion = "2015-12-01.2.2";
+        this.apiVersion = "2016-02-01.3.0";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;

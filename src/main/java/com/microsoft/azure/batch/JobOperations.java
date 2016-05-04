@@ -43,6 +43,20 @@ public class JobOperations implements IInheritedBehaviors {
         this._customBehaviors = behaviors;
     }
 
+    public JobStatistics getAllJobsLifetimeStatistics() throws BatchErrorException, IOException {
+        return getAllJobsLifetimeStatistics(null);
+    }
+
+    public JobStatistics getAllJobsLifetimeStatistics(Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+        JobGetAllJobsLifetimeStatisticsOptions options = new JobGetAllJobsLifetimeStatisticsOptions();
+        BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
+        bhMgr.applyRequestBehaviors(options);
+
+        ServiceResponseWithHeaders<JobStatistics, JobGetAllJobsLifetimeStatisticsHeaders> response = this._parentBatchClient.getProtocolLayer().getJobOperations().getAllJobsLifetimeStatistics(options);
+
+        return response.getBody();
+    }
+
     public CloudJob getJob(String jobId) throws BatchErrorException, IOException {
         return getJob(jobId, null, null);
     }

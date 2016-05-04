@@ -63,7 +63,7 @@ public class JobAddParameter {
     private List<EnvironmentSetting> commonEnvironmentSettings;
 
     /**
-     * Gets or sets the pool on which the Batch service runs the jobâ€™s tasks.
+     * Gets or sets the pool on which the Batch service runs the job’s tasks.
      */
     @JsonProperty(required = true)
     private PoolInformation poolInfo;

@@ -8,7 +8,6 @@ package com.microsoft.azure.batch;
 
 import com.microsoft.azure.batch.auth.BatchSharedKeyCredentials;
 import com.microsoft.azure.batch.interceptor.ClientRequestIdInterceptor;
-import com.microsoft.azure.batch.protocol.BatchCredentials;
 import com.microsoft.azure.batch.protocol.BatchServiceClient;
 import com.microsoft.azure.batch.protocol.BatchServiceClientImpl;
 
@@ -26,6 +25,7 @@ public class BatchClient {
     private FileOperations fileOperations;
     private ComputeNodeOperations computeNodeOperations;
     private ApplicationOperations applicationOperations;
+    private AccountOperations accountOperations;
     private Collection<BatchClientBehavior> customBehaviors;
 
     public BatchServiceClient getProtocolLayer() {
@@ -33,8 +33,7 @@ public class BatchClient {
     }
 
     private BatchClient(BatchSharedKeyCredentials credentials) {
-        BatchCredentials cred = new BatchCredentials(credentials.getAccountName(), credentials.getKeyValue());
-        this.protocolLayer = new BatchServiceClientImpl(credentials.getBaseUrl(), cred);
+        this.protocolLayer = new BatchServiceClientImpl(credentials.getBaseUrl(), credentials);
         this.customBehaviors = new LinkedList<>();
         this.customBehaviors.add(new ClientRequestIdInterceptor());
         this.certificateOperations = new CertificateOperations(this, getCustomBehaviors());
@@ -44,6 +43,7 @@ public class BatchClient {
         this.poolOperations = new PoolOperations(this, getCustomBehaviors());
         this.fileOperations = new FileOperations(this, getCustomBehaviors());
         this.applicationOperations = new ApplicationOperations(this, getCustomBehaviors());
+        this.accountOperations = new AccountOperations(this, getCustomBehaviors());
         this.computeNodeOperations = new ComputeNodeOperations(this, getCustomBehaviors());
     }
 
@@ -81,6 +81,10 @@ public class BatchClient {
 
     public ApplicationOperations getApplicationOperations() {
         return applicationOperations;
+    }
+
+    public AccountOperations getAccountOperations() {
+        return accountOperations;
     }
 
     public Collection<BatchClientBehavior> getCustomBehaviors() {

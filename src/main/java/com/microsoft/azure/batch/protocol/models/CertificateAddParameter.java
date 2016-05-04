@@ -28,16 +28,16 @@ public class CertificateAddParameter {
     private String thumbprintAlgorithm;
 
     /**
-     * Gets or sets the base64-encoded contents of the .pfx file containing
-     * the certificate. The maximum size is 10KB. This property is not
-     * populated by the Get Certificate operation.
+     * Gets or sets the base64-encoded contents of the certificate. The
+     * maximum size is 10KB. This property is not populated by the Get
+     * Certificate operation.
      */
     @JsonProperty(required = true)
     private String data;
 
     /**
-     * Gets or sets the format of the certificate data. This must be pfx.
-     * Possible values include: 'pfx', 'cer', 'unmapped'.
+     * Gets or sets the format of the certificate data. Possible values
+     * include: 'pfx', 'cer', 'unmapped'.
      */
     private CertificateFormat certificateFormat;
 

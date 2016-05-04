@@ -58,6 +58,12 @@ public class FileGetNodeFilePropertiesFromComputeNodeHeaders {
     private String ocpBatchFileUrl;
 
     /**
+     * Gets the file mode attribute in octal format.
+     */
+    @JsonProperty(value = "ocp-batch-file-mode")
+    private String ocpBatchFileMode;
+
+    /**
      * Gets the content type of the file.
      */
     @JsonProperty(value = "Content-Type")
@@ -199,6 +205,24 @@ public class FileGetNodeFilePropertiesFromComputeNodeHeaders {
      */
     public void setOcpBatchFileUrl(String ocpBatchFileUrl) {
         this.ocpBatchFileUrl = ocpBatchFileUrl;
+    }
+
+    /**
+     * Get the ocpBatchFileMode value.
+     *
+     * @return the ocpBatchFileMode value
+     */
+    public String getOcpBatchFileMode() {
+        return this.ocpBatchFileMode;
+    }
+
+    /**
+     * Set the ocpBatchFileMode value.
+     *
+     * @param ocpBatchFileMode the ocpBatchFileMode value to set
+     */
+    public void setOcpBatchFileMode(String ocpBatchFileMode) {
+        this.ocpBatchFileMode = ocpBatchFileMode;
     }
 
     /**

@@ -12,6 +12,10 @@ import com.microsoft.azure.batch.protocol.models.BatchErrorException;
 import com.microsoft.azure.batch.protocol.models.CloudTask;
 import com.microsoft.azure.batch.protocol.models.CloudTaskListSubtasksResult;
 import com.microsoft.azure.batch.protocol.models.PageImpl;
+import com.microsoft.azure.batch.protocol.models.TaskAddCollectionHeaders;
+import com.microsoft.azure.batch.protocol.models.TaskAddCollectionOptions;
+import com.microsoft.azure.batch.protocol.models.TaskAddCollectionParameter;
+import com.microsoft.azure.batch.protocol.models.TaskAddCollectionResult;
 import com.microsoft.azure.batch.protocol.models.TaskAddHeaders;
 import com.microsoft.azure.batch.protocol.models.TaskAddOptions;
 import com.microsoft.azure.batch.protocol.models.TaskAddParameter;
@@ -34,6 +38,7 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.DateTimeRfc1123;
+import com.microsoft.rest.serializer.CollectionFormat;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -90,6 +95,10 @@ public final class TasksImpl implements Tasks {
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @GET("jobs/{jobId}/tasks")
         Call<ResponseBody> list(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("$select") String select, @Query("$expand") String expand, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate);
+
+        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @POST("jobs/{jobId}/addtaskcollection")
+        Call<ResponseBody> addCollection(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Body TaskAddCollectionParameter taskCollection);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @HTTP(path = "jobs/{jobId}/tasks/{taskId}", method = "DELETE", hasBody = true)
@@ -561,6 +570,207 @@ public final class TasksImpl implements Tasks {
                 .register(200, new TypeToken<PageImpl<CloudTask>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, TaskListHeaders.class);
+    }
+
+    /**
+     * Adds a collection of tasks to the specified job.
+     *
+     * @param jobId The id of the job to which the task collection is to be added.
+     * @param value The collection of tasks to add.
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the TaskAddCollectionResult object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public ServiceResponseWithHeaders<TaskAddCollectionResult, TaskAddCollectionHeaders> addCollection(String jobId, List<TaskAddParameter> value) throws BatchErrorException, IOException, IllegalArgumentException {
+        if (jobId == null) {
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        if (value == null) {
+            throw new IllegalArgumentException("Parameter value is required and cannot be null.");
+        }
+        Validator.validate(value);
+        final TaskAddCollectionOptions taskAddCollectionOptions = null;
+        Integer timeout = null;
+        String clientRequestId = null;
+        Boolean returnClientRequestId = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        TaskAddCollectionParameter taskCollection = new TaskAddCollectionParameter();
+        taskCollection.setValue(value);
+        Call<ResponseBody> call = service.addCollection(jobId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, taskCollection);
+        return addCollectionDelegate(call.execute());
+    }
+
+    /**
+     * Adds a collection of tasks to the specified job.
+     *
+     * @param jobId The id of the job to which the task collection is to be added.
+     * @param value The collection of tasks to add.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall addCollectionAsync(String jobId, List<TaskAddParameter> value, final ServiceCallback<TaskAddCollectionResult> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (jobId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        if (value == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter value is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(value, serviceCallback);
+        final TaskAddCollectionOptions taskAddCollectionOptions = null;
+        Integer timeout = null;
+        String clientRequestId = null;
+        Boolean returnClientRequestId = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        TaskAddCollectionParameter taskCollection = new TaskAddCollectionParameter();
+        taskCollection.setValue(value);
+        Call<ResponseBody> call = service.addCollection(jobId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, taskCollection);
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<TaskAddCollectionResult>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(addCollectionDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Adds a collection of tasks to the specified job.
+     *
+     * @param jobId The id of the job to which the task collection is to be added.
+     * @param value The collection of tasks to add.
+     * @param taskAddCollectionOptions Additional parameters for the operation
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the TaskAddCollectionResult object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public ServiceResponseWithHeaders<TaskAddCollectionResult, TaskAddCollectionHeaders> addCollection(String jobId, List<TaskAddParameter> value, TaskAddCollectionOptions taskAddCollectionOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+        if (jobId == null) {
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
+        }
+        if (this.client.getApiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null.");
+        }
+        if (value == null) {
+            throw new IllegalArgumentException("Parameter value is required and cannot be null.");
+        }
+        Validator.validate(value);
+        Validator.validate(taskAddCollectionOptions);
+        Integer timeout = null;
+        if (taskAddCollectionOptions != null) {
+            timeout = taskAddCollectionOptions.getTimeout();
+        }
+        String clientRequestId = null;
+        if (taskAddCollectionOptions != null) {
+            clientRequestId = taskAddCollectionOptions.getClientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (taskAddCollectionOptions != null) {
+            returnClientRequestId = taskAddCollectionOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (taskAddCollectionOptions != null) {
+            ocpDate = taskAddCollectionOptions.getOcpDate();
+        }
+        TaskAddCollectionParameter taskCollection = new TaskAddCollectionParameter();
+        taskCollection.setValue(value);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.addCollection(jobId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, taskCollection);
+        return addCollectionDelegate(call.execute());
+    }
+
+    /**
+     * Adds a collection of tasks to the specified job.
+     *
+     * @param jobId The id of the job to which the task collection is to be added.
+     * @param value The collection of tasks to add.
+     * @param taskAddCollectionOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall addCollectionAsync(String jobId, List<TaskAddParameter> value, TaskAddCollectionOptions taskAddCollectionOptions, final ServiceCallback<TaskAddCollectionResult> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (jobId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
+            return null;
+        }
+        if (this.client.getApiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.getApiVersion() is required and cannot be null."));
+            return null;
+        }
+        if (value == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter value is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(value, serviceCallback);
+        Validator.validate(taskAddCollectionOptions, serviceCallback);
+        Integer timeout = null;
+        if (taskAddCollectionOptions != null) {
+            timeout = taskAddCollectionOptions.getTimeout();
+        }
+        String clientRequestId = null;
+        if (taskAddCollectionOptions != null) {
+            clientRequestId = taskAddCollectionOptions.getClientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (taskAddCollectionOptions != null) {
+            returnClientRequestId = taskAddCollectionOptions.getReturnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (taskAddCollectionOptions != null) {
+            ocpDate = taskAddCollectionOptions.getOcpDate();
+        }
+        TaskAddCollectionParameter taskCollection = new TaskAddCollectionParameter();
+        taskCollection.setValue(value);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.addCollection(jobId, this.client.getApiVersion(), this.client.getAcceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, taskCollection);
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<TaskAddCollectionResult>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(addCollectionDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponseWithHeaders<TaskAddCollectionResult, TaskAddCollectionHeaders> addCollectionDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<TaskAddCollectionResult, BatchErrorException>(this.client.getMapperAdapter())
+                .register(200, new TypeToken<TaskAddCollectionResult>() { }.getType())
+                .registerError(BatchErrorException.class)
+                .buildWithHeaders(response, TaskAddCollectionHeaders.class);
     }
 
     /**

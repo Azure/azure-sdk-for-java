@@ -339,7 +339,7 @@ public final class FilesImpl implements Files {
     }
 
     /**
-     * Gets the content of the specified task file.
+     * Returns the content of the specified task file.
      *
      * @param jobId The id of the job that contains the task.
      * @param taskId The id of the task whose file you want to retrieve.
@@ -375,7 +375,7 @@ public final class FilesImpl implements Files {
     }
 
     /**
-     * Gets the content of the specified task file.
+     * Returns the content of the specified task file.
      *
      * @param jobId The id of the job that contains the task.
      * @param taskId The id of the task whose file you want to retrieve.
@@ -428,7 +428,7 @@ public final class FilesImpl implements Files {
     }
 
     /**
-     * Gets the content of the specified task file.
+     * Returns the content of the specified task file.
      *
      * @param jobId The id of the job that contains the task.
      * @param taskId The id of the task whose file you want to retrieve.
@@ -498,7 +498,7 @@ public final class FilesImpl implements Files {
     }
 
     /**
-     * Gets the content of the specified task file.
+     * Returns the content of the specified task file.
      *
      * @param jobId The id of the job that contains the task.
      * @param taskId The id of the task whose file you want to retrieve.
@@ -1046,7 +1046,7 @@ public final class FilesImpl implements Files {
     }
 
     /**
-     * Gets the content of the specified task file.
+     * Returns the content of the specified task file.
      *
      * @param poolId The id of the pool that contains the compute node.
      * @param nodeId The id of the compute node that contains the file.
@@ -1082,7 +1082,7 @@ public final class FilesImpl implements Files {
     }
 
     /**
-     * Gets the content of the specified task file.
+     * Returns the content of the specified task file.
      *
      * @param poolId The id of the pool that contains the compute node.
      * @param nodeId The id of the compute node that contains the file.
@@ -1135,7 +1135,7 @@ public final class FilesImpl implements Files {
     }
 
     /**
-     * Gets the content of the specified task file.
+     * Returns the content of the specified task file.
      *
      * @param poolId The id of the pool that contains the compute node.
      * @param nodeId The id of the compute node that contains the file.
@@ -1205,7 +1205,7 @@ public final class FilesImpl implements Files {
     }
 
     /**
-     * Gets the content of the specified task file.
+     * Returns the content of the specified task file.
      *
      * @param poolId The id of the pool that contains the compute node.
      * @param nodeId The id of the compute node that contains the file.
