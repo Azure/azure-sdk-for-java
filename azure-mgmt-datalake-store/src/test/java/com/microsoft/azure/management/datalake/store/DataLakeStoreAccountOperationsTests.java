@@ -1,7 +1,7 @@
 package com.microsoft.azure.management.datalake.store;
 
-import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccount;
-import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccountProperties;
+import com.microsoft.azure.management.datalake.store.implementation.api.DataLakeStoreAccountInner;
+import com.microsoft.azure.management.datalake.store.implementation.api.DataLakeStoreAccountProperties;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -37,78 +37,78 @@ public class DataLakeStoreAccountOperationsTests extends DataLakeStoreManagement
     public void canCreateGetUpdateDeleteAdlsAccount() throws Exception {
         // Create
         DataLakeStoreAccountProperties createProperties = new DataLakeStoreAccountProperties();
-        
-        DataLakeStoreAccount createParams = new DataLakeStoreAccount();
+
+        DataLakeStoreAccountInner createParams = new DataLakeStoreAccountInner();
         createParams.setLocation(location);
         createParams.setName(adlsAcct);
         createParams.setProperties(createProperties);
         createParams.setTags(new HashMap<String, String>());
-        createParams.getTags().put("testkey", "testvalue");
+        createParams.tags().put("testkey", "testvalue");
 
-        DataLakeStoreAccount createResponse = dataLakeStoreAccountManagementClient.accounts().create(rgName, adlsAcct, createParams).getBody();
-        Assert.assertEquals(location, createResponse.getLocation());
-        Assert.assertEquals("Microsoft.DataLakeStore/accounts", createResponse.getType());
-        Assert.assertNotNull(createResponse.getId());
-        Assert.assertTrue(createResponse.getId().contains(adlsAcct));
-        Assert.assertEquals(1, createResponse.getTags().size());
+        DataLakeStoreAccountInner createResponse = dataLakeStoreAccountManagementClient.accounts().create(rgName, adlsAcct, createParams).getBody();
+        Assert.assertEquals(location, createResponse.location());
+        Assert.assertEquals("Microsoft.DataLakeStore/accounts", createResponse.type());
+        Assert.assertNotNull(createResponse.id());
+        Assert.assertTrue(createResponse.id().contains(adlsAcct));
+        Assert.assertEquals(1, createResponse.tags().size());
 
         // update the tags
-        createParams.getTags().put("testkey2", "testvalue2");
+        createParams.tags().put("testkey2", "testvalue2");
         createParams.setProperties(null);
-        DataLakeStoreAccount updateResponse = dataLakeStoreAccountManagementClient.accounts().update(rgName, adlsAcct, createParams).getBody();
-        Assert.assertEquals(location, updateResponse.getLocation());
-        Assert.assertEquals("Microsoft.DataLakeStore/accounts", updateResponse.getType());
-        Assert.assertNotNull(updateResponse.getId());
-        Assert.assertTrue(updateResponse.getId().contains(adlsAcct));
-        Assert.assertEquals(2, updateResponse.getTags().size());
+        DataLakeStoreAccountInner updateResponse = dataLakeStoreAccountManagementClient.accounts().update(rgName, adlsAcct, createParams).getBody();
+        Assert.assertEquals(location, updateResponse.location());
+        Assert.assertEquals("Microsoft.DataLakeStore/accounts", updateResponse.type());
+        Assert.assertNotNull(updateResponse.id());
+        Assert.assertTrue(updateResponse.id().contains(adlsAcct));
+        Assert.assertEquals(2, updateResponse.tags().size());
 
         // get the account
-        DataLakeStoreAccount getResponse = dataLakeStoreAccountManagementClient.accounts().get(rgName, adlsAcct).getBody();
-        Assert.assertEquals(location, getResponse.getLocation());
-        Assert.assertEquals("Microsoft.DataLakeStore/accounts", getResponse.getType());
-        Assert.assertNotNull(getResponse.getId());
-        Assert.assertTrue(getResponse.getId().contains(adlsAcct));
-        Assert.assertEquals(2, getResponse.getTags().size());
+        DataLakeStoreAccountInner getResponse = dataLakeStoreAccountManagementClient.accounts().get(rgName, adlsAcct).getBody();
+        Assert.assertEquals(location, getResponse.location());
+        Assert.assertEquals("Microsoft.DataLakeStore/accounts", getResponse.type());
+        Assert.assertNotNull(getResponse.id());
+        Assert.assertTrue(getResponse.id().contains(adlsAcct));
+        Assert.assertEquals(2, getResponse.tags().size());
 
         // list all accounts and make sure there is one.
-        List<DataLakeStoreAccount> listResult = dataLakeStoreAccountManagementClient.accounts().list().getBody();
-        DataLakeStoreAccount discoveredAcct = null;
-        for (DataLakeStoreAccount acct : listResult) {
-            if (acct.getName().equals(adlsAcct)) {
+        List<DataLakeStoreAccountInner> listResult = dataLakeStoreAccountManagementClient.accounts().list().getBody();
+        DataLakeStoreAccountInner discoveredAcct = null;
+        for (DataLakeStoreAccountInner acct : listResult) {
+            if (acct.name().equals(adlsAcct)) {
                 discoveredAcct = acct;
                 break;
             }
         }
 
         Assert.assertNotNull(discoveredAcct);
-        Assert.assertEquals(location, discoveredAcct.getLocation());
-        Assert.assertEquals("Microsoft.DataLakeStore/accounts", discoveredAcct.getType());
-        Assert.assertNotNull(discoveredAcct.getId());
-        Assert.assertTrue(discoveredAcct.getId().contains(adlsAcct));
-        Assert.assertEquals(2, discoveredAcct.getTags().size());
+        Assert.assertEquals(location, discoveredAcct.location());
+        Assert.assertEquals("Microsoft.DataLakeStore/accounts", discoveredAcct.type());
+        Assert.assertNotNull(discoveredAcct.id());
+        Assert.assertTrue(discoveredAcct.id().contains(adlsAcct));
+        Assert.assertEquals(2, discoveredAcct.tags().size());
 
         // the properties should be empty when we do list calls
-        Assert.assertNull(discoveredAcct.getProperties().getDefaultGroup());
+        Assert.assertNull(discoveredAcct.properties().defaultGroup());
 
         // list within a resource group
         listResult = dataLakeStoreAccountManagementClient.accounts().listByResourceGroup(rgName).getBody();
         discoveredAcct = null;
-        for (DataLakeStoreAccount acct : listResult) {
-            if (acct.getName().equals(adlsAcct)) {
+        for (DataLakeStoreAccountInner acct : listResult) {
+            if (acct.name().equals(adlsAcct)) {
                 discoveredAcct = acct;
                 break;
             }
         }
 
         Assert.assertNotNull(discoveredAcct);
-        Assert.assertEquals(location, discoveredAcct.getLocation());
-        Assert.assertEquals("Microsoft.DataLakeStore/accounts", discoveredAcct.getType());
-        Assert.assertNotNull(discoveredAcct.getId());
-        Assert.assertTrue(discoveredAcct.getId().contains(adlsAcct));
-        Assert.assertEquals(2, discoveredAcct.getTags().size());
+        Assert.assertEquals(location, discoveredAcct.location());
+        Assert.assertEquals("Microsoft.DataLakeStore/accounts", discoveredAcct.type());
+        Assert.assertNotNull(discoveredAcct.id());
+        Assert.assertTrue(discoveredAcct.id().contains(adlsAcct));
+        Assert.assertEquals(2, discoveredAcct.tags().size());
 
         // the properties should be empty when we do list calls
-        Assert.assertNull(discoveredAcct.getProperties().getDefaultGroup());
+        Assert.assertNull(discoveredAcct.properties().defaultGroup());
 
         // Delete the ADLS account
         dataLakeStoreAccountManagementClient.accounts().delete(rgName, adlsAcct);
