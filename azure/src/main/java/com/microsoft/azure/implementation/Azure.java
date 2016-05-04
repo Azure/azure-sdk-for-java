@@ -14,10 +14,6 @@ import com.microsoft.azure.management.resources.Tenants;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigureBase;
 import com.microsoft.azure.management.resources.fluentcore.collection.*;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
-import com.microsoft.azure.management.resources.implementation.SubscriptionsImpl;
-import com.microsoft.azure.management.resources.implementation.TenantsImpl;
-import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
-import com.microsoft.azure.management.resources.implementation.api.SubscriptionClientImpl;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.rest.RestClient;
@@ -26,7 +22,7 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 public final class Azure {
     private final RestClient restClient;
     // The service specific managers
-    ResourceManager resourceManager;
+    ResourceManager.Authenticated resourceManager;
 
     public static Configure configure() {
         return new AzureConfigureImpl();
@@ -90,7 +86,7 @@ public final class Azure {
         return new AzureSubscriptionImpl(restClient, subscriptionId);
     }
 
-    private ResourceManager resourceManager() {
+    private ResourceManager.Authenticated resourceManager() {
         if (resourceManager == null) {
             resourceManager = ResourceManager.authenticate(this.restClient);
         }

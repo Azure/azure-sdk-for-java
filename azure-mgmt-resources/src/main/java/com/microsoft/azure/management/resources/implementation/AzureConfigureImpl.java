@@ -6,7 +6,7 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 final class AzureConfigureImpl extends AzureConfigureBaseImpl<ResourceManager.Configure>
         implements ResourceManager.Configure {
     @Override
-    public ResourceManager authenticate(ServiceClientCredentials credentials) {
+    public ResourceManager.Authenticated authenticate(ServiceClientCredentials credentials) {
         this.restClient = this.restClientBuilder.withCredentials(credentials).build();
         return ResourceManager.authenticate(this.restClient);
     }

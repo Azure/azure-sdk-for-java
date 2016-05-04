@@ -7,7 +7,7 @@ import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
 public class StorageResourceConnector extends ResourceConnectorBase<StorageResourceConnector> {
-    StorageManager.Subscription storageClient;
+    StorageManager storageClient;
     private StorageAccounts.InGroup storageAccounts;
 
     private StorageResourceConnector(ServiceClientCredentials credentials, String subscriptionId,  ResourceGroup resourceGroup) {
@@ -31,11 +31,10 @@ public class StorageResourceConnector extends ResourceConnectorBase<StorageResou
         return storageAccounts;
     }
 
-    private StorageManager.Subscription storageClient() {
+    private StorageManager storageClient() {
         if (storageClient == null) {
             storageClient = StorageManager
-                    .authenticate(this.credentials())
-                    .withSubscription(this.subscriptionId());
+                    .authenticate(this.credentials(), this.subscriptionId());
         }
         return storageClient;
     }

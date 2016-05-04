@@ -5,9 +5,8 @@ import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 
 public abstract class StorageManagementTestBase {
-    protected static ResourceManager resourceManager;
-    protected static ResourceManager.Subscription resourceClient;
-    protected static StorageManager.Subscription storageClient;
+    protected static ResourceManager resourceClient;
+    protected static StorageManager storageClient;
 
     public static void createClients() {
         ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(
@@ -16,15 +15,12 @@ public abstract class StorageManagementTestBase {
                 System.getenv("arm.secret"),
                 null);
 
-        resourceManager = ResourceManager
-                .authenticate(credentials);
-
-        resourceClient = resourceManager.
-                withSubscription(System.getenv("arm.subscriptionid"));
+        resourceClient = ResourceManager
+                .authenticate(credentials)
+                .useSubscription(System.getenv("arm.subscriptionid"));
 
         storageClient = StorageManager.
-                authenticate(credentials).
-                withSubscription(System.getenv("arm.subscriptionid"));
+                authenticate(credentials, System.getenv("arm.subscriptionid"));
 
         // resourceManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);
         // storageManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);
