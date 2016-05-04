@@ -2,18 +2,19 @@ package com.microsoft.azure.management.datalake.analytics;
 
 import com.microsoft.azure.credentials.AzureEnvironment;
 import com.microsoft.azure.credentials.UserTokenCredentials;
-import com.microsoft.azure.management.datalake.analytics.models.JobInformation;
-import com.microsoft.azure.management.datalake.analytics.models.JobResult;
-import com.microsoft.azure.management.datalake.analytics.models.JobState;
-import com.microsoft.azure.management.datalake.analytics.models.JobType;
-import com.microsoft.azure.management.datalake.analytics.models.USqlJobProperties;
-import com.microsoft.azure.management.datalake.store.DataLakeStoreAccountManagementClient;
-import com.microsoft.azure.management.datalake.store.DataLakeStoreAccountManagementClientImpl;
-import com.microsoft.azure.management.resources.ResourceManagementClient;
-import com.microsoft.azure.management.resources.ResourceManagementClientImpl;
-import com.microsoft.azure.management.storage.StorageManagementClient;
-import com.microsoft.azure.management.storage.StorageManagementClientImpl;
+import com.microsoft.azure.management.datalake.analytics.implementation.api.DataLakeAnalyticsAccountManagementClientImpl;
+import com.microsoft.azure.management.datalake.analytics.implementation.api.DataLakeAnalyticsCatalogManagementClientImpl;
+import com.microsoft.azure.management.datalake.analytics.implementation.api.DataLakeAnalyticsJobManagementClientImpl;
+import com.microsoft.azure.management.datalake.analytics.implementation.api.JobInformationInner;
+import com.microsoft.azure.management.datalake.analytics.implementation.api.JobResult;
+import com.microsoft.azure.management.datalake.analytics.implementation.api.JobState;
+import com.microsoft.azure.management.datalake.analytics.implementation.api.JobType;
+import com.microsoft.azure.management.datalake.analytics.implementation.api.USqlJobProperties;
+import com.microsoft.azure.management.datalake.store.implementation.api.DataLakeStoreAccountManagementClientImpl;
+import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
+import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
 
+import com.microsoft.rest.RestClient;
 import org.junit.Assert;
 
 import java.text.MessageFormat;
@@ -25,12 +26,12 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 
 public abstract class DataLakeAnalyticsManagementTestBase {
-    protected static DataLakeAnalyticsAccountManagementClient dataLakeAnalyticsAccountManagementClient;
-    protected static DataLakeAnalyticsJobManagementClient dataLakeAnalyticsJobManagementClient;
-    protected static DataLakeAnalyticsCatalogManagementClient dataLakeAnalyticsCatalogManagementClient;
-    protected static ResourceManagementClient resourceManagementClient;
-    protected static DataLakeStoreAccountManagementClient dataLakeStoreAccountManagementClient;
-    protected static StorageManagementClient storageManagementClient;
+    protected static DataLakeAnalyticsAccountManagementClientImpl dataLakeAnalyticsAccountManagementClient;
+    protected static DataLakeAnalyticsJobManagementClientImpl dataLakeAnalyticsJobManagementClient;
+    protected static DataLakeAnalyticsCatalogManagementClientImpl dataLakeAnalyticsCatalogManagementClient;
+    protected static ResourceManagementClientImpl resourceManagementClient;
+    protected static DataLakeStoreAccountManagementClientImpl dataLakeStoreAccountManagementClient;
+    protected static StorageManagementClientImpl storageManagementClient;
     protected static String environmentLocation;
     public static void createClients() {
         String environment = System.getenv("arm.environmentType");
@@ -70,33 +71,35 @@ public abstract class DataLakeAnalyticsManagementTestBase {
                 null,
                 authEnv);
 
-        dataLakeAnalyticsAccountManagementClient = new DataLakeAnalyticsAccountManagementClientImpl(armUri, credentials);
-        dataLakeAnalyticsAccountManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);
+        RestClient restClient = new RestClient.Builder(armUri)
+                .withCredentials(credentials)
+                .withLogLevel(HttpLoggingInterceptor.Level.BODY)
+                .build();
+        dataLakeAnalyticsAccountManagementClient = new DataLakeAnalyticsAccountManagementClientImpl(restClient);
         dataLakeAnalyticsAccountManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
-        dataLakeAnalyticsJobManagementClient = new DataLakeAnalyticsJobManagementClientImpl(credentials, new OkHttpClient.Builder().readTimeout(5, TimeUnit.MINUTES), new Retrofit.Builder());
-        dataLakeAnalyticsJobManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);
+        RestClient restClientWithTimeout = new RestClient.Builder(armUri, new OkHttpClient.Builder().readTimeout(5, TimeUnit.MINUTES), new Retrofit.Builder())
+                .withCredentials(credentials)
+                .withLogLevel(HttpLoggingInterceptor.Level.BODY)
+                .build();
+        dataLakeAnalyticsJobManagementClient = new DataLakeAnalyticsJobManagementClientImpl(restClientWithTimeout);
         dataLakeAnalyticsJobManagementClient.setAdlaJobDnsSuffix(adlaSuffix);
 
-        dataLakeAnalyticsCatalogManagementClient = new DataLakeAnalyticsCatalogManagementClientImpl(credentials);
-        dataLakeAnalyticsCatalogManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);
+        dataLakeAnalyticsCatalogManagementClient = new DataLakeAnalyticsCatalogManagementClientImpl(restClient);
         dataLakeAnalyticsCatalogManagementClient.setAdlaCatalogDnsSuffix(adlaSuffix);
 
         resourceManagementClient = new ResourceManagementClientImpl(armUri, credentials);
         resourceManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
-        resourceManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);
 
-        dataLakeStoreAccountManagementClient = new DataLakeStoreAccountManagementClientImpl(armUri, credentials);
-        dataLakeStoreAccountManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);
+        dataLakeStoreAccountManagementClient = new DataLakeStoreAccountManagementClientImpl(restClient);
         dataLakeStoreAccountManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
 
-        storageManagementClient = new StorageManagementClientImpl(armUri, credentials);
-        storageManagementClient.setLogLevel(HttpLoggingInterceptor.Level.BODY);
+        storageManagementClient = new StorageManagementClientImpl(restClient);
         storageManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
     }
 
-    public static void runJobToCompletion(DataLakeAnalyticsJobManagementClient jobClient, String adlaAcct, UUID jobId, String scriptToRun) throws Exception {
+    public static void runJobToCompletion(DataLakeAnalyticsJobManagementClientImpl jobClient, String adlaAcct, UUID jobId, String scriptToRun) throws Exception {
         // submit a job
-        JobInformation jobToSubmit = new JobInformation();
+        JobInformationInner jobToSubmit = new JobInformationInner();
         USqlJobProperties jobProperties = new USqlJobProperties();
         jobProperties.setScript(scriptToRun);
         jobToSubmit.setName("java azure sdk data lake analytics job");
@@ -104,21 +107,21 @@ public abstract class DataLakeAnalyticsManagementTestBase {
         jobToSubmit.setType(JobType.USQL);
         jobToSubmit.setProperties(jobProperties);
 
-        JobInformation jobCreateResponse = jobClient.getJobOperations().create(adlaAcct, jobId, jobToSubmit).getBody();
+        JobInformationInner jobCreateResponse = jobClient.jobs().create(adlaAcct, jobId, jobToSubmit).getBody();
         Assert.assertNotNull(jobCreateResponse);
 
-        JobInformation getJobResponse = jobClient.getJobOperations().get(adlaAcct, jobCreateResponse.getJobId()).getBody();
+        JobInformationInner getJobResponse = jobClient.jobs().get(adlaAcct, jobCreateResponse.jobId()).getBody();
         Assert.assertNotNull(getJobResponse);
 
         int maxWaitInSeconds = 2700; // giving it 45 minutes for now.
         int curWaitInSeconds = 0;
 
-        while (getJobResponse.getState() != JobState.ENDED && curWaitInSeconds < maxWaitInSeconds)
+        while (getJobResponse.state() != JobState.ENDED && curWaitInSeconds < maxWaitInSeconds)
         {
             // wait 5 seconds before polling again
             Thread.sleep(5000);
             curWaitInSeconds += 5;
-            getJobResponse = jobClient.getJobOperations().get(adlaAcct, jobCreateResponse.getJobId()).getBody();
+            getJobResponse = jobClient.jobs().get(adlaAcct, jobCreateResponse.jobId()).getBody();
             Assert.assertNotNull(getJobResponse);
         }
 
@@ -127,8 +130,8 @@ public abstract class DataLakeAnalyticsManagementTestBase {
         // Verify the job completes successfully
         Assert.assertTrue(
                 MessageFormat.format("Job: {0} did not return success. Current job state: {1}. Actual result: {2}. Error (if any): {3}",
-                        getJobResponse.getJobId(), getJobResponse.getState(), getJobResponse.getResult(), getJobResponse.getErrorMessage()),
-                getJobResponse.getState() == JobState.ENDED && getJobResponse.getResult() == JobResult.SUCCEEDED);
+                        getJobResponse.jobId(), getJobResponse.state(), getJobResponse.result(), getJobResponse.errorMessage()),
+                getJobResponse.state() == JobState.ENDED && getJobResponse.result() == JobResult.SUCCEEDED);
     }
 
     public static String generateName(String prefix) {

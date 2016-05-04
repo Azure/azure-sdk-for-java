@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.batch.auth;
 
-import com.microsoft.azure.batch.auth.BatchCredentialsInterceptor;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import okhttp3.OkHttpClient;
 

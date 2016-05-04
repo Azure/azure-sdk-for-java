@@ -6,9 +6,9 @@
 
 package com.microsoft.azure.batch;
 
-import com.microsoft.azure.batch.protocol.models.BatchErrorException;
-import com.microsoft.azure.batch.protocol.models.TaskAddParameter;
-import com.microsoft.azure.batch.protocol.models.TaskAddResult;
+import com.microsoft.azure.batch.protocol.implementation.api.BatchErrorException;
+import com.microsoft.azure.batch.protocol.implementation.api.TaskAddParameterInner;
+import com.microsoft.azure.batch.protocol.implementation.api.TaskAddResult;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class CreateTasksTerminatedException extends BatchErrorException {
      *
      * @param message The exception message.
      */
-    public CreateTasksTerminatedException(final String message, List<TaskAddResult> failureTasks, List<TaskAddParameter> pendingList) {
+    public CreateTasksTerminatedException(final String message, List<TaskAddResult> failureTasks, List<TaskAddParameterInner> pendingList) {
         super(message);
         this.failureTasks = failureTasks;
     }
@@ -29,13 +29,13 @@ public class CreateTasksTerminatedException extends BatchErrorException {
      */
     private List<TaskAddResult> failureTasks;
 
-    private List<TaskAddParameter> pendingTaskList;
+    private List<TaskAddParameterInner> pendingTaskList;
 
     public List<TaskAddResult> getFailureTasks() {
         return failureTasks;
     }
 
-    public List<TaskAddParameter> getPendingTaskList() {
+    public List<TaskAddParameterInner> getPendingTaskList() {
         return pendingTaskList;
     }
 }
