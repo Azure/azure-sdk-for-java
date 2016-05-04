@@ -4,6 +4,7 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Deployments;
 import com.microsoft.azure.management.resources.ResourceGroups;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.api.DeploymentsInner;
@@ -31,14 +32,14 @@ public class DeploymentsImpl
         converter = new PagedListConverter<DeploymentExtendedInner, Deployment>() {
             @Override
             public Deployment typeConvert(DeploymentExtendedInner deploymentInner) {
-                return new DeploymentImpl(deploymentInner, deployments, resourceGroups, serviceClient);
+                return createFluentModel(deploymentInner);
             }
         };
     }
 
     @Override
-    public InGroup resourceGroup(String resourceGroupName) {
-        return new DeploymentsInGroupImpl(serviceClient, resourceGroupName);
+    public InGroup resourceGroup(ResourceGroup resourceGroup) {
+        return new DeploymentsInGroupImpl(this, resourceGroup);
     }
 
     @Override
@@ -52,6 +53,46 @@ public class DeploymentsImpl
     }
 
     @Override
+    public PagedList<Deployment> list(String groupName) throws CloudException, IOException {
+        return converter.convert(deployments.list(groupName).getBody());
+    }
+
+    @Override
+    public Deployment get(String name) throws IOException, CloudException {
+        for (ResourceGroup group : resourceGroups.list()) {
+            try {
+                DeploymentExtendedInner inner = deployments.get(group.name(), name).getBody();
+                if (inner != null) {
+                    return createFluentModel(inner);
+                }
+            } catch (CloudException ex) {
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Deployment get(String groupName, String name) throws IOException, CloudException {
+        DeploymentExtendedInner inner = deployments.get(groupName, name).getBody();
+        return createFluentModel(inner);
+    }
+
+    @Override
+    public void delete(String id) throws Exception {
+        this.delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+    }
+
+    @Override
+    public void delete(String groupName, String name) throws Exception {
+        deployments.delete(groupName, name);
+    }
+
+    @Override
+    public Deployment.DefinitionBlank define(String name) throws Exception {
+        return createFluentModel(name);
+    }
+
+    @Override
     public boolean checkExistence(String deploymentName) throws IOException, CloudException {
         for (ResourceGroup group : resourceGroups.list()) {
             if (deployments.checkExistence(group.name(), deploymentName).getBody()) {
@@ -62,28 +103,22 @@ public class DeploymentsImpl
     }
 
     @Override
-    public Deployment.DefinitionBlank define(String name) throws Exception {
+    public boolean checkExistence(String groupName, String deploymentName) throws IOException, CloudException {
+        if (deployments.checkExistence(groupName, deploymentName).getBody()) {
+            return true;
+        }
+        return false;
+    }
+
+    /** Fluent model create helpers **/
+
+    private DeploymentImpl createFluentModel(String name) {
         DeploymentExtendedInner deployment = new DeploymentExtendedInner();
         deployment.setName(name);
         return new DeploymentImpl(deployment, deployments, resourceGroups, serviceClient);
     }
 
-    @Override
-    public Deployment get(String name) throws IOException, CloudException {
-        for (ResourceGroup group : resourceGroups.list()) {
-            try {
-                DeploymentExtendedInner inner = deployments.get(group.name(), name).getBody();
-                if (inner != null) {
-                    return new DeploymentImpl(inner, deployments, resourceGroups, serviceClient);
-                }
-            } catch (CloudException ex) {
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public void delete(String id) throws Exception {
-
+    private DeploymentImpl createFluentModel(DeploymentExtendedInner deploymentInner) {
+        return new DeploymentImpl(deploymentInner, deployments, resourceGroups, serviceClient);
     }
 }

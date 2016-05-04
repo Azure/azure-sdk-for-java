@@ -11,8 +11,8 @@ import java.io.IOException;
 // Implementation of storage account collection with a resource group context.
 //
 public class StorageAccountsInGroupImpl implements StorageAccounts.InGroup {
-    private ResourceGroup resourceGroup;
-    private StorageAccounts storageAccounts;
+    private final StorageAccounts storageAccounts;
+    private final ResourceGroup resourceGroup;
 
     public StorageAccountsInGroupImpl(StorageAccounts storageAccounts, ResourceGroup resourceGroup) {
         this.storageAccounts = storageAccounts;

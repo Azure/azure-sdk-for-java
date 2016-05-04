@@ -123,9 +123,9 @@ public final class ResourceManager {
         return deployments;
     }
 
-    public Deployments.InGroup deployments(String resourceGroupName) {
+    public Deployments.InGroup deployments(ResourceGroup resourceGroup) {
         if (deploymentsInGroup == null) {
-            deploymentsInGroup = new DeploymentsInGroupImpl(resourceManagementClient(), resourceGroupName);
+            deploymentsInGroup = new DeploymentsInGroupImpl(deployments(), resourceGroup);
         }
         return deploymentsInGroup;
     }
