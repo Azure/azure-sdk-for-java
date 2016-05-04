@@ -20,7 +20,7 @@ public class AzureTests {
             System.getenv("domain"),
             System.getenv("secret"),
             AzureEnvironment.AZURE);
-    private static final String subscriptionId = System.getenv("subscription-id");
+    private static final String subscriptionId = System.getenv("resourceClient-id");
 
     private Subscriptions subscriptions;
     private Azure.ResourceGroups resourceGroups;

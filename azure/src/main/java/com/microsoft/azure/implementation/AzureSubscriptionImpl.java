@@ -22,9 +22,9 @@ final class AzureSubscriptionImpl
     private final String subscriptionId;
     private final RestClient restClient;
     // service specific managers in subscription level.
-    private ResourceManager.Subscription resourceClient;
-    private StorageManager.Subscription storageClient;
-    private ComputeManager.Subscription computeClient;
+    private ResourceManager resourceClient;
+    private StorageManager storageClient;
+    private ComputeManager computeClient;
     // SDK Clients
     // TODO: Get rid of these
     private ResourceManagementClientImpl resourceManagementClient;
@@ -70,29 +70,27 @@ final class AzureSubscriptionImpl
         return computeClient().virtualMachines();
     }
 
-    private ResourceManager.Subscription resourceClient() {
+    private ResourceManager resourceClient() {
         if (resourceClient == null) {
             resourceClient = ResourceManager
                     .authenticate(restClient)
-                    .withSubscription(subscriptionId);
+                    .useSubscription(subscriptionId);
         }
         return resourceClient;
     }
 
-    private StorageManager.Subscription storageClient() {
+    private StorageManager storageClient() {
         if (storageClient == null) {
             storageClient = StorageManager
-                    .authenticate(restClient)
-                    .withSubscription(subscriptionId);
+                    .authenticate(restClient, subscriptionId);
         }
         return storageClient;
     }
 
-    private ComputeManager.Subscription computeClient() {
+    private ComputeManager computeClient() {
         if (computeClient == null) {
             computeClient = ComputeManager
-                    .authenticate(restClient)
-                    .withSubscription(subscriptionId);
+                    .authenticate(restClient, subscriptionId);
         }
         return computeClient;
     }

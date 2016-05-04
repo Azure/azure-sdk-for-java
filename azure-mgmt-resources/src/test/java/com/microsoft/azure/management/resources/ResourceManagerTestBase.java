@@ -4,8 +4,7 @@ import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 
 public abstract class ResourceManagerTestBase {
-    protected static ResourceManager.Authenticated resourceClient;
-    protected static ResourceManager.Subscription subscription;
+    protected static ResourceManager resourceClient;
 
     public static void createClient() throws Exception {
         resourceClient = ResourceManager.authenticate(
@@ -14,7 +13,6 @@ public abstract class ResourceManagerTestBase {
                         System.getenv("arm.domain"),
                         System.getenv("arm.secret"),
                         null)
-        );
-        subscription = resourceClient.withSubscription(System.getenv("arm.subscriptionid"));
+        ).useSubscription(System.getenv("arm.subscriptionid"));
     }
 }
