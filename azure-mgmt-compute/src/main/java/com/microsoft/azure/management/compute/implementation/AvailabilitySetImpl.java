@@ -32,12 +32,13 @@ public class AvailabilitySetImpl
     // The client to make AvailabilitySet Management API calls
     private final AvailabilitySetsInner client;
 
-    public AvailabilitySetImpl(String name, AvailabilitySetInner inner, AvailabilitySetsInner innerCollection,
-                               ResourceGroups resourceGroups,
-                               VirtualMachines virtualMachines) {
-        super(inner.id(), inner, resourceGroups);
+    public AvailabilitySetImpl(String name, AvailabilitySetInner innerModel,
+                               final AvailabilitySetsInner client,
+                               final ResourceGroups resourceGroups,
+                               final VirtualMachines virtualMachines) {
+        super(innerModel.id(), innerModel, resourceGroups);
         this.name = name;
-        this.client = innerCollection;
+        this.client = client;
         this.virtualMachines = virtualMachines;
     }
 

@@ -25,7 +25,9 @@ public class AvailabilitySetsImpl implements AvailabilitySets {
     private final VirtualMachines virtualMachines;
     private final PagedListConverter<AvailabilitySetInner, AvailabilitySet> converter;
 
-    public AvailabilitySetsImpl(AvailabilitySetsInner client, ResourceGroups resourceGroups, VirtualMachines virtualMachines) {
+    public AvailabilitySetsImpl(final AvailabilitySetsInner client,
+                                final ResourceGroups resourceGroups,
+                                final VirtualMachines virtualMachines) {
         this.client = client;
         this.resourceGroups = resourceGroups;
         this.virtualMachines = virtualMachines;
@@ -35,40 +37,6 @@ public class AvailabilitySetsImpl implements AvailabilitySets {
                 return createFluentModel(availabilitySetInner);
             }
         };
-    }
-
-    @Override
-    public void delete(String groupName, String name) throws Exception {
-        this.client.delete(groupName, name);
-    }
-
-    @Override
-    public AvailabilitySet get(String groupName, String name) throws Exception {
-        ServiceResponse<AvailabilitySetInner> response = this.client.get(groupName, name);
-        return createFluentModel(response.getBody());
-    }
-
-    @Override
-    public PagedList<AvailabilitySet> list(String groupName) throws CloudException, IOException {
-        PageImpl<AvailabilitySetInner> page = new PageImpl<>();
-        page.setItems(client.list(groupName).getBody());
-        page.setNextPageLink(null);
-        return this.converter.convert(new PagedList<AvailabilitySetInner>(page) {
-            @Override
-            public Page<AvailabilitySetInner> nextPage(String nextPageLink) throws RestException, IOException {
-                return null;
-            }
-        });
-    }
-
-    @Override
-    public AvailabilitySet.DefinitionBlank define(String name) throws Exception {
-        return createFluentModel(name);
-    }
-
-    @Override
-    public void delete(String id) throws Exception {
-        this.delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
@@ -87,6 +55,40 @@ public class AvailabilitySetsImpl implements AvailabilitySets {
                 });
             }
         };
+    }
+
+    @Override
+    public PagedList<AvailabilitySet> list(String groupName) throws CloudException, IOException {
+        PageImpl<AvailabilitySetInner> page = new PageImpl<>();
+        page.setItems(client.list(groupName).getBody());
+        page.setNextPageLink(null);
+        return this.converter.convert(new PagedList<AvailabilitySetInner>(page) {
+            @Override
+            public Page<AvailabilitySetInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return null;
+            }
+        });
+    }
+
+    @Override
+    public AvailabilitySet get(String groupName, String name) throws CloudException, IOException {
+        ServiceResponse<AvailabilitySetInner> response = this.client.get(groupName, name);
+        return createFluentModel(response.getBody());
+    }
+
+    @Override
+    public AvailabilitySet.DefinitionBlank define(String name) throws Exception {
+        return createFluentModel(name);
+    }
+
+    @Override
+    public void delete(String id) throws Exception {
+        this.delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+    }
+
+    @Override
+    public void delete(String groupName, String name) throws Exception {
+        this.client.delete(groupName, name);
     }
 
     /** Fluent model create helpers **/

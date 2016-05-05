@@ -7,7 +7,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
 import com.microsoft.azure.management.resources.implementation.api.DeploymentsInner;
-import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.Provider;
 import com.microsoft.azure.management.resources.ResourceGroup;
@@ -27,22 +26,21 @@ public class DeploymentImpl extends
         Deployment.DefinitionWithParameters,
         Deployment.DefinitionProvisionable {
 
-    private final DeploymentsInner deployments;
-    private final ResourceManagementClientImpl serviceClient;
+    private final DeploymentsInner client;
+    private final DeploymentOperationsInner deploymentOperationsClient;
     private final ResourceGroups resourceGroups;
     private String resourceGroupName;
 
-    public DeploymentImpl(DeploymentExtendedInner deployment, DeploymentsInner deployments, ResourceGroups resourceGroups, ResourceManagementClientImpl serviceClient) {
-        super (deployment.name(), deployment);
-        this.deployments = deployments;
-        this.resourceGroupName = ResourceUtils.groupFromResourceId(deployment.id());
+    public DeploymentImpl(DeploymentExtendedInner innerModel,
+                          final DeploymentsInner client,
+                          final DeploymentOperationsInner deploymentOperationsClient,
+                          final ResourceGroups resourceGroups) {
+        super (innerModel.name(), innerModel);
+        this.client = client;
+        this.deploymentOperationsClient = deploymentOperationsClient;
+        this.resourceGroupName = ResourceUtils.groupFromResourceId(innerModel.id());
         this.resourceGroups = resourceGroups;
-        this.serviceClient = serviceClient;
     }
-
-    /***********************************************************
-     * Getters
-     ***********************************************************/
 
     @Override
     public String resourceGroupName() {
@@ -148,7 +146,7 @@ public class DeploymentImpl extends
 
     @Override
     public DeploymentOperations deploymentOperations() {
-        return new DeploymentOperationsImpl(serviceClient, this);
+        return new DeploymentOperationsImpl(deploymentOperationsClient, this, resourceGroups);
     }
 
     /**************************************************************
@@ -231,10 +229,6 @@ public class DeploymentImpl extends
         return this;
     }
 
-    /************************************************************
-     * Verbs
-     ************************************************************/
-
     @Override
     public Deployment provision() throws Exception {         //  FLUENT: implementation of ResourceGroup.DefinitionProvisionable.Provisionable<ResourceGroup>
         DeploymentInner inner = new DeploymentInner()
@@ -244,7 +238,7 @@ public class DeploymentImpl extends
         inner.properties().setTemplateLink(templateLink());
         inner.properties().setParameters(parameters());
         inner.properties().setParametersLink(parametersLink());
-        deployments.createOrUpdate(resourceGroupName(), name(), inner);
+        client.createOrUpdate(resourceGroupName(), name(), inner);
         return this;
     }
 

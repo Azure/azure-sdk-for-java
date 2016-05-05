@@ -1,6 +1,5 @@
 package com.microsoft.azure.management.resources.implementation;
 
-import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
 import com.microsoft.azure.management.resources.implementation.api.DeploymentOperationsInner;
@@ -13,18 +12,16 @@ public class DeploymentOperationImpl extends
         IndexableRefreshableWrapperImpl<DeploymentOperation, DeploymentOperationInner>
         implements
         DeploymentOperation {
-
-    private final DeploymentOperationsInner deploymentOperations;
-    private final ResourceGroups resourceGroups;
     private String resourceGroupName;
-    private String deployementName;
+    private String deploymentName;
 
-    public DeploymentOperationImpl(DeploymentOperationInner deploymentOperation, DeploymentOperationsInner deploymentOperations, ResourceGroups resourceGroups) {
-        super (deploymentOperation.id(), deploymentOperation);
-        this.deploymentOperations = deploymentOperations;
-        this.resourceGroupName = ResourceUtils.groupFromResourceId(deploymentOperation.id());
-        this.deployementName = ResourceUtils.extractFromResourceId(deploymentOperation.id(), "deployments");
-        this.resourceGroups = resourceGroups;
+    private final DeploymentOperationsInner client;
+
+    public DeploymentOperationImpl(DeploymentOperationInner innerModel, final DeploymentOperationsInner client) {
+        super (innerModel.id(), innerModel);
+        this.client = client;
+        this.resourceGroupName = ResourceUtils.groupFromResourceId(innerModel.id());
+        this.deploymentName = ResourceUtils.extractFromResourceId(innerModel.id(), "deployments");
     }
 
     /***********************************************************
@@ -78,7 +75,7 @@ public class DeploymentOperationImpl extends
 
     @Override
     public DeploymentOperation refresh() throws Exception {
-        this.setInner(deploymentOperations.get(resourceGroupName, deployementName, operationId()).getBody());
+        this.setInner(client.get(resourceGroupName, deploymentName, operationId()).getBody());
         return this;
     }
 }

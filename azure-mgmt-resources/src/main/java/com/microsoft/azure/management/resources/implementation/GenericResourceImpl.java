@@ -9,8 +9,8 @@ import com.microsoft.azure.management.resources.implementation.api.Plan;
 public class GenericResourceImpl
     extends GroupableResourceImpl<GenericResource, GenericResourceInner, GenericResourceImpl>
     implements GenericResource {
-    public GenericResourceImpl(String id, GenericResourceInner innerObject, ResourceManagementClientImpl serviceClient) {
-        super(id, innerObject, new ResourceGroupsImpl(serviceClient));
+    public GenericResourceImpl(String id, GenericResourceInner innerModel, final ResourceManagementClientImpl serviceClient) {
+        super(id, innerModel, new ResourceGroupsImpl(serviceClient));
     }
 
     @Override

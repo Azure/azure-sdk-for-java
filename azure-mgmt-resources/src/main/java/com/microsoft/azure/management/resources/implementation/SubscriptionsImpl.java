@@ -14,12 +14,10 @@ import java.util.List;
 
 public final class SubscriptionsImpl
         implements Subscriptions {
-    private SubscriptionsInner subscriptions;
-    private SubscriptionClientImpl client;
+    private final SubscriptionsInner client;
 
-    public SubscriptionsImpl(SubscriptionClientImpl client) {
+    public SubscriptionsImpl(final SubscriptionsInner client) {
         this.client = client;
-        this.subscriptions = client.subscriptions();
     }
 
     @Override
@@ -30,13 +28,13 @@ public final class SubscriptionsImpl
                 return new SubscriptionImpl(subscriptionInner, client);
             }
         };
-        return converter.convert(subscriptions.list().getBody());
+        return converter.convert(client.list().getBody());
     }
 
     @Override
     // Gets a specific resource group
     public SubscriptionImpl get(String name) throws CloudException, IOException {
-        SubscriptionInner subscription = subscriptions.get(name).getBody();
+        SubscriptionInner subscription = client.get(name).getBody();
         return new SubscriptionImpl(subscription, client);
     }
 

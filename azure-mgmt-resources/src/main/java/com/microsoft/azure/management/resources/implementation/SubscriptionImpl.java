@@ -19,12 +19,10 @@ public class SubscriptionImpl extends
         implements
         Subscription  {
 
-    private final SubscriptionsInner subscriptions;
-    private final SubscriptionClientImpl client;
+    private final SubscriptionsInner client;
 
-    public SubscriptionImpl(SubscriptionInner subscription, SubscriptionClientImpl client) {
-        super(subscription.id(), subscription);
-        this.subscriptions = client.subscriptions();
+    public SubscriptionImpl(SubscriptionInner innerModel, final SubscriptionsInner client) {
+        super(innerModel.id(), innerModel);
         this.client = client;
     }
 
@@ -61,9 +59,9 @@ public class SubscriptionImpl extends
         PagedListConverter<LocationInner, Location> converter = new PagedListConverter<LocationInner, Location>() {
             @Override
             public Location typeConvert(LocationInner locationInner) {
-                return new LocationImpl(locationInner, subscriptions);
+                return new LocationImpl(locationInner, client);
             }
         };
-        return converter.convert(subscriptions.listLocations(this.subscriptionId()).getBody());
+        return converter.convert(client.listLocations(this.subscriptionId()).getBody());
     }
 }

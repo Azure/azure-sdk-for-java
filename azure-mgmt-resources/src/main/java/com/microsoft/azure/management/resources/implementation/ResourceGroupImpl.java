@@ -23,8 +23,8 @@ public class ResourceGroupImpl extends
     private final ResourceGroupsInner client;
     private final ResourceManagementClientImpl serviceClient;
 
-    public ResourceGroupImpl(ResourceGroupInner azureGroup, ResourceManagementClientImpl serviceClient) {
-        super(azureGroup.name(), azureGroup);
+    public ResourceGroupImpl(final ResourceGroupInner innerModel, final ResourceManagementClientImpl serviceClient) {
+        super(innerModel.name(), innerModel);
         this.client = serviceClient.resourceGroups();
         this.serviceClient = serviceClient;
     }
@@ -59,7 +59,7 @@ public class ResourceGroupImpl extends
 
     @Override
     public ResourceGroupImpl withLocation(String regionName) {       //  FLUENT: implementation of ResourceGroup.DefinitionBlank
-        this.inner().setLocation(regionName);                      //
+        this.inner().setLocation(regionName);                        //
         return this;
     }
 
@@ -69,14 +69,14 @@ public class ResourceGroupImpl extends
     }
 
     @Override
-    public ResourceGroupImpl withTags(Map<String, String> tags) {   //  FLUENT: implementation of ResourceGroup.DefinitionProvisionable
-        this.inner().setTags(new HashMap<>(tags));    //                   ResourceGroup.Update.UpdateBlank.Taggable<Update>
+    public ResourceGroupImpl withTags(Map<String, String> tags) {     //  FLUENT: implementation of ResourceGroup.DefinitionProvisionable
+        this.inner().setTags(new HashMap<>(tags));    //                  ResourceGroup.Update.UpdateBlank.Taggable<Update>
         return this;
     }
 
     @Override
-    public ResourceGroupImpl withTag(String key, String value) {    //  FLUENT: implementation of ResourceGroup.DefinitionProvisionable
-        if(this.inner().tags() == null) {                        //                   ResourceGroup.Update.UpdateBlank.Taggable<Update>
+    public ResourceGroupImpl withTag(String key, String value) {      //  FLUENT: implementation of ResourceGroup.DefinitionProvisionable
+        if(this.inner().tags() == null) {                             //  ResourceGroup.Update.UpdateBlank.Taggable<Update>
             this.inner().setTags(new HashMap<String, String>());
         }
         this.inner().tags().put(key, value);
@@ -84,8 +84,8 @@ public class ResourceGroupImpl extends
     }
 
     @Override
-    public ResourceGroupImpl withoutTag(String key) {               //  FLUENT: implementation of ResourceGroup.Update.UpdateBlank.Taggable<Update>
-        this.inner().tags().remove(key);                         //
+    public ResourceGroupImpl withoutTag(String key) {                //  FLUENT: implementation of ResourceGroup.Update.UpdateBlank.Taggable<Update>
+        this.inner().tags().remove(key);                             //
         return this;
     }
 
@@ -114,7 +114,7 @@ public class ResourceGroupImpl extends
     }
     
     @Override
-    public ResourceGroupImpl provision() throws Exception {         //  FLUENT: implementation of ResourceGroup.DefinitionProvisionable.Provisionable<ResourceGroup>
+    public ResourceGroupImpl provision() throws Exception {          //  FLUENT: implementation of ResourceGroup.DefinitionProvisionable.Provisionable<ResourceGroup>
         ResourceGroupInner params = new ResourceGroupInner();
         params.setLocation(this.inner().location());
         params.setTags(this.inner().tags());
@@ -123,13 +123,13 @@ public class ResourceGroupImpl extends
     }
 
     @Override
-    public ResourceGroupImpl refresh() throws Exception {           //  FLUENT: implementation of ResourceGroup.Refreshable<ResourceGroup>
+    public ResourceGroupImpl refresh() throws Exception {            //  FLUENT: implementation of ResourceGroup.Refreshable<ResourceGroup>
         this.setInner(client.get(this.id).getBody());
         return this;
     }
 
     @Override
     public <T extends ResourceConnector> T connectToResource(T.Builder<T> adapterBuilder) {
-        return adapterBuilder.create(this.serviceClient.credentials(), this.serviceClient.subscriptionId(), this);
+        return adapterBuilder.create(this.serviceClient.restClient(), this.serviceClient.subscriptionId(), this);
     }
 }

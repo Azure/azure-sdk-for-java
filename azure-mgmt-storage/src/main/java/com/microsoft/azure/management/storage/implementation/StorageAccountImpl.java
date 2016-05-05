@@ -28,10 +28,13 @@ public class StorageAccountImpl
 
     private final StorageAccountsInner client;
 
-    public StorageAccountImpl(String name, StorageAccountInner inner, StorageAccountsInner innerCollection, ResourceGroups resourceGroups) {
-        super(inner.id(), inner, resourceGroups);
+    public StorageAccountImpl(String name,
+                              StorageAccountInner innerModel,
+                              final StorageAccountsInner client,
+                              final ResourceGroups resourceGroups) {
+        super(innerModel.id(), innerModel, resourceGroups);
         this.name = name;
-        this.client = innerCollection;
+        this.client = client;
     }
 
     @Override

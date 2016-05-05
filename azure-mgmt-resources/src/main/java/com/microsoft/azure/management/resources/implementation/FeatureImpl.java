@@ -9,8 +9,8 @@ public class FeatureImpl extends
         implements
         Feature {
 
-    public FeatureImpl(FeatureResultInner feature) {
-        super(feature.id(), feature);
+    public FeatureImpl(FeatureResultInner innerModel) {
+        super(innerModel.id(), innerModel);
     }
 
     /***********************************************************
