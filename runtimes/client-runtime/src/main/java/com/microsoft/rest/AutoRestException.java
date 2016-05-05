@@ -10,18 +10,18 @@ package com.microsoft.rest;
 /**
  * Exception thrown for an invalid response with custom error information.
  */
-public abstract class RestException extends Exception {
+public abstract class AutoRestException extends Exception {
     /**
      * Initializes a new instance of the AutoRestException class.
      */
-    public RestException() { }
+    public AutoRestException() { }
 
     /**
      * Initializes a new instance of the AutoRestException class.
      *
      * @param message The exception message.
      */
-    public RestException(String message) {
+    public AutoRestException(String message) {
         super(message);
     }
 
@@ -30,7 +30,7 @@ public abstract class RestException extends Exception {
      *
      * @param cause exception that caused this exception to occur
      */
-    public RestException(Throwable cause) {
+    public AutoRestException(Throwable cause) {
         super(cause);
     }
 
@@ -40,7 +40,7 @@ public abstract class RestException extends Exception {
      * @param message the exception message
      * @param cause   exception that caused this exception to occur
      */
-    public RestException(String message, Throwable cause) {
+    public AutoRestException(String message, Throwable cause) {
         super(message, cause);
     }
 }
