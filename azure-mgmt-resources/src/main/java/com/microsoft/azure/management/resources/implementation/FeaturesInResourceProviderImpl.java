@@ -14,13 +14,11 @@ import java.util.List;
 
 public final class FeaturesInResourceProviderImpl
         implements Features.InResourceProvider {
-    private FeaturesInner features;
-    private FeatureClientImpl serviceClient;
+    private final FeaturesInner client;
     private String resourceProviderNamespace;
 
-    public FeaturesInResourceProviderImpl(FeatureClientImpl serviceClient, String resourceProviderNamespace) {
-        this.serviceClient = serviceClient;
-        this.features = serviceClient.features();
+    public FeaturesInResourceProviderImpl(FeaturesInner client, String resourceProviderNamespace) {
+        this.client = client;
         this.resourceProviderNamespace = resourceProviderNamespace;
     }
 
@@ -32,16 +30,16 @@ public final class FeaturesInResourceProviderImpl
                 return new FeatureImpl(tenantInner);
             }
         };
-        return converter.convert(features.list(resourceProviderNamespace).getBody());
+        return converter.convert(client.list(resourceProviderNamespace).getBody());
     }
 
     @Override
     public Feature register(String featureName) throws IOException, CloudException {
-        return new FeatureImpl(features.register(resourceProviderNamespace, featureName).getBody());
+        return new FeatureImpl(client.register(resourceProviderNamespace, featureName).getBody());
     }
 
     @Override
     public Feature get(String name) throws CloudException, IOException {
-        return new FeatureImpl(features.get(resourceProviderNamespace, name).getBody());
+        return new FeatureImpl(client.get(resourceProviderNamespace, name).getBody());
     }
 }
