@@ -10,14 +10,13 @@ import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
 
 import java.io.IOException;
-import java.util.List;
 
 public class ResourceGroupsImpl
         implements ResourceGroups {
-    private ResourceGroupsInner client;
-    private ResourceManagementClientImpl serviceClient;
+    private final ResourceGroupsInner client;
+    private final ResourceManagementClientImpl serviceClient;
 
-    public ResourceGroupsImpl(ResourceManagementClientImpl serviceClient) {
+    public ResourceGroupsImpl(final ResourceManagementClientImpl serviceClient) {
         this.serviceClient = serviceClient;
         this.client = serviceClient.resourceGroups();
     }
@@ -27,17 +26,16 @@ public class ResourceGroupsImpl
         PagedListConverter<ResourceGroupInner, ResourceGroup> converter = new PagedListConverter<ResourceGroupInner, ResourceGroup>() {
             @Override
             public ResourceGroup typeConvert(ResourceGroupInner resourceGroupInner) {
-                return new ResourceGroupImpl(resourceGroupInner, serviceClient);
+                return createFluentModel(resourceGroupInner);
             }
         };
         return converter.convert(client.list().getBody());
     }
 
     @Override
-    // Gets a specific resource group
     public ResourceGroupImpl get(String name) throws CloudException, IOException {
-        ResourceGroupInner group = client.get(name).getBody();
-        return new ResourceGroupImpl(group, serviceClient);
+        ResourceGroupInner resourceGroupInner = client.get(name).getBody();
+        return createFluentModel(resourceGroupInner);
     }
 
     @Override
@@ -47,12 +45,12 @@ public class ResourceGroupsImpl
 
     @Override
     public ResourceGroupImpl update(String name) {
-        return createFluentWrapper(name);
+        return createFluentModel(name);
     }
 
     @Override
     public ResourceGroupImpl define(String name) {
-        return createFluentWrapper(name);
+        return createFluentModel(name);
     }
 
     @Override
@@ -60,14 +58,15 @@ public class ResourceGroupsImpl
         return client.checkExistence(name).getBody();
     }
 
-    /***************************************************
-     * Helpers
-     ***************************************************/
+    /** Fluent model create helpers **/
 
-    // Wraps native Azure resource group
-    private ResourceGroupImpl createFluentWrapper(String name) {
-        ResourceGroupInner azureGroup = new ResourceGroupInner();
-        azureGroup.setName(name);
-        return new ResourceGroupImpl(azureGroup, serviceClient);
+    private ResourceGroupImpl createFluentModel(String name) {
+        ResourceGroupInner resourceGroupInner = new ResourceGroupInner();
+        resourceGroupInner.setName(name);
+        return new ResourceGroupImpl(resourceGroupInner, serviceClient);
+    }
+
+    private ResourceGroupImpl createFluentModel(ResourceGroupInner resourceGroupInner) {
+        return new ResourceGroupImpl(resourceGroupInner, serviceClient);
     }
 }

@@ -1,9 +1,9 @@
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.RestClient;
 
 public interface ResourceConnector<T extends ResourceConnector> {
     interface Builder<T> {
-        T create(ServiceClientCredentials credentials, String subscriptionId, ResourceGroup resourceGroup);
+        T create(RestClient restClient, String subscriptionId, ResourceGroup resourceGroup);
     }
 }

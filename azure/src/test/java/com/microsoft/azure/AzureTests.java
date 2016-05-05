@@ -20,7 +20,7 @@ public class AzureTests {
             System.getenv("domain"),
             System.getenv("secret"),
             AzureEnvironment.AZURE);
-    private static final String subscriptionId = System.getenv("subscription-id");
+    private static final String subscriptionId = System.getenv("resourceClient-id");
 
     private Subscriptions subscriptions;
     private Azure.ResourceGroups resourceGroups;
@@ -28,7 +28,7 @@ public class AzureTests {
 
     @Before
     public void setup() throws Exception {
-        Azure.Authenticated azure = Azure.configure()
+        Azure azure = Azure.configure()
                 .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
                 .withUserAgent("AzureTests")
                 .authenticate(credentials);

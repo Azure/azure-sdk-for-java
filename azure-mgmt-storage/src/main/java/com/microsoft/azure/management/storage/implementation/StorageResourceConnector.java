@@ -4,51 +4,38 @@ import com.microsoft.azure.management.resources.ResourceConnector;
 import com.microsoft.azure.management.resources.implementation.ResourceConnectorBase;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.storage.StorageAccounts;
-import com.microsoft.azure.management.storage.Usages;
-import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
-import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.RestClient;
 
 public class StorageResourceConnector extends ResourceConnectorBase<StorageResourceConnector> {
-    private StorageManagementClientImpl client;
+    private StorageManager storageClient;
     private StorageAccounts.InGroup storageAccounts;
-    private Usages usages;
 
-    private StorageResourceConnector(ServiceClientCredentials credentials, String subscriptionId,  ResourceGroup resourceGroup) {
-        super(credentials, subscriptionId, resourceGroup);
-        constructClient();
+    private StorageResourceConnector(RestClient restClient, String subscriptionId, ResourceGroup resourceGroup) {
+        super(restClient, subscriptionId, resourceGroup);
     }
 
-    private static StorageResourceConnector create(ServiceClientCredentials credentials,  String subscriptionId, ResourceGroup resourceGroup) {
-        return new StorageResourceConnector(credentials, subscriptionId, resourceGroup);
-    }
-
-    private void constructClient() {
-        client = new StorageManagementClientImpl(credentials);
-        client.setSubscriptionId(subscriptionId);
+    private static StorageResourceConnector create(RestClient restClient, String subscriptionId, ResourceGroup resourceGroup) {
+        return new StorageResourceConnector(restClient, subscriptionId, resourceGroup);
     }
 
     public static class Builder implements ResourceConnector.Builder<StorageResourceConnector> {
-        public StorageResourceConnector create(ServiceClientCredentials credentials, String subscriptionId, ResourceGroup resourceGroup) {
-            return StorageResourceConnector.create(credentials, subscriptionId, resourceGroup);
+        public StorageResourceConnector create(RestClient restClient, String subscriptionId, ResourceGroup resourceGroup) {
+            return StorageResourceConnector.create(restClient, subscriptionId, resourceGroup);
         }
     }
 
     public StorageAccounts.InGroup storageAccounts() {
         if (storageAccounts == null) {
-            this.storageAccounts = new StorageAccountsInGroupImpl(storageAccountsCore(), resourceGroup);
+            this.storageAccounts = new StorageAccountsInGroupImpl(storageClient().storageAccounts(), resourceGroup);
         }
         return storageAccounts;
     }
 
-    public Usages usages() {
-        if (usages == null) {
-            this.usages = new UsagesImpl(client);
+    private StorageManager storageClient() {
+        if (storageClient == null) {
+            storageClient = StorageManager
+                    .authenticate(restClient, subscriptionId);
         }
-        return usages;
-    }
-
-    private StorageAccounts storageAccountsCore() {
-        StorageAccounts storageAccountsCore = new StorageAccountsImpl(this.client.storageAccounts(), resourceGroups());
-        return storageAccountsCore;
+        return storageClient;
     }
 }

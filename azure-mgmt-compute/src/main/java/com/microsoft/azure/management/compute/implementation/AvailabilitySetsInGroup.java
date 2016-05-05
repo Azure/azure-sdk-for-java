@@ -7,20 +7,19 @@ import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.resources.ResourceGroup;
 
 import java.io.IOException;
-import java.util.List;
 
 public class AvailabilitySetsInGroup implements AvailabilitySets.InGroup {
     private final ResourceGroup resourceGroup;
-    private final AvailabilitySets availabilitySetsCore;
+    private final AvailabilitySets availabilitySets;
 
-    public AvailabilitySetsInGroup(AvailabilitySets availabilitySetsCore, ResourceGroup resourceGroup) {
+    public AvailabilitySetsInGroup(AvailabilitySets availabilitySets, ResourceGroup resourceGroup) {
         this.resourceGroup = resourceGroup;
-        this.availabilitySetsCore = availabilitySetsCore;
+        this.availabilitySets = availabilitySets;
     }
 
     @Override
     public AvailabilitySet.DefinitionProvisionable define(String name) throws Exception {
-        return this.availabilitySetsCore
+        return this.availabilitySets
                 .define(name)
                 .withRegion(this.resourceGroup.location())
                 .withExistingGroup(this.resourceGroup.name());
@@ -28,11 +27,11 @@ public class AvailabilitySetsInGroup implements AvailabilitySets.InGroup {
 
     @Override
     public void delete(String name) throws Exception {
-        this.availabilitySetsCore.delete(this.resourceGroup.name(), name);
+        this.availabilitySets.delete(this.resourceGroup.name(), name);
     }
 
     @Override
     public PagedList<AvailabilitySet> list() throws CloudException, IOException {
-        return this.availabilitySetsCore.list(resourceGroup.name());
+        return this.availabilitySets.list(resourceGroup.name());
     }
 }

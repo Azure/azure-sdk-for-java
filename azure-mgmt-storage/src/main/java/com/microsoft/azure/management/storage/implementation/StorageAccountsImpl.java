@@ -23,7 +23,7 @@ public class StorageAccountsImpl
     private final ResourceGroups resourceGroups;
     private final PagedListConverter<StorageAccountInner, StorageAccount> converter;
 
-    public StorageAccountsImpl(StorageAccountsInner client, ResourceGroups resourceGroups) {
+    public StorageAccountsImpl(final StorageAccountsInner client, final ResourceGroups resourceGroups) {
         this.client = client;
         this.resourceGroups = resourceGroups;
         this.converter = new PagedListConverter<StorageAccountInner, StorageAccount>() {
@@ -34,29 +34,46 @@ public class StorageAccountsImpl
         };
     }
 
+    @Override
     public PagedList<StorageAccount> list() throws CloudException, IOException {
         ServiceResponse<List<StorageAccountInner>> response = client.list();
         return converter.convert(toPagedList(response.getBody()));
     }
 
+    @Override
     public PagedList<StorageAccount> list(String groupName) throws CloudException, IOException {
         ServiceResponse<List<StorageAccountInner>> response = client.listByResourceGroup(groupName);
         return converter.convert(toPagedList(response.getBody()));
     }
 
-    public StorageAccount get(String groupName, String name) throws Exception {
+    @Override
+    public StorageAccount get(String name) throws CloudException, IOException {
+        ServiceResponse<List<StorageAccountInner>> response = client.list();
+        for (StorageAccountInner storageAccountInner : response.getBody()) {
+            if (storageAccountInner.name() == name) {
+                return createFluentModel(storageAccountInner);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public StorageAccount get(String groupName, String name) throws CloudException, IOException {
         ServiceResponse<StorageAccountInner> serviceResponse = this.client.getProperties(groupName, name);
         return createFluentModel(serviceResponse.getBody());
     }
 
+    @Override
     public void delete(String id) throws Exception {
         this.delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
 
+    @Override
     public void delete(String groupName, String name) throws Exception {
         this.client.delete(groupName, name);
     }
 
+    @Override
     public StorageAccount.DefinitionBlank define(String name) throws Exception {
         return createFluentModel(name);
     }
