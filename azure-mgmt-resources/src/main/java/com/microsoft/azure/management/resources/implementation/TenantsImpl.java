@@ -14,12 +14,10 @@ import java.util.List;
 
 public final class TenantsImpl
         implements Tenants {
-    private TenantsInner tenants;
-    private SubscriptionClientImpl client;
+    private final TenantsInner client;
 
-    public TenantsImpl(SubscriptionClientImpl client) {
+    public TenantsImpl(final TenantsInner client) {
         this.client = client;
-        this.tenants = client.tenants();
     }
 
     @Override
@@ -30,6 +28,6 @@ public final class TenantsImpl
                 return new TenantImpl(tenantInner);
             }
         };
-        return converter.convert(tenants.list().getBody());
+        return converter.convert(client.list().getBody());
     }
 }

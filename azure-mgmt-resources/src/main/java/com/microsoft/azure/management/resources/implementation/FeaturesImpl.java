@@ -4,22 +4,17 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Features;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-import com.microsoft.azure.management.resources.implementation.api.FeatureClientImpl;
 import com.microsoft.azure.management.resources.implementation.api.FeaturesInner;
 import com.microsoft.azure.management.resources.Feature;
 import com.microsoft.azure.management.resources.implementation.api.FeatureResultInner;
-
 import java.io.IOException;
-import java.util.List;
 
 public final class FeaturesImpl
         implements Features {
-    private FeaturesInner features;
-    private FeatureClientImpl serviceClient;
+    private final FeaturesInner client;
 
-    public FeaturesImpl(FeatureClientImpl serviceClient) {
-        this.serviceClient = serviceClient;
-        this.features = serviceClient.features();
+    public FeaturesImpl(final FeaturesInner client) {
+        this.client = client;
     }
 
     @Override
@@ -30,7 +25,7 @@ public final class FeaturesImpl
                 return new FeatureImpl(tenantInner);
             }
         };
-        return converter.convert(features.listAll().getBody());
+        return converter.convert(client.listAll().getBody());
     }
 
     @Override

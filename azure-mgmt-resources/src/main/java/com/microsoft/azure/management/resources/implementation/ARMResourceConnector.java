@@ -4,29 +4,31 @@ import com.microsoft.azure.management.resources.Deployments;
 import com.microsoft.azure.management.resources.GenericResources;
 import com.microsoft.azure.management.resources.ResourceConnector;
 import com.microsoft.azure.management.resources.ResourceGroup;
-import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.RestClient;
 
 public class ARMResourceConnector extends ResourceConnectorBase<ARMResourceConnector> {
     private ResourceManager resourceClient;
-    private GenericResources genericResources;
+    private GenericResources.InGroup genericResources;
     private Deployments.InGroup deployments;
 
-    private ARMResourceConnector(ServiceClientCredentials credentials, String subscriptionId, ResourceGroup resourceGroup) {
-        super(credentials, subscriptionId, resourceGroup);
-        this.genericResources = new GenericResourcesImpl(resourceManagementClient(), resourceGroup.name());
+    private ARMResourceConnector(RestClient restClient, String subscriptionId, ResourceGroup resourceGroup) {
+        super(restClient, subscriptionId, resourceGroup);
     }
 
-    private static ARMResourceConnector create(ServiceClientCredentials credentials, String subscriptionId, ResourceGroup resourceGroup) {
-        return new ARMResourceConnector(credentials, subscriptionId, resourceGroup);
+    private static ARMResourceConnector create(RestClient restClient, String subscriptionId, ResourceGroup resourceGroup) {
+        return new ARMResourceConnector(restClient, subscriptionId, resourceGroup);
     }
 
     public static class Builder implements ResourceConnector.Builder<ARMResourceConnector> {
-        public ARMResourceConnector create(ServiceClientCredentials credentials, String subscriptionId, ResourceGroup resourceGroup) {
-            return ARMResourceConnector.create(credentials, subscriptionId, resourceGroup);
+        public ARMResourceConnector create(RestClient restClient, String subscriptionId, ResourceGroup resourceGroup) {
+            return ARMResourceConnector.create(restClient, subscriptionId, resourceGroup);
         }
     }
 
-    public GenericResources genericResources() {
+    public GenericResources.InGroup genericResources() {
+        if (genericResources == null) {
+            genericResources = new GenericResourcesInGroupImpl(resourceClient().genericResources(), resourceGroup);
+        }
         return genericResources;
     }
 
@@ -40,7 +42,7 @@ public class ARMResourceConnector extends ResourceConnectorBase<ARMResourceConne
     private ResourceManager resourceClient() {
         if (resourceClient == null) {
             resourceClient = ResourceManager
-                    .authenticate(credentials)
+                    .authenticate(restClient)
                     .useSubscription(subscriptionId);
         }
         return resourceClient;

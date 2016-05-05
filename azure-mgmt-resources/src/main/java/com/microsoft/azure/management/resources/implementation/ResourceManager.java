@@ -64,14 +64,14 @@ public final class ResourceManager {
 
         public Subscriptions subscriptions() {
             if (subscriptions == null) {
-                subscriptions = new SubscriptionsImpl(subscriptionClient());
+                subscriptions = new SubscriptionsImpl(subscriptionClient().subscriptions());
             }
             return subscriptions;
         }
 
         public Tenants tenants() {
             if (tenants == null) {
-                tenants = new TenantsImpl(subscriptionClient());
+                tenants = new TenantsImpl(subscriptionClient().tenants());
             }
             return tenants;
         }
