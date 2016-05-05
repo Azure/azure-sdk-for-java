@@ -88,7 +88,7 @@ public class SendLargeMessageTest
 			sender.send(largeMsg).get();
 		}
 		
-		Iterable<EventData> messages = receiver.receive().get();
+		Iterable<EventData> messages = receiver.receive(100).get();
 		Assert.assertTrue(messages != null && messages.iterator().hasNext());
 		Iterator<EventData> miterator = messages.iterator();
 		EventData recdMessage = null;

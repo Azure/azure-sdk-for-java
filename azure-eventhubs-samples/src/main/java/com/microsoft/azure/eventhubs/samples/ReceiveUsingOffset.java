@@ -37,7 +37,7 @@ public class ReceiveUsingOffset
 		
 		try
 		{
-			Iterable<EventData> receivedEvents = receiver.receive().get();
+			Iterable<EventData> receivedEvents = receiver.receive(100).get();
 			
 			while (true)
 			{
@@ -56,7 +56,7 @@ public class ReceiveUsingOffset
 				}
 				
 				System.out.println(String.format("ReceivedBatch Size: %s", batchSize));
-				receivedEvents = receiver.receive().get();
+				receivedEvents = receiver.receive(100).get();
 			}
 		}
 		finally

@@ -42,7 +42,7 @@ public class EventHubClientTest extends TestBase
 				}
 				
 				PartitionReceiver receiver = ehClient.createReceiver(consumerGroupName, partitionId, PartitionReceiver.START_OF_STREAM, false).get();
-				receiver.receive().get();
+				receiver.receive(100).get();
 			}
 		}
 		finally

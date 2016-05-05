@@ -38,13 +38,13 @@ public class ReceiveTest extends TestBase
 			TestBase.pushEventsToPartition(ehClient, partitionId, 10).get();
 			
 			offsetReceiver = ehClient.createReceiver(cgName, partitionId, PartitionReceiver.START_OF_STREAM, false).get();
-			Iterable<EventData> startingEventsUsingOffsetReceiver = offsetReceiver.receive().get();
+			Iterable<EventData> startingEventsUsingOffsetReceiver = offsetReceiver.receive(100).get();
 			
 			Assert.assertTrue(startingEventsUsingOffsetReceiver != null && startingEventsUsingOffsetReceiver.iterator().hasNext());
 			
 			// Test1: Validate DateTimeReceiver returns correct startingOffset with startOfEpoch
 			datetimeReceiver = ehClient.createReceiver(cgName, partitionId, Instant.EPOCH).get();
-			Iterable<EventData> startingEventsUsingDateTimeReceiver = datetimeReceiver.receive().get();
+			Iterable<EventData> startingEventsUsingDateTimeReceiver = datetimeReceiver.receive(100).get();
 			
 			Assert.assertTrue(startingEventsUsingOffsetReceiver != null && startingEventsUsingDateTimeReceiver.iterator().hasNext());
 			
@@ -69,7 +69,7 @@ public class ReceiveTest extends TestBase
 			offsetIterator.next();
 			// Test2: pick a random event from OffsetReceiver and then validate DateTime receiver using SystemProperties
 			if (!offsetIterator.hasNext()) {
-				startingEventsUsingOffsetReceiver = offsetReceiver.receive().get();
+				startingEventsUsingOffsetReceiver = offsetReceiver.receive(100).get();
 			}
 			
 			Assert.assertTrue(startingEventsUsingOffsetReceiver.iterator().hasNext());
@@ -77,7 +77,7 @@ public class ReceiveTest extends TestBase
 			datetimeReceiver = ehClient.createReceiver(cgName, partitionId, 
 				nextEvent.getSystemProperties().getEnqueuedTime().minusMillis(1)).get();
 			
-			Iterable<EventData> dateTimeEventsFromCustomOffset = datetimeReceiver.receive().get();
+			Iterable<EventData> dateTimeEventsFromCustomOffset = datetimeReceiver.receive(100).get();
 			Assert.assertTrue(dateTimeEventsFromCustomOffset.iterator().hasNext());
 			EventData firstEventAfterGivenTime = dateTimeEventsFromCustomOffset.iterator().next();
 			TEST_LOGGER.log(Level.FINE, firstEventAfterGivenTime.getSystemProperties().getEnqueuedTime().toString());

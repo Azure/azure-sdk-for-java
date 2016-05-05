@@ -4,6 +4,7 @@
  */
 package com.microsoft.azure.eventhubs;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.Locale;
@@ -25,11 +26,12 @@ import com.microsoft.azure.servicebus.StringUtil;
 /**
  * This is a logical representation of receiving from a EventHub partition.
  * <p>
- * A PartitionReceiver is tied to a ConsumerGroup + Partition combination. If you are creating an epoch based 
- * PartitionReceiver (i.e. PartitionReceiver.getEpoch != 0) you cannot have more than one active receiver per 
- * ConsumerGroup + Partition combo. You can have multiple receivers per ConsumerGroup + Partition combo with 
- * non-epoch receivers.
- *
+ * A {@link PartitionReceiver} is tied to a ConsumerGroup + EventHub Partition combination.
+ * <ul>
+ * <li>If an epoch based {@link PartitionReceiver} (i.e., PartitionReceiver.getEpoch != 0) is created, EventHubs service will guarantee only 1 active receiver exists per ConsumerGroup + Partition combo.
+ * This is the recommended approach to create a {@link PartitionReceiver}. 
+ * <li>Multiple receivers per ConsumerGroup + Partition combo can be created using non-epoch receivers.
+ * </ul>
  * @see EventHubClient#createReceiver
  * @see EventHubClient#createEpochReceiver 
  */
@@ -161,6 +163,16 @@ public final class PartitionReceiver extends ClientEntity
 		return this.internalReceiver.getPrefetchCount();
 	}
 	
+	public final Duration getReceiveTimeout()
+	{
+		return this.internalReceiver.getReceiveTimeout();
+	}
+	
+	public void setReceiveTimeout(Duration value)
+	{
+		this.internalReceiver.setReceiveTimeout(value);
+	}
+	
 	/**
 	 * Set the number of events that can be pre-fetched and cached at the {@link PartitionReceiver}.
 	 * <p>By default the value is 300
@@ -190,15 +202,16 @@ public final class PartitionReceiver extends ClientEntity
 	
     /**
 	 * Synchronous version of {@link #receive}. 
+	 * @param maxEventCount maximum number of {@link EventData}'s that this call should return
 	 * @return Batch of {@link EventData}'s from the partition on which this receiver is created. Returns 'null' if no {@link EventData} is present.
-	 * @throws ServiceBusException if ServiceBus client encountered any unrecoverable/non-transient problems during {@link #receive()}
+	 * @throws ServiceBusException if ServiceBus client encountered any unrecoverable/non-transient problems during {@link #receive}
 	 */
-    public final Iterable<EventData> receiveSync() 
+    public final Iterable<EventData> receiveSync(final int maxEventCount) 
 			throws ServiceBusException
 	{
         try
         {
-            return this.receive().get();
+            return this.receive(maxEventCount).get();
         }
 		catch (InterruptedException|ExecutionException exception)
 		{
@@ -257,17 +270,18 @@ public final class PartitionReceiver extends ClientEntity
 	 *     receivedEvents = receiver.receiveSync();
 	 * }
      * </pre>
+     * @param maxEventCount maximum number of {@link EventData}'s that this call should return
 	 * @return A completableFuture that will yield a batch of {@link EventData}'s from the partition on which this receiver is created. Returns 'null' if no {@link EventData} is present.
 	 */
-	public CompletableFuture<Iterable<EventData>> receive()
+	public CompletableFuture<Iterable<EventData>> receive(final int maxEventCount)
 	{
-		return this.internalReceiver.receive().thenApply(new Function<Collection<Message>, Iterable<EventData>>()
+		return this.internalReceiver.receive(maxEventCount).thenApply(new Function<Collection<Message>, Iterable<EventData>>()
 		{
 			@Override
 			public Iterable<EventData> apply(Collection<Message> amqpMessages)
 			{
 				return EventDataUtil.toEventDataCollection(amqpMessages);
-			}			
+			}
 		});
 	}
 
@@ -327,7 +341,8 @@ public final class PartitionReceiver extends ClientEntity
 
 					try
 					{
-						receivedEvents = PartitionReceiver.this.receive().get(PartitionReceiver.this.underlyingFactory.getOperationTimeout().getSeconds(), TimeUnit.SECONDS);
+						receivedEvents = PartitionReceiver.this.receive(PartitionReceiver.this.onReceiveHandler.getMaxEventCount())
+								.get(PartitionReceiver.this.underlyingFactory.getOperationTimeout().getSeconds(), TimeUnit.SECONDS);
 					}
 					catch (InterruptedException|ExecutionException|TimeoutException clientException)
 					{

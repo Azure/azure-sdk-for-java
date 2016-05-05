@@ -48,7 +48,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
 	private static final Duration MINIMUM_RECEIVE_TIMER = Duration.ofSeconds(2);
 
-	private final ConcurrentLinkedQueue<WorkItem<Collection<Message>>> pendingReceives;
+	private final ConcurrentLinkedQueue<ReceiveWorkItem> pendingReceives;
 	private final MessagingFactory underlyingFactory;
 	private final ITimeoutErrorHandler stuckTransportHandler;
 	private final String receivePath;
@@ -61,6 +61,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 	private WorkItem<MessageReceiver> linkOpen;
 	private CompletableFuture<Void> linkClose;
 	private boolean closeCalled;
+	private Duration receiveTimeout;
 	
 	private long epoch;
 	private boolean isEpochReceiver;
@@ -88,6 +89,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 			final boolean isEpochReceiver)
 	{
 		super(name);
+		
 		this.underlyingFactory = factory;
 		this.stuckTransportHandler = stuckTransportHandler;
 		this.operationTimeout = factory.getOperationTimeout();
@@ -100,6 +102,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		this.linkClose = new CompletableFuture<Void>();
 		this.lastKnownLinkError = null;
 		this.flowSync = new Object();
+		this.receiveTimeout = factory.getOperationTimeout();
 
 		if (offset != null)
 		{
@@ -111,7 +114,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 			this.dateTime = dateTime;
 		}
 		
-		this.pendingReceives = new ConcurrentLinkedQueue<WorkItem<Collection<Message>>>();
+		this.pendingReceives = new ConcurrentLinkedQueue<ReceiveWorkItem>();
 		
 		// onOperationTimeout delegate - per receive call
 		this.onOperationTimedout = new Runnable()
@@ -207,33 +210,48 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 	{
 		this.prefetchCount = value;
 	}
-		
-	public CompletableFuture<Collection<Message>> receive()
+	
+	public Duration getReceiveTimeout()
 	{
-		List<Message> returnMessages = this.receiveCore();
+		return this.receiveTimeout;
+	}
+	
+	public void setReceiveTimeout(final Duration value)
+	{
+		this.receiveTimeout = value;
+	}
+		
+	public CompletableFuture<Collection<Message>> receive(final int maxMessageCount)
+	{
+		if (maxMessageCount <= 0 || maxMessageCount > this.prefetchCount)
+		{
+			throw new IllegalArgumentException(String.format(Locale.US, "parameter 'maxMessageCount' should be a positive number and should be less than prefetchCount(%s)", this.prefetchCount));
+		}
+		
+		List<Message> returnMessages = this.receiveCore(maxMessageCount);
 		
 		if (returnMessages != null)
 		{
 			return CompletableFuture.completedFuture((Collection<Message>) returnMessages);				
 		}
 		
-		if (this.operationTimeout.compareTo(MessageReceiver.MINIMUM_RECEIVE_TIMER) <= 0)
+		if (this.receiveTimeout.compareTo(MessageReceiver.MINIMUM_RECEIVE_TIMER) <= 0)
 		{
 			return CompletableFuture.completedFuture(null);
 		}
 		
 		if (this.pendingReceives.isEmpty())
 		{
-			this.scheduleOperationTimer(TimeoutTracker.create(this.operationTimeout));
+			this.scheduleOperationTimer(TimeoutTracker.create(this.receiveTimeout));
 		}
 		
 		CompletableFuture<Collection<Message>> onReceive = new CompletableFuture<Collection<Message>>();
-		this.pendingReceives.offer(new WorkItem<Collection<Message>>(onReceive, this.operationTimeout));
+		this.pendingReceives.offer(new ReceiveWorkItem(onReceive, this.receiveTimeout, maxMessageCount));
 		
 		return onReceive;
 	}
 	
-	public List<Message> receiveCore()
+	public List<Message> receiveCore(final int messageCount)
 	{
 		List<Message> returnMessages = null;
 		Message currentMessage = null;
@@ -245,7 +263,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 			}
 			
 			returnMessages.add(currentMessage);
-			if (returnMessages.size() >= this.prefetchCount)
+			if (returnMessages.size() >= messageCount)
 			{
 				break;
 			}
@@ -300,10 +318,10 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		this.underlyingFactory.getRetryPolicy().resetRetryCount(this.getClientId());
 		this.stuckTransportHandler.resetTimeoutErrorTracking();
 		
-		WorkItem<Collection<Message>> currentReceive = this.pendingReceives.poll();
+		ReceiveWorkItem currentReceive = this.pendingReceives.poll();
 		if (currentReceive != null)
 		{
-			List<Message> returnMessages = this.receiveCore();
+			List<Message> returnMessages = this.receiveCore(currentReceive.maxMessageCount);
 			CompletableFuture<Collection<Message>> future = currentReceive.getWork();
 			future.complete(returnMessages);
 		}
@@ -322,15 +340,14 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		this.lastKnownLinkError = exception;
 		WorkItem<Collection<Message>> currentReceive = this.pendingReceives.peek();
 		
+		boolean isLinkOpenCall = (this.linkOpen != null && this.linkOpen.getWork() != null && !this.linkOpen.getWork().isDone());
 		TimeoutTracker currentOperationTracker = currentReceive != null 
 				? currentReceive.getTimeoutTracker() 
-				: ((this.linkOpen != null && this.linkOpen.getWork() != null && !this.linkOpen.getWork().isDone()) 
-						? this.linkOpen.getTimeoutTracker() : new TimeoutTracker(this.operationTimeout, true));
+				: (isLinkOpenCall ? this.linkOpen.getTimeoutTracker() : new TimeoutTracker(this.receiveTimeout, true));
+		
 		Duration remainingTime = currentOperationTracker == null 
 						? Duration.ofSeconds(0)
-						: (currentOperationTracker.elapsed().compareTo(this.operationTimeout) > 0) 
-								? Duration.ofSeconds(0) 
-								: this.operationTimeout.minus(currentOperationTracker.elapsed());
+						: (currentOperationTracker.remaining().getSeconds() <= 0 ? Duration.ofSeconds(0) : currentOperationTracker.remaining());
 		Duration retryInterval = this.underlyingFactory.getRetryPolicy().getNextRetryInterval(this.getClientId(), exception, remainingTime);
 
 		if (retryInterval != null)
@@ -687,4 +704,15 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		
 		return errorContext;
 	}	
+
+	private static class ReceiveWorkItem extends WorkItem<Collection<Message>>
+	{
+		private final int maxMessageCount;
+		
+		public ReceiveWorkItem(CompletableFuture<Collection<Message>> completableFuture, Duration timeout, final int maxMessageCount)
+		{
+			super(completableFuture, timeout);
+			this.maxMessageCount = maxMessageCount;
+		}
+	}
 }

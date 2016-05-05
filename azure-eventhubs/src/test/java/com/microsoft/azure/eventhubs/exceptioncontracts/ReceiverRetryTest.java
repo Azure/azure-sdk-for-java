@@ -95,10 +95,10 @@ public class ReceiverRetryTest extends TestBase
 		
 		MessageReceiver receiver = MessageReceiver.create(factory, 
 					"receiver1", "eventhub1/consumergroups/$default/partitions/0", "-1", false, null, 100, 0, false).get();
-		Collection<Message> messages = receiver.receive().get();
+		Collection<Message> messages = receiver.receive(10).get();
 		if (messages != null)
 		{
-			receiver.receive().get();
+			receiver.receive(10).get();
 		}
 		
 		TestBase.TEST_LOGGER.log(Level.FINE, String.format("actual retries: %s", data.retryCount));

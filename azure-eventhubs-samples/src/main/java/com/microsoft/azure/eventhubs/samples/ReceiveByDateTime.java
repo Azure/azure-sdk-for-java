@@ -44,7 +44,7 @@ public class ReceiveByDateTime
 		{
 			while (true)
 			{
-				receiver.receive().thenAccept(new Consumer<Iterable<EventData>>()
+				receiver.receive(100).thenAccept(new Consumer<Iterable<EventData>>()
 				{
 					public void accept(Iterable<EventData> receivedEvents)
 					{

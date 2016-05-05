@@ -153,6 +153,7 @@ public class ConnectionStringBuilder
 	
 	/**
 	 * Set the OperationTimeout value in the Connection String. This value will be used by all operations which uses this {@link ConnectionStringBuilder}, unless explicitly over-ridden.
+	 * <p>ConnectionString with operationTimeout is not interoperable between java and clients in other platforms.
 	 * @param operationTimeout Operation Timeout
 	 */
 	public void setOperationTimeout(final Duration operationTimeout)
