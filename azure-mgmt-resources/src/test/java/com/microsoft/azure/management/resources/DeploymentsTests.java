@@ -41,7 +41,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
                 .withParametersLink(parametersUri, contentVersion)
                 .withMode(DeploymentMode.COMPLETE)
                 .provision();
-        Deployment deployment = resourceClient.deployments(rgName).get(deploymentName);
+        Deployment deployment = resourceClient.deployments().get(rgName, deploymentName);
         Assert.assertNotNull(deployment);
         Assert.assertEquals("Succeeded", deployment.provisioningState());
         GenericResource generic = connector.genericResources().get("VNet1");
