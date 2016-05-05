@@ -44,8 +44,28 @@
 
   <repositories>
     <repository>
-      <id>ossrh</id>
-      <name>Sonatype Snapshots</name>
+      <id>azureoss-snapshots-pr</id>
+      <name>Azure Private Snapshots</name>
+      <url>http://azureoss.westus.cloudapp.azure.com:8080/nexus/content/repositories/snapshots-pr/</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>adx-snapshots</id>
+      <name>Azure ADX Snapshots</name>
+      <url>http://adxsnapshots.azurewebsites.net</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>oss-snapshots</id>
+      <name>Open Source Snapshots</name>
       <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
       <layout>default</layout>
       <snapshots>
@@ -57,17 +77,12 @@
 
   <distributionManagement>
     <snapshotRepository>
-      <id>ossrh</id>
-      <name>Maven Central Snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      <id>adx-snapshots</id>
+      <name>Azure ADX Snapshots</name>
+      <url>ftp://waws-prod-bay-005.ftp.azurewebsites.windows.net/site/wwwroot</url>
       <uniqueVersion>true</uniqueVersion>
       <layout>default</layout>
     </snapshotRepository>
-    <repository>
-      <id>ossrh</id>
-      <name>Maven Central</name>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-    </repository>
   </distributionManagement>
 
   <dependencyManagement>
@@ -186,6 +201,12 @@
 <br />*/</code>]]></bottom>
         </configuration>
       </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.5.3</version>
+      </plugin>
     </plugins>
     <pluginManagement>
       <plugins>
@@ -217,10 +238,34 @@
             </environmentVariables>
           </configuration>
         </plugin>
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-release-plugin</artifactId>
           <version>2.5.2</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>1.10</version>
+          <executions>
+            <execution>
+              <id>attach-artifacts</id>
+              <phase>package</phase>
+              <goals>
+                <goal>attach-artifact</goal>
+              </goals>
+              <configuration>
+                <artifacts>
+                  <artifact>
+                    <file>target/.gitrevision</file>
+                    <type>gitrevision</type>
+                  </artifact>
+                </artifacts>
+              </configuration>
+            </execution>
+          </executions>
         </plugin>
       </plugins>
     </pluginManagement>
