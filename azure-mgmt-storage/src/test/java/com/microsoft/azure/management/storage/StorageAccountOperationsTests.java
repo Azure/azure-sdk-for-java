@@ -41,10 +41,10 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
                 .withAccountType(AccountType.PREMIUM_LRS)
                 .provision();
 
-        Usages usages = resourceClient.resourceGroups()
+        StorageAccounts.InGroup storageAccountsInGroup = resourceClient.resourceGroups()
                 .get("my-rg")
                 .connectToResource(new StorageResourceConnector.Builder())
-                .usages();
+                .storageAccounts();
     }
 
     @Test

@@ -21,7 +21,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
     @BeforeClass
     public static void setup() throws Exception {
         createClient();
-        resourceGroups = subscription.resourceGroups();
+        resourceGroups = resourceClient.resourceGroups();
         resourceGroup = resourceGroups.define(rgName)
                 .withLocation(Region.US_SOUTH_CENTRAL)
                 .provision();
@@ -41,7 +41,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
                 .withParametersLink(parametersUri, contentVersion)
                 .withMode(DeploymentMode.COMPLETE)
                 .provision();
-        Deployment deployment = subscription.deployments(rgName).get(deploymentName);
+        Deployment deployment = resourceClient.deployments().get(rgName, deploymentName);
         Assert.assertNotNull(deployment);
         Assert.assertEquals("Succeeded", deployment.provisioningState());
         GenericResource generic = connector.genericResources().get("VNet1");

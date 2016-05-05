@@ -8,7 +8,7 @@ public class ResourceGroupsTests extends ResourceManagerTestBase {
     private  ResourceGroups resourceGroups;
 
     public ResourceGroupsTests() throws Exception {
-        resourceGroups = subscription.resourceGroups();
+        resourceGroups = resourceClient.resourceGroups();
     }
 
     @Test

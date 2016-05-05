@@ -9,8 +9,8 @@ public class TenantImpl extends
         implements
         Tenant {
 
-    public TenantImpl(TenantIdDescriptionInner tenant) {
-        super(tenant.id(), tenant);
+    public TenantImpl(TenantIdDescriptionInner innerModel) {
+        super(innerModel.id(), innerModel);
     }
 
     /***********************************************************

@@ -12,8 +12,8 @@ public class LocationImpl extends
 
     private final SubscriptionsInner client;
 
-    public LocationImpl(LocationInner location, SubscriptionsInner client) {
-        super(location.id(), location);
+    public LocationImpl(LocationInner innerModel, final SubscriptionsInner client) {
+        super(innerModel.id(), innerModel);
         this.client = client;
     }
 
