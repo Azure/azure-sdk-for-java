@@ -4,59 +4,28 @@
 This project provides a client library in Java that makes it easy to consume Microsoft Azure services. For documentation please see the [JavaDocs](http://azure.github.io/azure-sdk-for-java). For a list of libraries and how they are organized, please see the [Azure SDK for Java Features Wiki page] (https://github.com/Azure/azure-sdk-for-java/wiki/Azure-SDK-for-Java-Features).
 
 #Download
-To compile either this repo or your project depending on this, you need snapshot builds in private internal maven repo. Go to http://azuresdkci.cloudapp.net/view/4-Java/job/register-internal-maven/ and register. And then add these to your `$MAVEN_HOME/conf/settings.xml`.
+To compile either this repo, you need snapshot builds in sonatype snapshots repository.  Add the following to your pom:
 ```xml
-<servers>
-  <!-- other server settings -->
-  <server>
-    <id>azureoss-snapshots-pr</id>
-    <username>your username</username>
-    <password>your password</password>
-  </server>
-</servers>
-```
-and add the following to your pom:
-```xml
-<repositories>
-  <repository>
-    <id>azureoss-snapshots-pr</id>
-    <name>Azure Internal Snapshots</name>
-    <url>http://azureoss.westus.cloudapp.azure.com:8080/nexus/content/repositories/snapshots-pr/</url>
-    <layout>default</layout>
-    <snapshots>
-      <enabled>true</enabled>
-    </snapshots>
-  </repository>
-  <repository>
-    <id>adx-snapshots</id>
-    <name>Azure ADX Snapshots</name>
-    <url>http://adxsnapshots.azurewebsites.net/</url>
-    <layout>default</layout>
-    <snapshots>
-      <enabled>true</enabled>
-    </snapshots>
-  </repository>
-</repositories>
-...
-<dependency>
-  <groupId>com.microsoft.azure</groupId>
-  <artifactId>azure</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
-</dependency>
+  <repositories>
+    <repository>
+      <id>ossrh</id>
+      <name>Sonatype Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+    </repository>
+  </repositories>
 ```
 or Gradle:
 ```groovy
 repositories {
-    maven { url "http://adxsnapshots.azurewebsites.net/" }
-    ....
-}
-...
-dependencies {
-    compile 'com.microsoft.azure:azure:1.0.0-SNAPSHOT'
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     ....
 }
 ```
-You can browse the [snapshot repo](http://adxsnapshots.azurewebsites.net/) and view diffs between builds or master branch. Request a deploy in "Issues" if you find features/bug fixes in master but not in the latest snapshot build.
 
 #Getting Started
 You will need Java v1.7+. If you would like to develop on the SDK, you will also need maven.

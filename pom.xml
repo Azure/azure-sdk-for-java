@@ -5,12 +5,8 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.microsoft.azure</groupId>
-    <version>1.0.0-SNAPSHOT</version>
-    <artifactId>azure-bom</artifactId>
-  </parent>
-
+  <groupId>com.microsoft.azure</groupId>
+  <version>1.0.0-SNAPSHOT</version>
   <artifactId>azure-parent</artifactId>
   <packaging>pom</packaging>
 
@@ -47,28 +43,8 @@
 
   <repositories>
     <repository>
-      <id>azureoss-snapshots-pr</id>
-      <name>Azure Private Snapshots</name>
-      <url>http://azureoss.westus.cloudapp.azure.com:8080/nexus/content/repositories/snapshots-pr/</url>
-      <layout>default</layout>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>always</updatePolicy>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>adx-snapshots</id>
-      <name>Azure ADX Snapshots</name>
-      <url>http://adxsnapshots.azurewebsites.net</url>
-      <layout>default</layout>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>always</updatePolicy>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>oss-snapshots</id>
-      <name>Open Source Snapshots</name>
+      <id>ossrh</id>
+      <name>Sonatype Snapshots</name>
       <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
       <layout>default</layout>
       <snapshots>
@@ -80,12 +56,17 @@
 
   <distributionManagement>
     <snapshotRepository>
-      <id>adx-snapshots</id>
-      <name>Azure ADX Snapshots</name>
-      <url>ftp://waws-prod-bay-005.ftp.azurewebsites.windows.net/site/wwwroot</url>
+      <id>ossrh</id>
+      <name>Maven Central Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
       <uniqueVersion>true</uniqueVersion>
       <layout>default</layout>
     </snapshotRepository>
+    <repository>
+      <id>ossrh</id>
+      <name>Maven Central</name>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
   </distributionManagement>
 
   <dependencyManagement>
