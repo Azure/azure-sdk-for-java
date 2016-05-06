@@ -3,23 +3,22 @@ package com.microsoft.azure.implementation;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.ResourceGroupsImpl;
 import com.microsoft.azure.management.resources.implementation.api.PageImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
-import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.rest.RestException;
 
 import java.io.IOException;
-import java.util.List;
 
 
-public class AzureResourceGroupsImpl implements Azure.ResourceGroups {
+final class AzureResourceGroupsImpl implements Azure.ResourceGroups {
     private ResourceManagementClientImpl client;
     private ResourceGroups resourceGroupsCore;
 
-    public AzureResourceGroupsImpl(ResourceManagementClientImpl client) {
+    AzureResourceGroupsImpl(ResourceManagementClientImpl client) {
         this.client = client;
         this.resourceGroupsCore = new ResourceGroupsImpl(client);
     }

@@ -9,7 +9,6 @@ import okhttp3.logging.HttpLoggingInterceptor;
 public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
         implements AzureConfigurable<T> {
     protected RestClient.Builder restClientBuilder;
-    protected RestClient restClient;
 
     protected AzureConfigurableImpl() {
         this.restClientBuilder = new RestClient.Builder("https://management.azure.com");
@@ -33,7 +32,7 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
         return (T) this;
     }
 
-    protected void buildRestClient(ServiceClientCredentials credentials) {
-        restClient = restClientBuilder.withCredentials(credentials).build();
+    protected RestClient buildRestClient(ServiceClientCredentials credentials) {
+        return restClientBuilder.withCredentials(credentials).build();
     }
 }

@@ -7,12 +7,12 @@ import com.microsoft.azure.management.resources.implementation.api.ProviderResou
 
 import java.util.List;
 
-public class ProviderImpl extends
+class ProviderImpl extends
         IndexableWrapperImpl<ProviderInner>
         implements
         Provider {
 
-    public ProviderImpl(ProviderInner provider) {
+    ProviderImpl(ProviderInner provider) {
         super(provider.id(), provider);
     }
 

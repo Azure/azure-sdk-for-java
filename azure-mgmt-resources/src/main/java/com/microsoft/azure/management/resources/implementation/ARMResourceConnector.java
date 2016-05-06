@@ -6,7 +6,7 @@ import com.microsoft.azure.management.resources.ResourceConnector;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.rest.RestClient;
 
-public class ARMResourceConnector extends ResourceConnectorBase<ARMResourceConnector> {
+public class ARMResourceConnector extends ResourceConnectorBase {
     private ResourceManager resourceClient;
     private GenericResources.InGroup genericResources;
     private Deployments.InGroup deployments;
@@ -43,7 +43,7 @@ public class ARMResourceConnector extends ResourceConnectorBase<ARMResourceConne
         if (resourceClient == null) {
             resourceClient = ResourceManager
                     .authenticate(restClient)
-                    .useSubscription(subscriptionId);
+                    .withSubscription(subscriptionId);
         }
         return resourceClient;
     }

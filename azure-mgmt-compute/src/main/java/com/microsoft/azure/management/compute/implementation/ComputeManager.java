@@ -83,7 +83,7 @@ public final class ComputeManager {
         if (restClient == null) {
             resourceClient = ResourceManager
                     .authenticate(restClient)
-                    .useSubscription(subscriptionId);
+                    .withSubscription(subscriptionId);
         }
         return resourceClient;
     }

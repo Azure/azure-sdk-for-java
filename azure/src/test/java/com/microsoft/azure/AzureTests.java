@@ -5,7 +5,6 @@ import com.microsoft.azure.credentials.AzureEnvironment;
 import com.microsoft.azure.implementation.Azure;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.api.AccountType;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
@@ -21,22 +20,18 @@ public class AzureTests {
             System.getenv("secret"),
             AzureEnvironment.AZURE);
     private static final String subscriptionId = System.getenv("resourceClient-id");
-
     private Subscriptions subscriptions;
-    private Azure.ResourceGroups resourceGroups;
-    private StorageAccounts storageAccounts;
+    private Azure azure;
 
     @Before
     public void setup() throws Exception {
-        Azure azure = Azure.configure()
+        Azure.Authenticated azureAuthed = Azure.configure()
                 .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
                 .withUserAgent("AzureTests")
                 .authenticate(credentials);
 
-        subscriptions = azure.subscriptions();
-        Azure.Subscription sub = azure.withSubscription(subscriptionId);
-        resourceGroups = sub.resourceGroups();
-        storageAccounts = sub.storageAccounts();
+        subscriptions = azureAuthed.subscriptions();
+        azure = azureAuthed.withSubscription(subscriptionId);
     }
 
     @Test
@@ -46,17 +41,17 @@ public class AzureTests {
 
     @Test
     public void listResourceGroups() throws Exception {
-        Assert.assertTrue(0 < resourceGroups.list().size());
+        Assert.assertTrue(0 < azure.resourceGroups().list().size());
     }
 
     @Test
     public void listStorageAccounts() throws Exception {
-        Assert.assertTrue(0 < storageAccounts.list().size());
+        Assert.assertTrue(0 < azure.storageAccounts().list().size());
     }
 
     @Test
     public void createStorageAccount() throws Exception {
-        StorageAccount storageAccount = storageAccounts.define("my-stg1")
+        StorageAccount storageAccount = azure.storageAccounts().define("my-stg1")
                 .withRegion(Region.ASIA_EAST)
                 .withNewGroup()
                 .withAccountType(AccountType.PREMIUM_LRS)
@@ -67,7 +62,7 @@ public class AzureTests {
 
     @Test
     public void createStorageAccountInResourceGroupContext() throws Exception {
-        StorageAccount storageAccount = resourceGroups.get("my-grp")
+        StorageAccount storageAccount = azure.resourceGroups().get("my-grp")
                 .storageAccounts()
                 .define("my-stg2")
                 .withAccountType(AccountType.PREMIUM_LRS)
