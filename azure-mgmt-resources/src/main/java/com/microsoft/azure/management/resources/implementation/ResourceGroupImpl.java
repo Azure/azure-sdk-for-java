@@ -129,7 +129,7 @@ public class ResourceGroupImpl extends
     }
 
     @Override
-    public <T extends ResourceConnector> T connectToResource(T.Builder<T> adapterBuilder) {
+    public <T extends ResourceConnector> T connectToResource(ResourceConnector.Builder<T> adapterBuilder) {
         return adapterBuilder.create(this.serviceClient.restClient(), this.serviceClient.subscriptionId(), this);
     }
 }
