@@ -51,20 +51,36 @@ public class EventData
 		if (partitionKeyObj != null)
 		{
 			this.partitionKey = partitionKeyObj.toString();
+			messageAnnotations.remove(AmqpConstants.PARTITION_KEY);
 		}
 		
 		Object sequenceNumberObj = messageAnnotations.get(AmqpConstants.SEQUENCE_NUMBER);
 		this.sequenceNumber = (Long) sequenceNumberObj;
+		messageAnnotations.remove(AmqpConstants.SEQUENCE_NUMBER);
 		
 		Object enqueuedTimeUtcObj = messageAnnotations.get(AmqpConstants.ENQUEUED_TIME_UTC);
 		this.enqueuedTime = ((Date) enqueuedTimeUtcObj).toInstant();
+		messageAnnotations.remove(AmqpConstants.ENQUEUED_TIME_UTC);
 		
 		this.offset = messageAnnotations.get(AmqpConstants.OFFSET).toString();
+		messageAnnotations.remove(AmqpConstants.OFFSET);
 		
 		this.properties = amqpMessage.getApplicationProperties() == null ? null 
 				: ((Map<String, String>)(amqpMessage.getApplicationProperties().getValue()));
 		
-		
+		if (!messageAnnotations.isEmpty())
+		{
+			if (this.properties == null)
+			{
+				this.properties = new HashMap<String, String>();
+			}
+			
+			for(Map.Entry<Symbol, Object> annotation: messageAnnotations.entrySet())
+			{
+				this.properties.put(annotation.getKey().toString(), annotation.getValue() != null ? annotation.getValue().toString() : null);
+			}
+		}
+
 		this.bodyData = amqpMessage.getBody() == null ? null : ((Data) amqpMessage.getBody()).getValue();
 		
 		this.isReceivedEvent = true;
