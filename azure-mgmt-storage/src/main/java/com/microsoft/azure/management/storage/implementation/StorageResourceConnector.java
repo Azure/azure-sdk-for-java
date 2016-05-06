@@ -6,7 +6,7 @@ import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.rest.RestClient;
 
-public class StorageResourceConnector extends ResourceConnectorBase<StorageResourceConnector> {
+public class StorageResourceConnector extends ResourceConnectorBase {
     private StorageManager storageClient;
     private StorageAccounts.InGroup storageAccounts;
 

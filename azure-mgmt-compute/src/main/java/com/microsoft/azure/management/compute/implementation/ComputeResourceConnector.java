@@ -7,7 +7,7 @@ import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.implementation.ResourceConnectorBase;
 import com.microsoft.rest.RestClient;
 
-public class ComputeResourceConnector extends ResourceConnectorBase<ComputeResourceConnector> {
+public class ComputeResourceConnector extends ResourceConnectorBase {
     private ComputeManager computeClient;
     private AvailabilitySets.InGroup availabilitySets;
     private VirtualMachines.InGroup virtualMachines;

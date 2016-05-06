@@ -9,133 +9,128 @@ package com.microsoft.azure.management.resources.implementation;
 import com.microsoft.azure.management.resources.*;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
+import com.microsoft.azure.management.resources.implementation.api.FeatureClientImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.implementation.api.SubscriptionClientImpl;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
 public final class ResourceManager {
-    private RestClient restClient;
-    private String subscriptionId;
     // The sdk clients
-    private ResourceManagementClientImpl resourceManagementClient;
+    private final ResourceManagementClientImpl resourceManagementClient;
+    private final FeatureClientImpl featureClient;
     // The collections
-    ResourceGroups resourceGroups;
-    GenericResources genericResources;
-    Deployments deployments;
-    Deployments.InGroup deploymentsInGroup;
-
-    public static Configure configure() {
-        return new ResourceManager().new ConfigurableImpl();
-    }
+    private ResourceGroups resourceGroups;
+    private GenericResources genericResources;
+    private Deployments deployments;
+    private Features features;
+    private Providers providers;
 
     public static ResourceManager.Authenticated authenticate(ServiceClientCredentials credentials) {
-        return (new ResourceManager(credentials)).new AuthenticatedImpl();
+        return new AuthenticatedImpl(new RestClient
+                .Builder("https://management.azure.com")
+                .withCredentials(credentials)
+                .build());
     }
 
     public static ResourceManager.Authenticated authenticate(RestClient restClient) {
-        return (new ResourceManager(restClient)).new AuthenticatedImpl();
+        return new AuthenticatedImpl(restClient);
     }
 
-    public interface Configure extends AzureConfigurable<Configure> {
+    public static Configurable configure() {
+        return new ResourceManager.ConfigurableImpl();
+    }
+
+    public interface Configurable extends AzureConfigurable<Configurable> {
         ResourceManager.Authenticated authenticate(ServiceClientCredentials credentials);
     }
 
-    class ConfigurableImpl extends AzureConfigurableImpl<Configure> implements Configure {
+    private static class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         public ResourceManager.Authenticated authenticate(ServiceClientCredentials credentials) {
-            buildRestClient(credentials);
-            return ResourceManager.authenticate(restClient);
+            return ResourceManager.authenticate(buildRestClient(credentials));
         }
     }
 
     public interface Authenticated {
         Tenants tenants();
         Subscriptions subscriptions();
-        ResourceManager useSubscription(String subscriptionId);
+        ResourceManager withSubscription(String subscriptionId);
     }
 
-    class AuthenticatedImpl implements Authenticated {
+    private static final class AuthenticatedImpl implements Authenticated {
+        private RestClient restClient;
         private SubscriptionClientImpl subscriptionClient;
         // The subscription less collections
         private Subscriptions subscriptions;
         private Tenants tenants;
 
-        public AuthenticatedImpl() {}
+        AuthenticatedImpl(RestClient restClient) {
+            this.restClient = restClient;
+            this.subscriptionClient = new SubscriptionClientImpl(restClient);
+        }
 
         public Subscriptions subscriptions() {
             if (subscriptions == null) {
-                subscriptions = new SubscriptionsImpl(subscriptionClient().subscriptions());
+                subscriptions = new SubscriptionsImpl(subscriptionClient.subscriptions());
             }
             return subscriptions;
         }
 
         public Tenants tenants() {
             if (tenants == null) {
-                tenants = new TenantsImpl(subscriptionClient().tenants());
+                tenants = new TenantsImpl(subscriptionClient.tenants());
             }
             return tenants;
         }
 
-        public ResourceManager useSubscription(String subscriptionId) {
-           ResourceManager.this.subscriptionId =  subscriptionId;
-           return ResourceManager.this;
-        }
-
-        private SubscriptionClientImpl subscriptionClient() {
-            if (subscriptionClient == null) {
-                subscriptionClient = new SubscriptionClientImpl(restClient);
-            }
-            return subscriptionClient;
+        @Override
+        public ResourceManager withSubscription(String subscriptionId) {
+           return new ResourceManager(restClient, subscriptionId);
         }
     }
 
-    private ResourceManager(ServiceClientCredentials credentials) {
-        this.restClient = new RestClient
-                .Builder("https://management.azure.com")
-                .withCredentials(credentials)
-                .build();
+    private ResourceManager(RestClient restClient, String subscriptionId) {
+        this.resourceManagementClient = new ResourceManagementClientImpl(restClient);
+        this.resourceManagementClient.setSubscriptionId(subscriptionId);
+        this.featureClient = new FeatureClientImpl(restClient);
+        this.featureClient.setSubscriptionId(subscriptionId);
     }
-
-    private ResourceManager(RestClient restClient) {
-        this.restClient = restClient;
-    }
-
-    private ResourceManager() {}
 
     public ResourceGroups resourceGroups() {
         if (resourceGroups == null) {
-            resourceGroups = new ResourceGroupsImpl(resourceManagementClient());
+            resourceGroups = new ResourceGroupsImpl(resourceManagementClient);
         }
         return resourceGroups;
     }
 
     public GenericResources genericResources() {
         if (genericResources == null) {
-            genericResources = new GenericResourcesImpl(resourceManagementClient());
+            genericResources = new GenericResourcesImpl(resourceManagementClient);
         }
         return genericResources;
     }
 
     public Deployments deployments() {
         if (deployments == null) {
-            ResourceManagementClientImpl client = resourceManagementClient();
-            deployments = new DeploymentsImpl(client.deployments(), client.deploymentOperations(), resourceGroups());
+            deployments = new DeploymentsImpl(
+                    resourceManagementClient.deployments(),
+                    resourceManagementClient.deploymentOperations(),
+                    resourceGroups());
         }
         return deployments;
     }
 
-    public Deployments.InGroup deployments(ResourceGroup resourceGroup) {
-        if (deploymentsInGroup == null) {
-            deploymentsInGroup = new DeploymentsInGroupImpl(deployments(), resourceGroup);
+    public Features features() {
+        if (features == null) {
+            features = new FeaturesImpl(featureClient.features());
         }
-        return deploymentsInGroup;
+        return features;
     }
 
-    private ResourceManagementClientImpl resourceManagementClient() {
-        if (resourceManagementClient == null) {
-            resourceManagementClient = new ResourceManagementClientImpl(restClient);
-            resourceManagementClient.setSubscriptionId(subscriptionId);
+    public Providers providers() {
+        if (providers == null) {
+            providers = new ProvidersImpl(resourceManagementClient.providers());
         }
-        return resourceManagementClient;
+        return providers;
     }
 }

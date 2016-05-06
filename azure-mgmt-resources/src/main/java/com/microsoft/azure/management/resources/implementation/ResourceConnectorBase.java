@@ -4,7 +4,7 @@ import com.microsoft.azure.management.resources.ResourceConnector;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.rest.RestClient;
 
-public class ResourceConnectorBase<T extends ResourceConnector> implements ResourceConnector<T> {
+public class ResourceConnectorBase implements ResourceConnector {
     protected final RestClient restClient;
     protected final String subscriptionId;
     protected final ResourceGroup resourceGroup;

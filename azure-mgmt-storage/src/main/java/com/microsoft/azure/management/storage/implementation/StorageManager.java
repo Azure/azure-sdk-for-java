@@ -10,22 +10,22 @@ import com.microsoft.rest.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
 public final class StorageManager {
-    private RestClient restClient;
-    private String subscriptionId;
-    // The service managers
-    private ResourceManager resourceClient;
-    // The sdk clients
-    private StorageManagementClientImpl storageManagementClient;
-    // The collections
+    private final StorageManagementClientImpl storageManagementClient;
+    // Dependent managers
+    private ResourceManager resourceManager;
+    // Collections
     private StorageAccounts storageAccounts;
     private Usages storageUsages;
 
-    public static Configurable configurable() {
-        return new StorageManager().new ConfigurableImpl();
+    public static Configurable configure() {
+        return new StorageManager.ConfigurableImpl();
     }
 
     public static StorageManager authenticate(ServiceClientCredentials credentials, String subscriptionId) {
-        return new StorageManager(credentials, subscriptionId);
+        return new StorageManager(new RestClient
+                .Builder("https://management.azure.com")
+                .withCredentials(credentials)
+                .build(), subscriptionId);
     }
 
     public static StorageManager authenticate(RestClient restClient, String subscriptionId) {
@@ -36,56 +36,30 @@ public final class StorageManager {
         StorageManager authenticate(ServiceClientCredentials credentials, String subscriptionId);
     }
 
-    class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
+    private static class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         public StorageManager authenticate(ServiceClientCredentials credentials, String subscriptionId) {
-            buildRestClient(credentials);
-            return StorageManager.authenticate(restClient, subscriptionId);
+            return StorageManager.authenticate(buildRestClient(credentials), subscriptionId);
         }
     }
 
-    private StorageManager(ServiceClientCredentials credentials, String subscriptionId) {
-        this.restClient = new RestClient
-                .Builder("https://management.azure.com")
-                .withCredentials(credentials)
-                .build();
-        this.subscriptionId = subscriptionId;
-    }
-
     private StorageManager(RestClient restClient, String subscriptionId) {
-        this.restClient = restClient;
-        this.subscriptionId = subscriptionId;
+        storageManagementClient = new StorageManagementClientImpl(restClient);
+        storageManagementClient.setSubscriptionId(subscriptionId);
+        resourceManager = ResourceManager.authenticate(restClient).withSubscription(subscriptionId);
     }
-
-    private StorageManager() {}
 
     public StorageAccounts storageAccounts() {
         if (storageAccounts == null) {
-            storageAccounts = new StorageAccountsImpl(storageManagementClient().storageAccounts(), resourceClient().resourceGroups());
+            storageAccounts = new StorageAccountsImpl(storageManagementClient.storageAccounts(), resourceManager.resourceGroups());
         }
         return storageAccounts;
     }
 
     public Usages usages() {
         if (storageUsages == null) {
-            storageUsages = new UsagesImpl(storageManagementClient());
+            storageUsages = new UsagesImpl(storageManagementClient);
         }
         return storageUsages;
     }
 
-    private StorageManagementClientImpl storageManagementClient() {
-        if (storageManagementClient == null) {
-            storageManagementClient = new StorageManagementClientImpl(restClient);
-            storageManagementClient.setSubscriptionId(subscriptionId);
-        }
-        return storageManagementClient;
-    }
-
-    private ResourceManager resourceClient() {
-        if (restClient == null) {
-            resourceClient = ResourceManager
-                    .authenticate(restClient)
-                    .useSubscription(subscriptionId);
-        }
-        return resourceClient;
-    }
 }

@@ -13,7 +13,7 @@ import org.joda.time.DateTime;
 
 import java.io.IOException;
 
-public class StorageAccountImpl
+class StorageAccountImpl
         extends GroupableResourceImpl<StorageAccount, StorageAccountInner, StorageAccountImpl>
         implements
         StorageAccount,
@@ -28,7 +28,7 @@ public class StorageAccountImpl
 
     private final StorageAccountsInner client;
 
-    public StorageAccountImpl(String name,
+    StorageAccountImpl(String name,
                               StorageAccountInner innerModel,
                               final StorageAccountsInner client,
                               final ResourceGroups resourceGroups) {
