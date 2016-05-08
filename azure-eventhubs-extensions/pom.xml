@@ -2,7 +2,7 @@
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-  <description>Log4j appender for Microsoft Azure Event Hubs</description>
+  <description>libraries and extensions built on Microsoft Azure Event Hubs</description>
 
   <parent>
     <groupId>com.microsoft.azure</groupId>
@@ -12,8 +12,8 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-	<artifactId>azure-eventhubs-log4j-appender</artifactId>
-	<name>azure-eventhubs-log4j-appender</name>
+	<artifactId>azure-eventhubs-extensions</artifactId>
+	<name>azure-eventhubs-extensions</name>
 	<version>0.1.0-SNAPSHOT</version>
 
 	<dependencies>
