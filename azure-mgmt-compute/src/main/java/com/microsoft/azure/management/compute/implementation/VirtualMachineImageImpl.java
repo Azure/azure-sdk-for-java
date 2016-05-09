@@ -1,10 +1,8 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.management.compute.VirtualMachineImage;
-import com.microsoft.azure.management.compute.implementation.api.DataDiskImage;
-import com.microsoft.azure.management.compute.implementation.api.OSDiskImage;
-import com.microsoft.azure.management.compute.implementation.api.PurchasePlan;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImageInner;
+import com.microsoft.azure.management.compute.implementation.api.*;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 
 import java.util.List;
@@ -12,30 +10,36 @@ import java.util.List;
 class VirtualMachineImageImpl
         extends IndexableWrapperImpl<VirtualMachineImageInner>
         implements VirtualMachineImage {
-    VirtualMachineImageImpl(String publisher, String offer, String sku, String version) {
-        super(null, null);
-        this.publisher = publisher;
-        this.offer = offer;
-        this.sku = sku;
-        this.version = version;
-    }
-
-    VirtualMachineImageImpl(String publisher, String offer, String sku, String version, VirtualMachineImageInner innerObject) {
-        super(innerObject.id(), innerObject);
-        this.publisher = publisher;
-        this.offer = offer;
-        this.sku = sku;
-        this.version = version;
-    }
-
+    private final VirtualMachineImagesInner client;
+    private final Region location;
     private String publisher;
     private String offer;
     private String sku;
     private String version;
 
+    VirtualMachineImageImpl(Region location, String publisher, String offer, String sku, String version, VirtualMachineImagesInner client) {
+        super(null, null);
+        this.location = location;
+        this.publisher = publisher;
+        this.offer = offer;
+        this.sku = sku;
+        this.version = version;
+        this.client = client;
+    }
+
+    VirtualMachineImageImpl(Region location, String publisher, String offer, String sku, String version, VirtualMachineImageInner innerModel, VirtualMachineImagesInner client) {
+        super(innerModel.id(), innerModel);
+        this.location = location;
+        this.publisher = publisher;
+        this.offer = offer;
+        this.sku = sku;
+        this.version = version;
+        this.client = client;
+    }
+
     @Override
-    public String location() {
-        return inner().location();
+    public Region location() {
+        return location;
     }
 
     @Override

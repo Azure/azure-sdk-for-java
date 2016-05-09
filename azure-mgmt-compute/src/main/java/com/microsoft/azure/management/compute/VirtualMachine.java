@@ -98,6 +98,7 @@ public interface VirtualMachine extends
 
     interface DefinitionWithGroup {
         DefinitionWithImage withImage(String publisher, String offer, String sku, String version);
+        DefinitionWithImage withImage(VirtualMachineImage image);
         DefinitionWithImage withLatestImage(String publisher, String offer, String sku);
         DefinitionWithImage withKnownImage(KnownVirtualMachineImage image);
     }

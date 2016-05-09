@@ -1,21 +1,13 @@
 package com.microsoft.azure.management.compute;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingByLocation;
+
+import java.io.IOException;
+import java.util.List;
 
 public interface VirtualMachineImages extends
-        SupportsListing<VirtualMachine>,
-        SupportsListingByGroup<VirtualMachine>,
-        SupportsGettingByGroup<VirtualMachine>,
-        SupportsCreating<VirtualMachine>,
-        SupportsDeleting,
-        SupportsDeletingByGroup {
-    interface InGroup extends
-            SupportsListing<VirtualMachine>,
-            SupportsCreating<VirtualMachine>,
-            SupportsDeleting {}
+        SupportsListingByLocation<VirtualMachineImage> {
+    List<VirtualMachineImage.Publisher> listPublishers(final Region location) throws CloudException, IOException;
 }
