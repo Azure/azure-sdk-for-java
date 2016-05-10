@@ -12,28 +12,27 @@ class VirtualMachineImageImpl
         implements VirtualMachineImage {
     private final VirtualMachineImagesInner client;
     private final Region location;
-    private String publisher;
-    private String offer;
-    private String sku;
-    private String version;
+    private ImageReference imageReference;
 
     VirtualMachineImageImpl(Region location, String publisher, String offer, String sku, String version, VirtualMachineImagesInner client) {
         super(null, null);
         this.location = location;
-        this.publisher = publisher;
-        this.offer = offer;
-        this.sku = sku;
-        this.version = version;
+        this.imageReference = new ImageReference();
+        this.imageReference.setPublisher(publisher);
+        this.imageReference.setOffer(offer);
+        this.imageReference.setSku(sku);
+        this.imageReference.setVersion(version);
         this.client = client;
     }
 
     VirtualMachineImageImpl(Region location, String publisher, String offer, String sku, String version, VirtualMachineImageInner innerModel, VirtualMachineImagesInner client) {
         super(innerModel.id(), innerModel);
         this.location = location;
-        this.publisher = publisher;
-        this.offer = offer;
-        this.sku = sku;
-        this.version = version;
+        this.imageReference = new ImageReference();
+        this.imageReference.setPublisher(publisher);
+        this.imageReference.setOffer(offer);
+        this.imageReference.setSku(sku);
+        this.imageReference.setVersion(version);
         this.client = client;
     }
 
@@ -44,22 +43,27 @@ class VirtualMachineImageImpl
 
     @Override
     public String publisher() {
-        return publisher;
+        return imageReference.publisher();
     }
 
     @Override
     public String offer() {
-        return offer;
+        return imageReference.offer();
     }
 
     @Override
     public String sku() {
-        return sku;
+        return imageReference.sku();
     }
 
     @Override
     public String version() {
-        return version;
+        return imageReference.version();
+    }
+
+    @Override
+    public ImageReference imageReference() {
+        return imageReference;
     }
 
     @Override
