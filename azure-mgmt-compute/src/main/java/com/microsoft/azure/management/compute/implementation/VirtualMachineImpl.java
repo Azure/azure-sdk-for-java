@@ -5,6 +5,7 @@ import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.implementation.api.*;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.storage.StorageAccount;
 
 import java.util.List;
 
@@ -13,10 +14,11 @@ class VirtualMachineImpl
         implements
             VirtualMachine,
             VirtualMachine.DefinitionBlank,
-            VirtualMachine.DefinitionWithRegion,
             VirtualMachine.DefinitionWithGroup,
-            VirtualMachine.DefinitionWithImage {
+            VirtualMachine.DefinitionWithDataDisk,
+            VirtualMachine.DefinitionWithStorageAccount {
     private final VirtualMachinesInner client;
+    private DefinitionWithOSDiskBaseImpl definitionWithOSDiskBaseImpl;
 
     VirtualMachineImpl(String name, VirtualMachineInner innerModel, VirtualMachinesInner client, ResourceGroups resourceGroups) {
         super(name, innerModel, resourceGroups);
@@ -79,23 +81,27 @@ class VirtualMachineImpl
     }
 
     @Override
-    public DefinitionWithImage withImage(ImageReference imageReference) {
-        if (inner().storageProfile() == null) {
-            inner().setStorageProfile(new StorageProfile());
-        }
-        inner().storageProfile().setImageReference(imageReference);
-        return this;
+    public DefinitionWithNewOSDisk withNewStorageAccount(String name) {
+        // TODO Setup storage account details
+        DefinitionWithNewOSDiskImpl definitionWithNewOSDiskImpl = new DefinitionWithNewOSDiskImpl(this);
+        this.definitionWithOSDiskBaseImpl = definitionWithNewOSDiskImpl;
+        return definitionWithNewOSDiskImpl;
     }
 
     @Override
-    public DefinitionWithImage withLatestImage(String publisher, String offer, String sku) {
-        return this.withImage(new ImageReference()
-                .setPublisher(publisher).setOffer(offer).setSku(sku).setVersion("latest"));
+    public DefinitionWithOSDisk withExistingStorageAccount(String name) {
+        // TODO Setup storage account details
+        DefinitionWithOSDiskImpl  definitionWithOSDiskImpl = new DefinitionWithOSDiskImpl(this);
+        this.definitionWithOSDiskBaseImpl = definitionWithOSDiskImpl;
+        return definitionWithOSDiskImpl;
     }
 
     @Override
-    public DefinitionWithImage withKnownImage(KnownVirtualMachineImage knownImage) {
-        return this.withImage(knownImage.imageReference());
+    public  DefinitionWithOSDisk withExistingStorageAccount(StorageAccount.DefinitionProvisionable provisionable) {
+        // TODO Setup storage account details
+        DefinitionWithOSDiskImpl  definitionWithOSDiskImpl = new DefinitionWithOSDiskImpl(this);
+        this.definitionWithOSDiskBaseImpl = definitionWithOSDiskImpl;
+        return definitionWithOSDiskImpl;
     }
 
     @Override
