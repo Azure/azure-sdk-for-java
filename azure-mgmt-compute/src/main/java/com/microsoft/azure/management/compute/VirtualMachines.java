@@ -11,11 +11,11 @@ public interface VirtualMachines extends
         SupportsListing<VirtualMachine>,
         SupportsListingByGroup<VirtualMachine>,
         SupportsGettingByGroup<VirtualMachine>,
-        SupportsCreating<VirtualMachine>,
+        SupportsCreating<VirtualMachine.DefinitionBlank>,
         SupportsDeleting,
         SupportsDeletingByGroup {
     interface InGroup extends
             SupportsListing<VirtualMachine>,
-            SupportsCreating<VirtualMachine>,
+            SupportsCreating<VirtualMachine.DefinitionBlank>,
             SupportsDeleting {}
 }

@@ -40,7 +40,6 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
         parameters.setLocation(location);
         parameters.setAccountType(AccountType.STANDARD_LRS);
         storageManagementClient.storageAccounts().create(rgName, accountName, parameters).getBody();
-
     }
 
     @AfterClass
