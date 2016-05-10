@@ -3,7 +3,6 @@ package com.microsoft.azure.management.compute;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.compute.implementation.KnownVirtualMachineImage;
 import com.microsoft.azure.management.compute.implementation.api.*;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
@@ -98,10 +97,9 @@ public interface VirtualMachine extends
     }
 
     interface DefinitionWithGroup {
-        DefinitionWithImage withImage(Region location, String publisher, String offer, String sku, String version);
-        DefinitionWithImage withImage(VirtualMachineImage image);
-        DefinitionWithImage withLatestImage(Region location, String publisher, String offer, String sku);
-        DefinitionWithImage withKnownImage(Region location, KnownVirtualMachineImage image);
+        DefinitionWithImage withImage(ImageReference imageReference);
+        DefinitionWithImage withLatestImage(String publisher, String offer, String sku);
+        DefinitionWithImage withKnownImage(KnownVirtualMachineImage knownImage);
     }
 
     interface DefinitionWithImage {

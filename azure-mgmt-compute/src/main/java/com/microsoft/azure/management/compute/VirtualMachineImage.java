@@ -1,10 +1,7 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.compute.implementation.api.DataDiskImage;
-import com.microsoft.azure.management.compute.implementation.api.OSDiskImage;
-import com.microsoft.azure.management.compute.implementation.api.PurchasePlan;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImageInner;
+import com.microsoft.azure.management.compute.implementation.api.*;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
@@ -18,6 +15,7 @@ public interface VirtualMachineImage extends
     String offer();
     String sku();
     String version();
+    ImageReference imageReference();
     PurchasePlan plan();
     OSDiskImage osDiskImage();
     List<DataDiskImage> dataDiskImages();
