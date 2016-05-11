@@ -98,6 +98,7 @@ public interface VirtualMachine extends
     }
 
     interface DefinitionWithStorageAccount {
+        // anu thomas
         DefinitionWithNewOSDisk withNewStorageAccount(String name);
         DefinitionWithOSDisk withExistingStorageAccount(String name);
         DefinitionWithOSDisk withExistingStorageAccount(StorageAccount.DefinitionProvisionable provisionable);
@@ -115,23 +116,32 @@ public interface VirtualMachine extends
 
     interface DefinitionWithOSDisk extends DefinitionWithVMImage {
         OSDiskFromImage defineOSDisk(String name);
-        DefinitionWithDataDisk withUserImage(String containerName, String vhdName);
-        DefinitionWithDataDisk withExistingOSDisk(String containerName, String vhdName, OperatingSystemTypes osType);
+        DefinitionWithDataDisk withUserImage(String containerName, String vhdName, OperatingSystemTypes osType);
+        DefinitionWithDataDisk attachOSDisk(String containerName, String vhdName, OperatingSystemTypes osType);
     }
 
     interface NewOSDiskFromImage {
-        DefinitionWithOSDiskAttached fromImage(ImageReference imageReference);
-        DefinitionWithOSDiskAttached fromLatestImage(String publisher, String offer, String sku);
-        DefinitionWithOSDiskAttached fromKnownImage(KnownVirtualMachineImage knownImage);
+        DefinitionWithOSDiskConfiguration fromImage(ImageReference imageReference);
+        DefinitionWithOSDiskConfiguration fromLatestImage(String publisher, String offer, String sku);
+        DefinitionWithOSDiskConfiguration fromKnownImage(KnownVirtualMachineImage knownImage);
     }
 
     interface OSDiskFromImage extends NewOSDiskFromImage {
-        DefinitionWithOSDiskAttached fromUserImage(String containerName, String vhdName);
+        DefinitionWithOSDiskConfiguration fromUserImage(String containerName, String vhdName, OperatingSystemTypes osType);
+        DefinitionWithCommonOSDiskConfiguration useDisk(String containerName, String vhdName, OperatingSystemTypes osType);
     }
 
-    interface DefinitionWithOSDiskAttached {
-        DefinitionWithOSDiskAttached storeVhdAt(String containerName, String vhdName);
-        DefinitionWithDataDisk attach();
+    interface DefinitionWithCommonOSDiskConfiguration {
+        DefinitionWithOSDiskConfiguration withReadOnlyCaching();
+        DefinitionWithOSDiskConfiguration withReadWriteCaching();
+        DefinitionWithOSDiskConfiguration withNoCaching();
+        DefinitionWithOSDiskConfiguration withSize(Integer sizeInGB);
+        DefinitionWithOSDiskConfiguration encryptionSettings(DiskEncryptionSettings settings);
+        VirtualMachine.DefinitionWithDataDisk attach();
+    }
+
+    interface DefinitionWithOSDiskConfiguration extends DefinitionWithCommonOSDiskConfiguration {
+        DefinitionWithOSDiskConfiguration storeVHDAt(String containerName, String vhdName);
     }
 
     interface DefinitionWithDataDisk {
