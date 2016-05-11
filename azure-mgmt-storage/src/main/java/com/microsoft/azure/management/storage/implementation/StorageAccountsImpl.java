@@ -74,7 +74,7 @@ public class StorageAccountsImpl
     }
 
     @Override
-    public StorageAccount.DefinitionBlank define(String name) throws Exception {
+    public StorageAccount.DefinitionBlank define(String name) {
         return createFluentModel(name);
     }
 

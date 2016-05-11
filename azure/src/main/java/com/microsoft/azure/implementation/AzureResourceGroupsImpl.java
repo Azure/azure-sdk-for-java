@@ -58,7 +58,7 @@ final class AzureResourceGroupsImpl implements Azure.ResourceGroups {
     }
 
     @Override
-    public Azure.ResourceGroup.DefinitionBlank define(String name) throws Exception {
+    public Azure.ResourceGroup.DefinitionBlank define(String name) {
         return resourceGroupsCore.define(name);
     }
 

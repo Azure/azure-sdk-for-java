@@ -19,7 +19,7 @@ public class StorageAccountsInGroupImpl implements StorageAccounts.InGroup {
         this.resourceGroup = resourceGroup;
     }
 
-    public StorageAccount.DefinitionProvisionable define(String name) throws Exception {
+    public StorageAccount.DefinitionProvisionable define(String name) {
         return storageAccounts.define(name)
                 .withRegion(resourceGroup.location())
                 .withExistingGroup(resourceGroup.name());

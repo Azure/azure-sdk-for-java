@@ -32,7 +32,7 @@ class VirtualMachinesImpl
     }
 
     @Override
-    public VirtualMachine.DefinitionBlank define(String name) throws Exception {
+    public VirtualMachine.DefinitionBlank define(String name) {
         return null;
     }
 

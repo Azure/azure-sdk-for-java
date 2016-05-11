@@ -111,7 +111,6 @@ public class AvailabilitySetImpl
 
     @Override
     public AvailabilitySetImpl provision() throws Exception {
-        ensureGroup();
         ServiceResponse<AvailabilitySetInner> response = this.client.createOrUpdate(this.group(), this.name(), this.inner());
         AvailabilitySetInner availabilitySetInner = response.getBody();
         this.setInner(availabilitySetInner);

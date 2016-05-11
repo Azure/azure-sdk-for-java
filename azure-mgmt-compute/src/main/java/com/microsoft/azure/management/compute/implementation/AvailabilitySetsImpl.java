@@ -77,7 +77,7 @@ public class AvailabilitySetsImpl implements AvailabilitySets {
     }
 
     @Override
-    public AvailabilitySet.DefinitionBlank define(String name) throws Exception {
+    public AvailabilitySet.DefinitionBlank define(String name) {
         return createFluentModel(name);
     }
 

@@ -37,14 +37,14 @@ public interface GroupableResource extends
 		T withExistingGroup(ResourceGroupInner group);
 
 		/**
-		 * Creates a new resource group to put the resource in. The group will be created in the same region as the resource. 
+		 * Creates a new resource group to put the resource in. The group will be created in the same location as the resource.
 		 * @param name The name of the new group
 		 * @return The next stage of the resource definition
 		 */
 		T withNewGroup(String name);
 		
 		/**
-		 * Creates a new resource group to put the resource in. The group will be created in the same region as the resource. 
+		 * Creates a new resource group to put the resource in. The group will be created in the same location as the resource.
 		 * The group's name is automatically derived from the resource's name.
 		 * @return The next stage of the resource definition
 		 */

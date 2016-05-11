@@ -1,50 +1,56 @@
 package com.microsoft.azure.management.storage;
 
+import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.storage.implementation.StorageResourceConnector;
 import com.microsoft.azure.management.storage.implementation.api.AccountType;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class StorageAccountOperationsTests extends StorageManagementTestBase {
-    private static String rgName = "javacsmrg";
-    private static String location = "southcentralus";
+    private static final String RG_NAME = "javacsmrg";
+    private static final String RG_NAME_2 = "javacsmrg2";
+    private static final String SA_NAME = "javacsmsa6";
+    private static ResourceGroup resourceGroup;
 
     @BeforeClass
     public static void setup() throws Exception {
         createClients();
-        resourceClient.resourceGroups().define(rgName)
-                .withLocation(location)
+        resourceGroup = resourceManager.resourceGroups().define(RG_NAME)
+                .withLocation(Region.US_SOUTH_CENTRAL)
                 .provision();
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
-        resourceClient.resourceGroups().delete(rgName);
+        resourceManager.resourceGroups().delete(RG_NAME);
+        resourceManager.resourceGroups().delete(RG_NAME_2);
     }
 
     @Test
     public void getStorageAccountFromResource() throws Exception {
-        StorageAccount storageAccount1 = resourceClient.resourceGroups()
-                .get("my-rg")
-                .connectToResource(new StorageResourceConnector.Builder())
-                .storageAccounts()
-                .define("my-stg")
-                .withAccountType(AccountType.PREMIUM_LRS)
-                .provision();
-
-        StorageAccount storageAccount2 = storageClient.storageAccounts()
-                .define("my-stg2")
-                .withRegion(Region.ASIA_EAST)
-                .withNewGroup()
-                .withAccountType(AccountType.PREMIUM_LRS)
-                .provision();
-
-        StorageAccounts.InGroup storageAccountsInGroup = resourceClient.resourceGroups()
-                .get("my-rg")
+        StorageAccounts.InGroup storageAccountsInGroup = resourceGroup
                 .connectToResource(new StorageResourceConnector.Builder())
                 .storageAccounts();
+
+        StorageAccount storageAccount1 = resourceGroup
+                .connectToResource(new StorageResourceConnector.Builder())
+                .storageAccounts()
+                .define(SA_NAME)
+                .withAccountType(AccountType.PREMIUM_LRS)
+                .provision();
+
+        StorageAccount storageAccount2 = storageManager.storageAccounts()
+                .define(SA_NAME + "2")
+                .withRegion(Region.ASIA_EAST)
+                .withNewGroup(RG_NAME_2)
+                .withAccountType(AccountType.PREMIUM_LRS)
+                .provision();
+
+        Assert.assertEquals(RG_NAME, storageAccount1.group());
+        Assert.assertEquals(RG_NAME_2, storageAccount2.group());
     }
 
     @Test

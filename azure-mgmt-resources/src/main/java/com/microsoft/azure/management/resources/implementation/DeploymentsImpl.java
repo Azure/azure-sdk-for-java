@@ -90,7 +90,7 @@ public class DeploymentsImpl
     }
 
     @Override
-    public Deployment.DefinitionBlank define(String name) throws Exception {
+    public Deployment.DefinitionBlank define(String name) {
         return createFluentModel(name);
     }
 

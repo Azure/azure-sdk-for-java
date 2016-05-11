@@ -57,7 +57,7 @@ public final class GenericResourcesImpl
     }
 
     @Override
-    public GenericResource.DefinitionBlank define(String name) throws Exception {
+    public GenericResource.DefinitionBlank define(String name) {
         return null;
     }
 

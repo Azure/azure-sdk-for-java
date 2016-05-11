@@ -19,7 +19,10 @@
 */
 package com.microsoft.azure.management.resources.fluentcore.model;
 
-// Encapsulates the provisioning method 
+import java.util.List;
+
+// Encapsulates the provisioning method
 public interface Provisionable<T> {
 	T provision() throws Exception;
+	List<Provisionable<?>> prerequisites();
 }

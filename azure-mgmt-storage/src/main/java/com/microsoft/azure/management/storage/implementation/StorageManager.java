@@ -1,5 +1,6 @@
 package com.microsoft.azure.management.storage.implementation;
 
+import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
@@ -22,8 +23,7 @@ public final class StorageManager {
     }
 
     public static StorageManager authenticate(ServiceClientCredentials credentials, String subscriptionId) {
-        return new StorageManager(new RestClient
-                .Builder("https://management.azure.com")
+        return new StorageManager(AzureEnvironment.AZURE.newRestClientBuilder()
                 .withCredentials(credentials)
                 .build(), subscriptionId);
     }
@@ -36,7 +36,7 @@ public final class StorageManager {
         StorageManager authenticate(ServiceClientCredentials credentials, String subscriptionId);
     }
 
-    private static class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
+    private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         public StorageManager authenticate(ServiceClientCredentials credentials, String subscriptionId) {
             return StorageManager.authenticate(buildRestClient(credentials), subscriptionId);
         }

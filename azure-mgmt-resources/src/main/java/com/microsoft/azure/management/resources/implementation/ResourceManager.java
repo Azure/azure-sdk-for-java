@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
+import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.management.resources.*;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
@@ -27,8 +28,7 @@ public final class ResourceManager {
     private Providers providers;
 
     public static ResourceManager.Authenticated authenticate(ServiceClientCredentials credentials) {
-        return new AuthenticatedImpl(new RestClient
-                .Builder("https://management.azure.com")
+        return new AuthenticatedImpl(AzureEnvironment.AZURE.newRestClientBuilder()
                 .withCredentials(credentials)
                 .build());
     }

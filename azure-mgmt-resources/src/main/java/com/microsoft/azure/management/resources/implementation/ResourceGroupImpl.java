@@ -100,7 +100,7 @@ public class ResourceGroupImpl extends
 
         params.setTags(this.inner().tags());
 
-        // Figure out the region, since the SDK requires on the params explicitly even though it cannot be changed
+        // Figure out the location, since the SDK requires on the params explicitly even though it cannot be changed
         if(this.inner().location() != null) {
             params.setLocation(this.inner().location());
         } else if(null == (group = client.get(this.id).getBody())) {

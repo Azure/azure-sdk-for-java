@@ -11,11 +11,11 @@ public interface Resource extends
 	
 	public String type();
 	public String name();
-	public String region();
+	public String location();
 	public Map<String, String> tags();
 	
 	/**
-	 * A resource definition allowing a region be selected for the resource
+	 * A resource definition allowing a location be selected for the resource
 	 */	
 	interface DefinitionWithRegion<T> {
 		/**
@@ -25,7 +25,7 @@ public interface Resource extends
 	    T withRegion(String regionName);
 	    
 	    /**
-	     * @param region The region for the resource
+	     * @param region The location for the resource
 	     * @return The next stage of the resource definition
 	     */
 	    T withRegion(Region region);

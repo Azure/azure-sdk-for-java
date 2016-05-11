@@ -27,7 +27,7 @@ public abstract class ResourceImpl<
      *******************************************/
 
     @Override
-    public String region() {
+    public String location() {
         return this.inner().location();
     }
 

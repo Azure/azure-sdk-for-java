@@ -1,9 +1,13 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.models.implementation;
 
+import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
-import com.microsoft.azure.management.resources.ResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.model.Provisionable;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class GroupableResourceImpl<
         FluentModelT,
@@ -15,6 +19,8 @@ public abstract class GroupableResourceImpl<
         GroupableResource {
 
     ResourceGroups resourceGroups;
+    ResourceGroup.DefinitionProvisionable newGroup;
+    protected String existingGroupName;
 
     protected GroupableResourceImpl(String id, InnerModelT innerObject, ResourceGroups resourceGroups) {
         super(id, innerObject);
@@ -27,9 +33,6 @@ public abstract class GroupableResourceImpl<
         this.withExistingGroup(resourceGroup);
     }
 
-    protected String groupName;
-    protected boolean isExistingGroup;
-
     /*******************************************
      * Getters
      *******************************************/
@@ -37,7 +40,7 @@ public abstract class GroupableResourceImpl<
     @Override
     final public String group() {
         String groupNameTemp = groupFromResourceId(this.id());
-        return (groupNameTemp == null) ? this.groupName : groupNameTemp;
+        return (groupNameTemp == null) ? this.existingGroupName : groupNameTemp;
     }
 
     private static String groupFromResourceId(String id) {
@@ -45,27 +48,13 @@ public abstract class GroupableResourceImpl<
         return null;
     }
 
-    /**************************************************
-     * Helpers
-     * @throws Exception
-     **************************************************/
-    final protected ResourceGroup ensureGroup() throws Exception {
-        ResourceGroup group;
-        if(!this.isExistingGroup) {
-            if(this.groupName == null) {
-                this.groupName = this.name() + "group";
-            }
-
-            group = this.resourceGroups.define(this.groupName)
-                    .withLocation(this.region())
-                    .provision();
-            this.isExistingGroup = true;
-            return group;
-        } else {
-            return resourceGroups.get(groupName);
+    public List<Provisionable<?>> prerequisites() {
+        List<Provisionable<?>> provisionables = new ArrayList<>();
+        if (this.newGroup != null) {
+            provisionables.add(newGroup);
         }
+        return provisionables;
     }
-
 
     /****************************************
      * withGroup implementations
@@ -73,24 +62,22 @@ public abstract class GroupableResourceImpl<
 
     @SuppressWarnings("unchecked")
     public final FluentModelImplT withExistingGroup(String groupName) {
-        this.groupName = groupName;
-        this.isExistingGroup = true;
-        return (FluentModelImplT)this;
-    }
-
-    @SuppressWarnings("unchecked")
-    public final FluentModelImplT withNewGroup(String groupName) {
-        this.groupName = groupName;
-        this.isExistingGroup = false;
+        this.existingGroupName = groupName;
         return (FluentModelImplT) this;
     }
 
-    public final FluentModelImplT withNewGroup() {
-        return this.withNewGroup((String)null);
+    public final FluentModelImplT withNewGroup(String groupName) {
+        return this.withNewGroup(resourceGroups.define(groupName).withLocation(location()));
     }
 
-    public final FluentModelImplT withNewGroup(ResourceGroup.DefinitionProvisionable groupDefinition) throws Exception {
-        return withExistingGroup(groupDefinition.provision());
+    public final FluentModelImplT withNewGroup() {
+        return this.withNewGroup(this.name() + "Group");
+    }
+
+    @SuppressWarnings("unchecked")
+    public final FluentModelImplT withNewGroup(ResourceGroup.DefinitionProvisionable groupDefinition) {
+        this.newGroup = groupDefinition;
+        return (FluentModelImplT) this;
     }
 
     public final FluentModelImplT withExistingGroup(ResourceGroup group) {

@@ -11,7 +11,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Geographical region.
+ * Geographical location.
  */
 @JsonFlatten
 public class GeoRegion extends Resource {
@@ -28,7 +28,7 @@ public class GeoRegion extends Resource {
     private String description;
 
     /**
-     * Display name for region.
+     * Display name for location.
      */
     @JsonProperty(value = "properties.displayName")
     private String displayName;
