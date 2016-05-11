@@ -98,6 +98,7 @@ public interface VirtualMachine extends
     }
 
     interface DefinitionWithStorageAccount {
+        // anu thomas
         DefinitionWithNewOSDisk withNewStorageAccount(String name);
         DefinitionWithOSDisk withExistingStorageAccount(String name);
         DefinitionWithOSDisk withExistingStorageAccount(StorageAccount.DefinitionProvisionable provisionable);
@@ -116,7 +117,7 @@ public interface VirtualMachine extends
     interface DefinitionWithOSDisk extends DefinitionWithVMImage {
         OSDiskFromImage defineOSDisk(String name);
         DefinitionWithDataDisk withUserImage(String containerName, String vhdName, OperatingSystemTypes osType);
-        DefinitionWithDataDisk withExistingOSDisk(String containerName, String vhdName, OperatingSystemTypes osType);
+        DefinitionWithDataDisk attachOSDisk(String containerName, String vhdName, OperatingSystemTypes osType);
     }
 
     interface NewOSDiskFromImage {
@@ -127,15 +128,20 @@ public interface VirtualMachine extends
 
     interface OSDiskFromImage extends NewOSDiskFromImage {
         DefinitionWithOSDiskConfiguration fromUserImage(String containerName, String vhdName, OperatingSystemTypes osType);
+        DefinitionWithCommonOSDiskConfiguration useDisk(String containerName, String vhdName, OperatingSystemTypes osType);
     }
 
-    interface DefinitionWithOSDiskConfiguration {
+    interface DefinitionWithCommonOSDiskConfiguration {
         DefinitionWithOSDiskConfiguration withReadOnlyCaching();
         DefinitionWithOSDiskConfiguration withReadWriteCaching();
         DefinitionWithOSDiskConfiguration withNoCaching();
         DefinitionWithOSDiskConfiguration withSize(Integer sizeInGB);
-        DefinitionWithOSDiskConfiguration storeVHDAt(String containerName, String vhdName);
+        DefinitionWithOSDiskConfiguration encryptionSettings(DiskEncryptionSettings settings);
         VirtualMachine.DefinitionWithDataDisk attach();
+    }
+
+    interface DefinitionWithOSDiskConfiguration extends DefinitionWithCommonOSDiskConfiguration {
+        DefinitionWithOSDiskConfiguration storeVHDAt(String containerName, String vhdName);
     }
 
     interface DefinitionWithDataDisk {

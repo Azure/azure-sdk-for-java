@@ -95,26 +95,35 @@ class DefinitionWithOSDiskBaseImpl implements
     }
 
     @Override
+    public VirtualMachine.DefinitionWithOSDiskConfiguration encryptionSettings(DiskEncryptionSettings settings) {
+        this.storageProfile.osDisk().setEncryptionSettings(settings);
+        return this;
+    }
+
+    @Override
     public VirtualMachine.DefinitionWithDataDisk attach() {
         return definitionWithDataDisk;
     }
 
     public StorageProfile getStorageProfile() {
-        // TODO: Setup default values.
         OSDisk osDisk = this.storageProfile.osDisk();
         if (osDisk.vhd() == null) {
-            osDisk.setVhd(toVhd("vhds", generateVHDName()));
+            osDisk.setVhd(toVhd("vhds", generateRandomName() + ".vhd"));
         }
 
         if (osDisk.caching() == null) {
             osDisk.setCaching(CachingTypes.READWRITE);
         }
 
+        if (osDisk.name() == null) {
+            osDisk.setName(generateRandomName());
+        }
+
         return storageProfile;
     }
 
-    private String generateVHDName() {
-        // TODO: Generate a Random VHD name  this.resourceNamePrefix + "-" + {rand} + ".vhd"
+    private String generateRandomName() {
+        // TODO: Generate a Random name  this.resourceNamePrefix + "-" + {rand}
         return null;
     }
 }
