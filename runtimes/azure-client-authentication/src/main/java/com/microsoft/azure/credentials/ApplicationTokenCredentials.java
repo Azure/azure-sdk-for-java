@@ -12,7 +12,10 @@ import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.aad.adal4j.ClientCredential;
 import com.microsoft.rest.credentials.TokenCredentials;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -52,6 +55,78 @@ public class ApplicationTokenCredentials extends TokenCredentials {
         }
     }
 
+    
+    /**
+     * Contains the keys of the settings in a Properties file to read credentials from
+     */
+	private enum CredentialSettings {
+		SUBSCRIPTION_ID("subscription"),
+		TENANT_ID("tenant"),
+		CLIENT_ID("client"),
+		CLIENT_KEY("key"),
+		MANAGEMENT_URI("managementURI"),
+		BASE_URL("baseURL"),
+		AUTH_URL("authURL");
+		
+		private final String name;
+		
+		private CredentialSettings(String name) {
+			this.name = name;
+		}
+		
+		@Override
+		public String toString() {
+			return this.name;
+		}
+	}
+
+
+    /**
+     * Initializes the credentials based on the provided credentials file
+     * @param credentialsFile A  file with credentials, using the standard Java properties format 
+     * and the following keys:
+         * 	subscription=<subscription-id>
+         * 	tenant=<tenant-id>
+         * 	client=<client-id>
+         * 	key=<client-key>
+         * 	managementURI=<management-URI>
+         * 	baseURL=<base-URL>
+         * 	authURL=<authentication-URL>
+     * @return The credentials based on the file.
+     * @throws IOException 
+     */
+    public static ApplicationTokenCredentials fromFile(File credentialsFile) throws IOException {
+    	// Set defaults
+    	Properties authSettings = new Properties();
+    	authSettings.put(CredentialSettings.AUTH_URL.toString(), AzureEnvironment.AZURE.getAuthenticationEndpoint());
+    	authSettings.put(CredentialSettings.BASE_URL.toString(), AzureEnvironment.AZURE.getBaseUrl());
+    	authSettings.put(CredentialSettings.MANAGEMENT_URI.toString(), AzureEnvironment.AZURE.getTokenAudience());
+
+    	// Load the credentials from the file
+    	FileInputStream credentialsFileStream = new FileInputStream(credentialsFile);
+    	authSettings.load(credentialsFileStream);
+    	credentialsFileStream.close();
+    	
+    	final String clientId = authSettings.getProperty(CredentialSettings.CLIENT_ID.toString());
+    	final String tenantId = authSettings.getProperty(CredentialSettings.TENANT_ID.toString());
+    	final String clientKey = authSettings.getProperty(CredentialSettings.CLIENT_KEY.toString());
+    	final String mgmtUri = authSettings.getProperty(CredentialSettings.MANAGEMENT_URI.toString());
+    	final String authUrl = authSettings.getProperty(CredentialSettings.AUTH_URL.toString());
+    	final String baseUrl = authSettings.getProperty(CredentialSettings.BASE_URL.toString());
+    	
+    	return new ApplicationTokenCredentials(
+    			clientId,
+    			tenantId,
+    			clientKey,
+    			new AzureEnvironment(
+    				authUrl, 
+    				mgmtUri, 
+    				true, 
+    				baseUrl)
+    			);
+    }
+    
+    
     /**
      * Gets the active directory application client id.
      *

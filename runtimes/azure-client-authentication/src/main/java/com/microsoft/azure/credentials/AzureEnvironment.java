@@ -11,7 +11,12 @@ package com.microsoft.azure.credentials;
  * An instance of this class describes an environment in Azure.
  */
 public final class AzureEnvironment {
-    /**
+	/**
+	 * Base URL for calls to Azure management API.
+	 */
+	private final String baseURL;
+	
+	/**
      * ActiveDirectory Endpoint for the Azure Environment.
      */
     private String authenticationEndpoint;
@@ -33,10 +38,15 @@ public final class AzureEnvironment {
      * @param validateAuthority whether the authentication endpoint should
      *                          be validated with Azure AD.
      */
-    public AzureEnvironment(String authenticationEndpoint, String tokenAudience, boolean validateAuthority) {
+    public AzureEnvironment(
+    		String authenticationEndpoint, 
+    		String tokenAudience, 
+    		boolean validateAuthority, 
+    		String baseUrl) {
         this.authenticationEndpoint = authenticationEndpoint;
         this.tokenAudience = tokenAudience;
         this.validateAuthority = validateAuthority;
+        this.baseURL = baseUrl;
     }
 
     /**
@@ -45,7 +55,8 @@ public final class AzureEnvironment {
     public static final AzureEnvironment AZURE = new AzureEnvironment(
             "https://login.windows.net/",
             "https://management.core.windows.net/",
-            true);
+            true,
+            "https://management.azure.com/");
 
     /**
      * Provides the settings for authentication with Azure China.
@@ -53,8 +64,17 @@ public final class AzureEnvironment {
     public static final AzureEnvironment AZURE_CHINA = new AzureEnvironment(
             "https://login.chinacloudapi.cn/",
             "https://management.core.chinacloudapi.cn/",
-            true);
+            true,
+            "https://management.chinacloudapi.cn"); //TODO: Should be confirmed...
 
+    /**
+     * Gets the base URL of the management service
+     * @return the Base URL for the management service
+     */
+    public String getBaseUrl() {
+    	return this.baseURL;
+    }
+    
     /**
      * Gets the ActiveDirectory Endpoint for the Azure Environment.
      *
