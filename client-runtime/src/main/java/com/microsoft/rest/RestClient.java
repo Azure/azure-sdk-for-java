@@ -138,7 +138,7 @@ public final class RestClient {
         /**
          * Creates an instance of the builder with a base URL to the service.
          *
-         * @param baseUrl the dynamic base URL with varialbes wrapped in "{" and "}".
+         * @param baseUrl the dynamic base URL with variables wrapped in "{" and "}".
          */
         public Builder(String baseUrl) {
             this(baseUrl, new OkHttpClient.Builder(), new Retrofit.Builder());
@@ -147,7 +147,7 @@ public final class RestClient {
         /**
          * Creates an instance of the builder with a base URL and 2 custom builders.
          *
-         * @param baseUrl the dynamic base URL with varialbes wrapped in "{" and "}".
+         * @param baseUrl the dynamic base URL with variables wrapped in "{" and "}".
          * @param httpClientBuilder the builder to build an {@link OkHttpClient}.
          * @param retrofitBuilder the builder to build a {@link Retrofit}.
          */
@@ -204,10 +204,7 @@ public final class RestClient {
          * @return the builder itself for chaining.
          */
         public Builder withMapperAdapter(JacksonMapperAdapter mapperAdapter) {
-            if (mapperAdapter != null) {
-                this.mapperAdapter = mapperAdapter;
-                this.retrofitBuilder = retrofitBuilder.addConverterFactory(mapperAdapter.getConverterFactory());
-            }
+            this.mapperAdapter = mapperAdapter;
             return this;
         }
 
@@ -253,12 +250,18 @@ public final class RestClient {
          * @return a {@link RestClient}.
          */
         public RestClient build() {
+            if (mapperAdapter == null) {
+                throw new IllegalArgumentException("Please set mapper adapter.");
+            }
             OkHttpClient httpClient = httpClientBuilder
                     .addInterceptor(baseUrlHandler)
                     .addInterceptor(customHeadersInterceptor)
                     .build();
             return new RestClient(httpClient,
-                    retrofitBuilder.client(httpClient).build(),
+                    retrofitBuilder
+                            .client(httpClient)
+                            .addConverterFactory(mapperAdapter.getConverterFactory())
+                            .build(),
                     credentials,
                     customHeadersInterceptor,
                     baseUrlHandler,
