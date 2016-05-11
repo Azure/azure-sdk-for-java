@@ -83,7 +83,7 @@ class VirtualMachineImpl
     @Override
     public DefinitionWithNewOSDisk withNewStorageAccount(String name) {
         // TODO Setup storage account details
-        DefinitionWithNewOSDiskImpl definitionWithNewOSDiskImpl = new DefinitionWithNewOSDiskImpl(this);
+        DefinitionWithNewOSDiskImpl definitionWithNewOSDiskImpl = new DefinitionWithNewOSDiskImpl(this, this.name());
         this.definitionWithOSDiskBaseImpl = definitionWithNewOSDiskImpl;
         return definitionWithNewOSDiskImpl;
     }
@@ -91,7 +91,7 @@ class VirtualMachineImpl
     @Override
     public DefinitionWithOSDisk withExistingStorageAccount(String name) {
         // TODO Setup storage account details
-        DefinitionWithOSDiskImpl  definitionWithOSDiskImpl = new DefinitionWithOSDiskImpl(this);
+        DefinitionWithOSDiskImpl  definitionWithOSDiskImpl = new DefinitionWithOSDiskImpl(this, this.name());
         this.definitionWithOSDiskBaseImpl = definitionWithOSDiskImpl;
         return definitionWithOSDiskImpl;
     }
@@ -99,7 +99,7 @@ class VirtualMachineImpl
     @Override
     public  DefinitionWithOSDisk withExistingStorageAccount(StorageAccount.DefinitionProvisionable provisionable) {
         // TODO Setup storage account details
-        DefinitionWithOSDiskImpl  definitionWithOSDiskImpl = new DefinitionWithOSDiskImpl(this);
+        DefinitionWithOSDiskImpl  definitionWithOSDiskImpl = new DefinitionWithOSDiskImpl(this, this.name());
         this.definitionWithOSDiskBaseImpl = definitionWithOSDiskImpl;
         return definitionWithOSDiskImpl;
     }
