@@ -72,11 +72,6 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-client-runtime</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-      </dependency>
-      <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-core</artifactId>
         <version>2.6.3</version>
@@ -90,11 +85,6 @@
         <groupId>commons-codec</groupId>
         <artifactId>commons-codec</artifactId>
         <version>1.10</version>
-      </dependency>
-      <dependency>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-client-authentication</artifactId>
-        <version>1.0.0-beta1</version>
       </dependency>
       <!-- Test dependencies -->
       <dependency>
