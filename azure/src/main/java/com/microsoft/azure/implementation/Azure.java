@@ -77,16 +77,44 @@ public final class Azure {
     }
 
     public interface Configurable extends AzureConfigurable<Configurable> {
+    	/**
+    	 * Authenticates API access based on the provided credentials
+    	 * @param credentials The credentials to authenticate API access with
+    	 * @return
+    	 */
         Authenticated authenticate(ServiceClientCredentials credentials);
+        
+        /**
+         * Authenticates API access using a properties file containing the required credentials
+         * @param credentialsFile The file containing the credentials in the standard Java properties file format,
+         * with the following keys:
+     		* 	subscription=<subscription-id>
+     		* 	tenant=<tenant-id>
+     		* 	client=<client-id>
+     		* 	key=<client-key>
+     		* 	managementURI=<management-URI>
+     		* 	baseURL=<base-URL>
+     		* 	authURL=<authentication-URL>
+     	* @return Authenticated Azure client
+     	* @throws IOException 
+     	*/
+        Authenticated authenticate(File credentialsFile) throws IOException;
     }
 
+    
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         @Override
         public Authenticated authenticate(ServiceClientCredentials credentials) {
             return Azure.authenticate(buildRestClient(credentials));
         }
+
+		@Override
+		public Authenticated authenticate(File credentialsFile) throws IOException {
+			return Azure.authenticate(credentialsFile);
+		}
     }
 
+    
     public interface Authenticated {
         Subscriptions subscriptions();
         Tenants tenants();
