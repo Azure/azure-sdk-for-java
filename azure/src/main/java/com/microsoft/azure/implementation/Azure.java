@@ -6,6 +6,11 @@
 
 package com.microsoft.azure.implementation;
 
+import java.io.File;
+import java.io.IOException;
+
+import com.microsoft.azure.credentials.ApplicationTokenCredentials;
+import com.microsoft.azure.credentials.AzureEnvironment;
 import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
@@ -21,6 +26,7 @@ import com.microsoft.azure.management.resources.implementation.api.ResourceManag
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
+import com.microsoft.azure.serializer.AzureJacksonMapperAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
@@ -32,11 +38,36 @@ public final class Azure {
 
     public static Authenticated authenticate(ServiceClientCredentials credentials) {
         return new AuthenticatedImpl(new RestClient
-                .Builder("https://management.azure.com")
+                .Builder(AzureEnvironment.AZURE.getBaseUrl())
+                .withMapperAdapter(new AzureJacksonMapperAdapter())
                 .withCredentials(credentials)
                 .build());
     }
 
+    /**
+     * Authenticates API access using a properties file containing the required credentials
+     * @param credentialsFile The file containing the credentials in the standard Java properties file format,
+     * with the following keys:
+     	* 	subscription=<subscription-id>
+        * 	tenant=<tenant-id>
+        * 	client=<client-id>
+        * 	key=<client-key>
+        * 	managementURI=<management-URI>
+        * 	baseURL=<base-URL>
+        * 	authURL=<authentication-URL>
+     * @return Authenticated Azure client
+     * @throws IOException 
+     */
+    public static Authenticated authenticate(File credentialsFile) throws IOException {
+        ApplicationTokenCredentials credentials = ApplicationTokenCredentials.fromFile(credentialsFile);
+    	return new AuthenticatedImpl(new RestClient
+                .Builder(AzureEnvironment.AZURE.getBaseUrl())
+                .withMapperAdapter(new AzureJacksonMapperAdapter())
+                .withCredentials(credentials)
+                .withBaseUrl(credentials.getEnvironment().getBaseUrl())
+                .build());
+    }
+    
     public static Authenticated authenticate(RestClient restClient) {
         return new AuthenticatedImpl(restClient);
     }
@@ -63,11 +94,12 @@ public final class Azure {
     }
 
     private static final class AuthenticatedImpl implements Authenticated {
-        private RestClient restClient;
-        private ResourceManager.Authenticated resourceManagerAuthenticated;
+        final private RestClient restClient;
+        final private ResourceManager.Authenticated resourceManagerAuthenticated;
 
         private AuthenticatedImpl(RestClient restClient) {
-            resourceManagerAuthenticated = ResourceManager.authenticate(restClient);
+            this.resourceManagerAuthenticated = ResourceManager.authenticate(restClient);
+            this.restClient = restClient;
         }
 
         @Override
