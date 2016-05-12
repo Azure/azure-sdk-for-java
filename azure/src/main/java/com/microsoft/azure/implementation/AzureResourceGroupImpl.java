@@ -4,11 +4,14 @@ import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.implementation.ComputeResourceConnector;
 import com.microsoft.azure.management.resources.Deployments;
 import com.microsoft.azure.management.resources.ResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.model.Provisionable;
 import com.microsoft.azure.management.resources.implementation.ARMResourceConnector;
 import com.microsoft.azure.management.resources.implementation.ResourceGroupImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.implementation.StorageResourceConnector;
+
+import java.util.List;
 
 final class AzureResourceGroupImpl extends ResourceGroupImpl implements Azure.ResourceGroup {
     private final ARMResourceConnector armResourceConnector;
@@ -48,5 +51,10 @@ final class AzureResourceGroupImpl extends ResourceGroupImpl implements Azure.Re
             availabilitySets = computeResourceConnector.availabilitySets();
         }
         return availabilitySets;
+    }
+
+    @Override
+    public List<Provisionable<?>> prerequisites() {
+        return null;
     }
 }

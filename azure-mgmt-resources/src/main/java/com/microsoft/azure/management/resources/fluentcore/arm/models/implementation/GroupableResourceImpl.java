@@ -20,7 +20,7 @@ public abstract class GroupableResourceImpl<
 
     ResourceGroups resourceGroups;
     ResourceGroup.DefinitionProvisionable newGroup;
-    protected String existingGroupName;
+    protected String groupName;
 
     protected GroupableResourceImpl(String id, InnerModelT innerObject, ResourceGroups resourceGroups) {
         super(id, innerObject);
@@ -38,14 +38,8 @@ public abstract class GroupableResourceImpl<
      *******************************************/
 
     @Override
-    final public String group() {
-        String groupNameTemp = groupFromResourceId(this.id());
-        return (groupNameTemp == null) ? this.existingGroupName : groupNameTemp;
-    }
-
-    private static String groupFromResourceId(String id) {
-        // TODO
-        return null;
+    final public String resourceGroupName() {
+        return this.groupName;
     }
 
     public List<Provisionable<?>> prerequisites() {
@@ -62,20 +56,23 @@ public abstract class GroupableResourceImpl<
 
     @SuppressWarnings("unchecked")
     public final FluentModelImplT withExistingGroup(String groupName) {
-        this.existingGroupName = groupName;
+        this.groupName = groupName;
         return (FluentModelImplT) this;
     }
 
     public final FluentModelImplT withNewGroup(String groupName) {
-        return this.withNewGroup(resourceGroups.define(groupName).withLocation(location()));
+        this.groupName = groupName;
+        return this.withNewGroup(groupName, resourceGroups.define(groupName).withLocation(location()));
     }
 
     public final FluentModelImplT withNewGroup() {
-        return this.withNewGroup(this.name() + "Group");
+        this.groupName = this.name() + "Group";
+        return this.withNewGroup(groupName);
     }
 
     @SuppressWarnings("unchecked")
-    public final FluentModelImplT withNewGroup(ResourceGroup.DefinitionProvisionable groupDefinition) {
+    public final FluentModelImplT withNewGroup(String groupName, ResourceGroup.DefinitionProvisionable groupDefinition) {
+        this.groupName = groupName;
         this.newGroup = groupDefinition;
         return (FluentModelImplT) this;
     }

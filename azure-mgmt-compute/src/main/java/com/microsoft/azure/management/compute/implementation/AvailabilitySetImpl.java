@@ -10,12 +10,13 @@ import com.microsoft.azure.management.compute.implementation.api.InstanceViewSta
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceLazyList;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.Provisionable;
 import com.microsoft.rest.ServiceResponse;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AvailabilitySetImpl
+class AvailabilitySetImpl
         extends GroupableResourceImpl<AvailabilitySet, AvailabilitySetInner, AvailabilitySetImpl>
         implements
         AvailabilitySet,
@@ -32,7 +33,7 @@ public class AvailabilitySetImpl
     // The client to make AvailabilitySet Management API calls
     private final AvailabilitySetsInner client;
 
-    public AvailabilitySetImpl(String name, AvailabilitySetInner innerModel,
+    AvailabilitySetImpl(String name, AvailabilitySetInner innerModel,
                                final AvailabilitySetsInner client,
                                final ResourceGroups resourceGroups,
                                final VirtualMachines virtualMachines) {
@@ -90,7 +91,7 @@ public class AvailabilitySetImpl
 
     @Override
     public AvailabilitySet refresh() throws Exception {
-        ServiceResponse<AvailabilitySetInner> response = client.get(this.group(), this.name());
+        ServiceResponse<AvailabilitySetInner> response = client.get(this.resourceGroupName(), this.name());
         this.setInner(response.getBody());
         this.idOfVMsInSet = null;
         this.vmsInSet = null;
@@ -111,7 +112,10 @@ public class AvailabilitySetImpl
 
     @Override
     public AvailabilitySetImpl provision() throws Exception {
-        ServiceResponse<AvailabilitySetInner> response = this.client.createOrUpdate(this.group(), this.name(), this.inner());
+        for (Provisionable<?> provisionable : prerequisites()) {
+            provisionable.provision();
+        }
+        ServiceResponse<AvailabilitySetInner> response = this.client.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
         AvailabilitySetInner availabilitySetInner = response.getBody();
         this.setInner(availabilitySetInner);
         this.idOfVMsInSet = null;

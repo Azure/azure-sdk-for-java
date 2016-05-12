@@ -35,22 +35,20 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
                 .connectToResource(new StorageResourceConnector.Builder())
                 .storageAccounts();
 
-        StorageAccount storageAccount1 = resourceGroup
-                .connectToResource(new StorageResourceConnector.Builder())
-                .storageAccounts()
+        StorageAccount storageAccount1 = storageAccountsInGroup
                 .define(SA_NAME)
                 .withAccountType(AccountType.PREMIUM_LRS)
                 .provision();
 
         StorageAccount storageAccount2 = storageManager.storageAccounts()
-                .define(SA_NAME + "2")
+                .define(SA_NAME + "6")
                 .withRegion(Region.ASIA_EAST)
                 .withNewGroup(RG_NAME_2)
                 .withAccountType(AccountType.PREMIUM_LRS)
                 .provision();
 
-        Assert.assertEquals(RG_NAME, storageAccount1.group());
-        Assert.assertEquals(RG_NAME_2, storageAccount2.group());
+        Assert.assertEquals(RG_NAME, storageAccount1.resourceGroupName());
+        Assert.assertEquals(RG_NAME_2, storageAccount2.resourceGroupName());
     }
 
     @Test

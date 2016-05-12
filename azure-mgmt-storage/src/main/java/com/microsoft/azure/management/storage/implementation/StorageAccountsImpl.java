@@ -17,13 +17,13 @@ import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
 
-public class StorageAccountsImpl
+class StorageAccountsImpl
         implements StorageAccounts {
     private final StorageAccountsInner client;
     private final ResourceGroups resourceGroups;
     private final PagedListConverter<StorageAccountInner, StorageAccount> converter;
 
-    public StorageAccountsImpl(final StorageAccountsInner client, final ResourceGroups resourceGroups) {
+    StorageAccountsImpl(final StorageAccountsInner client, final ResourceGroups resourceGroups) {
         this.client = client;
         this.resourceGroups = resourceGroups;
         this.converter = new PagedListConverter<StorageAccountInner, StorageAccount>() {

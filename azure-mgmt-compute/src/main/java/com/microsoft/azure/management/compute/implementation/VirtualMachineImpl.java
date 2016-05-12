@@ -5,6 +5,7 @@ import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.implementation.api.*;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.Provisionable;
 import com.microsoft.azure.management.storage.StorageAccount;
 
 import java.util.List;
@@ -23,6 +24,11 @@ class VirtualMachineImpl
     VirtualMachineImpl(String name, VirtualMachineInner innerModel, VirtualMachinesInner client, ResourceGroups resourceGroups) {
         super(name, innerModel, resourceGroups);
         this.client = client;
+    }
+
+    @Override
+    public List<Provisionable<?>> prerequisites() {
+        return super.prerequisites();
     }
 
     @Override

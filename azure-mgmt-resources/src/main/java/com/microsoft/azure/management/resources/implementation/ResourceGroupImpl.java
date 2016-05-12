@@ -2,6 +2,7 @@ package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.management.resources.ResourceConnector;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.model.Provisionable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupsInner;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
@@ -10,6 +11,7 @@ import com.microsoft.azure.management.resources.implementation.api.ResourceGroup
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ResourceGroupImpl extends
@@ -120,6 +122,11 @@ public class ResourceGroupImpl extends
         params.setTags(this.inner().tags());
         client.createOrUpdate(this.id, params);
         return this;
+    }
+
+    @Override
+    public List<Provisionable<?>> prerequisites() {
+        return null;
     }
 
     @Override

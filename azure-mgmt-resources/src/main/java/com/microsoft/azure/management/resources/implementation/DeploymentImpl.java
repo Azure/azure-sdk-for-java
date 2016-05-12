@@ -5,6 +5,7 @@ import com.microsoft.azure.management.resources.DeploymentOperations;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.microsoft.azure.management.resources.fluentcore.model.Provisionable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
 import com.microsoft.azure.management.resources.implementation.api.DeploymentsInner;
 import com.microsoft.azure.management.resources.Deployment;
@@ -240,6 +241,11 @@ public class DeploymentImpl extends
         inner.properties().setParametersLink(parametersLink());
         client.createOrUpdate(resourceGroupName(), name(), inner);
         return this;
+    }
+
+    @Override
+    public List<Provisionable<?>> prerequisites() {
+        return null;
     }
 
     @Override
