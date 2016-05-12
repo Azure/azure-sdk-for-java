@@ -6,9 +6,6 @@
 
 package com.microsoft.azure.management.network.implementation.api;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Defines values for ExpressRouteCircuitSkuTier.
  */
