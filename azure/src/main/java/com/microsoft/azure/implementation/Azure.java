@@ -14,6 +14,8 @@ import com.microsoft.azure.credentials.AzureEnvironment;
 import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
+import com.microsoft.azure.management.network.PublicIpAddresses;
+import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.Deployments;
 import com.microsoft.azure.management.resources.GenericResources;
 import com.microsoft.azure.management.resources.Subscriptions;
@@ -35,6 +37,7 @@ public final class Azure {
     private final ResourceManager resourceManager;
     private final StorageManager storageManager;
     private final ComputeManager computeManager;
+    private final NetworkManager networkManager;
 
     public static Authenticated authenticate(ServiceClientCredentials credentials) {
         return new AuthenticatedImpl(new RestClient
@@ -168,6 +171,7 @@ public final class Azure {
         this.resourceManager = ResourceManager.authenticate(restClient).withSubscription(subscriptionId);
         this.storageManager = StorageManager.authenticate(restClient, subscriptionId);
         this.computeManager = ComputeManager.authenticate(restClient, subscriptionId);
+        this.networkManager = NetworkManager.authenticate(restClient, subscriptionId);
     }
 
     public ResourceGroups resourceGroups() {
@@ -192,5 +196,9 @@ public final class Azure {
 
     public VirtualMachines virtualMachines() {
         return computeManager.virtualMachines();
+    }
+    
+    public PublicIpAddresses publicIpAddresses() {
+    	return this.networkManager.publicIpAddresses();
     }
 }
