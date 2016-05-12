@@ -14,10 +14,10 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum SettingNames {
     /** Enum value AutoLogon. */
-    AUTOLOGON("AutoLogon"),
+    AUTO_LOGON("AutoLogon"),
 
     /** Enum value FirstLogonCommands. */
-    FIRSTLOGONCOMMANDS("FirstLogonCommands");
+    FIRST_LOGON_COMMANDS("FirstLogonCommands");
 
     /** The actual serialized value for a SettingNames instance. */
     private String value;

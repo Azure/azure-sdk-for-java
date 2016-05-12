@@ -20,7 +20,7 @@ public final class VirtualNetworkGatewayConnectionStatus {
     public static final String CONNECTED = "Connected";
 
     /** Static value NotConnected for VirtualNetworkGatewayConnectionStatus. */
-    public static final String NOTCONNECTED = "NotConnected";
+    public static final String NOT_CONNECTED = "NotConnected";
 
     private VirtualNetworkGatewayConnectionStatus() {
     }

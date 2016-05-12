@@ -11,7 +11,7 @@ package com.microsoft.azure.management.network.implementation.api;
  */
 public final class ServiceProviderProvisioningState {
     /** Static value NotProvisioned for ServiceProviderProvisioningState. */
-    public static final String NOTPROVISIONED = "NotProvisioned";
+    public static final String NOT_PROVISIONED = "NotProvisioned";
 
     /** Static value Provisioning for ServiceProviderProvisioningState. */
     public static final String PROVISIONING = "Provisioning";

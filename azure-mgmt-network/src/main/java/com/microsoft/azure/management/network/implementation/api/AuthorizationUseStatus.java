@@ -14,7 +14,7 @@ public final class AuthorizationUseStatus {
     public static final String AVAILABLE = "Available";
 
     /** Static value InUse for AuthorizationUseStatus. */
-    public static final String INUSE = "InUse";
+    public static final String IN_USE = "InUse";
 
     private AuthorizationUseStatus() {
     }

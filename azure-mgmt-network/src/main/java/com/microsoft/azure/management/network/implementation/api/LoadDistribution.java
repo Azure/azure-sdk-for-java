@@ -14,10 +14,10 @@ public final class LoadDistribution {
     public static final String DEFAULT = "Default";
 
     /** Static value SourceIP for LoadDistribution. */
-    public static final String SOURCEIP = "SourceIP";
+    public static final String SOURCE_IP = "SourceIP";
 
     /** Static value SourceIPProtocol for LoadDistribution. */
-    public static final String SOURCEIPPROTOCOL = "SourceIPProtocol";
+    public static final String SOURCE_IPPROTOCOL = "SourceIPProtocol";
 
     private LoadDistribution() {
     }

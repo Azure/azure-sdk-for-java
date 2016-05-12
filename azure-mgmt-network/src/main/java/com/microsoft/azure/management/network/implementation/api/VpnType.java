@@ -11,10 +11,10 @@ package com.microsoft.azure.management.network.implementation.api;
  */
 public final class VpnType {
     /** Static value PolicyBased for VpnType. */
-    public static final String POLICYBASED = "PolicyBased";
+    public static final String POLICY_BASED = "PolicyBased";
 
     /** Static value RouteBased for VpnType. */
-    public static final String ROUTEBASED = "RouteBased";
+    public static final String ROUTE_BASED = "RouteBased";
 
     private VpnType() {
     }

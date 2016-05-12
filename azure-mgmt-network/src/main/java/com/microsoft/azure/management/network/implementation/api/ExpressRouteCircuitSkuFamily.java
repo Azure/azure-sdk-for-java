@@ -11,10 +11,10 @@ package com.microsoft.azure.management.network.implementation.api;
  */
 public final class ExpressRouteCircuitSkuFamily {
     /** Static value UnlimitedData for ExpressRouteCircuitSkuFamily. */
-    public static final String UNLIMITEDDATA = "UnlimitedData";
+    public static final String UNLIMITED_DATA = "UnlimitedData";
 
     /** Static value MeteredData for ExpressRouteCircuitSkuFamily. */
-    public static final String METEREDDATA = "MeteredData";
+    public static final String METERED_DATA = "MeteredData";
 
     private ExpressRouteCircuitSkuFamily() {
     }

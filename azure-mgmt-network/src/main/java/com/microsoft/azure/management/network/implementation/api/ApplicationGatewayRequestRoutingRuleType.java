@@ -14,7 +14,7 @@ public final class ApplicationGatewayRequestRoutingRuleType {
     public static final String BASIC = "Basic";
 
     /** Static value PathBasedRouting for ApplicationGatewayRequestRoutingRuleType. */
-    public static final String PATHBASEDROUTING = "PathBasedRouting";
+    public static final String PATH_BASED_ROUTING = "PathBasedRouting";
 
     private ApplicationGatewayRequestRoutingRuleType() {
     }

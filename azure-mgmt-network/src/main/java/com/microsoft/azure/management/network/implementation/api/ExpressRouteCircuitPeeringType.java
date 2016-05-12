@@ -11,13 +11,13 @@ package com.microsoft.azure.management.network.implementation.api;
  */
 public final class ExpressRouteCircuitPeeringType {
     /** Static value AzurePublicPeering for ExpressRouteCircuitPeeringType. */
-    public static final String AZUREPUBLICPEERING = "AzurePublicPeering";
+    public static final String AZURE_PUBLIC_PEERING = "AzurePublicPeering";
 
     /** Static value AzurePrivatePeering for ExpressRouteCircuitPeeringType. */
-    public static final String AZUREPRIVATEPEERING = "AzurePrivatePeering";
+    public static final String AZURE_PRIVATE_PEERING = "AzurePrivatePeering";
 
     /** Static value MicrosoftPeering for ExpressRouteCircuitPeeringType. */
-    public static final String MICROSOFTPEERING = "MicrosoftPeering";
+    public static final String MICROSOFT_PEERING = "MicrosoftPeering";
 
     private ExpressRouteCircuitPeeringType() {
     }

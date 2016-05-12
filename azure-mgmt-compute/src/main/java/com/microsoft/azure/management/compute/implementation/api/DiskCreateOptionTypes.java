@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum DiskCreateOptionTypes {
     /** Enum value fromImage. */
-    FROMIMAGE("fromImage"),
+    FROM_IMAGE("fromImage"),
 
     /** Enum value empty. */
     EMPTY("empty"),

@@ -11,7 +11,7 @@ package com.microsoft.azure.management.network.implementation.api;
  */
 public final class NetworkOperationStatus {
     /** Static value InProgress for NetworkOperationStatus. */
-    public static final String INPROGRESS = "InProgress";
+    public static final String IN_PROGRESS = "InProgress";
 
     /** Static value Succeeded for NetworkOperationStatus. */
     public static final String SUCCEEDED = "Succeeded";

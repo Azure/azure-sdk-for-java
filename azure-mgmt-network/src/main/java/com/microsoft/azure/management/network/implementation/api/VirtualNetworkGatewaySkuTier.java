@@ -14,7 +14,7 @@ public final class VirtualNetworkGatewaySkuTier {
     public static final String BASIC = "Basic";
 
     /** Static value HighPerformance for VirtualNetworkGatewaySkuTier. */
-    public static final String HIGHPERFORMANCE = "HighPerformance";
+    public static final String HIGH_PERFORMANCE = "HighPerformance";
 
     /** Static value Standard for VirtualNetworkGatewaySkuTier. */
     public static final String STANDARD = "Standard";

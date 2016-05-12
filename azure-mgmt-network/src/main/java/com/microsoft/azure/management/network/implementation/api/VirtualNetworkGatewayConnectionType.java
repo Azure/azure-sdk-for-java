@@ -17,7 +17,7 @@ public final class VirtualNetworkGatewayConnectionType {
     public static final String VNET2VNET = "Vnet2Vnet";
 
     /** Static value ExpressRoute for VirtualNetworkGatewayConnectionType. */
-    public static final String EXPRESSROUTE = "ExpressRoute";
+    public static final String EXPRESS_ROUTE = "ExpressRoute";
 
     /** Static value VPNClient for VirtualNetworkGatewayConnectionType. */
     public static final String VPNCLIENT = "VPNClient";

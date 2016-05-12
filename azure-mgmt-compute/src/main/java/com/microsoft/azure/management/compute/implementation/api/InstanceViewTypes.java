@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum InstanceViewTypes {
     /** Enum value instanceView. */
-    INSTANCEVIEW("instanceView");
+    INSTANCE_VIEW("instanceView");
 
     /** The actual serialized value for a InstanceViewTypes instance. */
     private String value;

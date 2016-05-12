@@ -14,7 +14,7 @@ public final class VirtualNetworkGatewayType {
     public static final String VPN = "Vpn";
 
     /** Static value ExpressRoute for VirtualNetworkGatewayType. */
-    public static final String EXPRESSROUTE = "ExpressRoute";
+    public static final String EXPRESS_ROUTE = "ExpressRoute";
 
     private VirtualNetworkGatewayType() {
     }
