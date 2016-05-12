@@ -42,5 +42,5 @@ public final class ClientConstants
 	public final static boolean DEFAULT_IS_TRANSIENT = true;
 	
 	public final static int REACTOR_IO_POLL_TIMEOUT = 20;
-	public final static int SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS = 10;
+	public final static int SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS = 4;
 }

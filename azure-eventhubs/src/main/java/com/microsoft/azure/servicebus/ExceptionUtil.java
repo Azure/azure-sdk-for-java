@@ -55,7 +55,7 @@ final class ExceptionUtil
 		}
 		else if (errorCondition.getCondition() == AmqpErrorCode.InternalError)
 		{
-			return new ServiceBusException(false, new AmqpException(errorCondition));
+			return new ServiceBusException(true, new AmqpException(errorCondition));
 		}
 		else if (errorCondition.getCondition() == ClientConstants.ARGUMENT_ERROR)
 		{

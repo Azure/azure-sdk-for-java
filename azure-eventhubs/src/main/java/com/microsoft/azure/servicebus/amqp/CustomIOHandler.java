@@ -22,7 +22,7 @@ public class CustomIOHandler extends IOHandler
         Transport transport = Proton.transport();
         transport.setMaxFrameSize(AmqpConstants.MAX_FRAME_SIZE);
         transport.sasl();
-        
+        transport.setEmitFlowEventOnSend(false);
         transport.bind(connection);
 	}
 }
