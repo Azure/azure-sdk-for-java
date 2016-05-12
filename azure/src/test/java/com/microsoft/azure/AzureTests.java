@@ -31,8 +31,7 @@ public class AzureTests {
 
     public static void main(String[] args) throws IOException, CloudException {
     	Azure azure = Azure.authenticate(new File("my.auth"))
-    		.withSubscription("9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef");
-    	
+    		.withDefaultSubscription();
     	System.out.println(String.valueOf(azure.resourceGroups().list().size()));
     	
     	Azure.configure().withLogLevel(Level.BASIC).authenticate(new File("my.auth"));
@@ -52,12 +51,11 @@ public class AzureTests {
         
         // Authenticate based on file
     	this.azure2 = Azure.authenticate(new File("my.auth"))
-        	.withSubscription("9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef");
-        
+        	.withDefaultSubscription();
     }
 
     @Test public void testPublicIpAddresses() throws Exception {
-    	// Create a new public IP address the minimal way
+    	// Verify creation of a new public IP address 
     	String suffix = String.valueOf(System.currentTimeMillis());
     	String newPipName = "pip" + suffix;
     	PublicIpAddress pip = azure2.publicIpAddresses().define(newPipName)

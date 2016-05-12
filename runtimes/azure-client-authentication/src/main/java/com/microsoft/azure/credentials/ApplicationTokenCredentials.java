@@ -33,7 +33,9 @@ public class ApplicationTokenCredentials extends TokenCredentials {
     private AzureEnvironment environment;
     /** The current authentication result. */
     private AuthenticationResult authenticationResult;
-
+    /** The default subscription to use, if any */
+    private String defaultSubscription;
+    
     /**
      * Initializes a new instance of the UserTokenCredentials.
      *
@@ -80,7 +82,18 @@ public class ApplicationTokenCredentials extends TokenCredentials {
 		}
 	}
 
-
+    /**
+     * @return The default subscription ID, if any
+     */
+    public String defaultSubscriptionId() {
+    	return defaultSubscription;
+    }
+    
+    ApplicationTokenCredentials withDefaultSubscriptionId(String subscriptionId) {
+    	this.defaultSubscription = subscriptionId;
+    	return this;
+    }
+    
     /**
      * Initializes the credentials based on the provided credentials file
      * @param credentialsFile A  file with credentials, using the standard Java properties format 
@@ -113,7 +126,8 @@ public class ApplicationTokenCredentials extends TokenCredentials {
     	final String mgmtUri = authSettings.getProperty(CredentialSettings.MANAGEMENT_URI.toString());
     	final String authUrl = authSettings.getProperty(CredentialSettings.AUTH_URL.toString());
     	final String baseUrl = authSettings.getProperty(CredentialSettings.BASE_URL.toString());
-    	
+    	final String defaultSubscriptionId = authSettings.getProperty(CredentialSettings.SUBSCRIPTION_ID.toString());
+
     	return new ApplicationTokenCredentials(
     			clientId,
     			tenantId,
@@ -123,7 +137,7 @@ public class ApplicationTokenCredentials extends TokenCredentials {
     				mgmtUri, 
     				true, 
     				baseUrl)
-    			);
+    			).withDefaultSubscriptionId(defaultSubscriptionId);
     }
     
     
@@ -153,7 +167,7 @@ public class ApplicationTokenCredentials extends TokenCredentials {
     public String getSecret() {
         return secret;
     }
-
+    
     /**
      * Gets the Azure environment to authenticate with.
      *

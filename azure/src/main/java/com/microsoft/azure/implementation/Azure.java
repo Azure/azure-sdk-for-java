@@ -63,12 +63,14 @@ public final class Azure {
      */
     public static Authenticated authenticate(File credentialsFile) throws IOException {
         ApplicationTokenCredentials credentials = ApplicationTokenCredentials.fromFile(credentialsFile);
-    	return new AuthenticatedImpl(new RestClient
-                .Builder(AzureEnvironment.AZURE.getBaseUrl())
-                .withMapperAdapter(new AzureJacksonMapperAdapter())
+        
+    	return new AuthenticatedImpl(
+    		new RestClient.Builder(AzureEnvironment.AZURE.getBaseUrl())
+    			.withMapperAdapter(new AzureJacksonMapperAdapter())
                 .withCredentials(credentials)
                 .withBaseUrl(credentials.getEnvironment().getBaseUrl())
-                .build());
+                .build())
+    		.withDefaultSubscription(credentials.defaultSubscriptionId());
     }
     
     public static Authenticated authenticate(RestClient restClient) {
@@ -122,17 +124,24 @@ public final class Azure {
         Subscriptions subscriptions();
         Tenants tenants();
         Azure withSubscription(String subscriptionId);
+        Azure withDefaultSubscription();
     }
 
     private static final class AuthenticatedImpl implements Authenticated {
         final private RestClient restClient;
         final private ResourceManager.Authenticated resourceManagerAuthenticated;
-
+        private String defaultSubscription;
+        
         private AuthenticatedImpl(RestClient restClient) {
             this.resourceManagerAuthenticated = ResourceManager.authenticate(restClient);
             this.restClient = restClient;
         }
 
+        private AuthenticatedImpl withDefaultSubscription(String subscriptionId) {
+        	this.defaultSubscription =  subscriptionId;
+        	return this;
+        }
+        
         @Override
         public Subscriptions subscriptions() {
             return resourceManagerAuthenticated.subscriptions();
@@ -147,6 +156,11 @@ public final class Azure {
         public Azure withSubscription(String subscriptionId) {
             return new Azure(restClient, subscriptionId);
         }
+
+		@Override
+		public Azure withDefaultSubscription() {
+			return withSubscription(this.defaultSubscription);
+		}
     }
 
     public interface  ResourceGroups extends SupportsListing<Azure.ResourceGroup>,
