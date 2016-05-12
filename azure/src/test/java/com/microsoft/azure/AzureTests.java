@@ -56,13 +56,15 @@ public class AzureTests {
         
     }
 
-    @Test public void listPublicIpAddresses() throws Exception {
+    @Test public void testPublicIpAddresses() throws Exception {
     	// Create a new public IP address the minimal way
     	String suffix = String.valueOf(System.currentTimeMillis());
     	String newPipName = "pip" + suffix;
     	PublicIpAddress pip = azure2.publicIpAddresses().define(newPipName)
     		.withRegion(Region.US_WEST)
     		.withNewGroup()
+    		.withDynamicIp()
+    		.withLeafDomainLabel(newPipName)
     		.provision();
     	
     	// Verify list
@@ -72,9 +74,14 @@ public class AzureTests {
     	String resourceGroupName = pip.group();
     	pip = azure2.publicIpAddresses().get(resourceGroupName, newPipName);
     	Assert.assertTrue(pip.name().equalsIgnoreCase(newPipName));
+    	System.out.println(new StringBuilder().append("Public IP Address: ").append(pip.id())
+    			.append("\n\tIP Address: ").append(pip.ipAddress())
+    			.append("\n\tLeaf domain label: ").append(pip.leafDomainLabel())
+    			.toString());
     	
     	// Verify delete
-    	azure.publicIpAddresses().delete(pip.id());
+    	azure2.publicIpAddresses().delete(pip.id());
+    	azure2.resourceGroups().delete(resourceGroupName);
     }
     
     @Test
