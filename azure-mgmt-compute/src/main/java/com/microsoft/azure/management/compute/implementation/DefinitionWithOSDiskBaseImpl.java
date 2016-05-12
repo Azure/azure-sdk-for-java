@@ -31,7 +31,7 @@ class DefinitionWithOSDiskBaseImpl implements
     @Override
     public VirtualMachine.DefinitionWithDataDisk withImage(ImageReference imageReference) {
         this.storageProfile.setImageReference(imageReference);
-        this.storageProfile.osDisk().setCreateOption(DiskCreateOptionTypes.FROMIMAGE);
+        this.storageProfile.osDisk().setCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
         return definitionWithDataDisk;
     }
 
@@ -49,7 +49,7 @@ class DefinitionWithOSDiskBaseImpl implements
     @Override
     public VirtualMachine.DefinitionWithOSDiskConfiguration fromImage(ImageReference imageReference) {
         this.storageProfile.setImageReference(imageReference);
-        this.storageProfile.osDisk().setCreateOption(DiskCreateOptionTypes.FROMIMAGE);
+        this.storageProfile.osDisk().setCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
         return this;
     }
 
@@ -66,13 +66,13 @@ class DefinitionWithOSDiskBaseImpl implements
 
     @Override
     public VirtualMachine.DefinitionWithOSDiskConfiguration withReadOnlyCaching() {
-        this.storageProfile.osDisk().setCaching(CachingTypes.READONLY);
+        this.storageProfile.osDisk().setCaching(CachingTypes.READ_ONLY);
         return this;
     }
 
     @Override
     public VirtualMachine.DefinitionWithOSDiskConfiguration withReadWriteCaching() {
-        this.storageProfile.osDisk().setCaching(CachingTypes.READWRITE);
+        this.storageProfile.osDisk().setCaching(CachingTypes.READ_WRITE);
         return this;
     }
 
@@ -112,7 +112,7 @@ class DefinitionWithOSDiskBaseImpl implements
         }
 
         if (osDisk.caching() == null) {
-            osDisk.setCaching(CachingTypes.READWRITE);
+            osDisk.setCaching(CachingTypes.READ_WRITE);
         }
 
         if (osDisk.name() == null) {
