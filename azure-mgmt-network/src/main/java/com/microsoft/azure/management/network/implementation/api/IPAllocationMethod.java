@@ -9,11 +9,13 @@ package com.microsoft.azure.management.network.implementation.api;
 /**
  * Defines values for IPAllocationMethod.
  */
-public class IPAllocationMethod {
+public final class IPAllocationMethod {
     /** Static value Static for IPAllocationMethod. */
     public static final String STATIC = "Static";
 
     /** Static value Dynamic for IPAllocationMethod. */
     public static final String DYNAMIC = "Dynamic";
 
+    private IPAllocationMethod() {
+    }
 }

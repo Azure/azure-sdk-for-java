@@ -9,11 +9,13 @@ package com.microsoft.azure.management.network.implementation.api;
 /**
  * Defines values for ExpressRouteCircuitPeeringState.
  */
-public class ExpressRouteCircuitPeeringState {
+public final class ExpressRouteCircuitPeeringState {
     /** Static value Disabled for ExpressRouteCircuitPeeringState. */
     public static final String DISABLED = "Disabled";
 
     /** Static value Enabled for ExpressRouteCircuitPeeringState. */
     public static final String ENABLED = "Enabled";
 
+    private ExpressRouteCircuitPeeringState() {
+    }
 }

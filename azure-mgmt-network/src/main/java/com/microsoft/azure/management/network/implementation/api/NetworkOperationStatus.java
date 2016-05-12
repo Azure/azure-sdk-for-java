@@ -9,7 +9,7 @@ package com.microsoft.azure.management.network.implementation.api;
 /**
  * Defines values for NetworkOperationStatus.
  */
-public class NetworkOperationStatus {
+public final class NetworkOperationStatus {
     /** Static value InProgress for NetworkOperationStatus. */
     public static final String INPROGRESS = "InProgress";
 
@@ -19,4 +19,6 @@ public class NetworkOperationStatus {
     /** Static value Failed for NetworkOperationStatus. */
     public static final String FAILED = "Failed";
 
+    private NetworkOperationStatus() {
+    }
 }

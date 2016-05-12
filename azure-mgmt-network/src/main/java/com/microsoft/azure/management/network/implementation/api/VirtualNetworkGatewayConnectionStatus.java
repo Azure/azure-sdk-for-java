@@ -9,7 +9,7 @@ package com.microsoft.azure.management.network.implementation.api;
 /**
  * Defines values for VirtualNetworkGatewayConnectionStatus.
  */
-public class VirtualNetworkGatewayConnectionStatus {
+public final class VirtualNetworkGatewayConnectionStatus {
     /** Static value Unknown for VirtualNetworkGatewayConnectionStatus. */
     public static final String UNKNOWN = "Unknown";
 
@@ -22,4 +22,6 @@ public class VirtualNetworkGatewayConnectionStatus {
     /** Static value NotConnected for VirtualNetworkGatewayConnectionStatus. */
     public static final String NOTCONNECTED = "NotConnected";
 
+    private VirtualNetworkGatewayConnectionStatus() {
+    }
 }

@@ -9,11 +9,13 @@ package com.microsoft.azure.management.network.implementation.api;
 /**
  * Defines values for ExpressRouteCircuitSkuTier.
  */
-public class ExpressRouteCircuitSkuTier {
+public final class ExpressRouteCircuitSkuTier {
     /** Static value Standard for ExpressRouteCircuitSkuTier. */
     public static final String STANDARD = "Standard";
 
     /** Static value Premium for ExpressRouteCircuitSkuTier. */
     public static final String PREMIUM = "Premium";
 
+    private ExpressRouteCircuitSkuTier() {
+    }
 }

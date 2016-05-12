@@ -9,7 +9,7 @@ package com.microsoft.azure.management.compute.implementation.api;
 /**
  * Defines values for VirtualMachineSizeTypes.
  */
-public class VirtualMachineSizeTypes {
+public final class VirtualMachineSizeTypes {
     /** Static value Basic_A0 for VirtualMachineSizeTypes. */
     public static final String BASIC_A0 = "Basic_A0";
 
@@ -166,4 +166,6 @@ public class VirtualMachineSizeTypes {
     /** Static value Standard_GS5 for VirtualMachineSizeTypes. */
     public static final String STANDARD_GS5 = "Standard_GS5";
 
+    private VirtualMachineSizeTypes() {
+    }
 }

@@ -9,11 +9,13 @@ package com.microsoft.azure.management.network.implementation.api;
 /**
  * Defines values for ApplicationGatewayRequestRoutingRuleType.
  */
-public class ApplicationGatewayRequestRoutingRuleType {
+public final class ApplicationGatewayRequestRoutingRuleType {
     /** Static value Basic for ApplicationGatewayRequestRoutingRuleType. */
     public static final String BASIC = "Basic";
 
     /** Static value PathBasedRouting for ApplicationGatewayRequestRoutingRuleType. */
     public static final String PATHBASEDROUTING = "PathBasedRouting";
 
+    private ApplicationGatewayRequestRoutingRuleType() {
+    }
 }

@@ -9,7 +9,7 @@ package com.microsoft.azure.management.network.implementation.api;
 /**
  * Defines values for RouteNextHopType.
  */
-public class RouteNextHopType {
+public final class RouteNextHopType {
     /** Static value VirtualNetworkGateway for RouteNextHopType. */
     public static final String VIRTUALNETWORKGATEWAY = "VirtualNetworkGateway";
 
@@ -25,4 +25,6 @@ public class RouteNextHopType {
     /** Static value None for RouteNextHopType. */
     public static final String NONE = "None";
 
+    private RouteNextHopType() {
+    }
 }

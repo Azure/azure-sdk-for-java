@@ -9,11 +9,13 @@ package com.microsoft.azure.management.network.implementation.api;
 /**
  * Defines values for VirtualNetworkGatewayType.
  */
-public class VirtualNetworkGatewayType {
+public final class VirtualNetworkGatewayType {
     /** Static value Vpn for VirtualNetworkGatewayType. */
     public static final String VPN = "Vpn";
 
     /** Static value ExpressRoute for VirtualNetworkGatewayType. */
     public static final String EXPRESSROUTE = "ExpressRoute";
 
+    private VirtualNetworkGatewayType() {
+    }
 }

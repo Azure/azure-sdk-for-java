@@ -9,7 +9,7 @@ package com.microsoft.azure.management.network.implementation.api;
 /**
  * Defines values for LoadDistribution.
  */
-public class LoadDistribution {
+public final class LoadDistribution {
     /** Static value Default for LoadDistribution. */
     public static final String DEFAULT = "Default";
 
@@ -19,4 +19,6 @@ public class LoadDistribution {
     /** Static value SourceIPProtocol for LoadDistribution. */
     public static final String SOURCEIPPROTOCOL = "SourceIPProtocol";
 
+    private LoadDistribution() {
+    }
 }

@@ -9,7 +9,7 @@ package com.microsoft.azure.management.network.implementation.api;
 /**
  * Defines values for VirtualNetworkGatewaySkuTier.
  */
-public class VirtualNetworkGatewaySkuTier {
+public final class VirtualNetworkGatewaySkuTier {
     /** Static value Basic for VirtualNetworkGatewaySkuTier. */
     public static final String BASIC = "Basic";
 
@@ -19,4 +19,6 @@ public class VirtualNetworkGatewaySkuTier {
     /** Static value Standard for VirtualNetworkGatewaySkuTier. */
     public static final String STANDARD = "Standard";
 
+    private VirtualNetworkGatewaySkuTier() {
+    }
 }

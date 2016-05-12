@@ -9,7 +9,7 @@ package com.microsoft.azure.management.network.implementation.api;
 /**
  * Defines values for VirtualNetworkGatewayConnectionType.
  */
-public class VirtualNetworkGatewayConnectionType {
+public final class VirtualNetworkGatewayConnectionType {
     /** Static value IPsec for VirtualNetworkGatewayConnectionType. */
     public static final String IPSEC = "IPsec";
 
@@ -22,4 +22,6 @@ public class VirtualNetworkGatewayConnectionType {
     /** Static value VPNClient for VirtualNetworkGatewayConnectionType. */
     public static final String VPNCLIENT = "VPNClient";
 
+    private VirtualNetworkGatewayConnectionType() {
+    }
 }

@@ -9,7 +9,7 @@ package com.microsoft.azure.management.network.implementation.api;
 /**
  * Defines values for ApplicationGatewaySkuName.
  */
-public class ApplicationGatewaySkuName {
+public final class ApplicationGatewaySkuName {
     /** Static value Standard_Small for ApplicationGatewaySkuName. */
     public static final String STANDARD_SMALL = "Standard_Small";
 
@@ -19,4 +19,6 @@ public class ApplicationGatewaySkuName {
     /** Static value Standard_Large for ApplicationGatewaySkuName. */
     public static final String STANDARD_LARGE = "Standard_Large";
 
+    private ApplicationGatewaySkuName() {
+    }
 }

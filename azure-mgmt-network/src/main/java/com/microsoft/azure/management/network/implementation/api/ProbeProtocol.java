@@ -9,11 +9,13 @@ package com.microsoft.azure.management.network.implementation.api;
 /**
  * Defines values for ProbeProtocol.
  */
-public class ProbeProtocol {
+public final class ProbeProtocol {
     /** Static value Http for ProbeProtocol. */
     public static final String HTTP = "Http";
 
     /** Static value Tcp for ProbeProtocol. */
     public static final String TCP = "Tcp";
 
+    private ProbeProtocol() {
+    }
 }

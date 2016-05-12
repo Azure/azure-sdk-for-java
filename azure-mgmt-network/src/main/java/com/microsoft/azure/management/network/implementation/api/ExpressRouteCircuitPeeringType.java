@@ -9,7 +9,7 @@ package com.microsoft.azure.management.network.implementation.api;
 /**
  * Defines values for ExpressRouteCircuitPeeringType.
  */
-public class ExpressRouteCircuitPeeringType {
+public final class ExpressRouteCircuitPeeringType {
     /** Static value AzurePublicPeering for ExpressRouteCircuitPeeringType. */
     public static final String AZUREPUBLICPEERING = "AzurePublicPeering";
 
@@ -19,4 +19,6 @@ public class ExpressRouteCircuitPeeringType {
     /** Static value MicrosoftPeering for ExpressRouteCircuitPeeringType. */
     public static final String MICROSOFTPEERING = "MicrosoftPeering";
 
+    private ExpressRouteCircuitPeeringType() {
+    }
 }

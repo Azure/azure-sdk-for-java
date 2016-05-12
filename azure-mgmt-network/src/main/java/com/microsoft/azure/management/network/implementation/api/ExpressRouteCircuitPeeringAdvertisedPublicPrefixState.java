@@ -9,7 +9,7 @@ package com.microsoft.azure.management.network.implementation.api;
 /**
  * Defines values for ExpressRouteCircuitPeeringAdvertisedPublicPrefixState.
  */
-public class ExpressRouteCircuitPeeringAdvertisedPublicPrefixState {
+public final class ExpressRouteCircuitPeeringAdvertisedPublicPrefixState {
     /** Static value NotConfigured for ExpressRouteCircuitPeeringAdvertisedPublicPrefixState. */
     public static final String NOTCONFIGURED = "NotConfigured";
 
@@ -22,4 +22,6 @@ public class ExpressRouteCircuitPeeringAdvertisedPublicPrefixState {
     /** Static value ValidationNeeded for ExpressRouteCircuitPeeringAdvertisedPublicPrefixState. */
     public static final String VALIDATIONNEEDED = "ValidationNeeded";
 
+    private ExpressRouteCircuitPeeringAdvertisedPublicPrefixState() {
+    }
 }

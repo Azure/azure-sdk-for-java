@@ -9,7 +9,7 @@ package com.microsoft.azure.management.network.implementation.api;
 /**
  * Defines values for SecurityRuleProtocol.
  */
-public class SecurityRuleProtocol {
+public final class SecurityRuleProtocol {
     /** Static value Tcp for SecurityRuleProtocol. */
     public static final String TCP = "Tcp";
 
@@ -19,4 +19,6 @@ public class SecurityRuleProtocol {
     /** Static value * for SecurityRuleProtocol. */
     public static final String ASTERISK = "*";
 
+    private SecurityRuleProtocol() {
+    }
 }

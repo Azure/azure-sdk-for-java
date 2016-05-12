@@ -9,11 +9,13 @@ package com.microsoft.azure.management.network.implementation.api;
 /**
  * Defines values for ApplicationGatewayCookieBasedAffinity.
  */
-public class ApplicationGatewayCookieBasedAffinity {
+public final class ApplicationGatewayCookieBasedAffinity {
     /** Static value Enabled for ApplicationGatewayCookieBasedAffinity. */
     public static final String ENABLED = "Enabled";
 
     /** Static value Disabled for ApplicationGatewayCookieBasedAffinity. */
     public static final String DISABLED = "Disabled";
 
+    private ApplicationGatewayCookieBasedAffinity() {
+    }
 }

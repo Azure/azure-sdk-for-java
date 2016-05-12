@@ -9,8 +9,10 @@ package com.microsoft.azure.management.network.implementation.api;
 /**
  * Defines values for ApplicationGatewayTier.
  */
-public class ApplicationGatewayTier {
+public final class ApplicationGatewayTier {
     /** Static value Standard for ApplicationGatewayTier. */
     public static final String STANDARD = "Standard";
 
+    private ApplicationGatewayTier() {
+    }
 }

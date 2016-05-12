@@ -9,11 +9,13 @@ package com.microsoft.azure.management.network.implementation.api;
 /**
  * Defines values for ApplicationGatewayProtocol.
  */
-public class ApplicationGatewayProtocol {
+public final class ApplicationGatewayProtocol {
     /** Static value Http for ApplicationGatewayProtocol. */
     public static final String HTTP = "Http";
 
     /** Static value Https for ApplicationGatewayProtocol. */
     public static final String HTTPS = "Https";
 
+    private ApplicationGatewayProtocol() {
+    }
 }

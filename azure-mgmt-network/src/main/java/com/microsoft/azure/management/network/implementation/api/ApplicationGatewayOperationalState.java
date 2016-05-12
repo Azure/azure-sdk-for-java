@@ -9,7 +9,7 @@ package com.microsoft.azure.management.network.implementation.api;
 /**
  * Defines values for ApplicationGatewayOperationalState.
  */
-public class ApplicationGatewayOperationalState {
+public final class ApplicationGatewayOperationalState {
     /** Static value Stopped for ApplicationGatewayOperationalState. */
     public static final String STOPPED = "Stopped";
 
@@ -22,4 +22,6 @@ public class ApplicationGatewayOperationalState {
     /** Static value Stopping for ApplicationGatewayOperationalState. */
     public static final String STOPPING = "Stopping";
 
+    private ApplicationGatewayOperationalState() {
+    }
 }

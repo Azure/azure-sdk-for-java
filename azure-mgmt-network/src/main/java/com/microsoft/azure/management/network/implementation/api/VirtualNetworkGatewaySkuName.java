@@ -9,7 +9,7 @@ package com.microsoft.azure.management.network.implementation.api;
 /**
  * Defines values for VirtualNetworkGatewaySkuName.
  */
-public class VirtualNetworkGatewaySkuName {
+public final class VirtualNetworkGatewaySkuName {
     /** Static value Basic for VirtualNetworkGatewaySkuName. */
     public static final String BASIC = "Basic";
 
@@ -19,4 +19,6 @@ public class VirtualNetworkGatewaySkuName {
     /** Static value Standard for VirtualNetworkGatewaySkuName. */
     public static final String STANDARD = "Standard";
 
+    private VirtualNetworkGatewaySkuName() {
+    }
 }

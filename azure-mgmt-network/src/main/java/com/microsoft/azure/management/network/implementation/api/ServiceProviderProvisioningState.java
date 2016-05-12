@@ -9,7 +9,7 @@ package com.microsoft.azure.management.network.implementation.api;
 /**
  * Defines values for ServiceProviderProvisioningState.
  */
-public class ServiceProviderProvisioningState {
+public final class ServiceProviderProvisioningState {
     /** Static value NotProvisioned for ServiceProviderProvisioningState. */
     public static final String NOTPROVISIONED = "NotProvisioned";
 
@@ -22,4 +22,6 @@ public class ServiceProviderProvisioningState {
     /** Static value Deprovisioning for ServiceProviderProvisioningState. */
     public static final String DEPROVISIONING = "Deprovisioning";
 
+    private ServiceProviderProvisioningState() {
+    }
 }
