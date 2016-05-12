@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 public class ResourceUtils {
     public static String groupFromResourceId(String id) {
-        return extractFromResourceId(id, "resourcegroups");
+        return extractFromResourceId(id, "resourceGroups");
     }
 
     public static String extractFromResourceId(String id, String identifier) {
@@ -22,6 +22,6 @@ public class ResourceUtils {
     }
 
     public static String nameFromResourceId(String id) {
-        return null;
+        return id.split("/")[8];
     }
 }
