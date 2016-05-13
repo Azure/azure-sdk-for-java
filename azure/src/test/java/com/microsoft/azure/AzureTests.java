@@ -3,12 +3,18 @@ package com.microsoft.azure;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.credentials.AzureEnvironment;
 import com.microsoft.azure.implementation.Azure;
+import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.api.AccountType;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import okhttp3.logging.HttpLoggingInterceptor;
+import okhttp3.logging.HttpLoggingInterceptor.Level;
+
+import java.io.File;
+import java.io.IOException;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,19 +27,61 @@ public class AzureTests {
             AzureEnvironment.AZURE);
     private static final String subscriptionId = System.getenv("resourceClient-id");
     private Subscriptions subscriptions;
-    private Azure azure;
+    private Azure azure, azure2;
 
+    public static void main(String[] args) throws IOException, CloudException {
+    	Azure azure = Azure.authenticate(new File("my.auth"))
+    		.withDefaultSubscription();
+    	System.out.println(String.valueOf(azure.resourceGroups().list().size()));
+    	
+    	Azure.configure().withLogLevel(Level.BASIC).authenticate(new File("my.auth"));
+    	System.out.println(String.valueOf(azure.resourceGroups().list().size()));
+    }
+    
     @Before
     public void setup() throws Exception {
-        Azure.Authenticated azureAuthed = Azure.configure()
+        // Authenticate based on credentials instance
+    	Azure.Authenticated azureAuthed = Azure.configure()
                 .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
                 .withUserAgent("AzureTests")
                 .authenticate(credentials);
 
         subscriptions = azureAuthed.subscriptions();
         azure = azureAuthed.withSubscription(subscriptionId);
+        
+        // Authenticate based on file
+    	this.azure2 = Azure.authenticate(new File("my.auth"))
+        	.withDefaultSubscription();
     }
 
+    @Test public void testPublicIpAddresses() throws Exception {
+    	// Verify creation of a new public IP address 
+    	String suffix = String.valueOf(System.currentTimeMillis());
+    	String newPipName = "pip" + suffix;
+    	PublicIpAddress pip = azure2.publicIpAddresses().define(newPipName)
+    		.withRegion(Region.US_WEST)
+    		.withNewGroup()
+    		.withDynamicIp()
+    		.withLeafDomainLabel(newPipName)
+    		.provision();
+    	
+    	// Verify list
+    	int publicIpAddressCount = azure2.publicIpAddresses().list().size();
+    	System.out.println(publicIpAddressCount);
+    	Assert.assertTrue(0 < publicIpAddressCount);
+    	String resourceGroupName = pip.group();
+    	pip = azure2.publicIpAddresses().get(resourceGroupName, newPipName);
+    	Assert.assertTrue(pip.name().equalsIgnoreCase(newPipName));
+    	System.out.println(new StringBuilder().append("Public IP Address: ").append(pip.id())
+    			.append("\n\tIP Address: ").append(pip.ipAddress())
+    			.append("\n\tLeaf domain label: ").append(pip.leafDomainLabel())
+    			.toString());
+    	
+    	// Verify delete
+    	azure2.publicIpAddresses().delete(pip.id());
+    	azure2.resourceGroups().delete(resourceGroupName);
+    }
+    
     @Test
     public void listSubscriptions() throws Exception {
         Assert.assertTrue(0 < subscriptions.list().size());
@@ -48,7 +96,7 @@ public class AzureTests {
     public void listStorageAccounts() throws Exception {
         Assert.assertTrue(0 < azure.storageAccounts().list().size());
     }
-
+    
     @Test
     public void createStorageAccount() throws Exception {
         StorageAccount storageAccount = azure.storageAccounts().define("my-stg1")
