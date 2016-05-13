@@ -126,7 +126,7 @@ class VirtualMachineImpl
 
     @Override
     public DefinitionWithOSType withImage(ImageReference imageReference) {
-        this.innerModel.storageProfile().osDisk().setCreateOption(DiskCreateOptionTypes.FROMIMAGE);
+        this.innerModel.storageProfile().osDisk().setCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
         this.innerModel.storageProfile().setImageReference(imageReference);
         return this;
     }
@@ -150,7 +150,7 @@ class VirtualMachineImpl
     public DefinitionWithOSType withImage(String userImageUrl) {
         VirtualHardDisk userImageVhd = new VirtualHardDisk();
         userImageVhd.setUri(userImageUrl);
-        this.innerModel.storageProfile().osDisk().setCreateOption(DiskCreateOptionTypes.FROMIMAGE);
+        this.innerModel.storageProfile().osDisk().setCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
         this.innerModel.storageProfile().osDisk().setImage(userImageVhd);
         return this;
     }
@@ -305,7 +305,7 @@ class VirtualMachineImpl
             // Sets the OS disk VHD for "UserImage" and "VM(Platform)Image"
             withOSDiskVhdLocation("vhds", null /*TODO generate random vhd name */);
         }
-        withOSDiskCaching(CachingTypes.READWRITE);
+        withOSDiskCaching(CachingTypes.READ_WRITE);
         withOSDiskName(null /*TODO generate random OSDisk name */);
 
         return this;
