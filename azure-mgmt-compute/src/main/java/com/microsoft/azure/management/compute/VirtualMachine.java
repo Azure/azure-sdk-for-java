@@ -104,9 +104,6 @@ public interface VirtualMachine extends
         DefinitionWithOS withExistingStorageAccount(StorageAccount.DefinitionProvisionable provisionable);
     }
 
-    interface DefinitionWithDataDisk {
-    }
-
     interface DefinitionWithOS {
         /**
          * Specifies the platform image to create the virtual machine from.
@@ -144,14 +141,14 @@ public interface VirtualMachine extends
          * @param osDiskUrl The url to the OS disk in the Azure Storage account.
          * @return The next stage of the Windows virtual machine definition.
          */
-        DefinitionWithDataDisk withWindowsOSDisk(String osDiskUrl);
+        DefinitionWithNextTODO withWindowsOSDisk(String osDiskUrl);
 
         /**
          * Specifies the specialized Linux OS disk to be attached to the virtual machine.
          * @param osDiskUrl The url to the OS disk in the Azure Storage account.
          * @return The next stage of the Linux virtual machine definition.
          */
-        DefinitionWithDataDisk withLinxOSDisk(String osDiskUrl);
+        DefinitionWithNextTODO withLinuxOSDisk(String osDiskUrl);
     }
 
 
@@ -186,22 +183,10 @@ public interface VirtualMachine extends
 
     interface DefinitionWithWindowsConfiguration {
         /**
-         * Specifies that VM Agent should be provisioned.
-         * @return The optional windows configurations
-         */
-        DefinitionWithWindowsConfiguration enableVMAgent();
-
-        /**
          * Specifies that VM Agent should not be provisioned.
          * @return The optional windows configurations
          */
         DefinitionWithWindowsConfiguration disableVMAgent();
-
-        /**
-         * Specifies that updates should be installed automatically.
-         * @return The optional windows configurations
-         */
-        DefinitionWithWindowsConfiguration enableAutoUpdate();
 
         /**
          * Specifies that automatic updates should be disabled.

@@ -16,7 +16,6 @@ class VirtualMachineImpl
             VirtualMachine,
             VirtualMachine.DefinitionBlank,
             VirtualMachine.DefinitionWithGroup,
-            VirtualMachine.DefinitionWithDataDisk,
             VirtualMachine.DefinitionWithStorageAccount,
             VirtualMachine.DefinitionWithOS,
             VirtualMachine.DefinitionWithOSType,
@@ -151,7 +150,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public DefinitionWithDataDisk withWindowsOSDisk(String osDiskUrl) {
+    public DefinitionWithNextTODO withWindowsOSDisk(String osDiskUrl) {
         VirtualHardDisk osDisk = new VirtualHardDisk();
         osDisk.setUri(osDiskUrl);
         this.innerModel.storageProfile().osDisk().setCreateOption(DiskCreateOptionTypes.ATTACH);
@@ -161,7 +160,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public DefinitionWithDataDisk withLinxOSDisk(String osDiskUrl) {
+    public DefinitionWithNextTODO withLinuxOSDisk(String osDiskUrl) {
         VirtualHardDisk osDisk = new VirtualHardDisk();
         osDisk.setUri(osDiskUrl);
         this.innerModel.storageProfile().osDisk().setCreateOption(DiskCreateOptionTypes.ATTACH);
@@ -189,8 +188,8 @@ class VirtualMachineImpl
         }
         // VM from Windows "UserImage" or "VM(Platform)Image" must have default Windows configuration.
         defineConfiguration();
-        enableVMAgent();
-        enableAutoUpdate();
+        this.innerModel.osProfile().windowsConfiguration().setProvisionVMAgent(true);
+        this.innerModel.osProfile().windowsConfiguration().setEnableAutomaticUpdates(true);
         return this;
     }
 
@@ -203,20 +202,8 @@ class VirtualMachineImpl
     }
 
     @Override
-    public DefinitionWithWindowsConfiguration enableVMAgent() {
-        this.innerModel.osProfile().windowsConfiguration().setProvisionVMAgent(true);
-        return this;
-    }
-
-    @Override
     public DefinitionWithWindowsConfiguration disableVMAgent() {
         this.innerModel.osProfile().windowsConfiguration().setProvisionVMAgent(false);
-        return this;
-    }
-
-    @Override
-    public DefinitionWithWindowsConfiguration enableAutoUpdate() {
-        this.innerModel.osProfile().windowsConfiguration().setEnableAutomaticUpdates(true);
         return this;
     }
 
