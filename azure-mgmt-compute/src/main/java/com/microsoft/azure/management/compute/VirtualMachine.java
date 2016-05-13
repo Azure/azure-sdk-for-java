@@ -104,46 +104,6 @@ public interface VirtualMachine extends
         DefinitionWithOS withExistingStorageAccount(StorageAccount.DefinitionProvisionable provisionable);
     }
 
-    interface DefinitionWithVMImage {
-        DefinitionWithDataDisk withImage(ImageReference imageReference);
-        DefinitionWithDataDisk withLatestImage(String publisher, String offer, String sku);
-        DefinitionWithDataDisk withKnownImage(KnownVirtualMachineImage knownImage);
-    }
-
-    interface DefinitionWithNewOSDisk extends DefinitionWithVMImage {
-        NewOSDiskFromImage  defineOSDisk(String name);
-    }
-
-    interface DefinitionWithOSDisk extends DefinitionWithVMImage {
-        OSDiskFromImage defineOSDisk(String name);
-        DefinitionWithDataDisk withUserImage(String containerName, String vhdName, OperatingSystemTypes osType);
-        DefinitionWithDataDisk attachOSDisk(String containerName, String vhdName, OperatingSystemTypes osType);
-    }
-
-    interface NewOSDiskFromImage {
-        DefinitionWithOSDiskConfiguration fromImage(ImageReference imageReference);
-        DefinitionWithOSDiskConfiguration fromLatestImage(String publisher, String offer, String sku);
-        DefinitionWithOSDiskConfiguration fromKnownImage(KnownVirtualMachineImage knownImage);
-    }
-
-    interface OSDiskFromImage extends NewOSDiskFromImage {
-        DefinitionWithOSDiskConfiguration fromUserImage(String containerName, String vhdName, OperatingSystemTypes osType);
-        DefinitionWithCommonOSDiskConfiguration useDisk(String containerName, String vhdName, OperatingSystemTypes osType);
-    }
-
-    interface DefinitionWithCommonOSDiskConfiguration {
-        DefinitionWithOSDiskConfiguration withReadOnlyCaching();
-        DefinitionWithOSDiskConfiguration withReadWriteCaching();
-        DefinitionWithOSDiskConfiguration withNoCaching();
-        DefinitionWithOSDiskConfiguration withSize(Integer sizeInGB);
-        DefinitionWithOSDiskConfiguration encryptionSettings(DiskEncryptionSettings settings);
-        VirtualMachine.DefinitionWithDataDisk attach();
-    }
-
-    interface DefinitionWithOSDiskConfiguration extends DefinitionWithCommonOSDiskConfiguration {
-        DefinitionWithOSDiskConfiguration storeVHDAt(String containerName, String vhdName);
-    }
-
     interface DefinitionWithDataDisk {
     }
 
@@ -217,11 +177,11 @@ public interface VirtualMachine extends
         DefinitionWithWindowsConfiguration defineConfiguration();
 
         /**
-         * use the default Windows configuration, the automatic updates and VMAgent will be enabled.
-         *
+         * Specifies the administrator user name for the Windows virtual machine.
+         * @param userName The Windows administrator user name to use. This must follow the required naming convention for Windows user name.
          * @return The next stage of the Windows virtual machine definition.
          */
-        DefinitionWithAdminUserName withDefaultConfiguration();
+        DefinitionWithPassword withAdminUserName(String userName);
     }
 
     interface DefinitionWithWindowsConfiguration {
@@ -271,19 +231,19 @@ public interface VirtualMachine extends
     interface DefinitionWithRootUserName {
         /**
          * Specifies the root user name for the Linux virtual machine.
-         * @param userName The Linux root user name to use. This must follow the required naming convention for Linux user name.
+         * @param rootUserName The Linux root user name to use. This must follow the required naming convention for Linux user name.
          * @return The next stage of the Linux virtual machine definition.
          */
-        DefinitionWithOptionalSsh withRootUserName(String userName);
+        DefinitionWithOptionalSsh withRootUserName(String rootUserName);
     }
 
     interface DefinitionWithAdminUserName {
         /**
          * Specifies the administrator user name for the Windows virtual machine.
-         * @param userName The Windows administrator user name to use. This must follow the required naming convention for Windows user name.
+         * @param adminUserName The Windows administrator user name to use. This must follow the required naming convention for Windows user name.
          * @return The next stage of the Windows virtual machine definition.
          */
-        DefinitionWithPassword withAdminUserName(String userName);
+        DefinitionWithPassword withAdminUserName(String adminUserName);
     }
 
     interface DefinitionWithOptionalSsh {
@@ -312,7 +272,7 @@ public interface VirtualMachine extends
         /**
          * Specifies the password for the virtual machine.
          * @param password The password. This must follow the criteria for Azure VM password.
-         * @return
+         * @return The next stage of the Linux virtual machine definition.
          */
         DefinitionWithNextTODO withPassword(String password);
     }
@@ -329,10 +289,45 @@ public interface VirtualMachine extends
     }
 
     interface DefinitionWithNextTODO {
-        DefinitionProvisionable notImplemented();
+        DefinitionProvisionable moreVMRequiredParameters();
     }
 
     interface DefinitionProvisionable extends
             Provisionable<VirtualMachine> {
+        /**
+         * Specifies the caching type for the Operating System disk.
+         * @param cachingType The caching type.
+         * @return The stage with optional parameters for virtual machine definition.
+         */
+        DefinitionProvisionable withOSDiskCaching(CachingTypes cachingType);
+
+        /**
+         * Specifies the name of the OS Disk Vhd file and it's parent container.
+         * @param containerName The name of the container in the selected storage account.
+         * @param vhdName The name for the OS Disk vhd.
+         * @return The stage with optional parameters for virtual machine definition.
+         */
+        DefinitionProvisionable withOSDiskVhdLocation(String containerName, String vhdName);
+
+        /**
+         * Specifies the encryption settings for the OS Disk.
+         * @param settings The encryption settings.
+         * @return The stage with optional parameters for virtual machine definition.
+         */
+        DefinitionProvisionable withOSDiskEncryptionSettings(DiskEncryptionSettings settings);
+
+        /**
+         * Specifies the size of the OSDisk in GB.
+         * @param size The VHD size.
+         * @return The stage with optional parameters for virtual machine definition.
+         */
+        DefinitionProvisionable withOSDiskSizeInGB(Integer size);
+
+        /**
+         * Specifies the name for the OS Disk.
+         * @param name The OS Disk name.
+         * @return The stage with optional parameters for virtual machine definition.
+         */
+        DefinitionProvisionable withOSDiskName(String name);
     }
 }
