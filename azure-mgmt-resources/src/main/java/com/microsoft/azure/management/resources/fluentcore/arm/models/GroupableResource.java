@@ -6,7 +6,7 @@ import com.microsoft.azure.management.resources.implementation.api.ResourceGroup
 public interface GroupableResource extends
 		Resource {
 	
-	public String group();
+	public String resourceGroup();
 
 	interface DefinitionWithGroupContext<T> {
 	}
@@ -51,10 +51,10 @@ public interface GroupableResource extends
 		T withNewGroup();
 		
 		/**
-		 * Creates a new resource group to put the resource in based on the provisionable definition specified.
-		 * @param groupDefinition A provisionable definition for a new resource group
+		 * Creates a new resource group to put the resource in based on the creatable definition specified.
+		 * @param groupDefinition A creatable definition for a new resource group
 		 * @return The next stage of the resource definition
 		 */
-		T withNewGroup(ResourceGroup.DefinitionProvisionable groupDefinition) throws Exception;
+		T withNewGroup(ResourceGroup.DefinitionCreatable groupDefinition) throws Exception;
 	}
 }

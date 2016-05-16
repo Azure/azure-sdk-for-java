@@ -30,11 +30,12 @@ public class AzureTests {
     private Azure azure, azure2;
 
     public static void main(String[] args) throws IOException, CloudException {
-    	Azure azure = Azure.authenticate(new File("my.auth"))
+    	final File credFile = new File("my.auth");
+    	Azure azure = Azure.authenticate(credFile)
     		.withDefaultSubscription();
     	System.out.println(String.valueOf(azure.resourceGroups().list().size()));
     	
-    	Azure.configure().withLogLevel(Level.BASIC).authenticate(new File("my.auth"));
+    	Azure.configure().withLogLevel(Level.BASIC).authenticate(credFile);
     	System.out.println(String.valueOf(azure.resourceGroups().list().size()));
     }
     
@@ -63,18 +64,19 @@ public class AzureTests {
     		.withNewGroup()
     		.withDynamicIp()
     		.withLeafDomainLabel(newPipName)
-    		.provision();
+    		.create();
     	
     	// Verify list
     	int publicIpAddressCount = azure2.publicIpAddresses().list().size();
     	System.out.println(publicIpAddressCount);
     	Assert.assertTrue(0 < publicIpAddressCount);
-    	String resourceGroupName = pip.group();
+    	String resourceGroupName = pip.resourceGroup();
     	pip = azure2.publicIpAddresses().get(resourceGroupName, newPipName);
     	Assert.assertTrue(pip.name().equalsIgnoreCase(newPipName));
     	System.out.println(new StringBuilder().append("Public IP Address: ").append(pip.id())
     			.append("\n\tIP Address: ").append(pip.ipAddress())
     			.append("\n\tLeaf domain label: ").append(pip.leafDomainLabel())
+    			.append("\n\tResource group: ").append(pip.resourceGroup())
     			.toString());
     	
     	// Verify delete
@@ -103,7 +105,7 @@ public class AzureTests {
                 .withRegion(Region.ASIA_EAST)
                 .withNewGroup()
                 .withAccountType(AccountType.PREMIUM_LRS)
-                .provision();
+                .create();
 
         Assert.assertSame(storageAccount.name(), "my-stg1");
     }
@@ -114,7 +116,7 @@ public class AzureTests {
                 .storageAccounts()
                 .define("my-stg2")
                 .withAccountType(AccountType.PREMIUM_LRS)
-                .provision();
+                .create();
 
         Assert.assertSame(storageAccount.name(), "my-stg2");
     }

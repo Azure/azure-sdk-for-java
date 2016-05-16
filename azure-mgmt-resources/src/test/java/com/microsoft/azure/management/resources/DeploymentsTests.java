@@ -24,7 +24,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
         resourceGroups = resourceClient.resourceGroups();
         resourceGroup = resourceGroups.define(rgName)
                 .withLocation(Region.US_SOUTH_CENTRAL)
-                .provision();
+                .create();
     }
 
     @AfterClass
@@ -40,7 +40,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
                 .withTemplateLink(templateUri, contentVersion)
                 .withParametersLink(parametersUri, contentVersion)
                 .withMode(DeploymentMode.COMPLETE)
-                .provision();
+                .create();
         Deployment deployment = resourceClient.deployments().get(rgName, deploymentName);
         Assert.assertNotNull(deployment);
         Assert.assertEquals("Succeeded", deployment.provisioningState());

@@ -20,7 +20,7 @@ public class ResourceGroupsTests extends ResourceManagerTestBase {
                 .withLocation(Region.US_SOUTH_CENTRAL)
                 .withTag("department", "finance")
                 .withTag("tagname", "tagvalue")
-                .provision();
+                .create();
         // List
         ResourceGroup groupResult = null;
         for (ResourceGroup rg : resourceGroups.list()) {

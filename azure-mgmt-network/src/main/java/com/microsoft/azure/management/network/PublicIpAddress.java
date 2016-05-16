@@ -7,7 +7,7 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
-import com.microsoft.azure.management.resources.fluentcore.model.Provisionable;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
@@ -30,13 +30,13 @@ public interface PublicIpAddress extends
 		DefinitionWithGroup,
 		DefinitionWithIpAddress,
 		DefinitionWithLeafDomainLabel,
-		DefinitionProvisionable {}
+		DefinitionCreatable {}
 	
 	
     interface DefinitionBlank extends GroupableResource.DefinitionWithRegion<DefinitionWithGroup> {
     }
 
-    interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionProvisionable> {
+    interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionCreatable> {
     }
 
 	public interface DefinitionWithIpAddress {
@@ -45,13 +45,13 @@ public interface PublicIpAddress extends
 		 * after the provisioning process is complete from ipAddress().
 		 * @return The next stage of the public IP address definition
 		 */
-		DefinitionProvisionable withStaticIp();
+		DefinitionCreatable withStaticIp();
 		
 		/**
 		 * Enables dynamic IP address allocation.
 		 * @return The next stage of the public IP address definition
 		 */
-		DefinitionProvisionable withDynamicIp();
+		DefinitionCreatable withDynamicIp();
 	}
 
 	/**
@@ -64,18 +64,18 @@ public interface PublicIpAddress extends
 		 * @param dnsName The leaf domain label to use. This must follow the required naming convention for leaf domain names.
 		 * @return The next stage of the public IP address definition
 		 */
-		DefinitionProvisionable withLeafDomainLabel(String dnsName);
+		DefinitionCreatable withLeafDomainLabel(String dnsName);
 		
 		/**
 		 * Ensures that no leaf domain label will be used. This means that this public IP address will not be associated with a domain name.
 		 * @return The next stage of the public IP address definition
 		 */
-		DefinitionProvisionable withoutLeafDomainLabel();
+		DefinitionCreatable withoutLeafDomainLabel();
 	}
 	
 
-    interface DefinitionProvisionable extends 
-    	Provisionable<PublicIpAddress>,
+    interface DefinitionCreatable extends 
+    	Creatable<PublicIpAddress>,
     	DefinitionWithLeafDomainLabel,
     	DefinitionWithIpAddress {
     }

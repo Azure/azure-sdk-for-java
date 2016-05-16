@@ -24,7 +24,7 @@ public interface PublicIpAddresses extends
 
     interface InGroup extends
             SupportsListing<PublicIpAddress>,
-            SupportsCreating<PublicIpAddress.DefinitionProvisionable>,
+            SupportsCreating<PublicIpAddress.DefinitionCreatable>,
             SupportsDeleting {
     }
 }

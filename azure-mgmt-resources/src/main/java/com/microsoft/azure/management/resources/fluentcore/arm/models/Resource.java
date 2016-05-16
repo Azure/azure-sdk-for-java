@@ -11,7 +11,7 @@ public interface Resource extends
 	
 	public String type();
 	public String name();
-	public String region();
+	public String location();
 	public Map<String, String> tags();
 	
 	/**

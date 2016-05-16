@@ -3,7 +3,7 @@ package com.microsoft.azure.management.compute;
 import com.microsoft.azure.management.compute.implementation.api.AvailabilitySetInner;
 import com.microsoft.azure.management.compute.implementation.api.InstanceViewStatus;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
-import com.microsoft.azure.management.resources.fluentcore.model.Provisionable;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
@@ -58,11 +58,11 @@ public interface AvailabilitySet extends
     interface DefinitionBlank extends GroupableResource.DefinitionWithRegion<DefinitionWithGroup> {
     }
 
-    interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionProvisionable> {
+    interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionCreatable> {
     }
 
-    interface DefinitionProvisionable extends Provisionable<AvailabilitySet> {
-        DefinitionProvisionable withUpdateDomainCount(Integer updateDomainCount);
-        DefinitionProvisionable withFaultDomainCount(Integer faultDomainCount);
+    interface DefinitionCreatable extends Creatable<AvailabilitySet> {
+        DefinitionCreatable withUpdateDomainCount(Integer updateDomainCount);
+        DefinitionCreatable withFaultDomainCount(Integer faultDomainCount);
     }
 }

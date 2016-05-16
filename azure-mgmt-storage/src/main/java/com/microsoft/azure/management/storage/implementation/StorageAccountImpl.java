@@ -19,7 +19,7 @@ class StorageAccountImpl
         StorageAccount,
         StorageAccount.DefinitionBlank,
         StorageAccount.DefinitionWithGroup,
-        StorageAccount.DefinitionProvisionable
+        StorageAccount.DefinitionCreatable
         {
 
     private PublicEndpoints publicEndpoints;
@@ -86,7 +86,7 @@ class StorageAccountImpl
     @Override
     public StorageAccountKeys getKeys() throws CloudException, IOException {
         ServiceResponse<StorageAccountKeysInner> response =
-                this.client.listKeys(this.groupName, this.id);
+                this.client.listKeys(this.resourceGroupName, this.id);
         StorageAccountKeysInner stroageAccountKeysInner = response.getBody();
         return new StorageAccountKeys(stroageAccountKeysInner.key1(), stroageAccountKeysInner.key2());
     }
@@ -94,7 +94,7 @@ class StorageAccountImpl
     @Override
     public StorageAccountKeys regenerateKey(KeyType keyType) throws CloudException, IOException {
         ServiceResponse<StorageAccountKeysInner> response =
-                this.client.regenerateKey(this.groupName, this.id, keyType.toString());
+                this.client.regenerateKey(this.resourceGroupName, this.id, keyType.toString());
         StorageAccountKeysInner stroageAccountKeysInner = response.getBody();
         return new StorageAccountKeys(stroageAccountKeysInner.key1(), stroageAccountKeysInner.key2());
     }
@@ -102,7 +102,7 @@ class StorageAccountImpl
     @Override
     public StorageAccount refresh() throws Exception {
         ServiceResponse<StorageAccountInner> response =
-            this.client.getProperties(this.groupName, this.id);
+            this.client.getProperties(this.resourceGroupName, this.id);
         StorageAccountInner storageAccountInner = response.getBody();
         this.setInner(storageAccountInner);
         clearWrapperProperties();
@@ -110,15 +110,15 @@ class StorageAccountImpl
     }
 
     @Override
-    public StorageAccountImpl provision() throws Exception {
+    public StorageAccountImpl create() throws Exception {
         ensureGroup();
         StorageAccountCreateParametersInner createParameters = new StorageAccountCreateParametersInner();
         createParameters.setAccountType(this.inner().accountType());
-        createParameters.setLocation(this.region());
+        createParameters.setLocation(this.location());
         createParameters.setTags(this.inner().getTags());
 
         ServiceResponse<StorageAccountInner> response =
-                this.client.create(this.group(), this.name(), createParameters);
+                this.client.create(this.resourceGroup(), this.name(), createParameters);
         StorageAccountInner storageAccountInner = response.getBody();
         this.setInner(storageAccountInner);
         clearWrapperProperties();

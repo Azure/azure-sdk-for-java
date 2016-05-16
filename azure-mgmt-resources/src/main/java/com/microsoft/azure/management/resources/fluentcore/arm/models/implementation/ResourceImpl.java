@@ -12,9 +12,9 @@ public abstract class ResourceImpl<
         FluentModelT,
         InnerModelT extends com.microsoft.azure.Resource,
         FluentModelImplT extends ResourceImpl<FluentModelT, InnerModelT, FluentModelImplT>>
-        extends
+	extends
         IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
-        implements
+	implements
         Resource {
 
 
@@ -27,7 +27,7 @@ public abstract class ResourceImpl<
      *******************************************/
 
     @Override
-    public String region() {
+    public String location() {
         return this.inner().location();
     }
 
