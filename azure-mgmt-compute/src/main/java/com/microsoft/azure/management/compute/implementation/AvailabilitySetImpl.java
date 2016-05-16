@@ -90,7 +90,7 @@ public class AvailabilitySetImpl
 
     @Override
     public AvailabilitySet refresh() throws Exception {
-        ServiceResponse<AvailabilitySetInner> response = client.get(this.group(), this.name());
+        ServiceResponse<AvailabilitySetInner> response = client.get(this.resourceGroup(), this.name());
         this.setInner(response.getBody());
         this.idOfVMsInSet = null;
         this.vmsInSet = null;
@@ -112,7 +112,7 @@ public class AvailabilitySetImpl
     @Override
     public AvailabilitySetImpl provision() throws Exception {
         ensureGroup();
-        ServiceResponse<AvailabilitySetInner> response = this.client.createOrUpdate(this.group(), this.name(), this.inner());
+        ServiceResponse<AvailabilitySetInner> response = this.client.createOrUpdate(this.resourceGroup(), this.name(), this.inner());
         AvailabilitySetInner availabilitySetInner = response.getBody();
         this.setInner(availabilitySetInner);
         this.idOfVMsInSet = null;

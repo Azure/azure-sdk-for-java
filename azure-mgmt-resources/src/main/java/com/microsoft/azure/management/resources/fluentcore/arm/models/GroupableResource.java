@@ -6,7 +6,7 @@ import com.microsoft.azure.management.resources.implementation.api.ResourceGroup
 public interface GroupableResource extends
 		Resource {
 	
-	public String group();
+	public String resourceGroup();
 
 	interface DefinitionWithGroupContext<T> {
 	}

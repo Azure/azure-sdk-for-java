@@ -41,7 +41,7 @@ class PublicIpAddressImpl
     @Override
     public PublicIpAddress refresh() throws Exception {
         ServiceResponse<PublicIPAddressInner> response =
-            this.client.get(this.group(), this.name());
+            this.client.get(this.resourceGroup(), this.name());
         PublicIPAddressInner inner = response.getBody();
         this.setInner(inner);
         clearWrapperProperties();
@@ -53,7 +53,7 @@ class PublicIpAddressImpl
         ensureGroup();
 
         ServiceResponse<PublicIPAddressInner> response =
-                this.client.createOrUpdate(this.group(), this.name(), this.inner());
+                this.client.createOrUpdate(this.resourceGroup(), this.name(), this.inner());
         this.setInner(response.getBody());
         clearWrapperProperties();
         return this;
