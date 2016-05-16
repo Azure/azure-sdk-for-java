@@ -114,7 +114,7 @@ class StorageAccountImpl
         ensureGroup();
         StorageAccountCreateParametersInner createParameters = new StorageAccountCreateParametersInner();
         createParameters.setAccountType(this.inner().accountType());
-        createParameters.setLocation(this.region());
+        createParameters.setLocation(this.location());
         createParameters.setTags(this.inner().getTags());
 
         ServiceResponse<StorageAccountInner> response =

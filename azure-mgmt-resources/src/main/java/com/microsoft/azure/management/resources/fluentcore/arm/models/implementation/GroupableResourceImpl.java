@@ -53,7 +53,7 @@ public abstract class GroupableResourceImpl<
             }
 
             group = this.resourceGroups.define(this.resourceGroupName)
-                    .withLocation(this.region())
+                    .withLocation(this.location())
                     .provision();
             this.isExistingGroup = true;
             return group;
