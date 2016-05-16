@@ -1,18 +1,15 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.models;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Taggable;
-import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 
 import java.util.Map;
 
-public interface Resource extends
-		Indexable {
+public interface Resource {
 	
-	public String type();
-	public String name();
-	public String location();
-	public Map<String, String> tags();
+	String type();
+	String name();
+	String location();
+	Map<String, String> tags();
 	
 	/**
 	 * A resource definition allowing a location be selected for the resource

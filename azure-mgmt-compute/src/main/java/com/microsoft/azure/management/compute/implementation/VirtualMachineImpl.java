@@ -30,6 +30,7 @@ class VirtualMachineImpl
             VirtualMachine.DefinitionProvisionable {
     private final VirtualMachinesInner client;
     private VirtualMachineInner innerModel;
+    private StorageAccount.DefinitionProvisionable storageProvisionable;
 
     VirtualMachineImpl(String name, VirtualMachineInner innerModel, VirtualMachinesInner client, ResourceGroups resourceGroups) {
         super(name, innerModel, resourceGroups);

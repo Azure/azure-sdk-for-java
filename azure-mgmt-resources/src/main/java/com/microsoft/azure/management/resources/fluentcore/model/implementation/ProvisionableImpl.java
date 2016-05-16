@@ -17,13 +17,34 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.management.resources.fluentcore.model;
+package com.microsoft.azure.management.resources.fluentcore.model.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.model.Provisionable;
+
+import java.util.HashMap;
 import java.util.Map;
 
-// Encapsulates the provisioning method
-public interface Provisionable<T> extends Indexable {
-	T provision() throws Exception;
-	Map<String, Provisionable<?>> prerequisites();
-	Map<String, Provisionable<?>> provisioned();
+public abstract class ProvisionableImpl<FluentModelT, InnerModelT>
+        extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
+        implements Provisionable<FluentModelT> {
+    private Map<String, Provisionable<?>> prerequisites;
+    private Map<String, Provisionable<?>> provisioned;
+
+	protected ProvisionableImpl(String name, InnerModelT innerObject) {
+		super(name, innerObject);
+        prerequisites = new HashMap<>();
+        provisioned = new HashMap<>();
+	}
+
+    @Override
+    public Map<String, Provisionable<?>> prerequisites() {
+        return prerequisites;
+    }
+
+    @Override
+    public Map<String, Provisionable<?>> provisioned() {
+        return provisioned;
+    }
+
+    // TODO: Add provisioning() to allow unblocking
 }

@@ -3,11 +3,7 @@ package com.microsoft.azure.management.resources.fluentcore.arm.models.implement
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
-import com.microsoft.azure.management.resources.fluentcore.model.Provisionable;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class GroupableResourceImpl<
         FluentModelT,
@@ -18,9 +14,9 @@ public abstract class GroupableResourceImpl<
         implements
         GroupableResource {
 
-    ResourceGroups resourceGroups;
-    ResourceGroup.DefinitionProvisionable newGroup;
-    protected String groupName;
+    private ResourceGroups resourceGroups;
+    private ResourceGroup.DefinitionProvisionable newGroup;
+    private String groupName;
 
     protected GroupableResourceImpl(String id, InnerModelT innerObject, ResourceGroups resourceGroups) {
         super(id, innerObject);
@@ -38,16 +34,19 @@ public abstract class GroupableResourceImpl<
      *******************************************/
 
     @Override
-    final public String resourceGroupName() {
+    public String resourceGroupName() {
         return this.groupName;
     }
 
-    public List<Provisionable<?>> prerequisites() {
-        List<Provisionable<?>> provisionables = new ArrayList<>();
-        if (this.newGroup != null) {
-            provisionables.add(newGroup);
+    @Override
+    public FluentModelT provision() throws Exception {
+        for (String id : prerequisites().keySet()) {
+            if (!provisioned().containsKey(id)) {
+                provisioned().put(id, prerequisites().get(id));
+                prerequisites().get(id).provision();
+            }
         }
-        return provisionables;
+        return null;
     }
 
     /****************************************
@@ -62,7 +61,7 @@ public abstract class GroupableResourceImpl<
 
     public final FluentModelImplT withNewGroup(String groupName) {
         this.groupName = groupName;
-        return this.withNewGroup(groupName, resourceGroups.define(groupName).withLocation(location()));
+        return this.withNewGroup(resourceGroups.define(groupName).withLocation(location()));
     }
 
     public final FluentModelImplT withNewGroup() {
@@ -71,9 +70,10 @@ public abstract class GroupableResourceImpl<
     }
 
     @SuppressWarnings("unchecked")
-    public final FluentModelImplT withNewGroup(String groupName, ResourceGroup.DefinitionProvisionable groupDefinition) {
-        this.groupName = groupName;
+    public final FluentModelImplT withNewGroup(ResourceGroup.DefinitionProvisionable groupDefinition) {
+        this.groupName = groupDefinition.id();
         this.newGroup = groupDefinition;
+        this.prerequisites().put(groupDefinition.id(), this.newGroup);
         return (FluentModelImplT) this;
     }
 

@@ -3,8 +3,7 @@ package com.microsoft.azure.management.resources.fluentcore.arm.models;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
 
-public interface GroupableResource extends
-		Resource {
+public interface GroupableResource extends Resource {
 	
 	public String resourceGroupName();
 
@@ -55,6 +54,6 @@ public interface GroupableResource extends
 		 * @param groupDefinition A provisionable definition for a new resource group
 		 * @return The next stage of the resource definition
 		 */
-		T withNewGroup(String groupName, ResourceGroup.DefinitionProvisionable groupDefinition) throws Exception;
+		T withNewGroup(ResourceGroup.DefinitionProvisionable groupDefinition) throws Exception;
 	}
 }
