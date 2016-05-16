@@ -3,9 +3,10 @@ package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.implementation.api.*;
-import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.storage.StorageAccount;
+import com.microsoft.azure.management.storage.implementation.StorageManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,13 +29,19 @@ class VirtualMachineImpl
             VirtualMachine.DefinitionWithNextTODO,
             VirtualMachine.DefinitionCreatable {
     private final VirtualMachinesInner client;
-    private VirtualMachineInner innerModel;
-    private StorageAccount.DefinitionCreatable storageProvisionable;
+    private final VirtualMachineInner innerModel;
+    private final ResourceManager resourceManager;
+    private final StorageManager storageManager;
 
-    VirtualMachineImpl(String name, VirtualMachineInner innerModel, VirtualMachinesInner client, ResourceGroups resourceGroups) {
-        super(name, innerModel, resourceGroups);
+    private String storageAccountName;
+
+    VirtualMachineImpl(String name, VirtualMachineInner innerModel, VirtualMachinesInner client,
+                       ResourceManager resourceManager, StorageManager storageManager) {
+        super(name, innerModel, resourceManager.resourceGroups());
         this.client = client;
         this.innerModel = innerModel;
+        this.resourceManager = resourceManager;
+        this.storageManager = storageManager;
 
         this.innerModel.setStorageProfile(new StorageProfile());
         this.innerModel.storageProfile().setOsDisk(new OSDisk());
@@ -98,19 +105,21 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachine.DefinitionWithOS withNewStorageAccount(String name) {
-        // TODO Setup storage account details
+        return withNewStorageAccount(storageManager.storageAccounts().define(name)
+                .withRegion(location())
+                .withExistingGroup(this.resourceGroupName()));
+    }
+
+    @Override
+    public VirtualMachine.DefinitionWithOS withNewStorageAccount(StorageAccount.DefinitionCreatable creatable) {
+        this.storageAccountName = creatable.key();
+        this.prerequisites().put(creatable.key(), creatable);
         return this;
     }
 
     @Override
     public VirtualMachine.DefinitionWithOS withExistingStorageAccount(String name) {
-        // TODO Setup storage account details
-        return this;
-    }
-
-    @Override
-    public VirtualMachine.DefinitionWithOS withExistingStorageAccount(StorageAccount.DefinitionCreatable creatable) {
-        // TODO Setup storage account details
+        this.storageAccountName = name;
         return this;
     }
 

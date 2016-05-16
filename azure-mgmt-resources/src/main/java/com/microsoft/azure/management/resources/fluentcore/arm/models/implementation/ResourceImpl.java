@@ -18,8 +18,8 @@ public abstract class ResourceImpl<
         Resource {
 
 
-    protected ResourceImpl(String id, InnerModelT innerObject) {
-        super(id, innerObject);
+    protected ResourceImpl(String key, InnerModelT innerObject) {
+        super(key, innerObject);
     }
 
     /*******************************************

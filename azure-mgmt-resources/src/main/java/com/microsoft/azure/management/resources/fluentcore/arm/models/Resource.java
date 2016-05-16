@@ -6,7 +6,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import java.util.Map;
 
 public interface Resource extends Indexable {
-	
+	String id();
 	String type();
 	String name();
 	String location();

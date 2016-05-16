@@ -103,13 +103,13 @@ public class ResourceGroupImpl extends
         // Figure out the location, since the SDK requires on the params explicitly even though it cannot be changed
         if(this.inner().location() != null) {
             params.setLocation(this.inner().location());
-        } else if(null == (group = client.get(this.id).getBody())) {
+        } else if(null == (group = client.get(this.key).getBody())) {
             throw new Exception("Resource group not found");
         } else {
             params.setLocation(group.location());
         }
 
-        client.createOrUpdate(this.id, params);
+        client.createOrUpdate(this.key, params);
         return this;
     }
     
@@ -118,13 +118,13 @@ public class ResourceGroupImpl extends
         ResourceGroupInner params = new ResourceGroupInner();
         params.setLocation(this.inner().location());
         params.setTags(this.inner().tags());
-        client.createOrUpdate(this.id, params);
+        client.createOrUpdate(this.key, params);
         return this;
     }
 
     @Override
     public ResourceGroupImpl refresh() throws Exception {            //  FLUENT: implementation of ResourceGroup.Refreshable<ResourceGroup>
-        this.setInner(client.get(this.id).getBody());
+        this.setInner(client.get(this.key).getBody());
         return this;
     }
 

@@ -23,24 +23,24 @@ import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 
 // Base implementation for indexable entities
 public abstract class IndexableImpl implements Indexable {
-	protected String id;
+	protected String key;
 	
-	protected IndexableImpl(String id) {
-		this.id = id;
+	protected IndexableImpl(String key) {
+		this.key = key;
 	}
 	
-	public void setId(String id) {
-		this.id = id;
+	public void setKey(String key) {
+		this.key = key;
 	}
 	
 	@Override
-	public String id() {
-		return this.id;
+	public String key() {
+		return this.key;
 	}
 	
 	@Override
 	public String toString() {
-		return this.id();
+		return this.key();
 	}
 }
 
