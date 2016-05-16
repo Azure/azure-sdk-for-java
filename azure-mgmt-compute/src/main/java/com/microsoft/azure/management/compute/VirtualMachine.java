@@ -100,8 +100,8 @@ public interface VirtualMachine extends
 
     interface DefinitionWithStorageAccount {
         DefinitionWithOS withNewStorageAccount(String name);
+        DefinitionWithOS withNewStorageAccount(StorageAccount.DefinitionCreatable creatable);
         DefinitionWithOS withExistingStorageAccount(String name);
-        DefinitionWithOS withExistingStorageAccount(StorageAccount.DefinitionCreatable creatable);
     }
 
     interface DefinitionWithOS {

@@ -2,12 +2,15 @@ package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class ResourceGroupsTests extends ResourceManagerTestBase {
-    private  ResourceGroups resourceGroups;
+    private static ResourceGroups resourceGroups;
 
-    public ResourceGroupsTests() throws Exception {
+    @BeforeClass
+    public static void setup() throws Exception {
+        createClient();
         resourceGroups = resourceClient.resourceGroups();
     }
 

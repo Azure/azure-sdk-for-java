@@ -1,5 +1,6 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.implementation;
 
+import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
@@ -11,7 +12,7 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
     protected RestClient.Builder restClientBuilder;
 
     protected AzureConfigurableImpl() {
-        this.restClientBuilder = new RestClient.Builder("https://management.azure.com");
+        this.restClientBuilder = AzureEnvironment.AZURE.newRestClientBuilder();
     }
 
     @Override

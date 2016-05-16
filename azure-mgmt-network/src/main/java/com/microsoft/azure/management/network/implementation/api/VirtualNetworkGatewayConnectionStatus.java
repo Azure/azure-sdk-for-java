@@ -1,0 +1,27 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
+package com.microsoft.azure.management.network.implementation.api;
+
+/**
+ * Defines values for VirtualNetworkGatewayConnectionStatus.
+ */
+public final class VirtualNetworkGatewayConnectionStatus {
+    /** Static value Unknown for VirtualNetworkGatewayConnectionStatus. */
+    public static final String UNKNOWN = "Unknown";
+
+    /** Static value Connecting for VirtualNetworkGatewayConnectionStatus. */
+    public static final String CONNECTING = "Connecting";
+
+    /** Static value Connected for VirtualNetworkGatewayConnectionStatus. */
+    public static final String CONNECTED = "Connected";
+
+    /** Static value NotConnected for VirtualNetworkGatewayConnectionStatus. */
+    public static final String NOT_CONNECTED = "NotConnected";
+
+    private VirtualNetworkGatewayConnectionStatus() {
+    }
+}

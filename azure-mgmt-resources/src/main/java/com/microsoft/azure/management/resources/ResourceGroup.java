@@ -1,8 +1,8 @@
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.azure.management.resources.fluentcore.model.*;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Taggable;
+import com.microsoft.azure.management.resources.fluentcore.model.*;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
 
 import java.util.Map;

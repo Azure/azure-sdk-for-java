@@ -22,13 +22,13 @@ import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
 
-public class PublicIpAddressesImpl
+class PublicIpAddressesImpl
         implements PublicIpAddresses {
     private final PublicIPAddressesInner client;
     private final ResourceGroups resourceGroups;
     private final PagedListConverter<PublicIPAddressInner, PublicIpAddress> converter;
 
-    public PublicIpAddressesImpl(final PublicIPAddressesInner client, final ResourceGroups resourceGroups) {
+    PublicIpAddressesImpl(final PublicIPAddressesInner client, final ResourceGroups resourceGroups) {
         this.client = client;
         this.resourceGroups = resourceGroups;
         this.converter = new PagedListConverter<PublicIPAddressInner, PublicIpAddress>() {
@@ -76,7 +76,7 @@ public class PublicIpAddressesImpl
     }
 
     @Override
-    public PublicIpAddress.DefinitionBlank define(String name) throws Exception {
+    public PublicIpAddress.DefinitionBlank define(String name) {
         return createFluentModel(name);
     }
 

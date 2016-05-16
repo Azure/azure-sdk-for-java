@@ -34,7 +34,7 @@ public class DeploymentsInGroupImpl
     }
 
     @Override
-    public Deployment.DefinitionWithGroup define(String name) throws Exception {
+    public Deployment.DefinitionWithGroup define(String name) {
         return this.deployments.define(name).withExistingResourceGroup(resourceGroup.name());
     }
 

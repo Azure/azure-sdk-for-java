@@ -132,7 +132,7 @@ public class GroupPagedListTests {
             }
 
             @Override
-            public String id() {
+            public String key() {
                 return null;
             }
 

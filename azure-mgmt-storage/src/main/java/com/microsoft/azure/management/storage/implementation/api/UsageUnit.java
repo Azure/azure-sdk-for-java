@@ -26,10 +26,10 @@ public enum UsageUnit {
     PERCENT("Percent"),
 
     /** Enum value CountsPerSecond. */
-    COUNTSPERSECOND("CountsPerSecond"),
+    COUNTS_PER_SECOND("CountsPerSecond"),
 
     /** Enum value BytesPerSecond. */
-    BYTESPERSECOND("BytesPerSecond");
+    BYTES_PER_SECOND("BytesPerSecond");
 
     /** The actual serialized value for a UsageUnit instance. */
     private String value;

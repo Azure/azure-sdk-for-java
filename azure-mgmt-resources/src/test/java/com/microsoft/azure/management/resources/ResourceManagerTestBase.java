@@ -13,10 +13,10 @@ public abstract class ResourceManagerTestBase {
                 .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
                 .authenticate(
                 new ApplicationTokenCredentials(
-                        System.getenv("arm.clientid"),
-                        System.getenv("arm.domain"),
-                        System.getenv("arm.secret"),
+                        System.getenv("client-id"),
+                        System.getenv("domain"),
+                        System.getenv("secret"),
                         null)
-        ).withSubscription(System.getenv("arm.subscriptionid"));
+        ).withSubscription(System.getenv("subscription-id"));
     }
 }
