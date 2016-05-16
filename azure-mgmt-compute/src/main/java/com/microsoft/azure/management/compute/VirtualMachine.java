@@ -4,7 +4,7 @@ import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.compute.implementation.KnownVirtualMachineImage;
 import com.microsoft.azure.management.compute.implementation.api.*;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
-import com.microsoft.azure.management.resources.fluentcore.model.Provisionable;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.storage.StorageAccount;
@@ -101,7 +101,7 @@ public interface VirtualMachine extends
     interface DefinitionWithStorageAccount {
         DefinitionWithOS withNewStorageAccount(String name);
         DefinitionWithOS withExistingStorageAccount(String name);
-        DefinitionWithOS withExistingStorageAccount(StorageAccount.DefinitionProvisionable provisionable);
+        DefinitionWithOS withExistingStorageAccount(StorageAccount.DefinitionCreatable creatable);
     }
 
     interface DefinitionWithOS {
@@ -274,17 +274,17 @@ public interface VirtualMachine extends
     }
 
     interface DefinitionWithNextTODO {
-        DefinitionProvisionable moreVMRequiredParameters();
+        DefinitionCreatable moreVMRequiredParameters();
     }
 
-    interface DefinitionProvisionable extends
-            Provisionable<VirtualMachine> {
+    interface DefinitionCreatable extends
+            Creatable<VirtualMachine> {
         /**
          * Specifies the caching type for the Operating System disk.
          * @param cachingType The caching type.
          * @return The stage with optional parameters for virtual machine definition.
          */
-        DefinitionProvisionable withOSDiskCaching(CachingTypes cachingType);
+        DefinitionCreatable withOSDiskCaching(CachingTypes cachingType);
 
         /**
          * Specifies the name of the OS Disk Vhd file and it's parent container.
@@ -292,27 +292,27 @@ public interface VirtualMachine extends
          * @param vhdName The name for the OS Disk vhd.
          * @return The stage with optional parameters for virtual machine definition.
          */
-        DefinitionProvisionable withOSDiskVhdLocation(String containerName, String vhdName);
+        DefinitionCreatable withOSDiskVhdLocation(String containerName, String vhdName);
 
         /**
          * Specifies the encryption settings for the OS Disk.
          * @param settings The encryption settings.
          * @return The stage with optional parameters for virtual machine definition.
          */
-        DefinitionProvisionable withOSDiskEncryptionSettings(DiskEncryptionSettings settings);
+        DefinitionCreatable withOSDiskEncryptionSettings(DiskEncryptionSettings settings);
 
         /**
          * Specifies the size of the OSDisk in GB.
          * @param size The VHD size.
          * @return The stage with optional parameters for virtual machine definition.
          */
-        DefinitionProvisionable withOSDiskSizeInGB(Integer size);
+        DefinitionCreatable withOSDiskSizeInGB(Integer size);
 
         /**
          * Specifies the name for the OS Disk.
          * @param name The OS Disk name.
          * @return The stage with optional parameters for virtual machine definition.
          */
-        DefinitionProvisionable withOSDiskName(String name);
+        DefinitionCreatable withOSDiskName(String name);
     }
 }

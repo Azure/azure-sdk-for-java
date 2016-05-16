@@ -19,19 +19,20 @@
 */
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
 
-public abstract class IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT> extends IndexableRefreshableImpl<FluentModelT> {
+public abstract class IndexableRefreshableWrapperImpl<FLUENT_MODEL, INNER_MODEL> 
+	extends IndexableRefreshableImpl<FLUENT_MODEL> {
 
-	private InnerModelT innerObject;
-	protected IndexableRefreshableWrapperImpl(String name, InnerModelT innerObject) {
+	private INNER_MODEL innerObject;
+	protected IndexableRefreshableWrapperImpl(String name, INNER_MODEL innerObject) {
 		super(name);
 		this.innerObject = innerObject;
 	}
 	
-	public InnerModelT inner() {
+	public INNER_MODEL inner() {
 		return this.innerObject;
 	}
 	
-	protected void setInner(InnerModelT inner) {
+	protected void setInner(INNER_MODEL inner) {
 		this.innerObject = inner;
 	}
 }

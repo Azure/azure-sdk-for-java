@@ -19,7 +19,7 @@ public interface StorageAccounts extends
 
     interface InGroup extends
             SupportsListing<StorageAccount>,
-            SupportsCreating<StorageAccount.DefinitionProvisionable>,
+            SupportsCreating<StorageAccount.DefinitionCreatable>,
             SupportsDeleting {
     }
 }

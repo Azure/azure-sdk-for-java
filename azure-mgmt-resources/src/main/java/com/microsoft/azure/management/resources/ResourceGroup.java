@@ -26,13 +26,13 @@ public interface ResourceGroup extends
      **************************************************************/
 
     interface DefinitionBlank {
-        DefinitionProvisionable withLocation(String regionName);
-        DefinitionProvisionable withLocation(Region region);
+        DefinitionCreatable withLocation(String regionName);
+        DefinitionCreatable withLocation(Region region);
     }
 
-    interface DefinitionProvisionable extends Provisionable<ResourceGroup> {
-        DefinitionProvisionable withTags(Map<String, String> tags);
-        DefinitionProvisionable withTag(String key, String value);
+    interface DefinitionCreatable extends Creatable<ResourceGroup> {
+        DefinitionCreatable withTags(Map<String, String> tags);
+        DefinitionCreatable withTag(String key, String value);
     }
 
     interface Update extends UpdateBlank, Updatable<Update> {

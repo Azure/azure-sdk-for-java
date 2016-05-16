@@ -17,7 +17,7 @@ public class ResourceGroupImpl extends
         implements
         ResourceGroup,
         ResourceGroup.DefinitionBlank,
-        ResourceGroup.DefinitionProvisionable,
+        ResourceGroup.DefinitionCreatable,
         ResourceGroup.Update  {
 
     private final ResourceGroupsInner client;
@@ -69,13 +69,13 @@ public class ResourceGroupImpl extends
     }
 
     @Override
-    public ResourceGroupImpl withTags(Map<String, String> tags) {     //  FLUENT: implementation of ResourceGroup.DefinitionProvisionable
+    public ResourceGroupImpl withTags(Map<String, String> tags) {     //  FLUENT: implementation of ResourceGroup.DefinitionCreatable
         this.inner().setTags(new HashMap<>(tags));    //                  ResourceGroup.Update.UpdateBlank.Taggable<Update>
         return this;
     }
 
     @Override
-    public ResourceGroupImpl withTag(String key, String value) {      //  FLUENT: implementation of ResourceGroup.DefinitionProvisionable
+    public ResourceGroupImpl withTag(String key, String value) {      //  FLUENT: implementation of ResourceGroup.DefinitionCreatable
         if(this.inner().tags() == null) {                             //  ResourceGroup.Update.UpdateBlank.Taggable<Update>
             this.inner().setTags(new HashMap<String, String>());
         }
@@ -114,7 +114,7 @@ public class ResourceGroupImpl extends
     }
     
     @Override
-    public ResourceGroupImpl provision() throws Exception {          //  FLUENT: implementation of ResourceGroup.DefinitionProvisionable.Provisionable<ResourceGroup>
+    public ResourceGroupImpl create() throws Exception {          //  FLUENT: implementation of ResourceGroup.DefinitionCreatable.Creatable<ResourceGroup>
         ResourceGroupInner params = new ResourceGroupInner();
         params.setLocation(this.inner().location());
         params.setTags(this.inner().tags());

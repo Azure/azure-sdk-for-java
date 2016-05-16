@@ -19,7 +19,7 @@ class StorageAccountImpl
         StorageAccount,
         StorageAccount.DefinitionBlank,
         StorageAccount.DefinitionWithGroup,
-        StorageAccount.DefinitionProvisionable
+        StorageAccount.DefinitionCreatable
         {
 
     private PublicEndpoints publicEndpoints;
@@ -110,7 +110,7 @@ class StorageAccountImpl
     }
 
     @Override
-    public StorageAccountImpl provision() throws Exception {
+    public StorageAccountImpl create() throws Exception {
         ensureGroup();
         StorageAccountCreateParametersInner createParameters = new StorageAccountCreateParametersInner();
         createParameters.setAccountType(this.inner().accountType());

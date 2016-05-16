@@ -11,9 +11,9 @@ public abstract class GroupableResourceImpl<
         InnerModelT extends com.microsoft.azure.Resource,
         FluentModelImplT extends GroupableResourceImpl<FluentModelT, InnerModelT, FluentModelImplT>>
         extends
-        ResourceImpl<FluentModelT, InnerModelT, FluentModelImplT>
+        	ResourceImpl<FluentModelT, InnerModelT, FluentModelImplT>
         implements
-        GroupableResource {
+        	GroupableResource {
 
     ResourceGroups resourceGroups;
 
@@ -54,7 +54,7 @@ public abstract class GroupableResourceImpl<
 
             group = this.resourceGroups.define(this.resourceGroupName)
                     .withLocation(this.location())
-                    .provision();
+                    .create();
             this.isExistingGroup = true;
             return group;
         } else {
@@ -85,8 +85,8 @@ public abstract class GroupableResourceImpl<
         return this.withNewGroup((String)null);
     }
 
-    public final FluentModelImplT withNewGroup(ResourceGroup.DefinitionProvisionable groupDefinition) throws Exception {
-        return withExistingGroup(groupDefinition.provision());
+    public final FluentModelImplT withNewGroup(ResourceGroup.DefinitionCreatable groupDefinition) throws Exception {
+        return withExistingGroup(groupDefinition.create());
     }
 
     public final FluentModelImplT withExistingGroup(ResourceGroup group) {

@@ -21,7 +21,7 @@ public class AvailabilitySetImpl
         AvailabilitySet,
         AvailabilitySet.DefinitionBlank,
         AvailabilitySet.DefinitionWithGroup,
-        AvailabilitySet.DefinitionProvisionable {
+        AvailabilitySet.DefinitionCreatable {
     private String name;
     private List<String> idOfVMsInSet;
     private List<VirtualMachine> vmsInSet;
@@ -110,7 +110,7 @@ public class AvailabilitySetImpl
     }
 
     @Override
-    public AvailabilitySetImpl provision() throws Exception {
+    public AvailabilitySetImpl create() throws Exception {
         ensureGroup();
         ServiceResponse<AvailabilitySetInner> response = this.client.createOrUpdate(this.resourceGroup(), this.name(), this.inner());
         AvailabilitySetInner availabilitySetInner = response.getBody();

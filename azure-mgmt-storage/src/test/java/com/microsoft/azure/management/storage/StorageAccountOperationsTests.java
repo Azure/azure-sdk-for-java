@@ -16,7 +16,7 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
         createClients();
         resourceClient.resourceGroups().define(rgName)
                 .withLocation(location)
-                .provision();
+                .create();
     }
 
     @AfterClass
@@ -32,14 +32,14 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
                 .storageAccounts()
                 .define("my-stg")
                 .withAccountType(AccountType.PREMIUM_LRS)
-                .provision();
+                .create();
 
         StorageAccount storageAccount2 = storageClient.storageAccounts()
                 .define("my-stg2")
                 .withRegion(Region.ASIA_EAST)
                 .withNewGroup()
                 .withAccountType(AccountType.PREMIUM_LRS)
-                .provision();
+                .create();
 
         StorageAccounts.InGroup storageAccountsInGroup = resourceClient.resourceGroups()
                 .get("my-rg")

@@ -3,7 +3,7 @@ package com.microsoft.azure.management.resources;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
-import com.microsoft.azure.management.resources.fluentcore.model.Provisionable;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.resources.implementation.api.*;
@@ -58,9 +58,9 @@ public interface Deployment extends
     }
 
     interface DefinitionWithParameters {
-        DefinitionProvisionable withMode(DeploymentMode mode);
+        DefinitionCreatable withMode(DeploymentMode mode);
     }
 
-    interface DefinitionProvisionable extends Provisionable<Deployment> {
+    interface DefinitionCreatable extends Creatable<Deployment> {
     }
 }

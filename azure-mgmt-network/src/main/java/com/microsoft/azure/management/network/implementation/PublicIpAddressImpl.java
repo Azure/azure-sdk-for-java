@@ -33,11 +33,10 @@ class PublicIpAddressImpl
         this.client = client;
     }
 
-    @Override
-    public String name() {
-        return this.name;
-    }
-
+    /**************************************************
+     * Verbs
+     **************************************************/
+    
     @Override
     public PublicIpAddress refresh() throws Exception {
         ServiceResponse<PublicIPAddressInner> response =
@@ -49,7 +48,7 @@ class PublicIpAddressImpl
     }
 
     @Override
-    public PublicIpAddressImpl provision() throws Exception {
+    public PublicIpAddressImpl create() throws Exception {
         ensureGroup();
 
         ServiceResponse<PublicIPAddressInner> response =
@@ -63,6 +62,9 @@ class PublicIpAddressImpl
     	
     }
 
+    /*****************************************
+     * Setters (fluent)
+     *****************************************/
     
 	@Override
 	public PublicIpAddressImpl withStaticIp() {
@@ -96,6 +98,16 @@ class PublicIpAddressImpl
 		return this.withLeafDomainLabel(null);
 	}
 
+	
+	/**********************************************
+	 * Getters
+	 **********************************************/
+
+    @Override
+    public String name() {
+        return this.name;
+    }
+    
 	@Override
 	public String ipAddress() {
 		return this.inner().ipAddress();

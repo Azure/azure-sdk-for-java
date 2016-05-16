@@ -24,7 +24,7 @@ public class DeploymentImpl extends
         Deployment.DefinitionWithGroup,
         Deployment.DefinitionWithTemplate,
         Deployment.DefinitionWithParameters,
-        Deployment.DefinitionProvisionable {
+        Deployment.DefinitionCreatable {
 
     private final DeploymentsInner client;
     private final DeploymentOperationsInner deploymentOperationsClient;
@@ -155,7 +155,7 @@ public class DeploymentImpl extends
 
     @Override
     public DefinitionWithGroup withNewResourceGroup(String resourceGroupName, Region location) throws Exception {
-        ResourceGroup group = this.resourceGroups.define(resourceGroupName).withLocation(location).provision();
+        ResourceGroup group = this.resourceGroups.define(resourceGroupName).withLocation(location).create();
         this.resourceGroupName = group.name();
         return this;
     }
@@ -194,7 +194,7 @@ public class DeploymentImpl extends
     }
 
     @Override
-    public DefinitionProvisionable withMode(DeploymentMode mode) {
+    public DefinitionCreatable withMode(DeploymentMode mode) {
         if (this.inner().properties() == null) {
             this.inner().setProperties(new DeploymentPropertiesExtended());
         }
@@ -230,7 +230,7 @@ public class DeploymentImpl extends
     }
 
     @Override
-    public Deployment provision() throws Exception {         //  FLUENT: implementation of ResourceGroup.DefinitionProvisionable.Provisionable<ResourceGroup>
+    public Deployment create() throws Exception {         //  FLUENT: implementation of ResourceGroup.DefinitionCreatable.Creatable<ResourceGroup>
         DeploymentInner inner = new DeploymentInner()
                 .setProperties(new DeploymentProperties());
         inner.properties().setMode(mode());

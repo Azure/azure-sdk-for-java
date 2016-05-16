@@ -64,7 +64,7 @@ public class AzureTests {
     		.withNewGroup()
     		.withDynamicIp()
     		.withLeafDomainLabel(newPipName)
-    		.provision();
+    		.create();
     	
     	// Verify list
     	int publicIpAddressCount = azure2.publicIpAddresses().list().size();
@@ -105,7 +105,7 @@ public class AzureTests {
                 .withRegion(Region.ASIA_EAST)
                 .withNewGroup()
                 .withAccountType(AccountType.PREMIUM_LRS)
-                .provision();
+                .create();
 
         Assert.assertSame(storageAccount.name(), "my-stg1");
     }
@@ -116,7 +116,7 @@ public class AzureTests {
                 .storageAccounts()
                 .define("my-stg2")
                 .withAccountType(AccountType.PREMIUM_LRS)
-                .provision();
+                .create();
 
         Assert.assertSame(storageAccount.name(), "my-stg2");
     }
