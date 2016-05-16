@@ -12,8 +12,10 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 
 public final class StorageManager {
     private final StorageManagementClientImpl storageManagementClient;
+
     // Dependent managers
-    private ResourceManager resourceManager;
+    private final ResourceManager resourceManager;
+
     // Collections
     private StorageAccounts storageAccounts;
     private Usages storageUsages;

@@ -2,7 +2,7 @@ package com.microsoft.azure.management.storage;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
-import com.microsoft.azure.management.resources.fluentcore.model.Provisionable;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.storage.implementation.StorageAccountKeys;
@@ -92,11 +92,11 @@ public interface StorageAccount extends
     interface DefinitionBlank extends GroupableResource.DefinitionWithRegion<DefinitionWithGroup> {
     }
 
-    interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionProvisionable> {
+    interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionCreatable> {
     }
 
-    interface DefinitionProvisionable extends Provisionable<StorageAccount> {
-        DefinitionProvisionable withAccountType(AccountType accountType);
+    interface DefinitionCreatable extends Creatable<StorageAccount> {
+        DefinitionCreatable withAccountType(AccountType accountType);
     }
 }
 

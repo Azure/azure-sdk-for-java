@@ -5,7 +5,6 @@ import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.implementation.api.*;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.model.Provisionable;
 import com.microsoft.azure.management.storage.StorageAccount;
 
 import java.util.ArrayList;
@@ -27,10 +26,10 @@ class VirtualMachineImpl
             VirtualMachine.DefinitionWithOptionalSsh,
             VirtualMachine.DefinitionWithOptionalPassword,
             VirtualMachine.DefinitionWithNextTODO,
-            VirtualMachine.DefinitionProvisionable {
+            VirtualMachine.DefinitionCreatable {
     private final VirtualMachinesInner client;
     private VirtualMachineInner innerModel;
-    private StorageAccount.DefinitionProvisionable storageProvisionable;
+    private StorageAccount.DefinitionCreatable storageProvisionable;
 
     VirtualMachineImpl(String name, VirtualMachineInner innerModel, VirtualMachinesInner client, ResourceGroups resourceGroups) {
         super(name, innerModel, resourceGroups);
@@ -40,11 +39,6 @@ class VirtualMachineImpl
         this.innerModel.setStorageProfile(new StorageProfile());
         this.innerModel.storageProfile().setOsDisk(new OSDisk());
         this.innerModel.setOsProfile(new OSProfile());
-    }
-
-    @Override
-    public List<Provisionable<?>> prerequisites() {
-        return super.prerequisites();
     }
 
     @Override
@@ -115,7 +109,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachine.DefinitionWithOS withExistingStorageAccount(StorageAccount.DefinitionProvisionable provisionable) {
+    public VirtualMachine.DefinitionWithOS withExistingStorageAccount(StorageAccount.DefinitionCreatable creatable) {
         // TODO Setup storage account details
         return this;
     }
@@ -298,7 +292,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public DefinitionProvisionable moreVMRequiredParameters() {
+    public DefinitionCreatable moreVMRequiredParameters() {
         // TODO This is not the final place setting the defaults but putting it here so that we won't forget it later.
         //
         OSDisk osDisk = this.innerModel.storageProfile().osDisk();
@@ -313,20 +307,20 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachine provision() throws Exception {
+    public VirtualMachine create() throws Exception {
         return null;
     }
 
     // Optionals
 
     @Override
-    public DefinitionProvisionable withOSDiskCaching(CachingTypes cachingType) {
+    public DefinitionCreatable withOSDiskCaching(CachingTypes cachingType) {
         this.innerModel.storageProfile().osDisk().setCaching(cachingType);
         return this;
     }
 
     @Override
-    public DefinitionProvisionable withOSDiskVhdLocation(String containerName, String vhdName) {
+    public DefinitionCreatable withOSDiskVhdLocation(String containerName, String vhdName) {
         VirtualHardDisk osVhd = new VirtualHardDisk();
         osVhd.setUri(null); // TODO generate and sets VHD URI.
         this.innerModel.storageProfile().osDisk().setVhd(osVhd);
@@ -334,19 +328,19 @@ class VirtualMachineImpl
     }
 
     @Override
-    public DefinitionProvisionable withOSDiskEncryptionSettings(DiskEncryptionSettings settings) {
+    public DefinitionCreatable withOSDiskEncryptionSettings(DiskEncryptionSettings settings) {
         this.innerModel.storageProfile().osDisk().setEncryptionSettings(settings);
         return this;
     }
 
     @Override
-    public DefinitionProvisionable withOSDiskSizeInGB(Integer size) {
+    public DefinitionCreatable withOSDiskSizeInGB(Integer size) {
         this.innerModel.storageProfile().osDisk().setDiskSizeGB(size);
         return this;
     }
 
     @Override
-    public DefinitionProvisionable withOSDiskName(String name) {
+    public DefinitionCreatable withOSDiskName(String name) {
         this.innerModel.storageProfile().osDisk().setName(name);
         return this;
     }

@@ -18,7 +18,7 @@ public class AvailabilitySetsInGroup implements AvailabilitySets.InGroup {
     }
 
     @Override
-    public AvailabilitySet.DefinitionProvisionable define(String name) {
+    public AvailabilitySet.DefinitionCreatable define(String name) {
         return this.availabilitySets
                 .define(name)
                 .withRegion(this.resourceGroup.location())

@@ -16,6 +16,6 @@ public interface AvailabilitySets extends
         SupportsDeletingByGroup {
     interface InGroup extends
             SupportsListing<AvailabilitySet>,
-            SupportsCreating<AvailabilitySet.DefinitionProvisionable>,
+            SupportsCreating<AvailabilitySet.DefinitionCreatable>,
             SupportsDeleting {}
 }

@@ -40,13 +40,13 @@ public interface GenericResource extends
     }
 
     interface DefinitionWithPlan {
-        DefinitionProvisionable withPlan(String name, String publisher, String product, String promotionCode);
+        DefinitionCreatable withPlan(String name, String publisher, String product, String promotionCode);
     }
 
-    interface DefinitionProvisionable extends Provisionable<GenericResource> {  // Properties, tags are optional
-        DefinitionProvisionable withProperties(Object properties);
-        DefinitionProvisionable withTags(Map<String, String> tags);
-        DefinitionProvisionable withTag(String key, String value);
+    interface DefinitionCreatable extends Creatable<GenericResource> {  // Properties, tags are optional
+        DefinitionCreatable withProperties(Object properties);
+        DefinitionCreatable withTags(Map<String, String> tags);
+        DefinitionCreatable withTag(String key, String value);
     }
 
     // TODO: Updatable properties needs to be revised.

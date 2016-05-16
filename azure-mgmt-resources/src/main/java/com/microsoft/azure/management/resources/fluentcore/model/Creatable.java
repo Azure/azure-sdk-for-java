@@ -21,9 +21,9 @@ package com.microsoft.azure.management.resources.fluentcore.model;
 
 import java.util.Map;
 
-// Encapsulates the provisioning method
-public interface Provisionable<T> extends Indexable {
-	T provision() throws Exception;
-	Map<String, Provisionable<?>> prerequisites();
-	Map<String, Provisionable<?>> provisioned();
+// Encapsulates the create() method
+public interface Creatable<T> extends Indexable {
+	T create() throws Exception;
+	Map<String, Creatable<?>> prerequisites();
+	Map<String, Creatable<?>> created();
 }

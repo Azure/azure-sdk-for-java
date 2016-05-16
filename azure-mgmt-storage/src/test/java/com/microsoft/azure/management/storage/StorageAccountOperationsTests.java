@@ -20,7 +20,7 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
         createClients();
         resourceGroup = resourceManager.resourceGroups().define(RG_NAME)
                 .withLocation(Region.US_SOUTH_CENTRAL)
-                .provision();
+                .create();
     }
 
     @AfterClass
@@ -38,14 +38,14 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
         StorageAccount storageAccount1 = storageAccountsInGroup
                 .define(SA_NAME)
                 .withAccountType(AccountType.PREMIUM_LRS)
-                .provision();
+                .create();
 
         StorageAccount storageAccount2 = storageManager.storageAccounts()
                 .define(SA_NAME + "6")
                 .withRegion(Region.ASIA_EAST)
                 .withNewGroup(RG_NAME_2)
                 .withAccountType(AccountType.PREMIUM_LRS)
-                .provision();
+                .create();
 
         Assert.assertEquals(RG_NAME, storageAccount1.resourceGroupName());
         Assert.assertEquals(RG_NAME_2, storageAccount2.resourceGroupName());

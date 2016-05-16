@@ -2,6 +2,7 @@ package com.microsoft.azure.management.resources.fluentcore.arm.models.implement
 
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroups;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
 
@@ -10,12 +11,12 @@ public abstract class GroupableResourceImpl<
         InnerModelT extends com.microsoft.azure.Resource,
         FluentModelImplT extends GroupableResourceImpl<FluentModelT, InnerModelT, FluentModelImplT>>
         extends
-        ResourceImpl<FluentModelT, InnerModelT, FluentModelImplT>
+        	ResourceImpl<FluentModelT, InnerModelT, FluentModelImplT>
         implements
-        GroupableResource {
+        	GroupableResource {
 
     private ResourceGroups resourceGroups;
-    private ResourceGroup.DefinitionProvisionable newGroup;
+    private ResourceGroup.DefinitionCreatable newGroup;
     private String groupName;
 
     protected GroupableResourceImpl(String id, InnerModelT innerObject, ResourceGroups resourceGroups) {
@@ -39,11 +40,11 @@ public abstract class GroupableResourceImpl<
     }
 
     @Override
-    public FluentModelT provision() throws Exception {
+    public FluentModelT create() throws Exception {
         for (String id : prerequisites().keySet()) {
-            if (!provisioned().containsKey(id)) {
-                provisioned().put(id, prerequisites().get(id));
-                prerequisites().get(id).provision();
+            if (!created().containsKey(id)) {
+                created().put(id, prerequisites().get(id));
+                prerequisites().get(id).create();
             }
         }
         return null;
@@ -70,7 +71,7 @@ public abstract class GroupableResourceImpl<
     }
 
     @SuppressWarnings("unchecked")
-    public final FluentModelImplT withNewGroup(ResourceGroup.DefinitionProvisionable groupDefinition) {
+    public final FluentModelImplT withNewGroup(ResourceGroup.DefinitionCreatable groupDefinition) {
         this.groupName = groupDefinition.id();
         this.newGroup = groupDefinition;
         this.prerequisites().put(groupDefinition.id(), this.newGroup);

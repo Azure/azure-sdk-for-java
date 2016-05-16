@@ -64,7 +64,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
         request.storageProfile().setDataDisks(null);
         request.storageProfile().setOsDisk(new OSDisk());
         request.storageProfile().osDisk().setCaching(CachingTypes.NONE);
-        request.storageProfile().osDisk().setCreateOption(DiskCreateOptionTypes.FROMIMAGE);
+        request.storageProfile().osDisk().setCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
         request.storageProfile().osDisk().setName("javatest");
         request.storageProfile().osDisk().setVhd(new VirtualHardDisk());
         request.storageProfile().osDisk().vhd().setUri("https://" + accountName + ".blob.core.windows.net/javacontainer/osjavawindows.vhd");

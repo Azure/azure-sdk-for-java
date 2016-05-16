@@ -11,7 +11,7 @@ import com.microsoft.azure.management.network.implementation.api.PublicIPAddress
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressesInner;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.model.Provisionable;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.rest.ServiceResponse;
 
 class PublicIpAddressImpl
@@ -34,11 +34,10 @@ class PublicIpAddressImpl
         this.client = client;
     }
 
-    @Override
-    public String name() {
-        return this.name;
-    }
-
+    /**************************************************
+     * Verbs
+     **************************************************/
+    
     @Override
     public PublicIpAddress refresh() throws Exception {
         ServiceResponse<PublicIPAddressInner> response =
@@ -50,11 +49,12 @@ class PublicIpAddressImpl
     }
 
     @Override
-    public PublicIpAddressImpl provision() throws Exception {
-		for (Provisionable<?> provisionable : prerequisites()) {
-			provisionable.provision();
+    public PublicIpAddressImpl create() throws Exception {
+		for (Creatable<?> provisionable : prerequisites().values()) {
+			provisionable.create();
 		}
-		ServiceResponse<PublicIPAddressInner> response =
+
+        ServiceResponse<PublicIPAddressInner> response =
                 this.client.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
         this.setInner(response.getBody());
         clearWrapperProperties();
@@ -65,6 +65,9 @@ class PublicIpAddressImpl
     	
     }
 
+    /*****************************************
+     * Setters (fluent)
+     *****************************************/
     
 	@Override
 	public PublicIpAddressImpl withStaticIp() {
@@ -98,6 +101,16 @@ class PublicIpAddressImpl
 		return this.withLeafDomainLabel(null);
 	}
 
+	
+	/**********************************************
+	 * Getters
+	 **********************************************/
+
+    @Override
+    public String name() {
+        return this.name;
+    }
+    
 	@Override
 	public String ipAddress() {
 		return this.inner().ipAddress();

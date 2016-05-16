@@ -2,7 +2,7 @@ package com.microsoft.azure.management.resources.fluentcore.arm.models.implement
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.ProvisionableImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableImpl;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -12,9 +12,9 @@ public abstract class ResourceImpl<
         FluentModelT,
         InnerModelT extends com.microsoft.azure.Resource,
         FluentModelImplT extends ResourceImpl<FluentModelT, InnerModelT, FluentModelImplT>>
-        extends
-        ProvisionableImpl<FluentModelT, InnerModelT>
-        implements
+	extends
+        CreatableImpl<FluentModelT, InnerModelT>
+	implements
         Resource {
 
 

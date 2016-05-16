@@ -1,25 +1,23 @@
 package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.management.resources.ResourceConnector;
+import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.model.Provisionable;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableImpl;
+import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupsInner;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
-import com.microsoft.azure.management.resources.ResourceGroup;
-import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ResourceGroupImpl extends
-        IndexableRefreshableWrapperImpl<ResourceGroup, ResourceGroupInner>
+        CreatableImpl<ResourceGroup, ResourceGroupInner>
         implements
         ResourceGroup,
         ResourceGroup.DefinitionBlank,
-        ResourceGroup.DefinitionProvisionable,
+        ResourceGroup.DefinitionCreatable,
         ResourceGroup.Update  {
 
     private final ResourceGroupsInner client;
@@ -71,13 +69,13 @@ public class ResourceGroupImpl extends
     }
 
     @Override
-    public ResourceGroupImpl withTags(Map<String, String> tags) {     //  FLUENT: implementation of ResourceGroup.DefinitionProvisionable
+    public ResourceGroupImpl withTags(Map<String, String> tags) {     //  FLUENT: implementation of ResourceGroup.DefinitionCreatable
         this.inner().setTags(new HashMap<>(tags));    //                  ResourceGroup.Update.UpdateBlank.Taggable<Update>
         return this;
     }
 
     @Override
-    public ResourceGroupImpl withTag(String key, String value) {      //  FLUENT: implementation of ResourceGroup.DefinitionProvisionable
+    public ResourceGroupImpl withTag(String key, String value) {      //  FLUENT: implementation of ResourceGroup.DefinitionCreatable
         if(this.inner().tags() == null) {                             //  ResourceGroup.Update.UpdateBlank.Taggable<Update>
             this.inner().setTags(new HashMap<String, String>());
         }
@@ -116,17 +114,12 @@ public class ResourceGroupImpl extends
     }
     
     @Override
-    public ResourceGroupImpl provision() throws Exception {          //  FLUENT: implementation of ResourceGroup.DefinitionProvisionable.Provisionable<ResourceGroup>
+    public ResourceGroupImpl create() throws Exception {          //  FLUENT: implementation of ResourceGroup.DefinitionCreatable.Creatable<ResourceGroup>
         ResourceGroupInner params = new ResourceGroupInner();
         params.setLocation(this.inner().location());
         params.setTags(this.inner().tags());
         client.createOrUpdate(this.id, params);
         return this;
-    }
-
-    @Override
-    public List<Provisionable<?>> prerequisites() {
-        return null;
     }
 
     @Override

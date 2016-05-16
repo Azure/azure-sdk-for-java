@@ -19,32 +19,32 @@
 */
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
 
-import com.microsoft.azure.management.resources.fluentcore.model.Provisionable;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class ProvisionableImpl<FluentModelT, InnerModelT>
+public abstract class CreatableImpl<FluentModelT, InnerModelT>
         extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
-        implements Provisionable<FluentModelT> {
-    private Map<String, Provisionable<?>> prerequisites;
-    private Map<String, Provisionable<?>> provisioned;
+        implements Creatable<FluentModelT> {
+    private Map<String, Creatable<?>> prerequisites;
+    private Map<String, Creatable<?>> provisioned;
 
-	protected ProvisionableImpl(String name, InnerModelT innerObject) {
+	protected CreatableImpl(String name, InnerModelT innerObject) {
 		super(name, innerObject);
         prerequisites = new HashMap<>();
         provisioned = new HashMap<>();
 	}
 
     @Override
-    public Map<String, Provisionable<?>> prerequisites() {
+    public Map<String, Creatable<?>> prerequisites() {
         return prerequisites;
     }
 
     @Override
-    public Map<String, Provisionable<?>> provisioned() {
+    public Map<String, Creatable<?>> created() {
         return provisioned;
     }
 
-    // TODO: Add provisioning() to allow unblocking
+    // TODO: Add provisicreatingoning() to allow unblocking
 }
