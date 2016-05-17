@@ -66,6 +66,8 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	MessagingFactory(final ConnectionStringBuilder builder) throws IOException
 	{
 		super("MessagingFactory".concat(StringUtil.getRandomString()), null);
+		
+		Timer.register(this.getClientId());
 		this.hostName = builder.getEndpoint().getHost();
 		this.timeoutErrorStart = Instant.MAX;
 		
@@ -249,6 +251,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		if (this.getIsClosingOrClosed() && !this.closeTask.isDone())
 		{
 			this.closeTask.complete(null);
+			Timer.unregister(this.getClientId());
 		}
 	}
 	

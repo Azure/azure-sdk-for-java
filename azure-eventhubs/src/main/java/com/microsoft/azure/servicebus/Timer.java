@@ -5,15 +5,23 @@
 package com.microsoft.azure.servicebus;
 
 import java.time.Duration;
-import java.util.concurrent.*;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * An abstraction for a Scheduler functionality - which can later be replaced by a light-weight Thread
  */
 final class Timer
 {
-	private static final ScheduledThreadPoolExecutor executor =
-			new ScheduledThreadPoolExecutor(Math.max(Runtime.getRuntime().availableProcessors(), 4));
+	private static ScheduledThreadPoolExecutor executor = null;
+	
+	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
+	private static final HashSet<String> references = new HashSet<String>();
+	private static final Object syncReferences = new Object();
 	
 	private Timer() 
 	{
@@ -40,6 +48,42 @@ final class Timer
 				
 			default:
 				throw new UnsupportedOperationException("Unsupported timer pattern.");
+		}
+	}
+	
+	static void register(final String clientId)
+	{
+		synchronized (syncReferences)
+		{
+			if (references.size() == 0 && (executor == null || executor.isShutdown()))
+			{
+				final int corePoolSize = Math.max(Runtime.getRuntime().availableProcessors(), 4);
+				if (TRACE_LOGGER.isLoggable(Level.FINE))
+				{
+					TRACE_LOGGER.log(Level.FINE, 
+							String.format(Locale.US, "Starting ScheduledThreadPoolExecutor with coreThreadPoolSize: %s", corePoolSize));
+				}
+				
+				executor = new ScheduledThreadPoolExecutor(corePoolSize);
+			}
+			
+			references.add(clientId);
+		}
+	}
+	
+	static void unregister(final String clientId)
+	{
+		synchronized (syncReferences)
+		{
+			if (references.remove(clientId) && references.size() == 0 && executor != null)
+			{
+				if (TRACE_LOGGER.isLoggable(Level.FINE))
+				{
+					TRACE_LOGGER.log(Level.FINE, "Shuting down ScheduledThreadPoolExecutor.");
+				}
+				
+				executor.shutdownNow();
+			}
 		}
 	}
 }
