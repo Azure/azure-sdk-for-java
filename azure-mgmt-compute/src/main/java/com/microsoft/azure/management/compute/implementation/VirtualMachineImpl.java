@@ -43,6 +43,7 @@ class VirtualMachineImpl
         this.innerModel.setStorageProfile(new StorageProfile());
         this.innerModel.storageProfile().setOsDisk(new OSDisk());
         this.innerModel.setOsProfile(new OSProfile());
+        this.innerModel.setHardwareProfile(new HardwareProfile());
     }
 
     @Override
@@ -176,7 +177,6 @@ class VirtualMachineImpl
         return this;
     }
 
-
     @Override
     public DefinitionLinuxCreatable withRootUserName(String rootUserName) {
         this.innerModel.osProfile().setAdminUsername(rootUserName);
@@ -240,6 +240,18 @@ class VirtualMachineImpl
     @Override
     public DefinitionCreatable withPassword(String password) {
         this.innerModel.osProfile().setAdminPassword(password);
+        return this;
+    }
+
+    @Override
+    public DefinitionCreatable withSize(String sizeName) {
+        this.innerModel.hardwareProfile().setVmSize(sizeName);
+        return this;
+    }
+
+    @Override
+    public DefinitionCreatable withSize(VirtualMachineSizeTypes size) {
+        this.innerModel.hardwareProfile().setVmSize(size.toString());
         return this;
     }
 
@@ -334,6 +346,11 @@ class VirtualMachineImpl
 
         if (osDisk.name() == null) {
             withOSDiskName(null /*TODO generate random OSDisk name */);
+        }
+
+        HardwareProfile hardwareProfile = this.innerModel.hardwareProfile();
+        if (hardwareProfile.vmSize() == null) {
+            hardwareProfile.setVmSize(VirtualMachineSizeTypes.BASIC_A0);
         }
     }
 }
