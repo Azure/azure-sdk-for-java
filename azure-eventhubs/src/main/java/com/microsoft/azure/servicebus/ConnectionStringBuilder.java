@@ -43,11 +43,13 @@ public class ConnectionStringBuilder
 	final static String SharedAccessKeyConfigName = "SharedAccessKey";
 	final static String EntityPathConfigName = "EntityPath";
 	final static String OperationTimeoutConfigName = "OperationTimeout";
+	final static String RetryPolicyConfigName = "RetryPolicy";
 	final static String KeyValueSeparator = "=";
 	final static String KeyValuePairDelimiter = ";";
 
 	private static final String AllKeyEnumerateRegex = "(" + EndpointConfigName + "|" + SharedAccessKeyNameConfigName
-			+ "|" + SharedAccessKeyConfigName + "|" + EntityPathConfigName + "|" + OperationTimeoutConfigName + ")";
+			+ "|" + SharedAccessKeyConfigName + "|" + EntityPathConfigName + "|" + OperationTimeoutConfigName
+			+ "|" + RetryPolicyConfigName + ")";
 
 	private static final String KeysWithDelimitersRegex = KeyValuePairDelimiter + AllKeyEnumerateRegex
 			+ KeyValueSeparator;
@@ -169,6 +171,16 @@ public class ConnectionStringBuilder
 	{
 		return (this.retryPolicy == null ? RetryPolicy.getDefault() : this.retryPolicy);
 	}
+	
+	/**
+	 * Set the retry policy.
+	 * <p>RetryPolicy is not Serialized as part of {@link ConnectionStringBuilder#toString()} and is not interoperable with ServiceBus clients in other platforms. 
+	 * @param retryPolicy RetryPolicy applied for any operation performed using this ConnectionString
+	 */
+	public void setRetryPolicy(final RetryPolicy retryPolicy)
+	{
+		this.retryPolicy = retryPolicy;
+	}
 
 	/**
 	 * Returns an inter-operable connection string that can be used to connect to ServiceBus Namespace
@@ -208,6 +220,12 @@ public class ConnectionStringBuilder
 			{
 				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", KeyValuePairDelimiter, OperationTimeoutConfigName,
 						KeyValueSeparator, this.operationTimeout.toString()));
+			}
+			
+			if (this.retryPolicy != null)
+			{
+				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", KeyValuePairDelimiter, RetryPolicyConfigName,
+						KeyValueSeparator, this.retryPolicy.toString()));
 			}
 			
 			this.connectionString = connectionStringBuilder.toString();
@@ -290,6 +308,17 @@ public class ConnectionStringBuilder
 				{
 					throw new IllegalConnectionStringFormatException("Invalid value specified for property 'Duration' in the ConnectionString.", exception);
 				}
+			}
+			else if (key.equalsIgnoreCase(RetryPolicyConfigName))
+			{
+				this.retryPolicy = values[valueIndex].equals(ClientConstants.DEFAULT_RETRY)
+						? RetryPolicy.getDefault()
+						: (values[valueIndex].equals(ClientConstants.NO_RETRY) ? RetryPolicy.getNoRetry() : null);
+						
+				if (this.retryPolicy == null)
+					throw new IllegalConnectionStringFormatException(
+						String.format(Locale.US, "Connection string parameter '%s'='%s' is not recognized",
+						RetryPolicyConfigName, values[valueIndex]));
 			}
 			else
 			{

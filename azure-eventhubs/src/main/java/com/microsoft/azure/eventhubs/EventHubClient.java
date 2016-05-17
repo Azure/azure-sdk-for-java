@@ -32,7 +32,8 @@ public class EventHubClient extends ClientEntity
 	
 	private EventHubClient(ConnectionStringBuilder connectionString) throws IOException, IllegalEntityException
 	{
-		super(StringUtil.getRandomString());
+		super(StringUtil.getRandomString(), null);
+		
 		this.eventHubName = connectionString.getEntityPath();
 		this.senderCreateSync = new Object();
 	}
@@ -921,11 +922,22 @@ public class EventHubClient extends ClientEntity
 	}
 	
 	@Override
-	public CompletableFuture<Void> close()
+	public CompletableFuture<Void> onClose()
 	{
         if (this.underlyingFactory != null)
 		{
-			return this.underlyingFactory.close();
+        	synchronized (this.senderCreateSync)
+        	{
+        		return this.sender != null 
+        				? this.sender.close().thenRunAsync(new Runnable()
+	        				{
+			        			@Override
+								public void run() {
+									EventHubClient.this.underlyingFactory.close();
+								}
+	        				})
+        				: this.underlyingFactory.close();
+        	}
 		}
 		
 		return CompletableFuture.completedFuture(null);

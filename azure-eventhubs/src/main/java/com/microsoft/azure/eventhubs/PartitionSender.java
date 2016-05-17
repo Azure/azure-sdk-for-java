@@ -25,7 +25,8 @@ public final class PartitionSender extends ClientEntity
 		
 	private PartitionSender(MessagingFactory factory, String eventHubName, String partitionId)
 	{
-		super(null);
+		super(null, null);
+		
 		this.partitionId = partitionId;
 		this.eventHubName = eventHubName;
 		this.factory = factory;
@@ -213,7 +214,7 @@ public final class PartitionSender extends ClientEntity
 	}
 
 	@Override
-	public CompletableFuture<Void> close()
+	public CompletableFuture<Void> onClose()
 	{
 		if (this.internalSender == null)
 		{

@@ -18,8 +18,10 @@ public final class RetryExponential extends RetryPolicy
 	private final int maximumRetryCount;
 	private final double retryFactor;
 	
-	public RetryExponential(Duration minimumBackoff, Duration maximumBackoff, int maximumRetryCount)
+	public RetryExponential(final Duration minimumBackoff, final Duration maximumBackoff, final int maximumRetryCount, final String name)
 	{
+		super(name);
+		
 		this.minimumBackoff = minimumBackoff;
 		this.maximumBackoff = maximumBackoff;
 		this.maximumRetryCount = maximumRetryCount;

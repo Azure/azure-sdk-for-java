@@ -75,7 +75,8 @@ public final class PartitionReceiver extends ClientEntity
 			final boolean isEpochReceiver)
 					throws ServiceBusException
 	{
-		super(null);
+		super(null, null);
+		
 		this.underlyingFactory = factory;
 		this.eventHubName = eventHubName;
 		this.consumerGroupName = consumerGroupName;
@@ -305,7 +306,8 @@ public final class PartitionReceiver extends ClientEntity
 		}
 	}
 
-	public CompletableFuture<Void> close()
+	@Override
+	public CompletableFuture<Void> onClose()
 	{
 		this.isOnReceivePumpRunning = false;
 		if (this.onReceivePumpThread != null && !this.onReceivePumpThread.isInterrupted())

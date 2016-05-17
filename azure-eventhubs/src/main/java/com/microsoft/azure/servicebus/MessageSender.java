@@ -65,6 +65,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 	private final RetryPolicy retryPolicy;
 	private final Runnable operationTimer;
 	private final Duration timerTimeout;
+	private final CompletableFuture<Void> linkClose;
 	
 	private ConcurrentHashMap<String, ReplayableWorkItem<Void>> pendingSendsData;
 	private ConcurrentLinkedDeque<String> pendingSendsWaitingForCredit;
@@ -101,7 +102,8 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 	
 	private MessageSender(final MessagingFactory factory, final ITimeoutErrorHandler timeoutErrorHandler, final String sendLinkName, final String senderPath)
 	{
-		super(sendLinkName);
+		super(sendLinkName, factory);
+		
 		this.sendPath = senderPath;
 		this.underlyingFactory = factory;
 		this.timeoutErrorHandler = timeoutErrorHandler;
@@ -119,6 +121,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		 
 		this.linkCreateLock = new Object();
 		this.sendCall = new Object();
+		this.linkClose = new CompletableFuture<Void>();
 		
 		this.operationTimer = new Runnable()
 			{
@@ -181,6 +184,8 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 			final String deliveryTag,
 			final Exception lastKnownError)
 	{
+		this.throwIfClosed(this.lastKnownLinkError);
+		
 		if (tracker != null && onSend != null && (tracker.remaining().isNegative() || tracker.remaining().isZero()))
 		{
 			if (deliveryTag != null)
@@ -398,6 +403,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		return this.send(bytes, encodedSize, DeliveryImpl.DEFAULT_MESSAGE_FORMAT);
 	}
 	
+	@Override
 	public void onOpenComplete(Exception completionException)
 	{
 		if (completionException == null)
@@ -450,15 +456,21 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 	@Override
 	public void onClose(ErrorCondition condition)
 	{
-		// TODO: code-refactor pending - refer to issue: https://github.com/Azure/azure-event-hubs/issues/73
 		Exception completionException = condition != null ? ExceptionUtil.toException(condition) 
 				: new ServiceBusException(ClientConstants.DEFAULT_IS_TRANSIENT,
 						"The entity has been close due to transient failures (underlying link closed), please retry the operation.");
 		this.onError(completionException);
 	}
 	
+	@Override
 	public void onError(Exception completionException)
 	{
+		if (this.getIsClosingOrClosed())
+		{
+			this.linkClose.complete(null);
+			return;
+		}
+		
 		Duration remainingTime = this.openLinkTracker == null 
 						? this.operationTimeout
 						: (this.openLinkTracker.elapsed().compareTo(this.operationTimeout) > 0) 
@@ -476,6 +488,10 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		{
 			this.scheduleRecreate(retryInterval);			
 			return;
+		}
+		else
+		{
+			this.setClosed();
 		}
 		
 		this.onOpenComplete(completionException);
@@ -527,6 +543,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 			TimerType.OneTimeRun);
 	}
 	
+	@Override
 	public void onSendComplete(final byte[] deliveryTag, final DeliveryState outcome)
 	{
 		final String deliveryTagStr = new String(deliveryTag);
@@ -707,17 +724,6 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 	}
 
 	@Override
-	public CompletableFuture<Void> close()
-	{
-		if (this.sendLink != null && this.sendLink.getLocalState() != EndpointState.CLOSED)
-		{
-			this.sendLink.close();
-		}
-		
-		return CompletableFuture.completedFuture(null);
-	}
-
-	@Override
 	public ErrorContext getContext()
 	{
 		final boolean isLinkOpened = this.linkFirstOpen != null && this.linkFirstOpen.isDone();
@@ -789,5 +795,50 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		}
 		
 		ExceptionUtil.completeExceptionally(pendingSendWork, exception, this);
+	}
+	
+	private void scheduleLinkCloseTimeout(final TimeoutTracker timeout)
+	{
+		// timer to signal a timeout if exceeds the operationTimeout on MessagingFactory
+		Timer.schedule(
+			new Runnable()
+				{
+					public void run()
+					{
+						if (!linkClose.isDone())
+						{
+							Exception operationTimedout = new TimeoutException(String.format(Locale.US, "%s operation on Receive Link(%s) timed out at %s", "Close", MessageSender.this.sendLink.getName(), ZonedDateTime.now()));
+							if (TRACE_LOGGER.isLoggable(Level.WARNING))
+							{
+								TRACE_LOGGER.log(Level.WARNING, 
+										String.format(Locale.US, "message recever(linkName: %s, path: %s) %s call timedout", MessageSender.this.sendLink.getName(), MessageSender.this.sendPath, "Close"), 
+										operationTimedout);
+							}
+							
+							ExceptionUtil.completeExceptionally(linkClose, operationTimedout, MessageSender.this);
+						}
+					}
+				}
+			, timeout.remaining()
+			, TimerType.OneTimeRun);
+	}
+
+	@Override
+	protected CompletableFuture<Void> onClose()
+	{
+		if (!this.getIsClosed())
+		{
+			if (this.sendLink != null && this.sendLink.getLocalState() != EndpointState.CLOSED)
+			{
+				this.sendLink.close();
+				this.scheduleLinkCloseTimeout(TimeoutTracker.create(this.operationTimeout));
+			}
+			else if (this.sendLink == null || this.sendLink.getRemoteState() == EndpointState.CLOSED)
+			{
+				this.linkClose.complete(null);
+			}
+		}
+
+		return this.linkClose;
 	}
 }

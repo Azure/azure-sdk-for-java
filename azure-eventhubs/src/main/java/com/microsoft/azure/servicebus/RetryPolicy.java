@@ -12,14 +12,17 @@ import java.util.concurrent.ConcurrentHashMap;
 // TODO: SIMPLIFY retryPolicy - ConcurrentHashMap is not needed
 public abstract class RetryPolicy
 {
-	private static final RetryPolicy NO_RETRY = new RetryExponential(Duration.ofSeconds(0), Duration.ofSeconds(0), 0);
+	private static final RetryPolicy NO_RETRY = new RetryExponential(Duration.ofSeconds(0), Duration.ofSeconds(0), 0, ClientConstants.NO_RETRY);
+	
+	private final String name;
 	private ConcurrentHashMap<String, Integer> retryCounts;
 	private boolean isServerBusy;
 	private Instant lastServerBusyReportedTime;
 	private Object serverBusySync;
 	
-	protected RetryPolicy()
+	protected RetryPolicy(final String name)
 	{
+		this.name = name;
 		this.retryCounts = new ConcurrentHashMap<String, Integer>();
 		this.isServerBusy = false;
 		this.lastServerBusyReportedTime = Instant.EPOCH;
@@ -35,7 +38,7 @@ public abstract class RetryPolicy
 	public void resetRetryCount(String clientId)
 	{
 		Integer currentRetryCount = this.retryCounts.get(clientId);
-		if (currentRetryCount != null && currentRetryCount != 0)
+		if (currentRetryCount != null && currentRetryCount.intValue() != 0)
 		{
 			this.retryCounts.put(clientId, 0);
 		}
@@ -61,7 +64,8 @@ public abstract class RetryPolicy
 		return new RetryExponential(
 			ClientConstants.DEFAULT_RERTRY_MIN_BACKOFF, 
 			ClientConstants.DEFAULT_RERTRY_MAX_BACKOFF, 
-			ClientConstants.DEFAULT_MAX_RETRY_COUNT);
+			ClientConstants.DEFAULT_MAX_RETRY_COUNT,
+			ClientConstants.DEFAULT_RETRY);
 	}
 	
 	public static RetryPolicy getNoRetry()
@@ -108,4 +112,10 @@ public abstract class RetryPolicy
 	}
 	
 	protected abstract Duration onGetNextRetryInterval(String clientId, Exception lastException, Duration remainingTime);
+	
+	@Override
+	public String toString()
+	{
+		return this.name;
+	}
 }

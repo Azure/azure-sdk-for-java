@@ -54,13 +54,12 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 	private final String receivePath;
 	private final Runnable onOperationTimedout;
 	private final Duration operationTimeout;
+	private final CompletableFuture<Void> linkClose;
 	
 	private int prefetchCount; 
 	private ConcurrentLinkedQueue<Message> prefetchedMessages;
 	private Receiver receiveLink;
 	private WorkItem<MessageReceiver> linkOpen;
-	private CompletableFuture<Void> linkClose;
-	private boolean closeCalled;
 	private Duration receiveTimeout;
 	
 	private long epoch;
@@ -88,7 +87,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 			final Long epoch,
 			final boolean isEpochReceiver)
 	{
-		super(name);
+		super(name, factory);
 		
 		this.underlyingFactory = factory;
 		this.stuckTransportHandler = stuckTransportHandler;
@@ -223,6 +222,8 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		
 	public CompletableFuture<Collection<Message>> receive(final int maxMessageCount)
 	{
+		this.throwIfClosed(this.lastKnownLinkError);
+		
 		if (maxMessageCount <= 0 || maxMessageCount > this.prefetchCount)
 		{
 			throw new IllegalArgumentException(String.format(Locale.US, "parameter 'maxMessageCount' should be a positive number and should be less than prefetchCount(%s)", this.prefetchCount));
@@ -254,8 +255,9 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 	public List<Message> receiveCore(final int messageCount)
 	{
 		List<Message> returnMessages = null;
-		Message currentMessage = null;
-		while ((currentMessage = this.pollPrefetchQueue()) != null) 
+		Message currentMessage = this.pollPrefetchQueue();
+		
+		while (currentMessage != null) 
 		{
 			if (returnMessages == null)
 			{
@@ -267,6 +269,8 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 			{
 				break;
 			}
+			
+			currentMessage = this.pollPrefetchQueue();
 		}
 		
 		return returnMessages;
@@ -333,9 +337,14 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		this.onError(completionException);
 	}
 	
+	@Override
 	public void onError(Exception exception)
 	{
-		exception.getStackTrace();
+		if (this.getIsClosingOrClosed())
+		{
+			this.linkClose.complete(null);
+			return;
+		}
 		
 		this.lastKnownLinkError = exception;
 		WorkItem<Collection<Message>> currentReceive = this.pendingReceives.peek();
@@ -359,6 +368,10 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 			
 			this.scheduleRecreate(retryInterval);			
 			return;
+		}
+		else
+		{
+			this.setClosed();
 		}
 		
 		this.onOpenComplete(exception);
@@ -614,20 +627,17 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 				{
 					public void run()
 					{
-						synchronized(linkClose)
+						if (!linkClose.isDone())
 						{
-							if (!linkClose.isDone())
+							Exception operationTimedout = new TimeoutException(String.format(Locale.US, "%s operation on Receive Link(%s) timed out at %s", "Close", MessageReceiver.this.receiveLink.getName(), ZonedDateTime.now()));
+							if (TRACE_LOGGER.isLoggable(Level.WARNING))
 							{
-								Exception operationTimedout = new TimeoutException(String.format(Locale.US, "%s operation on Receive Link(%s) timed out at %s", "Close", MessageReceiver.this.receiveLink.getName(), ZonedDateTime.now()));
-								if (TRACE_LOGGER.isLoggable(Level.WARNING))
-								{
-									TRACE_LOGGER.log(Level.WARNING, 
-											String.format(Locale.US, "message recever(linkName: %s, path: %s) %s call timedout", MessageReceiver.this.receiveLink.getName(), MessageReceiver.this.receivePath, "Close"), 
-											operationTimedout);
-								}
-								
-								ExceptionUtil.completeExceptionally(linkClose, operationTimedout, MessageReceiver.this);
+								TRACE_LOGGER.log(Level.WARNING, 
+										String.format(Locale.US, "message recever(linkName: %s, path: %s) %s call timedout", MessageReceiver.this.receiveLink.getName(), MessageReceiver.this.receivePath, "Close"), 
+										operationTimedout);
 							}
+							
+							ExceptionUtil.completeExceptionally(linkClose, operationTimedout, MessageReceiver.this);
 						}
 					}
 				}
@@ -635,53 +645,17 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 			, TimerType.OneTimeRun);
 	}
 
+	@Override
 	public void onClose(ErrorCondition condition)
 	{
-		synchronized (this.linkClose)
-		{
-			if (this.closeCalled)
-			{
-				this.linkClose.complete(null);
-				this.closeCalled = false;
-				return;
-			}
-		}
-		
 		if (condition == null)
 		{
 			this.onError(new ServiceBusException(true, 
-					String.format(Locale.US,"Closing the link. LinkName(%s), EntityPath(%s)", this.receiveLink.getName(), this.receivePath)));
+					String.format(Locale.US, "Closing the link. LinkName(%s), EntityPath(%s)", this.receiveLink.getName(), this.receivePath)));
 		}
 		else
 		{
 			this.onError(condition);
-		}
-	}
-	
-	@Override
-	public CompletableFuture<Void> close()
-	{
-		this.closeInternal();
-		return this.linkClose;
-	}
-	
-	private void closeInternal()
-	{
-		synchronized (this.linkClose)
-		{
-			if (!this.closeCalled)
-			{
-				if (this.receiveLink != null && this.receiveLink.getLocalState() != EndpointState.CLOSED)
-				{
-					this.receiveLink.close();
-					this.scheduleLinkCloseTimeout(TimeoutTracker.create(this.operationTimeout));
-					this.closeCalled = true;
-				}
-				else
-				{
-					this.linkClose.complete(null);
-				}
-			}
 		}
 	}
 	
@@ -714,5 +688,24 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 			super(completableFuture, timeout);
 			this.maxMessageCount = maxMessageCount;
 		}
+	}
+
+	@Override
+	protected CompletableFuture<Void> onClose()
+	{
+		if (!this.getIsClosed())
+		{
+			if (this.receiveLink != null && this.receiveLink.getLocalState() != EndpointState.CLOSED)
+			{
+				this.receiveLink.close();
+				this.scheduleLinkCloseTimeout(TimeoutTracker.create(this.operationTimeout));
+			}
+			else if (this.receiveLink == null || this.receiveLink.getRemoteState() == EndpointState.CLOSED)
+			{
+				this.linkClose.complete(null);
+			}
+		}
+
+		return this.linkClose;
 	}
 }

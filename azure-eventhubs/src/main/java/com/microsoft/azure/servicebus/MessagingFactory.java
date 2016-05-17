@@ -40,9 +40,10 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	public static final Duration DefaultOperationTimeout = Duration.ofSeconds(60); 
 	
 	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
-	private static final int TIMEOUT_ERROR_THRESHOLD_IN_SECS = 180;
+	private static final int TIMEOUT_ERROR_THRESHOLD_IN_SECS = 100000;
 	private final Object connectionLock = new Object();
 	private final String hostName;
+	private final CompletableFuture<Void> closeTask;
 	
 	private Reactor reactor;
 	private Thread reactorThread;
@@ -64,7 +65,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	 */
 	MessagingFactory(final ConnectionStringBuilder builder) throws IOException
 	{
-		super("MessagingFactory".concat(StringUtil.getRandomString()));
+		super("MessagingFactory".concat(StringUtil.getRandomString()), null);
 		this.hostName = builder.getEndpoint().getHost();
 		this.timeoutErrorStart = Instant.MAX;
 		
@@ -82,6 +83,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		this.retryPolicy = builder.getRetryPolicy();
 		this.registeredLinks = new LinkedList<Link>();
 		this.resetConnectionSync = new Object();
+		this.closeTask = new CompletableFuture<Void>();
 	}
 	
 	String getHostName()
@@ -243,6 +245,11 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		{
 			currentConnection.free();
 		}
+		
+		if (this.getIsClosingOrClosed() && !this.closeTask.isDone())
+		{
+			this.closeTask.complete(null);
+		}
 	}
 	
 	private void onReactorError(Exception cause)
@@ -306,26 +313,33 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	}
 	
 	@Override
-	public void closeSync()
+	protected CompletableFuture<Void> onClose()
 	{
-		if (this.connection != null)
+		if (!this.getIsClosed())
 		{
-			if (this.connection.getLocalState() != EndpointState.CLOSED)
+			if (this.connection != null && this.connection.getRemoteState() != EndpointState.CLOSED)
 			{
-				this.connection.close();
+				if (this.connection.getLocalState() != EndpointState.CLOSED)
+				{
+					this.connection.close();
+				}
+				
+				Timer.schedule(new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						if (!MessagingFactory.this.closeTask.isDone())
+						{
+							MessagingFactory.this.closeTask.completeExceptionally(new TimeoutException("Closing MessagingFactory timed out."));
+						}
+					}
+				},
+				this.operationTimeout, TimerType.OneTimeRun);
 			}
-			
-			this.connection.free();
-		}
-	}
-
-	@Override
-	public CompletableFuture<Void> close()
-	{
-		this.closeSync();
+		}		
 		
-		// hook up onRemoteClose & timeout 
-		return CompletableFuture.completedFuture(null);
+		return this.closeTask;
 	}
 
 	private class RunReactor implements Runnable
