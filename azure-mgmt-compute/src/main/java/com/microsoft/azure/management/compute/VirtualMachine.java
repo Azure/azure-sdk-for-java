@@ -95,224 +95,206 @@ public interface VirtualMachine extends
     interface DefinitionBlank extends GroupableResource.DefinitionWithRegion<DefinitionWithGroup> {
     }
 
-    interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionWithStorageAccount> {
-    }
-
-    interface DefinitionWithStorageAccount {
-        DefinitionWithOS withNewStorageAccount(String name);
-        DefinitionWithOS withNewStorageAccount(StorageAccount.DefinitionCreatable creatable);
-        DefinitionWithOS withExistingStorageAccount(String name);
+    interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionWithOS> {
     }
 
     interface DefinitionWithOS {
         /**
-         * Specifies the platform image to create the virtual machine from.
-         * @param imageReference describes publisher, offer, sku and version of the platform image.
+         * Specifies the market-place image used for the virtual machine's OS.
          * @return The next stage of the virtual machine definition.
          */
-        DefinitionWithOSType withImage(ImageReference imageReference);
+        DefinitionWithMarketplaceImage withMarketplaceImage();
 
         /**
-         * Specifies the platform image to create the virtual machine from. The latest version of
-         * the image will be used.
+         * Specifies the user (generalized) image used for the virtual machine's OS.
+         * @param imageUrl The url the the VHD
+         * @return The next stage of the virtual machine definition.
+         */
+        DefinitionWithOSType withStoredImage(String imageUrl);
+
+        /**
+         * Specifies the specialized operating system disk to be attached to the virtual machine.
+         * @param osDiskUrl The url to the OS disk in the Azure Storage account.
+         * @return The next stage of the Windows virtual machine definition.
+         */
+        DefinitionCreatable withOSDisk(String osDiskUrl, OperatingSystemTypes osType);
+    }
+
+    interface DefinitionWithMarketplaceImage {
+        /**
+         * Specifies the version of image.
+         * @param imageReference describes publisher, offer, sku and version of the market-place image.
+         * @return The next stage of the virtual machine definition.
+         */
+        DefinitionWithOSType version(ImageReference imageReference);
+
+        /**
+         * Specifies that the latest version of the image needs to be used.
          * @param publisher Specifies the publisher of the image
          * @param offer Specifies the offer of the image
          * @param sku Specifies the SKU of the image
          * @return The next stage of the virtual machine definition.
          */
-        DefinitionWithOSType withLatestImage(String publisher, String offer, String sku);
+        DefinitionWithOSType latest(String publisher, String offer, String sku);
 
         /**
-         * Specifies the platform image to create the virtual machine from.
-         * @param knownImage Enum indicating the platform image.
+         * Specifies the known image to be used.
+         * @param knownImage Enum value indicating known market-place image.
          * @return The next stage of the virtual machine definition.
          */
-        DefinitionWithOSType withKnownImage(KnownVirtualMachineImage knownImage);
-
-        /**
-         * Specifies the generalized image to create the virtual machine from.
-         * @param userImageUrl The url the the VHD
-         * @return The next stage of the virtual machine definition.
-         */
-        DefinitionWithOSType withImage(String userImageUrl);
-
-        /**
-         * Specifies the specialized Windows OS disk to be attached to the virtual machine.
-         * @param osDiskUrl The url to the OS disk in the Azure Storage account.
-         * @return The next stage of the Windows virtual machine definition.
-         */
-        DefinitionWithNextTODO withWindowsOSDisk(String osDiskUrl);
-
-        /**
-         * Specifies the specialized Linux OS disk to be attached to the virtual machine.
-         * @param osDiskUrl The url to the OS disk in the Azure Storage account.
-         * @return The next stage of the Linux virtual machine definition.
-         */
-        DefinitionWithNextTODO withLinuxOSDisk(String osDiskUrl);
+        DefinitionWithOSType popular(KnownVirtualMachineImage knownImage);
     }
-
 
     interface DefinitionWithOSType {
         /**
          * Specifies the OS type of the virtual machine as Linux.
-         * @return The next stage of the Windows virtual machine definition.
+         * @return The next stage of the Linux virtual machine definition.
          */
         DefinitionWithRootUserName withLinuxOS();
 
         /**
          * Specifies the OS type as Windows.
-         * @return The next stage allowing optionally setting the Windows configuration.
-         */
-        DefinitionWithOptionalWindowsConfiguration withWindowsOS();
-    }
-
-    interface DefinitionWithOptionalWindowsConfiguration {
-        /**
-         * Specifies the configuration for the Windows virtual machine.
-         * @return The next stage for setting the configuration.
-         */
-        DefinitionWithWindowsConfiguration defineConfiguration();
-
-        /**
-         * Specifies the administrator user name for the Windows virtual machine.
-         * @param userName The Windows administrator user name to use. This must follow the required naming convention for Windows user name.
          * @return The next stage of the Windows virtual machine definition.
          */
-        DefinitionWithPassword withAdminUserName(String userName);
-    }
-
-    interface DefinitionWithWindowsConfiguration {
-        /**
-         * Specifies that VM Agent should not be provisioned.
-         * @return The optional windows configurations
-         */
-        DefinitionWithWindowsConfiguration disableVMAgent();
-
-        /**
-         * Specifies that automatic updates should be disabled.
-         * @return The optional windows configurations
-         */
-        DefinitionWithWindowsConfiguration disableAutoUpdate();
-
-        /**
-         * Specifies the time-zone.
-         * @return The optional windows configurations
-         */
-        DefinitionWithWindowsConfiguration withTimeZone(String timeZone);
-
-        /**
-         * Specifies the list of VM RM listeners.
-         * @return The optional windows configurations
-         */
-        DefinitionWithWindowsConfiguration withWinRM(List<WinRMListener> listeners);
-
-        /**
-         * applies the Windows configuration.
-         * @return The next stage of the Windows virtual machine definition.
-         */
-        DefinitionWithAdminUserName apply();
+        DefinitionWithAdminUserName withWindowsOS();
     }
 
     interface DefinitionWithRootUserName {
         /**
          * Specifies the root user name for the Linux virtual machine.
-         * @param rootUserName The Linux root user name to use. This must follow the required naming convention for Linux user name.
+         * @param rootUserName The Linux root user name. This must follow the required naming convention for Linux user name.
          * @return The next stage of the Linux virtual machine definition.
          */
-        DefinitionWithOptionalSsh withRootUserName(String rootUserName);
+        DefinitionLinuxCreatable withRootUserName(String rootUserName);
     }
 
     interface DefinitionWithAdminUserName {
         /**
          * Specifies the administrator user name for the Windows virtual machine.
-         * @param adminUserName The Windows administrator user name to use. This must follow the required naming convention for Windows user name.
-         * @return The next stage of the Windows virtual machine definition.
+         * @param adminUserName The Windows administrator user name. This must follow the required naming convention for Windows user name.
+         * @return The stage representing creatable Linux VM definition
          */
-        DefinitionWithPassword withAdminUserName(String adminUserName);
+        DefinitionWindowsCreatable withAdminUserName(String adminUserName);
     }
 
-    interface DefinitionWithOptionalSsh {
+    interface DefinitionLinuxCreatable extends DefinitionCreatable {
         /**
-         * Specifies the SSH public key
+         * Specifies the SSH public key, each call to this method adds the given public key to the list
+         * of VM's public keys.
+         *
          * @param publicKey The SSH public key in PEM format.
-         * @return The next stage of the Linux virtual machine definition.
+         * @return The stage representing creatable Linux VM definition
          */
-        DefinitionWithOptionalPassword withSsh(String publicKey);
-
-        /**
-         * Specifies the list of SSH public keys.
-         * @param publicKeys The list of SSH public keys in PEM format.
-         * @return The next stage of the Linux virtual machine definition.
-         */
-        DefinitionWithOptionalPassword withSsh(List<String> publicKeys);
-
-        /**
-         * Ensure that no SSH login with public key possible.
-         * @return The next stage of the Linux virtual machine definition.
-         */
-        DefinitionWithPassword withoutSsh();
+        DefinitionLinuxCreatable withSsh(String publicKey);
     }
 
-    interface DefinitionWithPassword {
+    interface DefinitionWindowsCreatable extends DefinitionCreatable {
+        /**
+         * Specifies that VM Agent should not be provisioned.
+         * @return The stage representing creatable Windows VM definition
+         */
+        DefinitionWindowsCreatable disableVMAgent();
+
+        /**
+         * Specifies that automatic updates should be disabled.
+         * @return The stage representing creatable Windows VM definition
+         */
+        DefinitionWindowsCreatable disableAutoUpdate();
+
+        /**
+         * Specifies the time-zone.
+         * @return The stage representing creatable Windows VM definition
+         */
+        DefinitionWindowsCreatable withTimeZone(String timeZone);
+
+        /**
+         * Specifies the WINRM listener, each call to this method adds the given listener to the list
+         * of VM's WinRM listeners.
+         * @return The stage representing creatable Windows VM definition
+         */
+        DefinitionWindowsCreatable withWinRM(WinRMListener listener);
+    }
+
+    interface DefinitionPassword<T extends DefinitionCreatable> {
         /**
          * Specifies the password for the virtual machine.
          * @param password The password. This must follow the criteria for Azure VM password.
-         * @return The next stage of the Linux virtual machine definition.
+         * @return The stage representing creatable VM definition
          */
-        DefinitionWithNextTODO withPassword(String password);
+        T withPassword(String password);
     }
 
-    interface DefinitionWithoutPassword {
-        /**
-         * Ensure that no SSH login with password possible.
-         * @return The next stage of the Linux virtual machine definition.
-         */
-        DefinitionWithNextTODO withoutPassword();
-    }
-
-    interface DefinitionWithOptionalPassword extends DefinitionWithPassword, DefinitionWithoutPassword {
-    }
-
-    interface DefinitionWithNextTODO {
-        DefinitionCreatable moreVMRequiredParameters();
-    }
-
-    interface DefinitionCreatable extends
-            Creatable<VirtualMachine> {
+    interface DefinitionOSDiskSettings<T extends DefinitionCreatable> {
         /**
          * Specifies the caching type for the Operating System disk.
          * @param cachingType The caching type.
-         * @return The stage with optional parameters for virtual machine definition.
+         * @return The stage representing creatable VM definition
          */
-        DefinitionCreatable withOSDiskCaching(CachingTypes cachingType);
+        T withOSDiskCaching(CachingTypes cachingType);
 
         /**
          * Specifies the name of the OS Disk Vhd file and it's parent container.
          * @param containerName The name of the container in the selected storage account.
          * @param vhdName The name for the OS Disk vhd.
-         * @return The stage with optional parameters for virtual machine definition.
+         * @return The stage representing creatable VM definition
          */
-        DefinitionCreatable withOSDiskVhdLocation(String containerName, String vhdName);
+        T withOSDiskVhdLocation(String containerName, String vhdName);
 
         /**
          * Specifies the encryption settings for the OS Disk.
          * @param settings The encryption settings.
-         * @return The stage with optional parameters for virtual machine definition.
+         * @return The stage representing creatable VM definition
          */
-        DefinitionCreatable withOSDiskEncryptionSettings(DiskEncryptionSettings settings);
+        T withOSDiskEncryptionSettings(DiskEncryptionSettings settings);
 
         /**
          * Specifies the size of the OSDisk in GB.
          * @param size The VHD size.
-         * @return The stage with optional parameters for virtual machine definition.
+         * @return The stage representing creatable VM definition
          */
-        DefinitionCreatable withOSDiskSizeInGB(Integer size);
+        T withOSDiskSizeInGB(Integer size);
 
         /**
          * Specifies the name for the OS Disk.
          * @param name The OS Disk name.
-         * @return The stage with optional parameters for virtual machine definition.
+         * @return The stage representing creatable VM definition
          */
-        DefinitionCreatable withOSDiskName(String name);
+        T withOSDiskName(String name);
+    }
+
+    interface DefinitionStorageAccount<T extends DefinitionCreatable> {
+        /**
+         * Specifies the name of the storage account to create, the OS disk for VM created from a market-place
+         * image will be stored in this account.
+         *
+         * @param name The name of the storage account
+         * @return The stage representing creatable VM definition
+         */
+        T withNewStorageAccount(String name);
+
+        /**
+         * Specifies an instance of StorageAccount.DefinitionCreatable representing the storage account to be
+         * created, the OS disk for VM created from a market-place image will be stored in this account.
+         *
+         * @param creatable The name of the storage account
+         * @return The stage representing creatable VM definition
+         */
+        T withNewStorageAccount(StorageAccount.DefinitionCreatable creatable);
+
+        /**
+         * Specifies the name of an existing storage account where the OS disk for VM created from market-place
+         * or user image (generalized image) needs be stored.
+         *
+         * @param name The name of an existing storage account
+         * @return The stage representing creatable VM definition
+         */
+        T withExistingStorageAccount(String name);
+    }
+
+    interface DefinitionCreatable extends
+            DefinitionPassword<DefinitionCreatable>,
+            DefinitionOSDiskSettings<DefinitionCreatable>,
+            DefinitionStorageAccount<DefinitionCreatable>,
+            Creatable<VirtualMachine> {
     }
 }
