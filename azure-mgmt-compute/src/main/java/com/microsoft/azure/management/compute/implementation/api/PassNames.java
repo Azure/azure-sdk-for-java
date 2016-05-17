@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum PassNames {
     /** Enum value oobeSystem. */
-    OOBESYSTEM("oobeSystem");
+    OOBE_SYSTEM("oobeSystem");
 
     /** The actual serialized value for a PassNames instance. */
     private String value;

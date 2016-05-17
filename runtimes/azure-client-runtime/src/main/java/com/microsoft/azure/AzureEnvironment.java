@@ -5,7 +5,10 @@
  *
  */
 
-package com.microsoft.azure.credentials;
+package com.microsoft.azure;
+
+import com.microsoft.azure.serializer.AzureJacksonMapperAdapter;
+import com.microsoft.rest.RestClient;
 
 /**
  * An instance of this class describes an environment in Azure.
@@ -73,6 +76,15 @@ public final class AzureEnvironment {
      */
     public String getBaseUrl() {
     	return this.baseURL;
+    }
+
+    /**
+     * Gets a builder for {@link RestClient}.
+     *
+     * @return a builder for the rest client.
+     */
+    public RestClient.Builder newRestClientBuilder() {
+        return new RestClient.Builder(baseURL).withMapperAdapter(new AzureJacksonMapperAdapter());
     }
     
     /**

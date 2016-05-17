@@ -1,7 +1,6 @@
 package com.microsoft.azure;
 
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
-import com.microsoft.azure.credentials.AzureEnvironment;
 import com.microsoft.azure.implementation.Azure;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.resources.Subscriptions;
@@ -11,13 +10,12 @@ import com.microsoft.azure.management.storage.implementation.api.AccountType;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import okhttp3.logging.HttpLoggingInterceptor;
 import okhttp3.logging.HttpLoggingInterceptor.Level;
-
-import java.io.File;
-import java.io.IOException;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.File;
+import java.io.IOException;
 
 public class AzureTests {
     private static final ServiceClientCredentials credentials = new ApplicationTokenCredentials(
@@ -25,7 +23,7 @@ public class AzureTests {
             System.getenv("domain"),
             System.getenv("secret"),
             AzureEnvironment.AZURE);
-    private static final String subscriptionId = System.getenv("resourceClient-id");
+    private static final String subscriptionId = System.getenv("subscription-id");
     private Subscriptions subscriptions;
     private Azure azure, azure2;
 
@@ -74,15 +72,14 @@ public class AzureTests {
     	int publicIpAddressCount = azure2.publicIpAddresses().list().size();
     	System.out.println(publicIpAddressCount);
     	Assert.assertTrue(0 < publicIpAddressCount);
-    	String resourceGroupName = pip.resourceGroup();
+    	String resourceGroupName = pip.resourceGroupName();
     	pip = azure2.publicIpAddresses().get(resourceGroupName, newPipName);
     	Assert.assertTrue(pip.name().equalsIgnoreCase(newPipName));
     	System.out.println(new StringBuilder().append("Public IP Address: ").append(pip.id())
     			.append("\n\tIP Address: ").append(pip.ipAddress())
     			.append("\n\tLeaf domain label: ").append(pip.leafDomainLabel())
-    			.append("\n\tResource group: ").append(pip.resourceGroup())
+    			.append("\n\tResource group: ").append(pip.resourceGroupName())
     			.toString());
-    	
     	// Verify update
     	pip = pip.update()
     		.withStaticIp()
@@ -92,13 +89,13 @@ public class AzureTests {
     	System.out.println(new StringBuilder().append("Public IP Address: ").append(pip.id())
     			.append("\n\tIP Address: ").append(pip.ipAddress())
     			.append("\n\tLeaf domain label: ").append(pip.leafDomainLabel())
-    			.append("\n\tResource group: ").append(pip.resourceGroup())
+    			.append("\n\tResource group: ").append(pip.resourceGroupName())
     			.toString());
     	
     	// Verify delete
     	azure2.publicIpAddresses().delete(pip.id());
     	azure2.resourceGroups().delete(resourceGroupName);
-    	azure2.resourceGroups().delete(pip.resourceGroup());
+    	azure2.resourceGroups().delete(pip.resourceGroupName());
     }
     
     @Test

@@ -2,7 +2,7 @@ package com.microsoft.azure.management.resources.fluentcore.arm.models.implement
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableImpl;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,13 +13,13 @@ public abstract class ResourceImpl<
         InnerModelT extends com.microsoft.azure.Resource,
         FluentModelImplT extends ResourceImpl<FluentModelT, InnerModelT, FluentModelImplT>>
 	extends
-        IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
+        CreatableImpl<FluentModelT, InnerModelT>
 	implements
         Resource {
 
 
-    protected ResourceImpl(String id, InnerModelT innerObject) {
-        super(id, innerObject);
+    protected ResourceImpl(String key, InnerModelT innerObject) {
+        super(key, innerObject);
     }
 
     /*******************************************

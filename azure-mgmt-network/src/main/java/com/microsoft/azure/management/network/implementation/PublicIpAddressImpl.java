@@ -11,6 +11,7 @@ import com.microsoft.azure.management.network.implementation.api.PublicIPAddress
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressesInner;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.rest.ServiceResponse;
 
 class PublicIpAddressImpl
@@ -40,7 +41,7 @@ class PublicIpAddressImpl
     @Override
     public PublicIpAddress refresh() throws Exception {
         ServiceResponse<PublicIPAddressInner> response =
-            this.client.get(this.resourceGroup(), this.name());
+            this.client.get(this.resourceGroupName(), this.name());
         PublicIPAddressInner inner = response.getBody();
         this.setInner(inner);
         clearWrapperProperties();
@@ -49,10 +50,10 @@ class PublicIpAddressImpl
 
     @Override
     public PublicIpAddressImpl create() throws Exception {
-        ensureGroup();
+    	super.create();
 
         ServiceResponse<PublicIPAddressInner> response =
-                this.client.createOrUpdate(this.resourceGroup(), this.name(), this.inner());
+                this.client.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
         this.setInner(response.getBody());
         clearWrapperProperties();
         return this;

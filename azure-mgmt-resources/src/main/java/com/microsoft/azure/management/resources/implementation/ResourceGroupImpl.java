@@ -1,19 +1,19 @@
 package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.management.resources.ResourceConnector;
+import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableImpl;
+import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupsInner;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
-import com.microsoft.azure.management.resources.ResourceGroup;
-import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ResourceGroupImpl extends
-        IndexableRefreshableWrapperImpl<ResourceGroup, ResourceGroupInner>
+        CreatableImpl<ResourceGroup, ResourceGroupInner>
         implements
         ResourceGroup,
         ResourceGroup.DefinitionBlank,
@@ -100,16 +100,16 @@ public class ResourceGroupImpl extends
 
         params.setTags(this.inner().tags());
 
-        // Figure out the region, since the SDK requires on the params explicitly even though it cannot be changed
+        // Figure out the location, since the SDK requires on the params explicitly even though it cannot be changed
         if(this.inner().location() != null) {
             params.setLocation(this.inner().location());
-        } else if(null == (group = client.get(this.id).getBody())) {
+        } else if(null == (group = client.get(this.key).getBody())) {
             throw new Exception("Resource group not found");
         } else {
             params.setLocation(group.location());
         }
 
-        client.createOrUpdate(this.id, params);
+        client.createOrUpdate(this.key, params);
         return this;
     }
     
@@ -118,13 +118,13 @@ public class ResourceGroupImpl extends
         ResourceGroupInner params = new ResourceGroupInner();
         params.setLocation(this.inner().location());
         params.setTags(this.inner().tags());
-        client.createOrUpdate(this.id, params);
+        client.createOrUpdate(this.key, params);
         return this;
     }
 
     @Override
     public ResourceGroupImpl refresh() throws Exception {            //  FLUENT: implementation of ResourceGroup.Refreshable<ResourceGroup>
-        this.setInner(client.get(this.id).getBody());
+        this.setInner(client.get(this.key).getBody());
         return this;
     }
 

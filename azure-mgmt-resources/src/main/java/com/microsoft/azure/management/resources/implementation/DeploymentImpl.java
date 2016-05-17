@@ -1,15 +1,10 @@
 package com.microsoft.azure.management.resources.implementation;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.microsoft.azure.management.resources.DeploymentOperations;
-import com.microsoft.azure.management.resources.ResourceGroups;
+import com.microsoft.azure.management.resources.*;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
-import com.microsoft.azure.management.resources.implementation.api.DeploymentsInner;
-import com.microsoft.azure.management.resources.Deployment;
-import com.microsoft.azure.management.resources.Provider;
-import com.microsoft.azure.management.resources.ResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableImpl;
 import com.microsoft.azure.management.resources.implementation.api.*;
 import org.joda.time.DateTime;
 
@@ -17,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DeploymentImpl extends
-        IndexableRefreshableWrapperImpl<Deployment, DeploymentExtendedInner>
+        CreatableImpl<Deployment, DeploymentExtendedInner>
         implements
         Deployment,
         Deployment.DefinitionBlank,

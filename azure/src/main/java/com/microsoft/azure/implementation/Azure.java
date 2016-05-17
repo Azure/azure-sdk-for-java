@@ -6,11 +6,8 @@
 
 package com.microsoft.azure.implementation;
 
-import java.io.File;
-import java.io.IOException;
-
+import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
-import com.microsoft.azure.credentials.AzureEnvironment;
 import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
@@ -28,9 +25,11 @@ import com.microsoft.azure.management.resources.implementation.api.ResourceManag
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
-import com.microsoft.azure.serializer.AzureJacksonMapperAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+
+import java.io.File;
+import java.io.IOException;
 
 public final class Azure {
     private final ResourceGroups resourceGroups;
@@ -40,9 +39,8 @@ public final class Azure {
     private final NetworkManager networkManager;
 
     public static Authenticated authenticate(ServiceClientCredentials credentials) {
-        return new AuthenticatedImpl(new RestClient
-                .Builder(AzureEnvironment.AZURE.getBaseUrl())
-                .withMapperAdapter(new AzureJacksonMapperAdapter())
+        return new AuthenticatedImpl(
+                AzureEnvironment.AZURE.newRestClientBuilder()
                 .withCredentials(credentials)
                 .build());
     }
@@ -63,14 +61,10 @@ public final class Azure {
      */
     public static Authenticated authenticate(File credentialsFile) throws IOException {
         ApplicationTokenCredentials credentials = ApplicationTokenCredentials.fromFile(credentialsFile);
-        
-    	return new AuthenticatedImpl(
-    		new RestClient.Builder(AzureEnvironment.AZURE.getBaseUrl())
-    			.withMapperAdapter(new AzureJacksonMapperAdapter())
+    	return new AuthenticatedImpl(AzureEnvironment.AZURE.newRestClientBuilder()
                 .withCredentials(credentials)
-                .withBaseUrl(credentials.getEnvironment().getBaseUrl())
                 .build())
-    		.withDefaultSubscription(credentials.defaultSubscriptionId());
+    			.withDefaultSubscription(credentials.defaultSubscriptionId());
     }
     
     public static Authenticated authenticate(RestClient restClient) {

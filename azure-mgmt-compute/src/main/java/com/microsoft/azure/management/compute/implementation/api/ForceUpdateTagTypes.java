@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum ForceUpdateTagTypes {
     /** Enum value RerunExtension. */
-    RERUNEXTENSION("RerunExtension");
+    RERUN_EXTENSION("RerunExtension");
 
     /** The actual serialized value for a ForceUpdateTagTypes instance. */
     private String value;

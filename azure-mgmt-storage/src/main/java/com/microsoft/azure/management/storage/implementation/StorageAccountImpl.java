@@ -3,6 +3,7 @@ package com.microsoft.azure.management.storage.implementation;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.storage.AccountStatuses;
 import com.microsoft.azure.management.storage.KeyType;
 import com.microsoft.azure.management.storage.PublicEndpoints;
@@ -86,7 +87,7 @@ class StorageAccountImpl
     @Override
     public StorageAccountKeys getKeys() throws CloudException, IOException {
         ServiceResponse<StorageAccountKeysInner> response =
-                this.client.listKeys(this.resourceGroupName, this.id);
+                this.client.listKeys(this.resourceGroupName(), this.key);
         StorageAccountKeysInner stroageAccountKeysInner = response.getBody();
         return new StorageAccountKeys(stroageAccountKeysInner.key1(), stroageAccountKeysInner.key2());
     }
@@ -94,7 +95,7 @@ class StorageAccountImpl
     @Override
     public StorageAccountKeys regenerateKey(KeyType keyType) throws CloudException, IOException {
         ServiceResponse<StorageAccountKeysInner> response =
-                this.client.regenerateKey(this.resourceGroupName, this.id, keyType.toString());
+                this.client.regenerateKey(this.resourceGroupName(), this.key, keyType.toString());
         StorageAccountKeysInner stroageAccountKeysInner = response.getBody();
         return new StorageAccountKeys(stroageAccountKeysInner.key1(), stroageAccountKeysInner.key2());
     }
@@ -102,7 +103,7 @@ class StorageAccountImpl
     @Override
     public StorageAccount refresh() throws Exception {
         ServiceResponse<StorageAccountInner> response =
-            this.client.getProperties(this.resourceGroupName, this.id);
+            this.client.getProperties(this.resourceGroupName(), this.key);
         StorageAccountInner storageAccountInner = response.getBody();
         this.setInner(storageAccountInner);
         clearWrapperProperties();
@@ -111,14 +112,17 @@ class StorageAccountImpl
 
     @Override
     public StorageAccountImpl create() throws Exception {
-        ensureGroup();
+        // Prerequisites
+        for (Creatable<?> creatable : prerequisites().values()) {
+            creatable.create();
+        }
         StorageAccountCreateParametersInner createParameters = new StorageAccountCreateParametersInner();
         createParameters.setAccountType(this.inner().accountType());
         createParameters.setLocation(this.location());
         createParameters.setTags(this.inner().getTags());
 
         ServiceResponse<StorageAccountInner> response =
-                this.client.create(this.resourceGroup(), this.name(), createParameters);
+                this.client.create(this.resourceGroupName(), this.name(), createParameters);
         StorageAccountInner storageAccountInner = response.getBody();
         this.setInner(storageAccountInner);
         clearWrapperProperties();

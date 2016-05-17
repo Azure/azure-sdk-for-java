@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class PremierAddOnRequestInner {
     /**
-     * Geo region resource belongs to e.g. SouthCentralUS, SouthEastAsia.
+     * Geo location resource belongs to e.g. SouthCentralUS, SouthEastAsia.
      */
     private String location;
 

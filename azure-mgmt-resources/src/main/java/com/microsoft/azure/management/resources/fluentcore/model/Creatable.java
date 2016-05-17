@@ -19,6 +19,11 @@
 */
 package com.microsoft.azure.management.resources.fluentcore.model;
 
-public interface Creatable<T> {
+import java.util.Map;
+
+// Encapsulates the create() method
+public interface Creatable<T> extends Indexable {
 	T create() throws Exception;
+	Map<String, Creatable<?>> prerequisites();
+	Map<String, Creatable<?>> created();
 }

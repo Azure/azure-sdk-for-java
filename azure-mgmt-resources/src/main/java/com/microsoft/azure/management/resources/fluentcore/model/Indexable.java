@@ -21,5 +21,5 @@ package com.microsoft.azure.management.resources.fluentcore.model;
 
 // Encapsulates the name accessor
 public interface Indexable {
-	String id();
+	String key();
 }

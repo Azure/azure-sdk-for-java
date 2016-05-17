@@ -17,7 +17,7 @@ public enum ProvisioningState {
     CREATING("Creating"),
 
     /** Enum value ResolvingDNS. */
-    RESOLVINGDNS("ResolvingDNS"),
+    RESOLVING_DNS("ResolvingDNS"),
 
     /** Enum value Succeeded. */
     SUCCEEDED("Succeeded");

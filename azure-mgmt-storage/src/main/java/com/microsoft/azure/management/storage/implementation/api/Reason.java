@@ -14,10 +14,10 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum Reason {
     /** Enum value AccountNameInvalid. */
-    ACCOUNTNAMEINVALID("AccountNameInvalid"),
+    ACCOUNT_NAME_INVALID("AccountNameInvalid"),
 
     /** Enum value AlreadyExists. */
-    ALREADYEXISTS("AlreadyExists");
+    ALREADY_EXISTS("AlreadyExists");
 
     /** The actual serialized value for a Reason instance. */
     private String value;

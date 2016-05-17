@@ -5,7 +5,7 @@
  */
 package com.microsoft.azure.management.datalake.store.uploader;
 
-import com.microsoft.azure.credentials.AzureEnvironment;
+import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.UserTokenCredentials;
 import com.microsoft.azure.management.datalake.store.implementation.api.DataLakeStoreAccountManagementClientImpl;
 import com.microsoft.azure.management.datalake.store.implementation.api.DataLakeStoreFileSystemManagementClientImpl;

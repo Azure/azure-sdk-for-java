@@ -17,10 +17,10 @@ public enum CachingTypes {
     NONE("None"),
 
     /** Enum value ReadOnly. */
-    READONLY("ReadOnly"),
+    READ_ONLY("ReadOnly"),
 
     /** Enum value ReadWrite. */
-    READWRITE("ReadWrite");
+    READ_WRITE("ReadWrite");
 
     /** The actual serialized value for a CachingTypes instance. */
     private String value;

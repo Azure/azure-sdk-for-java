@@ -22,5 +22,5 @@ package com.microsoft.azure.management.resources.fluentcore.collection;
 
 // Requires class to support creating entities
 public interface SupportsCreating<T> {
-	T define(String name) throws Exception;
+	T define(String name);
 }

@@ -1,21 +1,19 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.models;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Taggable;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 
 import java.util.Map;
 
-public interface Resource extends
-		Indexable {
-	
-	public String type();
-	public String name();
-	public String location();
-	public Map<String, String> tags();
-	
+public interface Resource extends Indexable {
+	String id();
+	String type();
+	String name();
+	String location();
+	Map<String, String> tags();
+
 	/**
-	 * A resource definition allowing a region be selected for the resource
+	 * A resource definition allowing a location be selected for the resource
 	 */	
 	interface DefinitionWithRegion<T> {
 		/**
@@ -25,7 +23,7 @@ public interface Resource extends
 	    T withRegion(String regionName);
 	    
 	    /**
-	     * @param region The region for the resource
+	     * @param region The location for the resource
 	     * @return The next stage of the resource definition
 	     */
 	    T withRegion(Region region);
