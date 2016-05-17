@@ -17,6 +17,7 @@ import com.microsoft.rest.ServiceClient;
 public abstract class AzureServiceClient extends ServiceClient {
     protected AzureServiceClient(String baseUrl) {
         this(new RestClient.Builder(baseUrl)
+                .withInterceptor(new RequestIdHeaderInterceptor())
                 .withMapperAdapter(new AzureJacksonMapperAdapter()).build());
     }
 

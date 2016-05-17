@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.network.implementation.api.NetworkManagementClientImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
@@ -27,8 +28,7 @@ public final class NetworkManager {
     }
 
     public static NetworkManager authenticate(ServiceClientCredentials credentials, String subscriptionId) {
-        return new NetworkManager(new RestClient
-                .Builder("https://management.azure.com")
+        return new NetworkManager(AzureEnvironment.AZURE.newRestClientBuilder()
                 .withCredentials(credentials)
                 .build(), subscriptionId);
     }
