@@ -106,7 +106,7 @@ class VirtualMachineImpl
     @Override
     public VirtualMachine.DefinitionWithOS withNewStorageAccount(String name) {
         return withNewStorageAccount(storageManager.storageAccounts().define(name)
-                .withRegion(location())
+                .withRegion(region())
                 .withExistingGroup(this.resourceGroupName()));
     }
 

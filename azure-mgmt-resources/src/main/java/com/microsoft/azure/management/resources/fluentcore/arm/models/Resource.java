@@ -9,7 +9,7 @@ public interface Resource extends Indexable {
 	String id();
 	String type();
 	String name();
-	String location();
+	String region();
 	Map<String, String> tags();
 
 	/**

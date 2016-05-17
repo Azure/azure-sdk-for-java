@@ -83,7 +83,7 @@ public class AzureTests {
     	pip = pip.update()
     		.withStaticIp()
     		.withLeafDomainLabel(newPipName + "xx")
-    		.withReverseFqdn(pip.leafDomainLabel() + "." + pip.location() + ".cloudapp.azure.com")
+    		.withReverseFqdn(pip.leafDomainLabel() + "." + pip.region() + ".cloudapp.azure.com")
     		.apply();
     	printPublicIpAddress(pip);
     	pip = azure2.publicIpAddresses().get(pip.id());

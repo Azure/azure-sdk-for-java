@@ -59,7 +59,7 @@ public abstract class GroupableResourceImpl<
      ****************************************/
 
     public final FluentModelImplT withNewGroup(String groupName) {
-        return this.withNewGroup(resourceGroups.define(groupName).withLocation(this.location()));
+        return this.withNewGroup(resourceGroups.define(groupName).withLocation(this.region()));
     }
 
     public final FluentModelImplT withNewGroup() {
