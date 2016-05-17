@@ -11,24 +11,22 @@ import com.microsoft.azure.management.network.implementation.api.PublicIPAddress
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressesInner;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.rest.ServiceResponse;
 
 class PublicIpAddressImpl
-        extends GroupableResourceImpl<PublicIpAddress, PublicIPAddressInner, PublicIpAddressImpl>
-        implements
-        	PublicIpAddress,
-        	PublicIpAddress.Definitions,
-        	PublicIpAddress.Update
-        {
+	extends GroupableResourceImpl<PublicIpAddress, PublicIPAddressInner, PublicIpAddressImpl>
+	implements
+        PublicIpAddress,
+        PublicIpAddress.Definitions,
+        PublicIpAddress.Update {
 
     private String name;
     private final PublicIPAddressesInner client;
 
     PublicIpAddressImpl(String name,
-                              PublicIPAddressInner innerModel,
-                              final PublicIPAddressesInner client,
-                              final ResourceGroups resourceGroups) {
+    		PublicIPAddressInner innerModel,
+    		final PublicIPAddressesInner client,
+    		final ResourceGroups resourceGroups) {
         super(innerModel.id(), innerModel, resourceGroups);
         this.name = name;
         this.client = client;
@@ -82,15 +80,7 @@ class PublicIpAddressImpl
 	
 	@Override
 	public PublicIpAddressImpl withLeafDomainLabel(String dnsName) {
-		PublicIPAddressDnsSettings dnsSettings;
-		if(dnsName == null) {
-			this.inner().setDnsSettings(null);
-			return this;
-		} else if(null == (dnsSettings = this.inner().dnsSettings())) {
-			dnsSettings = new PublicIPAddressDnsSettings();
-			this.inner().setDnsSettings(dnsSettings);
-		}
-		dnsSettings.setDomainNameLabel(dnsName);
+		ensureDnsSettings().setDomainNameLabel(dnsName.toLowerCase());
 		return this;
 	}
 	
@@ -99,10 +89,40 @@ class PublicIpAddressImpl
 		return this.withLeafDomainLabel(null);
 	}
 
+	@Override
+	public PublicIpAddressImpl withReverseFqdn(String reverseFqdn) {
+		ensureDnsSettings().setReverseFqdn(reverseFqdn.toLowerCase());
+		return this;
+	}
+
+	@Override
+	public PublicIpAddressImpl withoutReverseFqdn() {
+		return this.withReverseFqdn(null);
+	}
+	
+	
+	private PublicIPAddressDnsSettings ensureDnsSettings() {
+		PublicIPAddressDnsSettings dnsSettings;
+		if(null == (dnsSettings = this.inner().dnsSettings())) {
+			dnsSettings = new PublicIPAddressDnsSettings();
+			this.inner().setDnsSettings(dnsSettings);
+		}
+		return dnsSettings;
+	}
+	
 	
 	/**********************************************
 	 * Getters
 	 **********************************************/
+	@Override
+	public String fqdn() {
+		return this.inner().dnsSettings().fqdn();
+	}
+
+	@Override
+	public String reverseFqdn() {
+		return this.inner().dnsSettings().reverseFqdn();
+	}
 
     @Override
     public String name() {

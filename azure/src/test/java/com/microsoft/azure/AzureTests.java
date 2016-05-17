@@ -72,31 +72,39 @@ public class AzureTests {
     	int publicIpAddressCount = azure2.publicIpAddresses().list().size();
     	System.out.println(publicIpAddressCount);
     	Assert.assertTrue(0 < publicIpAddressCount);
+    	
+    	// Verify get
     	String resourceGroupName = pip.resourceGroupName();
     	pip = azure2.publicIpAddresses().get(resourceGroupName, newPipName);
     	Assert.assertTrue(pip.name().equalsIgnoreCase(newPipName));
-    	System.out.println(new StringBuilder().append("Public IP Address: ").append(pip.id())
-    			.append("\n\tIP Address: ").append(pip.ipAddress())
-    			.append("\n\tLeaf domain label: ").append(pip.leafDomainLabel())
-    			.append("\n\tResource group: ").append(pip.resourceGroupName())
-    			.toString());
+    	printPublicIpAddress(pip);
+    	
     	// Verify update
     	pip = pip.update()
     		.withStaticIp()
     		.withLeafDomainLabel(newPipName + "xx")
+    		.withReverseFqdn(pip.leafDomainLabel() + "." + pip.location() + ".cloudapp.azure.com")
     		.apply();
-    	
-    	System.out.println(new StringBuilder().append("Public IP Address: ").append(pip.id())
-    			.append("\n\tIP Address: ").append(pip.ipAddress())
-    			.append("\n\tLeaf domain label: ").append(pip.leafDomainLabel())
-    			.append("\n\tResource group: ").append(pip.resourceGroupName())
-    			.toString());
+    	printPublicIpAddress(pip);
+    	pip = azure2.publicIpAddresses().get(pip.id());
+    	printPublicIpAddress(pip);    	
     	
     	// Verify delete
     	azure2.publicIpAddresses().delete(pip.id());
     	azure2.resourceGroups().delete(resourceGroupName);
     	azure2.resourceGroups().delete(pip.resourceGroupName());
     }
+    
+    private void printPublicIpAddress(PublicIpAddress pip) {
+    	System.out.println(new StringBuilder().append("Public IP Address: ").append(pip.id())
+    			.append("\n\tIP Address: ").append(pip.ipAddress())
+    			.append("\n\tLeaf domain label: ").append(pip.leafDomainLabel())
+    			.append("\n\tResource group: ").append(pip.resourceGroupName())
+    			.append("\n\tFQDN: ").append(pip.fqdn())
+    			.append("\n\tReverse FQDN: ").append(pip.reverseFqdn())
+    			.toString());
+    }
+    
     
     @Test
     public void listSubscriptions() throws Exception {

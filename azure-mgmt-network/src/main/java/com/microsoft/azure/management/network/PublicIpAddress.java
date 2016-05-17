@@ -24,6 +24,8 @@ public interface PublicIpAddress extends
      ***********************************************************/
 	String ipAddress();
 	String leafDomainLabel();
+	String fqdn();
+	String reverseFqdn();
 
     /**************************************************************
      * Fluent interfaces for provisioning
@@ -105,22 +107,55 @@ public interface PublicIpAddress extends
 		
 		/**
 		 * Ensures that no leaf domain label will be used. This means that this public IP address will not be associated with a domain name.
-		 * @return The next stage of the public IP address definition
+		 * @return The next stage of the resource definition
 		 */
 		T withoutLeafDomainLabel();
+	}
+	
+	
+	public interface DefinitionWithReverseFQDN<T> {
+		/**
+		 * Specifies the reverse FQDN to assign to this public IP address
+		 * @param reverseFQDN The reverse FQDN to assign 
+		 * @return The next stage of the resource definition
+		 */
+		T withReverseFqdn(String reverseFQDN);
+		
+		/**
+		 * Ensures that no reverse FQDN will be used.
+		 * @return The next stage of the resource definition
+		 */
+		T withoutReverseFqdn();
+	}
+	
+	public interface UpdatableWithReverseFQDN<T> {
+		/**
+		 * Specifies the reverse FQDN to assign to this public IP address
+		 * @param reverseFQDN The reverse FQDN to assign 
+		 * @return The next stage of the resource definition
+		 */
+		T withReverseFqdn(String reverseFQDN);
+		
+		/**
+		 * Ensures that no reverse FQDN will be used.
+		 * @return The next stage of the resource definition
+		 */
+		T withoutReverseFqdn();
 	}
 
 	
     interface DefinitionCreatable extends 
     	Creatable<PublicIpAddress>,
     	DefinitionWithLeafDomainLabel,
-    	DefinitionWithIpAddress {
+    	DefinitionWithIpAddress,
+    	DefinitionWithReverseFQDN<DefinitionCreatable> {
     }
     
     interface Update extends 
     	Appliable<PublicIpAddress>,
     	UpdatableWithIpAddress<Update>,
-    	UpdatableWithLeafDomainLabel<Update> {
+    	UpdatableWithLeafDomainLabel<Update>,
+    	UpdatableWithReverseFQDN<Update> {
     }
 }
 
