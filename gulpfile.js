@@ -73,6 +73,7 @@ var mappings = {
         'dir': 'azure-batch',
         'source': 'batch/2016-02-01.3.0/swagger/BatchService.json',
         'package': 'com.microsoft.azure.batch.protocol',
+        'fluent': false,
         'args': '-FT 1'
     }
 };
@@ -137,7 +138,11 @@ var codegen = function(project, cb) {
     deleteFolderRecursive(outputDir + "/models/implementation/api");
     deleteFolderRecursive(outputDir + "/implementation/api");
     console.log('Generating "' + project + '" from spec file ' + specRoot + '/' + mappings[project].source);
-    cmd = autoRestExe + ' -Modeler Swagger -CodeGenerator Azure.Java.Fluent -Namespace ' + mappings[project].package + ' -Input ' + specRoot + '/' + mappings[project].source + 
+    var generator = 'Azure.Java.Fluent';
+    if (mappings[project].fluent !== null && mappings[project].fluent === false) {
+        generator = 'Azure.Java';
+    }
+    cmd = autoRestExe + ' -Modeler Swagger -CodeGenerator ' + generator + ' -Namespace ' + mappings[project].package + ' -Input ' + specRoot + '/' + mappings[project].source + 
             ' -outputDirectory ' + mappings[project].dir + '/src/main/java/' + mappings[project].package.replace(/\./g, '/') + ' -Header MICROSOFT_MIT_NO_CODEGEN';
     if (mappings[project].args !== undefined) {
         cmd = cmd + ' ' + mappings[project].args;

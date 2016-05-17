@@ -7,12 +7,12 @@
 package com.microsoft.azure.batch;
 
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.batch.protocol.implementation.api.ApplicationGetHeadersInner;
-import com.microsoft.azure.batch.protocol.implementation.api.ApplicationGetOptionsInner;
-import com.microsoft.azure.batch.protocol.implementation.api.ApplicationListHeadersInner;
-import com.microsoft.azure.batch.protocol.implementation.api.ApplicationListOptionsInner;
-import com.microsoft.azure.batch.protocol.implementation.api.ApplicationSummaryInner;
-import com.microsoft.azure.batch.protocol.implementation.api.BatchErrorException;
+import com.microsoft.azure.batch.protocol.models.ApplicationGetHeaders;
+import com.microsoft.azure.batch.protocol.models.ApplicationGetOptions;
+import com.microsoft.azure.batch.protocol.models.ApplicationListHeaders;
+import com.microsoft.azure.batch.protocol.models.ApplicationListOptions;
+import com.microsoft.azure.batch.protocol.models.ApplicationSummary;
+import com.microsoft.azure.batch.protocol.models.BatchErrorException;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 
 import java.io.IOException;
@@ -42,30 +42,30 @@ public class ApplicationOperations  implements IInheritedBehaviors {
         _customBehaviors = behaviors;
     }
 
-    public List<ApplicationSummaryInner> listApplications() throws BatchErrorException, IOException {
+    public List<ApplicationSummary> listApplications() throws BatchErrorException, IOException {
         return listApplications(null);
     }
 
-    public List<ApplicationSummaryInner> listApplications(Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        ApplicationListOptionsInner options = new ApplicationListOptionsInner();
+    public List<ApplicationSummary> listApplications(Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+        ApplicationListOptions options = new ApplicationListOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<PagedList<ApplicationSummaryInner>, ApplicationListHeadersInner> response = this._parentBatchClient.getProtocolLayer().applications().list(options);
+        ServiceResponseWithHeaders<PagedList<ApplicationSummary>, ApplicationListHeaders> response = this._parentBatchClient.getProtocolLayer().applications().list(options);
 
         return response.getBody();
     }
 
-    public ApplicationSummaryInner getApplication(String applicationId) throws BatchErrorException, IOException {
+    public ApplicationSummary getApplication(String applicationId) throws BatchErrorException, IOException {
         return getApplication(applicationId, null);
     }
 
-    public ApplicationSummaryInner getApplication(String applicationId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        ApplicationGetOptionsInner options = new ApplicationGetOptionsInner();
+    public ApplicationSummary getApplication(String applicationId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+        ApplicationGetOptions options = new ApplicationGetOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<ApplicationSummaryInner, ApplicationGetHeadersInner> response = this._parentBatchClient.getProtocolLayer().applications().get(applicationId, options);
+        ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders> response = this._parentBatchClient.getProtocolLayer().applications().get(applicationId, options);
 
         return response.getBody();
     }
