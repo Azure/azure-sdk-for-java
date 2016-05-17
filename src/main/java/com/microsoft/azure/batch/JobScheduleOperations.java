@@ -7,27 +7,7 @@
 package com.microsoft.azure.batch;
 
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.batch.protocol.implementation.api.BatchErrorException;
-import com.microsoft.azure.batch.protocol.implementation.api.CloudJobScheduleInner;
-import com.microsoft.azure.batch.protocol.implementation.api.JobScheduleAddOptionsInner;
-import com.microsoft.azure.batch.protocol.implementation.api.JobScheduleAddParameterInner;
-import com.microsoft.azure.batch.protocol.implementation.api.JobScheduleDeleteOptionsInner;
-import com.microsoft.azure.batch.protocol.implementation.api.JobScheduleDisableOptionsInner;
-import com.microsoft.azure.batch.protocol.implementation.api.JobScheduleEnableOptionsInner;
-import com.microsoft.azure.batch.protocol.implementation.api.JobScheduleExistsHeadersInner;
-import com.microsoft.azure.batch.protocol.implementation.api.JobScheduleExistsOptionsInner;
-import com.microsoft.azure.batch.protocol.implementation.api.JobScheduleGetHeadersInner;
-import com.microsoft.azure.batch.protocol.implementation.api.JobScheduleGetOptionsInner;
-import com.microsoft.azure.batch.protocol.implementation.api.JobScheduleListHeadersInner;
-import com.microsoft.azure.batch.protocol.implementation.api.JobScheduleListOptionsInner;
-import com.microsoft.azure.batch.protocol.implementation.api.JobSchedulePatchOptionsInner;
-import com.microsoft.azure.batch.protocol.implementation.api.JobSchedulePatchParameterInner;
-import com.microsoft.azure.batch.protocol.implementation.api.JobScheduleTerminateOptionsInner;
-import com.microsoft.azure.batch.protocol.implementation.api.JobScheduleUpdateOptionsInner;
-import com.microsoft.azure.batch.protocol.implementation.api.JobScheduleUpdateParameterInner;
-import com.microsoft.azure.batch.protocol.implementation.api.JobSpecification;
-import com.microsoft.azure.batch.protocol.implementation.api.MetadataItem;
-import com.microsoft.azure.batch.protocol.implementation.api.Schedule;
+import com.microsoft.azure.batch.protocol.models.*;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 
 import java.io.IOException;
@@ -62,11 +42,11 @@ public class JobScheduleOperations implements IInheritedBehaviors {
     }
 
     public boolean existsJobSchedule(String jobScheduleId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        JobScheduleExistsOptionsInner options = new JobScheduleExistsOptionsInner();
+        JobScheduleExistsOptions options = new JobScheduleExistsOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<Boolean, JobScheduleExistsHeadersInner> response = this._parentBatchClient.getProtocolLayer().jobSchedules().exists(jobScheduleId, options);
+        ServiceResponseWithHeaders<Boolean, JobScheduleExistsHeaders> response = this._parentBatchClient.getProtocolLayer().jobSchedules().exists(jobScheduleId, options);
 
         return response.getBody();
     }
@@ -76,28 +56,28 @@ public class JobScheduleOperations implements IInheritedBehaviors {
     }
 
     public void deleteJobSchedule(String jobScheduleId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        JobScheduleDeleteOptionsInner options = new JobScheduleDeleteOptionsInner();
+        JobScheduleDeleteOptions options = new JobScheduleDeleteOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
         this._parentBatchClient.getProtocolLayer().jobSchedules().delete(jobScheduleId, options);
     }
 
-    public CloudJobScheduleInner getJobSchedule(String jobScheduleId) throws BatchErrorException, IOException {
+    public CloudJobSchedule getJobSchedule(String jobScheduleId) throws BatchErrorException, IOException {
         return getJobSchedule(jobScheduleId, null, null);
     }
 
-    public CloudJobScheduleInner getJobSchedule(String jobScheduleId, DetailLevel detailLevel) throws BatchErrorException, IOException {
+    public CloudJobSchedule getJobSchedule(String jobScheduleId, DetailLevel detailLevel) throws BatchErrorException, IOException {
         return getJobSchedule(jobScheduleId, detailLevel, null);
     }
 
-    public CloudJobScheduleInner getJobSchedule(String jobScheduleId, DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        JobScheduleGetOptionsInner options = new JobScheduleGetOptionsInner();
+    public CloudJobSchedule getJobSchedule(String jobScheduleId, DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+        JobScheduleGetOptions options = new JobScheduleGetOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<CloudJobScheduleInner, JobScheduleGetHeadersInner> response = this._parentBatchClient.getProtocolLayer().jobSchedules().get(jobScheduleId, options);
+        ServiceResponseWithHeaders<CloudJobSchedule, JobScheduleGetHeaders> response = this._parentBatchClient.getProtocolLayer().jobSchedules().get(jobScheduleId, options);
 
         return response.getBody();
     }
@@ -111,11 +91,11 @@ public class JobScheduleOperations implements IInheritedBehaviors {
     }
 
     public void patchJobSchedule(String jobScheduleId, Schedule schedule, JobSpecification jobSpecification, List<MetadataItem> metadata, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        JobSchedulePatchOptionsInner options = new JobSchedulePatchOptionsInner();
+        JobSchedulePatchOptions options = new JobSchedulePatchOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        JobSchedulePatchParameterInner param = new JobSchedulePatchParameterInner();
+        JobSchedulePatchParameter param = new JobSchedulePatchParameter();
         param.setJobSpecification(jobSpecification);
         param.setMetadata(metadata);
         param.setSchedule(schedule);
@@ -131,11 +111,11 @@ public class JobScheduleOperations implements IInheritedBehaviors {
     }
 
     public void updateJobSchedule(String jobScheduleId, Schedule schedule, JobSpecification jobSpecification, List<MetadataItem> metadata, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        JobScheduleUpdateOptionsInner options = new JobScheduleUpdateOptionsInner();
+        JobScheduleUpdateOptions options = new JobScheduleUpdateOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        JobScheduleUpdateParameterInner param = new JobScheduleUpdateParameterInner();
+        JobScheduleUpdateParameter param = new JobScheduleUpdateParameter();
         param.setJobSpecification(jobSpecification);
         param.setMetadata(metadata);
         param.setSchedule(schedule);
@@ -147,7 +127,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
     }
 
     public void disableJobSchedule(String jobScheduleId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        JobScheduleDisableOptionsInner options = new JobScheduleDisableOptionsInner();
+        JobScheduleDisableOptions options = new JobScheduleDisableOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
@@ -159,7 +139,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
     }
 
     public void enableJobSchedule(String jobScheduleId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        JobScheduleEnableOptionsInner options = new JobScheduleEnableOptionsInner();
+        JobScheduleEnableOptions options = new JobScheduleEnableOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
@@ -171,7 +151,7 @@ public class JobScheduleOperations implements IInheritedBehaviors {
     }
 
     public void terminateJobSchedule(String jobScheduleId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        JobScheduleTerminateOptionsInner options = new JobScheduleTerminateOptionsInner();
+        JobScheduleTerminateOptions options = new JobScheduleTerminateOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
@@ -183,40 +163,40 @@ public class JobScheduleOperations implements IInheritedBehaviors {
     }
 
     public void createJobSchedule(String jobScheduleId, Schedule schedule, JobSpecification jobSpecification, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        JobScheduleAddParameterInner param = new JobScheduleAddParameterInner();
+        JobScheduleAddParameter param = new JobScheduleAddParameter();
         param.setJobSpecification(jobSpecification);
         param.setSchedule(schedule);
         param.setId(jobScheduleId);
         createJobSchedule(param, additionalBehaviors);
     }
 
-    public void createJobSchedule(JobScheduleAddParameterInner param) throws BatchErrorException, IOException {
+    public void createJobSchedule(JobScheduleAddParameter param) throws BatchErrorException, IOException {
         createJobSchedule(param, null);
     }
 
-    public void createJobSchedule(JobScheduleAddParameterInner param, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        JobScheduleAddOptionsInner options = new JobScheduleAddOptionsInner();
+    public void createJobSchedule(JobScheduleAddParameter param, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+        JobScheduleAddOptions options = new JobScheduleAddOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
         this._parentBatchClient.getProtocolLayer().jobSchedules().add(param, options);
     }
 
-    public List<CloudJobScheduleInner> listJobSchedules() throws BatchErrorException, IOException {
+    public List<CloudJobSchedule> listJobSchedules() throws BatchErrorException, IOException {
         return listJobSchedules(null, null);
     }
 
-    public List<CloudJobScheduleInner> listJobSchedules(DetailLevel detailLevel) throws BatchErrorException, IOException {
+    public List<CloudJobSchedule> listJobSchedules(DetailLevel detailLevel) throws BatchErrorException, IOException {
         return listJobSchedules(detailLevel, null);
     }
 
-    public List<CloudJobScheduleInner> listJobSchedules(DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        JobScheduleListOptionsInner options = new JobScheduleListOptionsInner();
+    public List<CloudJobSchedule> listJobSchedules(DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+        JobScheduleListOptions options = new JobScheduleListOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<PagedList<CloudJobScheduleInner>, JobScheduleListHeadersInner> response = this._parentBatchClient.getProtocolLayer().jobSchedules().list(options);
+        ServiceResponseWithHeaders<PagedList<CloudJobSchedule>, JobScheduleListHeaders> response = this._parentBatchClient.getProtocolLayer().jobSchedules().list(options);
 
         return response.getBody();
     }
