@@ -37,8 +37,11 @@ public abstract class GroupableResourceImpl<
 
     @Override
     final public String resourceGroup() {
-        String groupNameTemp = ResourceUtils.groupFromResourceId(this.id());
-        return (groupNameTemp == null) ? this.resourceGroupName : groupNameTemp;
+        if(this.resourceGroupName != null) {
+        	return this.resourceGroupName;
+        } else {
+        	return ResourceUtils.groupFromResourceId(this.id());
+        }
     }
 
     /**************************************************

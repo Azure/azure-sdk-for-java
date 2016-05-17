@@ -19,6 +19,6 @@
 */
 package com.microsoft.azure.management.resources.fluentcore.model;
 
-public interface Updatable<T> extends Indexable {
+public interface Appliable<T> extends Indexable {
 	T apply() throws Exception;
 }

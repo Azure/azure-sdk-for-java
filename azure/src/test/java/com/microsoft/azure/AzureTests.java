@@ -30,7 +30,7 @@ public class AzureTests {
     private Azure azure, azure2;
 
     public static void main(String[] args) throws IOException, CloudException {
-    	final File credFile = new File("my.auth");
+    	final File credFile = new File("azureauth.properties");
     	Azure azure = Azure.authenticate(credFile)
     		.withDefaultSubscription();
     	System.out.println(String.valueOf(azure.resourceGroups().list().size()));
@@ -55,6 +55,10 @@ public class AzureTests {
         	.withDefaultSubscription();
     }
 
+    /**
+     * Tests the Public IP Address implementation
+     * @throws Exception
+     */
     @Test public void testPublicIpAddresses() throws Exception {
     	// Verify creation of a new public IP address 
     	String suffix = String.valueOf(System.currentTimeMillis());
@@ -79,9 +83,22 @@ public class AzureTests {
     			.append("\n\tResource group: ").append(pip.resourceGroup())
     			.toString());
     	
+    	// Verify update
+    	pip = pip.update()
+    		.withStaticIp()
+    		.withLeafDomainLabel(newPipName + "xx")
+    		.apply();
+    	
+    	System.out.println(new StringBuilder().append("Public IP Address: ").append(pip.id())
+    			.append("\n\tIP Address: ").append(pip.ipAddress())
+    			.append("\n\tLeaf domain label: ").append(pip.leafDomainLabel())
+    			.append("\n\tResource group: ").append(pip.resourceGroup())
+    			.toString());
+    	
     	// Verify delete
     	azure2.publicIpAddresses().delete(pip.id());
     	azure2.resourceGroups().delete(resourceGroupName);
+    	azure2.resourceGroups().delete(pip.resourceGroup());
     }
     
     @Test

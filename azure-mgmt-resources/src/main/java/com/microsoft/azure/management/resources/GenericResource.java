@@ -50,7 +50,7 @@ public interface GenericResource extends
     }
 
     // TODO: Updatable properties needs to be revised.
-    interface Update extends UpdateBlank, Updatable<Update> {
+    interface Update extends UpdateBlank, Appliable<Update> {
     }
 
     interface UpdateBlank extends Taggable<Update> {

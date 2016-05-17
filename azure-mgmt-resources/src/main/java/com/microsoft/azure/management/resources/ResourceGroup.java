@@ -35,7 +35,7 @@ public interface ResourceGroup extends
         DefinitionCreatable withTag(String key, String value);
     }
 
-    interface Update extends UpdateBlank, Updatable<Update> {
+    interface Update extends UpdateBlank, Appliable<Update> {
     }
 
     interface UpdateBlank extends Taggable<Update> {
