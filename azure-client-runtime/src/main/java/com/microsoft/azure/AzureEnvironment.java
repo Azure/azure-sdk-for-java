@@ -84,7 +84,9 @@ public final class AzureEnvironment {
      * @return a builder for the rest client.
      */
     public RestClient.Builder newRestClientBuilder() {
-        return new RestClient.Builder(baseURL).withMapperAdapter(new AzureJacksonMapperAdapter());
+        return new RestClient.Builder(baseURL)
+                .withInterceptor(new RequestIdHeaderInterceptor())
+                .withMapperAdapter(new AzureJacksonMapperAdapter());
     }
     
     /**
