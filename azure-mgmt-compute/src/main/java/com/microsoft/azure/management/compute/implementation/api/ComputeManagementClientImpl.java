@@ -28,18 +28,6 @@ public final class ComputeManagementClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
-    /** Gets Azure subscription credentials. */
-    private ServiceClientCredentials credentials;
-
-    /**
-     * Gets Gets Azure subscription credentials.
-     *
-     * @return the credentials value.
-     */
-    public ServiceClientCredentials credentials() {
-        return this.credentials;
-    }
-
     /** Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. */
     private String subscriptionId;
 
