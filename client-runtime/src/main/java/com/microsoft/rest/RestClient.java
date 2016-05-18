@@ -91,16 +91,6 @@ public final class RestClient {
     }
 
     /**
-     * Get the user agent interceptor where custom user agents can be set or
-     * appended.
-     *
-     * @return the user agent interceptor.
-     */
-    public UserAgentInterceptor userAgent() {
-        return this.userAgentInterceptor;
-    }
-
-    /**
      * Get the base URL currently set. If it's a customizable URL, the updated
      * URL instead of the raw one might be returned.
      *

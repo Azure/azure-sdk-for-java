@@ -32,44 +32,26 @@ public class UserAgentInterceptor implements Interceptor {
      * 'User-Agent' header.
      */
     public UserAgentInterceptor() {
-        setUserAgent(DEFAULT_USER_AGENT_HEADER, null, null);
+        this.userAgent = DEFAULT_USER_AGENT_HEADER;
     }
 
     public void setUserAgent(String userAgent) {
-        setUserAgent(userAgent, null, null);
-    }
-
-    public void setUserAgent(String product, String version, String extras) {
-        this.userAgent = product;
-        if (version != null) {
-            this.userAgent += "/" + version;
-        }
-        if (extras != null) {
-            this.userAgent += String.format(" (%s)", extras);
-        }
+        this.userAgent = userAgent;
     }
 
     public void appendUserAgent(String userAgent) {
-        appendUserAgent(userAgent, null, null);
-    }
-
-    public void appendUserAgent(String product, String version, String extras) {
-        this.userAgent += " " + product;
-        if (version != null) {
-            this.userAgent += "/" + version;
-        }
-        if (extras != null) {
-            this.userAgent += String.format(" (%s)", extras);
-        }
+        this.userAgent += " " + userAgent;
     }
 
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
         String header = request.header("User-Agent");
-        request = chain.request().newBuilder()
-                .header("User-Agent", userAgent + " " + header)
-                .build();
+        if (header == null || !userAgent.equals(DEFAULT_USER_AGENT_HEADER)) {
+            request = chain.request().newBuilder()
+                    .header("User-Agent", userAgent + " " + header)
+                    .build();
+        }
         return chain.proceed(request);
     }
 }
