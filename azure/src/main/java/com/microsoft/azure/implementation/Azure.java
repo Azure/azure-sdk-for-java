@@ -63,7 +63,8 @@ public final class Azure {
         ApplicationTokenCredentials credentials = ApplicationTokenCredentials.fromFile(credentialsFile);
     	return new AuthenticatedImpl(AzureEnvironment.AZURE.newRestClientBuilder()
                 .withCredentials(credentials)
-                .build());
+                .build())
+    			.withDefaultSubscription(credentials.defaultSubscriptionId());
     }
     
     public static Authenticated authenticate(RestClient restClient) {

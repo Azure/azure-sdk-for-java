@@ -1,5 +1,9 @@
 *.class
 
+# Auth filed
+*.auth
+*.azureauth
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 

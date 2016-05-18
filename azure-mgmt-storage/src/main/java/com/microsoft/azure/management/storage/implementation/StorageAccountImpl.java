@@ -118,7 +118,7 @@ class StorageAccountImpl
         }
         StorageAccountCreateParametersInner createParameters = new StorageAccountCreateParametersInner();
         createParameters.setAccountType(this.inner().accountType());
-        createParameters.setLocation(this.location());
+        createParameters.setLocation(this.region());
         createParameters.setTags(this.inner().getTags());
 
         ServiceResponse<StorageAccountInner> response =
