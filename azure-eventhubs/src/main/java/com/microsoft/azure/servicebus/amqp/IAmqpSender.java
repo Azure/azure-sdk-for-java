@@ -4,11 +4,11 @@
  */
 package com.microsoft.azure.servicebus.amqp;
 
-import org.apache.qpid.proton.amqp.transport.*;
+import org.apache.qpid.proton.engine.Delivery;
 
 public interface IAmqpSender extends IAmqpLink
 {
 	void onFlow();
 	
-	void onSendComplete(final byte[] deliveryTag, final DeliveryState outcome);
+	void onSendComplete(final Delivery delivery);
 }

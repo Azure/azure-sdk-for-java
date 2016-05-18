@@ -277,7 +277,12 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 	}
 	
 	public void onOpenComplete(Exception exception)
-	{
+	{		
+		synchronized (this.linkCreateLock)
+		{
+			this.linkCreateScheduled = false;
+		}		
+		
 		if (exception == null)
 		{
 			if (this.linkOpen != null && !this.linkOpen.getWork().isDone())
@@ -301,6 +306,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		{
 			if (this.linkOpen != null && !this.linkOpen.getWork().isDone())
 			{
+				this.setClosed();
 				ExceptionUtil.completeExceptionally(this.linkOpen.getWork(), exception, this);
 			}
 			
@@ -308,11 +314,6 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		}
 
 		this.stuckTransportHandler.resetTimeoutErrorTracking();
-		
-		synchronized (this.linkCreateLock)
-		{
-			this.linkCreateScheduled = false;
-		}		
 	}
 	
 	// intended to be invoked by proton reactor handler - upon delivery 
@@ -344,51 +345,35 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		if (this.getIsClosingOrClosed())
 		{
 			this.linkClose.complete(null);
-			return;
-		}
-		
-		this.lastKnownLinkError = exception;
-		WorkItem<Collection<Message>> currentReceive = this.pendingReceives.peek();
-		
-		boolean isLinkOpenCall = (this.linkOpen != null && this.linkOpen.getWork() != null && !this.linkOpen.getWork().isDone());
-		TimeoutTracker currentOperationTracker = currentReceive != null 
-				? currentReceive.getTimeoutTracker() 
-				: (isLinkOpenCall ? this.linkOpen.getTimeoutTracker() : new TimeoutTracker(this.receiveTimeout, true));
-		
-		Duration remainingTime = currentOperationTracker == null 
-						? Duration.ofSeconds(0)
-						: (currentOperationTracker.remaining().getSeconds() <= 0 ? Duration.ofSeconds(0) : currentOperationTracker.remaining());
-		Duration retryInterval = this.underlyingFactory.getRetryPolicy().getNextRetryInterval(this.getClientId(), exception, remainingTime);
+			WorkItem<Collection<Message>> workItem = null;
 
-		if (retryInterval != null)
+			while ((workItem = this.pendingReceives.poll()) != null)
+			{
+				CompletableFuture<Collection<Message>> future = workItem.getWork();
+				if (exception == null ||
+					(exception instanceof ServiceBusException && ((ServiceBusException) exception).getIsTransient()))
+				{
+					future.complete(null);
+				}
+				else
+				{
+					ExceptionUtil.completeExceptionally(future, exception, this);
+				}
+			}
+		}
+		else
 		{
+			this.lastKnownLinkError = exception;
+			
 			if (this.receiveLink.getLocalState() != EndpointState.CLOSED)
 			{
 				this.receiveLink.close();
 			}
 			
-			this.scheduleRecreate(retryInterval);			
-			return;
-		}
-		else
-		{
-			this.setClosed();
-		}
-		
-		this.onOpenComplete(exception);
-		WorkItem<Collection<Message>> workItem = null;
-
-		while ((workItem = this.pendingReceives.poll()) != null)
-		{
-			CompletableFuture<Collection<Message>> future = workItem.getWork();
-			if (exception instanceof ServiceBusException && ((ServiceBusException) exception).getIsTransient())
-			{
-				future.complete(null);
-			}
-			else
-			{
-				ExceptionUtil.completeExceptionally(future, exception, this);
-			}
+			this.onOpenComplete(exception);
+	
+			if (!this.getIsClosingOrClosed())
+				this.scheduleRecreate(Duration.ofSeconds(0));
 		}
 	}
 	
@@ -426,11 +411,6 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
         catch (java.util.concurrent.TimeoutException exception)
         {
         	this.onError(new TimeoutException("Connection creation timed out.", exception));
-        	return null;
-        }
-        
-        if (connection == null || connection.getLocalState() == EndpointState.CLOSED)
-        {
         	return null;
         }
         
