@@ -54,13 +54,13 @@ public final class UsagesInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface UsagesService {
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (Usages, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/usages")
-        Call<ResponseBody> list(@Path("location") String location, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> list(@Path("location") String location, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (Usages, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -83,7 +83,7 @@ public final class UsagesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.list(location, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.list(location, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<UsageInner>> response = listDelegate(call.execute());
         PagedList<UsageInner> result = new PagedList<UsageInner>(response.getBody()) {
             @Override
@@ -118,7 +118,7 @@ public final class UsagesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.list(location, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.list(location, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<UsageInner>>(serviceCallback) {
             @Override
@@ -160,7 +160,7 @@ public final class UsagesInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return listNextDelegate(call.execute());
     }
 
@@ -181,7 +181,7 @@ public final class UsagesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<UsageInner>>(serviceCallback) {
             @Override

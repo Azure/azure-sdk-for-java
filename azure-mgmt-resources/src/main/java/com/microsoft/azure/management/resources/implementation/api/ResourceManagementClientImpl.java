@@ -287,6 +287,18 @@ public final class ResourceManagementClientImpl extends AzureServiceClient {
         this.resourceProviderOperationDetails = new ResourceProviderOperationDetailsInner(restClient().retrofit(), this);
         this.policyDefinitions = new PolicyDefinitionsInner(restClient().retrofit(), this);
         this.policyAssignments = new PolicyAssignmentsInner(restClient().retrofit(), this);
-        this.azureClient = new AzureClient(restClient());
+        restClient().headers().addHeader("x-ms-client-request-id", UUID.randomUUID().toString());
+        this.azureClient = new AzureClient(this);
+    }
+
+    /**
+     * Gets the User-Agent header for the client.
+     *
+     * @return the user agent string.
+     */
+    public String userAgent() {
+        return String.format("Azure-SDK-For-Java/%s (%s)",
+                getClass().getPackage().getImplementationVersion(),
+                "ResourceManagementClient, 2015-11-01");
     }
 }

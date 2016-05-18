@@ -63,37 +63,37 @@ public final class ResourcesInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface ResourcesService {
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (Resources, 2015-11-01)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{sourceResourceGroupName}/moveResources")
-        Call<ResponseBody> moveResources(@Path("sourceResourceGroupName") String sourceResourceGroupName, @Path("subscriptionId") String subscriptionId, @Body ResourcesMoveInfoInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> moveResources(@Path("sourceResourceGroupName") String sourceResourceGroupName, @Path("subscriptionId") String subscriptionId, @Body ResourcesMoveInfoInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (Resources, 2015-11-01)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{sourceResourceGroupName}/moveResources")
-        Call<ResponseBody> beginMoveResources(@Path("sourceResourceGroupName") String sourceResourceGroupName, @Path("subscriptionId") String subscriptionId, @Body ResourcesMoveInfoInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> beginMoveResources(@Path("sourceResourceGroupName") String sourceResourceGroupName, @Path("subscriptionId") String subscriptionId, @Body ResourcesMoveInfoInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (Resources, 2015-11-01)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resources")
-        Call<ResponseBody> list(@Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> list(@Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (Resources, 2015-11-01)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @HEAD("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
-        Call<Void> checkExistence(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("parentResourcePath") String parentResourcePath, @Path("resourceType") String resourceType, @Path("resourceName") String resourceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<Void> checkExistence(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("parentResourcePath") String parentResourcePath, @Path("resourceType") String resourceType, @Path("resourceName") String resourceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (Resources, 2015-11-01)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> delete(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("parentResourcePath") String parentResourcePath, @Path("resourceType") String resourceType, @Path("resourceName") String resourceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> delete(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("parentResourcePath") String parentResourcePath, @Path("resourceType") String resourceType, @Path("resourceName") String resourceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (Resources, 2015-11-01)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
-        Call<ResponseBody> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("parentResourcePath") String parentResourcePath, @Path("resourceType") String resourceType, @Path("resourceName") String resourceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Body GenericResourceInner parameters, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("parentResourcePath") String parentResourcePath, @Path("resourceType") String resourceType, @Path("resourceName") String resourceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Body GenericResourceInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (Resources, 2015-11-01)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
-        Call<ResponseBody> get(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("parentResourcePath") String parentResourcePath, @Path("resourceType") String resourceType, @Path("resourceName") String resourceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> get(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("parentResourcePath") String parentResourcePath, @Path("resourceType") String resourceType, @Path("resourceName") String resourceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (Resources, 2015-11-01)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -122,7 +122,7 @@ public final class ResourcesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Response<ResponseBody> result = service.moveResources(sourceResourceGroupName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage()).execute();
+        Response<ResponseBody> result = service.moveResources(sourceResourceGroupName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
 
@@ -152,7 +152,7 @@ public final class ResourcesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
         Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.moveResources(sourceResourceGroupName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.moveResources(sourceResourceGroupName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -191,7 +191,7 @@ public final class ResourcesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Call<ResponseBody> call = service.beginMoveResources(sourceResourceGroupName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginMoveResources(sourceResourceGroupName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginMoveResourcesDelegate(call.execute());
     }
 
@@ -225,7 +225,7 @@ public final class ResourcesInner {
             return null;
         }
         Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.beginMoveResources(sourceResourceGroupName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginMoveResources(sourceResourceGroupName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -264,7 +264,7 @@ public final class ResourcesInner {
         }
         final String filter = null;
         final Integer top = null;
-        Call<ResponseBody> call = service.list(this.client.subscriptionId(), filter, top, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.subscriptionId(), filter, top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<GenericResourceInner>> response = listDelegate(call.execute());
         PagedList<GenericResourceInner> result = new PagedList<GenericResourceInner>(response.getBody()) {
             @Override
@@ -296,7 +296,7 @@ public final class ResourcesInner {
         }
         final String filter = null;
         final Integer top = null;
-        Call<ResponseBody> call = service.list(this.client.subscriptionId(), filter, top, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.subscriptionId(), filter, top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<GenericResourceInner>>(serviceCallback) {
             @Override
@@ -335,7 +335,7 @@ public final class ResourcesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.list(this.client.subscriptionId(), filter, top, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.subscriptionId(), filter, top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<GenericResourceInner>> response = listDelegate(call.execute());
         PagedList<GenericResourceInner> result = new PagedList<GenericResourceInner>(response.getBody()) {
             @Override
@@ -367,7 +367,7 @@ public final class ResourcesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.list(this.client.subscriptionId(), filter, top, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.subscriptionId(), filter, top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<GenericResourceInner>>(serviceCallback) {
             @Override
@@ -432,7 +432,7 @@ public final class ResourcesInner {
         if (apiVersion == null) {
             throw new IllegalArgumentException("Parameter apiVersion is required and cannot be null.");
         }
-        Call<Void> call = service.checkExistence(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage());
+        Call<Void> call = service.checkExistence(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return checkExistenceDelegate(call.execute());
     }
 
@@ -481,7 +481,7 @@ public final class ResourcesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
             return null;
         }
-        Call<Void> call = service.checkExistence(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage());
+        Call<Void> call = service.checkExistence(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseEmptyCallback<Boolean>(serviceCallback) {
             @Override
@@ -540,7 +540,7 @@ public final class ResourcesInner {
         if (apiVersion == null) {
             throw new IllegalArgumentException("Parameter apiVersion is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.delete(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.delete(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return deleteDelegate(call.execute());
     }
 
@@ -589,7 +589,7 @@ public final class ResourcesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.delete(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.delete(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -653,7 +653,7 @@ public final class ResourcesInner {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), apiVersion, parameters, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent());
         return createOrUpdateDelegate(call.execute());
     }
 
@@ -708,7 +708,7 @@ public final class ResourcesInner {
             return null;
         }
         Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), apiVersion, parameters, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<GenericResourceInner>(serviceCallback) {
             @Override
@@ -767,7 +767,7 @@ public final class ResourcesInner {
         if (apiVersion == null) {
             throw new IllegalArgumentException("Parameter apiVersion is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.get(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.get(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return getDelegate(call.execute());
     }
 
@@ -816,7 +816,7 @@ public final class ResourcesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.get(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.get(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<GenericResourceInner>(serviceCallback) {
             @Override
@@ -852,7 +852,7 @@ public final class ResourcesInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return listNextDelegate(call.execute());
     }
 
@@ -873,7 +873,7 @@ public final class ResourcesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<GenericResourceInner>>(serviceCallback) {
             @Override

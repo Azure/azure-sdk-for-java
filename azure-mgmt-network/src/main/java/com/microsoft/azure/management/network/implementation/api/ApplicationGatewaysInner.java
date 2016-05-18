@@ -61,57 +61,57 @@ public final class ApplicationGatewaysInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface ApplicationGatewaysService {
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (ApplicationGateways, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> delete(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> delete(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (ApplicationGateways, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (ApplicationGateways, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}")
-        Call<ResponseBody> get(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> get(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (ApplicationGateways, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}")
-        Call<ResponseBody> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Body ApplicationGatewayInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Body ApplicationGatewayInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (ApplicationGateways, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}")
-        Call<ResponseBody> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Body ApplicationGatewayInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Body ApplicationGatewayInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (ApplicationGateways, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways")
-        Call<ResponseBody> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (ApplicationGateways, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGateways")
-        Call<ResponseBody> listAll(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listAll(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (ApplicationGateways, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/start")
-        Call<ResponseBody> start(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> start(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (ApplicationGateways, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/start")
-        Call<ResponseBody> beginStart(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> beginStart(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (ApplicationGateways, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/stop")
-        Call<ResponseBody> stop(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> stop(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (ApplicationGateways, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/stop")
-        Call<ResponseBody> beginStop(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> beginStop(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (ApplicationGateways, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (ApplicationGateways, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listAllNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listAllNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -139,7 +139,7 @@ public final class ApplicationGatewaysInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Response<ResponseBody> result = service.delete(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage()).execute();
+        Response<ResponseBody> result = service.delete(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
 
@@ -168,7 +168,7 @@ public final class ApplicationGatewaysInner {
         if (this.client.apiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
-        Call<ResponseBody> call = service.delete(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.delete(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -206,7 +206,7 @@ public final class ApplicationGatewaysInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.beginDelete(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginDelete(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginDeleteDelegate(call.execute());
     }
 
@@ -239,7 +239,7 @@ public final class ApplicationGatewaysInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.beginDelete(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginDelete(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -285,7 +285,7 @@ public final class ApplicationGatewaysInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.get(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.get(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getDelegate(call.execute());
     }
 
@@ -318,7 +318,7 @@ public final class ApplicationGatewaysInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.get(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.get(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ApplicationGatewayInner>(serviceCallback) {
             @Override
@@ -369,7 +369,7 @@ public final class ApplicationGatewaysInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Response<ResponseBody> result = service.createOrUpdate(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage()).execute();
+        Response<ResponseBody> result = service.createOrUpdate(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
         return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<ApplicationGatewayInner>() { }.getType());
     }
 
@@ -403,7 +403,7 @@ public final class ApplicationGatewaysInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
         Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -446,7 +446,7 @@ public final class ApplicationGatewaysInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginCreateOrUpdateDelegate(call.execute());
     }
 
@@ -485,7 +485,7 @@ public final class ApplicationGatewaysInner {
             return null;
         }
         Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ApplicationGatewayInner>(serviceCallback) {
             @Override
@@ -527,7 +527,7 @@ public final class ApplicationGatewaysInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<ApplicationGatewayInner>> response = listDelegate(call.execute());
         PagedList<ApplicationGatewayInner> result = new PagedList<ApplicationGatewayInner>(response.getBody()) {
             @Override
@@ -562,7 +562,7 @@ public final class ApplicationGatewaysInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<ApplicationGatewayInner>>(serviceCallback) {
             @Override
@@ -606,7 +606,7 @@ public final class ApplicationGatewaysInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<ApplicationGatewayInner>> response = listAllDelegate(call.execute());
         PagedList<ApplicationGatewayInner> result = new PagedList<ApplicationGatewayInner>(response.getBody()) {
             @Override
@@ -636,7 +636,7 @@ public final class ApplicationGatewaysInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<ApplicationGatewayInner>>(serviceCallback) {
             @Override
@@ -689,7 +689,7 @@ public final class ApplicationGatewaysInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Response<ResponseBody> result = service.start(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage()).execute();
+        Response<ResponseBody> result = service.start(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
 
@@ -718,7 +718,7 @@ public final class ApplicationGatewaysInner {
         if (this.client.apiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
-        Call<ResponseBody> call = service.start(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.start(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -756,7 +756,7 @@ public final class ApplicationGatewaysInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.beginStart(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginStart(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginStartDelegate(call.execute());
     }
 
@@ -789,7 +789,7 @@ public final class ApplicationGatewaysInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.beginStart(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginStart(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -835,7 +835,7 @@ public final class ApplicationGatewaysInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Response<ResponseBody> result = service.stop(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage()).execute();
+        Response<ResponseBody> result = service.stop(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
 
@@ -864,7 +864,7 @@ public final class ApplicationGatewaysInner {
         if (this.client.apiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
-        Call<ResponseBody> call = service.stop(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.stop(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -902,7 +902,7 @@ public final class ApplicationGatewaysInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.beginStop(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginStop(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginStopDelegate(call.execute());
     }
 
@@ -935,7 +935,7 @@ public final class ApplicationGatewaysInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.beginStop(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginStop(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -970,7 +970,7 @@ public final class ApplicationGatewaysInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return listNextDelegate(call.execute());
     }
 
@@ -991,7 +991,7 @@ public final class ApplicationGatewaysInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<ApplicationGatewayInner>>(serviceCallback) {
             @Override
@@ -1033,7 +1033,7 @@ public final class ApplicationGatewaysInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return listAllNextDelegate(call.execute());
     }
 
@@ -1054,7 +1054,7 @@ public final class ApplicationGatewaysInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<ApplicationGatewayInner>>(serviceCallback) {
             @Override

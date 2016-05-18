@@ -60,41 +60,41 @@ public final class NetworkSecurityGroupsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface NetworkSecurityGroupsService {
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (NetworkSecurityGroups, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/{networkSecurityGroupName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> delete(@Path("resourceGroupName") String resourceGroupName, @Path("networkSecurityGroupName") String networkSecurityGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> delete(@Path("resourceGroupName") String resourceGroupName, @Path("networkSecurityGroupName") String networkSecurityGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (NetworkSecurityGroups, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/{networkSecurityGroupName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("networkSecurityGroupName") String networkSecurityGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("networkSecurityGroupName") String networkSecurityGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (NetworkSecurityGroups, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/{networkSecurityGroupName}")
-        Call<ResponseBody> get(@Path("resourceGroupName") String resourceGroupName, @Path("networkSecurityGroupName") String networkSecurityGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> get(@Path("resourceGroupName") String resourceGroupName, @Path("networkSecurityGroupName") String networkSecurityGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (NetworkSecurityGroups, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/{networkSecurityGroupName}")
-        Call<ResponseBody> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("networkSecurityGroupName") String networkSecurityGroupName, @Path("subscriptionId") String subscriptionId, @Body NetworkSecurityGroupInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("networkSecurityGroupName") String networkSecurityGroupName, @Path("subscriptionId") String subscriptionId, @Body NetworkSecurityGroupInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (NetworkSecurityGroups, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/{networkSecurityGroupName}")
-        Call<ResponseBody> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("networkSecurityGroupName") String networkSecurityGroupName, @Path("subscriptionId") String subscriptionId, @Body NetworkSecurityGroupInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("networkSecurityGroupName") String networkSecurityGroupName, @Path("subscriptionId") String subscriptionId, @Body NetworkSecurityGroupInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (NetworkSecurityGroups, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/networkSecurityGroups")
-        Call<ResponseBody> listAll(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listAll(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (NetworkSecurityGroups, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups")
-        Call<ResponseBody> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (NetworkSecurityGroups, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listAllNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listAllNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (NetworkSecurityGroups, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -122,7 +122,7 @@ public final class NetworkSecurityGroupsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Response<ResponseBody> result = service.delete(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage()).execute();
+        Response<ResponseBody> result = service.delete(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
 
@@ -151,7 +151,7 @@ public final class NetworkSecurityGroupsInner {
         if (this.client.apiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
-        Call<ResponseBody> call = service.delete(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.delete(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -189,7 +189,7 @@ public final class NetworkSecurityGroupsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.beginDelete(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginDelete(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginDeleteDelegate(call.execute());
     }
 
@@ -222,7 +222,7 @@ public final class NetworkSecurityGroupsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.beginDelete(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginDelete(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -269,7 +269,7 @@ public final class NetworkSecurityGroupsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String expand = null;
-        Call<ResponseBody> call = service.get(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.get(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent());
         return getDelegate(call.execute());
     }
 
@@ -303,7 +303,7 @@ public final class NetworkSecurityGroupsInner {
             return null;
         }
         final String expand = null;
-        Call<ResponseBody> call = service.get(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.get(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<NetworkSecurityGroupInner>(serviceCallback) {
             @Override
@@ -342,7 +342,7 @@ public final class NetworkSecurityGroupsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.get(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.get(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent());
         return getDelegate(call.execute());
     }
 
@@ -376,7 +376,7 @@ public final class NetworkSecurityGroupsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.get(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.get(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<NetworkSecurityGroupInner>(serviceCallback) {
             @Override
@@ -427,7 +427,7 @@ public final class NetworkSecurityGroupsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Response<ResponseBody> result = service.createOrUpdate(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage()).execute();
+        Response<ResponseBody> result = service.createOrUpdate(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
         return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<NetworkSecurityGroupInner>() { }.getType());
     }
 
@@ -461,7 +461,7 @@ public final class NetworkSecurityGroupsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
         Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -504,7 +504,7 @@ public final class NetworkSecurityGroupsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginCreateOrUpdateDelegate(call.execute());
     }
 
@@ -543,7 +543,7 @@ public final class NetworkSecurityGroupsInner {
             return null;
         }
         Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<NetworkSecurityGroupInner>(serviceCallback) {
             @Override
@@ -581,7 +581,7 @@ public final class NetworkSecurityGroupsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<NetworkSecurityGroupInner>> response = listAllDelegate(call.execute());
         PagedList<NetworkSecurityGroupInner> result = new PagedList<NetworkSecurityGroupInner>(response.getBody()) {
             @Override
@@ -611,7 +611,7 @@ public final class NetworkSecurityGroupsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<NetworkSecurityGroupInner>>(serviceCallback) {
             @Override
@@ -659,7 +659,7 @@ public final class NetworkSecurityGroupsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<NetworkSecurityGroupInner>> response = listDelegate(call.execute());
         PagedList<NetworkSecurityGroupInner> result = new PagedList<NetworkSecurityGroupInner>(response.getBody()) {
             @Override
@@ -694,7 +694,7 @@ public final class NetworkSecurityGroupsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<NetworkSecurityGroupInner>>(serviceCallback) {
             @Override
@@ -736,7 +736,7 @@ public final class NetworkSecurityGroupsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return listAllNextDelegate(call.execute());
     }
 
@@ -757,7 +757,7 @@ public final class NetworkSecurityGroupsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<NetworkSecurityGroupInner>>(serviceCallback) {
             @Override
@@ -799,7 +799,7 @@ public final class NetworkSecurityGroupsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return listNextDelegate(call.execute());
     }
 
@@ -820,7 +820,7 @@ public final class NetworkSecurityGroupsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<NetworkSecurityGroupInner>>(serviceCallback) {
             @Override

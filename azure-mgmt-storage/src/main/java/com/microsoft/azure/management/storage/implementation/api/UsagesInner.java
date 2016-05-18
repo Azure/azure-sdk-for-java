@@ -51,9 +51,9 @@ public final class UsagesInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface UsagesService {
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (Usages, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Storage/usages")
-        Call<ResponseBody> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -72,7 +72,7 @@ public final class UsagesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<UsageInner>> response = listDelegate(call.execute());
         List<UsageInner> result = response.getBody().getItems();
         return new ServiceResponse<>(result, response.getResponse());
@@ -97,7 +97,7 @@ public final class UsagesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<UsageInner>>(serviceCallback) {
             @Override

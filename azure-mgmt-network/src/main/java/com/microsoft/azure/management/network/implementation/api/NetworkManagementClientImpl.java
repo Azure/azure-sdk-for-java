@@ -431,8 +431,20 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
         this.virtualNetworkGatewayConnections = new VirtualNetworkGatewayConnectionsInner(restClient().retrofit(), this);
         this.virtualNetworkGateways = new VirtualNetworkGatewaysInner(restClient().retrofit(), this);
         this.virtualNetworks = new VirtualNetworksInner(restClient().retrofit(), this);
-        this.azureClient = new AzureClient(restClient());
+        restClient().headers().addHeader("x-ms-client-request-id", UUID.randomUUID().toString());
+        this.azureClient = new AzureClient(this);
         initializeService();
+    }
+
+    /**
+     * Gets the User-Agent header for the client.
+     *
+     * @return the user agent string.
+     */
+    public String userAgent() {
+        return String.format("Azure-SDK-For-Java/%s (%s)",
+                getClass().getPackage().getImplementationVersion(),
+                "NetworkManagementClient, 2015-06-15");
     }
 
     private void initializeService() {
@@ -444,9 +456,9 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * used by Retrofit to perform actually REST calls.
      */
     interface NetworkManagementClientService {
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (NetworkManagementClient, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/CheckDnsNameAvailability")
-        Call<ResponseBody> checkDnsNameAvailability(@Path("location") String location, @Path("subscriptionId") String subscriptionId, @Query("domainNameLabel") String domainNameLabel, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> checkDnsNameAvailability(@Path("location") String location, @Path("subscriptionId") String subscriptionId, @Query("domainNameLabel") String domainNameLabel, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -470,7 +482,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         final String domainNameLabel = null;
-        Call<ResponseBody> call = service.checkDnsNameAvailability(location, this.subscriptionId(), domainNameLabel, this.apiVersion(), this.acceptLanguage());
+        Call<ResponseBody> call = service.checkDnsNameAvailability(location, this.subscriptionId(), domainNameLabel, this.apiVersion(), this.acceptLanguage(), this.userAgent());
         return checkDnsNameAvailabilityDelegate(call.execute());
     }
 
@@ -499,7 +511,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
             return null;
         }
         final String domainNameLabel = null;
-        Call<ResponseBody> call = service.checkDnsNameAvailability(location, this.subscriptionId(), domainNameLabel, this.apiVersion(), this.acceptLanguage());
+        Call<ResponseBody> call = service.checkDnsNameAvailability(location, this.subscriptionId(), domainNameLabel, this.apiVersion(), this.acceptLanguage(), this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<DnsNameAvailabilityResultInner>(serviceCallback) {
             @Override
@@ -534,7 +546,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.checkDnsNameAvailability(location, this.subscriptionId(), domainNameLabel, this.apiVersion(), this.acceptLanguage());
+        Call<ResponseBody> call = service.checkDnsNameAvailability(location, this.subscriptionId(), domainNameLabel, this.apiVersion(), this.acceptLanguage(), this.userAgent());
         return checkDnsNameAvailabilityDelegate(call.execute());
     }
 
@@ -563,7 +575,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.checkDnsNameAvailability(location, this.subscriptionId(), domainNameLabel, this.apiVersion(), this.acceptLanguage());
+        Call<ResponseBody> call = service.checkDnsNameAvailability(location, this.subscriptionId(), domainNameLabel, this.apiVersion(), this.acceptLanguage(), this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<DnsNameAvailabilityResultInner>(serviceCallback) {
             @Override

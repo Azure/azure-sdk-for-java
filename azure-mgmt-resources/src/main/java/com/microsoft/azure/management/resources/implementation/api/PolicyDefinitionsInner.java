@@ -54,17 +54,17 @@ public final class PolicyDefinitionsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface PolicyDefinitionsService {
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (PolicyDefinitions, 2015-11-01)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policydefinitions/{policyDefinitionName}")
-        Call<ResponseBody> createOrUpdate(@Path("policyDefinitionName") String policyDefinitionName, @Path("subscriptionId") String subscriptionId, @Body PolicyDefinitionInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> createOrUpdate(@Path("policyDefinitionName") String policyDefinitionName, @Path("subscriptionId") String subscriptionId, @Body PolicyDefinitionInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (PolicyDefinitions, 2015-11-01)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policydefinitions/{policyDefinitionName}")
-        Call<ResponseBody> get(@Path("policyDefinitionName") String policyDefinitionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> get(@Path("policyDefinitionName") String policyDefinitionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (PolicyDefinitions, 2015-11-01)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policydefinitions/{policyDefinitionName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> delete(@Path("policyDefinitionName") String policyDefinitionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> delete(@Path("policyDefinitionName") String policyDefinitionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -92,7 +92,7 @@ public final class PolicyDefinitionsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Call<ResponseBody> call = service.createOrUpdate(policyDefinitionName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdate(policyDefinitionName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return createOrUpdateDelegate(call.execute());
     }
 
@@ -126,7 +126,7 @@ public final class PolicyDefinitionsInner {
             return null;
         }
         Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdate(policyDefinitionName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdate(policyDefinitionName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<PolicyDefinitionInner>(serviceCallback) {
             @Override
@@ -167,7 +167,7 @@ public final class PolicyDefinitionsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.get(policyDefinitionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.get(policyDefinitionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getDelegate(call.execute());
     }
 
@@ -195,7 +195,7 @@ public final class PolicyDefinitionsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.get(policyDefinitionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.get(policyDefinitionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<PolicyDefinitionInner>(serviceCallback) {
             @Override
@@ -236,7 +236,7 @@ public final class PolicyDefinitionsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.delete(policyDefinitionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.delete(policyDefinitionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return deleteDelegate(call.execute());
     }
 
@@ -264,7 +264,7 @@ public final class PolicyDefinitionsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.delete(policyDefinitionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.delete(policyDefinitionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override

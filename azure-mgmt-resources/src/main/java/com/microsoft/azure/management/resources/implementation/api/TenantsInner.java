@@ -53,13 +53,13 @@ public final class TenantsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface TenantsService {
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (Tenants, 2015-11-01)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("tenants")
-        Call<ResponseBody> list(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> list(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (Tenants, 2015-11-01)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -75,7 +75,7 @@ public final class TenantsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<TenantIdDescriptionInner>> response = listDelegate(call.execute());
         PagedList<TenantIdDescriptionInner> result = new PagedList<TenantIdDescriptionInner>(response.getBody()) {
             @Override
@@ -101,7 +101,7 @@ public final class TenantsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<TenantIdDescriptionInner>>(serviceCallback) {
             @Override
@@ -143,7 +143,7 @@ public final class TenantsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return listNextDelegate(call.execute());
     }
 
@@ -164,7 +164,7 @@ public final class TenantsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<TenantIdDescriptionInner>>(serviceCallback) {
             @Override

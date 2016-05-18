@@ -168,6 +168,18 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
         this.generateClientRequestId = true;
         this.subscriptions = new SubscriptionsInner(restClient().retrofit(), this);
         this.tenants = new TenantsInner(restClient().retrofit(), this);
-        this.azureClient = new AzureClient(restClient());
+        restClient().headers().addHeader("x-ms-client-request-id", UUID.randomUUID().toString());
+        this.azureClient = new AzureClient(this);
+    }
+
+    /**
+     * Gets the User-Agent header for the client.
+     *
+     * @return the user agent string.
+     */
+    public String userAgent() {
+        return String.format("Azure-SDK-For-Java/%s (%s)",
+                getClass().getPackage().getImplementationVersion(),
+                "SubscriptionClient, 2015-11-01");
     }
 }

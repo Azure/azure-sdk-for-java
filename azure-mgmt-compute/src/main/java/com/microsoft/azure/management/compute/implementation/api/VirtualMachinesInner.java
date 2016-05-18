@@ -61,93 +61,93 @@ public final class VirtualMachinesInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface VirtualMachinesService {
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (VirtualMachines, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/capture")
-        Call<ResponseBody> capture(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Body VirtualMachineCaptureParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> capture(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Body VirtualMachineCaptureParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (VirtualMachines, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/capture")
-        Call<ResponseBody> beginCapture(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Body VirtualMachineCaptureParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> beginCapture(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Body VirtualMachineCaptureParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (VirtualMachines, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}")
-        Call<ResponseBody> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Body VirtualMachineInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Body VirtualMachineInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (VirtualMachines, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}")
-        Call<ResponseBody> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Body VirtualMachineInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Body VirtualMachineInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (VirtualMachines, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> delete(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> delete(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (VirtualMachines, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (VirtualMachines, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}")
-        Call<ResponseBody> get(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("$expand") InstanceViewTypes expand, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> get(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("$expand") InstanceViewTypes expand, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (VirtualMachines, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/deallocate")
-        Call<ResponseBody> deallocate(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> deallocate(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (VirtualMachines, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/deallocate")
-        Call<ResponseBody> beginDeallocate(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> beginDeallocate(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (VirtualMachines, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/generalize")
-        Call<ResponseBody> generalize(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> generalize(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (VirtualMachines, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines")
-        Call<ResponseBody> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (VirtualMachines, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/virtualMachines")
-        Call<ResponseBody> listAll(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listAll(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (VirtualMachines, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/vmSizes")
-        Call<ResponseBody> listAvailableSizes(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listAvailableSizes(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (VirtualMachines, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/powerOff")
-        Call<ResponseBody> powerOff(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> powerOff(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (VirtualMachines, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/powerOff")
-        Call<ResponseBody> beginPowerOff(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> beginPowerOff(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (VirtualMachines, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/restart")
-        Call<ResponseBody> restart(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> restart(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (VirtualMachines, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/restart")
-        Call<ResponseBody> beginRestart(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> beginRestart(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (VirtualMachines, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/start")
-        Call<ResponseBody> start(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> start(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (VirtualMachines, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/start")
-        Call<ResponseBody> beginStart(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> beginStart(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (VirtualMachines, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/redeploy")
-        Call<ResponseBody> redeploy(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> redeploy(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (VirtualMachines, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/redeploy")
-        Call<ResponseBody> beginRedeploy(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> beginRedeploy(@Path("resourceGroupName") String resourceGroupName, @Path("vmName") String vmName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (VirtualMachines, 2015-06-15)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listAllNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listAllNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -180,7 +180,7 @@ public final class VirtualMachinesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Response<ResponseBody> result = service.capture(resourceGroupName, vmName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage()).execute();
+        Response<ResponseBody> result = service.capture(resourceGroupName, vmName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<VirtualMachineCaptureResultInner>() { }.getType());
     }
 
@@ -214,7 +214,7 @@ public final class VirtualMachinesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
         Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.capture(resourceGroupName, vmName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.capture(resourceGroupName, vmName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -257,7 +257,7 @@ public final class VirtualMachinesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Call<ResponseBody> call = service.beginCapture(resourceGroupName, vmName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginCapture(resourceGroupName, vmName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginCaptureDelegate(call.execute());
     }
 
@@ -296,7 +296,7 @@ public final class VirtualMachinesInner {
             return null;
         }
         Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.beginCapture(resourceGroupName, vmName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginCapture(resourceGroupName, vmName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<VirtualMachineCaptureResultInner>(serviceCallback) {
             @Override
@@ -348,7 +348,7 @@ public final class VirtualMachinesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Response<ResponseBody> result = service.createOrUpdate(resourceGroupName, vmName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage()).execute();
+        Response<ResponseBody> result = service.createOrUpdate(resourceGroupName, vmName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
         return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<VirtualMachineInner>() { }.getType());
     }
 
@@ -382,7 +382,7 @@ public final class VirtualMachinesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
         Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, vmName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, vmName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -425,7 +425,7 @@ public final class VirtualMachinesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, vmName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, vmName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginCreateOrUpdateDelegate(call.execute());
     }
 
@@ -464,7 +464,7 @@ public final class VirtualMachinesInner {
             return null;
         }
         Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, vmName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, vmName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<VirtualMachineInner>(serviceCallback) {
             @Override
@@ -511,7 +511,7 @@ public final class VirtualMachinesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Response<ResponseBody> result = service.delete(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage()).execute();
+        Response<ResponseBody> result = service.delete(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
 
@@ -540,7 +540,7 @@ public final class VirtualMachinesInner {
         if (this.client.apiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
-        Call<ResponseBody> call = service.delete(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.delete(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -578,7 +578,7 @@ public final class VirtualMachinesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.beginDelete(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginDelete(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginDeleteDelegate(call.execute());
     }
 
@@ -611,7 +611,7 @@ public final class VirtualMachinesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.beginDelete(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginDelete(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -657,7 +657,7 @@ public final class VirtualMachinesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final InstanceViewTypes expand = null;
-        Call<ResponseBody> call = service.get(resourceGroupName, vmName, this.client.subscriptionId(), expand, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.get(resourceGroupName, vmName, this.client.subscriptionId(), expand, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getDelegate(call.execute());
     }
 
@@ -691,7 +691,7 @@ public final class VirtualMachinesInner {
             return null;
         }
         final InstanceViewTypes expand = null;
-        Call<ResponseBody> call = service.get(resourceGroupName, vmName, this.client.subscriptionId(), expand, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.get(resourceGroupName, vmName, this.client.subscriptionId(), expand, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<VirtualMachineInner>(serviceCallback) {
             @Override
@@ -730,7 +730,7 @@ public final class VirtualMachinesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.get(resourceGroupName, vmName, this.client.subscriptionId(), expand, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.get(resourceGroupName, vmName, this.client.subscriptionId(), expand, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getDelegate(call.execute());
     }
 
@@ -764,7 +764,7 @@ public final class VirtualMachinesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.get(resourceGroupName, vmName, this.client.subscriptionId(), expand, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.get(resourceGroupName, vmName, this.client.subscriptionId(), expand, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<VirtualMachineInner>(serviceCallback) {
             @Override
@@ -810,7 +810,7 @@ public final class VirtualMachinesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Response<ResponseBody> result = service.deallocate(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage()).execute();
+        Response<ResponseBody> result = service.deallocate(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
 
@@ -839,7 +839,7 @@ public final class VirtualMachinesInner {
         if (this.client.apiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
-        Call<ResponseBody> call = service.deallocate(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deallocate(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -877,7 +877,7 @@ public final class VirtualMachinesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.beginDeallocate(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginDeallocate(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginDeallocateDelegate(call.execute());
     }
 
@@ -910,7 +910,7 @@ public final class VirtualMachinesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.beginDeallocate(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginDeallocate(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -954,7 +954,7 @@ public final class VirtualMachinesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.generalize(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.generalize(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return generalizeDelegate(call.execute());
     }
 
@@ -987,7 +987,7 @@ public final class VirtualMachinesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.generalize(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.generalize(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -1027,7 +1027,7 @@ public final class VirtualMachinesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<VirtualMachineInner>> response = listDelegate(call.execute());
         List<VirtualMachineInner> result = response.getBody().getItems();
         return new ServiceResponse<>(result, response.getResponse());
@@ -1057,7 +1057,7 @@ public final class VirtualMachinesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<VirtualMachineInner>>(serviceCallback) {
             @Override
@@ -1095,7 +1095,7 @@ public final class VirtualMachinesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl1<VirtualMachineInner>> response = listAllDelegate(call.execute());
         PagedList<VirtualMachineInner> result = new PagedList<VirtualMachineInner>(response.getBody()) {
             @Override
@@ -1125,7 +1125,7 @@ public final class VirtualMachinesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<VirtualMachineInner>>(serviceCallback) {
             @Override
@@ -1177,7 +1177,7 @@ public final class VirtualMachinesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listAvailableSizes(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listAvailableSizes(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<VirtualMachineSizeInner>> response = listAvailableSizesDelegate(call.execute());
         List<VirtualMachineSizeInner> result = response.getBody().getItems();
         return new ServiceResponse<>(result, response.getResponse());
@@ -1212,7 +1212,7 @@ public final class VirtualMachinesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listAvailableSizes(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listAvailableSizes(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<VirtualMachineSizeInner>>(serviceCallback) {
             @Override
@@ -1259,7 +1259,7 @@ public final class VirtualMachinesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Response<ResponseBody> result = service.powerOff(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage()).execute();
+        Response<ResponseBody> result = service.powerOff(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
 
@@ -1288,7 +1288,7 @@ public final class VirtualMachinesInner {
         if (this.client.apiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
-        Call<ResponseBody> call = service.powerOff(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.powerOff(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -1326,7 +1326,7 @@ public final class VirtualMachinesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.beginPowerOff(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginPowerOff(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginPowerOffDelegate(call.execute());
     }
 
@@ -1359,7 +1359,7 @@ public final class VirtualMachinesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.beginPowerOff(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginPowerOff(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -1404,7 +1404,7 @@ public final class VirtualMachinesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Response<ResponseBody> result = service.restart(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage()).execute();
+        Response<ResponseBody> result = service.restart(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
 
@@ -1433,7 +1433,7 @@ public final class VirtualMachinesInner {
         if (this.client.apiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
-        Call<ResponseBody> call = service.restart(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.restart(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -1471,7 +1471,7 @@ public final class VirtualMachinesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.beginRestart(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginRestart(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginRestartDelegate(call.execute());
     }
 
@@ -1504,7 +1504,7 @@ public final class VirtualMachinesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.beginRestart(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginRestart(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -1549,7 +1549,7 @@ public final class VirtualMachinesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Response<ResponseBody> result = service.start(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage()).execute();
+        Response<ResponseBody> result = service.start(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
 
@@ -1578,7 +1578,7 @@ public final class VirtualMachinesInner {
         if (this.client.apiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
-        Call<ResponseBody> call = service.start(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.start(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -1616,7 +1616,7 @@ public final class VirtualMachinesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.beginStart(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginStart(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginStartDelegate(call.execute());
     }
 
@@ -1649,7 +1649,7 @@ public final class VirtualMachinesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.beginStart(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginStart(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -1694,7 +1694,7 @@ public final class VirtualMachinesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Response<ResponseBody> result = service.redeploy(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage()).execute();
+        Response<ResponseBody> result = service.redeploy(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
 
@@ -1723,7 +1723,7 @@ public final class VirtualMachinesInner {
         if (this.client.apiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
-        Call<ResponseBody> call = service.redeploy(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.redeploy(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -1761,7 +1761,7 @@ public final class VirtualMachinesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.beginRedeploy(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginRedeploy(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginRedeployDelegate(call.execute());
     }
 
@@ -1794,7 +1794,7 @@ public final class VirtualMachinesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.beginRedeploy(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginRedeploy(resourceGroupName, vmName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -1828,7 +1828,7 @@ public final class VirtualMachinesInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return listAllNextDelegate(call.execute());
     }
 
@@ -1849,7 +1849,7 @@ public final class VirtualMachinesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<VirtualMachineInner>>(serviceCallback) {
             @Override

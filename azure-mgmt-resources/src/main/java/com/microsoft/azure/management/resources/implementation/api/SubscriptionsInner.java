@@ -55,25 +55,25 @@ public final class SubscriptionsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface SubscriptionsService {
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (Subscriptions, 2015-11-01)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/locations")
-        Call<ResponseBody> listLocations(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listLocations(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (Subscriptions, 2015-11-01)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}")
-        Call<ResponseBody> get(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> get(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (Subscriptions, 2015-11-01)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions")
-        Call<ResponseBody> list(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> list(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (Subscriptions, 2015-11-01)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listLocationsNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listLocationsNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (Subscriptions, 2015-11-01)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -93,7 +93,7 @@ public final class SubscriptionsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listLocations(subscriptionId, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listLocations(subscriptionId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<LocationInner>> response = listLocationsDelegate(call.execute());
         PagedList<LocationInner> result = new PagedList<LocationInner>(response.getBody()) {
             @Override
@@ -124,7 +124,7 @@ public final class SubscriptionsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listLocations(subscriptionId, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listLocations(subscriptionId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<LocationInner>>(serviceCallback) {
             @Override
@@ -169,7 +169,7 @@ public final class SubscriptionsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.get(subscriptionId, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.get(subscriptionId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getDelegate(call.execute());
     }
 
@@ -193,7 +193,7 @@ public final class SubscriptionsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.get(subscriptionId, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.get(subscriptionId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SubscriptionInner>(serviceCallback) {
             @Override
@@ -227,7 +227,7 @@ public final class SubscriptionsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<SubscriptionInner>> response = listDelegate(call.execute());
         PagedList<SubscriptionInner> result = new PagedList<SubscriptionInner>(response.getBody()) {
             @Override
@@ -253,7 +253,7 @@ public final class SubscriptionsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<SubscriptionInner>>(serviceCallback) {
             @Override
@@ -295,7 +295,7 @@ public final class SubscriptionsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listLocationsNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listLocationsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return listLocationsNextDelegate(call.execute());
     }
 
@@ -316,7 +316,7 @@ public final class SubscriptionsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listLocationsNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listLocationsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<LocationInner>>(serviceCallback) {
             @Override
@@ -358,7 +358,7 @@ public final class SubscriptionsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return listNextDelegate(call.execute());
     }
 
@@ -379,7 +379,7 @@ public final class SubscriptionsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<SubscriptionInner>>(serviceCallback) {
             @Override

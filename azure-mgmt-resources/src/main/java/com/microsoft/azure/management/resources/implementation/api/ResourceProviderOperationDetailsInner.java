@@ -54,13 +54,13 @@ public final class ResourceProviderOperationDetailsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface ResourceProviderOperationDetailsService {
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (ResourceProviderOperationDetails, 2015-11-01)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("providers/{resourceProviderNamespace}/operations")
-        Call<ResponseBody> list(@Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> list(@Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (ResourceProviderOperationDetails, 2015-11-01)"})
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -84,7 +84,7 @@ public final class ResourceProviderOperationDetailsInner {
         if (apiVersion == null) {
             throw new IllegalArgumentException("Parameter apiVersion is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.list(resourceProviderNamespace, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.list(resourceProviderNamespace, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<ResourceProviderOperationDefinitionInner>> response = listDelegate(call.execute());
         PagedList<ResourceProviderOperationDefinitionInner> result = new PagedList<ResourceProviderOperationDefinitionInner>(response.getBody()) {
             @Override
@@ -120,7 +120,7 @@ public final class ResourceProviderOperationDetailsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.list(resourceProviderNamespace, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.list(resourceProviderNamespace, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<ResourceProviderOperationDefinitionInner>>(serviceCallback) {
             @Override
@@ -163,7 +163,7 @@ public final class ResourceProviderOperationDetailsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return listNextDelegate(call.execute());
     }
 
@@ -184,7 +184,7 @@ public final class ResourceProviderOperationDetailsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<ResourceProviderOperationDefinitionInner>>(serviceCallback) {
             @Override
