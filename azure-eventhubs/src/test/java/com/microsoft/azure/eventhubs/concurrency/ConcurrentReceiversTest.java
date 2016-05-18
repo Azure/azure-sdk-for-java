@@ -90,7 +90,8 @@ public class ConcurrentReceiversTest
 		private long count;
 		
 		public EventCounter()
-		{ 
+		{
+			super(50);
 			count = 0;
 		}
 		

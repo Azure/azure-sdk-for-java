@@ -60,7 +60,8 @@ public class ReceiverEpochTest extends TestBase
 		public long count;
 		
 		public EventCounter()
-		{ 
+		{
+			super(50);
 			count = 0;
 		}
 
