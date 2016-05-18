@@ -2,6 +2,7 @@ package com.microsoft.azure.management.resources.fluentcore.arm.models.implement
 
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroups;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
 
@@ -35,15 +36,19 @@ public abstract class GroupableResourceImpl<
 
     @Override
     public String resourceGroupName() {
-        return this.groupName;
+        if(this.groupName == null) {
+        	return ResourceUtils.groupFromResourceId(this.id());
+        } else {
+        	return this.groupName;
+        }
     }
 
     @Override
     public FluentModelT create() throws Exception {
         for (String id : prerequisites().keySet()) {
             if (!created().containsKey(id)) {
-                created().put(id, prerequisites().get(id));
                 prerequisites().get(id).create();
+                created().put(id, prerequisites().get(id));
             }
         }
         return null;
@@ -54,11 +59,11 @@ public abstract class GroupableResourceImpl<
      ****************************************/
 
     public final FluentModelImplT withNewGroup(String groupName) {
-        return this.withNewGroup(resourceGroups.define(groupName).withLocation(location()));
+        return this.withNewGroup(resourceGroups.define(groupName).withLocation(this.region()));
     }
 
     public final FluentModelImplT withNewGroup() {
-        return this.withNewGroup(groupName);
+        return this.withNewGroup(this.name() + "group");
     }
 
     @SuppressWarnings("unchecked")

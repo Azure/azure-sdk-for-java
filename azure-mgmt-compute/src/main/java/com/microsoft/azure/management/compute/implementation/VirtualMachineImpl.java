@@ -278,7 +278,7 @@ class VirtualMachineImpl
     @Override
     public DefinitionCreatable withNewStorageAccount(String name) {
         return withNewStorageAccount(storageManager.storageAccounts().define(name)
-                .withRegion(location())
+                .withRegion(region())
                 .withExistingGroup(this.resourceGroupName()));
     }
 
