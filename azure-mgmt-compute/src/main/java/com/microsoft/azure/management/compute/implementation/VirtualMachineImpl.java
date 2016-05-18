@@ -18,13 +18,17 @@ class VirtualMachineImpl
             VirtualMachine.DefinitionBlank,
             VirtualMachine.DefinitionWithGroup,
             VirtualMachine.DefinitionWithOS,
-        VirtualMachine.DefinitionWithMarketplaceImage,
+            VirtualMachine.DefinitionWithMarketplaceImage,
             VirtualMachine.DefinitionWithOSType,
             VirtualMachine.DefinitionWithRootUserName,
             VirtualMachine.DefinitionWithAdminUserName,
             VirtualMachine.DefinitionLinuxCreatable,
             VirtualMachine.DefinitionWindowsCreatable,
-            VirtualMachine.DefinitionCreatable {
+            VirtualMachine.DefinitionCreatable,
+            VirtualMachine.ConfigureDataDisk,
+        VirtualMachine.ConfigureNewDataDiskWithStoreAt,
+            VirtualMachine.ConfigureNewDataDisk,
+            VirtualMachine.ConfigureExistingDataDisk {
     private final VirtualMachinesInner client;
     private final VirtualMachineInner innerModel;
     private final ResourceManager resourceManager;
@@ -42,6 +46,7 @@ class VirtualMachineImpl
 
         this.innerModel.setStorageProfile(new StorageProfile());
         this.innerModel.storageProfile().setOsDisk(new OSDisk());
+        this.innerModel.storageProfile().setDataDisks(new ArrayList<DataDisk>());
         this.innerModel.setOsProfile(new OSProfile());
         this.innerModel.setHardwareProfile(new HardwareProfile());
     }
@@ -264,7 +269,7 @@ class VirtualMachineImpl
     @Override
     public DefinitionCreatable withOSDiskVhdLocation(String containerName, String vhdName) {
         VirtualHardDisk osVhd = new VirtualHardDisk();
-        osVhd.setUri(null); // TODO generate and sets VHD URI.
+        osVhd.setUri(blobUrl(this.storageAccountName, containerName, vhdName));
         this.innerModel.storageProfile().osDisk().setVhd(osVhd);
         return this;
     }
@@ -287,6 +292,88 @@ class VirtualMachineImpl
         return this;
     }
 
+    // Virtual machine data disk fluent methods
+    //
+
+    @Override
+    public ConfigureDataDisk<DefinitionCreatable> withLun(Integer lun) {
+        DataDisk dataDisk = currentDataDisk();
+        dataDisk.setLun(lun);
+        return this;
+    }
+
+    @Override
+    public ConfigureDataDisk<DefinitionCreatable> withCaching(CachingTypes cachingType) {
+        DataDisk dataDisk = currentDataDisk();
+        dataDisk.setCaching(cachingType);
+        return this;
+    }
+
+    @Override
+    public DefinitionCreatable attach() {
+        return this;
+    }
+
+    @Override
+    public ConfigureDataDisk<DefinitionCreatable> storeAt(String storageAccountName, String containerName, String vhdName) {
+        DataDisk dataDisk = currentDataDisk();
+        dataDisk.setVhd(new VirtualHardDisk());
+        dataDisk.vhd().setUri(blobUrl(storageAccountName, containerName, vhdName)); // URL points to where the new data disk needs to be stored.
+        return this;
+    }
+
+    @Override
+    public ConfigureNewDataDiskWithStoreAt<DefinitionCreatable> withSizeInGB(Integer sizeInGB) {
+        DataDisk dataDisk = currentDataDisk();
+        dataDisk.setDiskSizeGB(sizeInGB);
+        return this;
+    }
+
+    @Override
+    public ConfigureDataDisk<DefinitionCreatable> from(String storageAccountName, String containerName, String vhdName) {
+        DataDisk dataDisk = currentDataDisk();
+        dataDisk.setVhd(new VirtualHardDisk());
+        dataDisk.vhd().setUri(blobUrl(storageAccountName, containerName, vhdName)); // URL points to an existing data disk to be attached.
+        return this;
+    }
+
+    @Override
+    public ConfigureNewDataDisk<DefinitionCreatable> defineNewDataDisk(String name) {
+        DataDisk dataDisk = prepareNewDataDisk();
+        dataDisk.setName(name);
+        dataDisk.setCreateOption(DiskCreateOptionTypes.EMPTY);
+        return this;
+    }
+
+    @Override
+    public ConfigureExistingDataDisk<DefinitionCreatable> defineExistingDataDisk(String name) {
+        DataDisk dataDisk = prepareNewDataDisk();
+        dataDisk.setName(name);
+        dataDisk.setCreateOption(DiskCreateOptionTypes.ATTACH);
+        return this;
+    }
+
+    @Override
+    public DefinitionCreatable withNewDataDisk(Integer sizeInGB) {
+        DataDisk dataDisk = prepareNewDataDisk();
+        dataDisk.setDiskSizeGB(sizeInGB);
+        dataDisk.setCreateOption(DiskCreateOptionTypes.EMPTY);
+        return this;
+    }
+
+    @Override
+    public DefinitionCreatable withExistingDataDisk(String storageAccountName, String containerName, String vhdName) {
+        DataDisk dataDisk = prepareNewDataDisk();
+        VirtualHardDisk diskVhd = new VirtualHardDisk();
+        diskVhd.setUri(blobUrl(storageAccountName, containerName, vhdName));
+        dataDisk.setVhd(diskVhd);
+        dataDisk.setCreateOption(DiskCreateOptionTypes.ATTACH);
+        return this;
+    }
+
+    // Virtual machine storage account fluent methods
+    //
+
     @Override
     public DefinitionCreatable withNewStorageAccount(String name) {
         return withNewStorageAccount(storageManager.storageAccounts().define(name)
@@ -307,24 +394,22 @@ class VirtualMachineImpl
         return this;
     }
 
-
     @Override
     public VirtualMachine create() throws Exception {
         setDefaults();
         return null;
     }
 
-    // Helper methods
+    // helper methods to set various virtual machine's default properties
     //
-    private boolean isStoredImage(OSDisk osDisk) {
-        return osDisk.image() != null;
-    }
-
-    private boolean isOSDiskAttached(OSDisk osDisk) {
-        return osDisk.createOption() == DiskCreateOptionTypes.ATTACH;
-    }
 
     private void setDefaults() {
+        setOSDiskAndOSProfileDefaults();
+        setHardwareProfileDefaults();
+        setDataDisksDefaults();
+    }
+
+    private void setOSDiskAndOSProfileDefaults() {
         OSDisk osDisk = this.innerModel.storageProfile().osDisk();
         if (!isOSDiskAttached(osDisk)) {
             if (osDisk.vhd() == null) {
@@ -347,10 +432,79 @@ class VirtualMachineImpl
         if (osDisk.name() == null) {
             withOSDiskName(null /*TODO generate random OSDisk name */);
         }
+    }
 
+    private void setHardwareProfileDefaults() {
         HardwareProfile hardwareProfile = this.innerModel.hardwareProfile();
         if (hardwareProfile.vmSize() == null) {
             hardwareProfile.setVmSize(VirtualMachineSizeTypes.BASIC_A0);
         }
+    }
+
+    private void setDataDisksDefaults() {
+        List<DataDisk> dataDisks = this.innerModel.storageProfile().dataDisks();
+        if (dataDisks.size() == 0) {
+            this.innerModel.storageProfile().setDataDisks(null);
+            return;
+        }
+
+        List<Integer> usedLuns = new ArrayList<>();
+        for (DataDisk dataDisk : dataDisks) {
+            if (dataDisk.lun() != -1) {
+                usedLuns.add(dataDisk.lun());
+            }
+        }
+
+        for (DataDisk dataDisk : dataDisks) {
+            if (dataDisk.lun() == -1) {
+                Integer i = 0;
+                while (usedLuns.contains(i)) {
+                    i++;
+                }
+                dataDisk.setLun(i);
+                usedLuns.add(i);
+            }
+
+            if (dataDisk.vhd() == null) {
+                VirtualHardDisk diskVhd = new VirtualHardDisk();
+                diskVhd.setUri(blobUrl(this.storageAccountName, "vhds", null /* TODO generate Vhd name*/));
+                dataDisk.setVhd(diskVhd);
+            }
+
+            if (dataDisk.name() == null) {
+                dataDisk.setName(null /*TODO generate random name for new DataDisk */);
+            }
+
+            if (dataDisk.caching() == null) {
+                dataDisk.setCaching(CachingTypes.READ_WRITE);
+            }
+        }
+    }
+
+    // Helper methods
+    //
+
+    private boolean isStoredImage(OSDisk osDisk) {
+        return osDisk.image() != null;
+    }
+
+    private boolean isOSDiskAttached(OSDisk osDisk) {
+        return osDisk.createOption() == DiskCreateOptionTypes.ATTACH;
+    }
+
+    private DataDisk prepareNewDataDisk() {
+        DataDisk dataDisk = new DataDisk();
+        dataDisk.setLun(-1);
+        this.innerModel.storageProfile().dataDisks().add(dataDisk);
+        return dataDisk;
+    }
+
+    private DataDisk currentDataDisk() {
+        List<DataDisk> dataDisks = this.innerModel.storageProfile().dataDisks();
+        return dataDisks.get(dataDisks.size() - 1);
+    }
+
+    private String blobUrl(String storageAccountName, String containerName, String blobName) {
+        return storageAccountName + ".blob.core.windows.net" + "/" + containerName + "/" + blobName ;
     }
 }

@@ -264,16 +264,103 @@ public interface VirtualMachine extends
 
     interface DefinitionWithVMSize<T extends DefinitionCreatable> {
         /**
+         * Specifies the virtual machine size
          * @param sizeName The name of the size for the virtual machine as text
          * @return The stage representing creatable VM definition
          */
         T withSize(String sizeName);
 
         /**
+         * Specifies the virtual machine size
          * @param size A size from the list of available sizes for the virtual machine
          * @return The stage representing creatable VM definition
          */
         T withSize(VirtualMachineSizeTypes size);
+    }
+
+    interface ConfigureDataDisk<T extends DefinitionCreatable> {
+        /**
+         * Specifies the logical unit number for the data disk
+         * @param lun The logical unit number
+         * @return The stage representing optional additional configurations for the attachable data disk
+         */
+        ConfigureDataDisk<T> withLun(Integer lun);
+
+        /**
+         * Specifies the caching type for the data disk
+         * @param cachingType The disk caching type. Possible values include: 'None', 'ReadOnly', 'ReadWrite'
+         * @return The stage representing optional additional configurations for the attachable data disk
+         */
+        ConfigureDataDisk<T> withCaching(CachingTypes cachingType);
+
+        /**
+         * Adds the data disk to the list of virtual machine's data disks
+         * @return The stage representing creatable VM definition
+         */
+        T attach();
+    }
+
+    interface ConfigureNewDataDiskWithStoreAt<T extends DefinitionCreatable> extends ConfigureDataDisk<T> {
+        /**
+         * Specifies where the VHD associated with the new blank data disk needs to be stored
+         * @param storageAccountName The storage account name
+         * @param containerName The name of the container to hold the new VHD file
+         * @param vhdName The name for the new VHD file
+         * @return The stage representing optional additional configurations for the attachable data disk
+         */
+        ConfigureDataDisk<T> storeAt(String storageAccountName, String containerName, String vhdName);
+    }
+
+    interface ConfigureNewDataDisk<T extends DefinitionCreatable> {
+        /**
+         * Specifies the initial disk size in GB for new blank data disk
+         * @param size The disk size in GB
+         * @return The stage representing optional additional configurations for the attachable data disk
+         */
+        ConfigureNewDataDiskWithStoreAt<T> withSizeInGB(Integer size);
+    }
+
+    interface ConfigureExistingDataDisk<T extends DefinitionCreatable> {
+        /**
+         * Specifies an existing VHD that needs to be attached to the virtual machine as data disk
+         * @param storageAccountName The storage account name
+         * @param containerName The name of the container holding the VHD file
+         * @param vhdName The name for the VHD file
+         * @return The stage representing optional additional configurations for the attachable data disk
+         */
+        ConfigureDataDisk<T> from(String storageAccountName, String containerName, String vhdName);
+    }
+
+    interface DefinitionWithDataDisk<T extends DefinitionCreatable> {
+        /**
+         * Specifies that a new blank data disk needs to be attached to virtual machine
+         * @param sizeInGB The disk size in GB
+         * @return The stage representing creatable VM definition
+         */
+        T withNewDataDisk(Integer sizeInGB);
+
+        /**
+         * Specifies an existing VHD that needs to be attached to the virtual machine as data disk
+         * @param storageAccountName The storage account name
+         * @param containerName The name of the container holding the VHD file
+         * @param vhdName The name for the VHD file
+         * @return The stage representing creatable VM definition
+         */
+        T withExistingDataDisk(String storageAccountName, String containerName, String vhdName);
+
+        /**
+         * Specifies a new blank data disk to be attached to the virtual machine along with it's configuration
+         * @param name The name for the data disk
+         * @return The stage representing configuration for the data disk
+         */
+        ConfigureNewDataDisk<T> defineNewDataDisk(String name);
+
+        /**
+         * Specifies an existing VHD that needs to be attached to the virtual machine as data disk along with it's configuration
+         * @param name The name for the data disk
+         * @return The stage representing configuration for the data disk
+         */
+        ConfigureExistingDataDisk<T> defineExistingDataDisk(String name);
     }
 
     interface DefinitionStorageAccount<T extends DefinitionCreatable> {
@@ -310,6 +397,7 @@ public interface VirtualMachine extends
             DefinitionOSDiskSettings<DefinitionCreatable>,
             DefinitionWithVMSize<DefinitionCreatable>,
             DefinitionStorageAccount<DefinitionCreatable>,
+            DefinitionWithDataDisk<DefinitionCreatable>,
             Creatable<VirtualMachine> {
     }
 }
