@@ -10,6 +10,7 @@ import com.microsoft.azure.management.storage.implementation.StorageManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 class VirtualMachineImpl
         extends GroupableResourceImpl<VirtualMachine, VirtualMachineInner, VirtualMachineImpl>
@@ -414,7 +415,7 @@ class VirtualMachineImpl
         if (!isOSDiskAttached(osDisk)) {
             if (osDisk.vhd() == null) {
                 // Sets the OS disk VHD for "UserImage" and "VM(Platform)Image"
-                withOSDiskVhdLocation("vhds", null /*TODO generate random vhd name */);
+                withOSDiskVhdLocation("vhds", this.name() + "-os-disk-" + UUID.randomUUID().toString() + ".vhd");
             }
             OSProfile osProfile = this.innerModel.osProfile();
             if (osDisk.osType() == OperatingSystemTypes.LINUX) {
@@ -430,7 +431,7 @@ class VirtualMachineImpl
         }
 
         if (osDisk.name() == null) {
-            withOSDiskName(null /*TODO generate random OSDisk name */);
+            withOSDiskName(this.name() + "-os-disk");
         }
     }
 
@@ -467,12 +468,13 @@ class VirtualMachineImpl
 
             if (dataDisk.vhd() == null) {
                 VirtualHardDisk diskVhd = new VirtualHardDisk();
-                diskVhd.setUri(blobUrl(this.storageAccountName, "vhds", null /* TODO generate Vhd name*/));
+                diskVhd.setUri(blobUrl(this.storageAccountName, "vhds",
+                        this.name() + "-data-disk-" + dataDisk.lun() + "-" + UUID.randomUUID().toString() + ".vhd"));
                 dataDisk.setVhd(diskVhd);
             }
 
             if (dataDisk.name() == null) {
-                dataDisk.setName(null /*TODO generate random name for new DataDisk */);
+                dataDisk.setName(this.name() + "-data-disk-" + dataDisk.lun());
             }
 
             if (dataDisk.caching() == null) {
