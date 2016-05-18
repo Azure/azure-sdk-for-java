@@ -16,16 +16,12 @@ public abstract class RetryPolicy
 	
 	private final String name;
 	private ConcurrentHashMap<String, Integer> retryCounts;
-	private boolean isServerBusy;
-	private Instant lastServerBusyReportedTime;
 	private Object serverBusySync;
 	
 	protected RetryPolicy(final String name)
 	{
 		this.name = name;
 		this.retryCounts = new ConcurrentHashMap<String, Integer>();
-		this.isServerBusy = false;
-		this.lastServerBusyReportedTime = Instant.EPOCH;
 		this.serverBusySync = new Object();
 	}
 	
@@ -89,29 +85,20 @@ public abstract class RetryPolicy
 	 */
 	public Duration getNextRetryInterval(String clientId, Exception lastException, Duration remainingTime)
 	{
+		int baseWaitTime = 0;
 		synchronized (this.serverBusySync)
 		{
 			if (lastException != null &&
 					(lastException instanceof ServerBusyException || (lastException.getCause() != null && lastException.getCause() instanceof ServerBusyException)))
 			{
-				this.isServerBusy = true;
-				this.lastServerBusyReportedTime = Instant.now();
+				baseWaitTime += ClientConstants.SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS;
 			}
 		}
 		
-		return this.onGetNextRetryInterval(clientId, lastException, remainingTime);
+		return this.onGetNextRetryInterval(clientId, lastException, remainingTime, baseWaitTime);
 	}
 	
-	public boolean isServerBusy()
-	{
-		synchronized (this.serverBusySync)
-		{
-			return (this.isServerBusy &&
-					Instant.now().isBefore(this.lastServerBusyReportedTime.plus(ClientConstants.SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS, ChronoUnit.SECONDS)));
-		}	
-	}
-	
-	protected abstract Duration onGetNextRetryInterval(String clientId, Exception lastException, Duration remainingTime);
+	protected abstract Duration onGetNextRetryInterval(String clientId, Exception lastException, Duration remainingTime, int baseWaitTime);
 	
 	@Override
 	public String toString()

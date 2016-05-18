@@ -205,31 +205,47 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		}
 		
 		final String tag = (deliveryTag == null) ? UUID.randomUUID().toString().replace("-", StringUtil.EMPTY) : deliveryTag;
-		final boolean isServerBusy = this.retryPolicy.isServerBusy();
 		boolean messageSent = false;
+		Delivery dlv = null;
+		int sentMsgSize = 0;
 		
 		synchronized (this.sendCall)
 		{
 			if (this.sendLink != null && this.sendLink.getLocalState() != EndpointState.CLOSED && this.sendLink.getRemoteState() != EndpointState.CLOSED
 					&& this.linkCredit.get() > 0
-					&& (this.pendingSendsWaitingForCredit.isEmpty() || this.pendingSendsWaitingForCredit.contains(tag))
-					&& !isServerBusy)
+					&& (this.pendingSendsWaitingForCredit.isEmpty() || this.pendingSendsWaitingForCredit.contains(tag)))
 			{
 				this.linkCredit.decrementAndGet();
 				
-	        	Delivery dlv = this.sendLink.delivery(tag.getBytes());
+	        	dlv = this.sendLink.delivery(tag.getBytes());
 	        	dlv.setMessageFormat(messageFormat);
 
-		        int sentMsgSize = this.sendLink.send(bytes, 0, arrayOffset);
+	        	sentMsgSize = this.sendLink.send(bytes, 0, arrayOffset);
 		        assert sentMsgSize == arrayOffset : "Contract of the ProtonJ library for Sender.Send API changed";
 		        
-		        this.sendLink.advance();
-		        messageSent = true;
+		        if (this.sendLink.advance())
+		        	messageSent = true;
+		        else
+		        {
+		        	if (TRACE_LOGGER.isLoggable(Level.FINE))
+		        	{
+		        		TRACE_LOGGER.log(Level.FINE,
+		        				String.format(Locale.US, "path[%s], linkName[%s], deliveryTag[%s], sentMessageSize[%s], payloadActualSize[%s] - sendlink advance failed",
+		        						this.sendPath, this.sendLink.getName(), tag, sentMsgSize, arrayOffset));
+		        	}
+		        	
+		        	dlv.free();
+		        }
 			}
 		}
 		
 		if (!messageSent)
 		{
+			if (this.sendLink.getLocalState() == EndpointState.CLOSED || this.sendLink.getRemoteState() == EndpointState.CLOSED)
+			{
+				this.scheduleRecreate(Duration.ofSeconds(0));
+			}
+			
 			if (!this.pendingSendsWaitingForCredit.contains(tag))
 			{
 				if (onSend != null)
@@ -244,7 +260,8 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 			if (TRACE_LOGGER.isLoggable(Level.FINEST))
 			{
 				TRACE_LOGGER.log(Level.FINEST,
-						String.format(Locale.US, "path[%s], linkName[%s], deliveryTag[%s]", this.sendPath, this.sendLink.getName(), tag));
+						String.format(Locale.US, "path[%s], linkName[%s], deliveryTag[%s], deliverySettled[%s], sentMessageSize[%s], payloadActualSize[%s]",
+								this.sendPath, this.sendLink.getName(), tag, dlv.isSettled(), sentMsgSize, arrayOffset));
 			}
 		}
 		
@@ -257,21 +274,9 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		{
 			sendWaiterData.setLastKnownException(lastKnownError);
 		}
-		else
-		{
-			if (isServerBusy)
-			{
-				Exception serverBusy = this.lastKnownLinkError;
-				sendWaiterData.setLastKnownException(
-							serverBusy instanceof ServerBusyException
-							? (ServerBusyException) serverBusy
-							: new ServerBusyException(
-									String.format(Locale.US, "Send operation failed with ServerBusy error, sendLink[%s], senderPath[%s]",
-											this.sendLink.getName(), this.sendPath)));
-			}
-		}
 		
         this.pendingSendsData.put(tag, sendWaiterData);
+        
         return onSendFuture;
 	}
 	
@@ -507,40 +512,40 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 			}
 			
 			this.linkCreateScheduled = true;
-		}
-				
-		Timer.schedule(
-			new Runnable()
-			{
-				@Override
-				public void run()
+			
+			Timer.schedule(
+				new Runnable()
 				{
-					if (MessageSender.this.sendLink.getLocalState() != EndpointState.CLOSED)
+					@Override
+					public void run()
 					{
-						return;
-					}
-					
-					Sender sender = MessageSender.this.createSendLink();
-					if (sender != null)
-					{
-						Sender oldSender = MessageSender.this.sendLink;
-						MessageSender.this.underlyingFactory.deregisterForConnectionError(oldSender);
-						
-						MessageSender.this.sendLink = sender;
-					}
-					else
-					{
-						synchronized (MessageSender.this.linkCreateLock) 
+						if (MessageSender.this.sendLink.getLocalState() != EndpointState.CLOSED)
 						{
-							MessageSender.this.linkCreateScheduled = false;
+							return;
 						}
+						
+						Sender oldSender = MessageSender.this.sendLink;
+						Sender sender = MessageSender.this.createSendLink();
+						
+						if (sender != null)
+						{
+							MessageSender.this.underlyingFactory.deregisterForConnectionError(oldSender);
+							MessageSender.this.sendLink = sender;
+						}
+						else
+						{
+							synchronized (MessageSender.this.linkCreateLock) 
+							{
+								MessageSender.this.linkCreateScheduled = false;
+							}
+						}
+						
+						MessageSender.this.retryPolicy.incrementRetryCount(MessageSender.this.getClientId());
 					}
-					
-					MessageSender.this.retryPolicy.incrementRetryCount(MessageSender.this.getClientId());
-				}
-			},
-			runAfter,
-			TimerType.OneTimeRun);
+				},
+				runAfter,
+				TimerType.OneTimeRun);
+		}
 	}
 	
 	@Override

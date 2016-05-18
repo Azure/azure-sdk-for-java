@@ -308,10 +308,11 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		}
 
 		this.stuckTransportHandler.resetTimeoutErrorTracking();
+		
 		synchronized (this.linkCreateLock)
 		{
 			this.linkCreateScheduled = false;
-		}
+		}		
 	}
 	
 	// intended to be invoked by proton reactor handler - upon delivery 
@@ -450,7 +451,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
         		if(TRACE_LOGGER.isLoggable(Level.WARNING))
 		        {
 		        	TRACE_LOGGER.log(Level.WARNING,
-		        			String.format("linkname[%s], linkPath[%s], warning[starting receiver from epoch+Long.Max]", this.receiveLink.getName(), this.receivePath, this.receiveLink.getCredit()));
+		        			String.format("receiverPath[%s], linkname[%s], warning[starting receiver from epoch+Long.Max]", this.receivePath, this.receiveLink.getName(), this.receiveLink.getCredit()));
 		        }
         	}
         	
@@ -462,7 +463,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
         	this.prefetchedMessages.clear();
         	if(TRACE_LOGGER.isLoggable(Level.FINE))
 	        {
-	        	TRACE_LOGGER.log(Level.FINE, String.format("action[recreateReceiveLink], offset[%s], offsetInclusive[%s]", this.lastReceivedOffset, this.offsetInclusive));
+	        	TRACE_LOGGER.log(Level.FINE, String.format("receiverPath[%s], action[recreateReceiveLink], offset[%s], offsetInclusive[%s]", this.receivePath, this.lastReceivedOffset, this.offsetInclusive));
 	        }
         	
         	filter =  new UnknownDescribedType(AmqpConstants.STRING_FILTER,
@@ -537,7 +538,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		{
 			if(TRACE_LOGGER.isLoggable(Level.FINE))
 	        {
-	        	TRACE_LOGGER.log(Level.FINE, String.format("linkname[%s], updated-link-credit[%s], sentCredits[%s]", this.receiveLink.getName(), this.receiveLink.getCredit(), credits));
+	        	TRACE_LOGGER.log(Level.FINE, String.format("receiverPath[%s], linkname[%s], updated-link-credit[%s], sentCredits[%s]", this.receivePath, this.receiveLink.getName(), this.receiveLink.getCredit(), credits));
 	        }
 		}
 	}
@@ -555,40 +556,40 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 			}
 			
 			this.linkCreateScheduled = true;
-		}
-		
-		Timer.schedule(
-			new Runnable()
-			{
-				@Override
-				public void run()
+
+			Timer.schedule(
+				new Runnable()
 				{
-					if (MessageReceiver.this.receiveLink.getLocalState() != EndpointState.CLOSED)
+					@Override
+					public void run()
 					{
-						return;
-					}
-					
-					Receiver receiver = MessageReceiver.this.createReceiveLink();
-					if (receiver != null)
-					{
-						Receiver oldReceiver = MessageReceiver.this.receiveLink;
-						MessageReceiver.this.underlyingFactory.deregisterForConnectionError(oldReceiver);
-						
-						MessageReceiver.this.receiveLink = receiver;
-					}
-					else
-					{
-						synchronized (MessageReceiver.this.linkCreateLock) 
+						if (MessageReceiver.this.receiveLink.getLocalState() != EndpointState.CLOSED)
 						{
-							MessageReceiver.this.linkCreateScheduled = false;
+							return;
 						}
+						
+						Receiver receiver = MessageReceiver.this.createReceiveLink();
+						if (receiver != null)
+						{
+							Receiver oldReceiver = MessageReceiver.this.receiveLink;
+							MessageReceiver.this.underlyingFactory.deregisterForConnectionError(oldReceiver);
+							
+							MessageReceiver.this.receiveLink = receiver;
+						}
+						else
+						{
+							synchronized (MessageReceiver.this.linkCreateLock) 
+							{
+								MessageReceiver.this.linkCreateScheduled = false;
+							}
+						}
+						
+						MessageReceiver.this.underlyingFactory.getRetryPolicy().incrementRetryCount(MessageReceiver.this.getClientId());
 					}
-					
-					MessageReceiver.this.underlyingFactory.getRetryPolicy().incrementRetryCount(MessageReceiver.this.getClientId());
-				}
-			},
-			runAfter,
-			TimerType.OneTimeRun);
+				},
+				runAfter,
+				TimerType.OneTimeRun);
+		}
 	}
 	
 	private void scheduleLinkOpenTimeout(final TimeoutTracker timeout)
@@ -607,7 +608,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 							if (TRACE_LOGGER.isLoggable(Level.WARNING))
 							{
 								TRACE_LOGGER.log(Level.WARNING, 
-										String.format(Locale.US, "message recever(linkName: %s, path: %s) %s call timedout", MessageReceiver.this.receiveLink.getName(), MessageReceiver.this.receivePath, "Open"), 
+										String.format(Locale.US, "receiverPath[%s], linkName[%s], %s call timedout", MessageReceiver.this.receivePath, MessageReceiver.this.receiveLink.getName(),  "Open"), 
 										operationTimedout);
 							}
 							
@@ -633,7 +634,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 							if (TRACE_LOGGER.isLoggable(Level.WARNING))
 							{
 								TRACE_LOGGER.log(Level.WARNING, 
-										String.format(Locale.US, "message recever(linkName: %s, path: %s) %s call timedout", MessageReceiver.this.receiveLink.getName(), MessageReceiver.this.receivePath, "Close"), 
+										String.format(Locale.US, "receiverPath[%s], linkName[%s], %s call timedout", MessageReceiver.this.receivePath, MessageReceiver.this.receiveLink.getName(), "Close"), 
 										operationTimedout);
 							}
 							

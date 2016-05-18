@@ -29,7 +29,7 @@ public final class RetryExponential extends RetryPolicy
 	}
 
 	@Override
-	protected Duration onGetNextRetryInterval(String clientId, Exception lastException, Duration remainingTime)
+	protected Duration onGetNextRetryInterval(final String clientId, final Exception lastException, final Duration remainingTime, final int baseWaitTimeSecs)
 	{
 		int currentRetryCount = this.getRetryCount(clientId);
 	
@@ -38,7 +38,6 @@ public final class RetryExponential extends RetryPolicy
 			return null;
 		}
 		
-		// keep track of last error and add extra wait for ServerBusyException
 		if (!RetryPolicy.isRetryableException(lastException))
 		{
 			return null;
@@ -53,8 +52,7 @@ public final class RetryExponential extends RetryPolicy
 		}
 		
 		Duration retryAfter = this.minimumBackoff.plus(Duration.ofSeconds(nextRetryIntervalSeconds, nextRetryIntervalNano));
-		if (this.isServerBusy())
-			retryAfter = retryAfter.plus(Duration.ofSeconds(ClientConstants.SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS));
+		retryAfter = retryAfter.plus(Duration.ofSeconds(baseWaitTimeSecs));
 
 		return retryAfter;
 	}
