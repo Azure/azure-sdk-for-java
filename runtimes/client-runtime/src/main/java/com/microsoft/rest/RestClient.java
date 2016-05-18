@@ -168,7 +168,6 @@ public final class RestClient {
             // Set up OkHttp client
             this.httpClientBuilder = httpClientBuilder
                     .cookieJar(new JavaNetCookieJar(cookieManager))
-                    .addInterceptor(new RetryHandler())
                     .addInterceptor(new UserAgentInterceptor());
             // Set up rest adapter
             this.retrofitBuilder = retrofitBuilder.baseUrl(baseUrl);
@@ -256,6 +255,7 @@ public final class RestClient {
             OkHttpClient httpClient = httpClientBuilder
                     .addInterceptor(baseUrlHandler)
                     .addInterceptor(customHeadersInterceptor)
+                    .addInterceptor(new RetryHandler())
                     .build();
             return new RestClient(httpClient,
                     retrofitBuilder

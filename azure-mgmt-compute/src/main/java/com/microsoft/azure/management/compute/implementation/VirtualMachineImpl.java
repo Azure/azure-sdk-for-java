@@ -17,16 +17,13 @@ class VirtualMachineImpl
             VirtualMachine,
             VirtualMachine.DefinitionBlank,
             VirtualMachine.DefinitionWithGroup,
-            VirtualMachine.DefinitionWithStorageAccount,
             VirtualMachine.DefinitionWithOS,
+        VirtualMachine.DefinitionWithMarketplaceImage,
             VirtualMachine.DefinitionWithOSType,
-            VirtualMachine.DefinitionWithOptionalWindowsConfiguration,
-            VirtualMachine.DefinitionWithWindowsConfiguration,
             VirtualMachine.DefinitionWithRootUserName,
             VirtualMachine.DefinitionWithAdminUserName,
-            VirtualMachine.DefinitionWithOptionalSsh,
-            VirtualMachine.DefinitionWithOptionalPassword,
-            VirtualMachine.DefinitionWithNextTODO,
+            VirtualMachine.DefinitionLinuxCreatable,
+            VirtualMachine.DefinitionWindowsCreatable,
             VirtualMachine.DefinitionCreatable {
     private final VirtualMachinesInner client;
     private final VirtualMachineInner innerModel;
@@ -104,166 +101,101 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachine.DefinitionWithOS withNewStorageAccount(String name) {
-        return withNewStorageAccount(storageManager.storageAccounts().define(name)
-                .withRegion(region())
-                .withExistingGroup(this.resourceGroupName()));
-    }
-
-    @Override
-    public VirtualMachine.DefinitionWithOS withNewStorageAccount(StorageAccount.DefinitionCreatable creatable) {
-        this.storageAccountName = creatable.key();
-        this.prerequisites().put(creatable.key(), creatable);
-        return this;
-    }
-
-    @Override
-    public VirtualMachine.DefinitionWithOS withExistingStorageAccount(String name) {
-        this.storageAccountName = name;
-        return this;
-    }
-
-    @Override
     public VirtualMachine refresh() throws Exception {
         return this;
     }
 
     @Override
-    public DefinitionWithOSType withImage(ImageReference imageReference) {
-        this.innerModel.storageProfile().osDisk().setCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
-        this.innerModel.storageProfile().setImageReference(imageReference);
+    public DefinitionWithMarketplaceImage withMarketplaceImage() {
         return this;
     }
 
     @Override
-    public DefinitionWithOSType withLatestImage(String publisher, String offer, String sku) {
-        ImageReference imageReference = new ImageReference();
-        imageReference.setPublisher(publisher);
-        imageReference.setOffer(offer);
-        imageReference.setSku(sku);
-        imageReference.setVersion("latest");
-        return withImage(imageReference);
-    }
-
-    @Override
-    public DefinitionWithOSType withKnownImage(KnownVirtualMachineImage knownImage) {
-        return withImage(knownImage.imageReference());
-    }
-
-    @Override
-    public DefinitionWithOSType withImage(String userImageUrl) {
+    public DefinitionWithOSType withStoredImage(String imageUrl) {
         VirtualHardDisk userImageVhd = new VirtualHardDisk();
-        userImageVhd.setUri(userImageUrl);
+        userImageVhd.setUri(imageUrl);
         this.innerModel.storageProfile().osDisk().setCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
         this.innerModel.storageProfile().osDisk().setImage(userImageVhd);
         return this;
     }
 
     @Override
-    public DefinitionWithNextTODO withWindowsOSDisk(String osDiskUrl) {
+    public DefinitionCreatable withOSDisk(String osDiskUrl, OperatingSystemTypes osType) {
         VirtualHardDisk osDisk = new VirtualHardDisk();
         osDisk.setUri(osDiskUrl);
         this.innerModel.storageProfile().osDisk().setCreateOption(DiskCreateOptionTypes.ATTACH);
         this.innerModel.storageProfile().osDisk().setVhd(osDisk);
-        this.innerModel.storageProfile().osDisk().setOsType(OperatingSystemTypes.WINDOWS);
+        this.innerModel.storageProfile().osDisk().setOsType(osType);
         return this;
     }
 
     @Override
-    public DefinitionWithNextTODO withLinuxOSDisk(String osDiskUrl) {
-        VirtualHardDisk osDisk = new VirtualHardDisk();
-        osDisk.setUri(osDiskUrl);
-        this.innerModel.storageProfile().osDisk().setCreateOption(DiskCreateOptionTypes.ATTACH);
-        this.innerModel.storageProfile().osDisk().setVhd(osDisk);
-        this.innerModel.storageProfile().osDisk().setOsType(OperatingSystemTypes.LINUX);
+    public DefinitionWithOSType version(ImageReference imageReference) {
+        this.innerModel.storageProfile().osDisk().setCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
+        this.innerModel.storageProfile().setImageReference(imageReference);
         return this;
+    }
+
+    @Override
+    public DefinitionWithOSType latest(String publisher, String offer, String sku) {
+        ImageReference imageReference = new ImageReference();
+        imageReference.setPublisher(publisher);
+        imageReference.setOffer(offer);
+        imageReference.setSku(sku);
+        imageReference.setVersion("latest");
+        return version(imageReference);
+    }
+
+    @Override
+    public DefinitionWithOSType popular(KnownVirtualMachineImage knownImage) {
+        return version(knownImage.imageReference());
     }
 
     @Override
     public DefinitionWithRootUserName withLinuxOS() {
         OSDisk osDisk = this.innerModel.storageProfile().osDisk();
-        if (isUserImage(osDisk)) {
+        if (isStoredImage(osDisk)) {
             // For platform image osType should be null, azure will pick it from the image metadata.
             osDisk.setOsType(OperatingSystemTypes.LINUX);
         }
+        this.innerModel.osProfile().setLinuxConfiguration(new LinuxConfiguration());
         return this;
     }
 
     @Override
-    public DefinitionWithOptionalWindowsConfiguration withWindowsOS() {
+    public DefinitionWithAdminUserName withWindowsOS() {
         OSDisk osDisk = this.innerModel.storageProfile().osDisk();
-        if (isUserImage(osDisk)) {
+        if (isStoredImage(osDisk)) {
             // For platform image osType should be null, azure will pick it from the image metadata.
             osDisk.setOsType(OperatingSystemTypes.WINDOWS);
         }
-        // VM from Windows "UserImage" or "VM(Platform)Image" must have default Windows configuration.
-        defineConfiguration();
+        this.innerModel.osProfile().setWindowsConfiguration(new WindowsConfiguration());
+        // sets defaults for "Stored(User)Image" or "VM(Platform)Image"
         this.innerModel.osProfile().windowsConfiguration().setProvisionVMAgent(true);
         this.innerModel.osProfile().windowsConfiguration().setEnableAutomaticUpdates(true);
         return this;
     }
 
-    @Override
-    public DefinitionWithWindowsConfiguration defineConfiguration() {
-        OSProfile osProfile = new OSProfile();
-        osProfile.setWindowsConfiguration(new WindowsConfiguration());
-        this.innerModel.setOsProfile(osProfile);
-        return this;
-    }
 
     @Override
-    public DefinitionWithWindowsConfiguration disableVMAgent() {
-        this.innerModel.osProfile().windowsConfiguration().setProvisionVMAgent(false);
-        return this;
-    }
-
-    @Override
-    public DefinitionWithWindowsConfiguration disableAutoUpdate() {
-        this.innerModel.osProfile().windowsConfiguration().setEnableAutomaticUpdates(false);
-        return this;
-    }
-
-    @Override
-    public DefinitionWithWindowsConfiguration withTimeZone(String timeZone) {
-        this.innerModel.osProfile().windowsConfiguration().setTimeZone(timeZone);
-        return this;
-    }
-
-    @Override
-    public DefinitionWithWindowsConfiguration withWinRM(List<WinRMListener> listeners) {
-        WinRMConfiguration winRMConfiguration = new WinRMConfiguration();
-        winRMConfiguration.setListeners(listeners);
-        this.innerModel.osProfile().windowsConfiguration().setWinRM(winRMConfiguration);
-        return this;
-    }
-
-    @Override
-    public DefinitionWithAdminUserName apply() {
-        // Apply the Windows configuration.
-        return this;
-    }
-
-    @Override
-    public DefinitionWithOptionalSsh withRootUserName(String rootUserName) {
+    public DefinitionLinuxCreatable withRootUserName(String rootUserName) {
         this.innerModel.osProfile().setAdminUsername(rootUserName);
         return this;
     }
 
     @Override
-    public DefinitionWithPassword withAdminUserName(String adminUserName) {
+    public DefinitionWindowsCreatable withAdminUserName(String adminUserName) {
         this.innerModel.osProfile().setAdminUsername(adminUserName);
         return this;
     }
 
     @Override
-    public DefinitionWithOptionalPassword withSsh(String publicKeyData) {
+    public DefinitionLinuxCreatable withSsh(String publicKeyData) {
         OSProfile osProfile = this.innerModel.osProfile();
-        if (osProfile.linuxConfiguration() == null) {
-            LinuxConfiguration linuxConfiguration = new LinuxConfiguration();
+        if (osProfile.linuxConfiguration().ssh() == null) {
             SshConfiguration sshConfiguration = new SshConfiguration();
             sshConfiguration.setPublicKeys(new ArrayList<SshPublicKey>());
-            linuxConfiguration.setSsh(sshConfiguration);
-            osProfile.setLinuxConfiguration(linuxConfiguration);
+            osProfile.linuxConfiguration().setSsh(sshConfiguration);
         }
         SshPublicKey sshPublicKey = new SshPublicKey();
         sshPublicKey.setKeyData(publicKeyData);
@@ -273,54 +205,43 @@ class VirtualMachineImpl
     }
 
     @Override
-    public DefinitionWithOptionalPassword withSsh(List<String> publicKeyDataList) {
-        for(String publicKeyData : publicKeyDataList) {
-            withSsh(publicKeyData);
+    public DefinitionWindowsCreatable disableVMAgent() {
+        this.innerModel.osProfile().windowsConfiguration().setProvisionVMAgent(false);
+        return this;
+    }
+
+    @Override
+    public DefinitionWindowsCreatable disableAutoUpdate() {
+        this.innerModel.osProfile().windowsConfiguration().setEnableAutomaticUpdates(false);
+        return this;
+    }
+
+    @Override
+    public DefinitionWindowsCreatable withTimeZone(String timeZone) {
+        this.innerModel.osProfile().windowsConfiguration().setTimeZone(timeZone);
+        return this;
+    }
+
+    @Override
+    public DefinitionWindowsCreatable withWinRM(WinRMListener listener) {
+        if (this.innerModel.osProfile().windowsConfiguration().winRM() == null) {
+            WinRMConfiguration winRMConfiguration = new WinRMConfiguration();
+            this.innerModel.osProfile().windowsConfiguration().setWinRM(winRMConfiguration);
         }
+
+        this.innerModel.osProfile()
+                .windowsConfiguration()
+                .winRM()
+                .listeners()
+                .add(listener);
         return this;
     }
 
     @Override
-    public DefinitionWithPassword withoutSsh() {
-        OSProfile osProfile = this.innerModel.osProfile();
-        osProfile().setLinuxConfiguration(new LinuxConfiguration());
-        osProfile.linuxConfiguration().setDisablePasswordAuthentication(false);
-        return this;
-    }
-
-    @Override
-    public DefinitionWithNextTODO withPassword(String password) {
+    public DefinitionCreatable withPassword(String password) {
         this.innerModel.osProfile().setAdminPassword(password);
         return this;
     }
-
-    @Override
-    public DefinitionWithNextTODO withoutPassword() {
-        this.innerModel.osProfile().linuxConfiguration().setDisablePasswordAuthentication(true);
-        return this;
-    }
-
-    @Override
-    public DefinitionCreatable moreVMRequiredParameters() {
-        // TODO This is not the final place setting the defaults but putting it here so that we won't forget it later.
-        //
-        OSDisk osDisk = this.innerModel.storageProfile().osDisk();
-        if (!isSpecializedImage(osDisk)) {
-            // Sets the OS disk VHD for "UserImage" and "VM(Platform)Image"
-            withOSDiskVhdLocation("vhds", null /*TODO generate random vhd name */);
-        }
-        withOSDiskCaching(CachingTypes.READ_WRITE);
-        withOSDiskName(null /*TODO generate random OSDisk name */);
-
-        return this;
-    }
-
-    @Override
-    public VirtualMachine create() throws Exception {
-        return null;
-    }
-
-    // Optionals
 
     @Override
     public DefinitionCreatable withOSDiskCaching(CachingTypes cachingType) {
@@ -354,12 +275,65 @@ class VirtualMachineImpl
         return this;
     }
 
+    @Override
+    public DefinitionCreatable withNewStorageAccount(String name) {
+        return withNewStorageAccount(storageManager.storageAccounts().define(name)
+                .withRegion(region())
+                .withExistingGroup(this.resourceGroupName()));
+    }
+
+    @Override
+    public DefinitionCreatable withNewStorageAccount(StorageAccount.DefinitionCreatable creatable) {
+        this.storageAccountName = creatable.key();
+        this.prerequisites().put(creatable.key(), creatable);
+        return this;
+    }
+
+    @Override
+    public DefinitionCreatable withExistingStorageAccount(String name) {
+        this.storageAccountName = name;
+        return this;
+    }
+
+
+    @Override
+    public VirtualMachine create() throws Exception {
+        setDefaults();
+        return null;
+    }
+
     // Helper methods
-    private boolean isUserImage(OSDisk osDisk) {
+    //
+    private boolean isStoredImage(OSDisk osDisk) {
         return osDisk.image() != null;
     }
 
-    private boolean isSpecializedImage(OSDisk osDisk) {
+    private boolean isOSDiskAttached(OSDisk osDisk) {
         return osDisk.createOption() == DiskCreateOptionTypes.ATTACH;
+    }
+
+    private void setDefaults() {
+        OSDisk osDisk = this.innerModel.storageProfile().osDisk();
+        if (!isOSDiskAttached(osDisk)) {
+            if (osDisk.vhd() == null) {
+                // Sets the OS disk VHD for "UserImage" and "VM(Platform)Image"
+                withOSDiskVhdLocation("vhds", null /*TODO generate random vhd name */);
+            }
+            OSProfile osProfile = this.innerModel.osProfile();
+            if (osDisk.osType() == OperatingSystemTypes.LINUX) {
+                if (osProfile.linuxConfiguration() == null) {
+                    osProfile.setLinuxConfiguration(new LinuxConfiguration());
+                }
+                this.innerModel.osProfile().linuxConfiguration().setDisablePasswordAuthentication(osProfile.adminPassword() == null);
+            }
+        }
+
+        if (osDisk.caching() == null) {
+            withOSDiskCaching(CachingTypes.READ_WRITE);
+        }
+
+        if (osDisk.name() == null) {
+            withOSDiskName(null /*TODO generate random OSDisk name */);
+        }
     }
 }

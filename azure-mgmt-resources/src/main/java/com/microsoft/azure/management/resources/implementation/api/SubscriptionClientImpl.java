@@ -180,7 +180,6 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
         this.generateClientRequestId = true;
         this.subscriptions = new SubscriptionsInner(restClient().retrofit(), this);
         this.tenants = new TenantsInner(restClient().retrofit(), this);
-        restClient().headers().addHeader("x-ms-client-request-id", UUID.randomUUID().toString());
         this.azureClient = new AzureClient(restClient());
     }
 }
