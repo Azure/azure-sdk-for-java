@@ -60,31 +60,31 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface ExpressRouteCircuitAuthorizationsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (ExpressRouteCircuitAuthorizations, 2015-06-15)"})
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/authorizations/{authorizationName}", method = "DELETE", hasBody = true)
         Call<ResponseBody> delete(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("authorizationName") String authorizationName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (ExpressRouteCircuitAuthorizations, 2015-06-15)"})
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/authorizations/{authorizationName}", method = "DELETE", hasBody = true)
         Call<ResponseBody> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("authorizationName") String authorizationName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (ExpressRouteCircuitAuthorizations, 2015-06-15)"})
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/authorizations/{authorizationName}")
         Call<ResponseBody> get(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("authorizationName") String authorizationName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (ExpressRouteCircuitAuthorizations, 2015-06-15)"})
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/authorizations/{authorizationName}")
         Call<ResponseBody> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("authorizationName") String authorizationName, @Path("subscriptionId") String subscriptionId, @Body ExpressRouteCircuitAuthorizationInner authorizationParameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (ExpressRouteCircuitAuthorizations, 2015-06-15)"})
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/authorizations/{authorizationName}")
         Call<ResponseBody> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("authorizationName") String authorizationName, @Path("subscriptionId") String subscriptionId, @Body ExpressRouteCircuitAuthorizationInner authorizationParameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (ExpressRouteCircuitAuthorizations, 2015-06-15)"})
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/authorizations")
         Call<ResponseBody> list(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (ExpressRouteCircuitAuthorizations, 2015-06-15)"})
         @GET
         Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 

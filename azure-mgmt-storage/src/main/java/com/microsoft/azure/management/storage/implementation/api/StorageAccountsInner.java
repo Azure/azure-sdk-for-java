@@ -6,31 +6,19 @@
 
 package com.microsoft.azure.management.storage.implementation.api;
 
-import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.ServiceResponseCallback;
-import com.microsoft.rest.Validator;
-import java.io.IOException;
-import java.util.List;
+import com.microsoft.rest.*;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.HTTP;
-import retrofit2.http.PATCH;
-import retrofit2.http.Path;
-import retrofit2.http.POST;
-import retrofit2.http.PUT;
-import retrofit2.http.Query;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.http.*;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -58,43 +46,43 @@ public final class StorageAccountsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface StorageAccountsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (StorageAccounts, 2015-06-15)"})
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.Storage/checkNameAvailability")
         Call<ResponseBody> checkNameAvailability(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body StorageAccountCheckNameAvailabilityParameters accountName);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (StorageAccounts, 2015-06-15)"})
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}")
         Call<ResponseBody> create(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Body StorageAccountCreateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (StorageAccounts, 2015-06-15)"})
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}")
         Call<ResponseBody> beginCreate(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Body StorageAccountCreateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (StorageAccounts, 2015-06-15)"})
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}", method = "DELETE", hasBody = true)
         Call<ResponseBody> delete(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (StorageAccounts, 2015-06-15)"})
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}")
         Call<ResponseBody> getProperties(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (StorageAccounts, 2015-06-15)"})
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}")
         Call<ResponseBody> update(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Body StorageAccountUpdateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (StorageAccounts, 2015-06-15)"})
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/listKeys")
         Call<ResponseBody> listKeys(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (StorageAccounts, 2015-06-15)"})
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Storage/storageAccounts")
         Call<ResponseBody> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (StorageAccounts, 2015-06-15)"})
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts")
         Call<ResponseBody> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (StorageAccounts, 2015-06-15)"})
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/regenerateKey")
         Call<ResponseBody> regenerateKey(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body StorageAccountRegenerateKeyParameters regenerateKey);
 

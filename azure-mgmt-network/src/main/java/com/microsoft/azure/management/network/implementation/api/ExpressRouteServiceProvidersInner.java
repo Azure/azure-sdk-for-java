@@ -54,11 +54,11 @@ public final class ExpressRouteServiceProvidersInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface ExpressRouteServiceProvidersService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (ExpressRouteServiceProviders, 2015-06-15)"})
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/expressRouteServiceProviders")
         Call<ResponseBody> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (ExpressRouteServiceProviders, 2015-06-15)"})
         @GET
         Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 

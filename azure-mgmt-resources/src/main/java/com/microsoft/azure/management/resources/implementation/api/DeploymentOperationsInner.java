@@ -55,15 +55,15 @@ public final class DeploymentOperationsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface DeploymentOperationsService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (DeploymentOperations, 2015-11-01)"})
         @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}/operations/{operationId}")
         Call<ResponseBody> get(@Path("resourceGroupName") String resourceGroupName, @Path("deploymentName") String deploymentName, @Path("operationId") String operationId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (DeploymentOperations, 2015-11-01)"})
         @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}/operations")
         Call<ResponseBody> list(@Path("resourceGroupName") String resourceGroupName, @Path("deploymentName") String deploymentName, @Path("subscriptionId") String subscriptionId, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (DeploymentOperations, 2015-11-01)"})
         @GET
         Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
 

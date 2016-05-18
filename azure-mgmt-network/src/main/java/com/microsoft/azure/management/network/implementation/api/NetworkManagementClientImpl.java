@@ -444,7 +444,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * used by Retrofit to perform actually REST calls.
      */
     interface NetworkManagementClientService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (NetworkManagementClient, 2015-06-15)"})
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/CheckDnsNameAvailability")
         Call<ResponseBody> checkDnsNameAvailability(@Path("location") String location, @Path("subscriptionId") String subscriptionId, @Query("domainNameLabel") String domainNameLabel, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 

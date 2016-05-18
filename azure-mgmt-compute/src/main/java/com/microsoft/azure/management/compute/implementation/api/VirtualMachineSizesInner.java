@@ -51,7 +51,7 @@ public final class VirtualMachineSizesInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface VirtualMachineSizesService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (VirtualMachineSizes, 2015-06-15)"})
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/vmSizes")
         Call<ResponseBody> list(@Path("location") String location, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 

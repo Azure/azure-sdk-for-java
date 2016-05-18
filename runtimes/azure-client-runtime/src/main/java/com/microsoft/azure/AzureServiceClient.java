@@ -28,5 +28,6 @@ public abstract class AzureServiceClient extends ServiceClient {
      */
     protected AzureServiceClient(RestClient restClient) {
         super(restClient);
+        restClient.userAgent().setUserAgent("Azure-SDK-For-Java", getClass().getPackage().getImplementationVersion(), null);
     }
 }

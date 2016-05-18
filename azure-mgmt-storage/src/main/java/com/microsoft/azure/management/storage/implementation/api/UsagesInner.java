@@ -51,7 +51,7 @@ public final class UsagesInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface UsagesService {
-        @Headers("Content-Type: application/json; charset=utf-8")
+        @Headers({"Content-Type: application/json; charset=utf-8", "User-Agent: (Usages, 2015-06-15)"})
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Storage/usages")
         Call<ResponseBody> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
