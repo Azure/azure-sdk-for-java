@@ -61,7 +61,7 @@ public final class ComputeManager {
 
     public VirtualMachines virtualMachines() {
         if (virtualMachines == null) {
-            virtualMachines = new VirtualMachinesImpl(computeManagementClient.virtualMachines());
+            virtualMachines = new VirtualMachinesImpl(computeManagementClient.virtualMachines(), computeManagementClient.virtualMachineSizes());
         }
         return virtualMachines;
     }

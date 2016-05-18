@@ -262,6 +262,20 @@ public interface VirtualMachine extends
         T withOSDiskName(String name);
     }
 
+    interface DefinitionWithVMSize<T extends DefinitionCreatable> {
+        /**
+         * @param sizeName The name of the size for the virtual machine as text
+         * @return The stage representing creatable VM definition
+         */
+        T withSize(String sizeName);
+
+        /**
+         * @param size A size from the list of available sizes for the virtual machine
+         * @return The stage representing creatable VM definition
+         */
+        T withSize(VirtualMachineSizeTypes size);
+    }
+
     interface DefinitionStorageAccount<T extends DefinitionCreatable> {
         /**
          * Specifies the name of the storage account to create, the OS disk for VM created from a market-place
@@ -294,6 +308,7 @@ public interface VirtualMachine extends
     interface DefinitionCreatable extends
             DefinitionPassword<DefinitionCreatable>,
             DefinitionOSDiskSettings<DefinitionCreatable>,
+            DefinitionWithVMSize<DefinitionCreatable>,
             DefinitionStorageAccount<DefinitionCreatable>,
             Creatable<VirtualMachine> {
     }
