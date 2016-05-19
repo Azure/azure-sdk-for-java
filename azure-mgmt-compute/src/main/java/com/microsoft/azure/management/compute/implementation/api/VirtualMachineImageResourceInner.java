@@ -21,7 +21,7 @@ public class VirtualMachineImageResourceInner extends SubResource {
     private String name;
 
     /**
-     * Gets or sets the location of the resource.
+     * Gets or sets the region of the resource.
      */
     @JsonProperty(required = true)
     private String location;
@@ -52,18 +52,18 @@ public class VirtualMachineImageResourceInner extends SubResource {
     }
 
     /**
-     * Get the location value.
+     * Get the region value.
      *
-     * @return the location value
+     * @return the region value
      */
     public String location() {
         return this.location;
     }
 
     /**
-     * Set the location value.
+     * Set the region value.
      *
-     * @param location the location value to set
+     * @param location the region value to set
      * @return the VirtualMachineImageResourceInner object itself.
      */
     public VirtualMachineImageResourceInner setLocation(String location) {

@@ -1,5 +1,8 @@
 package com.microsoft.azure.management.compute;
 
+/**
+ * A type representing virtual machine size available for a subscription in a region.
+ */
 public interface VirtualMachineSize {
     /**
      * Gets the VM size name.

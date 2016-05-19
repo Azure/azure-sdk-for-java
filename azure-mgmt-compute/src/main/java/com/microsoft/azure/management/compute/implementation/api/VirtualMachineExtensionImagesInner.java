@@ -52,16 +52,16 @@ public final class VirtualMachineExtensionImagesInner {
      */
     interface VirtualMachineExtensionImagesService {
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmextension/types/{type}/versions/{version}")
-        Call<ResponseBody> get(@Path("location") String location, @Path("publisherName") String publisherName, @Path("type") String type, @Path("version") String version, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{region}/publishers/{publisherName}/artifacttypes/vmextension/types/{type}/versions/{version}")
+        Call<ResponseBody> get(@Path("region") String location, @Path("publisherName") String publisherName, @Path("type") String type, @Path("version") String version, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmextension/types")
-        Call<ResponseBody> listTypes(@Path("location") String location, @Path("publisherName") String publisherName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{region}/publishers/{publisherName}/artifacttypes/vmextension/types")
+        Call<ResponseBody> listTypes(@Path("region") String location, @Path("publisherName") String publisherName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmextension/types/{type}/versions")
-        Call<ResponseBody> listVersions(@Path("location") String location, @Path("publisherName") String publisherName, @Path("type") String type, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$orderby") String orderby, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{region}/publishers/{publisherName}/artifacttypes/vmextension/types/{type}/versions")
+        Call<ResponseBody> listVersions(@Path("region") String location, @Path("publisherName") String publisherName, @Path("type") String type, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$orderby") String orderby, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
     }
 
@@ -79,7 +79,7 @@ public final class VirtualMachineExtensionImagesInner {
      */
     public ServiceResponse<VirtualMachineExtensionImageInner> get(String location, String publisherName, String type, String version) throws CloudException, IOException, IllegalArgumentException {
         if (location == null) {
-            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
+            throw new IllegalArgumentException("Parameter region is required and cannot be null.");
         }
         if (publisherName == null) {
             throw new IllegalArgumentException("Parameter publisherName is required and cannot be null.");
@@ -116,7 +116,7 @@ public final class VirtualMachineExtensionImagesInner {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
         if (location == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter location is required and cannot be null."));
+            serviceCallback.failure(new IllegalArgumentException("Parameter region is required and cannot be null."));
             return null;
         }
         if (publisherName == null) {
@@ -173,7 +173,7 @@ public final class VirtualMachineExtensionImagesInner {
      */
     public ServiceResponse<List<VirtualMachineExtensionImageInner>> listTypes(String location, String publisherName) throws CloudException, IOException, IllegalArgumentException {
         if (location == null) {
-            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
+            throw new IllegalArgumentException("Parameter region is required and cannot be null.");
         }
         if (publisherName == null) {
             throw new IllegalArgumentException("Parameter publisherName is required and cannot be null.");
@@ -202,7 +202,7 @@ public final class VirtualMachineExtensionImagesInner {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
         if (location == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter location is required and cannot be null."));
+            serviceCallback.failure(new IllegalArgumentException("Parameter region is required and cannot be null."));
             return null;
         }
         if (publisherName == null) {
@@ -252,7 +252,7 @@ public final class VirtualMachineExtensionImagesInner {
      */
     public ServiceResponse<List<VirtualMachineExtensionImageInner>> listVersions(String location, String publisherName, String type) throws CloudException, IOException, IllegalArgumentException {
         if (location == null) {
-            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
+            throw new IllegalArgumentException("Parameter region is required and cannot be null.");
         }
         if (publisherName == null) {
             throw new IllegalArgumentException("Parameter publisherName is required and cannot be null.");
@@ -288,7 +288,7 @@ public final class VirtualMachineExtensionImagesInner {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
         if (location == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter location is required and cannot be null."));
+            serviceCallback.failure(new IllegalArgumentException("Parameter region is required and cannot be null."));
             return null;
         }
         if (publisherName == null) {
@@ -341,7 +341,7 @@ public final class VirtualMachineExtensionImagesInner {
      */
     public ServiceResponse<List<VirtualMachineExtensionImageInner>> listVersions(String location, String publisherName, String type, String filter, Integer top, String orderby) throws CloudException, IOException, IllegalArgumentException {
         if (location == null) {
-            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
+            throw new IllegalArgumentException("Parameter region is required and cannot be null.");
         }
         if (publisherName == null) {
             throw new IllegalArgumentException("Parameter publisherName is required and cannot be null.");
@@ -377,7 +377,7 @@ public final class VirtualMachineExtensionImagesInner {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
         if (location == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter location is required and cannot be null."));
+            serviceCallback.failure(new IllegalArgumentException("Parameter region is required and cannot be null."));
             return null;
         }
         if (publisherName == null) {

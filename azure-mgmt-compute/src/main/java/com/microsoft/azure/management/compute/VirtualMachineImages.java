@@ -9,5 +9,12 @@ import java.util.List;
 
 public interface VirtualMachineImages extends
         SupportsListingByLocation<VirtualMachineImage> {
-    List<VirtualMachineImage.Publisher> listPublishers(final Region location) throws CloudException, IOException;
+    /**
+     * Lists the virtual machine publishers in a region.
+     * @param region The region
+     * @return The list of VM image publishers
+     * @throws CloudException
+     * @throws IOException
+     */
+    List<VirtualMachineImage.Publisher> listPublishers(final Region region) throws CloudException, IOException;
 }

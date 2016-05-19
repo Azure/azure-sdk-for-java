@@ -23,8 +23,8 @@ class VirtualMachineImageOfferImpl
     }
 
     @Override
-    public Region location() {
-        return publisher.location();
+    public Region region() {
+        return publisher.region();
     }
 
     @Override
@@ -41,7 +41,7 @@ class VirtualMachineImageOfferImpl
     public List<VirtualMachineImage.Sku> listSkus() throws CloudException, IOException {
         List<VirtualMachineImage.Sku> skus = new ArrayList<>();
         for (VirtualMachineImageResourceInner inner :
-                client.listSkus(location().toString(), publisher(), offer()).getBody()) {
+                client.listSkus(region().toString(), publisher(), offer()).getBody()) {
             skus.add(new VirtualMachineImageSkuImpl(this, inner.name(), client));
         }
         return skus;

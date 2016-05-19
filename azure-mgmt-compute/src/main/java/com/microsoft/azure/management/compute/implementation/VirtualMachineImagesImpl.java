@@ -20,11 +20,11 @@ class VirtualMachineImagesImpl
     }
 
     @Override
-    public List<VirtualMachineImage.Publisher> listPublishers(final Region location) throws CloudException, IOException {
+    public List<VirtualMachineImage.Publisher> listPublishers(final Region region) throws CloudException, IOException {
         List<VirtualMachineImage.Publisher> publishers = new ArrayList<>();
         for (VirtualMachineImageResourceInner inner :
-                client.listPublishers(location.toString()).getBody()) {
-            publishers.add(new VirtualMachineImagePublisherImpl(location, inner.name(), client));
+                client.listPublishers(region.toString()).getBody()) {
+            publishers.add(new VirtualMachineImagePublisherImpl(region, inner.name(), client));
         }
         return publishers;
     }
