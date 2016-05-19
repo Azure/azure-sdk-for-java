@@ -44,6 +44,9 @@ public class AzureClient extends AzureServiceClient {
      */
     private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
+    /**
+     * The user agent from the service client that owns this Azure Client.
+     */
     private final String serviceClientUserAgent;
 
     /**
