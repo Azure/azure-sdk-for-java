@@ -56,55 +56,55 @@ public final class GlobalsInner {
     interface GlobalsService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/publishingCredentials")
-        Call<ResponseBody> getSubscriptionPublishingCredentials(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSubscriptionPublishingCredentials(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/providers/Microsoft.Web/publishingCredentials")
-        Call<ResponseBody> updateSubscriptionPublishingCredentials(@Path("subscriptionId") String subscriptionId, @Body UserInner requestMessage, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> updateSubscriptionPublishingCredentials(@Path("subscriptionId") String subscriptionId, @Body UserInner requestMessage, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/geoRegions")
-        Call<ResponseBody> getSubscriptionGeoRegions(@Path("subscriptionId") String subscriptionId, @Query("sku") String sku, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSubscriptionGeoRegions(@Path("subscriptionId") String subscriptionId, @Query("sku") String sku, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/certificates")
-        Call<ResponseBody> getAllCertificates(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getAllCertificates(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/serverfarms")
-        Call<ResponseBody> getAllServerFarms(@Path("subscriptionId") String subscriptionId, @Query("detailed") Boolean detailed, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getAllServerFarms(@Path("subscriptionId") String subscriptionId, @Query("detailed") Boolean detailed, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/sites")
-        Call<ResponseBody> getAllSites(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getAllSites(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/hostingEnvironments")
-        Call<ResponseBody> getAllHostingEnvironments(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getAllHostingEnvironments(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/managedHostingEnvironments")
-        Call<ResponseBody> getAllManagedHostingEnvironments(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getAllManagedHostingEnvironments(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/classicMobileServices")
-        Call<ResponseBody> getAllClassicMobileServices(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getAllClassicMobileServices(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/premieraddonoffers")
-        Call<ResponseBody> listPremierAddOnOffers(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listPremierAddOnOffers(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/ishostingenvironmentnameavailable")
-        Call<ResponseBody> isHostingEnvironmentNameAvailable(@Path("subscriptionId") String subscriptionId, @Query("name") String name, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> isHostingEnvironmentNameAvailable(@Path("subscriptionId") String subscriptionId, @Query("name") String name, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/ishostingenvironmentnameavailable/{name}")
-        Call<ResponseBody> isHostingEnvironmentWithLegacyNameAvailable(@Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> isHostingEnvironmentWithLegacyNameAvailable(@Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.Web/checknameavailability")
-        Call<ResponseBody> checkNameAvailability(@Path("subscriptionId") String subscriptionId, @Body ResourceNameAvailabilityRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> checkNameAvailability(@Path("subscriptionId") String subscriptionId, @Body ResourceNameAvailabilityRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -123,7 +123,7 @@ public final class GlobalsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSubscriptionPublishingCredentials(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSubscriptionPublishingCredentials(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSubscriptionPublishingCredentialsDelegate(call.execute());
     }
 
@@ -146,7 +146,7 @@ public final class GlobalsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSubscriptionPublishingCredentials(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSubscriptionPublishingCredentials(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<UserInner>(serviceCallback) {
             @Override
@@ -188,7 +188,7 @@ public final class GlobalsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(requestMessage);
-        Call<ResponseBody> call = service.updateSubscriptionPublishingCredentials(this.client.subscriptionId(), requestMessage, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSubscriptionPublishingCredentials(this.client.subscriptionId(), requestMessage, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return updateSubscriptionPublishingCredentialsDelegate(call.execute());
     }
 
@@ -217,7 +217,7 @@ public final class GlobalsInner {
             return null;
         }
         Validator.validate(requestMessage, serviceCallback);
-        Call<ResponseBody> call = service.updateSubscriptionPublishingCredentials(this.client.subscriptionId(), requestMessage, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSubscriptionPublishingCredentials(this.client.subscriptionId(), requestMessage, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<UserInner>(serviceCallback) {
             @Override
@@ -255,7 +255,7 @@ public final class GlobalsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String sku = null;
-        Call<ResponseBody> call = service.getSubscriptionGeoRegions(this.client.subscriptionId(), sku, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSubscriptionGeoRegions(this.client.subscriptionId(), sku, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSubscriptionGeoRegionsDelegate(call.execute());
     }
 
@@ -279,7 +279,7 @@ public final class GlobalsInner {
             return null;
         }
         final String sku = null;
-        Call<ResponseBody> call = service.getSubscriptionGeoRegions(this.client.subscriptionId(), sku, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSubscriptionGeoRegions(this.client.subscriptionId(), sku, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<GeoRegionCollectionInner>(serviceCallback) {
             @Override
@@ -310,7 +310,7 @@ public final class GlobalsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSubscriptionGeoRegions(this.client.subscriptionId(), sku, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSubscriptionGeoRegions(this.client.subscriptionId(), sku, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSubscriptionGeoRegionsDelegate(call.execute());
     }
 
@@ -334,7 +334,7 @@ public final class GlobalsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSubscriptionGeoRegions(this.client.subscriptionId(), sku, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSubscriptionGeoRegions(this.client.subscriptionId(), sku, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<GeoRegionCollectionInner>(serviceCallback) {
             @Override
@@ -371,7 +371,7 @@ public final class GlobalsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getAllCertificates(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getAllCertificates(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getAllCertificatesDelegate(call.execute());
     }
 
@@ -394,7 +394,7 @@ public final class GlobalsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getAllCertificates(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getAllCertificates(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CertificateCollectionInner>(serviceCallback) {
             @Override
@@ -432,7 +432,7 @@ public final class GlobalsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final Boolean detailed = null;
-        Call<ResponseBody> call = service.getAllServerFarms(this.client.subscriptionId(), detailed, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getAllServerFarms(this.client.subscriptionId(), detailed, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getAllServerFarmsDelegate(call.execute());
     }
 
@@ -456,7 +456,7 @@ public final class GlobalsInner {
             return null;
         }
         final Boolean detailed = null;
-        Call<ResponseBody> call = service.getAllServerFarms(this.client.subscriptionId(), detailed, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getAllServerFarms(this.client.subscriptionId(), detailed, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ServerFarmCollectionInner>(serviceCallback) {
             @Override
@@ -488,7 +488,7 @@ public final class GlobalsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getAllServerFarms(this.client.subscriptionId(), detailed, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getAllServerFarms(this.client.subscriptionId(), detailed, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getAllServerFarmsDelegate(call.execute());
     }
 
@@ -513,7 +513,7 @@ public final class GlobalsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getAllServerFarms(this.client.subscriptionId(), detailed, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getAllServerFarms(this.client.subscriptionId(), detailed, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ServerFarmCollectionInner>(serviceCallback) {
             @Override
@@ -550,7 +550,7 @@ public final class GlobalsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getAllSites(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getAllSites(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getAllSitesDelegate(call.execute());
     }
 
@@ -573,7 +573,7 @@ public final class GlobalsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getAllSites(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getAllSites(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteCollectionInner>(serviceCallback) {
             @Override
@@ -610,7 +610,7 @@ public final class GlobalsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getAllHostingEnvironments(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getAllHostingEnvironments(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getAllHostingEnvironmentsDelegate(call.execute());
     }
 
@@ -633,7 +633,7 @@ public final class GlobalsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getAllHostingEnvironments(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getAllHostingEnvironments(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<HostingEnvironmentCollectionInner>(serviceCallback) {
             @Override
@@ -670,7 +670,7 @@ public final class GlobalsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getAllManagedHostingEnvironments(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getAllManagedHostingEnvironments(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getAllManagedHostingEnvironmentsDelegate(call.execute());
     }
 
@@ -693,7 +693,7 @@ public final class GlobalsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getAllManagedHostingEnvironments(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getAllManagedHostingEnvironments(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ManagedHostingEnvironmentCollectionInner>(serviceCallback) {
             @Override
@@ -730,7 +730,7 @@ public final class GlobalsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getAllClassicMobileServices(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getAllClassicMobileServices(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getAllClassicMobileServicesDelegate(call.execute());
     }
 
@@ -753,7 +753,7 @@ public final class GlobalsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getAllClassicMobileServices(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getAllClassicMobileServices(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ClassicMobileServiceCollectionInner>(serviceCallback) {
             @Override
@@ -790,7 +790,7 @@ public final class GlobalsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listPremierAddOnOffers(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listPremierAddOnOffers(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return listPremierAddOnOffersDelegate(call.execute());
     }
 
@@ -813,7 +813,7 @@ public final class GlobalsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listPremierAddOnOffers(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listPremierAddOnOffers(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -854,7 +854,7 @@ public final class GlobalsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.isHostingEnvironmentNameAvailable(this.client.subscriptionId(), name, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.isHostingEnvironmentNameAvailable(this.client.subscriptionId(), name, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return isHostingEnvironmentNameAvailableDelegate(call.execute());
     }
 
@@ -882,7 +882,7 @@ public final class GlobalsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.isHostingEnvironmentNameAvailable(this.client.subscriptionId(), name, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.isHostingEnvironmentNameAvailable(this.client.subscriptionId(), name, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -923,7 +923,7 @@ public final class GlobalsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.isHostingEnvironmentWithLegacyNameAvailable(name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.isHostingEnvironmentWithLegacyNameAvailable(name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return isHostingEnvironmentWithLegacyNameAvailableDelegate(call.execute());
     }
 
@@ -951,7 +951,7 @@ public final class GlobalsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.isHostingEnvironmentWithLegacyNameAvailable(name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.isHostingEnvironmentWithLegacyNameAvailable(name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -993,7 +993,7 @@ public final class GlobalsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(request);
-        Call<ResponseBody> call = service.checkNameAvailability(this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.checkNameAvailability(this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return checkNameAvailabilityDelegate(call.execute());
     }
 
@@ -1022,7 +1022,7 @@ public final class GlobalsInner {
             return null;
         }
         Validator.validate(request, serviceCallback);
-        Call<ResponseBody> call = service.checkNameAvailability(this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.checkNameAvailability(this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ResourceNameAvailabilityInner>(serviceCallback) {
             @Override

@@ -20,7 +20,7 @@ public enum CompileMode {
     FULL("Full"),
 
     /** Enum value SingleBox. */
-    SINGLEBOX("SingleBox");
+    SINGLE_BOX("SingleBox");
 
     /** The actual serialized value for a CompileMode instance. */
     private String value;

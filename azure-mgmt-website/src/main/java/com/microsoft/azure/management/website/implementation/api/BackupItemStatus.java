@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum BackupItemStatus {
     /** Enum value InProgress. */
-    INPROGRESS("InProgress"),
+    IN_PROGRESS("InProgress"),
 
     /** Enum value Failed. */
     FAILED("Failed"),
@@ -23,7 +23,7 @@ public enum BackupItemStatus {
     SUCCEEDED("Succeeded"),
 
     /** Enum value TimedOut. */
-    TIMEDOUT("TimedOut"),
+    TIMED_OUT("TimedOut"),
 
     /** Enum value Created. */
     CREATED("Created"),
@@ -32,13 +32,13 @@ public enum BackupItemStatus {
     SKIPPED("Skipped"),
 
     /** Enum value PartiallySucceeded. */
-    PARTIALLYSUCCEEDED("PartiallySucceeded"),
+    PARTIALLY_SUCCEEDED("PartiallySucceeded"),
 
     /** Enum value DeleteInProgress. */
-    DELETEINPROGRESS("DeleteInProgress"),
+    DELETE_IN_PROGRESS("DeleteInProgress"),
 
     /** Enum value DeleteFailed. */
-    DELETEFAILED("DeleteFailed"),
+    DELETE_FAILED("DeleteFailed"),
 
     /** Enum value Deleted. */
     DELETED("Deleted");

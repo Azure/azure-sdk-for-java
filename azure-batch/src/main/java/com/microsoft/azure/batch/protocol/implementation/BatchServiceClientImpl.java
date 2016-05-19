@@ -276,7 +276,17 @@ public final class BatchServiceClientImpl extends AzureServiceClient implements 
         this.jobSchedules = new JobSchedulesImpl(restClient().retrofit(), this);
         this.tasks = new TasksImpl(restClient().retrofit(), this);
         this.computeNodes = new ComputeNodesImpl(restClient().retrofit(), this);
-        restClient().headers().addHeader("x-ms-client-request-id", UUID.randomUUID().toString());
-        this.azureClient = new AzureClient(restClient());
+        this.azureClient = new AzureClient(this);
+    }
+
+    /**
+     * Gets the User-Agent header for the client.
+     *
+     * @return the user agent string.
+     */
+    public String userAgent() {
+        return String.format("Azure-SDK-For-Java/%s (%s)",
+                getClass().getPackage().getImplementationVersion(),
+                "BatchServiceClient, 2016-02-01.3.0");
     }
 }

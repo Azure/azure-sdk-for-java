@@ -53,19 +53,19 @@ public final class RecommendationsInner {
     interface RecommendationsService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations")
-        Call<ResponseBody> getRecommendationBySubscription(@Path("subscriptionId") String subscriptionId, @Query("featured") Boolean featured, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getRecommendationBySubscription(@Path("subscriptionId") String subscriptionId, @Query("featured") Boolean featured, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations/{name}")
-        Call<ResponseBody> getRuleDetailsBySiteName(@Path("resourceGroupName") String resourceGroupName, @Path("siteName") String siteName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getRuleDetailsBySiteName(@Path("resourceGroupName") String resourceGroupName, @Path("siteName") String siteName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations")
-        Call<ResponseBody> getRecommendedRulesForSite(@Path("resourceGroupName") String resourceGroupName, @Path("siteName") String siteName, @Path("subscriptionId") String subscriptionId, @Query("featured") Boolean featured, @Query("siteSku") String siteSku, @Query("numSlots") Integer numSlots, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getRecommendedRulesForSite(@Path("resourceGroupName") String resourceGroupName, @Path("siteName") String siteName, @Path("subscriptionId") String subscriptionId, @Query("featured") Boolean featured, @Query("siteSku") String siteSku, @Query("numSlots") Integer numSlots, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendationHistory")
-        Call<ResponseBody> getRecommendationHistoryForSite(@Path("resourceGroupName") String resourceGroupName, @Path("siteName") String siteName, @Path("subscriptionId") String subscriptionId, @Query("startTime") String startTime, @Query("endTime") String endTime, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getRecommendationHistoryForSite(@Path("resourceGroupName") String resourceGroupName, @Path("siteName") String siteName, @Path("subscriptionId") String subscriptionId, @Query("startTime") String startTime, @Query("endTime") String endTime, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -86,7 +86,7 @@ public final class RecommendationsInner {
         }
         final Boolean featured = null;
         final String filter = null;
-        Call<ResponseBody> call = service.getRecommendationBySubscription(this.client.subscriptionId(), featured, filter, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getRecommendationBySubscription(this.client.subscriptionId(), featured, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getRecommendationBySubscriptionDelegate(call.execute());
     }
 
@@ -111,7 +111,7 @@ public final class RecommendationsInner {
         }
         final Boolean featured = null;
         final String filter = null;
-        Call<ResponseBody> call = service.getRecommendationBySubscription(this.client.subscriptionId(), featured, filter, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getRecommendationBySubscription(this.client.subscriptionId(), featured, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<RecommendationInner>>(serviceCallback) {
             @Override
@@ -143,7 +143,7 @@ public final class RecommendationsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getRecommendationBySubscription(this.client.subscriptionId(), featured, filter, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getRecommendationBySubscription(this.client.subscriptionId(), featured, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getRecommendationBySubscriptionDelegate(call.execute());
     }
 
@@ -168,7 +168,7 @@ public final class RecommendationsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getRecommendationBySubscription(this.client.subscriptionId(), featured, filter, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getRecommendationBySubscription(this.client.subscriptionId(), featured, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<RecommendationInner>>(serviceCallback) {
             @Override
@@ -217,7 +217,7 @@ public final class RecommendationsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getRuleDetailsBySiteName(resourceGroupName, siteName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getRuleDetailsBySiteName(resourceGroupName, siteName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getRuleDetailsBySiteNameDelegate(call.execute());
     }
 
@@ -255,7 +255,7 @@ public final class RecommendationsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getRuleDetailsBySiteName(resourceGroupName, siteName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getRuleDetailsBySiteName(resourceGroupName, siteName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<RecommendationRuleInner>(serviceCallback) {
             @Override
@@ -303,7 +303,7 @@ public final class RecommendationsInner {
         final Boolean featured = null;
         final String siteSku = null;
         final Integer numSlots = null;
-        Call<ResponseBody> call = service.getRecommendedRulesForSite(resourceGroupName, siteName, this.client.subscriptionId(), featured, siteSku, numSlots, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getRecommendedRulesForSite(resourceGroupName, siteName, this.client.subscriptionId(), featured, siteSku, numSlots, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getRecommendedRulesForSiteDelegate(call.execute());
     }
 
@@ -339,7 +339,7 @@ public final class RecommendationsInner {
         final Boolean featured = null;
         final String siteSku = null;
         final Integer numSlots = null;
-        Call<ResponseBody> call = service.getRecommendedRulesForSite(resourceGroupName, siteName, this.client.subscriptionId(), featured, siteSku, numSlots, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getRecommendedRulesForSite(resourceGroupName, siteName, this.client.subscriptionId(), featured, siteSku, numSlots, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<RecommendationInner>>(serviceCallback) {
             @Override
@@ -380,7 +380,7 @@ public final class RecommendationsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getRecommendedRulesForSite(resourceGroupName, siteName, this.client.subscriptionId(), featured, siteSku, numSlots, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getRecommendedRulesForSite(resourceGroupName, siteName, this.client.subscriptionId(), featured, siteSku, numSlots, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getRecommendedRulesForSiteDelegate(call.execute());
     }
 
@@ -416,7 +416,7 @@ public final class RecommendationsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getRecommendedRulesForSite(resourceGroupName, siteName, this.client.subscriptionId(), featured, siteSku, numSlots, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getRecommendedRulesForSite(resourceGroupName, siteName, this.client.subscriptionId(), featured, siteSku, numSlots, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<RecommendationInner>>(serviceCallback) {
             @Override
@@ -463,7 +463,7 @@ public final class RecommendationsInner {
         }
         final String startTime = null;
         final String endTime = null;
-        Call<ResponseBody> call = service.getRecommendationHistoryForSite(resourceGroupName, siteName, this.client.subscriptionId(), startTime, endTime, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getRecommendationHistoryForSite(resourceGroupName, siteName, this.client.subscriptionId(), startTime, endTime, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getRecommendationHistoryForSiteDelegate(call.execute());
     }
 
@@ -498,7 +498,7 @@ public final class RecommendationsInner {
         }
         final String startTime = null;
         final String endTime = null;
-        Call<ResponseBody> call = service.getRecommendationHistoryForSite(resourceGroupName, siteName, this.client.subscriptionId(), startTime, endTime, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getRecommendationHistoryForSite(resourceGroupName, siteName, this.client.subscriptionId(), startTime, endTime, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<RecommendationInner>>(serviceCallback) {
             @Override
@@ -538,7 +538,7 @@ public final class RecommendationsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getRecommendationHistoryForSite(resourceGroupName, siteName, this.client.subscriptionId(), startTime, endTime, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getRecommendationHistoryForSite(resourceGroupName, siteName, this.client.subscriptionId(), startTime, endTime, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getRecommendationHistoryForSiteDelegate(call.execute());
     }
 
@@ -573,7 +573,7 @@ public final class RecommendationsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getRecommendationHistoryForSite(resourceGroupName, siteName, this.client.subscriptionId(), startTime, endTime, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getRecommendationHistoryForSite(resourceGroupName, siteName, this.client.subscriptionId(), startTime, endTime, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<RecommendationInner>>(serviceCallback) {
             @Override

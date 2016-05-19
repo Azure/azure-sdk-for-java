@@ -23,7 +23,7 @@ public enum NotificationLevel {
     INFORMATION("Information"),
 
     /** Enum value NonUrgentSuggestion. */
-    NONURGENTSUGGESTION("NonUrgentSuggestion");
+    NON_URGENT_SUGGESTION("NonUrgentSuggestion");
 
     /** The actual serialized value for a NotificationLevel instance. */
     private String value;

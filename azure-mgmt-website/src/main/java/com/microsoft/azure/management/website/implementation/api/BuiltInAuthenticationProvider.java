@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum BuiltInAuthenticationProvider {
     /** Enum value AzureActiveDirectory. */
-    AZUREACTIVEDIRECTORY("AzureActiveDirectory"),
+    AZURE_ACTIVE_DIRECTORY("AzureActiveDirectory"),
 
     /** Enum value Facebook. */
     FACEBOOK("Facebook"),
@@ -23,7 +23,7 @@ public enum BuiltInAuthenticationProvider {
     GOOGLE("Google"),
 
     /** Enum value MicrosoftAccount. */
-    MICROSOFTACCOUNT("MicrosoftAccount"),
+    MICROSOFT_ACCOUNT("MicrosoftAccount"),
 
     /** Enum value Twitter. */
     TWITTER("Twitter");

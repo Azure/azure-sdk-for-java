@@ -27,6 +27,13 @@ public interface BatchServiceClient {
     AzureClient getAzureClient();
 
     /**
+     * Gets the User-Agent header for the client.
+     *
+     * @return the user agent string.
+     */
+    String userAgent();
+
+    /**
      * Gets Client API Version..
      *
      * @return the apiVersion value.
