@@ -55,8 +55,8 @@ public final class UsagesInner {
      */
     interface UsagesService {
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{region}/usages")
-        Call<ResponseBody> list(@Path("region") String location, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/usages")
+        Call<ResponseBody> list(@Path("location") String location, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
@@ -67,7 +67,7 @@ public final class UsagesInner {
     /**
      * Lists compute usages for a subscription.
      *
-     * @param location The region upon which resource usage is queried.
+     * @param location The location upon which resource usage is queried.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -75,7 +75,7 @@ public final class UsagesInner {
      */
     public ServiceResponse<PagedList<UsageInner>> list(final String location) throws CloudException, IOException, IllegalArgumentException {
         if (location == null) {
-            throw new IllegalArgumentException("Parameter region is required and cannot be null.");
+            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
@@ -97,7 +97,7 @@ public final class UsagesInner {
     /**
      * Lists compute usages for a subscription.
      *
-     * @param location The region upon which resource usage is queried.
+     * @param location The location upon which resource usage is queried.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
@@ -107,7 +107,7 @@ public final class UsagesInner {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
         if (location == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter region is required and cannot be null."));
+            serviceCallback.failure(new IllegalArgumentException("Parameter location is required and cannot be null."));
             return null;
         }
         if (this.client.subscriptionId() == null) {

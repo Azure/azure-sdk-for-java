@@ -52,15 +52,15 @@ public final class VirtualMachineSizesInner {
      */
     interface VirtualMachineSizesService {
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{region}/vmSizes")
-        Call<ResponseBody> list(@Path("region") String location, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/vmSizes")
+        Call<ResponseBody> list(@Path("location") String location, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
 
     }
 
     /**
-     * Lists all available virtual machine sizes for a subscription in a region.
+     * Lists all available virtual machine sizes for a subscription in a location.
      *
-     * @param location The region upon which virtual-machine-sizes is queried.
+     * @param location The location upon which virtual-machine-sizes is queried.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -68,7 +68,7 @@ public final class VirtualMachineSizesInner {
      */
     public ServiceResponse<List<VirtualMachineSizeInner>> list(String location) throws CloudException, IOException, IllegalArgumentException {
         if (location == null) {
-            throw new IllegalArgumentException("Parameter region is required and cannot be null.");
+            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
@@ -83,9 +83,9 @@ public final class VirtualMachineSizesInner {
     }
 
     /**
-     * Lists all available virtual machine sizes for a subscription in a region.
+     * Lists all available virtual machine sizes for a subscription in a location.
      *
-     * @param location The region upon which virtual-machine-sizes is queried.
+     * @param location The location upon which virtual-machine-sizes is queried.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
@@ -95,7 +95,7 @@ public final class VirtualMachineSizesInner {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
         if (location == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter region is required and cannot be null."));
+            serviceCallback.failure(new IllegalArgumentException("Parameter location is required and cannot be null."));
             return null;
         }
         if (this.client.subscriptionId() == null) {
