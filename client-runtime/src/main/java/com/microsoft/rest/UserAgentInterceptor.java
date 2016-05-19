@@ -47,11 +47,19 @@ public class UserAgentInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
         String header = request.header("User-Agent");
-        if (header == null || !userAgent.equals(DEFAULT_USER_AGENT_HEADER)) {
-            request = chain.request().newBuilder()
-                    .header("User-Agent", userAgent + " " + header)
-                    .build();
+        if (header == null) {
+            header = DEFAULT_USER_AGENT_HEADER;
         }
+        if (!userAgent.equals(DEFAULT_USER_AGENT_HEADER)) {
+            if (header.equals(DEFAULT_USER_AGENT_HEADER)) {
+                header = userAgent;
+            } else {
+                header = userAgent + " " + header;
+            }
+        }
+        request = chain.request().newBuilder()
+                .header("User-Agent", header)
+                .build();
         return chain.proceed(request);
     }
 }
