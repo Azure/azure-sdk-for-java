@@ -7,10 +7,10 @@
 package com.microsoft.azure.batch;
 
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.batch.protocol.implementation.api.AccountListNodeAgentSkusHeadersInner;
-import com.microsoft.azure.batch.protocol.implementation.api.AccountListNodeAgentSkusOptionsInner;
-import com.microsoft.azure.batch.protocol.implementation.api.BatchErrorException;
-import com.microsoft.azure.batch.protocol.implementation.api.NodeAgentSkuInner;
+import com.microsoft.azure.batch.protocol.models.AccountListNodeAgentSkusHeaders;
+import com.microsoft.azure.batch.protocol.models.AccountListNodeAgentSkusOptions;
+import com.microsoft.azure.batch.protocol.models.BatchErrorException;
+import com.microsoft.azure.batch.protocol.models.NodeAgentSku;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 
 import java.io.IOException;
@@ -40,21 +40,21 @@ public class AccountOperations implements IInheritedBehaviors {
         _customBehaviors = behaviors;
     }
 
-    public List<NodeAgentSkuInner> listNodeAgentSkus() throws BatchErrorException, IOException {
+    public List<NodeAgentSku> listNodeAgentSkus() throws BatchErrorException, IOException {
         return listNodeAgentSkus(null, null);
     }
 
-    public List<NodeAgentSkuInner> listNodeAgentSkus(DetailLevel detailLevel) throws BatchErrorException, IOException {
+    public List<NodeAgentSku> listNodeAgentSkus(DetailLevel detailLevel) throws BatchErrorException, IOException {
         return listNodeAgentSkus(detailLevel, null);
     }
 
-    public List<NodeAgentSkuInner> listNodeAgentSkus(DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        AccountListNodeAgentSkusOptionsInner options = new AccountListNodeAgentSkusOptionsInner();
+    public List<NodeAgentSku> listNodeAgentSkus(DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+        AccountListNodeAgentSkusOptions options = new AccountListNodeAgentSkusOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<PagedList<NodeAgentSkuInner>, AccountListNodeAgentSkusHeadersInner> response = this._parentBatchClient.getProtocolLayer().accounts().listNodeAgentSkus(options);
+        ServiceResponseWithHeaders<PagedList<NodeAgentSku>, AccountListNodeAgentSkusHeaders> response = this._parentBatchClient.getProtocolLayer().accounts().listNodeAgentSkus(options);
 
         return response.getBody();
     }

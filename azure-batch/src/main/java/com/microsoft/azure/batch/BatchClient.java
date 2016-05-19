@@ -8,14 +8,15 @@ package com.microsoft.azure.batch;
 
 import com.microsoft.azure.batch.auth.BatchSharedKeyCredentials;
 import com.microsoft.azure.batch.interceptor.ClientRequestIdInterceptor;
-import com.microsoft.azure.batch.protocol.implementation.api.BatchServiceClientImpl;
+import com.microsoft.azure.batch.protocol.BatchServiceClient;
+import com.microsoft.azure.batch.protocol.implementation.BatchServiceClientImpl;
 
 import java.util.Collection;
 import java.util.LinkedList;
 
 public class BatchClient {
 
-    private BatchServiceClientImpl protocolLayer;
+    private BatchServiceClient protocolLayer;
     private CertificateOperations certificateOperations;
     private JobOperations jobOperations;
     private TaskOperations taskOperations;
@@ -27,7 +28,7 @@ public class BatchClient {
     private AccountOperations accountOperations;
     private Collection<BatchClientBehavior> customBehaviors;
 
-    public BatchServiceClientImpl getProtocolLayer() {
+    public BatchServiceClient getProtocolLayer() {
         return this.protocolLayer;
     }
 

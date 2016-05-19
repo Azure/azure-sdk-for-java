@@ -28,18 +28,6 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
-    /** Gets Azure subscription credentials. */
-    private ServiceClientCredentials credentials;
-
-    /**
-     * Gets Gets Azure subscription credentials.
-     *
-     * @return the credentials value.
-     */
-    public ServiceClientCredentials credentials() {
-        return this.credentials;
-    }
-
     /** Client Api Version. */
     private String apiVersion;
 
