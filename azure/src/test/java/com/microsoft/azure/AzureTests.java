@@ -85,7 +85,7 @@ public class AzureTests {
     		.withStaticIp()
     		.withLeafDomainLabel(newPipName + "xx")
     		.withReverseFqdn(pip.leafDomainLabel() + "." + pip.region() + ".cloudapp.azure.com")
-    		.withIdleTimeoutInMinutes(10)
+    		.withIdleTimeoutInMinutes(15)
     		.apply();
     	printPublicIpAddress(pip);
     	pip = azure2.publicIpAddresses().get(pip.id());
@@ -93,7 +93,6 @@ public class AzureTests {
     	
     	// Verify delete
     	azure2.publicIpAddresses().delete(pip.id());
-    	azure2.resourceGroups().delete(resourceGroupName);
     	azure2.resourceGroups().delete(pip.resourceGroupName());
     }
     
