@@ -26,32 +26,32 @@ public interface PublicIpAddress extends
 	/**
 	 * @return the assigned IP address
 	 */
-	public String ipAddress();
+	String ipAddress();
 
 	/**
 	 * @return the assigned leaf domain label
 	 */
-	public String leafDomainLabel();
+	String leafDomainLabel();
 
 	/** 
 	 * @return the assigned FQDN (fully qualified domain name)
 	 */
-	public String fqdn();
+	String fqdn();
 
 	/**
 	 * @return the assigned reverse FQDN, if any
 	 */
-	public String reverseFqdn();
+	String reverseFqdn();
 
 	/**
 	 * @return the IP address allocation method (Static/Dynamic)
 	 */
-	public String ipAllocationMethod();
+	String ipAllocationMethod();
 
 	/**
 	 * @return the idle connection timeout setting (in minutes)
 	 */
-	public int idleTimeoutInMinutes();
+	int idleTimeoutInMinutes();
 
     /**************************************************************
      * Fluent interfaces for provisioning
@@ -84,7 +84,7 @@ public interface PublicIpAddress extends
     /**
      * A public IP address definition allowing to set the IP allocation method (static or dynamic)
      */
-    public interface DefinitionWithIpAddress {
+    interface DefinitionWithIpAddress {
         /**
          * Enables static IP address allocation. 
          * <p>
@@ -107,7 +107,7 @@ public interface PublicIpAddress extends
     /**
      * A public IP address update allowing to change the IP allocation method (static or dynamic)
      */
-    public interface UpdatableWithIpAddress<T> {
+    interface UpdatableWithIpAddress<T> {
         /**
          * Enables static IP address allocation. 
          * <p>
@@ -129,7 +129,7 @@ public interface PublicIpAddress extends
     /**
      * A public IP address definition allowing to specify the leaf domain label, if any
      */
-    public interface DefinitionWithLeafDomainLabel {
+    interface DefinitionWithLeafDomainLabel {
         /**
          * Specifies the leaf domain label to associate with this public IP address. 
          * <p>
@@ -153,7 +153,7 @@ public interface PublicIpAddress extends
     /**
      * A public IP address update allowing to change the leaf domain label, if any
      */
-    public interface UpdatableWithLeafDomainLabel<T> {
+    interface UpdatableWithLeafDomainLabel<T> {
         /**
          * Specifies the leaf domain label to associate with this public IP address. 
          * <p>
@@ -176,7 +176,7 @@ public interface PublicIpAddress extends
     /**
      * A public IP address definition allowing the reverse FQDN to be specified
      */
-    public interface DefinitionWithReverseFQDN<T> {
+    interface DefinitionWithReverseFQDN<T> {
         /**
          * Specifies the reverse FQDN to assign to this public IP address.
          * <p>
@@ -196,7 +196,7 @@ public interface PublicIpAddress extends
     /**
      * A public IP address update allowing the reverse FQDN to be specified
      */
-    public interface UpdatableWithReverseFQDN<T> {
+    interface UpdatableWithReverseFQDN<T> {
         /**
          * Specifies the reverse FQDN to assign to this public IP address
          * @param reverseFQDN the reverse FQDN to assign 
