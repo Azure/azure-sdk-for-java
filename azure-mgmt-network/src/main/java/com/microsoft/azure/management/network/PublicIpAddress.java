@@ -22,10 +22,12 @@ public interface PublicIpAddress extends
     /***********************************************************
      * Getters
      ***********************************************************/
-	String ipAddress();
-	String leafDomainLabel();
-	String fqdn();
-	String reverseFqdn();
+	public String ipAddress();
+	public String leafDomainLabel();
+	public String fqdn();
+	public String reverseFqdn();
+	public String ipAllocationMethod();
+	public int idleTimeoutInMinutes();
 
     /**************************************************************
      * Fluent interfaces for provisioning
@@ -142,13 +144,14 @@ public interface PublicIpAddress extends
 		 */
 		T withoutReverseFqdn();
 	}
-
+	
 	
     interface DefinitionCreatable extends 
     	Creatable<PublicIpAddress>,
     	DefinitionWithLeafDomainLabel,
     	DefinitionWithIpAddress,
     	DefinitionWithReverseFQDN<DefinitionCreatable> {
+    		DefinitionCreatable withIdleTimeoutInMinutes(int minutes);
     }
     
     interface Update extends 
@@ -156,6 +159,7 @@ public interface PublicIpAddress extends
     	UpdatableWithIpAddress<Update>,
     	UpdatableWithLeafDomainLabel<Update>,
     	UpdatableWithReverseFQDN<Update> {
+    		Update withIdleTimeoutInMinutes(int minutes);
     }
 }
 

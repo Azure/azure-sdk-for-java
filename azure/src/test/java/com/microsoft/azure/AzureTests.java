@@ -28,7 +28,7 @@ public class AzureTests {
     private Azure azure, azure2;
 
     public static void main(String[] args) throws IOException, CloudException {
-    	final File credFile = new File("azureauth.properties");
+    	final File credFile = new File("my.azureauth");
     	Azure azure = Azure.authenticate(credFile)
     		.withDefaultSubscription();
     	System.out.println(String.valueOf(azure.resourceGroups().list().size()));
@@ -49,7 +49,7 @@ public class AzureTests {
         azure = azureAuthed.withSubscription(subscriptionId);
         
         // Authenticate based on file
-    	this.azure2 = Azure.authenticate(new File("my.auth"))
+    	this.azure2 = Azure.authenticate(new File("my.azureauth"))
         	.withDefaultSubscription();
     }
 
@@ -66,6 +66,7 @@ public class AzureTests {
     		.withNewGroup()
     		.withDynamicIp()
     		.withLeafDomainLabel(newPipName)
+    		.withIdleTimeoutInMinutes(10)
     		.create();
     	
     	// Verify list
@@ -84,6 +85,7 @@ public class AzureTests {
     		.withStaticIp()
     		.withLeafDomainLabel(newPipName + "xx")
     		.withReverseFqdn(pip.leafDomainLabel() + "." + pip.region() + ".cloudapp.azure.com")
+    		.withIdleTimeoutInMinutes(10)
     		.apply();
     	printPublicIpAddress(pip);
     	pip = azure2.publicIpAddresses().get(pip.id());
@@ -102,6 +104,8 @@ public class AzureTests {
     			.append("\n\tResource group: ").append(pip.resourceGroupName())
     			.append("\n\tFQDN: ").append(pip.fqdn())
     			.append("\n\tReverse FQDN: ").append(pip.reverseFqdn())
+    			.append("\n\tIdle timeout (minutes): ").append(pip.idleTimeoutInMinutes())
+    			.append("\n\tIP allocation method: ").append(pip.ipAllocationMethod())
     			.toString());
     }
     
