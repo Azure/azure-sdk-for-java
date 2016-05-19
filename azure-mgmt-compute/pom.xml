@@ -35,6 +35,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <checkstyle.config.location>${project.basedir}/../tools/checkstyle.xml</checkstyle.config.location>
+    <checkstyle.suppressions.location>${project.basedir}/../tools/suppressions.xml</checkstyle.suppressions.location>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
   </properties>
 
