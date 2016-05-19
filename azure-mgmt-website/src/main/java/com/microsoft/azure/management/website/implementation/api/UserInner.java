@@ -34,6 +34,12 @@ public class UserInner extends Resource {
     private String publishingPassword;
 
     /**
+     * Service Control Manager URI, including username and password.
+     */
+    @JsonProperty(value = "properties.scmUri")
+    private String scmUri;
+
+    /**
      * Get the userName value.
      *
      * @return the userName value
@@ -90,6 +96,26 @@ public class UserInner extends Resource {
      */
     public UserInner setPublishingPassword(String publishingPassword) {
         this.publishingPassword = publishingPassword;
+        return this;
+    }
+
+    /**
+     * Get the scmUri value.
+     *
+     * @return the scmUri value
+     */
+    public String scmUri() {
+        return this.scmUri;
+    }
+
+    /**
+     * Set the scmUri value.
+     *
+     * @param scmUri the scmUri value to set
+     * @return the UserInner object itself.
+     */
+    public UserInner setScmUri(String scmUri) {
+        this.scmUri = scmUri;
         return this;
     }
 

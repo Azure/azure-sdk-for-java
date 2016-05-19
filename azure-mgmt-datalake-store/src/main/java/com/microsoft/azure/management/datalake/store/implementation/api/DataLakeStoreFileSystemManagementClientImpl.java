@@ -28,18 +28,6 @@ public final class DataLakeStoreFileSystemManagementClientImpl extends AzureServ
         return this.azureClient;
     }
 
-    /** Gets Azure subscription credentials. */
-    private ServiceClientCredentials credentials;
-
-    /**
-     * Gets Gets Azure subscription credentials.
-     *
-     * @return the credentials value.
-     */
-    public ServiceClientCredentials credentials() {
-        return this.credentials;
-    }
-
     /** Client Api Version. */
     private String apiVersion;
 
@@ -188,7 +176,17 @@ public final class DataLakeStoreFileSystemManagementClientImpl extends AzureServ
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
         this.fileSystems = new FileSystemsInner(restClient().retrofit(), this);
-        restClient().headers().addHeader("x-ms-client-request-id", UUID.randomUUID().toString());
-        this.azureClient = new AzureClient(restClient());
+        this.azureClient = new AzureClient(this);
+    }
+
+    /**
+     * Gets the User-Agent header for the client.
+     *
+     * @return the user agent string.
+     */
+    public String userAgent() {
+        return String.format("Azure-SDK-For-Java/%s (%s)",
+                getClass().getPackage().getImplementationVersion(),
+                "DataLakeStoreFileSystemManagementClient, 2015-10-01-preview");
     }
 }

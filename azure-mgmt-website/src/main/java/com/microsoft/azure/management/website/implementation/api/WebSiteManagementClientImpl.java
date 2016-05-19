@@ -28,18 +28,6 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
-    /** Gets Azure subscription credentials. */
-    private ServiceClientCredentials credentials;
-
-    /**
-     * Gets Gets Azure subscription credentials.
-     *
-     * @return the credentials value.
-     */
-    public ServiceClientCredentials credentials() {
-        return this.credentials;
-    }
-
     /** Subscription Id. */
     private String subscriptionId;
 
@@ -397,7 +385,17 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient {
         this.sites = new SitesInner(restClient().retrofit(), this);
         this.topLevelDomains = new TopLevelDomainsInner(restClient().retrofit(), this);
         this.usages = new UsagesInner(restClient().retrofit(), this);
-        restClient().headers().addHeader("x-ms-client-request-id", UUID.randomUUID().toString());
-        this.azureClient = new AzureClient(restClient());
+        this.azureClient = new AzureClient(this);
+    }
+
+    /**
+     * Gets the User-Agent header for the client.
+     *
+     * @return the user agent string.
+     */
+    public String userAgent() {
+        return String.format("Azure-SDK-For-Java/%s (%s)",
+                getClass().getPackage().getImplementationVersion(),
+                "WebSiteManagementClient, 2015-08-01");
     }
 }

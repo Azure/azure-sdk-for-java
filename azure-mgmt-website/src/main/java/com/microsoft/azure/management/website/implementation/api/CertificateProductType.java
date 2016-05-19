@@ -14,10 +14,10 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum CertificateProductType {
     /** Enum value StandardDomainValidatedSsl. */
-    STANDARDDOMAINVALIDATEDSSL("StandardDomainValidatedSsl"),
+    STANDARD_DOMAIN_VALIDATED_SSL("StandardDomainValidatedSsl"),
 
     /** Enum value StandardDomainValidatedWildCardSsl. */
-    STANDARDDOMAINVALIDATEDWILDCARDSSL("StandardDomainValidatedWildCardSsl");
+    STANDARD_DOMAIN_VALIDATED_WILD_CARD_SSL("StandardDomainValidatedWildCardSsl");
 
     /** The actual serialized value for a CertificateProductType instance. */
     private String value;

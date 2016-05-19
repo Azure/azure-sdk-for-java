@@ -20,7 +20,7 @@ public abstract class StorageManagementTestBase {
 
         RestClient restClient = AzureEnvironment.AZURE.newRestClientBuilder()
                 .withCredentials(credentials)
-                .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
+                .withLogLevel(HttpLoggingInterceptor.Level.HEADERS)
                 .build();
 
         resourceManager = ResourceManager

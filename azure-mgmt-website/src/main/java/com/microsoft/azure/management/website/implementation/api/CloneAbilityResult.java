@@ -17,10 +17,10 @@ public enum CloneAbilityResult {
     CLONEABLE("Cloneable"),
 
     /** Enum value PartiallyCloneable. */
-    PARTIALLYCLONEABLE("PartiallyCloneable"),
+    PARTIALLY_CLONEABLE("PartiallyCloneable"),
 
     /** Enum value NotCloneable. */
-    NOTCLONEABLE("NotCloneable");
+    NOT_CLONEABLE("NotCloneable");
 
     /** The actual serialized value for a CloneAbilityResult instance. */
     private String value;

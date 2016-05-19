@@ -41,7 +41,7 @@ public enum JobState {
     PAUSED("Paused"),
 
     /** Enum value WaitingForCapacity. */
-    WAITINGFORCAPACITY("WaitingForCapacity");
+    WAITING_FOR_CAPACITY("WaitingForCapacity");
 
     /** The actual serialized value for a JobState instance. */
     private String value;

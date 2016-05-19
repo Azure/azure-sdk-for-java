@@ -10,14 +10,15 @@ package com.microsoft.rest;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.retry.RetryHandler;
 import com.microsoft.rest.serializer.JacksonMapperAdapter;
+
+import java.net.CookieManager;
+import java.net.CookiePolicy;
+
 import okhttp3.Interceptor;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-
-import java.net.CookieManager;
-import java.net.CookiePolicy;
 
 /**
  * An instance of this class stores the client information for making REST calls.
@@ -35,17 +36,21 @@ public final class RestClient {
     private BaseUrlHandler baseUrlHandler;
     /** The adapter to a Jackson {@link com.fasterxml.jackson.databind.ObjectMapper}. */
     private JacksonMapperAdapter mapperAdapter;
+    /** The interceptor to set 'User-Agent' header. */
+    private UserAgentInterceptor userAgentInterceptor;
 
     private RestClient(OkHttpClient httpClient,
                        Retrofit retrofit,
                        ServiceClientCredentials credentials,
                        CustomHeadersInterceptor customHeadersInterceptor,
+                       UserAgentInterceptor userAgentInterceptor,
                        BaseUrlHandler baseUrlHandler,
                        JacksonMapperAdapter mapperAdapter) {
         this.httpClient = httpClient;
         this.retrofit = retrofit;
         this.credentials = credentials;
         this.customHeadersInterceptor = customHeadersInterceptor;
+        this.userAgentInterceptor = userAgentInterceptor;
         this.baseUrlHandler = baseUrlHandler;
         this.mapperAdapter = mapperAdapter;
     }
@@ -91,7 +96,11 @@ public final class RestClient {
      * URL instead of the raw one might be returned.
      *
      * @return the base URL.
+<<<<<<< HEAD
+     * @see {@link RestClient#setBaseUrl(String...)}
+=======
      * @see RestClient#setBaseUrl(String...)
+>>>>>>> fddca6a8917951772a65a3e5b47c5e72c1f42fb5
      */
     public String baseUrl() {
         return baseUrlHandler.baseUrl();
@@ -134,6 +143,8 @@ public final class RestClient {
         private BaseUrlHandler baseUrlHandler;
         /** The adapter to a Jackson {@link com.fasterxml.jackson.databind.ObjectMapper}. */
         private JacksonMapperAdapter mapperAdapter;
+        /** The interceptor to set 'User-Agent' header. */
+        private UserAgentInterceptor userAgentInterceptor;
 
         /**
          * Creates an instance of the builder with a base URL to the service.
@@ -165,24 +176,13 @@ public final class RestClient {
             cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
             customHeadersInterceptor = new CustomHeadersInterceptor();
             baseUrlHandler = new BaseUrlHandler(baseUrl);
+            userAgentInterceptor = new UserAgentInterceptor();
             // Set up OkHttp client
             this.httpClientBuilder = httpClientBuilder
                     .cookieJar(new JavaNetCookieJar(cookieManager))
-                    .addInterceptor(new UserAgentInterceptor());
+                    .addInterceptor(userAgentInterceptor);
             // Set up rest adapter
             this.retrofitBuilder = retrofitBuilder.baseUrl(baseUrl);
-        }
-
-        /**
-         * Sets the base URL.
-         *
-         * @param baseUrl the dynamic base URL.
-         * @return the builder itself for chaining.
-         */
-        public Builder withBaseUrl(String baseUrl) {
-            this.retrofitBuilder.baseUrl(baseUrl);
-            this.baseUrlHandler = new BaseUrlHandler(baseUrl);
-            return this;
         }
 
         /**
@@ -192,7 +192,7 @@ public final class RestClient {
          * @return the builder itself for chaining.
          */
         public Builder withUserAgent(String userAgent) {
-            this.httpClientBuilder.addInterceptor(new UserAgentInterceptor(userAgent));
+            this.userAgentInterceptor.setUserAgent(userAgent);
             return this;
         }
 
@@ -264,6 +264,7 @@ public final class RestClient {
                             .build(),
                     credentials,
                     customHeadersInterceptor,
+                    userAgentInterceptor,
                     baseUrlHandler,
                     mapperAdapter);
         }
