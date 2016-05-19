@@ -28,29 +28,29 @@ public class AzureTests {
     private Azure azure, azure2;
 
     public static void main(String[] args) throws IOException, CloudException {
-    	final File credFile = new File("my.azureauth");
-    	Azure azure = Azure.authenticate(credFile)
-    		.withDefaultSubscription();
-    	System.out.println(String.valueOf(azure.resourceGroups().list().size()));
-    	
-    	Azure.configure().withLogLevel(Level.BASIC).authenticate(credFile);
-    	System.out.println(String.valueOf(azure.resourceGroups().list().size()));
+        final File credFile = new File("my.azureauth");
+        Azure azure = Azure.authenticate(credFile)
+                .withDefaultSubscription();
+        System.out.println(String.valueOf(azure.resourceGroups().list().size()));
+
+        Azure.configure().withLogLevel(Level.BASIC).authenticate(credFile);
+        System.out.println(String.valueOf(azure.resourceGroups().list().size()));
     }
-    
+
     @Before
     public void setup() throws Exception {
         // Authenticate based on credentials instance
-    	Azure.Authenticated azureAuthed = Azure.configure()
+        Azure.Authenticated azureAuthed = Azure.configure()
                 .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
                 .withUserAgent("AzureTests")
                 .authenticate(credentials);
 
         subscriptions = azureAuthed.subscriptions();
         azure = azureAuthed.withSubscription(subscriptionId);
-        
+
         // Authenticate based on file
-    	this.azure2 = Azure.authenticate(new File("my.azureauth"))
-        	.withDefaultSubscription();
+        this.azure2 = Azure.authenticate(new File("my.azureauth"))
+                .withDefaultSubscription();
     }
 
     /**
@@ -58,57 +58,59 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testPublicIpAddresses() throws Exception {
-    	// Verify creation of a new public IP address 
-    	String suffix = String.valueOf(System.currentTimeMillis());
-    	String newPipName = "pip" + suffix;
-    	PublicIpAddress pip = azure2.publicIpAddresses().define(newPipName)
-    		.withRegion(Region.US_WEST)
-    		.withNewGroup()
-    		.withDynamicIp()
-    		.withLeafDomainLabel(newPipName)
-    		.withIdleTimeoutInMinutes(10)
-    		.create();
-    	
-    	// Verify list
-    	int publicIpAddressCount = azure2.publicIpAddresses().list().size();
-    	System.out.println(publicIpAddressCount);
-    	Assert.assertTrue(0 < publicIpAddressCount);
-    	
-    	// Verify get
-    	String resourceGroupName = pip.resourceGroupName();
-    	pip = azure2.publicIpAddresses().get(resourceGroupName, newPipName);
-    	Assert.assertTrue(pip.name().equalsIgnoreCase(newPipName));
-    	printPublicIpAddress(pip);
-    	
-    	// Verify update
-    	pip = pip.update()
-    		.withStaticIp()
-    		.withLeafDomainLabel(newPipName + "xx")
-    		.withReverseFqdn(pip.leafDomainLabel() + "." + pip.region() + ".cloudapp.azure.com")
-    		.withIdleTimeoutInMinutes(15)
-    		.apply();
-    	printPublicIpAddress(pip);
-    	pip = azure2.publicIpAddresses().get(pip.id());
-    	printPublicIpAddress(pip);    	
-    	
-    	// Verify delete
-    	azure2.publicIpAddresses().delete(pip.id());
-    	azure2.resourceGroups().delete(pip.resourceGroupName());
+        // Verify creation of a new public IP address 
+        String suffix = String.valueOf(System.currentTimeMillis());
+        String newPipName = "pip" + suffix;
+        PublicIpAddress pip = azure2.publicIpAddresses().define(newPipName)
+                .withRegion(Region.US_WEST)
+                .withNewGroup()
+                .withDynamicIp()
+                .withLeafDomainLabel(newPipName)
+                .withIdleTimeoutInMinutes(10)
+                .create();
+
+        // Verify list
+        int publicIpAddressCount = azure2.publicIpAddresses().list().size();
+        System.out.println(publicIpAddressCount);
+        Assert.assertTrue(0 < publicIpAddressCount);
+
+        // Verify get
+        String resourceGroupName = pip.resourceGroupName();
+        pip = azure2.publicIpAddresses().get(resourceGroupName, newPipName);
+        Assert.assertTrue(pip.name().equalsIgnoreCase(newPipName));
+        printPublicIpAddress(pip);
+
+        // Verify update
+        final String updatedDnsName = newPipName + "xx";
+        final int updatedIdleTimeout = 15;
+        pip = pip.update()
+                .withStaticIp()
+                .withLeafDomainLabel(updatedDnsName)
+                .withReverseFqdn(pip.leafDomainLabel() + "." + pip.region() + ".cloudapp.azure.com")
+                .withIdleTimeoutInMinutes(updatedIdleTimeout)
+                .apply();
+        printPublicIpAddress(pip);
+        Assert.assertTrue(pip.leafDomainLabel().equalsIgnoreCase(updatedDnsName));
+        Assert.assertTrue(pip.idleTimeoutInMinutes()==updatedIdleTimeout);
+        
+        // Verify delete
+        azure2.publicIpAddresses().delete(pip.id());
+        azure2.resourceGroups().delete(pip.resourceGroupName());
     }
-    
+
     private void printPublicIpAddress(PublicIpAddress pip) {
-    	System.out.println(new StringBuilder().append("Public IP Address: ").append(pip.id())
-    			.append("\n\tIP Address: ").append(pip.ipAddress())
-    			.append("\n\tLeaf domain label: ").append(pip.leafDomainLabel())
-    			.append("\n\tResource group: ").append(pip.resourceGroupName())
-    			.append("\n\tFQDN: ").append(pip.fqdn())
-    			.append("\n\tReverse FQDN: ").append(pip.reverseFqdn())
-    			.append("\n\tIdle timeout (minutes): ").append(pip.idleTimeoutInMinutes())
-    			.append("\n\tIP allocation method: ").append(pip.ipAllocationMethod())
-    			.toString());
+        System.out.println(new StringBuilder().append("Public IP Address: ").append(pip.id())
+                .append("\n\tIP Address: ").append(pip.ipAddress())
+                .append("\n\tLeaf domain label: ").append(pip.leafDomainLabel())
+                .append("\n\tResource group: ").append(pip.resourceGroupName())
+                .append("\n\tFQDN: ").append(pip.fqdn())
+                .append("\n\tReverse FQDN: ").append(pip.reverseFqdn())
+                .append("\n\tIdle timeout (minutes): ").append(pip.idleTimeoutInMinutes())
+                .append("\n\tIP allocation method: ").append(pip.ipAllocationMethod())
+                .toString());
     }
-    
-    
+
+
     @Test
     public void listSubscriptions() throws Exception {
         Assert.assertTrue(0 < subscriptions.list().size());
