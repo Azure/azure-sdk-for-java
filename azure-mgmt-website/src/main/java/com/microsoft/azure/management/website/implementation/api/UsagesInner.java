@@ -52,7 +52,7 @@ public final class UsagesInner {
     interface UsagesService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web.Admin/environments/{environmentName}/usage")
-        Call<ResponseBody> getUsage(@Path("resourceGroupName") String resourceGroupName, @Path("environmentName") String environmentName, @Path("subscriptionId") String subscriptionId, @Query("lastId") String lastId, @Query("batchSize") int batchSize, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getUsage(@Path("resourceGroupName") String resourceGroupName, @Path("environmentName") String environmentName, @Path("subscriptionId") String subscriptionId, @Query("lastId") String lastId, @Query("batchSize") int batchSize, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -84,7 +84,7 @@ public final class UsagesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getUsage(resourceGroupName, environmentName, this.client.subscriptionId(), lastId, batchSize, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getUsage(resourceGroupName, environmentName, this.client.subscriptionId(), lastId, batchSize, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getUsageDelegate(call.execute());
     }
 
@@ -123,7 +123,7 @@ public final class UsagesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getUsage(resourceGroupName, environmentName, this.client.subscriptionId(), lastId, batchSize, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getUsage(resourceGroupName, environmentName, this.client.subscriptionId(), lastId, batchSize, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override

@@ -189,7 +189,6 @@ public final class StorageManagementClientImpl extends AzureServiceClient {
         this.generateClientRequestId = true;
         this.storageAccounts = new StorageAccountsInner(restClient().retrofit(), this);
         this.usages = new UsagesInner(restClient().retrofit(), this);
-        restClient().headers().addHeader("x-ms-client-request-id", UUID.randomUUID().toString());
         this.azureClient = new AzureClient(this);
     }
 

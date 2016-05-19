@@ -65,11 +65,11 @@ public final class AccountsImpl implements Accounts {
     interface AccountsService {
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @GET("nodeagentskus")
-        Call<ResponseBody> listNodeAgentSkus(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate);
+        Call<ResponseBody> listNodeAgentSkus(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @GET
-        Call<ResponseBody> listNodeAgentSkusNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate);
+        Call<ResponseBody> listNodeAgentSkusNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
     }
 
@@ -92,7 +92,7 @@ public final class AccountsImpl implements Accounts {
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTimeRfc1123 ocpDateConverted = null;
-        Call<ResponseBody> call = service.listNodeAgentSkus(this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
+        Call<ResponseBody> call = service.listNodeAgentSkus(this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> response = listNodeAgentSkusDelegate(call.execute());
         PagedList<NodeAgentSku> result = new PagedList<NodeAgentSku>(response.getBody()) {
             @Override
@@ -125,7 +125,7 @@ public final class AccountsImpl implements Accounts {
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTimeRfc1123 ocpDateConverted = null;
-        Call<ResponseBody> call = service.listNodeAgentSkus(this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
+        Call<ResponseBody> call = service.listNodeAgentSkus(this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<NodeAgentSku>>(serviceCallback) {
             @Override
@@ -189,7 +189,7 @@ public final class AccountsImpl implements Accounts {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.listNodeAgentSkus(this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
+        Call<ResponseBody> call = service.listNodeAgentSkus(this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> response = listNodeAgentSkusDelegate(call.execute());
         PagedList<NodeAgentSku> result = new PagedList<NodeAgentSku>(response.getBody()) {
             @Override
@@ -252,7 +252,7 @@ public final class AccountsImpl implements Accounts {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.listNodeAgentSkus(this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted);
+        Call<ResponseBody> call = service.listNodeAgentSkus(this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<NodeAgentSku>>(serviceCallback) {
             @Override
@@ -305,7 +305,7 @@ public final class AccountsImpl implements Accounts {
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTimeRfc1123 ocpDateConverted = null;
-        Call<ResponseBody> call = service.listNodeAgentSkusNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
+        Call<ResponseBody> call = service.listNodeAgentSkusNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         return listNodeAgentSkusNextDelegate(call.execute());
     }
 
@@ -330,7 +330,7 @@ public final class AccountsImpl implements Accounts {
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTimeRfc1123 ocpDateConverted = null;
-        Call<ResponseBody> call = service.listNodeAgentSkusNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
+        Call<ResponseBody> call = service.listNodeAgentSkusNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<NodeAgentSku>>(serviceCallback) {
             @Override
@@ -383,7 +383,7 @@ public final class AccountsImpl implements Accounts {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.listNodeAgentSkusNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
+        Call<ResponseBody> call = service.listNodeAgentSkusNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         return listNodeAgentSkusNextDelegate(call.execute());
     }
 
@@ -422,7 +422,7 @@ public final class AccountsImpl implements Accounts {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.listNodeAgentSkusNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted);
+        Call<ResponseBody> call = service.listNodeAgentSkusNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<NodeAgentSku>>(serviceCallback) {
             @Override

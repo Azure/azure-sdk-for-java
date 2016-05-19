@@ -62,689 +62,689 @@ public final class SitesInner {
     interface SitesService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections/{vnetName}")
-        Call<ResponseBody> getSiteVNETConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteVNETConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections/{vnetName}")
-        Call<ResponseBody> createOrUpdateSiteVNETConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body VnetInfoInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> createOrUpdateSiteVNETConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body VnetInfoInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections/{vnetName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteSiteVNETConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> deleteSiteVNETConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections/{vnetName}")
-        Call<ResponseBody> updateSiteVNETConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body VnetInfoInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> updateSiteVNETConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body VnetInfoInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}")
-        Call<ResponseBody> getSiteVNETConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteVNETConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}")
-        Call<ResponseBody> createOrUpdateSiteVNETConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("subscriptionId") String subscriptionId, @Body VnetInfoInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> createOrUpdateSiteVNETConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("subscriptionId") String subscriptionId, @Body VnetInfoInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteSiteVNETConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> deleteSiteVNETConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}")
-        Call<ResponseBody> updateSiteVNETConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("subscriptionId") String subscriptionId, @Body VnetInfoInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> updateSiteVNETConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("subscriptionId") String subscriptionId, @Body VnetInfoInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkFeatures/{view}")
-        Call<ResponseBody> getSiteNetworkFeaturesSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("view") String view, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteNetworkFeaturesSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("view") String view, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkFeatures/{view}")
-        Call<ResponseBody> getSiteNetworkFeatures(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("view") String view, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteNetworkFeatures(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("view") String view, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/operationresults/{operationId}")
-        Call<ResponseBody> getSiteOperationSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("operationId") String operationId, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteOperationSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("operationId") String operationId, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/operationresults/{operationId}")
-        Call<ResponseBody> getSiteOperation(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("operationId") String operationId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteOperation(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("operationId") String operationId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slotsswap")
-        Call<ResponseBody> swapSlotWithProduction(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntityInner slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> swapSlotWithProduction(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntityInner slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slotsswap")
-        Call<ResponseBody> beginSwapSlotWithProduction(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntityInner slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> beginSwapSlotWithProduction(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntityInner slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/slotsswap")
-        Call<ResponseBody> swapSlotsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntityInner slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> swapSlotsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntityInner slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/slotsswap")
-        Call<ResponseBody> beginSwapSlotsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntityInner slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> beginSwapSlotsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntityInner slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slotsdiffs")
-        Call<ResponseBody> getSlotsDifferencesFromProduction(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntityInner slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSlotsDifferencesFromProduction(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntityInner slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/slotsdiffs")
-        Call<ResponseBody> getSlotsDifferencesSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntityInner slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSlotsDifferencesSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntityInner slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/applySlotConfig")
-        Call<ResponseBody> applySlotConfigToProduction(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntityInner slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> applySlotConfigToProduction(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntityInner slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/applySlotConfig")
-        Call<ResponseBody> applySlotConfigSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntityInner slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> applySlotConfigSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmSlotEntityInner slotSwapEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/resetSlotConfig")
-        Call<ResponseBody> resetProductionSlotConfig(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> resetProductionSlotConfig(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/resetSlotConfig")
-        Call<ResponseBody> resetSlotConfigSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> resetSlotConfigSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/slotConfigNames")
-        Call<ResponseBody> getSlotConfigNames(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSlotConfigNames(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/slotConfigNames")
-        Call<ResponseBody> updateSlotConfigNames(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SlotConfigNamesResourceInner slotConfigNames, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> updateSlotConfigNames(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SlotConfigNamesResourceInner slotConfigNames, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots")
-        Call<ResponseBody> getSiteSlots(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("propertiesToInclude") String propertiesToInclude, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteSlots(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("propertiesToInclude") String propertiesToInclude, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites")
-        Call<ResponseBody> getSites(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("propertiesToInclude") String propertiesToInclude, @Query("includeSiteTypes") String includeSiteTypes, @Query("includeSlots") Boolean includeSlots, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSites(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("propertiesToInclude") String propertiesToInclude, @Query("includeSiteTypes") String includeSiteTypes, @Query("includeSlots") Boolean includeSlots, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}")
-        Call<ResponseBody> getSite(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("propertiesToInclude") String propertiesToInclude, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSite(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("propertiesToInclude") String propertiesToInclude, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}")
-        Call<ResponseBody> createOrUpdateSite(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteInner siteEnvelope, @Query("skipDnsRegistration") String skipDnsRegistration, @Query("skipCustomDomainVerification") String skipCustomDomainVerification, @Query("forceDnsRegistration") String forceDnsRegistration, @Query("ttlInSeconds") String ttlInSeconds, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> createOrUpdateSite(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteInner siteEnvelope, @Query("skipDnsRegistration") String skipDnsRegistration, @Query("skipCustomDomainVerification") String skipCustomDomainVerification, @Query("forceDnsRegistration") String forceDnsRegistration, @Query("ttlInSeconds") String ttlInSeconds, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}")
-        Call<ResponseBody> beginCreateOrUpdateSite(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteInner siteEnvelope, @Query("skipDnsRegistration") String skipDnsRegistration, @Query("skipCustomDomainVerification") String skipCustomDomainVerification, @Query("forceDnsRegistration") String forceDnsRegistration, @Query("ttlInSeconds") String ttlInSeconds, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> beginCreateOrUpdateSite(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteInner siteEnvelope, @Query("skipDnsRegistration") String skipDnsRegistration, @Query("skipCustomDomainVerification") String skipCustomDomainVerification, @Query("forceDnsRegistration") String forceDnsRegistration, @Query("ttlInSeconds") String ttlInSeconds, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteSite(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("deleteMetrics") String deleteMetrics, @Query("deleteEmptyServerFarm") String deleteEmptyServerFarm, @Query("skipDnsRegistration") String skipDnsRegistration, @Query("deleteAllSlots") String deleteAllSlots, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> deleteSite(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("deleteMetrics") String deleteMetrics, @Query("deleteEmptyServerFarm") String deleteEmptyServerFarm, @Query("skipDnsRegistration") String skipDnsRegistration, @Query("deleteAllSlots") String deleteAllSlots, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}")
-        Call<ResponseBody> getSiteSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("propertiesToInclude") String propertiesToInclude, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("propertiesToInclude") String propertiesToInclude, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}")
-        Call<ResponseBody> createOrUpdateSiteSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SiteInner siteEnvelope, @Query("skipDnsRegistration") String skipDnsRegistration, @Query("skipCustomDomainVerification") String skipCustomDomainVerification, @Query("forceDnsRegistration") String forceDnsRegistration, @Query("ttlInSeconds") String ttlInSeconds, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> createOrUpdateSiteSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SiteInner siteEnvelope, @Query("skipDnsRegistration") String skipDnsRegistration, @Query("skipCustomDomainVerification") String skipCustomDomainVerification, @Query("forceDnsRegistration") String forceDnsRegistration, @Query("ttlInSeconds") String ttlInSeconds, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}")
-        Call<ResponseBody> beginCreateOrUpdateSiteSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SiteInner siteEnvelope, @Query("skipDnsRegistration") String skipDnsRegistration, @Query("skipCustomDomainVerification") String skipCustomDomainVerification, @Query("forceDnsRegistration") String forceDnsRegistration, @Query("ttlInSeconds") String ttlInSeconds, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> beginCreateOrUpdateSiteSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SiteInner siteEnvelope, @Query("skipDnsRegistration") String skipDnsRegistration, @Query("skipCustomDomainVerification") String skipCustomDomainVerification, @Query("forceDnsRegistration") String forceDnsRegistration, @Query("ttlInSeconds") String ttlInSeconds, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteSiteSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("deleteMetrics") String deleteMetrics, @Query("deleteEmptyServerFarm") String deleteEmptyServerFarm, @Query("skipDnsRegistration") String skipDnsRegistration, @Query("deleteAllSlots") String deleteAllSlots, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> deleteSiteSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("deleteMetrics") String deleteMetrics, @Query("deleteEmptyServerFarm") String deleteEmptyServerFarm, @Query("skipDnsRegistration") String skipDnsRegistration, @Query("deleteAllSlots") String deleteAllSlots, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/iscloneable")
-        Call<ResponseBody> isSiteCloneable(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> isSiteCloneable(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/iscloneable")
-        Call<ResponseBody> isSiteCloneableSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> isSiteCloneableSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/recover")
-        Call<ResponseBody> recoverSite(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsmSiteRecoveryEntityInner recoveryEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> recoverSite(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsmSiteRecoveryEntityInner recoveryEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/recover")
-        Call<ResponseBody> beginRecoverSite(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsmSiteRecoveryEntityInner recoveryEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> beginRecoverSite(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsmSiteRecoveryEntityInner recoveryEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/recover")
-        Call<ResponseBody> recoverSiteSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmSiteRecoveryEntityInner recoveryEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> recoverSiteSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmSiteRecoveryEntityInner recoveryEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/recover")
-        Call<ResponseBody> beginRecoverSiteSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmSiteRecoveryEntityInner recoveryEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> beginRecoverSiteSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmSiteRecoveryEntityInner recoveryEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/snapshots")
-        Call<ResponseBody> getSiteSnapshots(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteSnapshots(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/snapshots")
-        Call<ResponseBody> getSiteSnapshotsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteSnapshotsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/deletedSites")
-        Call<ResponseBody> getDeletedSites(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("propertiesToInclude") String propertiesToInclude, @Query("includeSiteTypes") String includeSiteTypes, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getDeletedSites(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("propertiesToInclude") String propertiesToInclude, @Query("includeSiteTypes") String includeSiteTypes, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deployments")
-        Call<ResponseBody> getDeployments(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getDeployments(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/deployments")
-        Call<ResponseBody> getDeploymentsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getDeploymentsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/deployments")
-        Call<ResponseBody> getInstanceDeployments(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getInstanceDeployments(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/deployments")
-        Call<ResponseBody> getInstanceDeploymentsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getInstanceDeploymentsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/deployments/{id}")
-        Call<ResponseBody> getInstanceDeployment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getInstanceDeployment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/deployments/{id}")
-        Call<ResponseBody> createInstanceDeployment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Body DeploymentInner deployment, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> createInstanceDeployment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Body DeploymentInner deployment, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/deployments/{id}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteInstanceDeployment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> deleteInstanceDeployment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deployments/{id}")
-        Call<ResponseBody> getDeployment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getDeployment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deployments/{id}")
-        Call<ResponseBody> createDeployment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("subscriptionId") String subscriptionId, @Body DeploymentInner deployment, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> createDeployment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("subscriptionId") String subscriptionId, @Body DeploymentInner deployment, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deployments/{id}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteDeployment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> deleteDeployment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/deployments/{id}")
-        Call<ResponseBody> getDeploymentSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getDeploymentSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/deployments/{id}")
-        Call<ResponseBody> createDeploymentSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body DeploymentInner deployment, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> createDeploymentSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body DeploymentInner deployment, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/deployments/{id}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteDeploymentSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> deleteDeploymentSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/deployments/{id}")
-        Call<ResponseBody> getInstanceDeploymentSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("slot") String slot, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getInstanceDeploymentSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("slot") String slot, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/deployments/{id}")
-        Call<ResponseBody> createInstanceDeploymentSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("slot") String slot, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Body DeploymentInner deployment, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> createInstanceDeploymentSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("slot") String slot, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Body DeploymentInner deployment, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/deployments/{id}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteInstanceDeploymentSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("slot") String slot, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> deleteInstanceDeploymentSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("id") String id, @Path("slot") String slot, @Path("instanceId") String instanceId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances")
-        Call<ResponseBody> getSiteInstanceIdentifiers(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteInstanceIdentifiers(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances")
-        Call<ResponseBody> getSiteInstanceIdentifiersSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteInstanceIdentifiersSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostNameBindings")
-        Call<ResponseBody> getSiteHostNameBindings(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteHostNameBindings(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hostNameBindings")
-        Call<ResponseBody> getSiteHostNameBindingsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteHostNameBindingsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostNameBindings/{hostName}")
-        Call<ResponseBody> getSiteHostNameBinding(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("hostName") String hostName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteHostNameBinding(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("hostName") String hostName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostNameBindings/{hostName}")
-        Call<ResponseBody> createOrUpdateSiteHostNameBinding(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("hostName") String hostName, @Path("subscriptionId") String subscriptionId, @Body HostNameBindingInner hostNameBinding, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> createOrUpdateSiteHostNameBinding(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("hostName") String hostName, @Path("subscriptionId") String subscriptionId, @Body HostNameBindingInner hostNameBinding, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostNameBindings/{hostName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteSiteHostNameBinding(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("hostName") String hostName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> deleteSiteHostNameBinding(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("hostName") String hostName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hostNameBindings/{hostName}")
-        Call<ResponseBody> getSiteHostNameBindingSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("hostName") String hostName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteHostNameBindingSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("hostName") String hostName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hostNameBindings/{hostName}")
-        Call<ResponseBody> createOrUpdateSiteHostNameBindingSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("hostName") String hostName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body HostNameBindingInner hostNameBinding, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> createOrUpdateSiteHostNameBindingSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("hostName") String hostName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body HostNameBindingInner hostNameBinding, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hostNameBindings/{hostName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteSiteHostNameBindingSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("hostName") String hostName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> deleteSiteHostNameBindingSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("hostName") String hostName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/web")
-        Call<ResponseBody> getSiteConfig(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteConfig(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/web")
-        Call<ResponseBody> createOrUpdateSiteConfig(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteConfigInner siteConfig, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> createOrUpdateSiteConfig(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteConfigInner siteConfig, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/web")
-        Call<ResponseBody> updateSiteConfig(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteConfigInner siteConfig, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> updateSiteConfig(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteConfigInner siteConfig, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/web")
-        Call<ResponseBody> getSiteConfigSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteConfigSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/web")
-        Call<ResponseBody> createOrUpdateSiteConfigSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SiteConfigInner siteConfig, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> createOrUpdateSiteConfigSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SiteConfigInner siteConfig, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/web")
-        Call<ResponseBody> updateSiteConfigSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SiteConfigInner siteConfig, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> updateSiteConfigSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SiteConfigInner siteConfig, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sourcecontrols/web")
-        Call<ResponseBody> getSiteSourceControl(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteSourceControl(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sourcecontrols/web")
-        Call<ResponseBody> createOrUpdateSiteSourceControl(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteSourceControlInner siteSourceControl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> createOrUpdateSiteSourceControl(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteSourceControlInner siteSourceControl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sourcecontrols/web", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteSiteSourceControl(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> deleteSiteSourceControl(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sourcecontrols/web")
-        Call<ResponseBody> updateSiteSourceControl(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteSourceControlInner siteSourceControl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> updateSiteSourceControl(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteSourceControlInner siteSourceControl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/sourcecontrols/web")
-        Call<ResponseBody> getSiteSourceControlSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteSourceControlSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/sourcecontrols/web")
-        Call<ResponseBody> createOrUpdateSiteSourceControlSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SiteSourceControlInner siteSourceControl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> createOrUpdateSiteSourceControlSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SiteSourceControlInner siteSourceControl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/sourcecontrols/web", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteSiteSourceControlSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> deleteSiteSourceControlSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/sourcecontrols/web")
-        Call<ResponseBody> updateSiteSourceControlSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SiteSourceControlInner siteSourceControl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> updateSiteSourceControlSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SiteSourceControlInner siteSourceControl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/appsettings/list")
-        Call<ResponseBody> listSiteAppSettingsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listSiteAppSettingsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/appsettings/list")
-        Call<ResponseBody> listSiteAppSettings(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listSiteAppSettings(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/appsettings")
-        Call<ResponseBody> updateSiteAppSettings(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body StringDictionaryInner appSettings, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> updateSiteAppSettings(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body StringDictionaryInner appSettings, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/appsettings")
-        Call<ResponseBody> updateSiteAppSettingsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body StringDictionaryInner appSettings, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> updateSiteAppSettingsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body StringDictionaryInner appSettings, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/connectionstrings/list")
-        Call<ResponseBody> listSiteConnectionStrings(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listSiteConnectionStrings(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/connectionstrings/list")
-        Call<ResponseBody> listSiteConnectionStringsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listSiteConnectionStringsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/connectionstrings")
-        Call<ResponseBody> updateSiteConnectionStrings(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body ConnectionStringDictionaryInner connectionStrings, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> updateSiteConnectionStrings(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body ConnectionStringDictionaryInner connectionStrings, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/connectionstrings")
-        Call<ResponseBody> updateSiteConnectionStringsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body ConnectionStringDictionaryInner connectionStrings, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> updateSiteConnectionStringsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body ConnectionStringDictionaryInner connectionStrings, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/authsettings/list")
-        Call<ResponseBody> listSiteAuthSettings(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listSiteAuthSettings(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/authsettings/list")
-        Call<ResponseBody> listSiteAuthSettingsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listSiteAuthSettingsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/authsettings")
-        Call<ResponseBody> updateSiteAuthSettings(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteAuthSettingsInner siteAuthSettings, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> updateSiteAuthSettings(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteAuthSettingsInner siteAuthSettings, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/authsettings")
-        Call<ResponseBody> updateSiteAuthSettingsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SiteAuthSettingsInner siteAuthSettings, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> updateSiteAuthSettingsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SiteAuthSettingsInner siteAuthSettings, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/publishingcredentials/list")
-        Call<ResponseBody> listSitePublishingCredentials(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listSitePublishingCredentials(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/publishingcredentials/list")
-        Call<ResponseBody> beginListSitePublishingCredentials(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> beginListSitePublishingCredentials(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/publishingcredentials/list")
-        Call<ResponseBody> listSitePublishingCredentialsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listSitePublishingCredentialsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/publishingcredentials/list")
-        Call<ResponseBody> beginListSitePublishingCredentialsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> beginListSitePublishingCredentialsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/metadata/list")
-        Call<ResponseBody> listSiteMetadata(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listSiteMetadata(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/metadata/list")
-        Call<ResponseBody> listSiteMetadataSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listSiteMetadataSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/metadata")
-        Call<ResponseBody> updateSiteMetadata(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body StringDictionaryInner metadata, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> updateSiteMetadata(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body StringDictionaryInner metadata, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/metadata")
-        Call<ResponseBody> updateSiteMetadataSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body StringDictionaryInner metadata, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> updateSiteMetadataSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body StringDictionaryInner metadata, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/logs")
-        Call<ResponseBody> getSiteLogsConfig(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteLogsConfig(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/logs")
-        Call<ResponseBody> updateSiteLogsConfig(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteLogsConfigInner siteLogsConfig, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> updateSiteLogsConfig(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SiteLogsConfigInner siteLogsConfig, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/logs")
-        Call<ResponseBody> getSiteLogsConfigSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteLogsConfigSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/logs")
-        Call<ResponseBody> updateSiteLogsConfigSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SiteLogsConfigInner siteLogsConfig, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> updateSiteLogsConfigSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SiteLogsConfigInner siteLogsConfig, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/premieraddons")
-        Call<ResponseBody> listSitePremierAddOns(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listSitePremierAddOns(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/premieraddons")
-        Call<ResponseBody> listSitePremierAddOnsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listSitePremierAddOnsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/premieraddons/{premierAddOnName}")
-        Call<ResponseBody> getSitePremierAddOn(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("premierAddOnName") String premierAddOnName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSitePremierAddOn(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("premierAddOnName") String premierAddOnName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/premieraddons/{premierAddOnName}")
-        Call<ResponseBody> addSitePremierAddOn(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("premierAddOnName") String premierAddOnName, @Path("subscriptionId") String subscriptionId, @Body PremierAddOnRequestInner premierAddOn, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> addSitePremierAddOn(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("premierAddOnName") String premierAddOnName, @Path("subscriptionId") String subscriptionId, @Body PremierAddOnRequestInner premierAddOn, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/premieraddons/{premierAddOnName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteSitePremierAddOn(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("premierAddOnName") String premierAddOnName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> deleteSitePremierAddOn(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("premierAddOnName") String premierAddOnName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/premieraddons/{premierAddOnName}")
-        Call<ResponseBody> getSitePremierAddOnSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("premierAddOnName") String premierAddOnName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSitePremierAddOnSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("premierAddOnName") String premierAddOnName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/premieraddons/{premierAddOnName}")
-        Call<ResponseBody> addSitePremierAddOnSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("premierAddOnName") String premierAddOnName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body PremierAddOnRequestInner premierAddOn, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> addSitePremierAddOnSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("premierAddOnName") String premierAddOnName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body PremierAddOnRequestInner premierAddOn, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/premieraddons/{premierAddOnName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteSitePremierAddOnSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("premierAddOnName") String premierAddOnName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> deleteSitePremierAddOnSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("premierAddOnName") String premierAddOnName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/backup/list")
-        Call<ResponseBody> getSiteBackupConfiguration(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteBackupConfiguration(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/backup/list")
-        Call<ResponseBody> getSiteBackupConfigurationSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteBackupConfigurationSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/backup")
-        Call<ResponseBody> updateSiteBackupConfiguration(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body BackupRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> updateSiteBackupConfiguration(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body BackupRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/backup")
-        Call<ResponseBody> updateSiteBackupConfigurationSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body BackupRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> updateSiteBackupConfigurationSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body BackupRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backup")
-        Call<ResponseBody> backupSite(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body BackupRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> backupSite(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body BackupRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/backup")
-        Call<ResponseBody> backupSiteSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body BackupRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> backupSiteSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body BackupRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backups/discover")
-        Call<ResponseBody> discoverSiteRestore(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body RestoreRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> discoverSiteRestore(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body RestoreRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/backups/discover")
-        Call<ResponseBody> discoverSiteRestoreSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body RestoreRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> discoverSiteRestoreSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body RestoreRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backups")
-        Call<ResponseBody> listSiteBackups(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listSiteBackups(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/backups")
-        Call<ResponseBody> listSiteBackupsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listSiteBackupsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backups/{backupId}")
-        Call<ResponseBody> getSiteBackupStatus(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteBackupStatus(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backups/{backupId}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteBackup(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> deleteBackup(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/backups/{backupId}")
-        Call<ResponseBody> getSiteBackupStatusSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteBackupStatusSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/backups/{backupId}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteBackupSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> deleteBackupSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/backups/{backupId}/list")
-        Call<ResponseBody> getSiteBackupStatusSecretsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body BackupRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteBackupStatusSecretsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body BackupRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backups/{backupId}/list")
-        Call<ResponseBody> getSiteBackupStatusSecrets(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("subscriptionId") String subscriptionId, @Body BackupRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteBackupStatusSecrets(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("subscriptionId") String subscriptionId, @Body BackupRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backups/{backupId}/restore")
-        Call<ResponseBody> restoreSite(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("subscriptionId") String subscriptionId, @Body RestoreRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> restoreSite(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("subscriptionId") String subscriptionId, @Body RestoreRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backups/{backupId}/restore")
-        Call<ResponseBody> beginRestoreSite(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("subscriptionId") String subscriptionId, @Body RestoreRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> beginRestoreSite(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("subscriptionId") String subscriptionId, @Body RestoreRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/backups/{backupId}/restore")
-        Call<ResponseBody> restoreSiteSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body RestoreRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> restoreSiteSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body RestoreRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/backups/{backupId}/restore")
-        Call<ResponseBody> beginRestoreSiteSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body RestoreRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> beginRestoreSiteSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("backupId") String backupId, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body RestoreRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/usages")
-        Call<ResponseBody> getSiteUsages(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteUsages(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/usages")
-        Call<ResponseBody> getSiteUsagesSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteUsagesSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/metrics")
-        Call<ResponseBody> getSiteMetrics(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("details") Boolean details, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteMetrics(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("details") Boolean details, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/metrics")
-        Call<ResponseBody> getSiteMetricsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("details") Boolean details, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteMetricsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("details") Boolean details, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/metricdefinitions")
-        Call<ResponseBody> getSiteMetricDefinitionsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteMetricDefinitionsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/metricdefinitions")
-        Call<ResponseBody> getSiteMetricDefinitions(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteMetricDefinitions(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/publishxml")
         @Streaming
-        Call<ResponseBody> listSitePublishingProfileXml(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CsmPublishingProfileOptions options);
+        Call<ResponseBody> listSitePublishingProfileXml(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CsmPublishingProfileOptions options, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/publishxml")
         @Streaming
-        Call<ResponseBody> listSitePublishingProfileXmlSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CsmPublishingProfileOptions options);
+        Call<ResponseBody> listSitePublishingProfileXmlSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CsmPublishingProfileOptions options, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/restart")
-        Call<ResponseBody> restartSiteSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("softRestart") Boolean softRestart, @Query("synchronous") Boolean synchronous, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> restartSiteSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("softRestart") Boolean softRestart, @Query("synchronous") Boolean synchronous, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/restart")
-        Call<ResponseBody> restartSite(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("softRestart") Boolean softRestart, @Query("synchronous") Boolean synchronous, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> restartSite(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("softRestart") Boolean softRestart, @Query("synchronous") Boolean synchronous, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/start")
-        Call<ResponseBody> startSite(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> startSite(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/start")
-        Call<ResponseBody> startSiteSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> startSiteSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/stop")
-        Call<ResponseBody> stopSite(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> stopSite(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/stop")
-        Call<ResponseBody> stopSiteSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> stopSiteSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sync")
-        Call<ResponseBody> syncSiteRepository(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> syncSiteRepository(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/sync")
-        Call<ResponseBody> syncSiteRepositorySlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> syncSiteRepositorySlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/newpassword")
-        Call<ResponseBody> generateNewSitePublishingPasswordSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> generateNewSitePublishingPasswordSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/newpassword")
-        Call<ResponseBody> generateNewSitePublishingPassword(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> generateNewSitePublishingPassword(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridconnection/{entityName}")
-        Call<ResponseBody> getSiteRelayServiceConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("entityName") String entityName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteRelayServiceConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("entityName") String entityName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridconnection/{entityName}")
-        Call<ResponseBody> createOrUpdateSiteRelayServiceConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("entityName") String entityName, @Path("subscriptionId") String subscriptionId, @Body RelayServiceConnectionEntityInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> createOrUpdateSiteRelayServiceConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("entityName") String entityName, @Path("subscriptionId") String subscriptionId, @Body RelayServiceConnectionEntityInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridconnection/{entityName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteSiteRelayServiceConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("entityName") String entityName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> deleteSiteRelayServiceConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("entityName") String entityName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridconnection/{entityName}")
-        Call<ResponseBody> updateSiteRelayServiceConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("entityName") String entityName, @Path("subscriptionId") String subscriptionId, @Body RelayServiceConnectionEntityInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> updateSiteRelayServiceConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("entityName") String entityName, @Path("subscriptionId") String subscriptionId, @Body RelayServiceConnectionEntityInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hybridconnection/{entityName}")
-        Call<ResponseBody> getSiteRelayServiceConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("entityName") String entityName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteRelayServiceConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("entityName") String entityName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hybridconnection/{entityName}")
-        Call<ResponseBody> createOrUpdateSiteRelayServiceConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("entityName") String entityName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body RelayServiceConnectionEntityInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> createOrUpdateSiteRelayServiceConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("entityName") String entityName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body RelayServiceConnectionEntityInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hybridconnection/{entityName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteSiteRelayServiceConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("entityName") String entityName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> deleteSiteRelayServiceConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("entityName") String entityName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hybridconnection/{entityName}")
-        Call<ResponseBody> updateSiteRelayServiceConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("entityName") String entityName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body RelayServiceConnectionEntityInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> updateSiteRelayServiceConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("entityName") String entityName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body RelayServiceConnectionEntityInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hybridconnection")
-        Call<ResponseBody> listSiteRelayServiceConnectionsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listSiteRelayServiceConnectionsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridconnection")
-        Call<ResponseBody> listSiteRelayServiceConnections(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listSiteRelayServiceConnections(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
-        Call<ResponseBody> getSiteVnetGatewaySlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteVnetGatewaySlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
-        Call<ResponseBody> createOrUpdateSiteVNETConnectionGatewaySlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body VnetGatewayInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> createOrUpdateSiteVNETConnectionGatewaySlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body VnetGatewayInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
-        Call<ResponseBody> updateSiteVNETConnectionGatewaySlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body VnetGatewayInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> updateSiteVNETConnectionGatewaySlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body VnetGatewayInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
-        Call<ResponseBody> getSiteVnetGateway(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteVnetGateway(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
-        Call<ResponseBody> createOrUpdateSiteVNETConnectionGateway(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("subscriptionId") String subscriptionId, @Body VnetGatewayInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> createOrUpdateSiteVNETConnectionGateway(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("subscriptionId") String subscriptionId, @Body VnetGatewayInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
-        Call<ResponseBody> updateSiteVNETConnectionGateway(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("subscriptionId") String subscriptionId, @Body VnetGatewayInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> updateSiteVNETConnectionGateway(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("subscriptionId") String subscriptionId, @Body VnetGatewayInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections")
-        Call<ResponseBody> getSiteVNETConnections(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteVNETConnections(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections")
-        Call<ResponseBody> getSiteVNETConnectionsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSiteVNETConnectionsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -779,7 +779,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteVNETConnectionSlotDelegate(call.execute());
     }
 
@@ -822,7 +822,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<VnetInfoInner>(serviceCallback) {
             @Override
@@ -880,7 +880,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(connectionEnvelope);
-        Call<ResponseBody> call = service.createOrUpdateSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdateSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return createOrUpdateSiteVNETConnectionSlotDelegate(call.execute());
     }
 
@@ -929,7 +929,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(connectionEnvelope, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdateSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdateSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<VnetInfoInner>(serviceCallback) {
             @Override
@@ -982,7 +982,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.deleteSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return deleteSiteVNETConnectionSlotDelegate(call.execute());
     }
 
@@ -1025,7 +1025,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.deleteSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -1083,7 +1083,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(connectionEnvelope);
-        Call<ResponseBody> call = service.updateSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return updateSiteVNETConnectionSlotDelegate(call.execute());
     }
 
@@ -1132,7 +1132,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(connectionEnvelope, serviceCallback);
-        Call<ResponseBody> call = service.updateSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<VnetInfoInner>(serviceCallback) {
             @Override
@@ -1181,7 +1181,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteVNETConnection(resourceGroupName, name, vnetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteVNETConnection(resourceGroupName, name, vnetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteVNETConnectionDelegate(call.execute());
     }
 
@@ -1219,7 +1219,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteVNETConnection(resourceGroupName, name, vnetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteVNETConnection(resourceGroupName, name, vnetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<VnetInfoInner>(serviceCallback) {
             @Override
@@ -1273,7 +1273,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(connectionEnvelope);
-        Call<ResponseBody> call = service.createOrUpdateSiteVNETConnection(resourceGroupName, name, vnetName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdateSiteVNETConnection(resourceGroupName, name, vnetName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return createOrUpdateSiteVNETConnectionDelegate(call.execute());
     }
 
@@ -1317,7 +1317,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(connectionEnvelope, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdateSiteVNETConnection(resourceGroupName, name, vnetName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdateSiteVNETConnection(resourceGroupName, name, vnetName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<VnetInfoInner>(serviceCallback) {
             @Override
@@ -1366,7 +1366,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.deleteSiteVNETConnection(resourceGroupName, name, vnetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteSiteVNETConnection(resourceGroupName, name, vnetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return deleteSiteVNETConnectionDelegate(call.execute());
     }
 
@@ -1404,7 +1404,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.deleteSiteVNETConnection(resourceGroupName, name, vnetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteSiteVNETConnection(resourceGroupName, name, vnetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -1458,7 +1458,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(connectionEnvelope);
-        Call<ResponseBody> call = service.updateSiteVNETConnection(resourceGroupName, name, vnetName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteVNETConnection(resourceGroupName, name, vnetName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return updateSiteVNETConnectionDelegate(call.execute());
     }
 
@@ -1502,7 +1502,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(connectionEnvelope, serviceCallback);
-        Call<ResponseBody> call = service.updateSiteVNETConnection(resourceGroupName, name, vnetName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteVNETConnection(resourceGroupName, name, vnetName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<VnetInfoInner>(serviceCallback) {
             @Override
@@ -1555,7 +1555,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteNetworkFeaturesSlot(resourceGroupName, name, view, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteNetworkFeaturesSlot(resourceGroupName, name, view, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteNetworkFeaturesSlotDelegate(call.execute());
     }
 
@@ -1598,7 +1598,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteNetworkFeaturesSlot(resourceGroupName, name, view, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteNetworkFeaturesSlot(resourceGroupName, name, view, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<NetworkFeaturesInner>(serviceCallback) {
             @Override
@@ -1648,7 +1648,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteNetworkFeatures(resourceGroupName, name, view, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteNetworkFeatures(resourceGroupName, name, view, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteNetworkFeaturesDelegate(call.execute());
     }
 
@@ -1686,7 +1686,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteNetworkFeatures(resourceGroupName, name, view, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteNetworkFeatures(resourceGroupName, name, view, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<NetworkFeaturesInner>(serviceCallback) {
             @Override
@@ -1740,7 +1740,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteOperationSlot(resourceGroupName, name, operationId, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteOperationSlot(resourceGroupName, name, operationId, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteOperationSlotDelegate(call.execute());
     }
 
@@ -1783,7 +1783,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteOperationSlot(resourceGroupName, name, operationId, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteOperationSlot(resourceGroupName, name, operationId, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -1832,7 +1832,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteOperation(resourceGroupName, name, operationId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteOperation(resourceGroupName, name, operationId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteOperationDelegate(call.execute());
     }
 
@@ -1870,7 +1870,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteOperation(resourceGroupName, name, operationId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteOperation(resourceGroupName, name, operationId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -1921,7 +1921,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(slotSwapEntity);
-        Response<ResponseBody> result = service.swapSlotWithProduction(resourceGroupName, name, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage()).execute();
+        Response<ResponseBody> result = service.swapSlotWithProduction(resourceGroupName, name, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Object>() { }.getType());
     }
 
@@ -1955,7 +1955,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
         Validator.validate(slotSwapEntity, serviceCallback);
-        Call<ResponseBody> call = service.swapSlotWithProduction(resourceGroupName, name, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.swapSlotWithProduction(resourceGroupName, name, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -1998,7 +1998,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(slotSwapEntity);
-        Call<ResponseBody> call = service.beginSwapSlotWithProduction(resourceGroupName, name, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginSwapSlotWithProduction(resourceGroupName, name, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginSwapSlotWithProductionDelegate(call.execute());
     }
 
@@ -2037,7 +2037,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(slotSwapEntity, serviceCallback);
-        Call<ResponseBody> call = service.beginSwapSlotWithProduction(resourceGroupName, name, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginSwapSlotWithProduction(resourceGroupName, name, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -2093,7 +2093,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(slotSwapEntity);
-        Response<ResponseBody> result = service.swapSlotsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage()).execute();
+        Response<ResponseBody> result = service.swapSlotsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Object>() { }.getType());
     }
 
@@ -2131,7 +2131,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
         Validator.validate(slotSwapEntity, serviceCallback);
-        Call<ResponseBody> call = service.swapSlotsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.swapSlotsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -2178,7 +2178,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(slotSwapEntity);
-        Call<ResponseBody> call = service.beginSwapSlotsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginSwapSlotsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginSwapSlotsSlotDelegate(call.execute());
     }
 
@@ -2222,7 +2222,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(slotSwapEntity, serviceCallback);
-        Call<ResponseBody> call = service.beginSwapSlotsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginSwapSlotsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -2273,7 +2273,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(slotSwapEntity);
-        Call<ResponseBody> call = service.getSlotsDifferencesFromProduction(resourceGroupName, name, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSlotsDifferencesFromProduction(resourceGroupName, name, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSlotsDifferencesFromProductionDelegate(call.execute());
     }
 
@@ -2312,7 +2312,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(slotSwapEntity, serviceCallback);
-        Call<ResponseBody> call = service.getSlotsDifferencesFromProduction(resourceGroupName, name, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSlotsDifferencesFromProduction(resourceGroupName, name, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SlotDifferenceCollectionInner>(serviceCallback) {
             @Override
@@ -2366,7 +2366,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(slotSwapEntity);
-        Call<ResponseBody> call = service.getSlotsDifferencesSlot(resourceGroupName, name, slot, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSlotsDifferencesSlot(resourceGroupName, name, slot, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSlotsDifferencesSlotDelegate(call.execute());
     }
 
@@ -2410,7 +2410,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(slotSwapEntity, serviceCallback);
-        Call<ResponseBody> call = service.getSlotsDifferencesSlot(resourceGroupName, name, slot, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSlotsDifferencesSlot(resourceGroupName, name, slot, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SlotDifferenceCollectionInner>(serviceCallback) {
             @Override
@@ -2460,7 +2460,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(slotSwapEntity);
-        Call<ResponseBody> call = service.applySlotConfigToProduction(resourceGroupName, name, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.applySlotConfigToProduction(resourceGroupName, name, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return applySlotConfigToProductionDelegate(call.execute());
     }
 
@@ -2499,7 +2499,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(slotSwapEntity, serviceCallback);
-        Call<ResponseBody> call = service.applySlotConfigToProduction(resourceGroupName, name, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.applySlotConfigToProduction(resourceGroupName, name, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -2553,7 +2553,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(slotSwapEntity);
-        Call<ResponseBody> call = service.applySlotConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.applySlotConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return applySlotConfigSlotDelegate(call.execute());
     }
 
@@ -2597,7 +2597,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(slotSwapEntity, serviceCallback);
-        Call<ResponseBody> call = service.applySlotConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.applySlotConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -2642,7 +2642,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.resetProductionSlotConfig(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.resetProductionSlotConfig(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return resetProductionSlotConfigDelegate(call.execute());
     }
 
@@ -2675,7 +2675,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.resetProductionSlotConfig(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.resetProductionSlotConfig(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -2724,7 +2724,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.resetSlotConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.resetSlotConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return resetSlotConfigSlotDelegate(call.execute());
     }
 
@@ -2762,7 +2762,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.resetSlotConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.resetSlotConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -2807,7 +2807,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSlotConfigNames(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSlotConfigNames(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSlotConfigNamesDelegate(call.execute());
     }
 
@@ -2840,7 +2840,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSlotConfigNames(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSlotConfigNames(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SlotConfigNamesResourceInner>(serviceCallback) {
             @Override
@@ -2890,7 +2890,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(slotConfigNames);
-        Call<ResponseBody> call = service.updateSlotConfigNames(resourceGroupName, name, this.client.subscriptionId(), slotConfigNames, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSlotConfigNames(resourceGroupName, name, this.client.subscriptionId(), slotConfigNames, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return updateSlotConfigNamesDelegate(call.execute());
     }
 
@@ -2929,7 +2929,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(slotConfigNames, serviceCallback);
-        Call<ResponseBody> call = service.updateSlotConfigNames(resourceGroupName, name, this.client.subscriptionId(), slotConfigNames, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSlotConfigNames(resourceGroupName, name, this.client.subscriptionId(), slotConfigNames, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SlotConfigNamesResourceInner>(serviceCallback) {
             @Override
@@ -2975,7 +2975,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String propertiesToInclude = null;
-        Call<ResponseBody> call = service.getSiteSlots(resourceGroupName, name, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteSlots(resourceGroupName, name, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteSlotsDelegate(call.execute());
     }
 
@@ -3009,7 +3009,7 @@ public final class SitesInner {
             return null;
         }
         final String propertiesToInclude = null;
-        Call<ResponseBody> call = service.getSiteSlots(resourceGroupName, name, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteSlots(resourceGroupName, name, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteCollectionInner>(serviceCallback) {
             @Override
@@ -3048,7 +3048,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteSlots(resourceGroupName, name, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteSlots(resourceGroupName, name, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteSlotsDelegate(call.execute());
     }
 
@@ -3082,7 +3082,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteSlots(resourceGroupName, name, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteSlots(resourceGroupName, name, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteCollectionInner>(serviceCallback) {
             @Override
@@ -3126,7 +3126,7 @@ public final class SitesInner {
         final String propertiesToInclude = null;
         final String includeSiteTypes = null;
         final Boolean includeSlots = null;
-        Call<ResponseBody> call = service.getSites(resourceGroupName, this.client.subscriptionId(), propertiesToInclude, includeSiteTypes, includeSlots, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSites(resourceGroupName, this.client.subscriptionId(), propertiesToInclude, includeSiteTypes, includeSlots, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSitesDelegate(call.execute());
     }
 
@@ -3157,7 +3157,7 @@ public final class SitesInner {
         final String propertiesToInclude = null;
         final String includeSiteTypes = null;
         final Boolean includeSlots = null;
-        Call<ResponseBody> call = service.getSites(resourceGroupName, this.client.subscriptionId(), propertiesToInclude, includeSiteTypes, includeSlots, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSites(resourceGroupName, this.client.subscriptionId(), propertiesToInclude, includeSiteTypes, includeSlots, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteCollectionInner>(serviceCallback) {
             @Override
@@ -3194,7 +3194,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSites(resourceGroupName, this.client.subscriptionId(), propertiesToInclude, includeSiteTypes, includeSlots, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSites(resourceGroupName, this.client.subscriptionId(), propertiesToInclude, includeSiteTypes, includeSlots, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSitesDelegate(call.execute());
     }
 
@@ -3225,7 +3225,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSites(resourceGroupName, this.client.subscriptionId(), propertiesToInclude, includeSiteTypes, includeSlots, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSites(resourceGroupName, this.client.subscriptionId(), propertiesToInclude, includeSiteTypes, includeSlots, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteCollectionInner>(serviceCallback) {
             @Override
@@ -3271,7 +3271,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String propertiesToInclude = null;
-        Call<ResponseBody> call = service.getSite(resourceGroupName, name, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSite(resourceGroupName, name, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteDelegate(call.execute());
     }
 
@@ -3305,7 +3305,7 @@ public final class SitesInner {
             return null;
         }
         final String propertiesToInclude = null;
-        Call<ResponseBody> call = service.getSite(resourceGroupName, name, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSite(resourceGroupName, name, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCallback) {
             @Override
@@ -3344,7 +3344,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSite(resourceGroupName, name, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSite(resourceGroupName, name, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteDelegate(call.execute());
     }
 
@@ -3378,7 +3378,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSite(resourceGroupName, name, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSite(resourceGroupName, name, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCallback) {
             @Override
@@ -3433,7 +3433,7 @@ public final class SitesInner {
         final String skipCustomDomainVerification = null;
         final String forceDnsRegistration = null;
         final String ttlInSeconds = null;
-        Response<ResponseBody> result = service.createOrUpdateSite(resourceGroupName, name, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage()).execute();
+        Response<ResponseBody> result = service.createOrUpdateSite(resourceGroupName, name, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
         return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<SiteInner>() { }.getType());
     }
 
@@ -3471,7 +3471,7 @@ public final class SitesInner {
         final String skipCustomDomainVerification = null;
         final String forceDnsRegistration = null;
         final String ttlInSeconds = null;
-        Call<ResponseBody> call = service.createOrUpdateSite(resourceGroupName, name, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdateSite(resourceGroupName, name, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -3519,7 +3519,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(siteEnvelope);
-        Response<ResponseBody> result = service.createOrUpdateSite(resourceGroupName, name, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage()).execute();
+        Response<ResponseBody> result = service.createOrUpdateSite(resourceGroupName, name, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
         return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<SiteInner>() { }.getType());
     }
 
@@ -3558,7 +3558,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
         Validator.validate(siteEnvelope, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdateSite(resourceGroupName, name, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdateSite(resourceGroupName, name, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -3605,7 +3605,7 @@ public final class SitesInner {
         final String skipCustomDomainVerification = null;
         final String forceDnsRegistration = null;
         final String ttlInSeconds = null;
-        Call<ResponseBody> call = service.beginCreateOrUpdateSite(resourceGroupName, name, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginCreateOrUpdateSite(resourceGroupName, name, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginCreateOrUpdateSiteDelegate(call.execute());
     }
 
@@ -3648,7 +3648,7 @@ public final class SitesInner {
         final String skipCustomDomainVerification = null;
         final String forceDnsRegistration = null;
         final String ttlInSeconds = null;
-        Call<ResponseBody> call = service.beginCreateOrUpdateSite(resourceGroupName, name, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginCreateOrUpdateSite(resourceGroupName, name, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCallback) {
             @Override
@@ -3696,7 +3696,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(siteEnvelope);
-        Call<ResponseBody> call = service.beginCreateOrUpdateSite(resourceGroupName, name, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginCreateOrUpdateSite(resourceGroupName, name, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginCreateOrUpdateSiteDelegate(call.execute());
     }
 
@@ -3740,7 +3740,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(siteEnvelope, serviceCallback);
-        Call<ResponseBody> call = service.beginCreateOrUpdateSite(resourceGroupName, name, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginCreateOrUpdateSite(resourceGroupName, name, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCallback) {
             @Override
@@ -3790,7 +3790,7 @@ public final class SitesInner {
         final String deleteEmptyServerFarm = null;
         final String skipDnsRegistration = null;
         final String deleteAllSlots = null;
-        Call<ResponseBody> call = service.deleteSite(resourceGroupName, name, this.client.subscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteSite(resourceGroupName, name, this.client.subscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return deleteSiteDelegate(call.execute());
     }
 
@@ -3827,7 +3827,7 @@ public final class SitesInner {
         final String deleteEmptyServerFarm = null;
         final String skipDnsRegistration = null;
         final String deleteAllSlots = null;
-        Call<ResponseBody> call = service.deleteSite(resourceGroupName, name, this.client.subscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteSite(resourceGroupName, name, this.client.subscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -3869,7 +3869,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.deleteSite(resourceGroupName, name, this.client.subscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteSite(resourceGroupName, name, this.client.subscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return deleteSiteDelegate(call.execute());
     }
 
@@ -3906,7 +3906,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.deleteSite(resourceGroupName, name, this.client.subscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteSite(resourceGroupName, name, this.client.subscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -3956,7 +3956,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String propertiesToInclude = null;
-        Call<ResponseBody> call = service.getSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteSlotDelegate(call.execute());
     }
 
@@ -3995,7 +3995,7 @@ public final class SitesInner {
             return null;
         }
         final String propertiesToInclude = null;
-        Call<ResponseBody> call = service.getSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCallback) {
             @Override
@@ -4038,7 +4038,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteSlotDelegate(call.execute());
     }
 
@@ -4077,7 +4077,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCallback) {
             @Override
@@ -4136,7 +4136,7 @@ public final class SitesInner {
         final String skipCustomDomainVerification = null;
         final String forceDnsRegistration = null;
         final String ttlInSeconds = null;
-        Response<ResponseBody> result = service.createOrUpdateSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage()).execute();
+        Response<ResponseBody> result = service.createOrUpdateSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
         return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<SiteInner>() { }.getType());
     }
 
@@ -4178,7 +4178,7 @@ public final class SitesInner {
         final String skipCustomDomainVerification = null;
         final String forceDnsRegistration = null;
         final String ttlInSeconds = null;
-        Call<ResponseBody> call = service.createOrUpdateSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdateSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -4230,7 +4230,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(siteEnvelope);
-        Response<ResponseBody> result = service.createOrUpdateSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage()).execute();
+        Response<ResponseBody> result = service.createOrUpdateSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
         return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<SiteInner>() { }.getType());
     }
 
@@ -4273,7 +4273,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
         Validator.validate(siteEnvelope, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdateSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdateSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -4324,7 +4324,7 @@ public final class SitesInner {
         final String skipCustomDomainVerification = null;
         final String forceDnsRegistration = null;
         final String ttlInSeconds = null;
-        Call<ResponseBody> call = service.beginCreateOrUpdateSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginCreateOrUpdateSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginCreateOrUpdateSiteSlotDelegate(call.execute());
     }
 
@@ -4372,7 +4372,7 @@ public final class SitesInner {
         final String skipCustomDomainVerification = null;
         final String forceDnsRegistration = null;
         final String ttlInSeconds = null;
-        Call<ResponseBody> call = service.beginCreateOrUpdateSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginCreateOrUpdateSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCallback) {
             @Override
@@ -4424,7 +4424,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(siteEnvelope);
-        Call<ResponseBody> call = service.beginCreateOrUpdateSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginCreateOrUpdateSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginCreateOrUpdateSiteSlotDelegate(call.execute());
     }
 
@@ -4473,7 +4473,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(siteEnvelope, serviceCallback);
-        Call<ResponseBody> call = service.beginCreateOrUpdateSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginCreateOrUpdateSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCallback) {
             @Override
@@ -4527,7 +4527,7 @@ public final class SitesInner {
         final String deleteEmptyServerFarm = null;
         final String skipDnsRegistration = null;
         final String deleteAllSlots = null;
-        Call<ResponseBody> call = service.deleteSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return deleteSiteSlotDelegate(call.execute());
     }
 
@@ -4569,7 +4569,7 @@ public final class SitesInner {
         final String deleteEmptyServerFarm = null;
         final String skipDnsRegistration = null;
         final String deleteAllSlots = null;
-        Call<ResponseBody> call = service.deleteSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -4615,7 +4615,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.deleteSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return deleteSiteSlotDelegate(call.execute());
     }
 
@@ -4657,7 +4657,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.deleteSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -4702,7 +4702,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.isSiteCloneable(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.isSiteCloneable(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return isSiteCloneableDelegate(call.execute());
     }
 
@@ -4735,7 +4735,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.isSiteCloneable(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.isSiteCloneable(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteCloneabilityInner>(serviceCallback) {
             @Override
@@ -4784,7 +4784,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.isSiteCloneableSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.isSiteCloneableSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return isSiteCloneableSlotDelegate(call.execute());
     }
 
@@ -4822,7 +4822,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.isSiteCloneableSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.isSiteCloneableSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteCloneabilityInner>(serviceCallback) {
             @Override
@@ -4873,7 +4873,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(recoveryEntity);
-        Response<ResponseBody> result = service.recoverSite(resourceGroupName, name, this.client.subscriptionId(), recoveryEntity, this.client.apiVersion(), this.client.acceptLanguage()).execute();
+        Response<ResponseBody> result = service.recoverSite(resourceGroupName, name, this.client.subscriptionId(), recoveryEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<SiteInner>() { }.getType());
     }
 
@@ -4907,7 +4907,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
         Validator.validate(recoveryEntity, serviceCallback);
-        Call<ResponseBody> call = service.recoverSite(resourceGroupName, name, this.client.subscriptionId(), recoveryEntity, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.recoverSite(resourceGroupName, name, this.client.subscriptionId(), recoveryEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -4950,7 +4950,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(recoveryEntity);
-        Call<ResponseBody> call = service.beginRecoverSite(resourceGroupName, name, this.client.subscriptionId(), recoveryEntity, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginRecoverSite(resourceGroupName, name, this.client.subscriptionId(), recoveryEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginRecoverSiteDelegate(call.execute());
     }
 
@@ -4989,7 +4989,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(recoveryEntity, serviceCallback);
-        Call<ResponseBody> call = service.beginRecoverSite(resourceGroupName, name, this.client.subscriptionId(), recoveryEntity, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginRecoverSite(resourceGroupName, name, this.client.subscriptionId(), recoveryEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCallback) {
             @Override
@@ -5045,7 +5045,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(recoveryEntity);
-        Response<ResponseBody> result = service.recoverSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), recoveryEntity, this.client.apiVersion(), this.client.acceptLanguage()).execute();
+        Response<ResponseBody> result = service.recoverSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), recoveryEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<SiteInner>() { }.getType());
     }
 
@@ -5083,7 +5083,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
         Validator.validate(recoveryEntity, serviceCallback);
-        Call<ResponseBody> call = service.recoverSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), recoveryEntity, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.recoverSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), recoveryEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -5130,7 +5130,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(recoveryEntity);
-        Call<ResponseBody> call = service.beginRecoverSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), recoveryEntity, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginRecoverSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), recoveryEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginRecoverSiteSlotDelegate(call.execute());
     }
 
@@ -5174,7 +5174,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(recoveryEntity, serviceCallback);
-        Call<ResponseBody> call = service.beginRecoverSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), recoveryEntity, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginRecoverSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), recoveryEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCallback) {
             @Override
@@ -5220,7 +5220,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteSnapshots(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteSnapshots(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteSnapshotsDelegate(call.execute());
     }
 
@@ -5253,7 +5253,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteSnapshots(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteSnapshots(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -5302,7 +5302,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteSnapshotsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteSnapshotsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteSnapshotsSlotDelegate(call.execute());
     }
 
@@ -5340,7 +5340,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteSnapshotsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteSnapshotsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -5383,7 +5383,7 @@ public final class SitesInner {
         }
         final String propertiesToInclude = null;
         final String includeSiteTypes = null;
-        Call<ResponseBody> call = service.getDeletedSites(resourceGroupName, this.client.subscriptionId(), propertiesToInclude, includeSiteTypes, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getDeletedSites(resourceGroupName, this.client.subscriptionId(), propertiesToInclude, includeSiteTypes, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getDeletedSitesDelegate(call.execute());
     }
 
@@ -5413,7 +5413,7 @@ public final class SitesInner {
         }
         final String propertiesToInclude = null;
         final String includeSiteTypes = null;
-        Call<ResponseBody> call = service.getDeletedSites(resourceGroupName, this.client.subscriptionId(), propertiesToInclude, includeSiteTypes, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getDeletedSites(resourceGroupName, this.client.subscriptionId(), propertiesToInclude, includeSiteTypes, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<DeletedSiteCollectionInner>(serviceCallback) {
             @Override
@@ -5449,7 +5449,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getDeletedSites(resourceGroupName, this.client.subscriptionId(), propertiesToInclude, includeSiteTypes, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getDeletedSites(resourceGroupName, this.client.subscriptionId(), propertiesToInclude, includeSiteTypes, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getDeletedSitesDelegate(call.execute());
     }
 
@@ -5479,7 +5479,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getDeletedSites(resourceGroupName, this.client.subscriptionId(), propertiesToInclude, includeSiteTypes, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getDeletedSites(resourceGroupName, this.client.subscriptionId(), propertiesToInclude, includeSiteTypes, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<DeletedSiteCollectionInner>(serviceCallback) {
             @Override
@@ -5524,7 +5524,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getDeployments(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getDeployments(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getDeploymentsDelegate(call.execute());
     }
 
@@ -5557,7 +5557,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getDeployments(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getDeployments(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<DeploymentCollectionInner>(serviceCallback) {
             @Override
@@ -5606,7 +5606,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getDeploymentsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getDeploymentsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getDeploymentsSlotDelegate(call.execute());
     }
 
@@ -5644,7 +5644,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getDeploymentsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getDeploymentsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<DeploymentCollectionInner>(serviceCallback) {
             @Override
@@ -5693,7 +5693,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getInstanceDeployments(resourceGroupName, name, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getInstanceDeployments(resourceGroupName, name, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getInstanceDeploymentsDelegate(call.execute());
     }
 
@@ -5731,7 +5731,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getInstanceDeployments(resourceGroupName, name, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getInstanceDeployments(resourceGroupName, name, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<DeploymentCollectionInner>(serviceCallback) {
             @Override
@@ -5784,7 +5784,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getInstanceDeploymentsSlot(resourceGroupName, name, slot, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getInstanceDeploymentsSlot(resourceGroupName, name, slot, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getInstanceDeploymentsSlotDelegate(call.execute());
     }
 
@@ -5827,7 +5827,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getInstanceDeploymentsSlot(resourceGroupName, name, slot, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getInstanceDeploymentsSlot(resourceGroupName, name, slot, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<DeploymentCollectionInner>(serviceCallback) {
             @Override
@@ -5880,7 +5880,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getInstanceDeploymentDelegate(call.execute());
     }
 
@@ -5923,7 +5923,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCallback) {
             @Override
@@ -5981,7 +5981,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(deployment);
-        Call<ResponseBody> call = service.createInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.subscriptionId(), deployment, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.subscriptionId(), deployment, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return createInstanceDeploymentDelegate(call.execute());
     }
 
@@ -6030,7 +6030,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(deployment, serviceCallback);
-        Call<ResponseBody> call = service.createInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.subscriptionId(), deployment, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.subscriptionId(), deployment, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCallback) {
             @Override
@@ -6083,7 +6083,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.deleteInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return deleteInstanceDeploymentDelegate(call.execute());
     }
 
@@ -6126,7 +6126,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.deleteInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -6175,7 +6175,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getDeployment(resourceGroupName, name, id, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getDeployment(resourceGroupName, name, id, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getDeploymentDelegate(call.execute());
     }
 
@@ -6213,7 +6213,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getDeployment(resourceGroupName, name, id, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getDeployment(resourceGroupName, name, id, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCallback) {
             @Override
@@ -6267,7 +6267,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(deployment);
-        Call<ResponseBody> call = service.createDeployment(resourceGroupName, name, id, this.client.subscriptionId(), deployment, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createDeployment(resourceGroupName, name, id, this.client.subscriptionId(), deployment, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return createDeploymentDelegate(call.execute());
     }
 
@@ -6311,7 +6311,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(deployment, serviceCallback);
-        Call<ResponseBody> call = service.createDeployment(resourceGroupName, name, id, this.client.subscriptionId(), deployment, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createDeployment(resourceGroupName, name, id, this.client.subscriptionId(), deployment, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCallback) {
             @Override
@@ -6360,7 +6360,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.deleteDeployment(resourceGroupName, name, id, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteDeployment(resourceGroupName, name, id, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return deleteDeploymentDelegate(call.execute());
     }
 
@@ -6398,7 +6398,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.deleteDeployment(resourceGroupName, name, id, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteDeployment(resourceGroupName, name, id, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -6451,7 +6451,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getDeploymentSlot(resourceGroupName, name, id, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getDeploymentSlot(resourceGroupName, name, id, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getDeploymentSlotDelegate(call.execute());
     }
 
@@ -6494,7 +6494,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getDeploymentSlot(resourceGroupName, name, id, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getDeploymentSlot(resourceGroupName, name, id, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCallback) {
             @Override
@@ -6552,7 +6552,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(deployment);
-        Call<ResponseBody> call = service.createDeploymentSlot(resourceGroupName, name, id, slot, this.client.subscriptionId(), deployment, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createDeploymentSlot(resourceGroupName, name, id, slot, this.client.subscriptionId(), deployment, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return createDeploymentSlotDelegate(call.execute());
     }
 
@@ -6601,7 +6601,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(deployment, serviceCallback);
-        Call<ResponseBody> call = service.createDeploymentSlot(resourceGroupName, name, id, slot, this.client.subscriptionId(), deployment, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createDeploymentSlot(resourceGroupName, name, id, slot, this.client.subscriptionId(), deployment, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCallback) {
             @Override
@@ -6654,7 +6654,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.deleteDeploymentSlot(resourceGroupName, name, id, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteDeploymentSlot(resourceGroupName, name, id, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return deleteDeploymentSlotDelegate(call.execute());
     }
 
@@ -6697,7 +6697,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.deleteDeploymentSlot(resourceGroupName, name, id, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteDeploymentSlot(resourceGroupName, name, id, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -6754,7 +6754,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getInstanceDeploymentSlot(resourceGroupName, name, id, slot, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getInstanceDeploymentSlot(resourceGroupName, name, id, slot, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getInstanceDeploymentSlotDelegate(call.execute());
     }
 
@@ -6802,7 +6802,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getInstanceDeploymentSlot(resourceGroupName, name, id, slot, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getInstanceDeploymentSlot(resourceGroupName, name, id, slot, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCallback) {
             @Override
@@ -6864,7 +6864,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(deployment);
-        Call<ResponseBody> call = service.createInstanceDeploymentSlot(resourceGroupName, name, id, slot, instanceId, this.client.subscriptionId(), deployment, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createInstanceDeploymentSlot(resourceGroupName, name, id, slot, instanceId, this.client.subscriptionId(), deployment, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return createInstanceDeploymentSlotDelegate(call.execute());
     }
 
@@ -6918,7 +6918,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(deployment, serviceCallback);
-        Call<ResponseBody> call = service.createInstanceDeploymentSlot(resourceGroupName, name, id, slot, instanceId, this.client.subscriptionId(), deployment, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createInstanceDeploymentSlot(resourceGroupName, name, id, slot, instanceId, this.client.subscriptionId(), deployment, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCallback) {
             @Override
@@ -6975,7 +6975,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.deleteInstanceDeploymentSlot(resourceGroupName, name, id, slot, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteInstanceDeploymentSlot(resourceGroupName, name, id, slot, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return deleteInstanceDeploymentSlotDelegate(call.execute());
     }
 
@@ -7023,7 +7023,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.deleteInstanceDeploymentSlot(resourceGroupName, name, id, slot, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteInstanceDeploymentSlot(resourceGroupName, name, id, slot, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -7068,7 +7068,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteInstanceIdentifiers(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteInstanceIdentifiers(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteInstanceIdentifiersDelegate(call.execute());
     }
 
@@ -7101,7 +7101,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteInstanceIdentifiers(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteInstanceIdentifiers(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteInstanceCollectionInner>(serviceCallback) {
             @Override
@@ -7150,7 +7150,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteInstanceIdentifiersSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteInstanceIdentifiersSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteInstanceIdentifiersSlotDelegate(call.execute());
     }
 
@@ -7188,7 +7188,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteInstanceIdentifiersSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteInstanceIdentifiersSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteInstanceCollectionInner>(serviceCallback) {
             @Override
@@ -7233,7 +7233,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteHostNameBindings(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteHostNameBindings(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteHostNameBindingsDelegate(call.execute());
     }
 
@@ -7266,7 +7266,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteHostNameBindings(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteHostNameBindings(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<HostNameBindingCollectionInner>(serviceCallback) {
             @Override
@@ -7315,7 +7315,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteHostNameBindingsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteHostNameBindingsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteHostNameBindingsSlotDelegate(call.execute());
     }
 
@@ -7353,7 +7353,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteHostNameBindingsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteHostNameBindingsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<HostNameBindingCollectionInner>(serviceCallback) {
             @Override
@@ -7402,7 +7402,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteHostNameBinding(resourceGroupName, name, hostName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteHostNameBinding(resourceGroupName, name, hostName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteHostNameBindingDelegate(call.execute());
     }
 
@@ -7440,7 +7440,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteHostNameBinding(resourceGroupName, name, hostName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteHostNameBinding(resourceGroupName, name, hostName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<HostNameBindingInner>(serviceCallback) {
             @Override
@@ -7494,7 +7494,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(hostNameBinding);
-        Call<ResponseBody> call = service.createOrUpdateSiteHostNameBinding(resourceGroupName, name, hostName, this.client.subscriptionId(), hostNameBinding, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdateSiteHostNameBinding(resourceGroupName, name, hostName, this.client.subscriptionId(), hostNameBinding, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return createOrUpdateSiteHostNameBindingDelegate(call.execute());
     }
 
@@ -7538,7 +7538,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(hostNameBinding, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdateSiteHostNameBinding(resourceGroupName, name, hostName, this.client.subscriptionId(), hostNameBinding, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdateSiteHostNameBinding(resourceGroupName, name, hostName, this.client.subscriptionId(), hostNameBinding, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<HostNameBindingInner>(serviceCallback) {
             @Override
@@ -7587,7 +7587,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.deleteSiteHostNameBinding(resourceGroupName, name, hostName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteSiteHostNameBinding(resourceGroupName, name, hostName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return deleteSiteHostNameBindingDelegate(call.execute());
     }
 
@@ -7625,7 +7625,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.deleteSiteHostNameBinding(resourceGroupName, name, hostName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteSiteHostNameBinding(resourceGroupName, name, hostName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -7678,7 +7678,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteHostNameBindingSlot(resourceGroupName, name, slot, hostName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteHostNameBindingSlot(resourceGroupName, name, slot, hostName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteHostNameBindingSlotDelegate(call.execute());
     }
 
@@ -7721,7 +7721,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteHostNameBindingSlot(resourceGroupName, name, slot, hostName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteHostNameBindingSlot(resourceGroupName, name, slot, hostName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<HostNameBindingInner>(serviceCallback) {
             @Override
@@ -7779,7 +7779,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(hostNameBinding);
-        Call<ResponseBody> call = service.createOrUpdateSiteHostNameBindingSlot(resourceGroupName, name, hostName, slot, this.client.subscriptionId(), hostNameBinding, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdateSiteHostNameBindingSlot(resourceGroupName, name, hostName, slot, this.client.subscriptionId(), hostNameBinding, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return createOrUpdateSiteHostNameBindingSlotDelegate(call.execute());
     }
 
@@ -7828,7 +7828,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(hostNameBinding, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdateSiteHostNameBindingSlot(resourceGroupName, name, hostName, slot, this.client.subscriptionId(), hostNameBinding, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdateSiteHostNameBindingSlot(resourceGroupName, name, hostName, slot, this.client.subscriptionId(), hostNameBinding, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<HostNameBindingInner>(serviceCallback) {
             @Override
@@ -7881,7 +7881,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.deleteSiteHostNameBindingSlot(resourceGroupName, name, slot, hostName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteSiteHostNameBindingSlot(resourceGroupName, name, slot, hostName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return deleteSiteHostNameBindingSlotDelegate(call.execute());
     }
 
@@ -7924,7 +7924,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.deleteSiteHostNameBindingSlot(resourceGroupName, name, slot, hostName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteSiteHostNameBindingSlot(resourceGroupName, name, slot, hostName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -7969,7 +7969,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteConfig(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteConfig(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteConfigDelegate(call.execute());
     }
 
@@ -8002,7 +8002,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteConfig(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteConfig(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteConfigInner>(serviceCallback) {
             @Override
@@ -8052,7 +8052,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(siteConfig);
-        Call<ResponseBody> call = service.createOrUpdateSiteConfig(resourceGroupName, name, this.client.subscriptionId(), siteConfig, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdateSiteConfig(resourceGroupName, name, this.client.subscriptionId(), siteConfig, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return createOrUpdateSiteConfigDelegate(call.execute());
     }
 
@@ -8091,7 +8091,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(siteConfig, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdateSiteConfig(resourceGroupName, name, this.client.subscriptionId(), siteConfig, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdateSiteConfig(resourceGroupName, name, this.client.subscriptionId(), siteConfig, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteConfigInner>(serviceCallback) {
             @Override
@@ -8141,7 +8141,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(siteConfig);
-        Call<ResponseBody> call = service.updateSiteConfig(resourceGroupName, name, this.client.subscriptionId(), siteConfig, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteConfig(resourceGroupName, name, this.client.subscriptionId(), siteConfig, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return updateSiteConfigDelegate(call.execute());
     }
 
@@ -8180,7 +8180,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(siteConfig, serviceCallback);
-        Call<ResponseBody> call = service.updateSiteConfig(resourceGroupName, name, this.client.subscriptionId(), siteConfig, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteConfig(resourceGroupName, name, this.client.subscriptionId(), siteConfig, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteConfigInner>(serviceCallback) {
             @Override
@@ -8229,7 +8229,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteConfigSlotDelegate(call.execute());
     }
 
@@ -8267,7 +8267,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteConfigInner>(serviceCallback) {
             @Override
@@ -8321,7 +8321,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(siteConfig);
-        Call<ResponseBody> call = service.createOrUpdateSiteConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteConfig, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdateSiteConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteConfig, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return createOrUpdateSiteConfigSlotDelegate(call.execute());
     }
 
@@ -8365,7 +8365,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(siteConfig, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdateSiteConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteConfig, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdateSiteConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteConfig, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteConfigInner>(serviceCallback) {
             @Override
@@ -8419,7 +8419,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(siteConfig);
-        Call<ResponseBody> call = service.updateSiteConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteConfig, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteConfig, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return updateSiteConfigSlotDelegate(call.execute());
     }
 
@@ -8463,7 +8463,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(siteConfig, serviceCallback);
-        Call<ResponseBody> call = service.updateSiteConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteConfig, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteConfig, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteConfigInner>(serviceCallback) {
             @Override
@@ -8508,7 +8508,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteSourceControl(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteSourceControl(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteSourceControlDelegate(call.execute());
     }
 
@@ -8541,7 +8541,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteSourceControl(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteSourceControl(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteSourceControlInner>(serviceCallback) {
             @Override
@@ -8591,7 +8591,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(siteSourceControl);
-        Call<ResponseBody> call = service.createOrUpdateSiteSourceControl(resourceGroupName, name, this.client.subscriptionId(), siteSourceControl, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdateSiteSourceControl(resourceGroupName, name, this.client.subscriptionId(), siteSourceControl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return createOrUpdateSiteSourceControlDelegate(call.execute());
     }
 
@@ -8630,7 +8630,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(siteSourceControl, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdateSiteSourceControl(resourceGroupName, name, this.client.subscriptionId(), siteSourceControl, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdateSiteSourceControl(resourceGroupName, name, this.client.subscriptionId(), siteSourceControl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteSourceControlInner>(serviceCallback) {
             @Override
@@ -8675,7 +8675,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.deleteSiteSourceControl(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteSiteSourceControl(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return deleteSiteSourceControlDelegate(call.execute());
     }
 
@@ -8708,7 +8708,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.deleteSiteSourceControl(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteSiteSourceControl(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -8758,7 +8758,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(siteSourceControl);
-        Call<ResponseBody> call = service.updateSiteSourceControl(resourceGroupName, name, this.client.subscriptionId(), siteSourceControl, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteSourceControl(resourceGroupName, name, this.client.subscriptionId(), siteSourceControl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return updateSiteSourceControlDelegate(call.execute());
     }
 
@@ -8797,7 +8797,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(siteSourceControl, serviceCallback);
-        Call<ResponseBody> call = service.updateSiteSourceControl(resourceGroupName, name, this.client.subscriptionId(), siteSourceControl, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteSourceControl(resourceGroupName, name, this.client.subscriptionId(), siteSourceControl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteSourceControlInner>(serviceCallback) {
             @Override
@@ -8846,7 +8846,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteSourceControlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteSourceControlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteSourceControlSlotDelegate(call.execute());
     }
 
@@ -8884,7 +8884,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteSourceControlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteSourceControlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteSourceControlInner>(serviceCallback) {
             @Override
@@ -8938,7 +8938,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(siteSourceControl);
-        Call<ResponseBody> call = service.createOrUpdateSiteSourceControlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteSourceControl, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdateSiteSourceControlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteSourceControl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return createOrUpdateSiteSourceControlSlotDelegate(call.execute());
     }
 
@@ -8982,7 +8982,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(siteSourceControl, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdateSiteSourceControlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteSourceControl, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdateSiteSourceControlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteSourceControl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteSourceControlInner>(serviceCallback) {
             @Override
@@ -9031,7 +9031,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.deleteSiteSourceControlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteSiteSourceControlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return deleteSiteSourceControlSlotDelegate(call.execute());
     }
 
@@ -9069,7 +9069,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.deleteSiteSourceControlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteSiteSourceControlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -9123,7 +9123,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(siteSourceControl);
-        Call<ResponseBody> call = service.updateSiteSourceControlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteSourceControl, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteSourceControlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteSourceControl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return updateSiteSourceControlSlotDelegate(call.execute());
     }
 
@@ -9167,7 +9167,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(siteSourceControl, serviceCallback);
-        Call<ResponseBody> call = service.updateSiteSourceControlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteSourceControl, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteSourceControlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteSourceControl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteSourceControlInner>(serviceCallback) {
             @Override
@@ -9216,7 +9216,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listSiteAppSettingsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSiteAppSettingsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return listSiteAppSettingsSlotDelegate(call.execute());
     }
 
@@ -9254,7 +9254,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listSiteAppSettingsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSiteAppSettingsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCallback) {
             @Override
@@ -9299,7 +9299,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listSiteAppSettings(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSiteAppSettings(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return listSiteAppSettingsDelegate(call.execute());
     }
 
@@ -9332,7 +9332,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listSiteAppSettings(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSiteAppSettings(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCallback) {
             @Override
@@ -9382,7 +9382,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(appSettings);
-        Call<ResponseBody> call = service.updateSiteAppSettings(resourceGroupName, name, this.client.subscriptionId(), appSettings, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteAppSettings(resourceGroupName, name, this.client.subscriptionId(), appSettings, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return updateSiteAppSettingsDelegate(call.execute());
     }
 
@@ -9421,7 +9421,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(appSettings, serviceCallback);
-        Call<ResponseBody> call = service.updateSiteAppSettings(resourceGroupName, name, this.client.subscriptionId(), appSettings, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteAppSettings(resourceGroupName, name, this.client.subscriptionId(), appSettings, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCallback) {
             @Override
@@ -9475,7 +9475,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(appSettings);
-        Call<ResponseBody> call = service.updateSiteAppSettingsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), appSettings, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteAppSettingsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), appSettings, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return updateSiteAppSettingsSlotDelegate(call.execute());
     }
 
@@ -9519,7 +9519,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(appSettings, serviceCallback);
-        Call<ResponseBody> call = service.updateSiteAppSettingsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), appSettings, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteAppSettingsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), appSettings, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCallback) {
             @Override
@@ -9564,7 +9564,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listSiteConnectionStrings(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSiteConnectionStrings(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return listSiteConnectionStringsDelegate(call.execute());
     }
 
@@ -9597,7 +9597,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listSiteConnectionStrings(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSiteConnectionStrings(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ConnectionStringDictionaryInner>(serviceCallback) {
             @Override
@@ -9646,7 +9646,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listSiteConnectionStringsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSiteConnectionStringsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return listSiteConnectionStringsSlotDelegate(call.execute());
     }
 
@@ -9684,7 +9684,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listSiteConnectionStringsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSiteConnectionStringsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ConnectionStringDictionaryInner>(serviceCallback) {
             @Override
@@ -9734,7 +9734,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(connectionStrings);
-        Call<ResponseBody> call = service.updateSiteConnectionStrings(resourceGroupName, name, this.client.subscriptionId(), connectionStrings, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteConnectionStrings(resourceGroupName, name, this.client.subscriptionId(), connectionStrings, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return updateSiteConnectionStringsDelegate(call.execute());
     }
 
@@ -9773,7 +9773,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(connectionStrings, serviceCallback);
-        Call<ResponseBody> call = service.updateSiteConnectionStrings(resourceGroupName, name, this.client.subscriptionId(), connectionStrings, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteConnectionStrings(resourceGroupName, name, this.client.subscriptionId(), connectionStrings, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ConnectionStringDictionaryInner>(serviceCallback) {
             @Override
@@ -9827,7 +9827,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(connectionStrings);
-        Call<ResponseBody> call = service.updateSiteConnectionStringsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), connectionStrings, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteConnectionStringsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), connectionStrings, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return updateSiteConnectionStringsSlotDelegate(call.execute());
     }
 
@@ -9871,7 +9871,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(connectionStrings, serviceCallback);
-        Call<ResponseBody> call = service.updateSiteConnectionStringsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), connectionStrings, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteConnectionStringsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), connectionStrings, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ConnectionStringDictionaryInner>(serviceCallback) {
             @Override
@@ -9916,7 +9916,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listSiteAuthSettings(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSiteAuthSettings(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return listSiteAuthSettingsDelegate(call.execute());
     }
 
@@ -9949,7 +9949,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listSiteAuthSettings(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSiteAuthSettings(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteAuthSettingsInner>(serviceCallback) {
             @Override
@@ -9998,7 +9998,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listSiteAuthSettingsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSiteAuthSettingsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return listSiteAuthSettingsSlotDelegate(call.execute());
     }
 
@@ -10036,7 +10036,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listSiteAuthSettingsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSiteAuthSettingsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteAuthSettingsInner>(serviceCallback) {
             @Override
@@ -10086,7 +10086,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(siteAuthSettings);
-        Call<ResponseBody> call = service.updateSiteAuthSettings(resourceGroupName, name, this.client.subscriptionId(), siteAuthSettings, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteAuthSettings(resourceGroupName, name, this.client.subscriptionId(), siteAuthSettings, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return updateSiteAuthSettingsDelegate(call.execute());
     }
 
@@ -10125,7 +10125,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(siteAuthSettings, serviceCallback);
-        Call<ResponseBody> call = service.updateSiteAuthSettings(resourceGroupName, name, this.client.subscriptionId(), siteAuthSettings, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteAuthSettings(resourceGroupName, name, this.client.subscriptionId(), siteAuthSettings, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteAuthSettingsInner>(serviceCallback) {
             @Override
@@ -10179,7 +10179,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(siteAuthSettings);
-        Call<ResponseBody> call = service.updateSiteAuthSettingsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteAuthSettings, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteAuthSettingsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteAuthSettings, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return updateSiteAuthSettingsSlotDelegate(call.execute());
     }
 
@@ -10223,7 +10223,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(siteAuthSettings, serviceCallback);
-        Call<ResponseBody> call = service.updateSiteAuthSettingsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteAuthSettings, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteAuthSettingsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteAuthSettings, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteAuthSettingsInner>(serviceCallback) {
             @Override
@@ -10269,7 +10269,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Response<ResponseBody> result = service.listSitePublishingCredentials(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage()).execute();
+        Response<ResponseBody> result = service.listSitePublishingCredentials(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<UserInner>() { }.getType());
     }
 
@@ -10298,7 +10298,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
-        Call<ResponseBody> call = service.listSitePublishingCredentials(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSitePublishingCredentials(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -10336,7 +10336,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.beginListSitePublishingCredentials(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginListSitePublishingCredentials(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginListSitePublishingCredentialsDelegate(call.execute());
     }
 
@@ -10369,7 +10369,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.beginListSitePublishingCredentials(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginListSitePublishingCredentials(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<UserInner>(serviceCallback) {
             @Override
@@ -10419,7 +10419,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Response<ResponseBody> result = service.listSitePublishingCredentialsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage()).execute();
+        Response<ResponseBody> result = service.listSitePublishingCredentialsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<UserInner>() { }.getType());
     }
 
@@ -10452,7 +10452,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
-        Call<ResponseBody> call = service.listSitePublishingCredentialsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSitePublishingCredentialsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -10494,7 +10494,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.beginListSitePublishingCredentialsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginListSitePublishingCredentialsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginListSitePublishingCredentialsSlotDelegate(call.execute());
     }
 
@@ -10532,7 +10532,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.beginListSitePublishingCredentialsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginListSitePublishingCredentialsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<UserInner>(serviceCallback) {
             @Override
@@ -10577,7 +10577,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listSiteMetadata(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSiteMetadata(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return listSiteMetadataDelegate(call.execute());
     }
 
@@ -10610,7 +10610,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listSiteMetadata(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSiteMetadata(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCallback) {
             @Override
@@ -10659,7 +10659,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listSiteMetadataSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSiteMetadataSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return listSiteMetadataSlotDelegate(call.execute());
     }
 
@@ -10697,7 +10697,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listSiteMetadataSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSiteMetadataSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCallback) {
             @Override
@@ -10747,7 +10747,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(metadata);
-        Call<ResponseBody> call = service.updateSiteMetadata(resourceGroupName, name, this.client.subscriptionId(), metadata, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteMetadata(resourceGroupName, name, this.client.subscriptionId(), metadata, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return updateSiteMetadataDelegate(call.execute());
     }
 
@@ -10786,7 +10786,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(metadata, serviceCallback);
-        Call<ResponseBody> call = service.updateSiteMetadata(resourceGroupName, name, this.client.subscriptionId(), metadata, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteMetadata(resourceGroupName, name, this.client.subscriptionId(), metadata, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCallback) {
             @Override
@@ -10840,7 +10840,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(metadata);
-        Call<ResponseBody> call = service.updateSiteMetadataSlot(resourceGroupName, name, slot, this.client.subscriptionId(), metadata, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteMetadataSlot(resourceGroupName, name, slot, this.client.subscriptionId(), metadata, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return updateSiteMetadataSlotDelegate(call.execute());
     }
 
@@ -10884,7 +10884,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(metadata, serviceCallback);
-        Call<ResponseBody> call = service.updateSiteMetadataSlot(resourceGroupName, name, slot, this.client.subscriptionId(), metadata, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteMetadataSlot(resourceGroupName, name, slot, this.client.subscriptionId(), metadata, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCallback) {
             @Override
@@ -10929,7 +10929,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteLogsConfig(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteLogsConfig(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteLogsConfigDelegate(call.execute());
     }
 
@@ -10962,7 +10962,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteLogsConfig(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteLogsConfig(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteLogsConfigInner>(serviceCallback) {
             @Override
@@ -11012,7 +11012,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(siteLogsConfig);
-        Call<ResponseBody> call = service.updateSiteLogsConfig(resourceGroupName, name, this.client.subscriptionId(), siteLogsConfig, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteLogsConfig(resourceGroupName, name, this.client.subscriptionId(), siteLogsConfig, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return updateSiteLogsConfigDelegate(call.execute());
     }
 
@@ -11051,7 +11051,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(siteLogsConfig, serviceCallback);
-        Call<ResponseBody> call = service.updateSiteLogsConfig(resourceGroupName, name, this.client.subscriptionId(), siteLogsConfig, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteLogsConfig(resourceGroupName, name, this.client.subscriptionId(), siteLogsConfig, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteLogsConfigInner>(serviceCallback) {
             @Override
@@ -11100,7 +11100,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteLogsConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteLogsConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteLogsConfigSlotDelegate(call.execute());
     }
 
@@ -11138,7 +11138,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteLogsConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteLogsConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteLogsConfigInner>(serviceCallback) {
             @Override
@@ -11192,7 +11192,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(siteLogsConfig);
-        Call<ResponseBody> call = service.updateSiteLogsConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteLogsConfig, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteLogsConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteLogsConfig, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return updateSiteLogsConfigSlotDelegate(call.execute());
     }
 
@@ -11236,7 +11236,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(siteLogsConfig, serviceCallback);
-        Call<ResponseBody> call = service.updateSiteLogsConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteLogsConfig, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteLogsConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteLogsConfig, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SiteLogsConfigInner>(serviceCallback) {
             @Override
@@ -11280,7 +11280,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listSitePremierAddOns(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSitePremierAddOns(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return listSitePremierAddOnsDelegate(call.execute());
     }
 
@@ -11312,7 +11312,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listSitePremierAddOns(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSitePremierAddOns(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -11360,7 +11360,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listSitePremierAddOnsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSitePremierAddOnsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return listSitePremierAddOnsSlotDelegate(call.execute());
     }
 
@@ -11397,7 +11397,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listSitePremierAddOnsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSitePremierAddOnsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -11445,7 +11445,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSitePremierAddOn(resourceGroupName, name, premierAddOnName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSitePremierAddOn(resourceGroupName, name, premierAddOnName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSitePremierAddOnDelegate(call.execute());
     }
 
@@ -11482,7 +11482,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSitePremierAddOn(resourceGroupName, name, premierAddOnName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSitePremierAddOn(resourceGroupName, name, premierAddOnName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -11535,7 +11535,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(premierAddOn);
-        Call<ResponseBody> call = service.addSitePremierAddOn(resourceGroupName, name, premierAddOnName, this.client.subscriptionId(), premierAddOn, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.addSitePremierAddOn(resourceGroupName, name, premierAddOnName, this.client.subscriptionId(), premierAddOn, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return addSitePremierAddOnDelegate(call.execute());
     }
 
@@ -11578,7 +11578,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(premierAddOn, serviceCallback);
-        Call<ResponseBody> call = service.addSitePremierAddOn(resourceGroupName, name, premierAddOnName, this.client.subscriptionId(), premierAddOn, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.addSitePremierAddOn(resourceGroupName, name, premierAddOnName, this.client.subscriptionId(), premierAddOn, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -11626,7 +11626,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.deleteSitePremierAddOn(resourceGroupName, name, premierAddOnName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteSitePremierAddOn(resourceGroupName, name, premierAddOnName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return deleteSitePremierAddOnDelegate(call.execute());
     }
 
@@ -11663,7 +11663,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.deleteSitePremierAddOn(resourceGroupName, name, premierAddOnName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteSitePremierAddOn(resourceGroupName, name, premierAddOnName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -11715,7 +11715,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSitePremierAddOnSlot(resourceGroupName, name, premierAddOnName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSitePremierAddOnSlot(resourceGroupName, name, premierAddOnName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSitePremierAddOnSlotDelegate(call.execute());
     }
 
@@ -11757,7 +11757,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSitePremierAddOnSlot(resourceGroupName, name, premierAddOnName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSitePremierAddOnSlot(resourceGroupName, name, premierAddOnName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -11814,7 +11814,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(premierAddOn);
-        Call<ResponseBody> call = service.addSitePremierAddOnSlot(resourceGroupName, name, premierAddOnName, slot, this.client.subscriptionId(), premierAddOn, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.addSitePremierAddOnSlot(resourceGroupName, name, premierAddOnName, slot, this.client.subscriptionId(), premierAddOn, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return addSitePremierAddOnSlotDelegate(call.execute());
     }
 
@@ -11862,7 +11862,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(premierAddOn, serviceCallback);
-        Call<ResponseBody> call = service.addSitePremierAddOnSlot(resourceGroupName, name, premierAddOnName, slot, this.client.subscriptionId(), premierAddOn, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.addSitePremierAddOnSlot(resourceGroupName, name, premierAddOnName, slot, this.client.subscriptionId(), premierAddOn, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -11914,7 +11914,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.deleteSitePremierAddOnSlot(resourceGroupName, name, premierAddOnName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteSitePremierAddOnSlot(resourceGroupName, name, premierAddOnName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return deleteSitePremierAddOnSlotDelegate(call.execute());
     }
 
@@ -11956,7 +11956,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.deleteSitePremierAddOnSlot(resourceGroupName, name, premierAddOnName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteSitePremierAddOnSlot(resourceGroupName, name, premierAddOnName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -12001,7 +12001,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteBackupConfiguration(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteBackupConfiguration(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteBackupConfigurationDelegate(call.execute());
     }
 
@@ -12034,7 +12034,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteBackupConfiguration(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteBackupConfiguration(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<BackupRequestInner>(serviceCallback) {
             @Override
@@ -12083,7 +12083,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteBackupConfigurationSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteBackupConfigurationSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteBackupConfigurationSlotDelegate(call.execute());
     }
 
@@ -12121,7 +12121,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteBackupConfigurationSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteBackupConfigurationSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<BackupRequestInner>(serviceCallback) {
             @Override
@@ -12171,7 +12171,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(request);
-        Call<ResponseBody> call = service.updateSiteBackupConfiguration(resourceGroupName, name, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteBackupConfiguration(resourceGroupName, name, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return updateSiteBackupConfigurationDelegate(call.execute());
     }
 
@@ -12210,7 +12210,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(request, serviceCallback);
-        Call<ResponseBody> call = service.updateSiteBackupConfiguration(resourceGroupName, name, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteBackupConfiguration(resourceGroupName, name, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<BackupRequestInner>(serviceCallback) {
             @Override
@@ -12264,7 +12264,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(request);
-        Call<ResponseBody> call = service.updateSiteBackupConfigurationSlot(resourceGroupName, name, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteBackupConfigurationSlot(resourceGroupName, name, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return updateSiteBackupConfigurationSlotDelegate(call.execute());
     }
 
@@ -12308,7 +12308,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(request, serviceCallback);
-        Call<ResponseBody> call = service.updateSiteBackupConfigurationSlot(resourceGroupName, name, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteBackupConfigurationSlot(resourceGroupName, name, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<BackupRequestInner>(serviceCallback) {
             @Override
@@ -12358,7 +12358,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(request);
-        Call<ResponseBody> call = service.backupSite(resourceGroupName, name, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.backupSite(resourceGroupName, name, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return backupSiteDelegate(call.execute());
     }
 
@@ -12397,7 +12397,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(request, serviceCallback);
-        Call<ResponseBody> call = service.backupSite(resourceGroupName, name, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.backupSite(resourceGroupName, name, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCallback) {
             @Override
@@ -12451,7 +12451,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(request);
-        Call<ResponseBody> call = service.backupSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.backupSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return backupSiteSlotDelegate(call.execute());
     }
 
@@ -12495,7 +12495,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(request, serviceCallback);
-        Call<ResponseBody> call = service.backupSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.backupSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCallback) {
             @Override
@@ -12545,7 +12545,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(request);
-        Call<ResponseBody> call = service.discoverSiteRestore(resourceGroupName, name, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.discoverSiteRestore(resourceGroupName, name, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return discoverSiteRestoreDelegate(call.execute());
     }
 
@@ -12584,7 +12584,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(request, serviceCallback);
-        Call<ResponseBody> call = service.discoverSiteRestore(resourceGroupName, name, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.discoverSiteRestore(resourceGroupName, name, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<RestoreRequestInner>(serviceCallback) {
             @Override
@@ -12638,7 +12638,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(request);
-        Call<ResponseBody> call = service.discoverSiteRestoreSlot(resourceGroupName, name, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.discoverSiteRestoreSlot(resourceGroupName, name, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return discoverSiteRestoreSlotDelegate(call.execute());
     }
 
@@ -12682,7 +12682,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(request, serviceCallback);
-        Call<ResponseBody> call = service.discoverSiteRestoreSlot(resourceGroupName, name, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.discoverSiteRestoreSlot(resourceGroupName, name, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<RestoreRequestInner>(serviceCallback) {
             @Override
@@ -12727,7 +12727,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listSiteBackups(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSiteBackups(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return listSiteBackupsDelegate(call.execute());
     }
 
@@ -12760,7 +12760,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listSiteBackups(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSiteBackups(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<BackupItemCollectionInner>(serviceCallback) {
             @Override
@@ -12809,7 +12809,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listSiteBackupsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSiteBackupsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return listSiteBackupsSlotDelegate(call.execute());
     }
 
@@ -12847,7 +12847,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listSiteBackupsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSiteBackupsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<BackupItemCollectionInner>(serviceCallback) {
             @Override
@@ -12896,7 +12896,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteBackupStatus(resourceGroupName, name, backupId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteBackupStatus(resourceGroupName, name, backupId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteBackupStatusDelegate(call.execute());
     }
 
@@ -12934,7 +12934,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteBackupStatus(resourceGroupName, name, backupId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteBackupStatus(resourceGroupName, name, backupId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCallback) {
             @Override
@@ -12983,7 +12983,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.deleteBackup(resourceGroupName, name, backupId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteBackup(resourceGroupName, name, backupId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return deleteBackupDelegate(call.execute());
     }
 
@@ -13021,7 +13021,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.deleteBackup(resourceGroupName, name, backupId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteBackup(resourceGroupName, name, backupId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCallback) {
             @Override
@@ -13074,7 +13074,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteBackupStatusSlot(resourceGroupName, name, backupId, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteBackupStatusSlot(resourceGroupName, name, backupId, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteBackupStatusSlotDelegate(call.execute());
     }
 
@@ -13117,7 +13117,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteBackupStatusSlot(resourceGroupName, name, backupId, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteBackupStatusSlot(resourceGroupName, name, backupId, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCallback) {
             @Override
@@ -13170,7 +13170,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.deleteBackupSlot(resourceGroupName, name, backupId, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteBackupSlot(resourceGroupName, name, backupId, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return deleteBackupSlotDelegate(call.execute());
     }
 
@@ -13213,7 +13213,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.deleteBackupSlot(resourceGroupName, name, backupId, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteBackupSlot(resourceGroupName, name, backupId, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCallback) {
             @Override
@@ -13271,7 +13271,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(request);
-        Call<ResponseBody> call = service.getSiteBackupStatusSecretsSlot(resourceGroupName, name, backupId, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteBackupStatusSecretsSlot(resourceGroupName, name, backupId, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteBackupStatusSecretsSlotDelegate(call.execute());
     }
 
@@ -13320,7 +13320,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(request, serviceCallback);
-        Call<ResponseBody> call = service.getSiteBackupStatusSecretsSlot(resourceGroupName, name, backupId, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteBackupStatusSecretsSlot(resourceGroupName, name, backupId, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCallback) {
             @Override
@@ -13374,7 +13374,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(request);
-        Call<ResponseBody> call = service.getSiteBackupStatusSecrets(resourceGroupName, name, backupId, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteBackupStatusSecrets(resourceGroupName, name, backupId, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteBackupStatusSecretsDelegate(call.execute());
     }
 
@@ -13418,7 +13418,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(request, serviceCallback);
-        Call<ResponseBody> call = service.getSiteBackupStatusSecrets(resourceGroupName, name, backupId, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteBackupStatusSecrets(resourceGroupName, name, backupId, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCallback) {
             @Override
@@ -13473,7 +13473,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(request);
-        Response<ResponseBody> result = service.restoreSite(resourceGroupName, name, backupId, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage()).execute();
+        Response<ResponseBody> result = service.restoreSite(resourceGroupName, name, backupId, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<RestoreResponseInner>() { }.getType());
     }
 
@@ -13511,7 +13511,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
         Validator.validate(request, serviceCallback);
-        Call<ResponseBody> call = service.restoreSite(resourceGroupName, name, backupId, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.restoreSite(resourceGroupName, name, backupId, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -13558,7 +13558,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(request);
-        Call<ResponseBody> call = service.beginRestoreSite(resourceGroupName, name, backupId, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginRestoreSite(resourceGroupName, name, backupId, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginRestoreSiteDelegate(call.execute());
     }
 
@@ -13602,7 +13602,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(request, serviceCallback);
-        Call<ResponseBody> call = service.beginRestoreSite(resourceGroupName, name, backupId, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginRestoreSite(resourceGroupName, name, backupId, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<RestoreResponseInner>(serviceCallback) {
             @Override
@@ -13661,7 +13661,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(request);
-        Response<ResponseBody> result = service.restoreSiteSlot(resourceGroupName, name, backupId, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage()).execute();
+        Response<ResponseBody> result = service.restoreSiteSlot(resourceGroupName, name, backupId, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<RestoreResponseInner>() { }.getType());
     }
 
@@ -13703,7 +13703,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
         Validator.validate(request, serviceCallback);
-        Call<ResponseBody> call = service.restoreSiteSlot(resourceGroupName, name, backupId, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.restoreSiteSlot(resourceGroupName, name, backupId, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -13754,7 +13754,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(request);
-        Call<ResponseBody> call = service.beginRestoreSiteSlot(resourceGroupName, name, backupId, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginRestoreSiteSlot(resourceGroupName, name, backupId, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginRestoreSiteSlotDelegate(call.execute());
     }
 
@@ -13803,7 +13803,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(request, serviceCallback);
-        Call<ResponseBody> call = service.beginRestoreSiteSlot(resourceGroupName, name, backupId, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginRestoreSiteSlot(resourceGroupName, name, backupId, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<RestoreResponseInner>(serviceCallback) {
             @Override
@@ -13849,7 +13849,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String filter = null;
-        Call<ResponseBody> call = service.getSiteUsages(resourceGroupName, name, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteUsages(resourceGroupName, name, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteUsagesDelegate(call.execute());
     }
 
@@ -13883,7 +13883,7 @@ public final class SitesInner {
             return null;
         }
         final String filter = null;
-        Call<ResponseBody> call = service.getSiteUsages(resourceGroupName, name, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteUsages(resourceGroupName, name, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollectionInner>(serviceCallback) {
             @Override
@@ -13922,7 +13922,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteUsages(resourceGroupName, name, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteUsages(resourceGroupName, name, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteUsagesDelegate(call.execute());
     }
 
@@ -13956,7 +13956,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteUsages(resourceGroupName, name, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteUsages(resourceGroupName, name, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollectionInner>(serviceCallback) {
             @Override
@@ -14006,7 +14006,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String filter = null;
-        Call<ResponseBody> call = service.getSiteUsagesSlot(resourceGroupName, name, slot, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteUsagesSlot(resourceGroupName, name, slot, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteUsagesSlotDelegate(call.execute());
     }
 
@@ -14045,7 +14045,7 @@ public final class SitesInner {
             return null;
         }
         final String filter = null;
-        Call<ResponseBody> call = service.getSiteUsagesSlot(resourceGroupName, name, slot, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteUsagesSlot(resourceGroupName, name, slot, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollectionInner>(serviceCallback) {
             @Override
@@ -14088,7 +14088,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteUsagesSlot(resourceGroupName, name, slot, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteUsagesSlot(resourceGroupName, name, slot, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteUsagesSlotDelegate(call.execute());
     }
 
@@ -14127,7 +14127,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteUsagesSlot(resourceGroupName, name, slot, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteUsagesSlot(resourceGroupName, name, slot, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollectionInner>(serviceCallback) {
             @Override
@@ -14174,7 +14174,7 @@ public final class SitesInner {
         }
         final Boolean details = null;
         final String filter = null;
-        Call<ResponseBody> call = service.getSiteMetrics(resourceGroupName, name, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteMetrics(resourceGroupName, name, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteMetricsDelegate(call.execute());
     }
 
@@ -14209,7 +14209,7 @@ public final class SitesInner {
         }
         final Boolean details = null;
         final String filter = null;
-        Call<ResponseBody> call = service.getSiteMetrics(resourceGroupName, name, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteMetrics(resourceGroupName, name, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ResourceMetricCollectionInner>(serviceCallback) {
             @Override
@@ -14249,7 +14249,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteMetrics(resourceGroupName, name, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteMetrics(resourceGroupName, name, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteMetricsDelegate(call.execute());
     }
 
@@ -14284,7 +14284,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteMetrics(resourceGroupName, name, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteMetrics(resourceGroupName, name, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ResourceMetricCollectionInner>(serviceCallback) {
             @Override
@@ -14335,7 +14335,7 @@ public final class SitesInner {
         }
         final Boolean details = null;
         final String filter = null;
-        Call<ResponseBody> call = service.getSiteMetricsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteMetricsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteMetricsSlotDelegate(call.execute());
     }
 
@@ -14375,7 +14375,7 @@ public final class SitesInner {
         }
         final Boolean details = null;
         final String filter = null;
-        Call<ResponseBody> call = service.getSiteMetricsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteMetricsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ResourceMetricCollectionInner>(serviceCallback) {
             @Override
@@ -14419,7 +14419,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteMetricsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteMetricsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteMetricsSlotDelegate(call.execute());
     }
 
@@ -14459,7 +14459,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteMetricsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteMetricsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ResourceMetricCollectionInner>(serviceCallback) {
             @Override
@@ -14508,7 +14508,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteMetricDefinitionsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteMetricDefinitionsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteMetricDefinitionsSlotDelegate(call.execute());
     }
 
@@ -14546,7 +14546,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteMetricDefinitionsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteMetricDefinitionsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<MetricDefinitionCollectionInner>(serviceCallback) {
             @Override
@@ -14591,7 +14591,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteMetricDefinitions(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteMetricDefinitions(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteMetricDefinitionsDelegate(call.execute());
     }
 
@@ -14624,7 +14624,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteMetricDefinitions(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteMetricDefinitions(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<MetricDefinitionCollectionInner>(serviceCallback) {
             @Override
@@ -14672,7 +14672,7 @@ public final class SitesInner {
         final String format = null;
         CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
         options = null;
-        Call<ResponseBody> call = service.listSitePublishingProfileXml(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options);
+        Call<ResponseBody> call = service.listSitePublishingProfileXml(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options, this.client.userAgent());
         return listSitePublishingProfileXmlDelegate(call.execute());
     }
 
@@ -14708,7 +14708,7 @@ public final class SitesInner {
         final String format = null;
         CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
         options = null;
-        Call<ResponseBody> call = service.listSitePublishingProfileXml(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options);
+        Call<ResponseBody> call = service.listSitePublishingProfileXml(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
             @Override
@@ -14752,7 +14752,7 @@ public final class SitesInner {
         }
         CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
         options.setFormat(format);
-        Call<ResponseBody> call = service.listSitePublishingProfileXml(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options);
+        Call<ResponseBody> call = service.listSitePublishingProfileXml(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options, this.client.userAgent());
         return listSitePublishingProfileXmlDelegate(call.execute());
     }
 
@@ -14791,7 +14791,7 @@ public final class SitesInner {
         }
         CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
         options.setFormat(format);
-        Call<ResponseBody> call = service.listSitePublishingProfileXml(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options);
+        Call<ResponseBody> call = service.listSitePublishingProfileXml(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
             @Override
@@ -14843,7 +14843,7 @@ public final class SitesInner {
         final String format = null;
         CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
         options = null;
-        Call<ResponseBody> call = service.listSitePublishingProfileXmlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options);
+        Call<ResponseBody> call = service.listSitePublishingProfileXmlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options, this.client.userAgent());
         return listSitePublishingProfileXmlSlotDelegate(call.execute());
     }
 
@@ -14884,7 +14884,7 @@ public final class SitesInner {
         final String format = null;
         CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
         options = null;
-        Call<ResponseBody> call = service.listSitePublishingProfileXmlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options);
+        Call<ResponseBody> call = service.listSitePublishingProfileXmlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
             @Override
@@ -14932,7 +14932,7 @@ public final class SitesInner {
         }
         CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
         options.setFormat(format);
-        Call<ResponseBody> call = service.listSitePublishingProfileXmlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options);
+        Call<ResponseBody> call = service.listSitePublishingProfileXmlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options, this.client.userAgent());
         return listSitePublishingProfileXmlSlotDelegate(call.execute());
     }
 
@@ -14976,7 +14976,7 @@ public final class SitesInner {
         }
         CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
         options.setFormat(format);
-        Call<ResponseBody> call = service.listSitePublishingProfileXmlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options);
+        Call<ResponseBody> call = service.listSitePublishingProfileXmlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
             @Override
@@ -15027,7 +15027,7 @@ public final class SitesInner {
         }
         final Boolean softRestart = null;
         final Boolean synchronous = null;
-        Call<ResponseBody> call = service.restartSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), softRestart, synchronous, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.restartSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), softRestart, synchronous, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return restartSiteSlotDelegate(call.execute());
     }
 
@@ -15067,7 +15067,7 @@ public final class SitesInner {
         }
         final Boolean softRestart = null;
         final Boolean synchronous = null;
-        Call<ResponseBody> call = service.restartSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), softRestart, synchronous, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.restartSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), softRestart, synchronous, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -15111,7 +15111,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.restartSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), softRestart, synchronous, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.restartSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), softRestart, synchronous, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return restartSiteSlotDelegate(call.execute());
     }
 
@@ -15151,7 +15151,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.restartSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), softRestart, synchronous, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.restartSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), softRestart, synchronous, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -15198,7 +15198,7 @@ public final class SitesInner {
         }
         final Boolean softRestart = null;
         final Boolean synchronous = null;
-        Call<ResponseBody> call = service.restartSite(resourceGroupName, name, this.client.subscriptionId(), softRestart, synchronous, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.restartSite(resourceGroupName, name, this.client.subscriptionId(), softRestart, synchronous, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return restartSiteDelegate(call.execute());
     }
 
@@ -15233,7 +15233,7 @@ public final class SitesInner {
         }
         final Boolean softRestart = null;
         final Boolean synchronous = null;
-        Call<ResponseBody> call = service.restartSite(resourceGroupName, name, this.client.subscriptionId(), softRestart, synchronous, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.restartSite(resourceGroupName, name, this.client.subscriptionId(), softRestart, synchronous, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -15273,7 +15273,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.restartSite(resourceGroupName, name, this.client.subscriptionId(), softRestart, synchronous, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.restartSite(resourceGroupName, name, this.client.subscriptionId(), softRestart, synchronous, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return restartSiteDelegate(call.execute());
     }
 
@@ -15308,7 +15308,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.restartSite(resourceGroupName, name, this.client.subscriptionId(), softRestart, synchronous, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.restartSite(resourceGroupName, name, this.client.subscriptionId(), softRestart, synchronous, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -15353,7 +15353,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.startSite(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.startSite(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return startSiteDelegate(call.execute());
     }
 
@@ -15386,7 +15386,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.startSite(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.startSite(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -15435,7 +15435,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.startSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.startSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return startSiteSlotDelegate(call.execute());
     }
 
@@ -15473,7 +15473,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.startSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.startSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -15518,7 +15518,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.stopSite(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.stopSite(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return stopSiteDelegate(call.execute());
     }
 
@@ -15551,7 +15551,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.stopSite(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.stopSite(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -15600,7 +15600,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.stopSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.stopSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return stopSiteSlotDelegate(call.execute());
     }
 
@@ -15638,7 +15638,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.stopSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.stopSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -15682,7 +15682,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.syncSiteRepository(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.syncSiteRepository(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return syncSiteRepositoryDelegate(call.execute());
     }
 
@@ -15714,7 +15714,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.syncSiteRepository(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.syncSiteRepository(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -15762,7 +15762,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.syncSiteRepositorySlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.syncSiteRepositorySlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return syncSiteRepositorySlotDelegate(call.execute());
     }
 
@@ -15799,7 +15799,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.syncSiteRepositorySlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.syncSiteRepositorySlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -15848,7 +15848,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.generateNewSitePublishingPasswordSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.generateNewSitePublishingPasswordSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return generateNewSitePublishingPasswordSlotDelegate(call.execute());
     }
 
@@ -15886,7 +15886,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.generateNewSitePublishingPasswordSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.generateNewSitePublishingPasswordSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -15931,7 +15931,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.generateNewSitePublishingPassword(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.generateNewSitePublishingPassword(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return generateNewSitePublishingPasswordDelegate(call.execute());
     }
 
@@ -15964,7 +15964,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.generateNewSitePublishingPassword(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.generateNewSitePublishingPassword(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -16013,7 +16013,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteRelayServiceConnectionDelegate(call.execute());
     }
 
@@ -16051,7 +16051,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCallback) {
             @Override
@@ -16105,7 +16105,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(connectionEnvelope);
-        Call<ResponseBody> call = service.createOrUpdateSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdateSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return createOrUpdateSiteRelayServiceConnectionDelegate(call.execute());
     }
 
@@ -16149,7 +16149,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(connectionEnvelope, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdateSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdateSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCallback) {
             @Override
@@ -16198,7 +16198,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.deleteSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return deleteSiteRelayServiceConnectionDelegate(call.execute());
     }
 
@@ -16236,7 +16236,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.deleteSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -16290,7 +16290,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(connectionEnvelope);
-        Call<ResponseBody> call = service.updateSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return updateSiteRelayServiceConnectionDelegate(call.execute());
     }
 
@@ -16334,7 +16334,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(connectionEnvelope, serviceCallback);
-        Call<ResponseBody> call = service.updateSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCallback) {
             @Override
@@ -16387,7 +16387,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteRelayServiceConnectionSlotDelegate(call.execute());
     }
 
@@ -16430,7 +16430,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCallback) {
             @Override
@@ -16488,7 +16488,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(connectionEnvelope);
-        Call<ResponseBody> call = service.createOrUpdateSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdateSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return createOrUpdateSiteRelayServiceConnectionSlotDelegate(call.execute());
     }
 
@@ -16537,7 +16537,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(connectionEnvelope, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdateSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdateSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCallback) {
             @Override
@@ -16590,7 +16590,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.deleteSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return deleteSiteRelayServiceConnectionSlotDelegate(call.execute());
     }
 
@@ -16633,7 +16633,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.deleteSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -16691,7 +16691,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(connectionEnvelope);
-        Call<ResponseBody> call = service.updateSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return updateSiteRelayServiceConnectionSlotDelegate(call.execute());
     }
 
@@ -16740,7 +16740,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(connectionEnvelope, serviceCallback);
-        Call<ResponseBody> call = service.updateSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCallback) {
             @Override
@@ -16789,7 +16789,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listSiteRelayServiceConnectionsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSiteRelayServiceConnectionsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return listSiteRelayServiceConnectionsSlotDelegate(call.execute());
     }
 
@@ -16827,7 +16827,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listSiteRelayServiceConnectionsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSiteRelayServiceConnectionsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCallback) {
             @Override
@@ -16872,7 +16872,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listSiteRelayServiceConnections(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSiteRelayServiceConnections(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return listSiteRelayServiceConnectionsDelegate(call.execute());
     }
 
@@ -16905,7 +16905,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listSiteRelayServiceConnections(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSiteRelayServiceConnections(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCallback) {
             @Override
@@ -16962,7 +16962,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteVnetGatewaySlot(resourceGroupName, name, vnetName, gatewayName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteVnetGatewaySlot(resourceGroupName, name, vnetName, gatewayName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteVnetGatewaySlotDelegate(call.execute());
     }
 
@@ -17010,7 +17010,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteVnetGatewaySlot(resourceGroupName, name, vnetName, gatewayName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteVnetGatewaySlot(resourceGroupName, name, vnetName, gatewayName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -17073,7 +17073,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(connectionEnvelope);
-        Call<ResponseBody> call = service.createOrUpdateSiteVNETConnectionGatewaySlot(resourceGroupName, name, vnetName, gatewayName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdateSiteVNETConnectionGatewaySlot(resourceGroupName, name, vnetName, gatewayName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return createOrUpdateSiteVNETConnectionGatewaySlotDelegate(call.execute());
     }
 
@@ -17127,7 +17127,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(connectionEnvelope, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdateSiteVNETConnectionGatewaySlot(resourceGroupName, name, vnetName, gatewayName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdateSiteVNETConnectionGatewaySlot(resourceGroupName, name, vnetName, gatewayName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<VnetGatewayInner>(serviceCallback) {
             @Override
@@ -17189,7 +17189,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(connectionEnvelope);
-        Call<ResponseBody> call = service.updateSiteVNETConnectionGatewaySlot(resourceGroupName, name, vnetName, gatewayName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteVNETConnectionGatewaySlot(resourceGroupName, name, vnetName, gatewayName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return updateSiteVNETConnectionGatewaySlotDelegate(call.execute());
     }
 
@@ -17243,7 +17243,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(connectionEnvelope, serviceCallback);
-        Call<ResponseBody> call = service.updateSiteVNETConnectionGatewaySlot(resourceGroupName, name, vnetName, gatewayName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteVNETConnectionGatewaySlot(resourceGroupName, name, vnetName, gatewayName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<VnetGatewayInner>(serviceCallback) {
             @Override
@@ -17296,7 +17296,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteVnetGateway(resourceGroupName, name, vnetName, gatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteVnetGateway(resourceGroupName, name, vnetName, gatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteVnetGatewayDelegate(call.execute());
     }
 
@@ -17339,7 +17339,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteVnetGateway(resourceGroupName, name, vnetName, gatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteVnetGateway(resourceGroupName, name, vnetName, gatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -17398,7 +17398,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(connectionEnvelope);
-        Call<ResponseBody> call = service.createOrUpdateSiteVNETConnectionGateway(resourceGroupName, name, vnetName, gatewayName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdateSiteVNETConnectionGateway(resourceGroupName, name, vnetName, gatewayName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return createOrUpdateSiteVNETConnectionGatewayDelegate(call.execute());
     }
 
@@ -17447,7 +17447,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(connectionEnvelope, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdateSiteVNETConnectionGateway(resourceGroupName, name, vnetName, gatewayName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.createOrUpdateSiteVNETConnectionGateway(resourceGroupName, name, vnetName, gatewayName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<VnetGatewayInner>(serviceCallback) {
             @Override
@@ -17505,7 +17505,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(connectionEnvelope);
-        Call<ResponseBody> call = service.updateSiteVNETConnectionGateway(resourceGroupName, name, vnetName, gatewayName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteVNETConnectionGateway(resourceGroupName, name, vnetName, gatewayName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return updateSiteVNETConnectionGatewayDelegate(call.execute());
     }
 
@@ -17554,7 +17554,7 @@ public final class SitesInner {
             return null;
         }
         Validator.validate(connectionEnvelope, serviceCallback);
-        Call<ResponseBody> call = service.updateSiteVNETConnectionGateway(resourceGroupName, name, vnetName, gatewayName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSiteVNETConnectionGateway(resourceGroupName, name, vnetName, gatewayName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<VnetGatewayInner>(serviceCallback) {
             @Override
@@ -17599,7 +17599,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteVNETConnections(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteVNETConnections(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteVNETConnectionsDelegate(call.execute());
     }
 
@@ -17632,7 +17632,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteVNETConnections(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteVNETConnections(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<VnetInfoInner>>(serviceCallback) {
             @Override
@@ -17681,7 +17681,7 @@ public final class SitesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSiteVNETConnectionsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteVNETConnectionsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSiteVNETConnectionsSlotDelegate(call.execute());
     }
 
@@ -17719,7 +17719,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSiteVNETConnectionsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSiteVNETConnectionsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<VnetInfoInner>>(serviceCallback) {
             @Override

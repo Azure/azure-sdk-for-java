@@ -14,10 +14,10 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum UnauthenticatedClientAction {
     /** Enum value RedirectToLoginPage. */
-    REDIRECTTOLOGINPAGE("RedirectToLoginPage"),
+    REDIRECT_TO_LOGIN_PAGE("RedirectToLoginPage"),
 
     /** Enum value AllowAnonymous. */
-    ALLOWANONYMOUS("AllowAnonymous");
+    ALLOW_ANONYMOUS("AllowAnonymous");
 
     /** The actual serialized value for a UnauthenticatedClientAction instance. */
     private String value;

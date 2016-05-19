@@ -287,7 +287,6 @@ public final class ComputeManagementClientImpl extends AzureServiceClient {
         this.virtualMachines = new VirtualMachinesInner(restClient().retrofit(), this);
         this.virtualMachineScaleSets = new VirtualMachineScaleSetsInner(restClient().retrofit(), this);
         this.virtualMachineScaleSetVMs = new VirtualMachineScaleSetVMsInner(restClient().retrofit(), this);
-        restClient().headers().addHeader("x-ms-client-request-id", UUID.randomUUID().toString());
         this.azureClient = new AzureClient(this);
     }
 

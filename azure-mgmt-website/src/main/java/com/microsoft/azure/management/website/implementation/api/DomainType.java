@@ -17,7 +17,7 @@ public enum DomainType {
     REGULAR("Regular"),
 
     /** Enum value SoftDeleted. */
-    SOFTDELETED("SoftDeleted");
+    SOFT_DELETED("SoftDeleted");
 
     /** The actual serialized value for a DomainType instance. */
     private String value;

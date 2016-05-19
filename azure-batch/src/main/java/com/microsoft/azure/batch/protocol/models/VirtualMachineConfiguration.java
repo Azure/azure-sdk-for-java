@@ -26,6 +26,7 @@ public class VirtualMachineConfiguration {
      * Batch service. There are different implementations of the node agent,
      * known as SKUs, for different operating systems.
      */
+    @JsonProperty(required = true)
     private String nodeAgentSKUId;
 
     /**

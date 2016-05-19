@@ -32,7 +32,7 @@ public enum CertificateOrderStatus {
     PENDINGREVOCATION("Pendingrevocation"),
 
     /** Enum value PendingRekey. */
-    PENDINGREKEY("PendingRekey"),
+    PENDING_REKEY("PendingRekey"),
 
     /** Enum value Unused. */
     UNUSED("Unused"),
@@ -41,7 +41,7 @@ public enum CertificateOrderStatus {
     EXPIRED("Expired"),
 
     /** Enum value NotSubmitted. */
-    NOTSUBMITTED("NotSubmitted");
+    NOT_SUBMITTED("NotSubmitted");
 
     /** The actual serialized value for a CertificateOrderStatus instance. */
     private String value;

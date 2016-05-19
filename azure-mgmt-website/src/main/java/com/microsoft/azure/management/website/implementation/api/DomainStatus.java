@@ -74,7 +74,7 @@ public enum DomainStatus {
     UPDATED("Updated"),
 
     /** Enum value JsonConverterFailed. */
-    JSONCONVERTERFAILED("JsonConverterFailed");
+    JSON_CONVERTER_FAILED("JsonConverterFailed");
 
     /** The actual serialized value for a DomainStatus instance. */
     private String value;

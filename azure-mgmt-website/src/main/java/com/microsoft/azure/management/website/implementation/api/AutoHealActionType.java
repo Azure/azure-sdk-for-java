@@ -17,10 +17,10 @@ public enum AutoHealActionType {
     RECYCLE("Recycle"),
 
     /** Enum value LogEvent. */
-    LOGEVENT("LogEvent"),
+    LOG_EVENT("LogEvent"),
 
     /** Enum value CustomAction. */
-    CUSTOMACTION("CustomAction");
+    CUSTOM_ACTION("CustomAction");
 
     /** The actual serialized value for a AutoHealActionType instance. */
     private String value;

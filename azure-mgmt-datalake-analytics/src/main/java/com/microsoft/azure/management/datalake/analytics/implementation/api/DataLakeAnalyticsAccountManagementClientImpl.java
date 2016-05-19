@@ -28,18 +28,6 @@ public final class DataLakeAnalyticsAccountManagementClientImpl extends AzureSer
         return this.azureClient;
     }
 
-    /** Gets Azure subscription credentials. */
-    private ServiceClientCredentials credentials;
-
-    /**
-     * Gets Gets Azure subscription credentials.
-     *
-     * @return the credentials value.
-     */
-    public ServiceClientCredentials credentials() {
-        return this.credentials;
-    }
-
     /** Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. */
     private String subscriptionId;
 
@@ -187,7 +175,17 @@ public final class DataLakeAnalyticsAccountManagementClientImpl extends AzureSer
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
         this.accounts = new AccountsInner(restClient().retrofit(), this);
-        restClient().headers().addHeader("x-ms-client-request-id", UUID.randomUUID().toString());
-        this.azureClient = new AzureClient(restClient());
+        this.azureClient = new AzureClient(this);
+    }
+
+    /**
+     * Gets the User-Agent header for the client.
+     *
+     * @return the user agent string.
+     */
+    public String userAgent() {
+        return String.format("Azure-SDK-For-Java/%s (%s)",
+                getClass().getPackage().getImplementationVersion(),
+                "DataLakeAnalyticsAccountManagementClient, 2015-10-01-preview");
     }
 }

@@ -287,7 +287,6 @@ public final class ResourceManagementClientImpl extends AzureServiceClient {
         this.resourceProviderOperationDetails = new ResourceProviderOperationDetailsInner(restClient().retrofit(), this);
         this.policyDefinitions = new PolicyDefinitionsInner(restClient().retrofit(), this);
         this.policyAssignments = new PolicyAssignmentsInner(restClient().retrofit(), this);
-        restClient().headers().addHeader("x-ms-client-request-id", UUID.randomUUID().toString());
         this.azureClient = new AzureClient(this);
     }
 
