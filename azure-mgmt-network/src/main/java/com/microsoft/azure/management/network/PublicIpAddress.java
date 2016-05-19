@@ -107,7 +107,7 @@ public interface PublicIpAddress extends
     /**
      * A public IP address update allowing to change the IP allocation method (static or dynamic)
      */
-    interface UpdatableWithIpAddress<T> {
+    interface UpdateWithIpAddress<T> {
         /**
          * Enables static IP address allocation. 
          * <p>
@@ -153,7 +153,7 @@ public interface PublicIpAddress extends
     /**
      * A public IP address update allowing to change the leaf domain label, if any
      */
-    interface UpdatableWithLeafDomainLabel<T> {
+    interface UpdateWithLeafDomainLabel<T> {
         /**
          * Specifies the leaf domain label to associate with this public IP address. 
          * <p>
@@ -172,6 +172,7 @@ public interface PublicIpAddress extends
          */
         T withoutLeafDomainLabel();
     }
+
 
     /**
      * A public IP address definition allowing the reverse FQDN to be specified
@@ -196,7 +197,7 @@ public interface PublicIpAddress extends
     /**
      * A public IP address update allowing the reverse FQDN to be specified
      */
-    interface UpdatableWithReverseFQDN<T> {
+    interface UpdateWithReverseFQDN<T> {
         /**
          * Specifies the reverse FQDN to assign to this public IP address
          * @param reverseFQDN the reverse FQDN to assign 
@@ -235,9 +236,9 @@ public interface PublicIpAddress extends
      */
     interface Update extends 
         Appliable<PublicIpAddress>,
-        UpdatableWithIpAddress<Update>,
-        UpdatableWithLeafDomainLabel<Update>,
-        UpdatableWithReverseFQDN<Update> {
+        UpdateWithIpAddress<Update>,
+        UpdateWithLeafDomainLabel<Update>,
+        UpdateWithReverseFQDN<Update> {
             /**
              * Specifies the timeout (in minutes) for an idle connection 
              * @param minutes the length of the time out in minutes
