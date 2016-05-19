@@ -23,9 +23,18 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 
 import java.io.IOException;
-import java.util.List;
 
-// Requires class to support listing entities
+/**
+ * Provides access to listing Azure resources of a specific type in a subscription
+ * <p>
+ * (Note: this interface is not intended to be implemented by user code)
+ */
 public interface SupportsListing<T> {
+	/**
+	 * Lists all the resources of the specified type in the currently selected subscription
+	 * @return list of resources
+	 * @throws CloudException
+	 * @throws IOException
+	 */
 	PagedList<T> list() throws CloudException, IOException;
 }

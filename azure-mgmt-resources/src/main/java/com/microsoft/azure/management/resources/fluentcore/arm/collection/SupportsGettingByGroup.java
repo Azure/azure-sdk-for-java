@@ -24,7 +24,19 @@ import com.microsoft.azure.CloudException;
 
 import java.io.IOException;
 
-// Requires class to support reading entities with a supplied group name
+/**
+ * Provides access to getting a specific Azure resource based on its name and resource group
+ * <p>
+ * (Note: this interface is not intended to be implemented by user code)
+ */
 public interface SupportsGettingByGroup<T> {
+	/**
+	 * Gets the information about a resource from Azure based on the resource name and the name of its resource group
+	 * @param groupName the name of the resource group the resource is in
+	 * @param name the name of the resource. (Note, this is not the ID)
+	 * @return an immutable representation of the resource
+	 * @throws CloudException
+	 * @throws IOException
+	 */
 	T get(String groupName, String name) throws CloudException, IOException;
 }
