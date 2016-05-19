@@ -55,23 +55,23 @@ public final class ProvidersInner {
     interface ProvidersService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("providers/Microsoft.Web/sourcecontrols")
-        Call<ResponseBody> getSourceControls(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSourceControls(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("providers/Microsoft.Web/sourcecontrols/{sourceControlType}")
-        Call<ResponseBody> getSourceControl(@Path("sourceControlType") String sourceControlType, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getSourceControl(@Path("sourceControlType") String sourceControlType, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("providers/Microsoft.Web/sourcecontrols/{sourceControlType}")
-        Call<ResponseBody> updateSourceControl(@Path("sourceControlType") String sourceControlType, @Body SourceControlInner requestMessage, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> updateSourceControl(@Path("sourceControlType") String sourceControlType, @Body SourceControlInner requestMessage, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("providers/Microsoft.Web/publishingUsers/web")
-        Call<ResponseBody> getPublishingUser(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getPublishingUser(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("providers/Microsoft.Web/publishingUsers/web")
-        Call<ResponseBody> updatePublishingUser(@Body UserInner requestMessage, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> updatePublishingUser(@Body UserInner requestMessage, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -87,7 +87,7 @@ public final class ProvidersInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSourceControls(this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSourceControls(this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSourceControlsDelegate(call.execute());
     }
 
@@ -106,7 +106,7 @@ public final class ProvidersInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSourceControls(this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSourceControls(this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SourceControlCollectionInner>(serviceCallback) {
             @Override
@@ -144,7 +144,7 @@ public final class ProvidersInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSourceControl(sourceControlType, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSourceControl(sourceControlType, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSourceControlDelegate(call.execute());
     }
 
@@ -168,7 +168,7 @@ public final class ProvidersInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getSourceControl(sourceControlType, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getSourceControl(sourceControlType, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SourceControlInner>(serviceCallback) {
             @Override
@@ -211,7 +211,7 @@ public final class ProvidersInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(requestMessage);
-        Call<ResponseBody> call = service.updateSourceControl(sourceControlType, requestMessage, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSourceControl(sourceControlType, requestMessage, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return updateSourceControlDelegate(call.execute());
     }
 
@@ -241,7 +241,7 @@ public final class ProvidersInner {
             return null;
         }
         Validator.validate(requestMessage, serviceCallback);
-        Call<ResponseBody> call = service.updateSourceControl(sourceControlType, requestMessage, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateSourceControl(sourceControlType, requestMessage, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SourceControlInner>(serviceCallback) {
             @Override
@@ -275,7 +275,7 @@ public final class ProvidersInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getPublishingUser(this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getPublishingUser(this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getPublishingUserDelegate(call.execute());
     }
 
@@ -294,7 +294,7 @@ public final class ProvidersInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getPublishingUser(this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getPublishingUser(this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<UserInner>(serviceCallback) {
             @Override
@@ -333,7 +333,7 @@ public final class ProvidersInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(requestMessage);
-        Call<ResponseBody> call = service.updatePublishingUser(requestMessage, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updatePublishingUser(requestMessage, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return updatePublishingUserDelegate(call.execute());
     }
 
@@ -358,7 +358,7 @@ public final class ProvidersInner {
             return null;
         }
         Validator.validate(requestMessage, serviceCallback);
-        Call<ResponseBody> call = service.updatePublishingUser(requestMessage, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updatePublishingUser(requestMessage, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<UserInner>(serviceCallback) {
             @Override

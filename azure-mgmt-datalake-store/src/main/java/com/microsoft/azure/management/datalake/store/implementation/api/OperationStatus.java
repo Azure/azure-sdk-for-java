@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum OperationStatus {
     /** Enum value InProgress. */
-    INPROGRESS("InProgress"),
+    IN_PROGRESS("InProgress"),
 
     /** Enum value Succeeded. */
     SUCCEEDED("Succeeded"),

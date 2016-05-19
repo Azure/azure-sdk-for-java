@@ -14,10 +14,10 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum JobResourceType {
     /** Enum value VertexResource. */
-    VERTEXRESOURCE("VertexResource"),
+    VERTEX_RESOURCE("VertexResource"),
 
     /** Enum value StatisticsResource. */
-    STATISTICSRESOURCE("StatisticsResource");
+    STATISTICS_RESOURCE("StatisticsResource");
 
     /** The actual serialized value for a JobResourceType instance. */
     private String value;

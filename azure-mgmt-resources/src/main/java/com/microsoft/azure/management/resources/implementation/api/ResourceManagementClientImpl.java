@@ -28,18 +28,6 @@ public final class ResourceManagementClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
-    /** Gets Azure subscription credentials. */
-    private ServiceClientCredentials credentials;
-
-    /**
-     * Gets Gets Azure subscription credentials.
-     *
-     * @return the credentials value.
-     */
-    public ServiceClientCredentials credentials() {
-        return this.credentials;
-    }
-
     /** Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. */
     private String subscriptionId;
 
@@ -299,6 +287,17 @@ public final class ResourceManagementClientImpl extends AzureServiceClient {
         this.resourceProviderOperationDetails = new ResourceProviderOperationDetailsInner(restClient().retrofit(), this);
         this.policyDefinitions = new PolicyDefinitionsInner(restClient().retrofit(), this);
         this.policyAssignments = new PolicyAssignmentsInner(restClient().retrofit(), this);
-        this.azureClient = new AzureClient(restClient());
+        this.azureClient = new AzureClient(this);
+    }
+
+    /**
+     * Gets the User-Agent header for the client.
+     *
+     * @return the user agent string.
+     */
+    public String userAgent() {
+        return String.format("Azure-SDK-For-Java/%s (%s)",
+                getClass().getPackage().getImplementationVersion(),
+                "ResourceManagementClient, 2015-11-01");
     }
 }

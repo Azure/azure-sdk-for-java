@@ -14,31 +14,31 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum CertificateOrderActionType {
     /** Enum value CertificateIssued. */
-    CERTIFICATEISSUED("CertificateIssued"),
+    CERTIFICATE_ISSUED("CertificateIssued"),
 
     /** Enum value CertificateOrderCanceled. */
-    CERTIFICATEORDERCANCELED("CertificateOrderCanceled"),
+    CERTIFICATE_ORDER_CANCELED("CertificateOrderCanceled"),
 
     /** Enum value CertificateOrderCreated. */
-    CERTIFICATEORDERCREATED("CertificateOrderCreated"),
+    CERTIFICATE_ORDER_CREATED("CertificateOrderCreated"),
 
     /** Enum value CertificateRevoked. */
-    CERTIFICATEREVOKED("CertificateRevoked"),
+    CERTIFICATE_REVOKED("CertificateRevoked"),
 
     /** Enum value DomainValidationComplete. */
-    DOMAINVALIDATIONCOMPLETE("DomainValidationComplete"),
+    DOMAIN_VALIDATION_COMPLETE("DomainValidationComplete"),
 
     /** Enum value FraudDetected. */
-    FRAUDDETECTED("FraudDetected"),
+    FRAUD_DETECTED("FraudDetected"),
 
     /** Enum value OrgNameChange. */
-    ORGNAMECHANGE("OrgNameChange"),
+    ORG_NAME_CHANGE("OrgNameChange"),
 
     /** Enum value OrgValidationComplete. */
-    ORGVALIDATIONCOMPLETE("OrgValidationComplete"),
+    ORG_VALIDATION_COMPLETE("OrgValidationComplete"),
 
     /** Enum value SanDrop. */
-    SANDROP("SanDrop");
+    SAN_DROP("SanDrop");
 
     /** The actual serialized value for a CertificateOrderActionType instance. */
     private String value;

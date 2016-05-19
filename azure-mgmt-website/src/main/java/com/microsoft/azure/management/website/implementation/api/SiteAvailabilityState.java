@@ -20,7 +20,7 @@ public enum SiteAvailabilityState {
     LIMITED("Limited"),
 
     /** Enum value DisasterRecoveryMode. */
-    DISASTERRECOVERYMODE("DisasterRecoveryMode");
+    DISASTER_RECOVERY_MODE("DisasterRecoveryMode");
 
     /** The actual serialized value for a SiteAvailabilityState instance. */
     private String value;

@@ -17,10 +17,10 @@ public enum SslState {
     DISABLED("Disabled"),
 
     /** Enum value SniEnabled. */
-    SNIENABLED("SniEnabled"),
+    SNI_ENABLED("SniEnabled"),
 
     /** Enum value IpBasedEnabled. */
-    IPBASEDENABLED("IpBasedEnabled");
+    IP_BASED_ENABLED("IpBasedEnabled");
 
     /** The actual serialized value for a SslState instance. */
     private String value;

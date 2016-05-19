@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum DatabaseServerType {
     /** Enum value MySql. */
-    MYSQL("MySql"),
+    MY_SQL("MySql"),
 
     /** Enum value SQLServer. */
     SQLSERVER("SQLServer"),

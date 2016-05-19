@@ -23,7 +23,7 @@ public enum ProvisioningState {
     CANCELED("Canceled"),
 
     /** Enum value InProgress. */
-    INPROGRESS("InProgress"),
+    IN_PROGRESS("InProgress"),
 
     /** Enum value Deleting. */
     DELETING("Deleting");

@@ -14,19 +14,19 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum SiteLoadBalancing {
     /** Enum value WeightedRoundRobin. */
-    WEIGHTEDROUNDROBIN("WeightedRoundRobin"),
+    WEIGHTED_ROUND_ROBIN("WeightedRoundRobin"),
 
     /** Enum value LeastRequests. */
-    LEASTREQUESTS("LeastRequests"),
+    LEAST_REQUESTS("LeastRequests"),
 
     /** Enum value LeastResponseTime. */
-    LEASTRESPONSETIME("LeastResponseTime"),
+    LEAST_RESPONSE_TIME("LeastResponseTime"),
 
     /** Enum value WeightedTotalTraffic. */
-    WEIGHTEDTOTALTRAFFIC("WeightedTotalTraffic"),
+    WEIGHTED_TOTAL_TRAFFIC("WeightedTotalTraffic"),
 
     /** Enum value RequestHash. */
-    REQUESTHASH("RequestHash");
+    REQUEST_HASH("RequestHash");
 
     /** The actual serialized value for a SiteLoadBalancing instance. */
     private String value;

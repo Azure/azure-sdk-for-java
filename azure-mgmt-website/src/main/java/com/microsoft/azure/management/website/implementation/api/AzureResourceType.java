@@ -17,7 +17,7 @@ public enum AzureResourceType {
     WEBSITE("Website"),
 
     /** Enum value TrafficManager. */
-    TRAFFICMANAGER("TrafficManager");
+    TRAFFIC_MANAGER("TrafficManager");
 
     /** The actual serialized value for a AzureResourceType instance. */
     private String value;

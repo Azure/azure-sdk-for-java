@@ -28,18 +28,6 @@ public final class ComputeManagementClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
-    /** Gets Azure subscription credentials. */
-    private ServiceClientCredentials credentials;
-
-    /**
-     * Gets Gets Azure subscription credentials.
-     *
-     * @return the credentials value.
-     */
-    public ServiceClientCredentials credentials() {
-        return this.credentials;
-    }
-
     /** Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. */
     private String subscriptionId;
 
@@ -299,6 +287,17 @@ public final class ComputeManagementClientImpl extends AzureServiceClient {
         this.virtualMachines = new VirtualMachinesInner(restClient().retrofit(), this);
         this.virtualMachineScaleSets = new VirtualMachineScaleSetsInner(restClient().retrofit(), this);
         this.virtualMachineScaleSetVMs = new VirtualMachineScaleSetVMsInner(restClient().retrofit(), this);
-        this.azureClient = new AzureClient(restClient());
+        this.azureClient = new AzureClient(this);
+    }
+
+    /**
+     * Gets the User-Agent header for the client.
+     *
+     * @return the user agent string.
+     */
+    public String userAgent() {
+        return String.format("Azure-SDK-For-Java/%s (%s)",
+                getClass().getPackage().getImplementationVersion(),
+                "ComputeManagementClient, 2015-06-15");
     }
 }

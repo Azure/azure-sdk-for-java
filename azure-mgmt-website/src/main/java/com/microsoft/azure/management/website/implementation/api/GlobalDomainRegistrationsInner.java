@@ -55,23 +55,23 @@ public final class GlobalDomainRegistrationsInner {
     interface GlobalDomainRegistrationsService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/domains")
-        Call<ResponseBody> getAllDomains(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getAllDomains(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/generateSsoRequest")
-        Call<ResponseBody> getDomainControlCenterSsoRequest(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getDomainControlCenterSsoRequest(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/validateDomainRegistrationInformation")
-        Call<ResponseBody> validateDomainPurchaseInformation(@Path("subscriptionId") String subscriptionId, @Body DomainRegistrationInputInner domainRegistrationInput, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> validateDomainPurchaseInformation(@Path("subscriptionId") String subscriptionId, @Body DomainRegistrationInputInner domainRegistrationInput, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/checkDomainAvailability")
-        Call<ResponseBody> checkDomainAvailability(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body NameIdentifier identifier);
+        Call<ResponseBody> checkDomainAvailability(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body NameIdentifier identifier, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/listDomainRecommendations")
-        Call<ResponseBody> listDomainRecommendations(@Path("subscriptionId") String subscriptionId, @Body DomainRecommendationSearchParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listDomainRecommendations(@Path("subscriptionId") String subscriptionId, @Body DomainRecommendationSearchParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -90,7 +90,7 @@ public final class GlobalDomainRegistrationsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getAllDomains(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getAllDomains(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getAllDomainsDelegate(call.execute());
     }
 
@@ -113,7 +113,7 @@ public final class GlobalDomainRegistrationsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getAllDomains(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getAllDomains(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<DomainCollectionInner>(serviceCallback) {
             @Override
@@ -150,7 +150,7 @@ public final class GlobalDomainRegistrationsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getDomainControlCenterSsoRequest(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getDomainControlCenterSsoRequest(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getDomainControlCenterSsoRequestDelegate(call.execute());
     }
 
@@ -173,7 +173,7 @@ public final class GlobalDomainRegistrationsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getDomainControlCenterSsoRequest(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getDomainControlCenterSsoRequest(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<DomainControlCenterSsoRequestInner>(serviceCallback) {
             @Override
@@ -215,7 +215,7 @@ public final class GlobalDomainRegistrationsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(domainRegistrationInput);
-        Call<ResponseBody> call = service.validateDomainPurchaseInformation(this.client.subscriptionId(), domainRegistrationInput, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.validateDomainPurchaseInformation(this.client.subscriptionId(), domainRegistrationInput, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return validateDomainPurchaseInformationDelegate(call.execute());
     }
 
@@ -244,7 +244,7 @@ public final class GlobalDomainRegistrationsInner {
             return null;
         }
         Validator.validate(domainRegistrationInput, serviceCallback);
-        Call<ResponseBody> call = service.validateDomainPurchaseInformation(this.client.subscriptionId(), domainRegistrationInput, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.validateDomainPurchaseInformation(this.client.subscriptionId(), domainRegistrationInput, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
             @Override
@@ -284,7 +284,7 @@ public final class GlobalDomainRegistrationsInner {
         final String name = null;
         NameIdentifier identifier = new NameIdentifier();
         identifier = null;
-        Call<ResponseBody> call = service.checkDomainAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), identifier);
+        Call<ResponseBody> call = service.checkDomainAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), identifier, this.client.userAgent());
         return checkDomainAvailabilityDelegate(call.execute());
     }
 
@@ -310,7 +310,7 @@ public final class GlobalDomainRegistrationsInner {
         final String name = null;
         NameIdentifier identifier = new NameIdentifier();
         identifier = null;
-        Call<ResponseBody> call = service.checkDomainAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), identifier);
+        Call<ResponseBody> call = service.checkDomainAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), identifier, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<DomainAvailablilityCheckResultInner>(serviceCallback) {
             @Override
@@ -343,7 +343,7 @@ public final class GlobalDomainRegistrationsInner {
         }
         NameIdentifier identifier = new NameIdentifier();
         identifier.setName(name);
-        Call<ResponseBody> call = service.checkDomainAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), identifier);
+        Call<ResponseBody> call = service.checkDomainAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), identifier, this.client.userAgent());
         return checkDomainAvailabilityDelegate(call.execute());
     }
 
@@ -369,7 +369,7 @@ public final class GlobalDomainRegistrationsInner {
         }
         NameIdentifier identifier = new NameIdentifier();
         identifier.setName(name);
-        Call<ResponseBody> call = service.checkDomainAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), identifier);
+        Call<ResponseBody> call = service.checkDomainAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), identifier, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<DomainAvailablilityCheckResultInner>(serviceCallback) {
             @Override
@@ -411,7 +411,7 @@ public final class GlobalDomainRegistrationsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Call<ResponseBody> call = service.listDomainRecommendations(this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listDomainRecommendations(this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return listDomainRecommendationsDelegate(call.execute());
     }
 
@@ -440,7 +440,7 @@ public final class GlobalDomainRegistrationsInner {
             return null;
         }
         Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.listDomainRecommendations(this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listDomainRecommendations(this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<NameIdentifierCollectionInner>(serviceCallback) {
             @Override

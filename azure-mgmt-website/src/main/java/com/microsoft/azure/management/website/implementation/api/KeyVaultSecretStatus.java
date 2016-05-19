@@ -17,28 +17,28 @@ public enum KeyVaultSecretStatus {
     INITIALIZED("Initialized"),
 
     /** Enum value WaitingOnCertificateOrder. */
-    WAITINGONCERTIFICATEORDER("WaitingOnCertificateOrder"),
+    WAITING_ON_CERTIFICATE_ORDER("WaitingOnCertificateOrder"),
 
     /** Enum value Succeeded. */
     SUCCEEDED("Succeeded"),
 
     /** Enum value CertificateOrderFailed. */
-    CERTIFICATEORDERFAILED("CertificateOrderFailed"),
+    CERTIFICATE_ORDER_FAILED("CertificateOrderFailed"),
 
     /** Enum value OperationNotPermittedOnKeyVault. */
-    OPERATIONNOTPERMITTEDONKEYVAULT("OperationNotPermittedOnKeyVault"),
+    OPERATION_NOT_PERMITTED_ON_KEY_VAULT("OperationNotPermittedOnKeyVault"),
 
     /** Enum value AzureServiceUnauthorizedToAccessKeyVault. */
-    AZURESERVICEUNAUTHORIZEDTOACCESSKEYVAULT("AzureServiceUnauthorizedToAccessKeyVault"),
+    AZURE_SERVICE_UNAUTHORIZED_TO_ACCESS_KEY_VAULT("AzureServiceUnauthorizedToAccessKeyVault"),
 
     /** Enum value KeyVaultDoesNotExist. */
-    KEYVAULTDOESNOTEXIST("KeyVaultDoesNotExist"),
+    KEY_VAULT_DOES_NOT_EXIST("KeyVaultDoesNotExist"),
 
     /** Enum value KeyVaultSecretDoesNotExist. */
-    KEYVAULTSECRETDOESNOTEXIST("KeyVaultSecretDoesNotExist"),
+    KEY_VAULT_SECRET_DOES_NOT_EXIST("KeyVaultSecretDoesNotExist"),
 
     /** Enum value UnknownError. */
-    UNKNOWNERROR("UnknownError"),
+    UNKNOWN_ERROR("UnknownError"),
 
     /** Enum value Unknown. */
     UNKNOWN("Unknown");

@@ -64,127 +64,127 @@ public final class AccountsInner {
     interface AccountsService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}")
-        Call<ResponseBody> getStorageAccount(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("storageAccountName") String storageAccountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getStorageAccount(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("storageAccountName") String storageAccountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteStorageAccount(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("storageAccountName") String storageAccountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> deleteStorageAccount(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("storageAccountName") String storageAccountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}")
-        Call<ResponseBody> updateStorageAccount(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("storageAccountName") String storageAccountName, @Path("subscriptionId") String subscriptionId, @Body AddStorageAccountParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> updateStorageAccount(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("storageAccountName") String storageAccountName, @Path("subscriptionId") String subscriptionId, @Body AddStorageAccountParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}")
-        Call<ResponseBody> addStorageAccount(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("storageAccountName") String storageAccountName, @Path("subscriptionId") String subscriptionId, @Body AddStorageAccountParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> addStorageAccount(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("storageAccountName") String storageAccountName, @Path("subscriptionId") String subscriptionId, @Body AddStorageAccountParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}/Containers/{containerName}")
-        Call<ResponseBody> getStorageContainer(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("storageAccountName") String storageAccountName, @Path("containerName") String containerName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getStorageContainer(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("storageAccountName") String storageAccountName, @Path("containerName") String containerName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}/Containers")
-        Call<ResponseBody> listStorageContainers(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("storageAccountName") String storageAccountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listStorageContainers(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("storageAccountName") String storageAccountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("{nextLink}")
-        Call<ResponseBody> storageContainersListNext(@Path("nextLink") String nextLink, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> storageContainersListNext(@Path("nextLink") String nextLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("{nextLink}")
-        Call<ResponseBody> sasTokensListNext(@Path("nextLink") String nextLink, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> sasTokensListNext(@Path("nextLink") String nextLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}/Containers/{containerName}/listSasTokens")
-        Call<ResponseBody> listSasTokens(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("storageAccountName") String storageAccountName, @Path("containerName") String containerName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listSasTokens(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("storageAccountName") String storageAccountName, @Path("containerName") String containerName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/DataLakeStoreAccounts/{dataLakeStoreAccountName}")
-        Call<ResponseBody> getDataLakeStoreAccount(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("dataLakeStoreAccountName") String dataLakeStoreAccountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getDataLakeStoreAccount(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("dataLakeStoreAccountName") String dataLakeStoreAccountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/DataLakeStoreAccounts/{dataLakeStoreAccountName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteDataLakeStoreAccount(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("dataLakeStoreAccountName") String dataLakeStoreAccountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> deleteDataLakeStoreAccount(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("dataLakeStoreAccountName") String dataLakeStoreAccountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/DataLakeStoreAccounts/{dataLakeStoreAccountName}")
-        Call<ResponseBody> addDataLakeStoreAccount(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("dataLakeStoreAccountName") String dataLakeStoreAccountName, @Path("subscriptionId") String subscriptionId, @Body AddDataLakeStoreParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> addDataLakeStoreAccount(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("dataLakeStoreAccountName") String dataLakeStoreAccountName, @Path("subscriptionId") String subscriptionId, @Body AddDataLakeStoreParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/")
-        Call<ResponseBody> listStorageAccounts(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("$search") String search, @Query("$format") String format, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listStorageAccounts(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("$search") String search, @Query("$format") String format, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/DataLakeStoreAccounts/")
-        Call<ResponseBody> listDataLakeStoreAccounts(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("$search") String search, @Query("$format") String format, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listDataLakeStoreAccounts(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("$search") String search, @Query("$format") String format, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts")
-        Call<ResponseBody> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("$search") String search, @Query("$format") String format, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("$search") String search, @Query("$format") String format, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.DataLakeAnalytics/accounts")
-        Call<ResponseBody> list(@Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("$search") String search, @Query("$format") String format, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> list(@Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("$search") String search, @Query("$format") String format, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}")
-        Call<ResponseBody> get(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> get(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> delete(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> delete(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{name}")
-        Call<ResponseBody> create(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body DataLakeAnalyticsAccountInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> create(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body DataLakeAnalyticsAccountInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{name}")
-        Call<ResponseBody> beginCreate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body DataLakeAnalyticsAccountInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> beginCreate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body DataLakeAnalyticsAccountInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{name}")
-        Call<ResponseBody> update(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body DataLakeAnalyticsAccountInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> update(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body DataLakeAnalyticsAccountInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{name}")
-        Call<ResponseBody> beginUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body DataLakeAnalyticsAccountInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> beginUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body DataLakeAnalyticsAccountInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listStorageContainersNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listStorageContainersNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> storageContainersListNextNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> storageContainersListNextNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> sasTokensListNextNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> sasTokensListNextNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listSasTokensNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listSasTokensNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listStorageAccountsNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listStorageAccountsNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listDataLakeStoreAccountsNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listDataLakeStoreAccountsNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listByResourceGroupNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listByResourceGroupNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -215,7 +215,7 @@ public final class AccountsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getStorageAccount(resourceGroupName, accountName, storageAccountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getStorageAccount(resourceGroupName, accountName, storageAccountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getStorageAccountDelegate(call.execute());
     }
 
@@ -253,7 +253,7 @@ public final class AccountsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getStorageAccount(resourceGroupName, accountName, storageAccountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getStorageAccount(resourceGroupName, accountName, storageAccountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<StorageAccountInfoInner>(serviceCallback) {
             @Override
@@ -302,7 +302,7 @@ public final class AccountsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.deleteStorageAccount(resourceGroupName, accountName, storageAccountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteStorageAccount(resourceGroupName, accountName, storageAccountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return deleteStorageAccountDelegate(call.execute());
     }
 
@@ -340,7 +340,7 @@ public final class AccountsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.deleteStorageAccount(resourceGroupName, accountName, storageAccountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteStorageAccount(resourceGroupName, accountName, storageAccountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -393,7 +393,7 @@ public final class AccountsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Call<ResponseBody> call = service.updateStorageAccount(resourceGroupName, accountName, storageAccountName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateStorageAccount(resourceGroupName, accountName, storageAccountName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return updateStorageAccountDelegate(call.execute());
     }
 
@@ -437,7 +437,7 @@ public final class AccountsInner {
             return null;
         }
         Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.updateStorageAccount(resourceGroupName, accountName, storageAccountName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.updateStorageAccount(resourceGroupName, accountName, storageAccountName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -490,7 +490,7 @@ public final class AccountsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Call<ResponseBody> call = service.addStorageAccount(resourceGroupName, accountName, storageAccountName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.addStorageAccount(resourceGroupName, accountName, storageAccountName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return addStorageAccountDelegate(call.execute());
     }
 
@@ -534,7 +534,7 @@ public final class AccountsInner {
             return null;
         }
         Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.addStorageAccount(resourceGroupName, accountName, storageAccountName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.addStorageAccount(resourceGroupName, accountName, storageAccountName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -586,7 +586,7 @@ public final class AccountsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getStorageContainer(resourceGroupName, accountName, storageAccountName, containerName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getStorageContainer(resourceGroupName, accountName, storageAccountName, containerName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getStorageContainerDelegate(call.execute());
     }
 
@@ -629,7 +629,7 @@ public final class AccountsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getStorageContainer(resourceGroupName, accountName, storageAccountName, containerName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getStorageContainer(resourceGroupName, accountName, storageAccountName, containerName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<BlobContainerInner>(serviceCallback) {
             @Override
@@ -678,7 +678,7 @@ public final class AccountsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listStorageContainers(resourceGroupName, accountName, storageAccountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listStorageContainers(resourceGroupName, accountName, storageAccountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<BlobContainerInner>> response = listStorageContainersDelegate(call.execute());
         PagedList<BlobContainerInner> result = new PagedList<BlobContainerInner>(response.getBody()) {
             @Override
@@ -723,7 +723,7 @@ public final class AccountsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listStorageContainers(resourceGroupName, accountName, storageAccountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listStorageContainers(resourceGroupName, accountName, storageAccountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<BlobContainerInner>>(serviceCallback) {
             @Override
@@ -765,7 +765,7 @@ public final class AccountsInner {
         if (nextLink == null) {
             throw new IllegalArgumentException("Parameter nextLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.storageContainersListNext(nextLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.storageContainersListNext(nextLink, this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<BlobContainerInner>> response = storageContainersListNextDelegate(call.execute());
         PagedList<BlobContainerInner> result = new PagedList<BlobContainerInner>(response.getBody()) {
             @Override
@@ -792,7 +792,7 @@ public final class AccountsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.storageContainersListNext(nextLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.storageContainersListNext(nextLink, this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<BlobContainerInner>>(serviceCallback) {
             @Override
@@ -834,7 +834,7 @@ public final class AccountsInner {
         if (nextLink == null) {
             throw new IllegalArgumentException("Parameter nextLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.sasTokensListNext(nextLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.sasTokensListNext(nextLink, this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<SasTokenInfoInner>> response = sasTokensListNextDelegate(call.execute());
         PagedList<SasTokenInfoInner> result = new PagedList<SasTokenInfoInner>(response.getBody()) {
             @Override
@@ -861,7 +861,7 @@ public final class AccountsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.sasTokensListNext(nextLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.sasTokensListNext(nextLink, this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<SasTokenInfoInner>>(serviceCallback) {
             @Override
@@ -921,7 +921,7 @@ public final class AccountsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listSasTokens(resourceGroupName, accountName, storageAccountName, containerName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSasTokens(resourceGroupName, accountName, storageAccountName, containerName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<SasTokenInfoInner>> response = listSasTokensDelegate(call.execute());
         PagedList<SasTokenInfoInner> result = new PagedList<SasTokenInfoInner>(response.getBody()) {
             @Override
@@ -971,7 +971,7 @@ public final class AccountsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listSasTokens(resourceGroupName, accountName, storageAccountName, containerName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSasTokens(resourceGroupName, accountName, storageAccountName, containerName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<SasTokenInfoInner>>(serviceCallback) {
             @Override
@@ -1027,7 +1027,7 @@ public final class AccountsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getDataLakeStoreAccount(resourceGroupName, accountName, dataLakeStoreAccountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getDataLakeStoreAccount(resourceGroupName, accountName, dataLakeStoreAccountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getDataLakeStoreAccountDelegate(call.execute());
     }
 
@@ -1065,7 +1065,7 @@ public final class AccountsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getDataLakeStoreAccount(resourceGroupName, accountName, dataLakeStoreAccountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getDataLakeStoreAccount(resourceGroupName, accountName, dataLakeStoreAccountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<DataLakeStoreAccountInfoInner>(serviceCallback) {
             @Override
@@ -1114,7 +1114,7 @@ public final class AccountsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.deleteDataLakeStoreAccount(resourceGroupName, accountName, dataLakeStoreAccountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteDataLakeStoreAccount(resourceGroupName, accountName, dataLakeStoreAccountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return deleteDataLakeStoreAccountDelegate(call.execute());
     }
 
@@ -1152,7 +1152,7 @@ public final class AccountsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.deleteDataLakeStoreAccount(resourceGroupName, accountName, dataLakeStoreAccountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.deleteDataLakeStoreAccount(resourceGroupName, accountName, dataLakeStoreAccountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -1205,7 +1205,7 @@ public final class AccountsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Call<ResponseBody> call = service.addDataLakeStoreAccount(resourceGroupName, accountName, dataLakeStoreAccountName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.addDataLakeStoreAccount(resourceGroupName, accountName, dataLakeStoreAccountName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return addDataLakeStoreAccountDelegate(call.execute());
     }
 
@@ -1249,7 +1249,7 @@ public final class AccountsInner {
             return null;
         }
         Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.addDataLakeStoreAccount(resourceGroupName, accountName, dataLakeStoreAccountName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.addDataLakeStoreAccount(resourceGroupName, accountName, dataLakeStoreAccountName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -1302,7 +1302,7 @@ public final class AccountsInner {
         final Boolean count = null;
         final String search = null;
         final String format = null;
-        Call<ResponseBody> call = service.listStorageAccounts(resourceGroupName, accountName, this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listStorageAccounts(resourceGroupName, accountName, this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<StorageAccountInfoInner>> response = listStorageAccountsDelegate(call.execute());
         PagedList<StorageAccountInfoInner> result = new PagedList<StorageAccountInfoInner>(response.getBody()) {
             @Override
@@ -1351,7 +1351,7 @@ public final class AccountsInner {
         final Boolean count = null;
         final String search = null;
         final String format = null;
-        Call<ResponseBody> call = service.listStorageAccounts(resourceGroupName, accountName, this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listStorageAccounts(resourceGroupName, accountName, this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<StorageAccountInfoInner>>(serviceCallback) {
             @Override
@@ -1405,7 +1405,7 @@ public final class AccountsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listStorageAccounts(resourceGroupName, accountName, this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listStorageAccounts(resourceGroupName, accountName, this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<StorageAccountInfoInner>> response = listStorageAccountsDelegate(call.execute());
         PagedList<StorageAccountInfoInner> result = new PagedList<StorageAccountInfoInner>(response.getBody()) {
             @Override
@@ -1454,7 +1454,7 @@ public final class AccountsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listStorageAccounts(resourceGroupName, accountName, this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listStorageAccounts(resourceGroupName, accountName, this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<StorageAccountInfoInner>>(serviceCallback) {
             @Override
@@ -1515,7 +1515,7 @@ public final class AccountsInner {
         final Boolean count = null;
         final String search = null;
         final String format = null;
-        Call<ResponseBody> call = service.listDataLakeStoreAccounts(resourceGroupName, accountName, this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listDataLakeStoreAccounts(resourceGroupName, accountName, this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<DataLakeStoreAccountInfoInner>> response = listDataLakeStoreAccountsDelegate(call.execute());
         PagedList<DataLakeStoreAccountInfoInner> result = new PagedList<DataLakeStoreAccountInfoInner>(response.getBody()) {
             @Override
@@ -1564,7 +1564,7 @@ public final class AccountsInner {
         final Boolean count = null;
         final String search = null;
         final String format = null;
-        Call<ResponseBody> call = service.listDataLakeStoreAccounts(resourceGroupName, accountName, this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listDataLakeStoreAccounts(resourceGroupName, accountName, this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<DataLakeStoreAccountInfoInner>>(serviceCallback) {
             @Override
@@ -1618,7 +1618,7 @@ public final class AccountsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listDataLakeStoreAccounts(resourceGroupName, accountName, this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listDataLakeStoreAccounts(resourceGroupName, accountName, this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<DataLakeStoreAccountInfoInner>> response = listDataLakeStoreAccountsDelegate(call.execute());
         PagedList<DataLakeStoreAccountInfoInner> result = new PagedList<DataLakeStoreAccountInfoInner>(response.getBody()) {
             @Override
@@ -1667,7 +1667,7 @@ public final class AccountsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listDataLakeStoreAccounts(resourceGroupName, accountName, this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listDataLakeStoreAccounts(resourceGroupName, accountName, this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<DataLakeStoreAccountInfoInner>>(serviceCallback) {
             @Override
@@ -1724,7 +1724,7 @@ public final class AccountsInner {
         final Boolean count = null;
         final String search = null;
         final String format = null;
-        Call<ResponseBody> call = service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<DataLakeAnalyticsAccountInner>> response = listByResourceGroupDelegate(call.execute());
         PagedList<DataLakeAnalyticsAccountInner> result = new PagedList<DataLakeAnalyticsAccountInner>(response.getBody()) {
             @Override
@@ -1768,7 +1768,7 @@ public final class AccountsInner {
         final Boolean count = null;
         final String search = null;
         final String format = null;
-        Call<ResponseBody> call = service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<DataLakeAnalyticsAccountInner>>(serviceCallback) {
             @Override
@@ -1818,7 +1818,7 @@ public final class AccountsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<DataLakeAnalyticsAccountInner>> response = listByResourceGroupDelegate(call.execute());
         PagedList<DataLakeAnalyticsAccountInner> result = new PagedList<DataLakeAnalyticsAccountInner>(response.getBody()) {
             @Override
@@ -1862,7 +1862,7 @@ public final class AccountsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<DataLakeAnalyticsAccountInner>>(serviceCallback) {
             @Override
@@ -1915,7 +1915,7 @@ public final class AccountsInner {
         final Boolean count = null;
         final String search = null;
         final String format = null;
-        Call<ResponseBody> call = service.list(this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<DataLakeAnalyticsAccountInner>> response = listDelegate(call.execute());
         PagedList<DataLakeAnalyticsAccountInner> result = new PagedList<DataLakeAnalyticsAccountInner>(response.getBody()) {
             @Override
@@ -1954,7 +1954,7 @@ public final class AccountsInner {
         final Boolean count = null;
         final String search = null;
         final String format = null;
-        Call<ResponseBody> call = service.list(this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<DataLakeAnalyticsAccountInner>>(serviceCallback) {
             @Override
@@ -2000,7 +2000,7 @@ public final class AccountsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.list(this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<DataLakeAnalyticsAccountInner>> response = listDelegate(call.execute());
         PagedList<DataLakeAnalyticsAccountInner> result = new PagedList<DataLakeAnalyticsAccountInner>(response.getBody()) {
             @Override
@@ -2039,7 +2039,7 @@ public final class AccountsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.list(this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.list(this.client.subscriptionId(), filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<DataLakeAnalyticsAccountInner>>(serviceCallback) {
             @Override
@@ -2091,7 +2091,7 @@ public final class AccountsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.get(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.get(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getDelegate(call.execute());
     }
 
@@ -2124,7 +2124,7 @@ public final class AccountsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.get(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.get(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<DataLakeAnalyticsAccountInner>(serviceCallback) {
             @Override
@@ -2170,7 +2170,7 @@ public final class AccountsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Response<ResponseBody> result = service.delete(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage()).execute();
+        Response<ResponseBody> result = service.delete(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
 
@@ -2199,7 +2199,7 @@ public final class AccountsInner {
         if (this.client.apiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
-        Call<ResponseBody> call = service.delete(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.delete(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -2237,7 +2237,7 @@ public final class AccountsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.beginDelete(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginDelete(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginDeleteDelegate(call.execute());
     }
 
@@ -2270,7 +2270,7 @@ public final class AccountsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.beginDelete(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginDelete(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -2323,7 +2323,7 @@ public final class AccountsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Response<ResponseBody> result = service.create(resourceGroupName, name, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage()).execute();
+        Response<ResponseBody> result = service.create(resourceGroupName, name, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
         return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<DataLakeAnalyticsAccountInner>() { }.getType());
     }
 
@@ -2357,7 +2357,7 @@ public final class AccountsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
         Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.create(resourceGroupName, name, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.create(resourceGroupName, name, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -2400,7 +2400,7 @@ public final class AccountsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Call<ResponseBody> call = service.beginCreate(resourceGroupName, name, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginCreate(resourceGroupName, name, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginCreateDelegate(call.execute());
     }
 
@@ -2439,7 +2439,7 @@ public final class AccountsInner {
             return null;
         }
         Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.beginCreate(resourceGroupName, name, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginCreate(resourceGroupName, name, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<DataLakeAnalyticsAccountInner>(serviceCallback) {
             @Override
@@ -2491,7 +2491,7 @@ public final class AccountsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Response<ResponseBody> result = service.update(resourceGroupName, name, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage()).execute();
+        Response<ResponseBody> result = service.update(resourceGroupName, name, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
         return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<DataLakeAnalyticsAccountInner>() { }.getType());
     }
 
@@ -2525,7 +2525,7 @@ public final class AccountsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
         Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.update(resourceGroupName, name, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.update(resourceGroupName, name, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -2568,7 +2568,7 @@ public final class AccountsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Call<ResponseBody> call = service.beginUpdate(resourceGroupName, name, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginUpdate(resourceGroupName, name, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginUpdateDelegate(call.execute());
     }
 
@@ -2607,7 +2607,7 @@ public final class AccountsInner {
             return null;
         }
         Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.beginUpdate(resourceGroupName, name, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.beginUpdate(resourceGroupName, name, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<DataLakeAnalyticsAccountInner>(serviceCallback) {
             @Override
@@ -2643,7 +2643,7 @@ public final class AccountsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listStorageContainersNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listStorageContainersNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return listStorageContainersNextDelegate(call.execute());
     }
 
@@ -2664,7 +2664,7 @@ public final class AccountsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listStorageContainersNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listStorageContainersNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<BlobContainerInner>>(serviceCallback) {
             @Override
@@ -2706,7 +2706,7 @@ public final class AccountsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.storageContainersListNextNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.storageContainersListNextNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return storageContainersListNextNextDelegate(call.execute());
     }
 
@@ -2727,7 +2727,7 @@ public final class AccountsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.storageContainersListNextNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.storageContainersListNextNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<BlobContainerInner>>(serviceCallback) {
             @Override
@@ -2769,7 +2769,7 @@ public final class AccountsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.sasTokensListNextNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.sasTokensListNextNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return sasTokensListNextNextDelegate(call.execute());
     }
 
@@ -2790,7 +2790,7 @@ public final class AccountsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.sasTokensListNextNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.sasTokensListNextNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<SasTokenInfoInner>>(serviceCallback) {
             @Override
@@ -2832,7 +2832,7 @@ public final class AccountsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listSasTokensNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSasTokensNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return listSasTokensNextDelegate(call.execute());
     }
 
@@ -2853,7 +2853,7 @@ public final class AccountsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listSasTokensNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listSasTokensNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<SasTokenInfoInner>>(serviceCallback) {
             @Override
@@ -2895,7 +2895,7 @@ public final class AccountsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listStorageAccountsNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listStorageAccountsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return listStorageAccountsNextDelegate(call.execute());
     }
 
@@ -2916,7 +2916,7 @@ public final class AccountsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listStorageAccountsNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listStorageAccountsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<StorageAccountInfoInner>>(serviceCallback) {
             @Override
@@ -2958,7 +2958,7 @@ public final class AccountsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listDataLakeStoreAccountsNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listDataLakeStoreAccountsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return listDataLakeStoreAccountsNextDelegate(call.execute());
     }
 
@@ -2979,7 +2979,7 @@ public final class AccountsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listDataLakeStoreAccountsNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listDataLakeStoreAccountsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<DataLakeStoreAccountInfoInner>>(serviceCallback) {
             @Override
@@ -3021,7 +3021,7 @@ public final class AccountsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listByResourceGroupNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listByResourceGroupNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return listByResourceGroupNextDelegate(call.execute());
     }
 
@@ -3042,7 +3042,7 @@ public final class AccountsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listByResourceGroupNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listByResourceGroupNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<DataLakeAnalyticsAccountInner>>(serviceCallback) {
             @Override
@@ -3084,7 +3084,7 @@ public final class AccountsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return listNextDelegate(call.execute());
     }
 
@@ -3105,7 +3105,7 @@ public final class AccountsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage());
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<DataLakeAnalyticsAccountInner>>(serviceCallback) {
             @Override

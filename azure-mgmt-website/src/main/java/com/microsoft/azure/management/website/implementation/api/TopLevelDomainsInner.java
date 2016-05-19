@@ -54,15 +54,15 @@ public final class TopLevelDomainsInner {
     interface TopLevelDomainsService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains")
-        Call<ResponseBody> getGetTopLevelDomains(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getGetTopLevelDomains(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains/{name}")
-        Call<ResponseBody> getTopLevelDomain(@Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> getTopLevelDomain(@Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains/{name}/listAgreements")
-        Call<ResponseBody> listTopLevelDomainAgreements(@Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body TopLevelDomainAgreementOption agreementOption);
+        Call<ResponseBody> listTopLevelDomainAgreements(@Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body TopLevelDomainAgreementOption agreementOption, @Header("User-Agent") String userAgent);
 
     }
 
@@ -81,7 +81,7 @@ public final class TopLevelDomainsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getGetTopLevelDomains(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getGetTopLevelDomains(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getGetTopLevelDomainsDelegate(call.execute());
     }
 
@@ -104,7 +104,7 @@ public final class TopLevelDomainsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getGetTopLevelDomains(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getGetTopLevelDomains(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<TopLevelDomainCollectionInner>(serviceCallback) {
             @Override
@@ -145,7 +145,7 @@ public final class TopLevelDomainsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getTopLevelDomain(name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getTopLevelDomain(name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getTopLevelDomainDelegate(call.execute());
     }
 
@@ -173,7 +173,7 @@ public final class TopLevelDomainsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.getTopLevelDomain(name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.getTopLevelDomain(name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<TopLevelDomainInner>(serviceCallback) {
             @Override
@@ -217,7 +217,7 @@ public final class TopLevelDomainsInner {
         final Boolean includePrivacy = null;
         TopLevelDomainAgreementOption agreementOption = new TopLevelDomainAgreementOption();
         agreementOption = null;
-        Call<ResponseBody> call = service.listTopLevelDomainAgreements(name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), agreementOption);
+        Call<ResponseBody> call = service.listTopLevelDomainAgreements(name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), agreementOption, this.client.userAgent());
         return listTopLevelDomainAgreementsDelegate(call.execute());
     }
 
@@ -248,7 +248,7 @@ public final class TopLevelDomainsInner {
         final Boolean includePrivacy = null;
         TopLevelDomainAgreementOption agreementOption = new TopLevelDomainAgreementOption();
         agreementOption = null;
-        Call<ResponseBody> call = service.listTopLevelDomainAgreements(name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), agreementOption);
+        Call<ResponseBody> call = service.listTopLevelDomainAgreements(name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), agreementOption, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<TldLegalAgreementCollectionInner>(serviceCallback) {
             @Override
@@ -285,7 +285,7 @@ public final class TopLevelDomainsInner {
         }
         TopLevelDomainAgreementOption agreementOption = new TopLevelDomainAgreementOption();
         agreementOption.setIncludePrivacy(includePrivacy);
-        Call<ResponseBody> call = service.listTopLevelDomainAgreements(name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), agreementOption);
+        Call<ResponseBody> call = service.listTopLevelDomainAgreements(name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), agreementOption, this.client.userAgent());
         return listTopLevelDomainAgreementsDelegate(call.execute());
     }
 
@@ -316,7 +316,7 @@ public final class TopLevelDomainsInner {
         }
         TopLevelDomainAgreementOption agreementOption = new TopLevelDomainAgreementOption();
         agreementOption.setIncludePrivacy(includePrivacy);
-        Call<ResponseBody> call = service.listTopLevelDomainAgreements(name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), agreementOption);
+        Call<ResponseBody> call = service.listTopLevelDomainAgreements(name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), agreementOption, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<TldLegalAgreementCollectionInner>(serviceCallback) {
             @Override

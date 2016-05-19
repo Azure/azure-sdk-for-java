@@ -7,23 +7,23 @@
 package com.microsoft.azure.batch;
 
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.batch.protocol.implementation.api.BatchErrorException;
-import com.microsoft.azure.batch.protocol.implementation.api.FileDeleteFromComputeNodeOptionsInner;
-import com.microsoft.azure.batch.protocol.implementation.api.FileDeleteFromTaskOptionsInner;
-import com.microsoft.azure.batch.protocol.implementation.api.FileGetFromComputeNodeHeadersInner;
-import com.microsoft.azure.batch.protocol.implementation.api.FileGetFromComputeNodeOptionsInner;
-import com.microsoft.azure.batch.protocol.implementation.api.FileGetFromTaskHeadersInner;
-import com.microsoft.azure.batch.protocol.implementation.api.FileGetFromTaskOptionsInner;
-import com.microsoft.azure.batch.protocol.implementation.api.FileGetNodeFilePropertiesFromComputeNodeHeadersInner;
-import com.microsoft.azure.batch.protocol.implementation.api.FileGetNodeFilePropertiesFromComputeNodeOptionsInner;
-import com.microsoft.azure.batch.protocol.implementation.api.FileGetNodeFilePropertiesFromTaskHeadersInner;
-import com.microsoft.azure.batch.protocol.implementation.api.FileGetNodeFilePropertiesFromTaskOptionsInner;
-import com.microsoft.azure.batch.protocol.implementation.api.FileListFromComputeNodeHeadersInner;
-import com.microsoft.azure.batch.protocol.implementation.api.FileListFromComputeNodeOptionsInner;
-import com.microsoft.azure.batch.protocol.implementation.api.FileListFromTaskHeadersInner;
-import com.microsoft.azure.batch.protocol.implementation.api.FileListFromTaskOptionsInner;
-import com.microsoft.azure.batch.protocol.implementation.api.FileProperties;
-import com.microsoft.azure.batch.protocol.implementation.api.NodeFileInner;
+import com.microsoft.azure.batch.protocol.models.BatchErrorException;
+import com.microsoft.azure.batch.protocol.models.FileDeleteFromComputeNodeOptions;
+import com.microsoft.azure.batch.protocol.models.FileDeleteFromTaskOptions;
+import com.microsoft.azure.batch.protocol.models.FileGetFromComputeNodeHeaders;
+import com.microsoft.azure.batch.protocol.models.FileGetFromComputeNodeOptions;
+import com.microsoft.azure.batch.protocol.models.FileGetFromTaskHeaders;
+import com.microsoft.azure.batch.protocol.models.FileGetFromTaskOptions;
+import com.microsoft.azure.batch.protocol.models.FileGetNodeFilePropertiesFromComputeNodeHeaders;
+import com.microsoft.azure.batch.protocol.models.FileGetNodeFilePropertiesFromComputeNodeOptions;
+import com.microsoft.azure.batch.protocol.models.FileGetNodeFilePropertiesFromTaskHeaders;
+import com.microsoft.azure.batch.protocol.models.FileGetNodeFilePropertiesFromTaskOptions;
+import com.microsoft.azure.batch.protocol.models.FileListFromComputeNodeHeaders;
+import com.microsoft.azure.batch.protocol.models.FileListFromComputeNodeOptions;
+import com.microsoft.azure.batch.protocol.models.FileListFromTaskHeaders;
+import com.microsoft.azure.batch.protocol.models.FileListFromTaskOptions;
+import com.microsoft.azure.batch.protocol.models.FileProperties;
+import com.microsoft.azure.batch.protocol.models.NodeFile;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 
 import java.io.IOException;
@@ -54,40 +54,40 @@ public class FileOperations implements IInheritedBehaviors {
         this._customBehaviors = behaviors;
     }
 
-    public List<NodeFileInner> listFilesFromTask(String jobId, String taskId) throws BatchErrorException, IOException {
+    public List<NodeFile> listFilesFromTask(String jobId, String taskId) throws BatchErrorException, IOException {
         return listFilesFromTask(jobId, taskId, null, null, null);
     }
 
-    public List<NodeFileInner> listFilesFromTask(String jobId, String taskId, Boolean recursive, DetailLevel detailLevel) throws BatchErrorException, IOException {
+    public List<NodeFile> listFilesFromTask(String jobId, String taskId, Boolean recursive, DetailLevel detailLevel) throws BatchErrorException, IOException {
         return listFilesFromTask(jobId, taskId, recursive, detailLevel, null);
     }
 
-    public List<NodeFileInner> listFilesFromTask(String jobId, String taskId, Boolean recursive, DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        FileListFromTaskOptionsInner options = new FileListFromTaskOptionsInner();
+    public List<NodeFile> listFilesFromTask(String jobId, String taskId, Boolean recursive, DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+        FileListFromTaskOptions options = new FileListFromTaskOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<PagedList<NodeFileInner>, FileListFromTaskHeadersInner> response = this._parentBatchClient.getProtocolLayer().files().listFromTask(jobId, taskId, recursive, options);
+        ServiceResponseWithHeaders<PagedList<NodeFile>, FileListFromTaskHeaders> response = this._parentBatchClient.getProtocolLayer().files().listFromTask(jobId, taskId, recursive, options);
 
         return response.getBody();
     }
 
-    public List<NodeFileInner> listFilesFromComputeNode(String poolId, String nodeId) throws BatchErrorException, IOException {
+    public List<NodeFile> listFilesFromComputeNode(String poolId, String nodeId) throws BatchErrorException, IOException {
         return listFilesFromComputeNode(poolId, nodeId, null, null, null);
     }
 
-    public List<NodeFileInner> listFilesFromComputeNode(String poolId, String nodeId, Boolean recursive, DetailLevel detailLevel) throws BatchErrorException, IOException {
+    public List<NodeFile> listFilesFromComputeNode(String poolId, String nodeId, Boolean recursive, DetailLevel detailLevel) throws BatchErrorException, IOException {
         return listFilesFromComputeNode(poolId, nodeId, recursive, detailLevel, null);
     }
 
-    public List<NodeFileInner> listFilesFromComputeNode(String poolId, String nodeId, Boolean recursive, DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        FileListFromComputeNodeOptionsInner options = new FileListFromComputeNodeOptionsInner();
+    public List<NodeFile> listFilesFromComputeNode(String poolId, String nodeId, Boolean recursive, DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+        FileListFromComputeNodeOptions options = new FileListFromComputeNodeOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<PagedList<NodeFileInner>, FileListFromComputeNodeHeadersInner> response = this._parentBatchClient.getProtocolLayer().files().listFromComputeNode(poolId, nodeId, recursive, options);
+        ServiceResponseWithHeaders<PagedList<NodeFile>, FileListFromComputeNodeHeaders> response = this._parentBatchClient.getProtocolLayer().files().listFromComputeNode(poolId, nodeId, recursive, options);
 
         return response.getBody();
     }
@@ -101,7 +101,7 @@ public class FileOperations implements IInheritedBehaviors {
     }
 
     public void deleteFileFromTask(String jobId, String taskId, String fileName, Boolean recursive, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        FileDeleteFromTaskOptionsInner options = new FileDeleteFromTaskOptionsInner();
+        FileDeleteFromTaskOptions options = new FileDeleteFromTaskOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
@@ -117,7 +117,7 @@ public class FileOperations implements IInheritedBehaviors {
     }
 
     public void deleteFileFromComputeNode(String poolId, String nodeId, String fileName, Boolean recursive, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        FileDeleteFromComputeNodeOptionsInner options = new FileDeleteFromComputeNodeOptionsInner();
+        FileDeleteFromComputeNodeOptions options = new FileDeleteFromComputeNodeOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
@@ -129,11 +129,11 @@ public class FileOperations implements IInheritedBehaviors {
     }
 
     public InputStream getFileFromTask(String jobId, String taskId, String fileName, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        FileGetFromTaskOptionsInner options = new FileGetFromTaskOptionsInner();
+        FileGetFromTaskOptions options = new FileGetFromTaskOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<InputStream, FileGetFromTaskHeadersInner> response = this._parentBatchClient.getProtocolLayer().files().getFromTask(jobId, taskId, fileName, options);
+        ServiceResponseWithHeaders<InputStream, FileGetFromTaskHeaders> response = this._parentBatchClient.getProtocolLayer().files().getFromTask(jobId, taskId, fileName, options);
 
         return response.getBody();
     }
@@ -143,11 +143,11 @@ public class FileOperations implements IInheritedBehaviors {
     }
 
     public InputStream getFileFromComputeNode(String poolId, String nodeId, String fileName, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        FileGetFromComputeNodeOptionsInner options = new FileGetFromComputeNodeOptionsInner();
+        FileGetFromComputeNodeOptions options = new FileGetFromComputeNodeOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<InputStream, FileGetFromComputeNodeHeadersInner> response = this._parentBatchClient.getProtocolLayer().files().getFromComputeNode(poolId, nodeId, fileName, options);
+        ServiceResponseWithHeaders<InputStream, FileGetFromComputeNodeHeaders> response = this._parentBatchClient.getProtocolLayer().files().getFromComputeNode(poolId, nodeId, fileName, options);
 
         return response.getBody();
     }
@@ -157,11 +157,11 @@ public class FileOperations implements IInheritedBehaviors {
     }
 
     public FileProperties getFilePropertiesFromTask(String jobId, String taskId, String fileName, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        FileGetNodeFilePropertiesFromTaskOptionsInner options = new FileGetNodeFilePropertiesFromTaskOptionsInner();
+        FileGetNodeFilePropertiesFromTaskOptions options = new FileGetNodeFilePropertiesFromTaskOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromTaskHeadersInner> response = this._parentBatchClient.getProtocolLayer().files().getNodeFilePropertiesFromTask(jobId, taskId, fileName, options);
+        ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromTaskHeaders> response = this._parentBatchClient.getProtocolLayer().files().getNodeFilePropertiesFromTask(jobId, taskId, fileName, options);
 
         FileProperties properties = new FileProperties();
         properties.setContentLength(response.getHeaders().contentLength());
@@ -177,11 +177,11 @@ public class FileOperations implements IInheritedBehaviors {
     }
 
     public FileProperties getFilePropertiesFromComputeNode(String poolId, String nodeId, String fileName, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        FileGetNodeFilePropertiesFromComputeNodeOptionsInner options = new FileGetNodeFilePropertiesFromComputeNodeOptionsInner();
+        FileGetNodeFilePropertiesFromComputeNodeOptions options = new FileGetNodeFilePropertiesFromComputeNodeOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromComputeNodeHeadersInner> response = this._parentBatchClient.getProtocolLayer().files().getNodeFilePropertiesFromComputeNode(poolId, nodeId, fileName, options);
+        ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromComputeNodeHeaders> response = this._parentBatchClient.getProtocolLayer().files().getNodeFilePropertiesFromComputeNode(poolId, nodeId, fileName, options);
 
         FileProperties properties = new FileProperties();
         properties.setContentLength(response.getHeaders().contentLength());

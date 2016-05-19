@@ -54,7 +54,7 @@ public final class GlobalResourceGroupsInner {
     interface GlobalResourceGroupsService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/moveResources")
-        Call<ResponseBody> moveResources(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Body CsmMoveResourceEnvelopeInner moveResourceEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage);
+        Call<ResponseBody> moveResources(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Body CsmMoveResourceEnvelopeInner moveResourceEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -81,7 +81,7 @@ public final class GlobalResourceGroupsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(moveResourceEnvelope);
-        Call<ResponseBody> call = service.moveResources(resourceGroupName, this.client.subscriptionId(), moveResourceEnvelope, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.moveResources(resourceGroupName, this.client.subscriptionId(), moveResourceEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return moveResourcesDelegate(call.execute());
     }
 
@@ -114,7 +114,7 @@ public final class GlobalResourceGroupsInner {
             return null;
         }
         Validator.validate(moveResourceEnvelope, serviceCallback);
-        Call<ResponseBody> call = service.moveResources(resourceGroupName, this.client.subscriptionId(), moveResourceEnvelope, this.client.apiVersion(), this.client.acceptLanguage());
+        Call<ResponseBody> call = service.moveResources(resourceGroupName, this.client.subscriptionId(), moveResourceEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override

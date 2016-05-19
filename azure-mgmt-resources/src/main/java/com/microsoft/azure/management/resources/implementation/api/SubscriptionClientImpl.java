@@ -28,18 +28,6 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
-    /** Gets Azure subscription credentials. */
-    private ServiceClientCredentials credentials;
-
-    /**
-     * Gets Gets Azure subscription credentials.
-     *
-     * @return the credentials value.
-     */
-    public ServiceClientCredentials credentials() {
-        return this.credentials;
-    }
-
     /** Client Api Version. */
     private String apiVersion;
 
@@ -180,6 +168,17 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
         this.generateClientRequestId = true;
         this.subscriptions = new SubscriptionsInner(restClient().retrofit(), this);
         this.tenants = new TenantsInner(restClient().retrofit(), this);
-        this.azureClient = new AzureClient(restClient());
+        this.azureClient = new AzureClient(this);
+    }
+
+    /**
+     * Gets the User-Agent header for the client.
+     *
+     * @return the user agent string.
+     */
+    public String userAgent() {
+        return String.format("Azure-SDK-For-Java/%s (%s)",
+                getClass().getPackage().getImplementationVersion(),
+                "SubscriptionClient, 2015-11-01");
     }
 }
