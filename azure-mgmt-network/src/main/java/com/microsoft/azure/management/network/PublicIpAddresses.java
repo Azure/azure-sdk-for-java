@@ -26,9 +26,9 @@ public interface PublicIpAddresses extends
         SupportsDeleting,
         SupportsDeletingByGroup {
 
-	/**
-	 * Entry point to public IP address management within a specific resource group
-	 */
+    /**
+     * Entry point to public IP address management within a specific resource group
+     */
     public interface InGroup extends
             SupportsListing<PublicIpAddress>,
             SupportsCreating<PublicIpAddress.DefinitionCreatable>,
