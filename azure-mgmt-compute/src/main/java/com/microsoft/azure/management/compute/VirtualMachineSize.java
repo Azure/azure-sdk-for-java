@@ -1,5 +1,8 @@
 package com.microsoft.azure.management.compute;
 
+/**
+ * A type representing virtual machine size available for a subscription in a region.
+ */
 public interface VirtualMachineSize {
     /**
      * Gets the VM size name.
@@ -27,7 +30,7 @@ public interface VirtualMachineSize {
     Integer memoryInMB();
 
     /**
-     * Gets or the Maximum number of data disks allowed by a VM size.
+     * Gets the Maximum number of data disks allowed by a VM size.
      */
     Integer maxDataDiskCount();
 }
