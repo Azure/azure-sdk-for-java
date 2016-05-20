@@ -25,7 +25,18 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import java.io.IOException;
 import java.util.List;
 
-// Requires class to support listing entities
+/**
+ * Provides access to listing Azure resources of a specific type based on their region (location)
+ * <p>
+ * (Note: this interface is not intended to be implemented by user code)
+ */
 public interface SupportsListingByLocation<T> {
-	List<T> list(Region location) throws CloudException, IOException;
+	/**
+	 * Lists all the resources of the specified type in the specified region
+	 * @param region the Azure region to list the resources from
+	 * @return list of resources
+	 * @throws CloudException
+	 * @throws IOException
+	 */
+	List<T> list(Region region) throws CloudException, IOException;
 }
