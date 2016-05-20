@@ -13,9 +13,9 @@ apply plugin: 'checkstyle'
 version = '1.0.0-SNAPSHOT'
 
 checkstyle {
-    configFile = new File("$rootDir/Tools/checkstyle/checkstyle.xml")
-    configProperties = [samedir: "$rootDir/Tools/checkstyle"]
-    reportsDir = new File("$rootDir/Tools/checkstyle/reports")
+    configFile = new File("$rootDir/ClientRuntimes/Java/checkstyle/checkstyle.xml")
+    configProperties = [samedir: "$rootDir/ClientRuntimes/Java/checkstyle"]
+    reportsDir = new File("$rootDir/ClientRuntimes/Java/checkstyle/reports")
 }
 
 dependencies {
