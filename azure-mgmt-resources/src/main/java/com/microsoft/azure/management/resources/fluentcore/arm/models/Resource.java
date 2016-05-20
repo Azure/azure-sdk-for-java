@@ -17,7 +17,7 @@ public interface Resource extends Indexable {
 	 */	
 	interface DefinitionWithRegion<T> {
 		/**
-		 * @param regionName The name of the location for the resource
+		 * @param regionName The name of the region for the resource
 		 * @return The next stage of the resource definition
 		 */
 	    T withRegion(String regionName);
