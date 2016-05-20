@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.implementation.api.IPAllocationMethod;
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressDnsSettings;
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressInner;
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressesInner;
@@ -64,17 +65,23 @@ class PublicIpAddressImpl
     /*****************************************
      * Setters (fluent)
      *****************************************/
-    
+
+	@Override
+	public PublicIpAddressImpl withIdleTimeoutInMinutes(int minutes) {
+		this.inner().setIdleTimeoutInMinutes(minutes);
+		return this;
+	}
+
 	@Override
 	public PublicIpAddressImpl withStaticIp() {
-		this.inner().setPublicIPAllocationMethod("Static"); // TODO: Replace with IpAllocationMethod.STATIC
+		this.inner().setPublicIPAllocationMethod(IPAllocationMethod.STATIC);
 		return this;
 	}
 
 
 	@Override
 	public PublicIpAddressImpl withDynamicIp() {
-		this.inner().setPublicIPAllocationMethod("Dynamic"); // TODO: Replace with IpAllocationMethod.DYNAMIC
+		this.inner().setPublicIPAllocationMethod(IPAllocationMethod.DYNAMIC);
 		return this;
 	}
 	
@@ -114,6 +121,16 @@ class PublicIpAddressImpl
 	/**********************************************
 	 * Getters
 	 **********************************************/
+	@Override
+	public int idleTimeoutInMinutes() {
+		return this.inner().idleTimeoutInMinutes();
+	}
+
+	@Override
+	public String ipAllocationMethod() { 	// TODO: This should really return an enum
+		return this.inner().publicIPAllocationMethod();
+	}
+
 	@Override
 	public String fqdn() {
 		return this.inner().dnsSettings().fqdn();
