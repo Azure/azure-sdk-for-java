@@ -30,7 +30,7 @@ public interface VirtualMachineSize {
     Integer memoryInMB();
 
     /**
-     * Gets or the Maximum number of data disks allowed by a VM size.
+     * Gets the Maximum number of data disks allowed by a VM size.
      */
     Integer maxDataDiskCount();
 }

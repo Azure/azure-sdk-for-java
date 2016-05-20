@@ -11,6 +11,9 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 
 import java.io.IOException;
 
+/**
+ *  The type representing Azure virtual machine collection.
+ */
 public interface VirtualMachines extends
         SupportsListing<VirtualMachine>,
         SupportsListingByGroup<VirtualMachine>,
@@ -20,6 +23,7 @@ public interface VirtualMachines extends
         SupportsDeletingByGroup {
     /**
      * Lists all available virtual machine sizes in a region.
+     *
      * @param region The region upon which virtual-machine-sizes is queried.
      * @return the List&lt;VirtualMachineSize&gt; if successful.
      * @throws CloudException
@@ -32,6 +36,7 @@ public interface VirtualMachines extends
             SupportsDeleting {
         /**
          * Lists all available virtual machine sizes in a region.
+         *
          * @param region The region upon which virtual-machine-sizes is queried.
          * @return the List&lt;VirtualMachineSize&gt; if successful.
          * @throws CloudException
