@@ -59,7 +59,7 @@ public class SubscriptionImpl extends
         PagedListConverter<LocationInner, Location> converter = new PagedListConverter<LocationInner, Location>() {
             @Override
             public Location typeConvert(LocationInner locationInner) {
-                return new LocationImpl(locationInner, client);
+                return new LocationImpl(locationInner);
             }
         };
         return converter.convert(client.listLocations(this.subscriptionId()).getBody());

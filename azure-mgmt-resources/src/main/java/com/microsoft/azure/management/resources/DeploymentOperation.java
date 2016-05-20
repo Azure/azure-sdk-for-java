@@ -7,6 +7,9 @@ import com.microsoft.azure.management.resources.implementation.api.DeploymentOpe
 import com.microsoft.azure.management.resources.implementation.api.TargetResource;
 import org.joda.time.DateTime;
 
+/**
+ * Defines the interface for accessing a deployment operation in Azure.
+ */
 public interface DeploymentOperation extends
         Indexable,
         Refreshable<DeploymentOperation>,
@@ -16,10 +19,45 @@ public interface DeploymentOperation extends
      * Getters
      ***********************************************************/
 
+    /**
+     * Get the deployment operation id.
+     *
+     * @return the deployment operation id.
+     */
     String operationId();
+
+    /**
+     * Get the state of the provisioning.
+     *
+     * @return the state of the provisioning.
+     */
     String provisioningState();
+
+    /**
+     * Get the date and time of the operation.
+     *
+     * @return the date and time of the operation.
+     */
     DateTime timestamp();
+
+    /**
+     * Get the operation status code.
+     *
+     * @return the operation status code.
+     */
     String statusCode();
+
+    /**
+     * Get the operation status message.
+     *
+     * @return the operation status message.
+     */
     Object statusMessage();
+
+    /**
+     * Get the target resource.
+     *
+     * @return the target resource.
+     */
     TargetResource targetResource();
 }

@@ -1,25 +1,28 @@
 package com.microsoft.azure.management.resources.implementation;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.GenericResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.implementation.api.GenericResourceInner;
 import com.microsoft.azure.management.resources.implementation.api.Plan;
+import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 
-public class GenericResourceImpl
+/**
+ * An instance of this class provides access to generic resources in Azure.
+ */
+final class GenericResourceImpl
     extends GroupableResourceImpl<GenericResource, GenericResourceInner, GenericResourceImpl>
     implements GenericResource {
-    public GenericResourceImpl(String id, GenericResourceInner innerModel, final ResourceManagementClientImpl serviceClient) {
+    GenericResourceImpl(String id, GenericResourceInner innerModel, final ResourceManagementClientImpl serviceClient) {
         super(id, innerModel, new ResourceGroupsImpl(serviceClient));
     }
 
     @Override
-    public Plan plan() throws Exception {
+    public Plan plan() {
         return inner().plan();
     }
 
     @Override
-    public Object properties() throws Exception {
+    public Object properties() {
         return inner().properties();
     }
 

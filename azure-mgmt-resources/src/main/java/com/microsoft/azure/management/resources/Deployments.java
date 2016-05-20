@@ -11,6 +11,9 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 
 import java.io.IOException;
 
+/**
+ * Defines an interface for accessing deployments in Azure.
+ */
 public interface Deployments extends
         SupportsCreating<Deployment.DefinitionBlank>,
         SupportsListing<Deployment>,
@@ -19,15 +22,42 @@ public interface Deployments extends
         SupportsGettingByGroup<Deployment>,
         SupportsDeleting,
         SupportsDeletingByGroup {
+    /**
+     * Checks if a deployment exists in the subscription.
+     *
+     * @param deploymentName the deployment's name.
+     * @return true if the deployment exists; false otherwise.
+     * @throws IOException serialization failures
+     * @throws CloudException failures thrown from Azure
+     */
     boolean checkExistence(String deploymentName) throws IOException, CloudException;
+
+    /**
+     * Checks if a deployment exists in a resource group.
+     *
+     * @param groupName the resource group's name.
+     * @param deploymentName the deployment's name.
+     * @return true if the deployment exists; false otherwise.
+     * @throws IOException serialization failures
+     * @throws CloudException failures thrown from Azure
+     */
     boolean checkExistence(String groupName, String deploymentName) throws IOException, CloudException;
 
+    /**
+     * Filters deployments by a resource group.
+     *
+     * @param resourceGroup the resource group to filter by.
+     * @return the instance for accessing deployments in a resource group.
+     */
     InGroup resourceGroup(ResourceGroup resourceGroup);
 
+    /**
+     * Defines an interface for accessing deployments in a resource group.
+     */
     interface InGroup extends
             SupportsListing<Deployment>,
             SupportsGetting<Deployment>,
-            SupportsCreating<Deployment.DefinitionWithGroup>,
+            SupportsCreating<Deployment.DefinitionWithTemplate>,
             SupportsDeleting {
         boolean checkExistence(String deploymentName) throws IOException, CloudException;
     }

@@ -1,24 +1,41 @@
 package com.microsoft.azure.management.resources.implementation;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.microsoft.azure.management.resources.*;
+import com.microsoft.azure.management.resources.Deployment;
+import com.microsoft.azure.management.resources.DeploymentOperations;
+import com.microsoft.azure.management.resources.Provider;
+import com.microsoft.azure.management.resources.ResourceGroup;
+import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableImpl;
-import com.microsoft.azure.management.resources.implementation.api.*;
+import com.microsoft.azure.management.resources.implementation.api.Dependency;
+import com.microsoft.azure.management.resources.implementation.api.DeploymentExtendedInner;
+import com.microsoft.azure.management.resources.implementation.api.DeploymentInner;
+import com.microsoft.azure.management.resources.implementation.api.DeploymentMode;
+import com.microsoft.azure.management.resources.implementation.api.DeploymentOperationsInner;
+import com.microsoft.azure.management.resources.implementation.api.DeploymentProperties;
+import com.microsoft.azure.management.resources.implementation.api.DeploymentPropertiesExtended;
+import com.microsoft.azure.management.resources.implementation.api.DeploymentsInner;
+import com.microsoft.azure.management.resources.implementation.api.ParametersLink;
+import com.microsoft.azure.management.resources.implementation.api.ProviderInner;
+import com.microsoft.azure.management.resources.implementation.api.TemplateLink;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DeploymentImpl extends
+/**
+ * An instance of this class provides access to a deployment in Azure.
+ */
+final class DeploymentImpl extends
         CreatableImpl<Deployment, DeploymentExtendedInner>
         implements
         Deployment,
         Deployment.DefinitionBlank,
-        Deployment.DefinitionWithGroup,
         Deployment.DefinitionWithTemplate,
         Deployment.DefinitionWithParameters,
+        Deployment.DefinitionWithMode,
         Deployment.DefinitionCreatable {
 
     private final DeploymentsInner client;
@@ -26,11 +43,11 @@ public class DeploymentImpl extends
     private final ResourceGroups resourceGroups;
     private String resourceGroupName;
 
-    public DeploymentImpl(DeploymentExtendedInner innerModel,
+    DeploymentImpl(DeploymentExtendedInner innerModel,
                           final DeploymentsInner client,
                           final DeploymentOperationsInner deploymentOperationsClient,
                           final ResourceGroups resourceGroups) {
-        super (innerModel.name(), innerModel);
+        super(innerModel.name(), innerModel);
         this.client = client;
         this.deploymentOperationsClient = deploymentOperationsClient;
         this.resourceGroupName = ResourceUtils.groupFromResourceId(innerModel.id());
@@ -144,25 +161,21 @@ public class DeploymentImpl extends
         return new DeploymentOperationsImpl(deploymentOperationsClient, this, resourceGroups);
     }
 
-    /**************************************************************
-     * Setters (fluent interface)
-     **************************************************************/
-
     @Override
-    public DefinitionWithGroup withNewResourceGroup(String resourceGroupName, Region location) throws Exception {
+    public DefinitionWithTemplate withNewResourceGroup(String resourceGroupName, Region location) throws Exception {
         ResourceGroup group = this.resourceGroups.define(resourceGroupName).withLocation(location).create();
         this.resourceGroupName = group.name();
         return this;
     }
 
     @Override
-    public DefinitionWithGroup withExistingResourceGroup(String resourceGroupName) {
+    public DefinitionWithTemplate withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
     }
 
     @Override
-    public DefinitionWithTemplate withTemplate(Object template) {
+    public DefinitionWithParameters withTemplate(Object template) {
         if (this.inner().properties() == null) {
             this.inner().setProperties(new DeploymentPropertiesExtended());
         }
@@ -171,7 +184,7 @@ public class DeploymentImpl extends
     }
 
     @Override
-    public DefinitionWithTemplate withTemplate(JsonNode template) {
+    public DefinitionWithParameters withTemplate(JsonNode template) {
         if (this.inner().properties() == null) {
             this.inner().setProperties(new DeploymentPropertiesExtended());
         }
@@ -180,7 +193,7 @@ public class DeploymentImpl extends
     }
 
     @Override
-    public DefinitionWithTemplate withTemplateLink(String uri, String contentVersion) {
+    public DefinitionWithParameters withTemplateLink(String uri, String contentVersion) {
         if (this.inner().properties() == null) {
             this.inner().setProperties(new DeploymentPropertiesExtended());
         }
@@ -198,7 +211,7 @@ public class DeploymentImpl extends
     }
 
     @Override
-    public DefinitionWithParameters withParameters(Object parameters) {
+    public DefinitionWithMode withParameters(Object parameters) {
         if (this.inner().properties() == null) {
             this.inner().setProperties(new DeploymentPropertiesExtended());
         }
@@ -207,7 +220,7 @@ public class DeploymentImpl extends
     }
 
     @Override
-    public DefinitionWithParameters withParameters(JsonNode parameters) {
+    public DefinitionWithMode withParameters(JsonNode parameters) {
         if (this.inner().properties() == null) {
             this.inner().setProperties(new DeploymentPropertiesExtended());
         }
@@ -216,7 +229,7 @@ public class DeploymentImpl extends
     }
 
     @Override
-    public DefinitionWithParameters withParametersLink(String uri, String contentVersion) {
+    public DefinitionWithMode withParametersLink(String uri, String contentVersion) {
         if (this.inner().properties() == null) {
             this.inner().setProperties(new DeploymentPropertiesExtended());
         }

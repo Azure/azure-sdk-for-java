@@ -17,7 +17,10 @@ import com.microsoft.rest.RestException;
 import java.io.IOException;
 import java.util.List;
 
-public class DeploymentsImpl
+/**
+ * An instance of this class provides access to deployments in Azure.
+ */
+final class DeploymentsImpl
     implements Deployments {
 
     private final DeploymentsInner client;
@@ -25,7 +28,7 @@ public class DeploymentsImpl
     private final ResourceGroups resourceGroups;
     private PagedListConverter<DeploymentExtendedInner, Deployment> converter;
 
-    public DeploymentsImpl(final DeploymentsInner client,
+    DeploymentsImpl(final DeploymentsInner client,
                            final DeploymentOperationsInner deploymentOperationsClient,
                            final ResourceGroups resourceGroups) {
         this.client = client;
@@ -68,6 +71,7 @@ public class DeploymentsImpl
                     return createFluentModel(inner);
                 }
             } catch (CloudException ex) {
+                // Do nothing
             }
         }
         return null;
@@ -106,13 +110,8 @@ public class DeploymentsImpl
 
     @Override
     public boolean checkExistence(String groupName, String deploymentName) throws IOException, CloudException {
-        if (client.checkExistence(groupName, deploymentName).getBody()) {
-            return true;
-        }
-        return false;
+        return client.checkExistence(groupName, deploymentName).getBody();
     }
-
-    /** Fluent model create helpers **/
 
     private DeploymentImpl createFluentModel(String name) {
         DeploymentExtendedInner deploymentExtendedInner = new DeploymentExtendedInner();

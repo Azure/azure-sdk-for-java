@@ -4,18 +4,17 @@ import com.microsoft.azure.management.resources.fluentcore.model.implementation.
 import com.microsoft.azure.management.resources.Feature;
 import com.microsoft.azure.management.resources.implementation.api.FeatureResultInner;
 
-public class FeatureImpl extends
+/**
+ * An instance of this class provides access to a feature in Azure.
+ */
+final class FeatureImpl extends
         IndexableWrapperImpl<FeatureResultInner>
         implements
         Feature {
 
-    public FeatureImpl(FeatureResultInner innerModel) {
+    FeatureImpl(FeatureResultInner innerModel) {
         super(innerModel.id(), innerModel);
     }
-
-    /***********************************************************
-     * Getters
-     ***********************************************************/
 
     @Override
     public String name() {

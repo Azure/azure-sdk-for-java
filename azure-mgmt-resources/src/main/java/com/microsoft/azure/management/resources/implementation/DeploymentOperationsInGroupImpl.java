@@ -2,15 +2,22 @@ package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.resources.*;
+import com.microsoft.azure.management.resources.DeploymentOperation;
+import com.microsoft.azure.management.resources.DeploymentOperations;
+import com.microsoft.azure.management.resources.ResourceGroup;
+
 import java.io.IOException;
 
-public class DeploymentOperationsInGroupImpl
+/**
+ * An instance of this class provides access to deployment operations in a
+ * resource group.
+ */
+class DeploymentOperationsInGroupImpl
         implements DeploymentOperations.InGroup {
     private final DeploymentOperations deploymentOperations;
     private final ResourceGroup resourceGroup;
 
-    public DeploymentOperationsInGroupImpl(final DeploymentOperations deploymentOperations, final ResourceGroup resourceGroup) {
+    DeploymentOperationsInGroupImpl(final DeploymentOperations deploymentOperations, final ResourceGroup resourceGroup) {
         this.deploymentOperations  = deploymentOperations;
         this.resourceGroup = resourceGroup;
     }

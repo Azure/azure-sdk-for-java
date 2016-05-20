@@ -9,11 +9,14 @@ import com.microsoft.azure.management.resources.Feature;
 import com.microsoft.azure.management.resources.implementation.api.FeatureResultInner;
 import java.io.IOException;
 
-public final class FeaturesImpl
+/**
+ * An instance of this class provides access to features in Azure.
+ */
+final class FeaturesImpl
         implements Features {
     private final FeaturesInner client;
 
-    public FeaturesImpl(final FeaturesInner client) {
+    FeaturesImpl(final FeaturesInner client) {
         this.client = client;
     }
 

@@ -8,7 +8,10 @@ import com.microsoft.azure.management.resources.implementation.api.DeploymentOpe
 import com.microsoft.azure.management.resources.implementation.api.TargetResource;
 import org.joda.time.DateTime;
 
-public class DeploymentOperationImpl extends
+/**
+ * An instance of this class provides access to a deployment operation in Azure.
+ */
+final class DeploymentOperationImpl extends
         IndexableRefreshableWrapperImpl<DeploymentOperation, DeploymentOperationInner>
         implements
         DeploymentOperation {
@@ -17,16 +20,12 @@ public class DeploymentOperationImpl extends
 
     private final DeploymentOperationsInner client;
 
-    public DeploymentOperationImpl(DeploymentOperationInner innerModel, final DeploymentOperationsInner client) {
-        super (innerModel.id(), innerModel);
+    DeploymentOperationImpl(DeploymentOperationInner innerModel, final DeploymentOperationsInner client) {
+        super(innerModel.id(), innerModel);
         this.client = client;
         this.resourceGroupName = ResourceUtils.groupFromResourceId(innerModel.id());
         this.deploymentName = ResourceUtils.extractFromResourceId(innerModel.id(), "deployments");
     }
-
-    /***********************************************************
-     * Getters
-     ***********************************************************/
 
     @Override
     public String operationId() {

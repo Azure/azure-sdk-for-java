@@ -1,25 +1,19 @@
 package com.microsoft.azure.management.resources.implementation;
 
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
-import com.microsoft.azure.management.resources.implementation.api.SubscriptionsInner;
 import com.microsoft.azure.management.resources.Location;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.management.resources.implementation.api.LocationInner;
 
-public class LocationImpl extends
+/**
+ * An instance of this class provides access to locations in Azure.
+ */
+final class LocationImpl extends
         IndexableWrapperImpl<LocationInner>
         implements
         Location {
-
-    private final SubscriptionsInner client;
-
-    public LocationImpl(LocationInner innerModel, final SubscriptionsInner client) {
+    LocationImpl(LocationInner innerModel) {
         super(innerModel.id(), innerModel);
-        this.client = client;
     }
-
-    /***********************************************************
-     * Getters
-     ***********************************************************/
 
     @Override
     public String subscriptionId() {
