@@ -14,15 +14,15 @@ public class CustomIOHandler extends IOHandler
 	public void onConnectionLocalOpen(Event event)
 	{
 		Connection connection = event.getConnection();
-        if (connection.getRemoteState() != EndpointState.UNINITIALIZED)
-        {
-        	return;
-        }
-        
-        Transport transport = Proton.transport();
-        transport.setMaxFrameSize(AmqpConstants.MAX_FRAME_SIZE);
-        transport.sasl();
-        transport.setEmitFlowEventOnSend(false);
-        transport.bind(connection);
+		if (connection.getRemoteState() != EndpointState.UNINITIALIZED)
+		{
+			return;
+		}
+
+		Transport transport = Proton.transport();
+		transport.setMaxFrameSize(AmqpConstants.MAX_FRAME_SIZE);
+		transport.sasl();
+		transport.setEmitFlowEventOnSend(false);
+		transport.bind(connection);
 	}
 }

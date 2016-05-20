@@ -9,7 +9,7 @@ public final class ProtonUtil
 	private ProtonUtil()
 	{
 	}
-	
+
 	public static Reactor reactor(ReactorHandler reactorHandler) throws IOException
 	{
 		Reactor reactor = Proton.reactor(reactorHandler);

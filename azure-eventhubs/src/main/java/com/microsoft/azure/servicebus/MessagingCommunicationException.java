@@ -10,19 +10,19 @@ public class MessagingCommunicationException extends ServiceBusException
 	{
 		super(true);
 	}
-	
+
 	MessagingCommunicationException(final String message)
-	  {
-	    super(true, message);
-	  }
-	
+	{
+		super(true, message);
+	}
+
 	MessagingCommunicationException(final Throwable cause)
-	  {
-	    super(true, cause);
-	  }
-	
+	{
+		super(true, cause);
+	}
+
 	MessagingCommunicationException(final String message, final Throwable cause)
-	  {
-	    super(true, message, cause);
-	  }
+	{
+		super(true, message, cause);
+	}
 }

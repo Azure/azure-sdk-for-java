@@ -16,24 +16,24 @@ import com.microsoft.azure.servicebus.ClientConstants;
 public class ReactorHandler extends BaseHandler
 {
 	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
-	
+
 	@Override
 	public void onReactorInit(Event e)
 	{ 
 		if(TRACE_LOGGER.isLoggable(Level.FINE))
-        {
-            TRACE_LOGGER.log(Level.FINE, "reactor.onReactorInit");
-        }
-		
+		{
+			TRACE_LOGGER.log(Level.FINE, "reactor.onReactorInit");
+		}
+
 		final Reactor reactor = e.getReactor();
 		reactor.setTimeout(ClientConstants.REACTOR_IO_POLL_TIMEOUT);
 	}
-    
-    @Override public void onReactorFinal(Event e)
-    {
-    	if(TRACE_LOGGER.isLoggable(Level.FINE))
-	    {
-	        TRACE_LOGGER.log(Level.FINE, "reactor.onReactorFinal");
-	    }
-    }
+
+	@Override public void onReactorFinal(Event e)
+	{
+		if(TRACE_LOGGER.isLoggable(Level.FINE))
+		{
+			TRACE_LOGGER.log(Level.FINE, "reactor.onReactorFinal");
+		}
+	}
 }

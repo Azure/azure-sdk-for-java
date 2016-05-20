@@ -9,17 +9,17 @@ import java.util.Locale;
 public abstract class ErrorContext
 {
 	private final String namespaceName;
-	
+
 	ErrorContext(final String namespaceName)
 	{
 		this.namespaceName = namespaceName;
 	}
-	
+
 	protected String getNamespaceName()
 	{
 		return this.namespaceName;
 	}
-	
+
 	@Override
 	public String toString()
 	{

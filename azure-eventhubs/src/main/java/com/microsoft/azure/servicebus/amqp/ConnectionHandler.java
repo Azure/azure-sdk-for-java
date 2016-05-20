@@ -30,7 +30,7 @@ public final class ConnectionHandler extends BaseHandler
 	public ConnectionHandler(final IAmqpConnection messagingFactory, final String hostname, final String username, final String password)
 	{
 		add(new Handshaker());
-		
+
 		this.hostname = hostname;
 		this.username = username;
 		this.password = password;
@@ -45,7 +45,7 @@ public final class ConnectionHandler extends BaseHandler
 		connection.setContainer(UUID.randomUUID().toString());
 		connection.open();
 	}
-	
+
 	@Override
 	public void onConnectionBound(Event event)
 	{
@@ -57,7 +57,7 @@ public final class ConnectionHandler extends BaseHandler
 		Sasl sasl = transport.sasl();
 		sasl.plain(this.username, this.password);
 	}
-	
+
 	@Override
 	public void onConnectionUnbound(Event event)
 	{
@@ -85,10 +85,10 @@ public final class ConnectionHandler extends BaseHandler
 				TRACE_LOGGER.log(Level.WARNING, "Connection.onTransportError: hostname[" + event.getConnection().getHostname() + "], error[no description returned]");
 			}
 		}
-		
+
 		this.messagingFactory.onConnectionError(condition);
 	}
-	
+
 	@Override
 	public void onConnectionRemoteOpen(Event event)
 	{
@@ -96,24 +96,24 @@ public final class ConnectionHandler extends BaseHandler
 		{
 			TRACE_LOGGER.log(Level.FINE, "Connection.onConnectionRemoteOpen: hostname[" + event.getConnection().getHostname() + "]");
 		}
-		
+
 		this.messagingFactory.onOpenComplete(null);
 	}
-	
+
 	@Override
 	public void onConnectionRemoteClose(Event event)
 	{
 		Connection connection = event.getConnection();
 		ErrorCondition error = connection.getRemoteCondition();
-		
+
 		if (TRACE_LOGGER.isLoggable(Level.FINE))
 		{
 			TRACE_LOGGER.log(Level.FINE, "hostname[" + connection.getHostname() + 
 					(error != null
-							 ? "], errorCondition[" + error.getCondition() + ", " + error.getDescription() + "]"
-									 : "]"));
+					? "], errorCondition[" + error.getCondition() + ", " + error.getDescription() + "]"
+							: "]"));
 		}
-		
+
 		this.messagingFactory.onConnectionError(error);
 	}
 

@@ -15,7 +15,7 @@ public final class IteratorUtil
 	public static <T> boolean sizeEquals(Iterable<T> iterable, int expectedSize)
 	{
 		Iterator<T> iterator = iterable.iterator();
-		
+
 		int currentSize = 0;
 		while(iterator.hasNext())
 		{
@@ -30,10 +30,10 @@ public final class IteratorUtil
 				return false;
 			}
 		}
-		
+
 		return true;		
 	}
-	
+
 	public static <T> T getLast(Iterator<T> iterator)
 	{
 		T last = null;
@@ -41,7 +41,7 @@ public final class IteratorUtil
 		{
 			last = iterator.next();
 		}
-		
+
 		return last;
 	}
 }

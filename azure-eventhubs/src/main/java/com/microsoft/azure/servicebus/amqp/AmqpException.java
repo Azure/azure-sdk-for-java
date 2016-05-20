@@ -18,7 +18,7 @@ public class AmqpException extends Exception
 		super(errorCondition.getDescription());
 		this.errorCondition = errorCondition;
 	}
-	
+
 	public ErrorCondition getError()
 	{
 		return this.errorCondition;

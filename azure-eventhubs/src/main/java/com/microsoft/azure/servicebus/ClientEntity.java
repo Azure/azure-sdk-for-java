@@ -18,25 +18,25 @@ public abstract class ClientEntity
 	private final String clientId;
 	private final Object syncClose;
 	private final ClientEntity parent;
-	
+
 	private boolean isClosing;
 	private boolean isClosed;
-	
+
 	protected ClientEntity(final String clientId, final ClientEntity parent)
 	{
 		this.clientId = clientId;
 		this.parent = parent;
-		
+
 		this.syncClose = new Object();
 	}
-	
+
 	protected abstract CompletableFuture<Void> onClose();
-	
+
 	public String getClientId()
 	{
 		return this.clientId;
 	}
-	
+
 	boolean getIsClosed()
 	{
 		final boolean isParentClosed = this.parent != null && this.parent.getIsClosed();
@@ -45,7 +45,7 @@ public abstract class ClientEntity
 			return isParentClosed || this.isClosed;
 		}
 	}
-	
+
 	// returns true even if the Parent is (being) Closed
 	boolean getIsClosingOrClosed()
 	{
@@ -55,7 +55,7 @@ public abstract class ClientEntity
 			return isParentClosingOrClosed || this.isClosing || this.isClosed;
 		}
 	}
-	
+
 	// used to force close when entity is faulted
 	protected final void setClosed()
 	{
@@ -64,14 +64,14 @@ public abstract class ClientEntity
 			this.isClosed = true;
 		}
 	}
-	
+
 	public final CompletableFuture<Void> close()
 	{
 		synchronized (this.syncClose)
 		{
 			this.isClosing = true;
 		}
-		
+
 		return this.onClose().thenRunAsync(new Runnable()
 		{
 			@Override
@@ -84,7 +84,7 @@ public abstract class ClientEntity
 				}
 			}});
 	}
-	
+
 	public final void closeSync() throws ServiceBusException
 	{
 		try
@@ -93,12 +93,12 @@ public abstract class ClientEntity
 		}
 		catch (InterruptedException|ExecutionException exception)
 		{
-            if (exception instanceof InterruptedException)
-            {
-                // Re-assert the thread's interrupted status
-                Thread.currentThread().interrupt();
-            }
-            
+			if (exception instanceof InterruptedException)
+			{
+				// Re-assert the thread's interrupted status
+				Thread.currentThread().interrupt();
+			}
+
 			Throwable throwable = exception.getCause();
 			if (throwable != null)
 			{
@@ -106,17 +106,17 @@ public abstract class ClientEntity
 				{
 					throw (RuntimeException)throwable;
 				}
-				
+
 				if (throwable instanceof ServiceBusException)
 				{
 					throw (ServiceBusException)throwable;
 				}
-				                
+
 				throw new ServiceBusException(true, throwable);
 			}
 		}
 	}
-	
+
 	protected final void throwIfClosed(Throwable cause)
 	{
 		if (this.getIsClosingOrClosed())

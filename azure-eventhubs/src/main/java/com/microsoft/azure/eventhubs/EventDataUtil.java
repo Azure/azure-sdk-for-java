@@ -14,24 +14,24 @@ import org.apache.qpid.proton.message.*;
 final class EventDataUtil
 {
 	private EventDataUtil(){}
-	
+
 	static LinkedList<EventData> toEventDataCollection(final Collection<Message> messages)
 	{
 		if (messages == null)
 		{
 			return null;
 		}
-		
+
 		// TODO: no-copy solution
 		LinkedList<EventData> events = new LinkedList<EventData>();
 		for(Message message : messages)
 		{
 			events.add(new EventData(message));
 		}
-		
+
 		return events;
 	}
-	
+
 	static Iterable<Message> toAmqpMessages(final Iterable<EventData> eventDatas, final String partitionKey)
 	{
 		final LinkedList<Message> messages = new LinkedList<Message>();
@@ -44,10 +44,10 @@ final class EventDataUtil
 				messages.add(amqpMessage);
 			}
 		});
-		
+
 		return messages;
 	}
-	
+
 	static Iterable<Message> toAmqpMessages(final Iterable<EventData> eventDatas)
 	{
 		return EventDataUtil.toAmqpMessages(eventDatas, null);

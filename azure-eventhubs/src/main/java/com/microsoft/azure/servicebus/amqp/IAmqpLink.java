@@ -14,6 +14,6 @@ public interface IAmqpLink
 	void onOpenComplete(Exception completionException);
 
 	void onError(Exception exception);
-	
+
 	void onClose(ErrorCondition condition);
 }

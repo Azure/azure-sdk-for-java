@@ -15,7 +15,7 @@ public final class ClientConstants
 
 	public final static int AMQPS_PORT = 5671;
 	public final static int MAX_PARTITION_KEY_LENGTH = 128;
-	
+
 	public final static Symbol SERVER_BUSY_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":server-busy");
 	public final static Symbol ARGUMENT_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":argument-error");
 	public final static Symbol ARGUMENT_OUT_OF_RANGE_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":argument-out-of-range");
@@ -31,19 +31,19 @@ public final class ClientConstants
 	public static final int MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES = 512;
 
 	public final static Duration TIMER_TOLERANCE = Duration.ofSeconds(1);
-	
+
 	public final static Duration DEFAULT_RERTRY_MIN_BACKOFF = Duration.ofSeconds(0);
 	public final static Duration DEFAULT_RERTRY_MAX_BACKOFF = Duration.ofSeconds(30);
-	
+
 	public final static int DEFAULT_MAX_RETRY_COUNT = 10;
-	
+
 	public final static String SERVICEBUS_CLIENT_TRACE = "servicebus.trace";
-	
+
 	public final static boolean DEFAULT_IS_TRANSIENT = true;
-	
+
 	public final static int REACTOR_IO_POLL_TIMEOUT = 20;
 	public final static int SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS = 4;
-	
+
 	public final static String NO_RETRY = "NoRetry";
 	public final static String DEFAULT_RETRY = "Default";
 }

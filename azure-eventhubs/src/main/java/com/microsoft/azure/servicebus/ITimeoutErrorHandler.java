@@ -11,6 +11,6 @@ package com.microsoft.azure.servicebus;
 public interface ITimeoutErrorHandler
 {
 	public void reportTimeoutError();
-	
+
 	public void resetTimeoutErrorTracking();
 }

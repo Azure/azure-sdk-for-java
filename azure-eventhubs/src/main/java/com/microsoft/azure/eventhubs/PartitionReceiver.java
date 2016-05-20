@@ -39,15 +39,15 @@ public final class PartitionReceiver extends ClientEntity
 {
 	private static final int MINIMUM_PREFETCH_COUNT = 10;
 	private static final int MAXIMUM_PREFETCH_COUNT = 999;
-	
+
 	static final int DEFAULT_PREFETCH_COUNT = 300;
 	static final long NULL_EPOCH = 0;
-	
-    /**
-     * This is a constant defined to represent the start of a partition stream in EventHub.
-     */
+
+	/**
+	 * This is a constant defined to represent the start of a partition stream in EventHub.
+	 */
 	public static final String START_OF_STREAM = "-1";
-	
+
 	private final String partitionId;
 	private final MessagingFactory underlyingFactory;
 	private final String eventHubName;
@@ -63,7 +63,7 @@ public final class PartitionReceiver extends ClientEntity
 	private PartitionReceiveHandler onReceiveHandler;
 	private boolean isOnReceivePumpRunning;
 	private Thread onReceivePumpThread;
-	
+
 	private PartitionReceiver(MessagingFactory factory, 
 			final String eventHubName, 
 			final String consumerGroupName, 
@@ -76,7 +76,7 @@ public final class PartitionReceiver extends ClientEntity
 					throws ServiceBusException
 	{
 		super(null, null);
-		
+
 		this.underlyingFactory = factory;
 		this.eventHubName = eventHubName;
 		this.consumerGroupName = consumerGroupName;
@@ -89,7 +89,7 @@ public final class PartitionReceiver extends ClientEntity
 		this.receiveHandlerSync = new Object();
 		this.isOnReceivePumpRunning = false;
 	}
-	
+
 	static CompletableFuture<PartitionReceiver> create(MessagingFactory factory, 
 			final String eventHubName, 
 			final String consumerGroupName, 
@@ -101,16 +101,16 @@ public final class PartitionReceiver extends ClientEntity
 			final boolean isEpochReceiver) 
 					throws ServiceBusException
 	{
-        if (epoch < NULL_EPOCH)
-        {
-            throw new IllegalArgumentException("epoch cannot be a negative value. Please specify a zero or positive long value.");
-        }
-        
+		if (epoch < NULL_EPOCH)
+		{
+			throw new IllegalArgumentException("epoch cannot be a negative value. Please specify a zero or positive long value.");
+		}
+
 		if (StringUtil.isNullOrWhiteSpace(consumerGroupName))
 		{
 			throw new IllegalArgumentException("specify valid string for argument - 'consumerGroupName'");
 		}
-			
+
 		final PartitionReceiver receiver = new PartitionReceiver(factory, eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, dateTime, epoch, isEpochReceiver);
 		return receiver.createInternalReceiver().thenApplyAsync(new Function<Void, PartitionReceiver>()
 		{
@@ -120,7 +120,7 @@ public final class PartitionReceiver extends ClientEntity
 			}
 		});
 	}
-	
+
 	private CompletableFuture<Void> createInternalReceiver() throws ServiceBusException
 	{
 		return MessageReceiver.create(this.underlyingFactory, StringUtil.getRandomString(), 
@@ -131,7 +131,7 @@ public final class PartitionReceiver extends ClientEntity
 					public void accept(MessageReceiver r) { PartitionReceiver.this.internalReceiver = r;}
 				});
 	}
-	
+
 	/**
 	 * @return The Cursor from which this Receiver started receiving from
 	 */
@@ -139,12 +139,12 @@ public final class PartitionReceiver extends ClientEntity
 	{
 		return this.startingOffset;
 	}
-	
+
 	final boolean getOffsetInclusive()
 	{
 		return this.offsetInclusive;
 	}
-	
+
 	/**
 	 * Get EventHubs partition identifier.
 	 * @return The identifier representing the partition from which this receiver is fetching data
@@ -153,27 +153,27 @@ public final class PartitionReceiver extends ClientEntity
 	{
 		return this.partitionId;
 	}
-	
-    /**
-     * Get Prefetch Count configured on the Receiver.
-     * @return the upper limit of events this receiver will actively receive regardless of whether a receive operation is pending.
-     * @see #setPrefetchCount
-     */
+
+	/**
+	 * Get Prefetch Count configured on the Receiver.
+	 * @return the upper limit of events this receiver will actively receive regardless of whether a receive operation is pending.
+	 * @see #setPrefetchCount
+	 */
 	public final int getPrefetchCount()
 	{
 		return this.internalReceiver.getPrefetchCount();
 	}
-	
+
 	public final Duration getReceiveTimeout()
 	{
 		return this.internalReceiver.getReceiveTimeout();
 	}
-	
+
 	public void setReceiveTimeout(Duration value)
 	{
 		this.internalReceiver.setReceiveTimeout(value);
 	}
-	
+
 	/**
 	 * Set the number of events that can be pre-fetched and cached at the {@link PartitionReceiver}.
 	 * <p>By default the value is 300
@@ -186,42 +186,42 @@ public final class PartitionReceiver extends ClientEntity
 			throw new IllegalArgumentException(String.format(Locale.US, 
 					"PrefetchCount has to be between %s and %s", PartitionReceiver.MINIMUM_PREFETCH_COUNT, PartitionReceiver.MAXIMUM_PREFETCH_COUNT));
 		}
-		
+
 		this.internalReceiver.setPrefetchCount(prefetchCount);
 	}
-	
-    /**
-     * Get the epoch value that this receiver is currently using for partition ownership.
-     * <p>
-     * A value of 0 means this receiver is not an epoch-based receiver.
-     * @return the epoch value that this receiver is currently using for partition ownership.
-     */
+
+	/**
+	 * Get the epoch value that this receiver is currently using for partition ownership.
+	 * <p>
+	 * A value of 0 means this receiver is not an epoch-based receiver.
+	 * @return the epoch value that this receiver is currently using for partition ownership.
+	 */
 	public final long getEpoch()
 	{
 		return this.epoch;
 	}
-	
-    /**
+
+	/**
 	 * Synchronous version of {@link #receive}. 
 	 * @param maxEventCount maximum number of {@link EventData}'s that this call should return
 	 * @return Batch of {@link EventData}'s from the partition on which this receiver is created. Returns 'null' if no {@link EventData} is present.
 	 * @throws ServiceBusException if ServiceBus client encountered any unrecoverable/non-transient problems during {@link #receive}
 	 */
-    public final Iterable<EventData> receiveSync(final int maxEventCount) 
+	public final Iterable<EventData> receiveSync(final int maxEventCount) 
 			throws ServiceBusException
 	{
-        try
-        {
-            return this.receive(maxEventCount).get();
-        }
+		try
+		{
+			return this.receive(maxEventCount).get();
+		}
 		catch (InterruptedException|ExecutionException exception)
 		{
-            if (exception instanceof InterruptedException)
-            {
-                // Re-assert the thread's interrupted status
-                Thread.currentThread().interrupt();
-            }
-            
+			if (exception instanceof InterruptedException)
+			{
+				// Re-assert the thread's interrupted status
+				Thread.currentThread().interrupt();
+			}
+
 			Throwable throwable = exception.getCause();
 			if (throwable != null)
 			{
@@ -229,26 +229,26 @@ public final class PartitionReceiver extends ClientEntity
 				{
 					throw (RuntimeException)throwable;
 				}
-				
+
 				if (throwable instanceof ServiceBusException)
 				{
 					throw (ServiceBusException)throwable;
 				}
-				                
+
 				throw new ServiceBusException(true, throwable);
 			}
 		}
-        
+
 		return null;
-    }
-	
+	}
+
 	/** 
 	 * Receive a batch of {@link EventData}'s from an EventHub partition
-     * <p>
-     * Sample code (sample uses sync version of the api but concept are identical):
-     * <pre>
-     * EventHubClient client = EventHubClient.createFromConnectionStringSync("__connection__");
-     * PartitionReceiver receiver = client.createPartitionReceiverSync("ConsumerGroup1", "1");
+	 * <p>
+	 * Sample code (sample uses sync version of the api but concept are identical):
+	 * <pre>
+	 * EventHubClient client = EventHubClient.createFromConnectionStringSync("__connection__");
+	 * PartitionReceiver receiver = client.createPartitionReceiverSync("ConsumerGroup1", "1");
 	 * Iterable{@literal<}EventData{@literal>} receivedEvents = receiver.receiveSync();
 	 *      
 	 * while (true)
@@ -270,8 +270,8 @@ public final class PartitionReceiver extends ClientEntity
 	 *     System.out.println(String.format("ReceivedBatch Size: %s", batchSize));
 	 *     receivedEvents = receiver.receiveSync();
 	 * }
-     * </pre>
-     * @param maxEventCount maximum number of {@link EventData}'s that this call should return
+	 * </pre>
+	 * @param maxEventCount maximum number of {@link EventData}'s that this call should return
 	 * @return A completableFuture that will yield a batch of {@link EventData}'s from the partition on which this receiver is created. Returns 'null' if no {@link EventData} is present.
 	 */
 	public CompletableFuture<Iterable<EventData>> receive(final int maxEventCount)
@@ -314,7 +314,7 @@ public final class PartitionReceiver extends ClientEntity
 		{
 			this.onReceivePumpThread.interrupt();
 		}
-		
+
 		if (this.internalReceiver != null)
 		{
 			return this.internalReceiver.close();
@@ -324,7 +324,7 @@ public final class PartitionReceiver extends ClientEntity
 			return CompletableFuture.completedFuture(null);
 		}
 	}
-	
+
 	private void startOnReceivePump()
 	{
 		this.onReceivePumpThread = new Thread(new Runnable()
@@ -336,7 +336,7 @@ public final class PartitionReceiver extends ClientEntity
 				{
 					PartitionReceiver.this.isOnReceivePumpRunning = true;
 				}
-				
+
 				while(PartitionReceiver.this.isOnReceivePumpRunning)
 				{
 					Iterable<EventData> receivedEvents = null;
@@ -352,7 +352,7 @@ public final class PartitionReceiver extends ClientEntity
 						{
 							continue;
 						}
-						
+
 						Throwable cause = clientException.getCause();
 						if (cause != null && 
 								((cause instanceof ServiceBusException && ((ServiceBusException) cause).getIsTransient()) ||
@@ -369,7 +369,7 @@ public final class PartitionReceiver extends ClientEntity
 								{
 									PartitionReceiver.this.isOnReceivePumpRunning = false;
 								}
-								
+
 								PartitionReceiver.this.onReceiveHandler.onClose(userCodeError);
 							}
 						}
@@ -379,18 +379,18 @@ public final class PartitionReceiver extends ClientEntity
 							{
 								PartitionReceiver.this.isOnReceivePumpRunning = false;
 							}
-							
+
 							PartitionReceiver.this.onReceiveHandler.onClose(cause);
 						}
-						
+
 						if (clientException instanceof InterruptedException)
 						{
 							Thread.currentThread().interrupt();
 						}
-						
+
 						return;
 					}
-					
+
 					if (receivedEvents != null && receivedEvents.iterator().hasNext())
 					{
 						try
@@ -403,21 +403,21 @@ public final class PartitionReceiver extends ClientEntity
 							{
 								PartitionReceiver.this.isOnReceivePumpRunning = false;
 							}
-							
+
 							PartitionReceiver.this.onReceiveHandler.onClose(userCodeError);
-							
+
 							if (userCodeError instanceof InterruptedException)
 							{
 								Thread.currentThread().interrupt();
 							}
-							
+
 							return;
 						}
 					}
 				}						
 			}
 		});
-			
+
 		this.onReceivePumpThread.start();
 	}
 }

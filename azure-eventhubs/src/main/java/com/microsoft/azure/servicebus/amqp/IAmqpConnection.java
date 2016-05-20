@@ -10,10 +10,10 @@ import org.apache.qpid.proton.engine.Link;
 public interface IAmqpConnection
 {
 	void onOpenComplete(Exception exception);
-	
+
 	void onConnectionError(ErrorCondition error);
-	
+
 	void registerForConnectionError(Link link);
-	
+
 	void deregisterForConnectionError(Link link);
 }

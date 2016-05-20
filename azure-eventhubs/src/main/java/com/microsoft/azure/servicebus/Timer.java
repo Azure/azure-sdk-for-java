@@ -18,11 +18,11 @@ import java.util.logging.Logger;
 final class Timer
 {
 	private static ScheduledThreadPoolExecutor executor = null;
-	
+
 	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
 	private static final HashSet<String> references = new HashSet<String>();
 	private static final Object syncReferences = new Object();
-	
+
 	private Timer() 
 	{
 	}
@@ -34,23 +34,23 @@ final class Timer
 	{
 		switch (timerType)
 		{
-			case OneTimeRun:
-				long seconds = runFrequency.getSeconds();
-				if (seconds > 0)
-					executor.schedule(runnable, seconds, TimeUnit.SECONDS);
-				else
-					executor.schedule(runnable, runFrequency.toMillis(), TimeUnit.MILLISECONDS);
-				break;
-			
-			case RepeatRun:
-				executor.scheduleWithFixedDelay(runnable, runFrequency.getSeconds(), runFrequency.getSeconds(), TimeUnit.SECONDS);
-				break;
-				
-			default:
-				throw new UnsupportedOperationException("Unsupported timer pattern.");
+		case OneTimeRun:
+			long seconds = runFrequency.getSeconds();
+			if (seconds > 0)
+				executor.schedule(runnable, seconds, TimeUnit.SECONDS);
+			else
+				executor.schedule(runnable, runFrequency.toMillis(), TimeUnit.MILLISECONDS);
+			break;
+
+		case RepeatRun:
+			executor.scheduleWithFixedDelay(runnable, runFrequency.getSeconds(), runFrequency.getSeconds(), TimeUnit.SECONDS);
+			break;
+
+		default:
+			throw new UnsupportedOperationException("Unsupported timer pattern.");
 		}
 	}
-	
+
 	static void register(final String clientId)
 	{
 		synchronized (syncReferences)
@@ -63,14 +63,14 @@ final class Timer
 					TRACE_LOGGER.log(Level.FINE, 
 							String.format(Locale.US, "Starting ScheduledThreadPoolExecutor with coreThreadPoolSize: %s", corePoolSize));
 				}
-				
+
 				executor = new ScheduledThreadPoolExecutor(corePoolSize);
 			}
-			
+
 			references.add(clientId);
 		}
 	}
-	
+
 	static void unregister(final String clientId)
 	{
 		synchronized (syncReferences)
@@ -81,7 +81,7 @@ final class Timer
 				{
 					TRACE_LOGGER.log(Level.FINE, "Shuting down ScheduledThreadPoolExecutor.");
 				}
-				
+
 				executor.shutdownNow();
 			}
 		}

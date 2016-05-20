@@ -7,11 +7,11 @@ package com.microsoft.azure.servicebus;
 public final class TrackingUtil
 {
 	public static final String TRACKING_ID_TOKEN_SEPARATOR = "_"; 
-	
+
 	private TrackingUtil()
 	{
 	}
-	
+
 	/**
 	 * parses ServiceBus role identifiers from trackingId  
 	 * @return null if no roleIdentifier found
@@ -22,7 +22,7 @@ public final class TrackingUtil
 		{
 			return null;
 		}
-		
+
 		return trackingId.substring(trackingId.indexOf(TRACKING_ID_TOKEN_SEPARATOR));
 	}
 }

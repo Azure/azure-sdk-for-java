@@ -20,18 +20,18 @@ public final class PartitionSender extends ClientEntity
 	private final String partitionId;
 	private final String eventHubName;
 	private final MessagingFactory factory;
-	
+
 	private MessageSender internalSender;
-		
+
 	private PartitionSender(MessagingFactory factory, String eventHubName, String partitionId)
 	{
 		super(null, null);
-		
+
 		this.partitionId = partitionId;
 		this.eventHubName = eventHubName;
 		this.factory = factory;
 	}
-	
+
 	/**
 	 * Internal-Only: factory pattern to Create EventHubSender
 	 */
@@ -47,7 +47,7 @@ public final class PartitionSender extends ClientEntity
 					}
 				});
 	}
-	
+
 	private CompletableFuture<Void> createInternalSender() throws ServiceBusException
 	{
 		return MessageSender.create(this.factory, StringUtil.getRandomString(), 
@@ -57,27 +57,27 @@ public final class PartitionSender extends ClientEntity
 					public void accept(MessageSender a) { PartitionSender.this.internalSender = a;}
 				});
 	}
-	
-    /**
+
+	/**
 	 * Synchronous version of {@link #send(EventData)} Api. 
 	 * @param data the {@link EventData} to be sent.
 	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
 	 */
-    public final void sendSync(final EventData data) 
+	public final void sendSync(final EventData data) 
 			throws ServiceBusException
 	{
-        try
-        {
-            this.send(data).get();
-        }
+		try
+		{
+			this.send(data).get();
+		}
 		catch (InterruptedException|ExecutionException exception)
 		{
-            if (exception instanceof InterruptedException)
-            {
-                // Re-assert the thread's interrupted status
-                Thread.currentThread().interrupt();
-            }
-            
+			if (exception instanceof InterruptedException)
+			{
+				// Re-assert the thread's interrupted status
+				Thread.currentThread().interrupt();
+			}
+
 			Throwable throwable = exception.getCause();
 			if (throwable != null)
 			{
@@ -85,17 +85,17 @@ public final class PartitionSender extends ClientEntity
 				{
 					throw (RuntimeException)throwable;
 				}
-				
+
 				if (throwable instanceof ServiceBusException)
 				{
 					throw (ServiceBusException)throwable;
 				}
-				                
+
 				throw new ServiceBusException(true, throwable);
 			}
 		}
-    }
-    
+	}
+
 	/**
 	 * Send {@link EventData} to a specific EventHub partition. The target partition is pre-determined when this PartitionSender was created.
 	 * This send pattern emphasize data correlation over general availability and latency.
@@ -123,27 +123,27 @@ public final class PartitionSender extends ClientEntity
 	{
 		return this.internalSender.send(data.toAmqpMessage());
 	}
-	
-    /**
+
+	/**
 	 * Synchronous version of {@link #send(Iterable)} .
 	 * @param eventDatas batch of events to send to EventHub
 	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
 	 */
-    public final void sendSync(final Iterable<EventData> eventDatas) 
+	public final void sendSync(final Iterable<EventData> eventDatas) 
 			throws ServiceBusException
 	{
-        try
-        {
-            this.send(eventDatas).get();
-        }
+		try
+		{
+			this.send(eventDatas).get();
+		}
 		catch (InterruptedException|ExecutionException exception)
 		{
-            if (exception instanceof InterruptedException)
-            {
-                // Re-assert the thread's interrupted status
-                Thread.currentThread().interrupt();
-            }
-            
+			if (exception instanceof InterruptedException)
+			{
+				// Re-assert the thread's interrupted status
+				Thread.currentThread().interrupt();
+			}
+
 			Throwable throwable = exception.getCause();
 			if (throwable != null)
 			{
@@ -151,17 +151,17 @@ public final class PartitionSender extends ClientEntity
 				{
 					throw (RuntimeException)throwable;
 				}
-				
+
 				if (throwable instanceof ServiceBusException)
 				{
 					throw (ServiceBusException)throwable;
 				}
-				                
+
 				throw new ServiceBusException(true, throwable);
 			}
 		}
-    }
-	
+	}
+
 	/**
 	 * Send {@link EventData} to a specific EventHub partition. The targeted partition is pre-determined when this PartitionSender was created.
 	 * <p>
@@ -172,31 +172,31 @@ public final class PartitionSender extends ClientEntity
 	 * i.	Efficient send - sending a batch of {@link EventData} maximizes the overall throughput by optimally using the number of sessions created to EventHubs' service.
 	 * ii.	Send multiple {@link EventData}'s in a Transaction. To achieve ACID properties, the Gateway Service will forward all {@link EventData}'s in the batch to a single EventHubs' partition.
 	 * </pre>
-     * <p>
-     * Sample code (sample uses sync version of the api but concept are identical):
-     * <pre>
-     * Gson gson = new GsonBuilder().create();
-     * EventHubClient client = EventHubClient.createFromConnectionStringSync("__connection__");
-     * PartitionSender senderToPartitionOne = client.createPartitionSenderSync("1");
-     *         
-     * while (true)
-     * {
-     *     LinkedList{@literal<}EventData{@literal>} events = new LinkedList{@literal<}EventData{@literal>}();
-     *     for (int count = 1; count {@literal<} 11; count++)
-     *     {
-     *         PayloadEvent payload = new PayloadEvent(count);
-     *         byte[] payloadBytes = gson.toJson(payload).getBytes(Charset.defaultCharset());
-     *         EventData sendEvent = new EventData(payloadBytes);
-     *         Map{@literal<}String, String{@literal>} applicationProperties = new HashMap{@literal<}String, String{@literal>}();
-     *         applicationProperties.put("from", "javaClient");
-     *         sendEvent.setProperties(applicationProperties);
-     *         events.add(sendEvent);
-     *     }
-     *         
-     *     senderToPartitionOne.sendSync(events);
-     *     System.out.println(String.format("Sent Batch... Size: %s", events.size()));
-     * }		
-     * </pre>
+	 * <p>
+	 * Sample code (sample uses sync version of the api but concept are identical):
+	 * <pre>
+	 * Gson gson = new GsonBuilder().create();
+	 * EventHubClient client = EventHubClient.createFromConnectionStringSync("__connection__");
+	 * PartitionSender senderToPartitionOne = client.createPartitionSenderSync("1");
+	 *         
+	 * while (true)
+	 * {
+	 *     LinkedList{@literal<}EventData{@literal>} events = new LinkedList{@literal<}EventData{@literal>}();
+	 *     for (int count = 1; count {@literal<} 11; count++)
+	 *     {
+	 *         PayloadEvent payload = new PayloadEvent(count);
+	 *         byte[] payloadBytes = gson.toJson(payload).getBytes(Charset.defaultCharset());
+	 *         EventData sendEvent = new EventData(payloadBytes);
+	 *         Map{@literal<}String, String{@literal>} applicationProperties = new HashMap{@literal<}String, String{@literal>}();
+	 *         applicationProperties.put("from", "javaClient");
+	 *         sendEvent.setProperties(applicationProperties);
+	 *         events.add(sendEvent);
+	 *     }
+	 *         
+	 *     senderToPartitionOne.sendSync(events);
+	 *     System.out.println(String.format("Sent Batch... Size: %s", events.size()));
+	 * }		
+	 * </pre>
 	 * @param eventDatas batch of events to send to EventHub
 	 * @return     a CompletableFuture that can be completed when the send operations is done..
 	 * @throws PayloadSizeExceededException    if the total size of the {@link EventData} exceeds a pre-defined limit set by the service. Default is 256k bytes.
@@ -209,7 +209,7 @@ public final class PartitionSender extends ClientEntity
 		{
 			throw new IllegalArgumentException("EventData batch cannot be empty.");
 		}
-        
+
 		return this.internalSender.send(EventDataUtil.toAmqpMessages(eventDatas));
 	}
 

@@ -9,6 +9,6 @@ import org.apache.qpid.proton.engine.Delivery;
 public interface IAmqpSender extends IAmqpLink
 {
 	void onFlow();
-	
+
 	void onSendComplete(final Delivery delivery);
 }

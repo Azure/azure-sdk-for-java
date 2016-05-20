@@ -17,11 +17,11 @@ public final class RetryExponential extends RetryPolicy
 	private final Duration maximumBackoff;
 	private final int maximumRetryCount;
 	private final double retryFactor;
-	
+
 	public RetryExponential(final Duration minimumBackoff, final Duration maximumBackoff, final int maximumRetryCount, final String name)
 	{
 		super(name);
-		
+
 		this.minimumBackoff = minimumBackoff;
 		this.maximumBackoff = maximumBackoff;
 		this.maximumRetryCount = maximumRetryCount;
@@ -32,17 +32,17 @@ public final class RetryExponential extends RetryPolicy
 	protected Duration onGetNextRetryInterval(final String clientId, final Exception lastException, final Duration remainingTime, final int baseWaitTimeSecs)
 	{
 		int currentRetryCount = this.getRetryCount(clientId);
-	
+
 		if (currentRetryCount >= this.maximumRetryCount)
 		{
 			return null;
 		}
-		
+
 		if (!RetryPolicy.isRetryableException(lastException))
 		{
 			return null;
 		}
-		
+
 		double nextRetryInterval = Math.pow(this.retryFactor, (double)currentRetryCount);
 		long nextRetryIntervalSeconds = (long) nextRetryInterval ;
 		long nextRetryIntervalNano = (long)((nextRetryInterval - (double)nextRetryIntervalSeconds) * 1000000000);
@@ -50,13 +50,13 @@ public final class RetryExponential extends RetryPolicy
 		{
 			return null;
 		}
-		
+
 		Duration retryAfter = this.minimumBackoff.plus(Duration.ofSeconds(nextRetryIntervalSeconds, nextRetryIntervalNano));
 		retryAfter = retryAfter.plus(Duration.ofSeconds(baseWaitTimeSecs));
 
 		return retryAfter;
 	}
-	
+
 	private double computeRetryFactor()
 	{
 		long deltaBackoff = this.maximumBackoff.minus(this.minimumBackoff).getSeconds();
@@ -64,7 +64,7 @@ public final class RetryExponential extends RetryPolicy
 		{
 			return 0;
 		}
-		
+
 		return (Math.log(deltaBackoff) / Math.log(this.maximumRetryCount));
 	}
 }
