@@ -10,6 +10,9 @@ import com.microsoft.azure.management.resources.implementation.api.ProvidersInne
 
 import java.io.IOException;
 
+/**
+ *
+ */
 final class ProvidersImpl
         implements Providers {
     private final ProvidersInner client;

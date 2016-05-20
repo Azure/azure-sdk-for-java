@@ -12,7 +12,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ResourceGroupImpl extends
+/**
+ * An instance of this class provides access to a resource group in Azure.
+ */
+final class ResourceGroupImpl extends
         CreatableImpl<ResourceGroup, ResourceGroupInner>
         implements
         ResourceGroup,
@@ -23,15 +26,11 @@ public class ResourceGroupImpl extends
     private final ResourceGroupsInner client;
     private final ResourceManagementClientImpl serviceClient;
 
-    public ResourceGroupImpl(final ResourceGroupInner innerModel, final ResourceManagementClientImpl serviceClient) {
+    ResourceGroupImpl(final ResourceGroupInner innerModel, final ResourceManagementClientImpl serviceClient) {
         super(innerModel.name(), innerModel);
         this.client = serviceClient.resourceGroups();
         this.serviceClient = serviceClient;
     }
-
-    /***********************************************************
-     * Getters
-     ***********************************************************/
 
     @Override
     public String name() {
@@ -53,10 +52,6 @@ public class ResourceGroupImpl extends
         return Collections.unmodifiableMap(this.inner().tags());
     }
 
-    /**************************************************************
-     * Setters (fluent interface)
-     **************************************************************/
-
     @Override
     public ResourceGroupImpl withLocation(String regionName) {       //  FLUENT: implementation of ResourceGroup.DefinitionBlank
         this.inner().setLocation(regionName);                        //
@@ -76,7 +71,7 @@ public class ResourceGroupImpl extends
 
     @Override
     public ResourceGroupImpl withTag(String key, String value) {      //  FLUENT: implementation of ResourceGroup.DefinitionCreatable
-        if(this.inner().tags() == null) {                             //  ResourceGroup.Update.UpdateBlank.Taggable<Update>
+        if (this.inner().tags() == null) {                             //  ResourceGroup.Update.UpdateBlank.Taggable<Update>
             this.inner().setTags(new HashMap<String, String>());
         }
         this.inner().tags().put(key, value);
@@ -89,10 +84,6 @@ public class ResourceGroupImpl extends
         return this;
     }
 
-    /************************************************************
-     * Verbs
-     ************************************************************/
-
     @Override
     public ResourceGroupImpl apply() throws Exception {             //  FLUENT: implementation of ResourceGroup.Update.Updatable<T>
         ResourceGroupInner params = new ResourceGroupInner();
@@ -101,18 +92,21 @@ public class ResourceGroupImpl extends
         params.setTags(this.inner().tags());
 
         // Figure out the location, since the SDK requires on the params explicitly even though it cannot be changed
-        if(this.inner().location() != null) {
+        if (this.inner().location() != null) {
             params.setLocation(this.inner().location());
-        } else if(null == (group = client.get(this.key).getBody())) {
-            throw new Exception("Resource group not found");
         } else {
-            params.setLocation(group.location());
+            group = client.get(this.key).getBody();
+            if (null == group) {
+                throw new Exception("Resource group not found");
+            } else {
+                params.setLocation(group.location());
+            }
         }
 
         client.createOrUpdate(this.key, params);
         return this;
     }
-    
+
     @Override
     public ResourceGroupImpl create() throws Exception {          //  FLUENT: implementation of ResourceGroup.DefinitionCreatable.Creatable<ResourceGroup>
         ResourceGroupInner params = new ResourceGroupInner();

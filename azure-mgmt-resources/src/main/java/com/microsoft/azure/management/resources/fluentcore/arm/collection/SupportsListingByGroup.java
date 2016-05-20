@@ -1,22 +1,8 @@
 /**
-* Copyright (c) Microsoft Corporation
-* 
-* All rights reserved. 
-* 
-* MIT License
-* 
-* Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files 
-* (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, 
-* publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, 
-* subject to the following conditions:
-* 
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-* 
-* THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR 
-* ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
-* THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 
 package com.microsoft.azure.management.resources.fluentcore.arm.collection;
 
@@ -24,14 +10,21 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 
 import java.io.IOException;
-import java.util.List;
 
+/**
+ * Defines the base interface for resources that support listing resources
+ * in a resource group.
+ *
+ * @param <T> the type of the resources listed.
+ */
 public interface SupportsListingByGroup<T> {
-	/**
-	 * List of the entities in a specific group
-	 * @param groupName
-	 * @return
-	 * @throws Exception
-	 */
-	PagedList<T> list(String groupName) throws CloudException, IOException;
+    /**
+     * List resources in the resource group.
+     *
+     * @param groupName the name of the resource group.
+     * @return the list of resources.
+     * @throws CloudException exception thrown from the cloud.
+     * @throws IOException exception thrown from serialization/deserialization.
+     */
+    PagedList<T> list(String groupName) throws CloudException, IOException;
 }

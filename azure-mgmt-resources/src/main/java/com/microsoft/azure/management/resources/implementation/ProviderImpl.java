@@ -7,7 +7,11 @@ import com.microsoft.azure.management.resources.implementation.api.ProviderResou
 
 import java.util.List;
 
-class ProviderImpl extends
+/**
+ * An instance of this class provides access to information of a resource
+ * provider in Azure.
+ */
+final class ProviderImpl extends
         IndexableWrapperImpl<ProviderInner>
         implements
         Provider {
@@ -15,10 +19,6 @@ class ProviderImpl extends
     ProviderImpl(ProviderInner provider) {
         super(provider.id(), provider);
     }
-
-    /***********************************************************
-     * Getters
-     ***********************************************************/
 
     @Override
     public String namespace() {

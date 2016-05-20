@@ -4,10 +4,13 @@ import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import okhttp3.logging.HttpLoggingInterceptor;
 
-public abstract class ResourceManagerTestBase {
+/**
+ * The base for resource manager tests.
+ */
+abstract class ResourceManagerTestBase {
     protected static ResourceManager resourceClient;
 
-    public static void createClient() throws Exception {
+    static void createClient() throws Exception {
         resourceClient = ResourceManager
                 .configure()
                 .withLogLevel(HttpLoggingInterceptor.Level.BASIC)

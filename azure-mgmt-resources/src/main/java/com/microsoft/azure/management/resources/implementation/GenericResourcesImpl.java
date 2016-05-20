@@ -13,14 +13,17 @@ import com.microsoft.azure.management.resources.implementation.api.GenericResour
 import java.io.IOException;
 import java.util.List;
 
-public final class GenericResourcesImpl
+/**
+ * An instance of this class provides access to generic resources in Azure.
+ */
+final class GenericResourcesImpl
     implements GenericResources {
 
     private final ResourceManagementClientImpl serviceClient;
     private final ResourcesInner resources;
     private final ResourceGroupsInner resourceGroups;
 
-    public GenericResourcesImpl(ResourceManagementClientImpl serviceClient) {
+    GenericResourcesImpl(ResourceManagementClientImpl serviceClient) {
         this.serviceClient = serviceClient;
         this.resources = serviceClient.resources();
         this.resourceGroups = serviceClient.resourceGroups();

@@ -11,12 +11,15 @@ import com.microsoft.azure.management.resources.implementation.api.ResourceGroup
 
 import java.io.IOException;
 
-public class ResourceGroupsImpl
+/**
+ * An instance of this class provides access to resource groups in Azure.
+ */
+final class ResourceGroupsImpl
         implements ResourceGroups {
     private final ResourceGroupsInner client;
     private final ResourceManagementClientImpl serviceClient;
 
-    public ResourceGroupsImpl(final ResourceManagementClientImpl serviceClient) {
+    ResourceGroupsImpl(final ResourceManagementClientImpl serviceClient) {
         this.serviceClient = serviceClient;
         this.client = serviceClient.resourceGroups();
     }
@@ -57,8 +60,6 @@ public class ResourceGroupsImpl
     public boolean checkExistence(String name) throws CloudException, IOException {
         return client.checkExistence(name).getBody();
     }
-
-    /** Fluent model create helpers **/
 
     private ResourceGroupImpl createFluentModel(String name) {
         ResourceGroupInner resourceGroupInner = new ResourceGroupInner();

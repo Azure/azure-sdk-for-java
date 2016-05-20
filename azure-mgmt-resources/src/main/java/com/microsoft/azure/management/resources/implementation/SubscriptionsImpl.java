@@ -2,21 +2,22 @@ package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.resources.Subscriptions;
-import com.microsoft.azure.management.resources.implementation.api.SubscriptionClientImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-import com.microsoft.azure.management.resources.implementation.api.SubscriptionsInner;
 import com.microsoft.azure.management.resources.Subscription;
+import com.microsoft.azure.management.resources.Subscriptions;
+import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.api.SubscriptionInner;
+import com.microsoft.azure.management.resources.implementation.api.SubscriptionsInner;
 
 import java.io.IOException;
-import java.util.List;
 
-public final class SubscriptionsImpl
+/**
+ * An instance of this class provides access to subscriptions in Azure.
+ */
+final class SubscriptionsImpl
         implements Subscriptions {
     private final SubscriptionsInner client;
 
-    public SubscriptionsImpl(final SubscriptionsInner client) {
+    SubscriptionsImpl(final SubscriptionsInner client) {
         this.client = client;
     }
 

@@ -3,15 +3,13 @@ package com.microsoft.azure.management.resources;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.resources.implementation.api.LocationInner;
-import com.microsoft.azure.management.resources.implementation.api.SubscriptionInner;
-import com.microsoft.azure.management.resources.implementation.api.SubscriptionPolicies;
 
 /**
  * Defines an interface for accessing a location in Azure.
  */
 public interface Location extends
         Indexable,
-        Wrapper<LocationInner>{
+        Wrapper<LocationInner> {
     /**
      * Get the subscription Id.
      *
