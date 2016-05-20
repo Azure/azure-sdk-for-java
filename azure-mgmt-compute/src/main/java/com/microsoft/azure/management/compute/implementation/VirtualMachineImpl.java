@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * The type representing Azure virtual machine.
+ */
 class VirtualMachineImpl
         extends GroupableResourceImpl<VirtualMachine, VirtualMachineInner, VirtualMachineImpl>
         implements
@@ -507,6 +510,6 @@ class VirtualMachineImpl
     }
 
     private String blobUrl(String storageAccountName, String containerName, String blobName) {
-        return storageAccountName + ".blob.core.windows.net" + "/" + containerName + "/" + blobName ;
+        return storageAccountName + ".blob.core.windows.net" + "/" + containerName + "/" + blobName;
     }
 }

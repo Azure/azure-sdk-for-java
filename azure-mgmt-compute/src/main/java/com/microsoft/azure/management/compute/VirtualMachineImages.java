@@ -17,8 +17,8 @@ public interface VirtualMachineImages extends
      *
      * @param region The region
      * @return The list of VM image publishers
-     * @throws CloudException
-     * @throws IOException
+     * @throws CloudException Thrown for an invalid response from the service.
+     * @throws IOException Thrown for IO exception.
      */
     List<VirtualMachineImage.Publisher> listPublishers(final Region region) throws CloudException, IOException;
 }

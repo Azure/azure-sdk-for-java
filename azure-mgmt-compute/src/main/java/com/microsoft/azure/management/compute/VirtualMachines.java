@@ -26,10 +26,14 @@ public interface VirtualMachines extends
      *
      * @param region The region upon which virtual-machine-sizes is queried.
      * @return the List&lt;VirtualMachineSize&gt; if successful.
-     * @throws CloudException
-     * @throws IOException
+     * @throws CloudException Thrown for an invalid response from the service.
+     * @throws IOException Thrown for IO exception.
      */
     PagedList<VirtualMachineSize> listSizes(String region) throws CloudException, IOException;
+
+    /**
+     * A type representing Azure virtual machine under a resource gorup.
+     */
     interface InGroup extends
             SupportsListing<VirtualMachine>,
             SupportsCreating<VirtualMachine.DefinitionBlank>,
