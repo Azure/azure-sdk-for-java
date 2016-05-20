@@ -46,6 +46,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	private final CompletableFuture<Void> closeTask;
 	private final ConnectionHandler connectionHandler;
 	private final ReactorHandler reactorHandler;
+	private final LinkedList<Link> registeredLinks;
 	
 	private Reactor reactor;
 	private Thread reactorThread;
@@ -56,7 +57,6 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	private RetryPolicy retryPolicy;
 	private CompletableFuture<MessagingFactory> open;
 	private CompletableFuture<Connection> openConnection;
-	private LinkedList<Link> registeredLinks;
 	private TimeoutTracker connectionCreateTracker;
 	private Instant timeoutErrorStart;
 	private Object resetConnectionSync;
