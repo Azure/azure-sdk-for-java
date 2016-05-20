@@ -29,11 +29,16 @@ public class AzureTests {
 
     public static void main(String[] args) throws IOException, CloudException {
         final File credFile = new File("my.azureauth");
-        Azure azure = Azure.authenticate(credFile)
-                .withDefaultSubscription();
+        Azure azure = Azure.authenticate(credFile).withDefaultSubscription();
         System.out.println(String.valueOf(azure.resourceGroups().list().size()));
 
         Azure.configure().withLogLevel(Level.BASIC).authenticate(credFile);
+        System.out.println("Selected subscription: " + azure.subscriptionId());
+        System.out.println(String.valueOf(azure.resourceGroups().list().size()));
+        
+        final File authFileNoSubscription = new File("nosub.azureauth");
+        azure = Azure.authenticate(authFileNoSubscription).withDefaultSubscription();
+        System.out.println("Selected subscription: " + azure.subscriptionId());
         System.out.println(String.valueOf(azure.resourceGroups().list().size()));
     }
 
