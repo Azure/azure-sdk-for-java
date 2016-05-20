@@ -242,11 +242,6 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		
 		if (!messageSent)
 		{
-			if (this.sendLink.getLocalState() == EndpointState.CLOSED || this.sendLink.getRemoteState() == EndpointState.CLOSED)
-			{
-				this.scheduleRecreate(Duration.ofSeconds(0));
-			}
-			
 			if (!this.pendingSendsWaitingForCredit.contains(tag))
 			{
 				if (onSend != null)

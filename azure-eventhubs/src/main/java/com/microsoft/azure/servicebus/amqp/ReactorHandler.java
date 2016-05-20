@@ -25,7 +25,7 @@ public class ReactorHandler extends BaseHandler
             TRACE_LOGGER.log(Level.FINE, "reactor.onReactorInit");
         }
 		
-		Reactor reactor = e.getReactor();
+		final Reactor reactor = e.getReactor();
 		reactor.setTimeout(ClientConstants.REACTOR_IO_POLL_TIMEOUT);
 	}
     

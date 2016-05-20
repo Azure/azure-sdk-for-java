@@ -44,10 +44,11 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	private final Object connectionLock = new Object();
 	private final String hostName;
 	private final CompletableFuture<Void> closeTask;
+	private final ConnectionHandler connectionHandler;
+	private final ReactorHandler reactorHandler;
 	
 	private Reactor reactor;
 	private Thread reactorThread;
-	private ConnectionHandler connectionHandler;
 	private Connection connection;
 	private boolean waitingConnectionOpen;
 	
@@ -63,29 +64,32 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	/**
 	 * @param reactor parameter reactor is purely for testing purposes and the SDK code should always set it to null
 	 */
-	MessagingFactory(final ConnectionStringBuilder builder) throws IOException
+	MessagingFactory(final ConnectionStringBuilder builder)
 	{
 		super("MessagingFactory".concat(StringUtil.getRandomString()), null);
 		
 		Timer.register(this.getClientId());
 		this.hostName = builder.getEndpoint().getHost();
 		this.timeoutErrorStart = Instant.MAX;
-		
-		this.startReactor(new ReactorHandler()
-		{
-			@Override
-			public void onReactorFinal(Event e)
-		    {
-				super.onReactorFinal(e);
-				MessagingFactory.this.onReactorError(new ServiceBusException(true, String.format(Locale.US, "Reactor finalized, %s", ExceptionUtil.getTrackingIDAndTimeToLog())));
-		    }
-		});
-		
 		this.operationTimeout = builder.getOperationTimeout();
 		this.retryPolicy = builder.getRetryPolicy();
 		this.registeredLinks = new LinkedList<Link>();
 		this.resetConnectionSync = new Object();
 		this.closeTask = new CompletableFuture<Void>();
+		this.connectionHandler = new ConnectionHandler(this, 
+				builder.getEndpoint().getHost(), builder.getSasKeyName(), builder.getSasKey());
+		
+		this.reactorHandler = new ReactorHandler()
+		{
+			@Override
+			public void onReactorInit(Event e)
+			{
+				super.onReactorInit(e);
+				
+				final Reactor reactor = e.getReactor();
+				MessagingFactory.this.connection = reactor.connection(MessagingFactory.this.connectionHandler);
+			}
+		};
 	}
 	
 	String getHostName()
@@ -93,15 +97,11 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		return this.hostName;
 	}
 	
-	private void createConnection(ConnectionStringBuilder builder)
+	private void createConnection(ConnectionStringBuilder builder) throws IOException
 	{
-		assert this.reactor != null;
-		
-		this.connectionHandler = new ConnectionHandler(this, 
-				builder.getEndpoint().getHost(), builder.getSasKeyName(), builder.getSasKey());
-		this.waitingConnectionOpen = true;
-		this.connection = reactor.connection(this.connectionHandler);
 		this.open = new CompletableFuture<MessagingFactory>();
+		this.waitingConnectionOpen = true;
+		this.startReactor(this.reactorHandler);
 	}
 
 	private void startReactor(ReactorHandler reactorHandler) throws IOException
@@ -115,33 +115,16 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	public CompletableFuture<Connection> getConnection()
 	{
 		if (this.connection.getLocalState() == EndpointState.CLOSED
-				|| (this.connectionCreateTracker != null && this.connectionCreateTracker.remaining().minus(ClientConstants.TIMER_TOLERANCE).isNegative()))
+				|| (this.connectionCreateTracker != null && !this.connectionCreateTracker.remaining().minus(ClientConstants.TIMER_TOLERANCE).isNegative()))
 		{
 			synchronized (this.connectionLock)
 			{
 				if ((this.connection.getLocalState() == EndpointState.CLOSED && !this.waitingConnectionOpen)
-						|| (this.connectionCreateTracker != null && this.connectionCreateTracker.remaining().minus(ClientConstants.TIMER_TOLERANCE).isNegative()))
+						|| (this.connectionCreateTracker != null && !this.connectionCreateTracker.remaining().minus(ClientConstants.TIMER_TOLERANCE).isNegative()))
 				{
 					try
 					{
-						this.startReactor(new ReactorHandler()
-						{
-							@Override
-							public void onReactorInit(Event e)
-							{
-								super.onReactorInit(e);
-								
-								Reactor reactor = e.getReactor();
-								MessagingFactory.this.connection = reactor.connection(MessagingFactory.this.connectionHandler);
-							}
-							
-							@Override
-							public void onReactorFinal(Event e)
-						    {
-								super.onReactorFinal(e);
-								MessagingFactory.this.onReactorError(new ServiceBusException(true, String.format(Locale.US, "Reactor finalized, %s", ExceptionUtil.getTrackingIDAndTimeToLog())));
-						    }
-						});
+						this.startReactor(this.reactorHandler);
 					}
 					catch (IOException e)
 					{
@@ -212,20 +195,29 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	@Override
 	public void onConnectionError(ErrorCondition error)
 	{
-		Connection currentConnection = this.connection;
-		
-		Iterator<Link> literator = this.registeredLinks.iterator();
-		while (literator.hasNext())
+		if (this.reactorThread != null && !this.reactorThread.isInterrupted())
 		{
-			Link link = literator.next();
-			if (link.getLocalState() != EndpointState.CLOSED)
-			{
-				link.close();
-			}
+			this.reactorThread.interrupt();
 		}
 		
-		try
+		if (!this.open.isDone())
 		{
+			this.onOpenComplete(ExceptionUtil.toException(error));
+		}
+		else
+		{
+			final Connection currentConnection = this.connection;
+			Iterator<Link> literator = this.registeredLinks.iterator();
+			
+			while (literator.hasNext())
+			{
+				Link link = literator.next();
+				if (link.getLocalState() != EndpointState.CLOSED)
+				{
+					link.close();
+				}
+			}
+			
 			if (currentConnection.getLocalState() != EndpointState.CLOSED)
 			{
 				currentConnection.close();
@@ -243,10 +235,6 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 				}
 			}
 		}
-		finally
-		{
-			currentConnection.free();
-		}
 		
 		if (this.getIsClosingOrClosed() && !this.closeTask.isDone())
 		{
@@ -257,40 +245,29 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	
 	private void onReactorError(Exception cause)
 	{
-		Connection currentConnection = this.connection;
-		
 		if (!this.open.isDone())
 		{
-			try
+			this.onOpenComplete(cause);
+		}
+		else
+		{
+			final Connection currentConnection = this.connection;
+			
+			Iterator<Link> literator = this.registeredLinks.iterator();
+			while (literator.hasNext())
 			{
-				this.onOpenComplete(cause);
-			}
-			finally
-			{
-				currentConnection.free();
+				Link link = literator.next();
+				if (link.getLocalState() != EndpointState.CLOSED)
+				{
+					link.close();
+				}
 			}
 			
-			return;
-		}
-
-		
-		Iterator<Link> literator = this.registeredLinks.iterator();
-		while (literator.hasNext())
-		{
-			Link link = literator.next();
-			if (link.getLocalState() != EndpointState.CLOSED)
-			{
-				link.close();
-			}
-		}
-		
-		try
-		{
-			if (currentConnection != null && currentConnection.getLocalState() != EndpointState.CLOSED)
+			if (currentConnection.getLocalState() != EndpointState.CLOSED)
 			{
 				currentConnection.close();
 			}
-			
+
 			literator = this.registeredLinks.iterator();
 			while (literator.hasNext())
 			{
@@ -302,10 +279,6 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 					linkHandler.processOnClose(link, cause);
 				}
 			}
-		}
-		finally
-		{
-			currentConnection.free();
 		}
 	}
 	
@@ -347,11 +320,11 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 
 	private class RunReactor implements Runnable
 	{
-		private Reactor r;
+		final private Reactor rctr;
 		
-		public RunReactor(Reactor r)
+		public RunReactor(final Reactor reactor)
 		{
-			this.r = r;
+			this.rctr = reactor;
 		}
 		
 		public void run()
@@ -363,7 +336,10 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 			
 			try
 			{
-				this.r.run();
+				this.rctr.setTimeout(3141);
+		        this.rctr.start();
+		        while(!Thread.interrupted() && this.rctr.process()) {}
+		        this.rctr.stop();
 			}
 			catch (HandlerException handlerException)
 			{
@@ -401,6 +377,10 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 						true,
 						String.format(Locale.US, "%s, %s", StringUtil.isNullOrEmpty(cause.getMessage()) ? "Reactor encountered unrecoverable error" : cause.getMessage(), ExceptionUtil.getTrackingIDAndTimeToLog()),
 						cause));
+			}
+			finally
+			{
+				this.rctr.free();
 			}
 		}
 	}
