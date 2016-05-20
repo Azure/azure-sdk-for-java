@@ -348,39 +348,19 @@ public final class PartitionReceiver extends ClientEntity
 					}
 					catch (InterruptedException|ExecutionException|TimeoutException clientException)
 					{
-						if (clientException instanceof TimeoutException)
-						{
-							continue;
-						}
-
 						Throwable cause = clientException.getCause();
-						if (cause != null && 
-								((cause instanceof ServiceBusException && ((ServiceBusException) cause).getIsTransient()) ||
-										!(cause instanceof RuntimeException)))
-						{
-							try
-							{
-								PartitionReceiver.this.onReceiveHandler.onError(clientException.getCause());
-								continue;
-							}
-							catch (Throwable userCodeError)
-							{
-								synchronized (PartitionReceiver.this.receiveHandlerSync)
-								{
-									PartitionReceiver.this.isOnReceivePumpRunning = false;
-								}
 
-								PartitionReceiver.this.onReceiveHandler.onClose(userCodeError);
-							}
-						}
-						else
+						if (!(clientException instanceof TimeoutException)
+								&& ((cause != null 
+									&& ((cause instanceof ServiceBusException && !((ServiceBusException) cause).getIsTransient())
+									|| cause instanceof RuntimeException))))
 						{
 							synchronized (PartitionReceiver.this.receiveHandlerSync)
 							{
 								PartitionReceiver.this.isOnReceivePumpRunning = false;
 							}
 
-							PartitionReceiver.this.onReceiveHandler.onClose(cause);
+							PartitionReceiver.this.onReceiveHandler.onError(cause);
 						}
 
 						if (clientException instanceof InterruptedException)
@@ -391,28 +371,25 @@ public final class PartitionReceiver extends ClientEntity
 						return;
 					}
 
-					if (receivedEvents != null && receivedEvents.iterator().hasNext())
+					try
 					{
-						try
+						PartitionReceiver.this.onReceiveHandler.onReceive(receivedEvents);
+					}
+					catch (Throwable userCodeError)
+					{
+						synchronized (PartitionReceiver.this.receiveHandlerSync)
 						{
-							PartitionReceiver.this.onReceiveHandler.onReceive(receivedEvents);
+							PartitionReceiver.this.isOnReceivePumpRunning = false;
 						}
-						catch (Throwable userCodeError)
+
+						PartitionReceiver.this.onReceiveHandler.onError(userCodeError);
+
+						if (userCodeError instanceof InterruptedException)
 						{
-							synchronized (PartitionReceiver.this.receiveHandlerSync)
-							{
-								PartitionReceiver.this.isOnReceivePumpRunning = false;
-							}
-
-							PartitionReceiver.this.onReceiveHandler.onClose(userCodeError);
-
-							if (userCodeError instanceof InterruptedException)
-							{
-								Thread.currentThread().interrupt();
-							}
-
-							return;
+							Thread.currentThread().interrupt();
 						}
+
+						return;
 					}
 				}						
 			}

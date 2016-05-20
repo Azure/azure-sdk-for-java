@@ -41,15 +41,8 @@ public abstract class PartitionReceiveHandler
 	public abstract void onReceive(Iterable<EventData> events);
 
 	/**
-	 * Implement this method to Listen to recoverable or retry'able errors encountered while running the onReceive handler.
-	 * The errors reported by {@link PartitionReceiveHandler#onError} are transient and are recoverable.
-	 * @param error transient error encountered while executing the {@link PartitionReceiveHandler} pump 
-	 */
-	public abstract void onError(Throwable error);
-
-	/**
 	 * Implement this method to Listen to errors which lead to Closure of the {@link PartitionReceiveHandler} pump.
 	 * @param error fatal error encountered while running the {@link PartitionReceiveHandler} pump
 	 */
-	public abstract void onClose(Throwable error);
+	public abstract void onError(Throwable error);
 }

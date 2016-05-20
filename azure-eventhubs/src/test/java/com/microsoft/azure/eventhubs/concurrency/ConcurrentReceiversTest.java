@@ -3,14 +3,15 @@ package com.microsoft.azure.eventhubs.concurrency;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.concurrent.ExecutionException;
-import java.util.logging.*;
-
 import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.PartitionReceiveHandler;
+import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.lib.TestBase;
 import com.microsoft.azure.eventhubs.lib.TestEventHubInfo;
 import com.microsoft.azure.servicebus.ConnectionStringBuilder;
@@ -22,29 +23,29 @@ public class ConcurrentReceiversTest
 	ConnectionStringBuilder connStr;
 	int partitionCount = 4;
 	EventHubClient sender;
-	
+
 	@Before
 	public void initializeEventHub()  throws Exception
 	{
 		Assume.assumeTrue(TestBase.isServiceRun());
-		
-    	eventHubInfo = TestBase.checkoutTestEventHub();
+
+		eventHubInfo = TestBase.checkoutTestEventHub();
 		connStr = new ConnectionStringBuilder(
 				eventHubInfo.getNamespaceName(), eventHubInfo.getName(), eventHubInfo.getSasRule().getKey(), eventHubInfo.getSasRule().getValue());
-	
+
 		sender = EventHubClient.createFromConnectionString(connStr.toString()).get();
-		
+
 		for (int i=0; i < partitionCount; i++)
 		{
 			TestBase.pushEventsToPartition(sender, Integer.toString(i), 10);
 		}
 	}
-	
+
 	@Test()
 	public void testParallelReceivers() throws ServiceBusException, InterruptedException, ExecutionException, IOException
 	{
 		String consumerGroupName = eventHubInfo.getRandomConsumerGroup();
-		
+
 		for (int repeatCount = 0; repeatCount< 4; repeatCount++)
 		{
 			EventHubClient[] ehClients = new EventHubClient[partitionCount];
@@ -66,7 +67,7 @@ public class ConcurrentReceiversTest
 					{
 						receivers[i].close();
 					}
-					
+
 					if (ehClients[i] != null)
 					{
 						ehClients[i].close();
@@ -75,7 +76,7 @@ public class ConcurrentReceiversTest
 			}
 		}
 	}
-	
+
 	@After()
 	public void cleanup()
 	{
@@ -88,13 +89,13 @@ public class ConcurrentReceiversTest
 	public static final class EventCounter extends PartitionReceiveHandler
 	{
 		private long count;
-		
+
 		public EventCounter()
 		{
 			super(50);
 			count = 0;
 		}
-		
+
 		@Override
 		public void onReceive(Iterable<EventData> events)
 		{
@@ -108,10 +109,5 @@ public class ConcurrentReceiversTest
 		public void onError(Throwable error)
 		{
 		}
-
-		@Override
-		public void onClose(Throwable error)
-		{
-		}		
 	}
 }

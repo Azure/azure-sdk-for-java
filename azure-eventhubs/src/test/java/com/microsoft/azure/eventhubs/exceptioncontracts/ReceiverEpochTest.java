@@ -17,13 +17,13 @@ public class ReceiverEpochTest extends TestBase
 	public void testEpochReceiver() throws Throwable
 	{
 		Assume.assumeTrue(TestBase.isServiceRun());
-		
+
 		TestEventHubInfo eventHubInfo = TestBase.checkoutTestEventHub();
 		try 
 		{
 			ConnectionStringBuilder connectionString = TestBase.getConnectionString(eventHubInfo);
 			EventHubClient ehClient = EventHubClient.createFromConnectionString(connectionString.toString()).get();		
-			
+
 			try
 			{
 				String cgName = eventHubInfo.getRandomConsumerGroup();
@@ -32,7 +32,7 @@ public class ReceiverEpochTest extends TestBase
 				PartitionReceiver receiver = ehClient.createEpochReceiver(cgName, partitionId, PartitionReceiver.START_OF_STREAM, false, epoch).get();
 				EventCounter counter = new EventCounter();
 				receiver.setReceiveHandler(counter);
-				
+
 				try
 				{
 					ehClient.createEpochReceiver(cgName, partitionId, PartitionReceiver.START_OF_STREAM, false, epoch - 10).get();
@@ -41,7 +41,7 @@ public class ReceiverEpochTest extends TestBase
 				{
 					throw exp.getCause();
 				}
-				
+
 				Assert.assertTrue(counter.count > 0);
 			}
 			finally
@@ -58,7 +58,7 @@ public class ReceiverEpochTest extends TestBase
 	public static final class EventCounter extends PartitionReceiveHandler
 	{
 		public long count;
-		
+
 		public EventCounter()
 		{
 			super(50);
@@ -73,13 +73,8 @@ public class ReceiverEpochTest extends TestBase
 
 		@Override
 		public void onError(Throwable error)
-		{
-		}
-
-		@Override
-		public void onClose(Throwable error)
 		{			
 		}
-		
+
 	}
 }
