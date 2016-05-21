@@ -21,15 +21,13 @@ class PublicIpAddressImpl
         PublicIpAddress.Definitions,
         PublicIpAddress.Update {
 
-    private String name;
     private final PublicIPAddressesInner client;
 
     PublicIpAddressImpl(String name,
     		PublicIPAddressInner innerModel,
     		final PublicIPAddressesInner client,
     		final ResourceGroups resourceGroups) {
-        super(innerModel.id(), innerModel, resourceGroups);
-        this.name = name;
+        super(name, innerModel, resourceGroups);
         this.client = client;
     }
 
@@ -37,6 +35,16 @@ class PublicIpAddressImpl
      * Verbs
      **************************************************/
     
+    @Override
+    public PublicIpAddressImpl apply() throws Exception {
+        return this.create();
+    }
+
+    @Override
+    public PublicIpAddressImpl update() throws Exception {
+        return this;
+    }
+
     @Override
     public PublicIpAddress refresh() throws Exception {
         ServiceResponse<PublicIPAddressInner> response =
@@ -52,7 +60,7 @@ class PublicIpAddressImpl
     	super.create();
 
         ServiceResponse<PublicIPAddressInner> response =
-                this.client.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
+                this.client.createOrUpdate(this.resourceGroupName(), this.key(), this.inner());
         this.setInner(response.getBody());
         clearWrapperProperties();
         return this;
@@ -141,11 +149,6 @@ class PublicIpAddressImpl
 		return this.inner().dnsSettings().reverseFqdn();
 	}
 
-    @Override
-    public String name() {
-        return this.name;
-    }
-    
 	@Override
 	public String ipAddress() {
 		return this.inner().ipAddress();
@@ -158,15 +161,5 @@ class PublicIpAddressImpl
 		} else {
 			return this.inner().dnsSettings().domainNameLabel();
 		}
-	}
-
-	@Override
-	public PublicIpAddressImpl apply() throws Exception {
-		return this.create();
-	}
-
-	@Override
-	public PublicIpAddressImpl update() throws Exception {
-		return this;
 	}
 }

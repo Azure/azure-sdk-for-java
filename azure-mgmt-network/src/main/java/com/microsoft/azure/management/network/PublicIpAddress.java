@@ -13,6 +13,9 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
+/**
+ * Public IP address
+ */
 public interface PublicIpAddress extends
         GroupableResource,
         Refreshable<PublicIpAddress>,
@@ -68,7 +71,7 @@ public interface PublicIpAddress extends
 	    DefinitionCreatable {}
 
 	/**
-	 * The first stage of the public IP address definition
+	 * The first stage of a public IP address definition
 	 */
 	interface DefinitionBlank 
 	    extends GroupableResource.DefinitionWithRegion<DefinitionWithGroup> {
@@ -201,13 +204,13 @@ public interface PublicIpAddress extends
         /**
          * Specifies the reverse FQDN to assign to this public IP address
          * @param reverseFQDN the reverse FQDN to assign 
-         * @return the next stage of the resource definition
+         * @return the next stage of the resource update
          */
         T withReverseFqdn(String reverseFQDN);
 
         /**
          * Ensures that no reverse FQDN will be used.
-         * @return The next stage of the resource definition
+         * @return The next stage of the resource update
          */
         T withoutReverseFqdn();
     }
@@ -215,7 +218,7 @@ public interface PublicIpAddress extends
     /**
      * The stage of the public IP definition which contains all the minimum required inputs for
      * the resource to be created (via {@link DefinitionCreatable#create()}), but also allows 
-     * for the remaining optional settings to be specified.
+     * for any other optional settings to be specified.
      */
     interface DefinitionCreatable extends 
         Creatable<PublicIpAddress>,
@@ -232,7 +235,7 @@ public interface PublicIpAddress extends
 
     /**
      * The template for a public IP address update operation, containing all the settings that 
-     * can be updated.
+     * can be modified.
      */
     interface Update extends 
         Appliable<PublicIpAddress>,
@@ -242,7 +245,7 @@ public interface PublicIpAddress extends
             /**
              * Specifies the timeout (in minutes) for an idle connection 
              * @param minutes the length of the time out in minutes
-             * @return the next stage of the resource definition
+             * @return the next stage of the resource update
              */
             Update withIdleTimeoutInMinutes(int minutes);
     }
