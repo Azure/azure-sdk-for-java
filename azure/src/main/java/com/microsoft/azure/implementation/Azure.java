@@ -205,7 +205,7 @@ public final class Azure {
             SupportsGetting<Azure.ResourceGroup>,
             SupportsCreating<Azure.ResourceGroup.DefinitionBlank>,
             SupportsDeleting,
-            SupportsUpdating<Azure.ResourceGroup.UpdateBlank> {
+            SupportsUpdating<Azure.ResourceGroup.Update> {
     }
 
     public interface ResourceGroup extends com.microsoft.azure.management.resources.ResourceGroup {

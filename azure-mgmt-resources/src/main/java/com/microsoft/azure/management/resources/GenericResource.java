@@ -1,12 +1,10 @@
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Taggable;
 import com.microsoft.azure.management.resources.fluentcore.model.*;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.implementation.api.GenericResourceInner;
 import com.microsoft.azure.management.resources.implementation.api.Plan;
-
-import java.util.Map;
 
 public interface GenericResource extends
         GroupableResource,
@@ -43,16 +41,10 @@ public interface GenericResource extends
         DefinitionCreatable withPlan(String name, String publisher, String product, String promotionCode);
     }
 
-    interface DefinitionCreatable extends Creatable<GenericResource> {  // Properties, tags are optional
+    interface DefinitionCreatable extends 
+        Creatable<GenericResource>,
+        Resource.DefinitionWithTags<DefinitionCreatable> {  
+        
         DefinitionCreatable withProperties(Object properties);
-        DefinitionCreatable withTags(Map<String, String> tags);
-        DefinitionCreatable withTag(String key, String value);
-    }
-
-    // TODO: Updatable properties needs to be revised.
-    interface Update extends UpdateBlank, Appliable<Update> {
-    }
-
-    interface UpdateBlank extends Taggable<Update> {
     }
 }

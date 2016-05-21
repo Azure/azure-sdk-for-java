@@ -53,7 +53,7 @@ final class AzureResourceGroupsImpl implements Azure.ResourceGroups {
     }
 
     @Override
-    public Azure.ResourceGroup.UpdateBlank update(String name) {
+    public Azure.ResourceGroup.Update update(String name) {
         return resourceGroupsCore.update(name);
     }
 

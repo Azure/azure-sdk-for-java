@@ -35,6 +35,8 @@ public class TestPublicIpAddress extends TestTemplate<PublicIpAddress, PublicIpA
                 .withLeafDomainLabel(updatedDnsName)
                 .withReverseFqdn(resource.leafDomainLabel() + "." + resource.region() + ".cloudapp.azure.com")
                 .withIdleTimeoutInMinutes(updatedIdleTimeout)
+                .withTag("tag1", "value1")
+                .withTag("tag2", "value2")
                 .apply();
         Assert.assertTrue(resource.leafDomainLabel().equalsIgnoreCase(updatedDnsName));
         Assert.assertTrue(resource.idleTimeoutInMinutes()==updatedIdleTimeout);
@@ -47,6 +49,7 @@ public class TestPublicIpAddress extends TestTemplate<PublicIpAddress, PublicIpA
                 .append("Name: ").append(resource.name())
                 .append("\n\tResource group: ").append(resource.resourceGroupName())
                 .append("\n\tRegion: ").append(resource.region())
+                .append("\n\tTags: ").append(resource.tags())
                 .append("\n\tIP Address: ").append(resource.ipAddress())
                 .append("\n\tLeaf domain label: ").append(resource.leafDomainLabel())
                 .append("\n\tFQDN: ").append(resource.fqdn())
@@ -55,5 +58,4 @@ public class TestPublicIpAddress extends TestTemplate<PublicIpAddress, PublicIpA
                 .append("\n\tIP allocation method: ").append(resource.ipAllocationMethod())
                 .toString());
     }
-    
 }

@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
@@ -224,7 +225,9 @@ public interface PublicIpAddress extends
         Creatable<PublicIpAddress>,
         DefinitionWithLeafDomainLabel,
         DefinitionWithIpAddress,
-        DefinitionWithReverseFQDN<DefinitionCreatable> {
+        DefinitionWithReverseFQDN<DefinitionCreatable>,
+        Resource.DefinitionWithTags<DefinitionCreatable> {
+        
         /**
          * Specifies the timeout (in minutes) for an idle connection 
          * @param minutes the length of the time out in minutes
@@ -241,7 +244,8 @@ public interface PublicIpAddress extends
         Appliable<PublicIpAddress>,
         UpdateWithIpAddress<Update>,
         UpdateWithLeafDomainLabel<Update>,
-        UpdateWithReverseFQDN<Update> {
+        UpdateWithReverseFQDN<Update>,
+        Resource.UpdateWithTags<Update> {
             /**
              * Specifies the timeout (in minutes) for an idle connection 
              * @param minutes the length of the time out in minutes

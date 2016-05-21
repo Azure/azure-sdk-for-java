@@ -10,6 +10,6 @@ public interface ResourceGroups extends
         SupportsGetting<ResourceGroup>,
         SupportsCreating<ResourceGroup.DefinitionBlank>,
         SupportsDeleting,
-        SupportsUpdating<ResourceGroup.UpdateBlank> {
+        SupportsUpdating<ResourceGroup.Update> {
     boolean checkExistence(String name) throws CloudException, IOException;
 }
