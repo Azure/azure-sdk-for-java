@@ -23,8 +23,8 @@ class VirtualMachineImageSkuImpl
     }
 
     @Override
-    public Region location() {
-        return offer.location();
+    public Region region() {
+        return offer.region();
     }
 
     @Override
@@ -46,18 +46,18 @@ class VirtualMachineImageSkuImpl
         List<VirtualMachineImage> images = new ArrayList<>();
         for (VirtualMachineImageResourceInner inner :
                 client.list(
-                        location().toString(),
+                        region().toString(),
                         publisher(),
                         offer(),
                         sku).getBody()) {
             String version = inner.name();
             images.add(new VirtualMachineImageImpl(
-                    location(),
+                    region(),
                     publisher(),
                     offer(),
                     sku,
                     version,
-                    client.get(location().toString(), publisher(), offer(), sku, version).getBody(),
+                    client.get(region().toString(), publisher(), offer(), sku, version).getBody(),
                     client));
         }
         return images;

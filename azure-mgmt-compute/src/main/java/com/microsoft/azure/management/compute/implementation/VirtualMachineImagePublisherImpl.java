@@ -23,7 +23,7 @@ class VirtualMachineImagePublisherImpl
     }
 
     @Override
-    public Region location() {
+    public Region region() {
         return location;
     }
 
@@ -36,7 +36,7 @@ class VirtualMachineImagePublisherImpl
     public List<VirtualMachineImage.Offer> listOffers() throws CloudException, IOException {
         List<VirtualMachineImage.Offer> offers = new ArrayList<>();
         for (VirtualMachineImageResourceInner inner :
-                client.listOffers(location().toString(), publisher()).getBody()) {
+                client.listOffers(region().toString(), publisher()).getBody()) {
             offers.add(new VirtualMachineImageOfferImpl(this, inner.name(), client));
         }
         return offers;
