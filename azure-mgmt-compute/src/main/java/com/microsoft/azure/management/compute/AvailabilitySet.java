@@ -3,8 +3,11 @@ package com.microsoft.azure.management.compute;
 import com.microsoft.azure.management.compute.implementation.api.AvailabilitySetInner;
 import com.microsoft.azure.management.compute.implementation.api.InstanceViewStatus;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
+import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
+import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
 import java.util.List;
@@ -15,7 +18,8 @@ import java.util.List;
 public interface AvailabilitySet extends
         GroupableResource,
         Refreshable<AvailabilitySet>,
-        Wrapper<AvailabilitySetInner> {
+        Wrapper<AvailabilitySetInner>,
+        Updatable<AvailabilitySet.Update> {
 
     /**
      * Returns the update domain count of an availability set.
@@ -80,7 +84,9 @@ public interface AvailabilitySet extends
      * the resource to be created (via {@link DefinitionCreatable#create()}), but also allows 
      * for any other optional settings to be specified.
      */     
-    interface DefinitionCreatable extends Creatable<AvailabilitySet> {
+    interface DefinitionCreatable extends 
+        Creatable<AvailabilitySet>,
+        Resource.DefinitionWithTags<DefinitionCreatable> {
         /**
          * Specifies the update domain count for the availability set.
          * @param updateDomainCount update domain count
@@ -94,5 +100,16 @@ public interface AvailabilitySet extends
          * @return the next stage of the resource definition
          */
         DefinitionCreatable withFaultDomainCount(int faultDomainCount);
+    }
+    
+    /**
+     * The template for an availability set update operation, containing all the settings that 
+     * can be modified.
+     * <p>
+     * Call {@link Update#apply()} to apply the changes to the resource in Azure.
+     */
+    interface Update extends 
+        Appliable<AvailabilitySet>,
+        Resource.UpdateWithTags<Update> {
     }
 }

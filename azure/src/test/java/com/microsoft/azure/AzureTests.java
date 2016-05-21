@@ -70,6 +70,14 @@ public class AzureTests {
         new TestPublicIpAddress().runTest(azure2, azure2.publicIpAddresses());        
     }
 
+    /**
+     * Tests the availability set implementation
+     * @throws Exception
+     */
+    @Test public void testAvailabilitySets() throws Exception {
+        new TestAvailabilitySet().runTest(azure2, azure2.availabilitySets());
+    }
+    
     @Test
     public void listSubscriptions() throws Exception {
         Assert.assertTrue(0 < subscriptions.list().size());

@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.SubResource;
@@ -18,12 +23,14 @@ import java.util.Collections;
 import java.util.List;
 
 class AvailabilitySetImpl
-        extends GroupableResourceImpl<AvailabilitySet, AvailabilitySetInner, AvailabilitySetImpl>
-        implements
+    extends 
+        GroupableResourceImpl<AvailabilitySet, AvailabilitySetInner, AvailabilitySetImpl>
+    implements
         AvailabilitySet,
         AvailabilitySet.DefinitionBlank,
         AvailabilitySet.DefinitionWithGroup,
-        AvailabilitySet.DefinitionCreatable {
+        AvailabilitySet.DefinitionCreatable,
+        AvailabilitySet.Update {
     private List<String> idOfVMsInSet;
     private List<VirtualMachine> vmsInSet;
 
@@ -114,5 +121,15 @@ class AvailabilitySetImpl
         this.idOfVMsInSet = null;
         this.vmsInSet = null;
         return this;
+    }
+
+    @Override
+    public AvailabilitySetImpl update() throws Exception {
+        return this;
+    }
+
+    @Override
+    public AvailabilitySetImpl apply() throws Exception {
+        return create();
     }
 }
