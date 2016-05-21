@@ -38,6 +38,7 @@
     </module>
     <module name="SuppressionFilter">
         <property name="file" value="${samedir}/suppressions.xml"/>
+        <property name="optional" value="true"/>
     </module>
 
     <!--
