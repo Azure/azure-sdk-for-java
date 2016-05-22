@@ -10,6 +10,7 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddresses;
+import com.microsoft.azure.management.network.implementation.api.PublicIPAddressDnsSettings;
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressInner;
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressesInner;
 import com.microsoft.azure.management.resources.ResourceGroups;
@@ -96,9 +97,15 @@ class PublicIpAddressesImpl
 
     private PublicIpAddressImpl createFluentModel(String name) {
         PublicIPAddressInner inner = new PublicIPAddressInner();
+
+        if(null == inner.dnsSettings()) {
+            inner.setDnsSettings(new PublicIPAddressDnsSettings());
+        }
+        
         return new PublicIpAddressImpl(name, inner, this.client, this.resourceGroups);
     }
 
+    
     private PublicIpAddressImpl createFluentModel(PublicIPAddressInner inner) {
         return new PublicIpAddressImpl(inner.name(), inner, this.client, this.resourceGroups);
     }

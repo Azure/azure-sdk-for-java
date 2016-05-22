@@ -7,7 +7,6 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.implementation.api.IPAllocationMethod;
-import com.microsoft.azure.management.network.implementation.api.PublicIPAddressDnsSettings;
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressInner;
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressesInner;
 import com.microsoft.azure.management.resources.ResourceGroups;
@@ -51,7 +50,6 @@ class PublicIpAddressImpl
             this.client.get(this.resourceGroupName(), this.name());
         PublicIPAddressInner inner = response.getBody();
         this.setInner(inner);
-        clearWrapperProperties();
         return this;
     }
 
@@ -62,12 +60,7 @@ class PublicIpAddressImpl
         ServiceResponse<PublicIPAddressInner> response =
                 this.client.createOrUpdate(this.resourceGroupName(), this.key(), this.inner());
         this.setInner(response.getBody());
-        clearWrapperProperties();
         return this;
-    }
-
-    private void clearWrapperProperties() {
-    	
     }
 
     /*****************************************
@@ -95,7 +88,7 @@ class PublicIpAddressImpl
 	
 	@Override
 	public PublicIpAddressImpl withLeafDomainLabel(String dnsName) {
-		ensureDnsSettings().setDomainNameLabel(dnsName.toLowerCase());
+		this.inner().dnsSettings().setDomainNameLabel(dnsName.toLowerCase());
 		return this;
 	}
 	
@@ -106,7 +99,7 @@ class PublicIpAddressImpl
 
 	@Override
 	public PublicIpAddressImpl withReverseFqdn(String reverseFqdn) {
-		ensureDnsSettings().setReverseFqdn(reverseFqdn.toLowerCase());
+		this.inner().dnsSettings().setReverseFqdn(reverseFqdn.toLowerCase());
 		return this;
 	}
 
@@ -115,17 +108,7 @@ class PublicIpAddressImpl
 		return this.withReverseFqdn(null);
 	}
 	
-	
-	private PublicIPAddressDnsSettings ensureDnsSettings() {
-		PublicIPAddressDnsSettings dnsSettings;
-		if(null == (dnsSettings = this.inner().dnsSettings())) {
-			dnsSettings = new PublicIPAddressDnsSettings();
-			this.inner().setDnsSettings(dnsSettings);
-		}
-		return dnsSettings;
-	}
-	
-	
+		
 	/**********************************************
 	 * Getters
 	 **********************************************/
