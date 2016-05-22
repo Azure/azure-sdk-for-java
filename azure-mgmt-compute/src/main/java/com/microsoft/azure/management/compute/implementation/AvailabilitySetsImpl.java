@@ -33,8 +33,8 @@ public class AvailabilitySetsImpl implements AvailabilitySets {
         this.virtualMachines = virtualMachines;
         this.converter = new PagedListConverter<AvailabilitySetInner, AvailabilitySet>() {
             @Override
-            public AvailabilitySet typeConvert(AvailabilitySetInner availabilitySetInner) {
-                return createFluentModel(availabilitySetInner);
+            public AvailabilitySet typeConvert(AvailabilitySetInner inner) {
+                return createFluentModel(inner);
             }
         };
     }
@@ -71,13 +71,13 @@ public class AvailabilitySetsImpl implements AvailabilitySets {
     }
 
     @Override
-    public AvailabilitySet get(String groupName, String name) throws CloudException, IOException {
+    public AvailabilitySetImpl get(String groupName, String name) throws CloudException, IOException {
         ServiceResponse<AvailabilitySetInner> response = this.client.get(groupName, name);
         return createFluentModel(response.getBody());
     }
 
     @Override
-    public AvailabilitySet.DefinitionBlank define(String name) {
+    public AvailabilitySetImpl define(String name) {
         return createFluentModel(name);
     }
 
