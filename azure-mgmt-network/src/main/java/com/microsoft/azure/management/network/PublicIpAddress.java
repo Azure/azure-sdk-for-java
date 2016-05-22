@@ -239,6 +239,8 @@ public interface PublicIpAddress extends
     /**
      * The template for a public IP address update operation, containing all the settings that 
      * can be modified.
+     * <p>
+     * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
     interface Update extends 
         Appliable<PublicIpAddress>,

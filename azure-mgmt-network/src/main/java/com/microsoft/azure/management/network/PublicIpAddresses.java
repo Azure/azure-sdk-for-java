@@ -31,7 +31,7 @@ public interface PublicIpAddresses extends
      */
     public interface InGroup extends
             SupportsListing<PublicIpAddress>,
-            SupportsCreating<PublicIpAddress.DefinitionCreatable>,
+            SupportsCreating<PublicIpAddress.DefinitionBlank>,
             SupportsDeleting {
     }
 }
