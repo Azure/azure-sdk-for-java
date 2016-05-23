@@ -26,7 +26,7 @@ import com.microsoft.azure.management.storage.StorageAccount;
 import java.util.List;
 
 /**
- * Client-side representation of an Azure virtual machine.
+ * An immutable client-side representation of an Azure virtual machine.
  */
 public interface VirtualMachine extends
         GroupableResource,
@@ -110,19 +110,19 @@ public interface VirtualMachine extends
     List<VirtualMachineExtensionInner> resources();
 
     /**
-     * The initial stage representing virtual machine definition.
+     * The first stage of a virtual machine definition.
      */
     interface DefinitionBlank extends GroupableResource.DefinitionWithRegion<DefinitionWithGroup> {
     }
 
     /**
-     * The virtual machine definition stage with resource group.
+     * The stage of the virtual machine definition allowing to specify the resource group.
      */
     interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionWithOS> {
     }
 
     /**
-     * The virtual machine definition stage with Operation System.
+     * The stage of the virtual machine definition allowing to specify the Operation System.
      */
     interface DefinitionWithOS {
         /**
@@ -150,7 +150,7 @@ public interface VirtualMachine extends
     }
 
     /**
-     * The virtual machine definition stage with marketplace (platform) image.
+     * The stage of the virtual machine definition allowing to specify marketplace (platform) image.
      */
     interface DefinitionWithMarketplaceImage {
         /**
@@ -181,7 +181,7 @@ public interface VirtualMachine extends
     }
 
     /**
-     * The virtual machine definition stage with Operating system type.
+     * The stage of the virtual machine definition allowing to specify Operating system type.
      */
     interface DefinitionWithOSType {
         /**
@@ -200,7 +200,7 @@ public interface VirtualMachine extends
     }
 
     /**
-     * The Linux virtual machine definition stage with root user name.
+     * The stage of the Linux virtual machine definition allowing to specify root user name.
      */
     interface DefinitionWithRootUserName {
         /**
@@ -213,7 +213,7 @@ public interface VirtualMachine extends
     }
 
     /**
-     * The Windows virtual machine definition stage with root user name.
+     * The stage of the Windows virtual machine definition allowing to specify administrator user name.
      */
     interface DefinitionWithAdminUserName {
         /**
@@ -226,7 +226,9 @@ public interface VirtualMachine extends
     }
 
     /**
-     * The Linux virtual machine in creatable stage.
+     * The stage of the Linux virtual machine definition which contains all the minimum required inputs for
+     * the resource to be created (via {@link DefinitionCreatable#create()}), but also allows
+     * for any other optional settings to be specified.
      */
     interface DefinitionLinuxCreatable extends DefinitionCreatable {
         /**
@@ -241,7 +243,9 @@ public interface VirtualMachine extends
     }
 
     /**
-     * The Windows virtual machine in cretable stage.
+     * The stage of the Windows virtual machine definition which contains all the minimum required inputs for
+     * the resource to be created (via {@link DefinitionCreatable#create()}), but also allows
+     * for any other optional settings to be specified.
      */
     interface DefinitionWindowsCreatable extends DefinitionCreatable {
         /**
@@ -276,7 +280,7 @@ public interface VirtualMachine extends
     }
 
     /**
-     * The virtual machine definition stage with password.
+     * The stage of the virtual machine definition allowing to specify password.
      *
      * @param <T> The virtual machine definition in creatable stage.
      */
@@ -291,7 +295,7 @@ public interface VirtualMachine extends
     }
 
     /**
-     * The virtual machine definition stage with OS disk configurations.
+     * The stage of the virtual machine definition allowing to specify OS disk configurations.
      *
      * @param <T> The virtual machine definition in creatable stage.
      */
@@ -339,7 +343,7 @@ public interface VirtualMachine extends
     }
 
     /**
-     * The virtual machine definition stage with size.
+     * The stage of the virtual machine definition allowing to specify VM size.
      *
      * @param <T> The virtual machine definition in creatable stage.
      */
@@ -362,7 +366,7 @@ public interface VirtualMachine extends
     }
 
     /**
-     * The virtual machine definition stage with data disk configurations.
+     * The stage of the virtual machine definition allowing to specify data disk configurations.
      *
      * @param <T> The virtual machine definition in creatable stage.
      */
@@ -392,7 +396,7 @@ public interface VirtualMachine extends
     }
 
     /**
-     * The virtual machine definition stage with data disk target location.
+     * The stage of the virtual machine definition allowing to specify data disk target location.
      *
      * @param <T> The virtual machine definition in creatable stage.
      */
@@ -409,7 +413,7 @@ public interface VirtualMachine extends
     }
 
     /**
-     * The virtual machine definition stage with new data disk configuration.
+     * The stage of the virtual machine definition allowing to specify new data disk configuration.
      *
      * @param <T> The virtual machine definition in creatable stage.
      */
@@ -424,7 +428,7 @@ public interface VirtualMachine extends
     }
 
     /**
-     * The virtual machine definition stage with existing data disk configuration.
+     * The stage of the virtual machine definition allowing to specify existing data disk configuration.
      *
      * @param <T> The virtual machine definition in creatable stage.
      */
@@ -441,7 +445,7 @@ public interface VirtualMachine extends
     }
 
     /**
-     * The virtual machine definition stage with data disk configuration.
+     * The stage of the virtual machine definition allowing to specify data disk configuration.
      *
      * @param <T> The virtual machine definition in creatable stage.
      */
@@ -482,7 +486,7 @@ public interface VirtualMachine extends
     }
 
     /**
-     * The virtual machine definition stage with availability set.
+     * The stage of the virtual machine definition allowing to specify availability set.
      *
      * @param <T> The virtual machine definition in creatable stage.
      */
@@ -525,7 +529,7 @@ public interface VirtualMachine extends
     }
 
     /**
-     * The virtual machine definition stage with storage account.
+     * The stage of the virtual machine definition allowing to specify storage account.
      *
      * @param <T> The virtual machine definition in creatable stage.
      */
@@ -559,7 +563,9 @@ public interface VirtualMachine extends
     }
 
     /**
-     * The virtual machine definition in creatable stage.
+     * The stage of the virtual machine definition which contains all the minimum required inputs for
+     * the resource to be created (via {@link DefinitionCreatable#create()}), but also allows
+     * for any other optional settings to be specified.
      */
     interface DefinitionCreatable extends
             DefinitionPassword<DefinitionCreatable>,
