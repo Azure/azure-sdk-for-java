@@ -111,7 +111,7 @@ public interface PublicIpAddress extends
     /**
      * A public IP address update allowing to change the IP allocation method (static or dynamic)
      */
-    interface UpdateWithIpAddress<T> {
+    interface UpdateWithIpAddress {
         /**
          * Enables static IP address allocation. 
          * <p>
@@ -120,16 +120,17 @@ public interface PublicIpAddress extends
          * 
          * @return the next stage of the public IP address definition
          */
-        T withStaticIp();
+        Update withStaticIp();
 
         /**
          * Enables dynamic IP address allocation.
          *
          * @return the next stage of the public IP address definition
          */
-        T withDynamicIp();		
+        Update withDynamicIp();		
     }
 
+    
     /**
      * A public IP address definition allowing to specify the leaf domain label, if any
      */
@@ -157,7 +158,7 @@ public interface PublicIpAddress extends
     /**
      * A public IP address update allowing to change the leaf domain label, if any
      */
-    interface UpdateWithLeafDomainLabel<T> {
+    interface UpdateWithLeafDomainLabel {
         /**
          * Specifies the leaf domain label to associate with this public IP address. 
          * <p>
@@ -166,7 +167,7 @@ public interface PublicIpAddress extends
          * @param dnsName the leaf domain label to use. This must follow the required naming convention for leaf domain names.
          * @return the next stage of the public IP address definition
          */
-        T withLeafDomainLabel(String dnsName);
+        Update withLeafDomainLabel(String dnsName);
 
         /**
          * Ensures that no leaf domain label will be used. 
@@ -174,7 +175,7 @@ public interface PublicIpAddress extends
          * This means that this public IP address will not be associated with a domain name.
          * @return the next stage of the resource definition
          */
-        T withoutLeafDomainLabel();
+        Update withoutLeafDomainLabel();
     }
 
 
@@ -201,19 +202,19 @@ public interface PublicIpAddress extends
     /**
      * A public IP address update allowing the reverse FQDN to be specified
      */
-    interface UpdateWithReverseFQDN<T> {
+    interface UpdateWithReverseFQDN {
         /**
          * Specifies the reverse FQDN to assign to this public IP address
          * @param reverseFQDN the reverse FQDN to assign 
          * @return the next stage of the resource update
          */
-        T withReverseFqdn(String reverseFQDN);
+        Update withReverseFqdn(String reverseFQDN);
 
         /**
          * Ensures that no reverse FQDN will be used.
          * @return The next stage of the resource update
          */
-        T withoutReverseFqdn();
+        Update withoutReverseFqdn();
     }
 
     /**
@@ -244,9 +245,9 @@ public interface PublicIpAddress extends
      */
     interface Update extends 
         Appliable<PublicIpAddress>,
-        UpdateWithIpAddress<Update>,
-        UpdateWithLeafDomainLabel<Update>,
-        UpdateWithReverseFQDN<Update>,
+        UpdateWithIpAddress,
+        UpdateWithLeafDomainLabel,
+        UpdateWithReverseFQDN,
         Resource.UpdateWithTags<Update> {
             /**
              * Specifies the timeout (in minutes) for an idle connection 
