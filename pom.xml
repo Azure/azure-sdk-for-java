@@ -30,8 +30,6 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <checkstyle.config.location>${project.basedir}/tools/checkstyle.xml</checkstyle.config.location>
-    <checkstyle.suppresions.location>${project.basedir}/tools/suppressions.xml</checkstyle.suppresions.location>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <testMode>playback</testMode>
   </properties>
@@ -102,6 +100,29 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>2.17</version>
+        <dependencies>
+          <dependency>
+            <groupId>com.microsoft.azure</groupId>
+            <artifactId>autorest-build-tools</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+          </dependency>
+          <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>6.18</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <configLocation>checkstyle.xml</configLocation>
+          <propertyExpansion>samedir=runtimes/build-tools/src/main/resources</propertyExpansion>
+          <suppressionsLocation>suppressions.xml</suppressionsLocation>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.1</version>
         <configuration>
@@ -135,25 +156,6 @@
     </plugins>
     <pluginManagement>
       <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-checkstyle-plugin</artifactId>
-          <version>2.17</version>
-          <executions>
-            <execution>
-              <id>validate</id>
-              <phase>validate</phase>
-              <configuration>
-                <consoleOutput>true</consoleOutput>
-                <failsOnError>true</failsOnError>
-              </configuration>
-              <goals>
-                <goal>check</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-resources-plugin</artifactId>
