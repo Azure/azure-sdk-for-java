@@ -26,7 +26,7 @@ import com.microsoft.azure.management.storage.StorageAccount;
 import java.util.List;
 
 /**
- * The type representing Azure virtual machine.
+ * Client-side representation of an Azure virtual machine.
  */
 public interface VirtualMachine extends
         GroupableResource,
@@ -482,13 +482,56 @@ public interface VirtualMachine extends
     }
 
     /**
+     * The virtual machine definition stage with availability set.
+     *
+     * @param <T> The virtual machine definition in creatable stage.
+     */
+    interface DefinitionWithAvailabilitySet<T extends DefinitionCreatable> {
+        /**
+         * Specifies the name of the availability set to create, the virtual machine will be part of
+         * this availability set.
+         * <p/>
+         * Adding virtual machines running your application to an availability set ensures that during
+         * maintenance event at least one virtual machine will be available.
+         *
+         * @param name The name of the availability set
+         * @return The stage representing creatable VM definition
+         */
+        T withNewAvailabilitySet(String name);
+
+        /**
+         * Specifies an instance of AvailabilitySet.DefinitionCreatable representing the availability set
+         * to be created, the virtual machine will be part of this availability set.
+         * <p/>
+         * Adding virtual machines running your application to an availability set ensures that during
+         * maintenance event at least one virtual machine will be available.
+         *
+         * @param creatable The availability set in creatable stage
+         * @return The stage representing creatable VM definition
+         */
+        T withNewAvailabilitySet(AvailabilitySet.DefinitionCreatable creatable);
+
+        /**
+         * Specifies the name of an existing availability set under which this virtual machine needs to be
+         * added.
+         * <p/>
+         * Adding virtual machines running your application to an availability set ensures that during
+         * maintenance event at least one virtual machine will be available.
+         *
+         * @param name The name of an existing availability set
+         * @return The stage representing creatable VM definition
+         */
+        T withExistingAvailabilitySet(String name);
+    }
+
+    /**
      * The virtual machine definition stage with storage account.
      *
      * @param <T> The virtual machine definition in creatable stage.
      */
     interface DefinitionStorageAccount<T extends DefinitionCreatable> {
         /**
-         * Specifies the name of the storage account to create, the OS disk for VM created from a market-place.
+         * Specifies the name of the storage account to create, the OS disk for VM created from a market-place
          * image will be stored in this account.
          *
          * @param name The name of the storage account
@@ -500,7 +543,7 @@ public interface VirtualMachine extends
          * Specifies an instance of StorageAccount.DefinitionCreatable representing the storage account to be
          * created, the OS disk for VM created from a market-place image will be stored in this account.
          *
-         * @param creatable The name of the storage account
+         * @param creatable The storage account in creatable stage
          * @return The stage representing creatable VM definition
          */
         T withNewStorageAccount(StorageAccount.DefinitionCreatable creatable);
@@ -516,7 +559,7 @@ public interface VirtualMachine extends
     }
 
     /**
-     * The virtual machine definition in cretable stage.
+     * The virtual machine definition in creatable stage.
      */
     interface DefinitionCreatable extends
             DefinitionPassword<DefinitionCreatable>,
@@ -524,6 +567,7 @@ public interface VirtualMachine extends
             DefinitionWithVMSize<DefinitionCreatable>,
             DefinitionStorageAccount<DefinitionCreatable>,
             DefinitionWithDataDisk<DefinitionCreatable>,
+            DefinitionWithAvailabilitySet<DefinitionCreatable>,
             Creatable<VirtualMachine> {
     }
 }

@@ -2,6 +2,9 @@ package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.management.compute.implementation.api.ImageReference;
 
+/**
+ * The popular Azure images.
+ */
 public enum KnownVirtualMachineImage {
     /** Linux */
     UBUNTU_SERVER_14_04_LTS("Canonical", "UbuntuServer", "14.04.4-LTS"),
@@ -27,18 +30,38 @@ public enum KnownVirtualMachineImage {
         this.sku = sku;
     }
 
+    /**
+     * The name of the image publisher.
+     *
+     * @return The publisher
+     */
     public String publisher() {
         return this.publisher;
     }
 
+    /**
+     * The name of the image offer.
+     *
+     * @return The offer
+     */
     public String offer() {
         return this.offer;
     }
 
+    /**
+     * The name of the image SKU.
+     *
+     * @return The SKU
+     */
     public String sku() {
         return this.sku;
     }
 
+    /**
+     * The reference of the image.
+     *
+     * @return The image reference.
+     */
     public ImageReference imageReference() {
         return new ImageReference()
             .setPublisher(publisher())

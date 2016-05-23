@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 import java.io.IOException;
 
 /**
- *  The type representing Azure virtual machine collection.
+ *  Type represents Azure virtual machine collection.
  */
 public interface VirtualMachines extends
         SupportsListing<VirtualMachine>,
@@ -32,7 +32,7 @@ public interface VirtualMachines extends
     PagedList<VirtualMachineSize> listSizes(String region) throws CloudException, IOException;
 
     /**
-     * A type representing Azure virtual machine under a resource gorup.
+     * A type representing Azure virtual machine under a resource group.
      */
     interface InGroup extends
             SupportsListing<VirtualMachine>,
