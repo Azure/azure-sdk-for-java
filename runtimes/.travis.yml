@@ -10,4 +10,5 @@ android:
 sudo: false
 script:
   - mvn clean package
+  - mvn checkstyle:check
   - cd ./azure-android-client-authentication && ./gradlew check
