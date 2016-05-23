@@ -98,7 +98,7 @@ public interface Network extends
         DefinitionCreatableWithSubnet withSubnets(Map<String, String> nameCidrPairs);
     }
 
-    
+
     /**
      * The stage of the virtual network update allowing to add or remove subnets
      */
@@ -112,16 +112,16 @@ public interface Network extends
          * @return the next stage of the virtual network update
          */
         Update withSubnet(String name, String cidr);
-                
+
         /**
          * Explicitly defines all the subnets in the virtual network based on the provided map.
          * <p>
-         * Any previously existing subnets will be removed.
-         * @param nameCidrPairs a {@link Map} of CIDR addresses for the subnets, indexed by the name of each subnet to be defined
+         * This replaces any previously existing subnets.
+         * @param nameCidrPairs a {@link Map} of CIDR addresses for the subnets, indexed by the name of each subnet to be added
          * @return the next stage of the virtual network update
          */
         Update withSubnets(Map<String, String> nameCidrPairs);
-        
+
         /**
          * Removes a subnet from the virtual network.
          * @param name name of the subnet to remove
@@ -129,7 +129,7 @@ public interface Network extends
          */
         Update withoutSubnet(String name);
     }
-    
+
     
     /**
      * The stage of the virtual network definition which contains all the minimum required inputs for

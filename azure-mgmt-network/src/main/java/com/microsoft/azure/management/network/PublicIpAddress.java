@@ -118,14 +118,14 @@ public interface PublicIpAddress extends
          * Use {@link PublicIpAddress#ipAddress()} after the public IP address is updated to 
          * obtain the actual IP address allocated for this resource by Azure
          * 
-         * @return the next stage of the public IP address definition
+         * @return the next stage of the resource update
          */
         Update withStaticIp();
 
         /**
          * Enables dynamic IP address allocation.
          *
-         * @return the next stage of the public IP address definition
+         * @return the next stage of the resource update
          */
         Update withDynamicIp();		
     }
@@ -165,7 +165,7 @@ public interface PublicIpAddress extends
          * The fully qualified domain name (FQDN) 
          * will be constructed automatically by appending the rest of the domain to this label.
          * @param dnsName the leaf domain label to use. This must follow the required naming convention for leaf domain names.
-         * @return the next stage of the public IP address definition
+         * @return the next stage of the resource update
          */
         Update withLeafDomainLabel(String dnsName);
 
@@ -173,7 +173,7 @@ public interface PublicIpAddress extends
          * Ensures that no leaf domain label will be used. 
          * <p>
          * This means that this public IP address will not be associated with a domain name.
-         * @return the next stage of the resource definition
+         * @return the next stage of the resource update
          */
         Update withoutLeafDomainLabel();
     }
