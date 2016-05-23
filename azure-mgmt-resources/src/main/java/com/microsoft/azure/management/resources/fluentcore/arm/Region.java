@@ -8,7 +8,7 @@ public enum Region {
 	US_CENTRAL("centralus", "Central US"),
 	US_EAST("eastus", "East US"),
 	US_EAST2("eastus2", "East US 2"),
-	US_NORTH_CENTRAL("nothcentralus", "North Central US"),
+	US_NORTH_CENTRAL("northcentralus", "North Central US"),
 	US_SOUTH_CENTRAL("southcentralus", "South Central US"),
 	EUROPE_NORTH("northeurope", "North Europe"),
 	EUROPE_WEST("westeurope", "West Europe"),

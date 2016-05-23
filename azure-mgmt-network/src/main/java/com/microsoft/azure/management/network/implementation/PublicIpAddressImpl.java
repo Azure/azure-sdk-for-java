@@ -7,7 +7,6 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.implementation.api.IPAllocationMethod;
-import com.microsoft.azure.management.network.implementation.api.PublicIPAddressDnsSettings;
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressInner;
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressesInner;
 import com.microsoft.azure.management.resources.ResourceGroups;
@@ -21,15 +20,13 @@ class PublicIpAddressImpl
         PublicIpAddress.Definitions,
         PublicIpAddress.Update {
 
-    private String name;
     private final PublicIPAddressesInner client;
 
     PublicIpAddressImpl(String name,
     		PublicIPAddressInner innerModel,
     		final PublicIPAddressesInner client,
     		final ResourceGroups resourceGroups) {
-        super(innerModel.id(), innerModel, resourceGroups);
-        this.name = name;
+        super(name, innerModel, resourceGroups);
         this.client = client;
     }
 
@@ -38,12 +35,21 @@ class PublicIpAddressImpl
      **************************************************/
     
     @Override
+    public PublicIpAddressImpl apply() throws Exception {
+        return this.create();
+    }
+
+    @Override
+    public PublicIpAddressImpl update() throws Exception {
+        return this;
+    }
+
+    @Override
     public PublicIpAddress refresh() throws Exception {
         ServiceResponse<PublicIPAddressInner> response =
             this.client.get(this.resourceGroupName(), this.name());
         PublicIPAddressInner inner = response.getBody();
         this.setInner(inner);
-        clearWrapperProperties();
         return this;
     }
 
@@ -52,14 +58,9 @@ class PublicIpAddressImpl
     	super.create();
 
         ServiceResponse<PublicIPAddressInner> response =
-                this.client.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
+                this.client.createOrUpdate(this.resourceGroupName(), this.key(), this.inner());
         this.setInner(response.getBody());
-        clearWrapperProperties();
         return this;
-    }
-
-    private void clearWrapperProperties() {
-    	
     }
 
     /*****************************************
@@ -87,7 +88,7 @@ class PublicIpAddressImpl
 	
 	@Override
 	public PublicIpAddressImpl withLeafDomainLabel(String dnsName) {
-		ensureDnsSettings().setDomainNameLabel(dnsName.toLowerCase());
+		this.inner().dnsSettings().setDomainNameLabel(dnsName.toLowerCase());
 		return this;
 	}
 	
@@ -98,7 +99,7 @@ class PublicIpAddressImpl
 
 	@Override
 	public PublicIpAddressImpl withReverseFqdn(String reverseFqdn) {
-		ensureDnsSettings().setReverseFqdn(reverseFqdn.toLowerCase());
+		this.inner().dnsSettings().setReverseFqdn(reverseFqdn.toLowerCase());
 		return this;
 	}
 
@@ -107,17 +108,7 @@ class PublicIpAddressImpl
 		return this.withReverseFqdn(null);
 	}
 	
-	
-	private PublicIPAddressDnsSettings ensureDnsSettings() {
-		PublicIPAddressDnsSettings dnsSettings;
-		if(null == (dnsSettings = this.inner().dnsSettings())) {
-			dnsSettings = new PublicIPAddressDnsSettings();
-			this.inner().setDnsSettings(dnsSettings);
-		}
-		return dnsSettings;
-	}
-	
-	
+		
 	/**********************************************
 	 * Getters
 	 **********************************************/
@@ -141,11 +132,6 @@ class PublicIpAddressImpl
 		return this.inner().dnsSettings().reverseFqdn();
 	}
 
-    @Override
-    public String name() {
-        return this.name;
-    }
-    
 	@Override
 	public String ipAddress() {
 		return this.inner().ipAddress();
@@ -158,15 +144,5 @@ class PublicIpAddressImpl
 		} else {
 			return this.inner().dnsSettings().domainNameLabel();
 		}
-	}
-
-	@Override
-	public PublicIpAddressImpl apply() throws Exception {
-		return this.create();
-	}
-
-	@Override
-	public PublicIpAddressImpl update() throws Exception {
-		return this;
 	}
 }

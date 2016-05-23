@@ -17,22 +17,69 @@ public interface Resource extends Indexable {
 	 */	
 	interface DefinitionWithRegion<T> {
 		/**
-		 * @param regionName The name of the location for the resource
-		 * @return The next stage of the resource definition
+		 * @param regionName The name of the region for the resource
+		 * @return the next stage of the resource definition
 		 */
 	    T withRegion(String regionName);
 	    
 	    /**
 	     * @param region The location for the resource
-	     * @return The next stage of the resource definition
+	     * @return the next stage of the resource definition
 	     */
 	    T withRegion(Region region);
 	}
 	
+	/**
+	 * A resource definition allowing tags to be modified for the resource
+	 */
+	interface DefinitionWithTags<T> {
+	    /**
+	     * Specifies tags for the resource as a {@link Map}.
+	     * @param tags a {@link Map} of tags
+	     * @return the next stage of the resource definition
+	     */
+	    T withTags(Map<String, String> tags);
+	    
+	    /**
+	     * Adds a tag to the resource.
+	     * @param key the key for the tag
+	     * @param value the value for the tag
+	     * @return the next stage of the resource definition
+	     */
+	    T withTag(String key, String value);
+	    
+	    /**
+	     * Removes a tag from the resource
+	     * @param key the key of the tag to remove
+	     * @return the next stage of the resource definition
+	     */
+	    T withoutTag(String key);
+	}
 	
 	/**
-	 * A resource definition allowing tags to be specified
+	 * An update allowing tags to be modified for the resource
 	 */
-	interface DefinitionWithTags<T> extends Taggable<T> {
+	interface UpdateWithTags<T> {
+	    /**
+	     * Specifies tags for the resource as a {@link Map}.
+	     * @param tags a {@link Map} of tags
+	     * @return the next stage of the resource update
+	     */
+        T withTags(Map<String, String> tags);
+        
+        /**
+         * Adds a tag to the resource.
+         * @param key the key for the tag
+         * @param value the value for the tag
+         * @return the next stage of the resource definition
+         */
+        T withTag(String key, String value);
+
+        /**
+         * Removes a tag from the resource
+         * @param key the key of the tag to remove
+         * @return the next stage of the resource definition
+         */
+        T withoutTag(String key);	    
 	}
 }

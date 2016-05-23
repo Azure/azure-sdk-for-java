@@ -7,12 +7,16 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
+/**
+ * Public IP address
+ */
 public interface PublicIpAddress extends
         GroupableResource,
         Refreshable<PublicIpAddress>,
@@ -68,7 +72,7 @@ public interface PublicIpAddress extends
 	    DefinitionCreatable {}
 
 	/**
-	 * The first stage of the public IP address definition
+	 * The first stage of a public IP address definition
 	 */
 	interface DefinitionBlank 
 	    extends GroupableResource.DefinitionWithRegion<DefinitionWithGroup> {
@@ -107,7 +111,7 @@ public interface PublicIpAddress extends
     /**
      * A public IP address update allowing to change the IP allocation method (static or dynamic)
      */
-    interface UpdateWithIpAddress<T> {
+    interface UpdateWithIpAddress {
         /**
          * Enables static IP address allocation. 
          * <p>
@@ -116,16 +120,17 @@ public interface PublicIpAddress extends
          * 
          * @return the next stage of the public IP address definition
          */
-        T withStaticIp();
+        Update withStaticIp();
 
         /**
          * Enables dynamic IP address allocation.
          *
          * @return the next stage of the public IP address definition
          */
-        T withDynamicIp();		
+        Update withDynamicIp();		
     }
 
+    
     /**
      * A public IP address definition allowing to specify the leaf domain label, if any
      */
@@ -153,7 +158,7 @@ public interface PublicIpAddress extends
     /**
      * A public IP address update allowing to change the leaf domain label, if any
      */
-    interface UpdateWithLeafDomainLabel<T> {
+    interface UpdateWithLeafDomainLabel {
         /**
          * Specifies the leaf domain label to associate with this public IP address. 
          * <p>
@@ -162,7 +167,7 @@ public interface PublicIpAddress extends
          * @param dnsName the leaf domain label to use. This must follow the required naming convention for leaf domain names.
          * @return the next stage of the public IP address definition
          */
-        T withLeafDomainLabel(String dnsName);
+        Update withLeafDomainLabel(String dnsName);
 
         /**
          * Ensures that no leaf domain label will be used. 
@@ -170,7 +175,7 @@ public interface PublicIpAddress extends
          * This means that this public IP address will not be associated with a domain name.
          * @return the next stage of the resource definition
          */
-        T withoutLeafDomainLabel();
+        Update withoutLeafDomainLabel();
     }
 
 
@@ -197,31 +202,33 @@ public interface PublicIpAddress extends
     /**
      * A public IP address update allowing the reverse FQDN to be specified
      */
-    interface UpdateWithReverseFQDN<T> {
+    interface UpdateWithReverseFQDN {
         /**
          * Specifies the reverse FQDN to assign to this public IP address
          * @param reverseFQDN the reverse FQDN to assign 
-         * @return the next stage of the resource definition
+         * @return the next stage of the resource update
          */
-        T withReverseFqdn(String reverseFQDN);
+        Update withReverseFqdn(String reverseFQDN);
 
         /**
          * Ensures that no reverse FQDN will be used.
-         * @return The next stage of the resource definition
+         * @return The next stage of the resource update
          */
-        T withoutReverseFqdn();
+        Update withoutReverseFqdn();
     }
 
     /**
      * The stage of the public IP definition which contains all the minimum required inputs for
      * the resource to be created (via {@link DefinitionCreatable#create()}), but also allows 
-     * for the remaining optional settings to be specified.
+     * for any other optional settings to be specified.
      */
     interface DefinitionCreatable extends 
         Creatable<PublicIpAddress>,
         DefinitionWithLeafDomainLabel,
         DefinitionWithIpAddress,
-        DefinitionWithReverseFQDN<DefinitionCreatable> {
+        DefinitionWithReverseFQDN<DefinitionCreatable>,
+        Resource.DefinitionWithTags<DefinitionCreatable> {
+        
         /**
          * Specifies the timeout (in minutes) for an idle connection 
          * @param minutes the length of the time out in minutes
@@ -232,17 +239,20 @@ public interface PublicIpAddress extends
 
     /**
      * The template for a public IP address update operation, containing all the settings that 
-     * can be updated.
+     * can be modified.
+     * <p>
+     * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
     interface Update extends 
         Appliable<PublicIpAddress>,
-        UpdateWithIpAddress<Update>,
-        UpdateWithLeafDomainLabel<Update>,
-        UpdateWithReverseFQDN<Update> {
+        UpdateWithIpAddress,
+        UpdateWithLeafDomainLabel,
+        UpdateWithReverseFQDN,
+        Resource.UpdateWithTags<Update> {
             /**
              * Specifies the timeout (in minutes) for an idle connection 
              * @param minutes the length of the time out in minutes
-             * @return the next stage of the resource definition
+             * @return the next stage of the resource update
              */
             Update withIdleTimeoutInMinutes(int minutes);
     }

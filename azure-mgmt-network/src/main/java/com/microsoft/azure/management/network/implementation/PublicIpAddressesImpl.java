@@ -10,6 +10,7 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddresses;
+import com.microsoft.azure.management.network.implementation.api.PublicIPAddressDnsSettings;
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressInner;
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressesInner;
 import com.microsoft.azure.management.resources.ResourceGroups;
@@ -33,8 +34,8 @@ class PublicIpAddressesImpl
         this.resourceGroups = resourceGroups;
         this.converter = new PagedListConverter<PublicIPAddressInner, PublicIpAddress>() {
             @Override
-            public PublicIpAddress typeConvert(PublicIPAddressInner publicIpAddressInner) {
-                return createFluentModel(publicIpAddressInner);
+            public PublicIpAddress typeConvert(PublicIPAddressInner inner) {
+                return createFluentModel(inner);
             }
         };
     }
@@ -52,7 +53,7 @@ class PublicIpAddressesImpl
     }
 
     @Override
-    public PublicIpAddress get(String id) throws CloudException, IOException {
+    public PublicIpAddressImpl get(String id) throws CloudException, IOException {
     	PublicIPAddressInner inner = client.get(
     			ResourceUtils.groupFromResourceId(id), 
     			ResourceUtils.nameFromResourceId(id)).getBody();
@@ -60,7 +61,7 @@ class PublicIpAddressesImpl
     }
 
     @Override
-    public PublicIpAddress get(String groupName, String name) throws CloudException, IOException {
+    public PublicIpAddressImpl get(String groupName, String name) throws CloudException, IOException {
         ServiceResponse<PublicIPAddressInner> serviceResponse = this.client.get(groupName, name);
         return createFluentModel(serviceResponse.getBody());
     }
@@ -76,7 +77,7 @@ class PublicIpAddressesImpl
     }
 
     @Override
-    public PublicIpAddress.DefinitionBlank define(String name) {
+    public PublicIpAddressImpl define(String name) {
         return createFluentModel(name);
     }
 
@@ -96,9 +97,15 @@ class PublicIpAddressesImpl
 
     private PublicIpAddressImpl createFluentModel(String name) {
         PublicIPAddressInner inner = new PublicIPAddressInner();
+
+        if(null == inner.dnsSettings()) {
+            inner.setDnsSettings(new PublicIPAddressDnsSettings());
+        }
+        
         return new PublicIpAddressImpl(name, inner, this.client, this.resourceGroups);
     }
 
+    
     private PublicIpAddressImpl createFluentModel(PublicIPAddressInner inner) {
         return new PublicIpAddressImpl(inner.name(), inner, this.client, this.resourceGroups);
     }

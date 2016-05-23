@@ -1,8 +1,12 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 package com.microsoft.azure;
 
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.implementation.Azure;
-import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.storage.StorageAccount;
@@ -59,63 +63,21 @@ public class AzureTests {
     }
 
     /**
-     * Tests the Public IP Address implementation
+     * Tests the public IP address implementation
      * @throws Exception
      */
     @Test public void testPublicIpAddresses() throws Exception {
-        // Verify creation of a new public IP address 
-        String suffix = String.valueOf(System.currentTimeMillis());
-        String newPipName = "pip" + suffix;
-        PublicIpAddress pip = azure2.publicIpAddresses().define(newPipName)
-                .withRegion(Region.US_WEST)
-                .withNewGroup()
-                .withDynamicIp()
-                .withLeafDomainLabel(newPipName)
-                .withIdleTimeoutInMinutes(10)
-                .create();
-
-        // Verify list
-        int publicIpAddressCount = azure2.publicIpAddresses().list().size();
-        System.out.println(publicIpAddressCount);
-        Assert.assertTrue(0 < publicIpAddressCount);
-
-        // Verify get
-        String resourceGroupName = pip.resourceGroupName();
-        pip = azure2.publicIpAddresses().get(resourceGroupName, newPipName);
-        Assert.assertTrue(pip.name().equalsIgnoreCase(newPipName));
-        printPublicIpAddress(pip);
-
-        // Verify update
-        final String updatedDnsName = newPipName + "xx";
-        final int updatedIdleTimeout = 15;
-        pip = pip.update()
-                .withStaticIp()
-                .withLeafDomainLabel(updatedDnsName)
-                .withReverseFqdn(pip.leafDomainLabel() + "." + pip.region() + ".cloudapp.azure.com")
-                .withIdleTimeoutInMinutes(updatedIdleTimeout)
-                .apply();
-        printPublicIpAddress(pip);
-        Assert.assertTrue(pip.leafDomainLabel().equalsIgnoreCase(updatedDnsName));
-        Assert.assertTrue(pip.idleTimeoutInMinutes()==updatedIdleTimeout);
-        
-        // Verify delete
-        azure2.publicIpAddresses().delete(pip.id());
-        azure2.resourceGroups().delete(pip.resourceGroupName());
+        new TestPublicIpAddress().runTest(azure2, azure2.publicIpAddresses());        
     }
 
-    private void printPublicIpAddress(PublicIpAddress pip) {
-        System.out.println(new StringBuilder().append("Public IP Address: ").append(pip.id())
-                .append("\n\tIP Address: ").append(pip.ipAddress())
-                .append("\n\tLeaf domain label: ").append(pip.leafDomainLabel())
-                .append("\n\tResource group: ").append(pip.resourceGroupName())
-                .append("\n\tFQDN: ").append(pip.fqdn())
-                .append("\n\tReverse FQDN: ").append(pip.reverseFqdn())
-                .append("\n\tIdle timeout (minutes): ").append(pip.idleTimeoutInMinutes())
-                .append("\n\tIP allocation method: ").append(pip.ipAllocationMethod())
-                .toString());
+    /**
+     * Tests the availability set implementation
+     * @throws Exception
+     */
+    @Test public void testAvailabilitySets() throws Exception {
+        new TestAvailabilitySet().runTest(azure2, azure2.availabilitySets());
     }
-
-
+    
     @Test
     public void listSubscriptions() throws Exception {
         Assert.assertTrue(0 < subscriptions.list().size());

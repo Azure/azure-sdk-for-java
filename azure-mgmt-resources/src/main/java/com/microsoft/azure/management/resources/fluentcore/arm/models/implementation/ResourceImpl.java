@@ -7,6 +7,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.implementation.
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public abstract class ResourceImpl<
         FluentModelT,
@@ -20,6 +21,11 @@ public abstract class ResourceImpl<
 
     protected ResourceImpl(String key, InnerModelT innerObject) {
         super(key, innerObject);
+        
+        // Initialize tags
+        if(innerObject.getTags() == null) {
+            innerObject.setTags(new TreeMap<String, String>());
+        }
     }
 
     /*******************************************
@@ -33,7 +39,11 @@ public abstract class ResourceImpl<
 
     @Override
     public Map<String, String> tags() {
-        return Collections.unmodifiableMap(this.inner().getTags());
+        Map<String, String> tags = this.inner().getTags();
+        if(tags == null) {
+            tags = new TreeMap<String, String>();
+        }
+        return Collections.unmodifiableMap(tags);
     }
 
     @Override
