@@ -7,6 +7,9 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCr
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
+/**
+ * Entry point to availability set management API.
+ */
 public interface AvailabilitySets extends
         SupportsListing<AvailabilitySet>,
         SupportsListingByGroup<AvailabilitySet>,
@@ -14,6 +17,9 @@ public interface AvailabilitySets extends
         SupportsCreating<AvailabilitySet.DefinitionBlank>,
         SupportsDeleting,
         SupportsDeletingByGroup {
+    /**
+     * Entry point to availability set management API within a specific resource group.
+     */
     interface InGroup extends
             SupportsListing<AvailabilitySet>,
             SupportsCreating<AvailabilitySet.DefinitionCreatable>,

@@ -25,6 +25,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
  * Providing access to creating Azure top level resources
  * <p>
  * (Note: this interface is not intended to be implemented by user code)
+ * @param T the initial blank definition interface
  */
 public interface SupportsCreating<T> {
 	/**

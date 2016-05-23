@@ -1,7 +1,7 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Taggable;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.*;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
 
@@ -35,11 +35,11 @@ public interface ResourceGroup extends
         DefinitionCreatable withTag(String key, String value);
     }
 
-    interface Update extends UpdateBlank, Appliable<Update> {
+    interface Update extends 
+        Appliable<Update>,
+        Resource.UpdateWithTags<Update> {
     }
 
-    interface UpdateBlank extends Taggable<Update> {
-    }
 
     /**************************************************************
      * Adapter to other resources
