@@ -11,7 +11,7 @@ import com.microsoft.rest.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
 /**
- * A type that exposes Azure Compute service resource collections.
+ * Entry point to Azure compute resource management.
  */
 public final class ComputeManager {
     // The service managers
@@ -32,11 +32,11 @@ public final class ComputeManager {
     }
 
     /**
-     * Creates an instance of ComputeManager that exposes Azure Compute service resource collections.
+     * Creates an instance of ComputeManager that exposes Compute resource management API entry points.
      *
-     * @param credentials The credentials to use
-     * @param subscriptionId The subscription
-     * @return The ComputeManager
+     * @param credentials the credentials to use
+     * @param subscriptionId the subscription
+     * @return the ComputeManager
      */
     public static ComputeManager authenticate(ServiceClientCredentials credentials, String subscriptionId) {
         return new ComputeManager(AzureEnvironment.AZURE.newRestClientBuilder()
@@ -45,11 +45,11 @@ public final class ComputeManager {
     }
 
     /**
-     * Creates an instance of ComputeManager that exposes Azure Compute service resource collections.
+     * Creates an instance of ComputeManager that exposes Compute resource management API entry points.
      *
-     * @param restClient The RestClient to be used for API calls.
-     * @param subscriptionId The subscription
-     * @return The ComputeManager
+     * @param restClient the RestClient to be used for API calls.
+     * @param subscriptionId the subscription
+     * @return the ComputeManager
      */
     public static ComputeManager authenticate(RestClient restClient, String subscriptionId) {
         return new ComputeManager(restClient, subscriptionId);
@@ -57,11 +57,11 @@ public final class ComputeManager {
 
     public interface Configurable extends AzureConfigurable<Configurable> {
         /**
-         * Creates an instance of ComputeManager that exposes Azure Compute service resource collections.
+         * Creates an instance of ComputeManager that exposes Compute resource management API entry points.
          *
-         * @param credentials The credentials to use
-         * @param subscriptionId The subscription
-         * @return The ComputeManager
+         * @param credentials the credentials to use
+         * @param subscriptionId the subscription
+         * @return the ComputeManager
          */
         ComputeManager authenticate(ServiceClientCredentials credentials, String subscriptionId);
     }
@@ -83,11 +83,7 @@ public final class ComputeManager {
     }
 
     /**
-     * Get Azure availability set collection.
-     * <p/>
-     * The collection supports performing CRUD operations on Azure availability sets
-     *
-     * @return The availability set collection
+     * @return the availability set resource management API entry point
      */
     public AvailabilitySets availabilitySets() {
         if (availabilitySets == null) {
@@ -98,11 +94,7 @@ public final class ComputeManager {
     }
 
     /**
-     * Get Azure virtual machine collection.
-     * <p/>
-     * The collection supports performing CRUD operations on Azure virtual machines
-     *
-     * @return The virtual machine collection
+     * @return the virtual machine resource management API entry point
      */
     public VirtualMachines virtualMachines() {
         if (virtualMachines == null) {

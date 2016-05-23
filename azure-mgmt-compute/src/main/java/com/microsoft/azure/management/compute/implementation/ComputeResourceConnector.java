@@ -42,7 +42,7 @@ public class ComputeResourceConnector extends ResourceConnectorBase {
     }
 
     /**
-     * Get Azure virtual machine collection in the reosurce gorup.
+     * Get Azure virtual machine collection in the resource group.
      * <p/>
      * The collection supports performing CRUD operations on Azure virtual machines
      *
