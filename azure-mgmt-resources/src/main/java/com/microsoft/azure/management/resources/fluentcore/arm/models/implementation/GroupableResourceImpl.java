@@ -69,7 +69,7 @@ public abstract class GroupableResourceImpl<
     }
 
     public final FluentModelImplT withNewGroup() {
-        return this.withNewGroup(this.name() + "group");
+        return this.withNewGroup(this.key() + "group");
     }
 
     @SuppressWarnings("unchecked")

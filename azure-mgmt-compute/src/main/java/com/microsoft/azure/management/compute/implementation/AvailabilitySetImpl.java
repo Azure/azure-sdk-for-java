@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.SubResource;
@@ -14,16 +19,18 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.rest.ServiceResponse;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 class AvailabilitySetImpl
-        extends GroupableResourceImpl<AvailabilitySet, AvailabilitySetInner, AvailabilitySetImpl>
-        implements
+    extends 
+        GroupableResourceImpl<AvailabilitySet, AvailabilitySetInner, AvailabilitySetImpl>
+    implements
         AvailabilitySet,
         AvailabilitySet.DefinitionBlank,
         AvailabilitySet.DefinitionWithGroup,
-        AvailabilitySet.DefinitionCreatable {
-    private String name;
+        AvailabilitySet.DefinitionCreatable,
+        AvailabilitySet.Update {
     private List<String> idOfVMsInSet;
     private List<VirtualMachine> vmsInSet;
 
@@ -37,19 +44,18 @@ class AvailabilitySetImpl
                                final AvailabilitySetsInner client,
                                final ResourceGroups resourceGroups,
                                final VirtualMachines virtualMachines) {
-        super(innerModel.id(), innerModel, resourceGroups);
-        this.name = name;
+        super(name, innerModel, resourceGroups);
         this.client = client;
         this.virtualMachines = virtualMachines;
     }
 
     @Override
-    public Integer updateDomainCount() {
+    public int updateDomainCount() {
         return this.inner().platformUpdateDomainCount();
     }
 
     @Override
-    public Integer FaultDomainCount() {
+    public int faultDomainCount() {
         return this.inner().platformFaultDomainCount();
     }
 
@@ -62,7 +68,7 @@ class AvailabilitySetImpl
             }
         }
 
-        return idOfVMsInSet;
+        return Collections.unmodifiableList(idOfVMsInSet);
     }
 
     @Override
@@ -75,18 +81,12 @@ class AvailabilitySetImpl
                 }
             });
         }
-        return vmsInSet;
+        return Collections.unmodifiableList(vmsInSet);
     }
 
     @Override
     public List<InstanceViewStatus> statuses() {
-        return this.inner().statuses();
-    }
-
-    @Override
-    public String name() {
-        // TODO: This method should be removed once once Runtime::Resource::setName is available.
-        return this.name;
+        return Collections.unmodifiableList(this.inner().statuses());
     }
 
     @Override
@@ -99,13 +99,13 @@ class AvailabilitySetImpl
     }
 
     @Override
-    public AvailabilitySetImpl withUpdateDomainCount(Integer updateDomainCount) {
+    public AvailabilitySetImpl withUpdateDomainCount(int updateDomainCount) {
         this.inner().setPlatformUpdateDomainCount(updateDomainCount);
         return this;
     }
 
     @Override
-    public AvailabilitySetImpl withFaultDomainCount(Integer faultDomainCount) {
+    public AvailabilitySetImpl withFaultDomainCount(int faultDomainCount) {
         this.inner().setPlatformFaultDomainCount(faultDomainCount);
         return this;
     }
@@ -115,11 +115,21 @@ class AvailabilitySetImpl
         for (Creatable<?> provisionable : prerequisites().values()) {
             provisionable.create();
         }
-        ServiceResponse<AvailabilitySetInner> response = this.client.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
+        ServiceResponse<AvailabilitySetInner> response = this.client.createOrUpdate(this.resourceGroupName(), this.key, this.inner());
         AvailabilitySetInner availabilitySetInner = response.getBody();
         this.setInner(availabilitySetInner);
         this.idOfVMsInSet = null;
         this.vmsInSet = null;
         return this;
+    }
+
+    @Override
+    public AvailabilitySetImpl update() throws Exception {
+        return this;
+    }
+
+    @Override
+    public AvailabilitySetImpl apply() throws Exception {
+        return create();
     }
 }

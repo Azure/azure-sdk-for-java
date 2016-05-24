@@ -7,15 +7,16 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.collection;
 
 /**
- * Defines the base interface for all resources that support deleting a resource
- * from the resource group it belongs to.
+ * Provides access to deleting a resource from Azure, identifying it by its name and its resource group
+ *
+ * (Note: this interface is not intended to be implemented by user code)
  */
 public interface SupportsDeletingByGroup {
     /**
-     * Delete a resource from a specific group.
+     * Deletes a resource from Azure, identifying it by its name and its resource group.
 	 *
      * @param groupName The group the resource is part of
-     * @param name The name of the resource within that group
+     * @param name The name of the resource
      * @throws Exception error to throw
      */
     void delete(String groupName, String name) throws Exception;

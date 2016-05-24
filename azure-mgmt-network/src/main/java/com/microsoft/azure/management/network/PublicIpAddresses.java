@@ -13,18 +13,25 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDe
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsGetting;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
-public interface PublicIpAddresses extends
-        SupportsCreating<PublicIpAddress.DefinitionBlank>,
-        SupportsListing<PublicIpAddress>,
-        SupportsListingByGroup<PublicIpAddress>,
-        SupportsGetting<PublicIpAddress>,
-        SupportsGettingByGroup<PublicIpAddress>,
-        SupportsDeleting,
-        SupportsDeletingByGroup {
 
-    interface InGroup extends
+/**
+ * Entry point to public IP address management
+ */
+public interface PublicIpAddresses extends
+    SupportsCreating<PublicIpAddress.DefinitionBlank>,
+    SupportsListing<PublicIpAddress>,
+    SupportsListingByGroup<PublicIpAddress>,
+    SupportsGetting<PublicIpAddress>,
+    SupportsGettingByGroup<PublicIpAddress>,
+    SupportsDeleting,
+    SupportsDeletingByGroup {
+
+    /**
+     * Entry point to public IP address management within a specific resource group
+     */
+    public interface InGroup extends
             SupportsListing<PublicIpAddress>,
-            SupportsCreating<PublicIpAddress.DefinitionCreatable>,
+            SupportsCreating<PublicIpAddress.DefinitionBlank>,
             SupportsDeleting {
     }
 }

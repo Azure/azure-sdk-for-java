@@ -1,7 +1,7 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Taggable;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
@@ -65,12 +65,12 @@ public interface ResourceGroup extends
         DefinitionCreatable withTag(String key, String value);
     }
 
-    //CHECKSTYLE IGNORE JavadocType FOR NEXT 5 LINES
-    interface Update extends UpdateBlank, Appliable<Update> {
+    //CHECKSTYLE IGNORE JavadocType FOR NEXT 4 LINES
+    interface Update extends
+        Appliable<Update>,
+        Resource.UpdateWithTags<Update> {
     }
 
-    interface UpdateBlank extends Taggable<Update> {
-    }
 
     /**
      * Connects to other resources inside the resource group.
