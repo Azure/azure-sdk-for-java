@@ -46,7 +46,8 @@ import com.microsoft.azure.servicebus.amqp.SessionHandler;
 public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErrorContextProvider
 {
 	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
-
+	private static final int MIN_TIMEOUT_DURATION_MILLIS = 20;
+	
 	private final ConcurrentLinkedQueue<ReceiveWorkItem> pendingReceives;
 	private final MessagingFactory underlyingFactory;
 	private final ITimeoutErrorHandler stuckTransportHandler;
@@ -126,7 +127,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 				boolean workItemTimedout = false;
 				while((topWorkItem = MessageReceiver.this.pendingReceives.peek()) != null)
 				{
-					if (topWorkItem.getTimeoutTracker().remaining().getSeconds() <= 0)
+					if (topWorkItem.getTimeoutTracker().remaining().toMillis() <= MessageReceiver.MIN_TIMEOUT_DURATION_MILLIS)
 					{
 						WorkItem<Collection<Message>> dequedWorkItem = MessageReceiver.this.pendingReceives.poll();
 						if (dequedWorkItem != null)
@@ -518,7 +519,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 			if (this.nextCreditToFlow >= this.prefetchCount)
 			{
 				tempFlow = this.nextCreditToFlow;
-				this.receiveLink.flow(this.prefetchCount);
+				this.receiveLink.flow(tempFlow);
 				this.nextCreditToFlow = 0;
 			}
 		}
@@ -528,7 +529,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 			if(TRACE_LOGGER.isLoggable(Level.FINE))
 			{
 				TRACE_LOGGER.log(Level.FINE, String.format("receiverPath[%s], linkname[%s], updated-link-credit[%s], sentCredits[%s]",
-						this.receivePath, this.receiveLink.getName(), this.receiveLink.getCredit(), this.prefetchCount));
+						this.receivePath, this.receiveLink.getName(), this.receiveLink.getCredit(), tempFlow));
 			}
 		}
 	}

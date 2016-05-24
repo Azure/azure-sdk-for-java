@@ -181,7 +181,7 @@ public final class PartitionReceiver extends ClientEntity
 	 */
 	public final void setPrefetchCount(final int prefetchCount)
 	{
-		if (prefetchCount < PartitionReceiver.MINIMUM_PREFETCH_COUNT && prefetchCount > PartitionReceiver.MAXIMUM_PREFETCH_COUNT)
+		if (prefetchCount < PartitionReceiver.MINIMUM_PREFETCH_COUNT || prefetchCount > PartitionReceiver.MAXIMUM_PREFETCH_COUNT)
 		{
 			throw new IllegalArgumentException(String.format(Locale.US, 
 					"PrefetchCount has to be between %s and %s", PartitionReceiver.MINIMUM_PREFETCH_COUNT, PartitionReceiver.MAXIMUM_PREFETCH_COUNT));

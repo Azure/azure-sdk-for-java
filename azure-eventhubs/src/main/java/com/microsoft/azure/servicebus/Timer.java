@@ -39,7 +39,7 @@ final class Timer
 			break;
 
 		case RepeatRun:
-			executor.scheduleWithFixedDelay(runnable, runFrequency.getSeconds(), runFrequency.toMillis(), TimeUnit.MILLISECONDS);
+			executor.scheduleWithFixedDelay(runnable, runFrequency.toMillis(), runFrequency.toMillis(), TimeUnit.MILLISECONDS);
 			break;
 
 		default:
