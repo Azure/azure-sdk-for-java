@@ -54,8 +54,12 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 	private final Runnable onOperationTimedout;
 	private final Duration operationTimeout;
 	private final CompletableFuture<Void> linkClose;
-
-	private int prefetchCount; 
+	private final Object prefetchCountSync;
+	private final Object flowSync;
+	private final Object linkCreateLock;
+	
+	private int prefetchCount;
+	
 	private ConcurrentLinkedQueue<Message> prefetchedMessages;
 	private Receiver receiveLink;
 	private WorkItem<MessageReceiver> linkOpen;
@@ -69,12 +73,10 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 	private String lastReceivedOffset;
 
 	private boolean linkCreateScheduled;
-	private Object linkCreateLock;
 	private Exception lastKnownLinkError;
 
 	private int nextCreditToFlow;
-	private Object flowSync;
-
+	
 	private MessageReceiver(final MessagingFactory factory,
 			final ITimeoutErrorHandler stuckTransportHandler,
 			final String name, 
@@ -101,6 +103,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		this.lastKnownLinkError = null;
 		this.flowSync = new Object();
 		this.receiveTimeout = factory.getOperationTimeout();
+		this.prefetchCountSync = new Object();
 
 		if (offset != null)
 		{
@@ -225,12 +228,24 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 
 	public int getPrefetchCount()
 	{
-		return this.prefetchCount;
+		synchronized (this.prefetchCountSync)
+		{
+			return this.prefetchCount;
+		}
 	}
 
 	public void setPrefetchCount(final int value)
 	{
-		this.prefetchCount = value;
+		synchronized (this.prefetchCountSync)
+		{
+			if (this.prefetchCount < value)
+			{
+				final int deltaPrefetch = this.prefetchCount - value;
+				this.sendFlow(deltaPrefetch);
+			}
+
+			this.prefetchCount = value;
+		}
 	}
 
 	public Duration getReceiveTimeout()
