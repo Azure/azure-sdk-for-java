@@ -40,7 +40,7 @@ public final class PartitionReceiver extends ClientEntity
 	private static final int MINIMUM_PREFETCH_COUNT = 10;
 	private static final int MAXIMUM_PREFETCH_COUNT = 999;
 
-	static final int DEFAULT_PREFETCH_COUNT = 300;
+	static final int DEFAULT_PREFETCH_COUNT = 999;
 	static final long NULL_EPOCH = 0;
 
 	/**
