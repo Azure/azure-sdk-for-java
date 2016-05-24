@@ -35,15 +35,11 @@ final class Timer
 		switch (timerType)
 		{
 		case OneTimeRun:
-			long seconds = runFrequency.getSeconds();
-			if (seconds > 0)
-				executor.schedule(runnable, seconds, TimeUnit.SECONDS);
-			else
-				executor.schedule(runnable, runFrequency.toMillis(), TimeUnit.MILLISECONDS);
+			executor.schedule(runnable, runFrequency.toMillis(), TimeUnit.MILLISECONDS);
 			break;
 
 		case RepeatRun:
-			executor.scheduleWithFixedDelay(runnable, runFrequency.getSeconds(), runFrequency.getSeconds(), TimeUnit.SECONDS);
+			executor.scheduleWithFixedDelay(runnable, runFrequency.getSeconds(), runFrequency.toMillis(), TimeUnit.MILLISECONDS);
 			break;
 
 		default:

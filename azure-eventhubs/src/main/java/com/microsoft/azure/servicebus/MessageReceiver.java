@@ -46,7 +46,6 @@ import com.microsoft.azure.servicebus.amqp.SessionHandler;
 public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErrorContextProvider
 {
 	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
-	private static final Duration MINIMUM_RECEIVE_TIMER = Duration.ofSeconds(2);
 
 	private final ConcurrentLinkedQueue<ReceiveWorkItem> pendingReceives;
 	private final MessagingFactory underlyingFactory;
@@ -200,6 +199,30 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		return this.linkOpen.getWork();
 	}
 
+	private List<Message> receiveCore(final int messageCount)
+	{
+		List<Message> returnMessages = null;
+		Message currentMessage = this.pollPrefetchQueue();
+
+		while (currentMessage != null) 
+		{
+			if (returnMessages == null)
+			{
+				returnMessages = new LinkedList<Message>();
+			}
+
+			returnMessages.add(currentMessage);
+			if (returnMessages.size() >= messageCount)
+			{
+				break;
+			}
+
+			currentMessage = this.pollPrefetchQueue();
+		}
+
+		return returnMessages;
+	}
+
 	public int getPrefetchCount()
 	{
 		return this.prefetchCount;
@@ -236,11 +259,6 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 			return CompletableFuture.completedFuture((Collection<Message>) returnMessages);				
 		}
 
-		if (this.receiveTimeout.compareTo(MessageReceiver.MINIMUM_RECEIVE_TIMER) <= 0)
-		{
-			return CompletableFuture.completedFuture(null);
-		}
-
 		if (this.pendingReceives.isEmpty())
 		{
 			this.scheduleOperationTimer(TimeoutTracker.create(this.receiveTimeout));
@@ -250,30 +268,6 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		this.pendingReceives.offer(new ReceiveWorkItem(onReceive, this.receiveTimeout, maxMessageCount));
 
 		return onReceive;
-	}
-
-	public List<Message> receiveCore(final int messageCount)
-	{
-		List<Message> returnMessages = null;
-		Message currentMessage = this.pollPrefetchQueue();
-
-		while (currentMessage != null) 
-		{
-			if (returnMessages == null)
-			{
-				returnMessages = new LinkedList<Message>();
-			}
-
-			returnMessages.add(currentMessage);
-			if (returnMessages.size() >= messageCount)
-			{
-				break;
-			}
-
-			currentMessage = this.pollPrefetchQueue();
-		}
-
-		return returnMessages;
 	}
 
 	public void onOpenComplete(Exception exception)
@@ -316,7 +310,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		this.stuckTransportHandler.resetTimeoutErrorTracking();
 	}
 
-	// intended to be invoked by proton reactor handler - upon delivery 
+	@Override
 	public void onReceiveComplete(Message message)
 	{
 		this.prefetchedMessages.add(message);
@@ -325,7 +319,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		this.stuckTransportHandler.resetTimeoutErrorTracking();
 
 		ReceiveWorkItem currentReceive = this.pendingReceives.poll();
-		if (currentReceive != null)
+		if (currentReceive != null && !currentReceive.getWork().isDone())
 		{
 			List<Message> returnMessages = this.receiveCore(currentReceive.maxMessageCount);
 			CompletableFuture<Collection<Message>> future = currentReceive.getWork();
@@ -509,7 +503,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 			if (this.nextCreditToFlow >= this.prefetchCount)
 			{
 				tempFlow = this.nextCreditToFlow;
-				this.receiveLink.flow(this.nextCreditToFlow);
+				this.receiveLink.flow(this.prefetchCount);
 				this.nextCreditToFlow = 0;
 			}
 		}
@@ -518,7 +512,8 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		{
 			if(TRACE_LOGGER.isLoggable(Level.FINE))
 			{
-				TRACE_LOGGER.log(Level.FINE, String.format("receiverPath[%s], linkname[%s], updated-link-credit[%s], sentCredits[%s]", this.receivePath, this.receiveLink.getName(), this.receiveLink.getCredit(), credits));
+				TRACE_LOGGER.log(Level.FINE, String.format("receiverPath[%s], linkname[%s], updated-link-credit[%s], sentCredits[%s]",
+						this.receivePath, this.receiveLink.getName(), this.receiveLink.getCredit(), this.prefetchCount));
 			}
 		}
 	}

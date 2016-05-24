@@ -106,15 +106,12 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
 	@Override
 	public void onDelivery(Event event)
 	{
-		if (this.isFirstResponse)
+		synchronized (this.firstResponse)
 		{
-			synchronized (this.firstResponse)
+			if (this.isFirstResponse)
 			{
-				if (this.isFirstResponse)
-				{
-					this.isFirstResponse = false;
-					this.amqpReceiver.onOpenComplete(null);
-				}
+				this.isFirstResponse = false;
+				this.amqpReceiver.onOpenComplete(null);
 			}
 		}
 
