@@ -643,16 +643,16 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 				? this.receiveLink.getRemoteProperties().get(ClientConstants.TRACKING_ID_PROPERTY).toString()
 						: ((this.receiveLink != null) ? this.receiveLink.getName(): null);
 
-				ReceiverContext errorContext = new ReceiverContext(this.underlyingFactory != null ? this.underlyingFactory.getHostName() : null,
-						this.receivePath,
-						referenceId,
-						isLinkOpened ? new Long(this.lastReceivedOffset) : null, 
-								isLinkOpened ? this.prefetchCount : null, 
-										isLinkOpened ? this.receiveLink.getCredit(): null, 
-												isLinkOpened && this.prefetchedMessages != null ? this.prefetchedMessages.size(): null, 
-														this.isEpochReceiver);
+		ReceiverContext errorContext = new ReceiverContext(this.underlyingFactory != null ? this.underlyingFactory.getHostName() : null,
+				this.receivePath,
+				referenceId,
+				isLinkOpened ? new Long(this.lastReceivedOffset) : null, 
+						isLinkOpened ? this.prefetchCount : null, 
+								isLinkOpened ? this.receiveLink.getCredit(): null, 
+										isLinkOpened && this.prefetchedMessages != null ? this.prefetchedMessages.size(): null, 
+												this.isEpochReceiver);
 
-				return errorContext;
+		return errorContext;
 	}	
 
 	private static class ReceiveWorkItem extends WorkItem<Collection<Message>>
