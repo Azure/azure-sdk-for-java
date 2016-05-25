@@ -85,7 +85,7 @@ public class AzureTests {
     @Test public void testNetworks() throws Exception {
         new TestNetwork().runTest(azure2, azure2.networks());
     }
-
+    
     @Test
     public void listSubscriptions() throws Exception {
         Assert.assertTrue(0 < subscriptions.list().size());
