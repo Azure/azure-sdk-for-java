@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -70,7 +76,6 @@ public interface ResourceGroup extends
         Appliable<Update>,
         Resource.UpdateWithTags<Update> {
     }
-
 
     /**
      * Connects to other resources inside the resource group.
