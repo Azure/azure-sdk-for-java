@@ -77,7 +77,15 @@ public class AzureTests {
     @Test public void testAvailabilitySets() throws Exception {
         new TestAvailabilitySet().runTest(azure2, azure2.availabilitySets());
     }
-    
+
+    /**
+     * Tests the virtual network implementation
+     * @throws Exception
+     */
+    @Test public void testNetworks() throws Exception {
+        new TestNetwork().runTest(azure2, azure2.networks());
+    }
+
     @Test
     public void listSubscriptions() throws Exception {
         Assert.assertTrue(0 < subscriptions.list().size());
