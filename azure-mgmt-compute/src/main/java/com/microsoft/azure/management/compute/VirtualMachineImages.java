@@ -8,17 +8,17 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- *  The type representing Azure virtual machine image collection.
+ *  Entry point to virtual machine image management API.
  */
 public interface VirtualMachineImages extends
         SupportsListingByLocation<VirtualMachineImage> {
     /**
      * Lists the virtual machine publishers in a region.
      *
-     * @param region The region
-     * @return The list of VM image publishers
-     * @throws CloudException Thrown for an invalid response from the service.
-     * @throws IOException Thrown for IO exception.
+     * @param region the region
+     * @return the list of VM image publishers
+     * @throws CloudException thrown for an invalid response from the service
+     * @throws IOException thrown for IO exception
      */
     List<VirtualMachineImage.Publisher> listPublishers(final Region region) throws CloudException, IOException;
 }

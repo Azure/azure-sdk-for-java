@@ -1,8 +1,34 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.compute.AvailabilitySet;
+import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.VirtualMachine;
-import com.microsoft.azure.management.compute.implementation.api.*;
+import com.microsoft.azure.management.compute.implementation.api.VirtualMachineInner;
+import com.microsoft.azure.management.compute.implementation.api.Plan;
+import com.microsoft.azure.management.compute.implementation.api.HardwareProfile;
+import com.microsoft.azure.management.compute.implementation.api.StorageProfile;
+import com.microsoft.azure.management.compute.implementation.api.OSProfile;
+import com.microsoft.azure.management.compute.implementation.api.NetworkProfile;
+import com.microsoft.azure.management.compute.implementation.api.DiagnosticsProfile;
+import com.microsoft.azure.management.compute.implementation.api.VirtualMachineInstanceView;
+import com.microsoft.azure.management.compute.implementation.api.VirtualMachineExtensionInner;
+import com.microsoft.azure.management.compute.implementation.api.OperatingSystemTypes;
+import com.microsoft.azure.management.compute.implementation.api.ImageReference;
+import com.microsoft.azure.management.compute.implementation.api.WinRMListener;
+import com.microsoft.azure.management.compute.implementation.api.CachingTypes;
+import com.microsoft.azure.management.compute.implementation.api.DiskEncryptionSettings;
+import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeTypes;
+import com.microsoft.azure.management.compute.implementation.api.VirtualHardDisk;
+import com.microsoft.azure.management.compute.implementation.api.VirtualMachinesInner;
+import com.microsoft.azure.management.compute.implementation.api.OSDisk;
+import com.microsoft.azure.management.compute.implementation.api.DiskCreateOptionTypes;
+import com.microsoft.azure.management.compute.implementation.api.DataDisk;
+import com.microsoft.azure.management.compute.implementation.api.LinuxConfiguration;
+import com.microsoft.azure.management.compute.implementation.api.WindowsConfiguration;
+import com.microsoft.azure.management.compute.implementation.api.WinRMConfiguration;
+import com.microsoft.azure.management.compute.implementation.api.SshConfiguration;
+import com.microsoft.azure.management.compute.implementation.api.SshPublicKey;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.storage.StorageAccount;
@@ -30,23 +56,28 @@ class VirtualMachineImpl
             VirtualMachine.DefinitionWindowsCreatable,
             VirtualMachine.DefinitionCreatable,
             VirtualMachine.ConfigureDataDisk,
-        VirtualMachine.ConfigureNewDataDiskWithStoreAt,
+            VirtualMachine.ConfigureNewDataDiskWithStoreAt,
             VirtualMachine.ConfigureNewDataDisk,
             VirtualMachine.ConfigureExistingDataDisk {
     private final VirtualMachinesInner client;
     private final VirtualMachineInner innerModel;
     private final ResourceManager resourceManager;
     private final StorageManager storageManager;
+    private final AvailabilitySets availabilitySets;
 
     private String storageAccountName;
+    private String availabilitySetName;
 
-    VirtualMachineImpl(String name, VirtualMachineInner innerModel, VirtualMachinesInner client,
+    VirtualMachineImpl(String name, VirtualMachineInner innerModel,
+                       VirtualMachinesInner client,
+                       AvailabilitySets availabilitySets,
                        ResourceManager resourceManager, StorageManager storageManager) {
         super(name, innerModel, resourceManager.resourceGroups());
         this.client = client;
         this.innerModel = innerModel;
         this.resourceManager = resourceManager;
         this.storageManager = storageManager;
+        this.availabilitySets = availabilitySets;
 
         this.innerModel.setStorageProfile(new StorageProfile());
         this.innerModel.storageProfile().setOsDisk(new OSDisk());
@@ -395,6 +426,30 @@ class VirtualMachineImpl
     @Override
     public DefinitionCreatable withExistingStorageAccount(String name) {
         this.storageAccountName = name;
+        return this;
+    }
+
+    // Virtual machine availability set fluent methods
+    //
+
+    @Override
+    public DefinitionCreatable withNewAvailabilitySet(String name) {
+        return withNewAvailabilitySet(availabilitySets.define(name)
+                .withRegion(region())
+                .withExistingGroup(this.resourceGroupName())
+        );
+    }
+
+    @Override
+    public DefinitionCreatable withNewAvailabilitySet(AvailabilitySet.DefinitionCreatable creatable) {
+        this.availabilitySetName = creatable.key();
+        this.prerequisites().put(creatable.key(), creatable);
+        return this;
+    }
+
+    @Override
+    public DefinitionCreatable withExistingAvailabilitySet(String name) {
+        this.availabilitySetName = name;
         return this;
     }
 
