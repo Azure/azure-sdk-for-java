@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 
 
 /**
- * Entry point to public IP address management
+ * Entry point to virtual network management
  */
 public interface Networks extends
     SupportsCreating<Network.DefinitionBlank>,

@@ -17,17 +17,19 @@ public class TestAvailabilitySet extends TestTemplate<AvailabilitySet, Availabil
     @Override
     public AvailabilitySet createResource(Azure azure) throws Exception {
         final String newName = "as" + this.testId;
-        return azure.availabilitySets().define(newName)
+        AvailabilitySet aset = azure.availabilitySets().define(newName)
                 .withRegion(Region.US_WEST)
                 .withNewGroup()
                 .withFaultDomainCount(2)
                 .withUpdateDomainCount(4)
                 .withTag("tag1", "value1")
                 .create();
+        return aset;
     }
 
     @Override
     public AvailabilitySet updateResource(AvailabilitySet resource) throws Exception {
+        // Modify existing availability set
         resource =  resource.update()
                 .withTag("tag2", "value2")
                 .withTag("tag3", "value3")

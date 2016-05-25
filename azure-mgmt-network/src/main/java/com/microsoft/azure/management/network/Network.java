@@ -145,6 +145,9 @@ public interface Network extends
         
         /**
          * Specifies the IP address of an existing DNS server to associate with the virtual network.
+         * <p>
+         * Note this method's effect is additive, i.e. each time it is used, a new dns server is added 
+         * to the network.
          * @param ipAddress the IP address of the DNS server
          * @return the next stage of the virtual network definition
          */
@@ -188,6 +191,9 @@ public interface Network extends
 
         /**
          * Specifies the IP address of the DNS server to associate with the virtual network.
+         * <p>
+         * Note this method's effect is additive, i.e. each time it is used, a new dns server is 
+         * added to the network
          * @param ipAddress the IP address of the DNS server
          * @return the next stage of the virtual network update
          */
