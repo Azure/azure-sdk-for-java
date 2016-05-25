@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnknownDescribedType;
 import org.apache.qpid.proton.amqp.messaging.Source;
@@ -29,6 +30,7 @@ import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Connection;
+import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Session;
@@ -47,7 +49,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 {
 	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
 	private static final int MIN_TIMEOUT_DURATION_MILLIS = 20;
-	
+
 	private final ConcurrentLinkedQueue<ReceiveWorkItem> pendingReceives;
 	private final MessagingFactory underlyingFactory;
 	private final ITimeoutErrorHandler stuckTransportHandler;
@@ -58,9 +60,9 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 	private final Object prefetchCountSync;
 	private final Object flowSync;
 	private final Object linkCreateLock;
-	
+
 	private int prefetchCount;
-	
+
 	private ConcurrentLinkedQueue<Message> prefetchedMessages;
 	private Receiver receiveLink;
 	private WorkItem<MessageReceiver> linkOpen;
@@ -77,7 +79,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 	private Exception lastKnownLinkError;
 
 	private int nextCreditToFlow;
-	
+
 	private MessageReceiver(final MessagingFactory factory,
 			final ITimeoutErrorHandler stuckTransportHandler,
 			final String name, 
@@ -147,8 +149,13 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 
 				if (workItemTimedout)
 				{
-					// workaround to push the sendflow-performative to reactor
-					MessageReceiver.this.receiveLink.flow(0);
+					synchronized (MessageReceiver.this.flowSync)
+					{
+						// workaround to push the sendflow-performative to reactor
+						// this sets the receiveLink endpoint to modified state
+						// (and increment the unsentCredits in proton by 0)
+						MessageReceiver.this.receiveLink.flow(0);
+					}
 
 					// we have a known issue with proton libraries where transport layer is stuck while Sending Flow
 					// to workaround this - we built a mechanism to reset the transport whenever we encounter this
@@ -241,8 +248,11 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		{
 			if (this.prefetchCount < value)
 			{
-				final int deltaPrefetch = this.prefetchCount - value;
-				this.sendFlow(deltaPrefetch);
+				int deltaPrefetch = this.prefetchCount - value;
+				synchronized (this.flowSync)
+				{
+					this.sendFlow(deltaPrefetch);
+				}
 			}
 
 			this.prefetchCount = value;
@@ -306,10 +316,17 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 			this.offsetInclusive = false;
 			this.underlyingFactory.getRetryPolicy().resetRetryCount(this.underlyingFactory.getClientId());
 
-			if (this.receiveLink.getCredit() == 0)
+			synchronized (this.flowSync)
 			{
-				int pendingPrefetch = this.prefetchCount - this.prefetchedMessages.size();
-				this.sendFlow(pendingPrefetch);
+				this.prefetchedMessages.clear();
+				this.nextCreditToFlow = 0;
+				this.receiveLink.flow(this.prefetchCount);
+
+				if(TRACE_LOGGER.isLoggable(Level.FINE))
+				{
+					TRACE_LOGGER.log(Level.FINE, String.format("receiverPath[%s], linkname[%s], updated-link-credit[%s], sentCredits[%s]",
+							this.receivePath, this.receiveLink.getName(), this.receiveLink.getCredit(), this.prefetchCount));
+				}
 			}
 		}
 		else
@@ -327,8 +344,22 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 	}
 
 	@Override
-	public void onReceiveComplete(Message message)
+	public void onReceiveComplete(Delivery delivery)
 	{
+		Message message = null;
+		synchronized (this.flowSync)
+		{
+			int msgSize = delivery.pending();
+			byte[] buffer = new byte[msgSize];
+			
+			int read = receiveLink.recv(buffer, 0, msgSize);
+			
+			message = Proton.message();
+			message.decode(buffer, 0, read);
+			
+			delivery.settle();
+		}
+
 		this.prefetchedMessages.add(message);
 
 		this.underlyingFactory.getRetryPolicy().resetRetryCount(this.getClientId());
@@ -352,6 +383,8 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 	@Override
 	public void onError(Exception exception)
 	{
+		this.prefetchedMessages.clear();
+
 		if (this.getIsClosingOrClosed())
 		{
 			this.linkClose.complete(null);
@@ -441,7 +474,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 				if(TRACE_LOGGER.isLoggable(Level.WARNING))
 				{
 					TRACE_LOGGER.log(Level.WARNING,
-							String.format("receiverPath[%s], linkname[%s], warning[starting receiver from epoch+Long.Max]", this.receivePath, this.receiveLink.getName(), this.receiveLink.getCredit()));
+							String.format("receiverPath[%s], linkname[%s], warning[starting receiver from epoch+Long.Max]", this.receivePath, this.receiveLink.getName()));
 				}
 			}
 
@@ -450,7 +483,6 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		}
 		else 
 		{
-			this.prefetchedMessages.clear();
 			if(TRACE_LOGGER.isLoggable(Level.FINE))
 			{
 				TRACE_LOGGER.log(Level.FINE, String.format("receiverPath[%s], action[recreateReceiveLink], offset[%s], offsetInclusive[%s]", this.receivePath, this.lastReceivedOffset, this.offsetInclusive));
@@ -495,33 +527,33 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 	// CONTRACT: message should be delivered to the caller of MessageReceiver.receive() only via Poll on prefetchqueue
 	private Message pollPrefetchQueue()
 	{
-		Message message = this.prefetchedMessages.poll();
-		if (message != null)
+		synchronized (this.flowSync)
 		{
-			// message lastReceivedOffset should be up-to-date upon each poll - as recreateLink will depend on this 
-			this.lastReceivedOffset = message.getMessageAnnotations().getValue().get(AmqpConstants.OFFSET).toString();
-			this.sendFlow(1);
-		}
+			final Message message = this.prefetchedMessages.poll();
+			if (message != null)
+			{
+				// message lastReceivedOffset should be up-to-date upon each poll - as recreateLink will depend on this 
+				this.lastReceivedOffset = message.getMessageAnnotations().getValue().get(AmqpConstants.OFFSET).toString();
+				this.sendFlow(1);
+			}
 
-		return message;
+			return message;
+		}
 	}
 
 
-	// set the link credit; thread-safe
+	// set the link credit; not-thread-safe
 	private void sendFlow(final int credits)
 	{
 		int tempFlow = 0;
 
 		// slow down sending the flow - to make the protocol less-chat'y
-		synchronized (this.flowSync)
+		this.nextCreditToFlow += credits;
+		if (this.nextCreditToFlow >= this.prefetchCount)
 		{
-			this.nextCreditToFlow += credits;
-			if (this.nextCreditToFlow >= this.prefetchCount)
-			{
-				tempFlow = this.nextCreditToFlow;
-				this.receiveLink.flow(tempFlow);
-				this.nextCreditToFlow = 0;
-			}
+			tempFlow = this.nextCreditToFlow;
+			this.receiveLink.flow(tempFlow);
+			this.nextCreditToFlow = 0;
 		}
 
 		if (tempFlow != 0)

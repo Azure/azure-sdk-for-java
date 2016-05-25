@@ -122,21 +122,8 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
 		// all until "last-1" deliveries will be partial
 		// reactor will raise onDelivery event for all of these - we only need the last one
 		if (!delivery.isPartial())
-		{
-			// delivery.pending() should return current deliveries pending bytes to be read.
-			// we ran into an issue with proton-j where delivery.pending() returned lessthan available bytes and hence the below Math.max(...)
-			int msgSize = delivery.pending() + ClientConstants.MAX_FRAME_SIZE_BYTES;
-			byte[] buffer = new byte[msgSize];
-			int read = receiveLink.recv(buffer, 0, msgSize);
-
-			delivery.settle();
-
-			if (read != -1)
-			{
-				Message msg = Proton.message();
-				msg.decode(buffer, 0, read);
-				this.amqpReceiver.onReceiveComplete(msg);
-			}
+		{	
+			this.amqpReceiver.onReceiveComplete(delivery);
 		}
 
 		if(TRACE_LOGGER.isLoggable(Level.FINEST) && receiveLink != null)
