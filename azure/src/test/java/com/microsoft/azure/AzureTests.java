@@ -34,6 +34,7 @@ public class AzureTests {
     public static void main(String[] args) throws IOException, CloudException {
         final File credFile = new File("my.azureauth");
         Azure azure = Azure.authenticate(credFile).withDefaultSubscription();
+        
         System.out.println(String.valueOf(azure.resourceGroups().list().size()));
 
         Azure.configure().withLogLevel(Level.BASIC).authenticate(credFile);
@@ -67,7 +68,7 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testPublicIpAddresses() throws Exception {
-        new TestPublicIpAddress().runTest(azure2, azure2.publicIpAddresses());        
+        new TestPublicIpAddress().runTest(azure2.publicIpAddresses());        
     }
 
     /**
@@ -75,7 +76,7 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testAvailabilitySets() throws Exception {
-        new TestAvailabilitySet().runTest(azure2, azure2.availabilitySets());
+        new TestAvailabilitySet().runTest(azure2.availabilitySets());
     }
 
     /**
@@ -83,7 +84,7 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testNetworks() throws Exception {
-        new TestNetwork().runTest(azure2, azure2.networks());
+        new TestNetwork().runTest(azure2.networks());
     }
     
     @Test

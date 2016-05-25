@@ -7,7 +7,6 @@ package com.microsoft.azure;
 
 import org.junit.Assert;
 
-import com.microsoft.azure.implementation.Azure;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.Subnet;
@@ -16,9 +15,9 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 public class TestNetwork extends TestTemplate<Network, Networks> {
 
     @Override
-    public Network createResource(Azure azure) throws Exception {
+    public Network createResource(Networks networks) throws Exception {
         final String newName = "net" + this.testId;
-        return azure.networks().define(newName)
+        return networks.define(newName)
                 .withRegion(Region.US_WEST)
                 .withNewGroup()
                 .withAddressSpace("10.0.0.0/28")

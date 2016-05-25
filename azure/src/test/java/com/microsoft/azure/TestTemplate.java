@@ -31,7 +31,7 @@ public abstract class TestTemplate<
      * @return created resource
      * @throws Exception 
      */
-    public abstract T createResource(Azure azure) throws Exception;
+    public abstract T createResource(C resources) throws Exception;
 
     /** 
      * Resource update logic
@@ -78,17 +78,15 @@ public abstract class TestTemplate<
 
     /**
      * Runs the test
-     * @param azure authenticated Azure instance
      * @param collection collection of resources to test
      * @throws Exception
      */
     @Test
-    public void runTest(Azure azure, C collection) throws Exception {
-        this.azure = azure;
+    public void runTest(C collection) throws Exception {
         this.collection = collection;
 
         // Verify creation
-        this.resource = createResource(azure);
+        this.resource = createResource(collection);
         System.out.println("\n------------\nAfter creation:\n");
         print(this.resource);
 

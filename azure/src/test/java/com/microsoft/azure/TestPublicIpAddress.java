@@ -7,7 +7,6 @@ package com.microsoft.azure;
 
 import org.junit.Assert;
 
-import com.microsoft.azure.implementation.Azure;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -15,15 +14,16 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 public class TestPublicIpAddress extends TestTemplate<PublicIpAddress, PublicIpAddresses> {
 
     @Override
-    public PublicIpAddress createResource(Azure azure) throws Exception {
+    public PublicIpAddress createResource(PublicIpAddresses pips) throws Exception {
         final String newPipName = "pip" + this.testId;
-        return azure.publicIpAddresses().define(newPipName)
+        PublicIpAddress pip = pips.define(newPipName)
                 .withRegion(Region.US_WEST)
                 .withNewGroup()
                 .withDynamicIp()
                 .withLeafDomainLabel(newPipName)
                 .withIdleTimeoutInMinutes(10)
                 .create();
+        return pip;
     }
 
     @Override
