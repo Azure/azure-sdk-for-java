@@ -30,7 +30,7 @@ following dependency declaration inside of your Maven project file:
     <dependency> 
    		<groupId>com.microsoft.azure</groupId> 
    		<artifactId>azure-eventhubs-clients</artifactId> 
-   		<version>0.6.9</version> 
+   		<version>0.7.0</version> 
    	</dependency>   
  ```
  
@@ -64,19 +64,21 @@ The receiver code then creates (at least) one *PartitionReceiver* that will rece
 an offset, in the snippet below it's simply the start of the log.    
 		
 ```Java
-		String partitionId = "0"; // API to get PartitionIds will be released as part of V0.2
+		String partitionId = "0"; // API to get PartitionIds will be released soon
 		PartitionReceiver receiver = ehClient.createReceiver(
 				EventHubClient.DefaultConsumerGroupName, 
 				partitionId, 
 				PartitionReceiver.StartOfStream,
 				false).get();
+
+		receiver.setReceiveTimeout(Duration.ofSeconds(5));
 ``` 
 
 Once the receiver is initialized, getting events is just a matter of calling the *receive()* method in a loop. Each call 
-to *receive()* will fetch an eneumerable batch of events to process.    		
+to *receive()* will fetch an iterable batch of events to process.    		
         
 ```Java        
-		Iterable<EventData> receivedEvents = receiver.receive().get();         
+		Iterable<EventData> receivedEvents = receiver.receive(maxEventCount).get();         
 ```
 
 ##Consumer Groups 
