@@ -168,9 +168,9 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public DefinitionWithTemplate withNewResourceGroup(String resourceGroupName, Region location) throws Exception {
-        ResourceGroup group = this.resourceGroups.define(resourceGroupName).withLocation(location).create();
-        this.resourceGroupName = group.name();
+    public DefinitionWithTemplate withNewResourceGroup(String resourceGroupName, Region region) {
+        prerequisites().put(resourceGroupName, this.resourceGroups.define(resourceGroupName).withRegion(region));
+        this.resourceGroupName = resourceGroupName;
         return this;
     }
 

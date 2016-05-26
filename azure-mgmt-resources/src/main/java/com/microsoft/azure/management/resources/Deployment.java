@@ -8,7 +8,6 @@ package com.microsoft.azure.management.resources;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
@@ -102,8 +101,22 @@ public interface Deployment extends
     /**
      * A deployment definition allowing resource group to be specified.
      */
-    interface DefinitionBlank extends GroupableResource.DefinitionWithGroup<DefinitionWithTemplate> {
-        DefinitionWithTemplate withNewResourceGroup(String resourceGroupName, Region location) throws Exception;
+    interface DefinitionBlank {
+        /**
+         * Creates a new resource group for the deployment.
+         *
+         * @param resourceGroupName the name of the resource group
+         * @param region the region for the resource group
+         * @return the next stage of the deployment definition
+         */
+        DefinitionWithTemplate withNewResourceGroup(String resourceGroupName, Region region);
+
+        /**
+         * Specifies the name of an existing resource group for the deployment.
+         *
+         * @param resourceGroupName the name of the resource group
+         * @return the next stage of the deployment definition
+         */
         DefinitionWithTemplate withExistingResourceGroup(String resourceGroupName);
     }
 
@@ -111,8 +124,29 @@ public interface Deployment extends
      * A deployment definition allowing template to be specified.
      */
     interface DefinitionWithTemplate {
+        /**
+         * Specifies the template as a Java object.
+         *
+         * @param template the Java object
+         * @return the next stage of the deployment definition
+         */
         DefinitionWithParameters withTemplate(Object template);
+
+        /**
+         * Specifies the template as a serialized JSON object.
+         *
+         * @param template the JSON object
+         * @return the next stage of the deployment definition
+         */
         DefinitionWithParameters withTemplate(JsonNode template);
+
+        /**
+         * Specifies the template as a URL.
+         *
+         * @param uri the location of the remote template file
+         * @param contentVersion the version of the template file
+         * @return the next stage of the deployment definition
+         */
         DefinitionWithParameters withTemplateLink(String uri, String contentVersion);
     }
 
@@ -120,8 +154,29 @@ public interface Deployment extends
      * A deployment definition allowing parameters to be specified.
      */
     interface DefinitionWithParameters {
+        /**
+         * Specifies the parameters as a Java object.
+         *
+         * @param parameters the Java object
+         * @return the next stage of the deployment definition
+         */
         DefinitionWithMode withParameters(Object parameters);
+
+        /**
+         * Specifies the parameters as a serialized JSON object.
+         *
+         * @param parameters the JSON object
+         * @return the next stage of the deployment definition
+         */
         DefinitionWithMode withParameters(JsonNode parameters);
+
+        /**
+         * Specifies the parameters as a URL.
+         *
+         * @param uri the location of the remote parameters file
+         * @param contentVersion the version of the parameters file
+         * @return the next stage of the deployment definition
+         */
         DefinitionWithMode withParametersLink(String uri, String contentVersion);
     }
 
