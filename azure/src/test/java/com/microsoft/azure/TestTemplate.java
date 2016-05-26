@@ -22,7 +22,6 @@ public abstract class TestTemplate<
 
     protected String testId = String.valueOf(System.currentTimeMillis());
     private T resource;
-    private Azure azure;
     private C collection;
 
     /**
@@ -64,10 +63,10 @@ public abstract class TestTemplate<
      * Tests the deletion logic
      * @throws Exception
      */
-    public void verifyDeleting() throws Exception {
+    public void verifyDeleting(Azure azure) throws Exception {
         final String groupName = this.resource.resourceGroupName();
         this.collection.delete(this.resource.id());
-        this.azure.resourceGroups().delete(groupName);
+        azure.resourceGroups().delete(groupName);
     }
 
     /**
@@ -82,7 +81,7 @@ public abstract class TestTemplate<
      * @throws Exception
      */
     @Test
-    public void runTest(C collection) throws Exception {
+    public void runTest(C collection, Azure azure) throws Exception { //TODO Still need to find a way to eliminate Azure
         this.collection = collection;
 
         // Verify creation
@@ -106,6 +105,6 @@ public abstract class TestTemplate<
         print(this.resource);
 
         // Verify deletion
-        verifyDeleting();
+        verifyDeleting(azure);
     }
 }
