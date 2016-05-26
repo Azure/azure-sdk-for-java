@@ -107,6 +107,6 @@ class PublicIpAddressesImpl
 
     
     private PublicIpAddressImpl createFluentModel(PublicIPAddressInner inner) {
-        return new PublicIpAddressImpl(inner.name(), inner, this.client, this.resourceGroups);
+        return new PublicIpAddressImpl(inner.id(), inner, this.client, this.resourceGroups);
     }
 }

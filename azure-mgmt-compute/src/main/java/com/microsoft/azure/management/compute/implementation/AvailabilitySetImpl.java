@@ -15,7 +15,6 @@ import com.microsoft.azure.management.compute.implementation.api.InstanceViewSta
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceLazyList;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.rest.ServiceResponse;
 
 import java.util.ArrayList;
@@ -112,9 +111,7 @@ class AvailabilitySetImpl
 
     @Override
     public AvailabilitySetImpl create() throws Exception {
-        for (Creatable<?> provisionable : prerequisites().values()) {
-            provisionable.create();
-        }
+        super.create(this.resourceGroupName());
         ServiceResponse<AvailabilitySetInner> response = this.client.createOrUpdate(this.resourceGroupName(), this.key, this.inner());
         AvailabilitySetInner availabilitySetInner = response.getBody();
         this.setInner(availabilitySetInner);
