@@ -89,13 +89,26 @@ public interface StorageAccount extends
      * Fluent interfaces to provision a StorageAccount
      **************************************************************/
 
-    interface DefinitionBlank extends GroupableResource.DefinitionWithRegion<DefinitionWithGroup> {
+    /**
+     * Container interface for all the definitions
+     */
+    public interface Definitions extends 
+        DefinitionBlank,
+        DefinitionWithGroup,
+        DefinitionAfterGroup,
+        DefinitionCreatable {
+    }
+    
+    public interface DefinitionBlank extends GroupableResource.DefinitionWithRegion<DefinitionWithGroup> {
     }
 
-    interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionCreatable> {
+    public interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionAfterGroup> {
     }
 
-    interface DefinitionCreatable extends Creatable<StorageAccount> {
+    public interface DefinitionAfterGroup extends DefinitionCreatable {
+    }
+    
+    public interface DefinitionCreatable extends Creatable<StorageAccount> {
         DefinitionCreatable withAccountType(AccountType accountType);
     }
 }

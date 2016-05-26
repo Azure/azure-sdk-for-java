@@ -55,6 +55,7 @@ public interface Network extends
 	interface Definitions extends 
 	    DefinitionBlank,
 	    DefinitionWithGroup,
+	    DefinitionAfterGroup,
 	    DefinitionWithSubnet,
 	    DefinitionCreatable,
 	    DefinitionCreatableWithSubnet {}
@@ -69,10 +70,16 @@ public interface Network extends
     /**
      * The stage of the virtual network definition allowing to specify the resource group
      */
-    interface DefinitionWithGroup 
-        extends GroupableResource.DefinitionWithGroup<DefinitionCreatable> {
+    public interface DefinitionWithGroup 
+        extends GroupableResource.DefinitionWithGroup<DefinitionAfterGroup> {
     }
 
+    /**
+     * The stage of the virtual network definition after with the resource group already specified
+     */
+    public interface DefinitionAfterGroup
+        extends DefinitionCreatable {}
+    
     /**
      * The stage of the virtual network definition allowing to add subnets
      */

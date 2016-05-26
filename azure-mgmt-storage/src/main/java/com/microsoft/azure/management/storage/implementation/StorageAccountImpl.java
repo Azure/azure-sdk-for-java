@@ -17,10 +17,7 @@ class StorageAccountImpl
         extends GroupableResourceImpl<StorageAccount, StorageAccountInner, StorageAccountImpl>
         implements
         StorageAccount,
-        StorageAccount.DefinitionBlank,
-        StorageAccount.DefinitionWithGroup,
-        StorageAccount.DefinitionCreatable
-        {
+        StorageAccount.Definitions {
 
     private PublicEndpoints publicEndpoints;
     private AccountStatuses accountStatuses;

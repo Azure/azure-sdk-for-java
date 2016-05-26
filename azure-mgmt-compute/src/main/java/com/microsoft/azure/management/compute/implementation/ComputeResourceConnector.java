@@ -36,7 +36,7 @@ public class ComputeResourceConnector extends ResourceConnectorBase {
      */
     public AvailabilitySets.InGroup availabilitySets() {
         if (availabilitySets == null) {
-            availabilitySets = new AvailabilitySetsInGroup(computeClient().availabilitySets(), resourceGroup);
+            availabilitySets = new AvailabilitySetsInGroupImpl(computeClient().availabilitySets(), resourceGroup);
         }
         return availabilitySets;
     }
@@ -48,7 +48,7 @@ public class ComputeResourceConnector extends ResourceConnectorBase {
      *
      * @return The virtual machine collection
      */
-    public VirtualMachines.InGroup VirtualMachines() {
+    public VirtualMachines.InGroup virtualMachines() {
         // TODO
         return null;
     }

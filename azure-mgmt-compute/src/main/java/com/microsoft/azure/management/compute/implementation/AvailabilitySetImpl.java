@@ -26,9 +26,7 @@ class AvailabilitySetImpl
         GroupableResourceImpl<AvailabilitySet, AvailabilitySetInner, AvailabilitySetImpl>
     implements
         AvailabilitySet,
-        AvailabilitySet.DefinitionBlank,
-        AvailabilitySet.DefinitionWithGroup,
-        AvailabilitySet.DefinitionCreatable,
+        AvailabilitySet.Definitions,
         AvailabilitySet.Update {
     private List<String> idOfVMsInSet;
     private List<VirtualMachine> vmsInSet;

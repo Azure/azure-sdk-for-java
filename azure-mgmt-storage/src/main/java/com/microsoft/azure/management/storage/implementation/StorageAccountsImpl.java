@@ -74,7 +74,7 @@ class StorageAccountsImpl
     }
 
     @Override
-    public StorageAccount.DefinitionBlank define(String name) {
+    public StorageAccountImpl define(String name) {
         return createFluentModel(name);
     }
 

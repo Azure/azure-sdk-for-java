@@ -64,27 +64,42 @@ public interface AvailabilitySet extends
 
 
     /**************************************************************
-     * Fluent interfaces to provision an AvailabilitySet
+     * Fluent interfaces to create an AvailabilitySet
      **************************************************************/
 
     /**
+     * Container interface for all the definitions
+     */
+    public interface Definitions extends
+        DefinitionBlank,
+        DefinitionWithGroup,
+        DefinitionAfterGroup,
+        DefinitionCreatable {
+    }
+    
+    /**
      * The first stage of an availability set definition
      */
-    interface DefinitionBlank extends GroupableResource.DefinitionWithRegion<DefinitionWithGroup> {
+    public interface DefinitionBlank extends GroupableResource.DefinitionWithRegion<DefinitionWithGroup> {
     }
 
     /**
      * The stage of the availability set definition allowing to specify the resource group
      */
-    interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionCreatable> {
+    public interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionAfterGroup> {
     }
+    
+    /**
+     * The stage of the availability set definition after the resource group has been specified
+     */
+    public interface DefinitionAfterGroup extends DefinitionCreatable {}
 
     /**
      * The stage of an availability set definition which contains all the minimum required inputs for
      * the resource to be created (via {@link DefinitionCreatable#create()}), but also allows 
      * for any other optional settings to be specified.
      */     
-    interface DefinitionCreatable extends 
+    public interface DefinitionCreatable extends 
         Creatable<AvailabilitySet>,
         Resource.DefinitionWithTags<DefinitionCreatable> {
         /**
@@ -108,7 +123,7 @@ public interface AvailabilitySet extends
      * <p>
      * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
-    interface Update extends 
+    public interface Update extends 
         Appliable<AvailabilitySet>,
         Resource.UpdateWithTags<Update> {
     }
