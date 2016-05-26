@@ -7,9 +7,11 @@ package com.microsoft.azure;
 
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.implementation.Azure;
+import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.storage.StorageAccount;
+import com.microsoft.azure.management.storage.implementation.StorageManager;
 import com.microsoft.azure.management.storage.implementation.api.AccountType;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -61,6 +63,7 @@ public class AzureTests {
         // Authenticate based on file
         this.azure2 = Azure.authenticate(new File("my.azureauth"))
                 .withDefaultSubscription();
+        
     }
 
     /**
@@ -68,15 +71,28 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testPublicIpAddresses() throws Exception {
-        new TestPublicIpAddress().runTest(azure2.publicIpAddresses());        
+        new TestPublicIpAddress().runTest(azure2.publicIpAddresses(), azure2);        
     }
 
+    /**
+     * Tests the public IP address implementation from an individual service client
+     * @throws IOException 
+     * @throws CloudException 
+     */
+    @Test
+    public void testPublicIpAddressesFromServiceClient() throws IOException, CloudException {
+        NetworkManager networkManager= NetworkManager.authenticate(
+                ApplicationTokenCredentials.fromFile(new File("my.azureauth")), 
+                "9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef");
+        
+    }
+    
     /**
      * Tests the availability set implementation
      * @throws Exception
      */
     @Test public void testAvailabilitySets() throws Exception {
-        new TestAvailabilitySet().runTest(azure2.availabilitySets());
+        new TestAvailabilitySet().runTest(azure2.availabilitySets(), azure2);
     }
 
     /**
@@ -84,7 +100,7 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testNetworks() throws Exception {
-        new TestNetwork().runTest(azure2.networks());
+        new TestNetwork().runTest(azure2.networks(), azure2);
     }
     
     @Test
