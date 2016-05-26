@@ -16,45 +16,38 @@ import com.microsoft.azure.management.resources.implementation.api.SubscriptionP
 import java.io.IOException;
 
 /**
- * Defines an interface for accessing a subscription in Azure.
+ * An immutable client-side representation of an Azure subscription.
  */
 public interface Subscription extends
         Indexable,
         Wrapper<SubscriptionInner> {
 
     /**
-     * Get the subscription Id.
-     *
-     * @return the subscription Id.
+     * @return the UUID of the subscription
      */
     String subscriptionId();
 
     /**
-     * Get the subscription display name.
-     *
-     * @return the subscription display name.
+     * @return the name of the subscription for humans to read
      */
     String displayName();
 
     /**
-     * Get the subscription state.
-     *
-     * @return the subscription state.
+     * @return the state of the subscription.
      */
     String state();
 
     /**
-     * Get the subscription policies.
-     * @return the subscription policies.
+     * @return the policies defined in the subscription
      */
     SubscriptionPolicies subscriptionPolicies();
 
     /**
-     * Gets a list of the subscription locations.
+     * List the locations the subscription has access to.
      *
-     * @throws CloudException exception thrown from REST call.
-     * @throws IOException exception thrown from serialization/deserialization.
-     * @return the List of locations.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @return the lazy list of locations
      */
 
     PagedList<Location> listLocations() throws IOException, CloudException;

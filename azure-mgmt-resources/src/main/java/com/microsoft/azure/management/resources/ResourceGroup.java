@@ -6,7 +6,7 @@
 
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -18,7 +18,7 @@ import com.microsoft.azure.management.resources.implementation.api.ResourceGroup
 import java.util.Map;
 
 /**
- * Defines an interface for accessing a resource group in Azure.
+ * An immutable client-side representation of an Azure resource group.
  */
 public interface ResourceGroup extends
         Indexable,
@@ -26,39 +26,29 @@ public interface ResourceGroup extends
         Wrapper<ResourceGroupInner> {
 
     /**
-     * Get the name of the resource group.
-     *
-     * @return the name of the resource group.
+     * @return the name of the resource group
      */
     String name();
 
     /**
-     * Get the resource group provisioning state.
-     *
-     * @return the resource group provisioning state.
+     * @return the provisioning state of the resource group
      */
     String provisioningState();
 
     /**
-     * Get the location of the resource group.
-     *
-     * @return the location of the resource group.
+     * @return the location of the resource group
      */
     String location();
 
     /**
-     * Get the tags attached to the resource group.
-     *
-     * @return the tags attached to the resource group.
+     * @return the tags attached to the resource group
      */
     Map<String, String> tags();
 
     /**
      * A resource group definition allowing location to be set.
      */
-    interface DefinitionBlank {
-        DefinitionCreatable withLocation(String regionName);
-        DefinitionCreatable withLocation(Region region);
+    interface DefinitionBlank extends GroupableResource.DefinitionWithRegion<DefinitionCreatable> {
     }
 
     /**
@@ -66,12 +56,14 @@ public interface ResourceGroup extends
      * resource group in the cloud, but exposing additional optional inputs to
      * specify.
      */
-    interface DefinitionCreatable extends Creatable<ResourceGroup> {
-        DefinitionCreatable withTags(Map<String, String> tags);
-        DefinitionCreatable withTag(String key, String value);
+    interface DefinitionCreatable extends
+            Creatable<ResourceGroup>,
+            Resource.DefinitionWithTags<ResourceGroup> {
     }
 
-    //CHECKSTYLE IGNORE JavadocType FOR NEXT 4 LINES
+    /**
+     * The template for a pet update operation, containing all the settings that can be modified.
+     */
     interface Update extends
         Appliable<Update>,
         Resource.UpdateWithTags<Update> {

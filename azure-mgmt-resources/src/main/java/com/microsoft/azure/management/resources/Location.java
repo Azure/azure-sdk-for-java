@@ -11,43 +11,33 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.resources.implementation.api.LocationInner;
 
 /**
- * Defines an interface for accessing a location in Azure.
+ * An immutable client-side representation of an Azure location.
  */
 public interface Location extends
         Indexable,
         Wrapper<LocationInner> {
     /**
-     * Get the subscription Id.
-     *
-     * @return the subscription Id.
+     * @return the subscription UUID
      */
     String subscriptionId();
 
     /**
-     * Get the location name.
-     *
-     * @return the location name.
+     * @return the name of the location
      */
     String name();
 
     /**
-     * Get the display name of the location.
-     *
-     * @return the display name of the location.
+     * @return the display name of the location readable by humans
      */
     String displayName();
 
     /**
-     * Get the latitude of the location.
-     *
-     * @return the latitude of the location.
+     * @return the latitude of the location
      */
     String latitude();
 
     /**
-     * Get the longitude of the location.
-     *
-     * @return the longitude of the location.
+     * @return the longitude of the location
      */
     String longitude();
 }

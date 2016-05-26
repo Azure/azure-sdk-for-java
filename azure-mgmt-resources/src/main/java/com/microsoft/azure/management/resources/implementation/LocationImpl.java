@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.management.resources.Location;
@@ -5,7 +11,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.implementation.
 import com.microsoft.azure.management.resources.implementation.api.LocationInner;
 
 /**
- * An instance of this class provides access to locations in Azure.
+ * The implementation of Location and its parent interfaces.
  */
 final class LocationImpl extends
         IndexableWrapperImpl<LocationInner>

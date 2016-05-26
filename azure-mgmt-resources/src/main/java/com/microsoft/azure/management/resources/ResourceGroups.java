@@ -16,7 +16,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsUp
 import java.io.IOException;
 
 /**
- * Defines an instance for accessing resource groups in Azure.
+ * Entry point to resource group management API.
  */
 public interface ResourceGroups extends
         SupportsListing<ResourceGroup>,
@@ -27,10 +27,10 @@ public interface ResourceGroups extends
     /**
      * Checks whether resource group exists.
      *
-     * @param name The name of the resource group to check. The name is case insensitive.
-     * @throws CloudException exception thrown from REST call.
-     * @throws IOException exception thrown from serialization/deserialization.
-     * @return true if the resource group exists; false otherwise.
+     * @param name The name of the resource group to check. The name is case insensitive
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @return true if the resource group exists; false otherwise
      */
     boolean checkExistence(String name) throws CloudException, IOException;
 }

@@ -18,7 +18,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 import java.io.IOException;
 
 /**
- * Defines an interface for accessing generic resources in Azure.
+ * Entry point to generic resources management API.
  */
 public interface GenericResources extends
         SupportsListing<GenericResource>,
@@ -31,20 +31,20 @@ public interface GenericResources extends
     /**
      * Checks if a resource exists in a resource group.
      *
-     * @param resourceGroupName the resource group's name.
-     * @param resourceProviderNamespace the resource provider's namespace.
-     * @param parentResourcePath the parent's resource path.
-     * @param resourceType the type of the resource.
-     * @param resourceName the name of the resource.
-     * @param apiVersion the API version.
-     * @return true if the resource exists; false otherwise.
+     * @param resourceGroupName the resource group's name
+     * @param resourceProviderNamespace the resource provider's namespace
+     * @param parentResourcePath the parent's resource path
+     * @param resourceType the type of the resource
+     * @param resourceName the name of the resource
+     * @param apiVersion the API version
+     * @return true if the resource exists; false otherwise
      * @throws IOException serialization failures
      * @throws CloudException failures thrown from Azure
      */
     boolean checkExistence(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws IOException, CloudException;
 
     /**
-     * Defines an interface for accessing generic resources in a resource group.
+     * Entry point to generic resources management API in a specific resource group.
      */
     interface InGroup extends
             SupportsListing<GenericResource>,

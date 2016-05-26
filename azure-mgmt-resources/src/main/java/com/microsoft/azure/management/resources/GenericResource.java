@@ -14,22 +14,21 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.resources.implementation.api.GenericResourceInner;
 import com.microsoft.azure.management.resources.implementation.api.Plan;
 
+/**
+ * An immutable client-side representation of an Azure generic resource.
+ */
 public interface GenericResource extends
         GroupableResource,
         Refreshable<GenericResource>,
         Wrapper<GenericResourceInner> {
 
     /**
-     * Get the plan of the resource.
-     *
-     * @return the plan of the resource.
+     * @return the plan of the resource
      */
     Plan plan();
 
     /**
-     * Get the resource properties.
-     *
-     * @return the resource properties.
+     * @return other properties of the resource
      */
     Object properties();
 
@@ -42,13 +41,32 @@ public interface GenericResource extends
     /**
      * A generic resource definition allowing resource group to be specified.
      */
-    interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionWithProviderNamespace> {
+    interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionWithResourceType> {
+    }
+
+    /**
+     * A generic resource definition allowing resource type to be specified.
+     */
+    interface DefinitionWithResourceType {
+        /**
+         * Specifies the resource's type.
+         *
+         * @param resourceType the type of the resources
+         * @return the next stage of generic resource definition
+         */
+        DefinitionWithProviderNamespace withResourceType(String resourceType);
     }
 
     /**
      * A generic resource definition allowing provider namespace to be specified.
      */
     interface DefinitionWithProviderNamespace {
+        /**
+         * Specifies the resource provider's namespace.
+         *
+         * @param resourceProviderNamespace the namespace of the resource provider
+         * @return the next stage of the generic resource definition
+         */
         DefinitionWithOrWithoutParentResource withProviderNamespace(String resourceProviderNamespace);
     }
 
@@ -56,6 +74,12 @@ public interface GenericResource extends
      * A generic resource definition allowing parent resource to be specified.
      */
     interface DefinitionWithOrWithoutParentResource extends DefinitionWithPlan {
+        /**
+         * Specifies the parent resource.
+         *
+         * @param parentResourceId the UUID of the parent resource
+         * @return the next stage of the generic resource definition
+         */
         DefinitionWithPlan withParentResource(String parentResourceId); // ParentResource is optional so user can navigate to DefinitionWithPlan with or without it.
     }
 
@@ -63,6 +87,15 @@ public interface GenericResource extends
      * A generic resource definition allowing plan to be specified.
      */
     interface DefinitionWithPlan {
+        /**
+         * Specifies the plan of the resource.
+         *
+         * @param name the name of the plan
+         * @param publisher the publisher of the plan
+         * @param product the name of the product
+         * @param promotionCode the promotion code, if any
+         * @return the next stage of the generic resource definition
+         */
         DefinitionCreatable withPlan(String name, String publisher, String product, String promotionCode);
     }
 
@@ -74,6 +107,12 @@ public interface GenericResource extends
     interface DefinitionCreatable extends
             Creatable<GenericResource>,
             Resource.DefinitionWithTags<DefinitionCreatable> {
+        /**
+         * Specifies other properties.
+         *
+         * @param properties the properties object
+         * @return the next stage of generic resource definition
+         */
         DefinitionCreatable withProperties(Object properties);
     }
 }

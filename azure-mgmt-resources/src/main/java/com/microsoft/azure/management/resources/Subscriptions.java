@@ -10,7 +10,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsGe
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
 /**
- * Defines an interface for accessing subscriptions in Azure.
+ * Entry point to subscription management API.
  */
 public interface Subscriptions extends
         SupportsListing<Subscription>,

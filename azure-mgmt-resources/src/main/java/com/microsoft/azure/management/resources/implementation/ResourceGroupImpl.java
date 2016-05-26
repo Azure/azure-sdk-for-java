@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.management.resources.ResourceConnector;
@@ -53,25 +59,25 @@ final class ResourceGroupImpl extends
     }
 
     @Override
-    public ResourceGroupImpl withLocation(String regionName) {       //  FLUENT: implementation of ResourceGroup.DefinitionBlank
-        this.inner().setLocation(regionName);                        //
+    public ResourceGroupImpl withRegion(String regionName) {
+        this.inner().setLocation(regionName);
         return this;
     }
 
     @Override
-    public ResourceGroupImpl withLocation(Region region) {            //  FLUENT: implementation of ResourceGroup.DefinitionBlank
-        return this.withLocation(region.toString());                  //
+    public ResourceGroupImpl withRegion(Region region) {
+        return this.withRegion(region.toString());
     }
 
     @Override
-    public ResourceGroupImpl withTags(Map<String, String> tags) {     //  FLUENT: implementation of ResourceGroup.DefinitionCreatable
-        this.inner().setTags(new HashMap<>(tags));    //                  ResourceGroup.Update.UpdateBlank.Taggable<Update>
+    public ResourceGroupImpl withTags(Map<String, String> tags) {
+        this.inner().setTags(new HashMap<>(tags));
         return this;
     }
 
     @Override
-    public ResourceGroupImpl withTag(String key, String value) {      //  FLUENT: implementation of ResourceGroup.DefinitionCreatable
-        if (this.inner().tags() == null) {                             //  ResourceGroup.Update.UpdateBlank.Taggable<Update>
+    public ResourceGroupImpl withTag(String key, String value) {
+        if (this.inner().tags() == null) {
             this.inner().setTags(new HashMap<String, String>());
         }
         this.inner().tags().put(key, value);
@@ -79,13 +85,13 @@ final class ResourceGroupImpl extends
     }
 
     @Override
-    public ResourceGroupImpl withoutTag(String key) {                //  FLUENT: implementation of ResourceGroup.Update.UpdateBlank.Taggable<Update>
-        this.inner().tags().remove(key);                             //
+    public ResourceGroupImpl withoutTag(String key) {
+        this.inner().tags().remove(key);
         return this;
     }
 
     @Override
-    public ResourceGroupImpl apply() throws Exception {             //  FLUENT: implementation of ResourceGroup.Update.Updatable<T>
+    public ResourceGroupImpl apply() throws Exception {
         ResourceGroupInner params = new ResourceGroupInner();
         ResourceGroupInner group;
 

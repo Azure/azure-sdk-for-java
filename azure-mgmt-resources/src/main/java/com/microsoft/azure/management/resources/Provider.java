@@ -14,30 +14,25 @@ import com.microsoft.azure.management.resources.implementation.api.ProviderResou
 import java.util.List;
 
 /**
- * Defines an interface for accessing information of a resource provider in Azure.
+ * An immutable client-side representation of an Azure resource provider.
  */
 public interface Provider extends
         Indexable,
         Wrapper<ProviderInner> {
 
     /**
-     * Get the namespace of the provider.
-     *
-     * @return the namespace of the provider.
+     * @return the namespace of the provider
      */
     String namespace();
 
     /**
-     * Get the registration state of the provider.
-     *
-     * @return the registration state of the provider.
+     * @return the registration state of the provider, indicating whether this
+     *         resource provider is registered in the current subscription
      */
     String registrationState();
 
     /**
-     * Get the collection of provider resource types.
-     *
-     * @return the collection of provider resource types.
+     * @return the list of provider resource types
      */
     List<ProviderResourceType> resourceTypes();
 }

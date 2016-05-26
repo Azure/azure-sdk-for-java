@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.CloudException;
@@ -61,7 +67,7 @@ final class GenericResourcesImpl
 
     @Override
     public GenericResource.DefinitionBlank define(String name) {
-        return null;
+        return new GenericResourceImpl(name, new GenericResourceInner(), resources, serviceClient);
     }
 
     @Override
@@ -73,7 +79,7 @@ final class GenericResourcesImpl
         PagedListConverter<GenericResourceInner, GenericResource> converter = new PagedListConverter<GenericResourceInner, GenericResource>() {
             @Override
             public GenericResource typeConvert(GenericResourceInner genericResourceInner) {
-                return new GenericResourceImpl(genericResourceInner.id(), genericResourceInner, serviceClient);
+                return new GenericResourceImpl(genericResourceInner.id(), genericResourceInner, resources, serviceClient);
             }
         };
         return converter.convert(resourceGroups.listResources(groupName).getBody());
@@ -86,7 +92,7 @@ final class GenericResourcesImpl
         List<GenericResourceInner> innerList = resourceGroups.listResources(groupName).getBody();
         for (GenericResourceInner inner : innerList) {
             if (name.equals(inner.name())) {
-                return new GenericResourceImpl(inner.id(), inner, serviceClient);
+                return new GenericResourceImpl(inner.id(), inner, resources, serviceClient);
             }
         }
         return null;
