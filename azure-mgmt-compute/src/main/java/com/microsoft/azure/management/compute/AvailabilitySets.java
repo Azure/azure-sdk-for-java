@@ -15,7 +15,7 @@ public interface AvailabilitySets extends
         SupportsDeletingByGroup {
     
     
-    public interface InGroup 
+    interface InGroup 
         extends ResourcesInGroup<AvailabilitySet, AvailabilitySet.DefinitionAfterGroup> {
     }
 }

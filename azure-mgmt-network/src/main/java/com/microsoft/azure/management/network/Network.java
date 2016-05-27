@@ -70,14 +70,14 @@ public interface Network extends
     /**
      * The stage of the virtual network definition allowing to specify the resource group
      */
-    public interface DefinitionWithGroup 
+    interface DefinitionWithGroup 
         extends GroupableResource.DefinitionWithGroup<DefinitionAfterGroup> {
     }
 
     /**
      * The stage of the virtual network definition after with the resource group already specified
      */
-    public interface DefinitionAfterGroup
+    interface DefinitionAfterGroup
         extends DefinitionCreatable {}
     
     /**

@@ -70,7 +70,7 @@ public interface AvailabilitySet extends
     /**
      * Container interface for all the definitions
      */
-    public interface Definitions extends
+    interface Definitions extends
         DefinitionBlank,
         DefinitionWithGroup,
         DefinitionAfterGroup,
@@ -80,26 +80,26 @@ public interface AvailabilitySet extends
     /**
      * The first stage of an availability set definition
      */
-    public interface DefinitionBlank extends GroupableResource.DefinitionWithRegion<DefinitionWithGroup> {
+    interface DefinitionBlank extends GroupableResource.DefinitionWithRegion<DefinitionWithGroup> {
     }
 
     /**
      * The stage of the availability set definition allowing to specify the resource group
      */
-    public interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionAfterGroup> {
+    interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionAfterGroup> {
     }
     
     /**
      * The stage of the availability set definition after the resource group has been specified
      */
-    public interface DefinitionAfterGroup extends DefinitionCreatable {}
+    interface DefinitionAfterGroup extends DefinitionCreatable {}
 
     /**
      * The stage of an availability set definition which contains all the minimum required inputs for
      * the resource to be created (via {@link DefinitionCreatable#create()}), but also allows 
      * for any other optional settings to be specified.
      */     
-    public interface DefinitionCreatable extends 
+    interface DefinitionCreatable extends 
         Creatable<AvailabilitySet>,
         Resource.DefinitionWithTags<DefinitionCreatable> {
         /**
@@ -123,7 +123,7 @@ public interface AvailabilitySet extends
      * <p>
      * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
-    public interface Update extends 
+    interface Update extends 
         Appliable<AvailabilitySet>,
         Resource.UpdateWithTags<Update> {
     }
