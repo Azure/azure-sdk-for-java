@@ -45,13 +45,13 @@ class NetworksImpl implements Networks {
     @Override
     public PagedList<Network> list() throws CloudException, IOException {
         ServiceResponse<PagedList<VirtualNetworkInner>> response = client.listAll();
-        return converter.convert(toPagedList(response.getBody()));
+        return converter.convert(response.getBody());
     }
 
     @Override
     public PagedList<Network> list(String groupName) throws CloudException, IOException {
         ServiceResponse<PagedList<VirtualNetworkInner>> response = client.list(groupName);
-        return converter.convert(toPagedList(response.getBody()));
+        return converter.convert(response.getBody());
     }
 
     @Override
