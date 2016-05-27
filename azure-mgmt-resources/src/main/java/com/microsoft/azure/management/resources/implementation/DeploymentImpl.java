@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.DeploymentOperations;
 import com.microsoft.azure.management.resources.Provider;
-import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
@@ -32,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * An instance of this class provides access to a deployment in Azure.
+ * The implementation of Deployment and its parent interfaces.
  */
 final class DeploymentImpl extends
         CreatableImpl<Deployment, DeploymentExtendedInner>

@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * An instance of this class provides access to deployment operations in Azure.
+ * The implementation of DeploymentOperations and its parent interfaces.
  */
 final class DeploymentOperationsImpl
         implements DeploymentOperations {

@@ -184,6 +184,12 @@ public interface Deployment extends
      * A deployment definition allowing deployment mode to be specified.
      */
     interface DefinitionWithMode {
+        /**
+         * Specifies the deployment mode.
+         *
+         * @param mode the mode of the deployment
+         * @return the next stage of the deployment definition
+         */
         DefinitionCreatable withMode(DeploymentMode mode);
     }
 

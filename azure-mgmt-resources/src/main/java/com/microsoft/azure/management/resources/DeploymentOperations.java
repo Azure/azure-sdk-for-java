@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsGe
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
 /**
- * Defines the interface for accessing deployments in Azure.
+ * Entry point to deployment operation management API.
  */
 public interface DeploymentOperations extends
         SupportsListing<DeploymentOperation>,
@@ -23,14 +23,13 @@ public interface DeploymentOperations extends
     /**
      * Filter the deployment operations by a specific resource group.
      *
-     * @param resourceGroup the resource group to filter by.
-     * @return the interface for accessing deployment operations in the resource group.
+     * @param resourceGroup the resource group to filter by
+     * @return the entry point to deployment operation management API in the resource group
      */
     InGroup resourceGroup(ResourceGroup resourceGroup);
 
     /**
-     * Defines the interface for accessing deployment operations in a resource
-     * group.
+     * Entry point to deployment operation management API in a specific resource group.
      */
     interface InGroup extends
             SupportsListing<DeploymentOperation>,

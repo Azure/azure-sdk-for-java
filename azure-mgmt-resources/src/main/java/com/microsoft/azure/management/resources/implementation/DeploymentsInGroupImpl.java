@@ -14,12 +14,16 @@ import com.microsoft.azure.management.resources.Deployment;
 
 import java.io.IOException;
 
-public class DeploymentsInGroupImpl
+
+/**
+ * The implementation of Deployments.InGroup and its parent interfaces.
+ */
+final class DeploymentsInGroupImpl
         implements Deployments.InGroup {
     private final Deployments deployments;
     private final ResourceGroup resourceGroup;
 
-    public DeploymentsInGroupImpl(Deployments deployments, ResourceGroup resourceGroup) {
+    DeploymentsInGroupImpl(Deployments deployments, ResourceGroup resourceGroup) {
         this.deployments = deployments;
         this.resourceGroup = resourceGroup;
     }

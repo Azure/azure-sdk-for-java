@@ -14,11 +14,14 @@ import com.microsoft.azure.management.resources.ResourceGroup;
 
 import java.io.IOException;
 
-public final class GenericResourcesInGroupImpl implements GenericResources.InGroup {
+/**
+ * The implementation of GenericResources.InGroup and its parent interfaces.
+ */
+final class GenericResourcesInGroupImpl implements GenericResources.InGroup {
     private final GenericResources genericResources;
     private final ResourceGroup resourceGroup;
 
-    public GenericResourcesInGroupImpl(GenericResources genericResources, ResourceGroup resourceGroup) {
+    GenericResourcesInGroupImpl(GenericResources genericResources, ResourceGroup resourceGroup) {
         this.genericResources = genericResources;
         this.resourceGroup = resourceGroup;
     }
