@@ -7,11 +7,13 @@ package com.microsoft.azure;
 
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.implementation.Azure;
-import com.microsoft.azure.management.network.implementation.NetworkManager;
+import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.PublicIpAddresses;
+import com.microsoft.azure.management.network.implementation.NetworkResourceConnector;
+import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.storage.StorageAccount;
-import com.microsoft.azure.management.storage.implementation.StorageManager;
 import com.microsoft.azure.management.storage.implementation.api.AccountType;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -76,15 +78,33 @@ public class AzureTests {
 
     /**
      * Tests the public IP address implementation from an individual service client
-     * @throws IOException 
-     * @throws CloudException 
+     * @throws Exception 
      */
     @Test
-    public void testPublicIpAddressesFromServiceClient() throws IOException, CloudException {
-        NetworkManager networkManager= NetworkManager.authenticate(
-                ApplicationTokenCredentials.fromFile(new File("my.azureauth")), 
-                "9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef");
+    public void testPublicIpAddressesInGroup() throws Exception {
+        final String suffix = String.valueOf(System.currentTimeMillis());
+        final String newGroupName = "group" + suffix;
+        final String newPipName = "pip" + suffix;
+        ResourceGroup group = azure2.resourceGroups().define(newGroupName)
+                .withLocation(Region.US_WEST)
+                .create();
         
+        PublicIpAddresses.InGroup pips = 
+                group.connectToResource(new NetworkResourceConnector.Builder()).publicIpAddresses();
+        
+        PublicIpAddress pip = pips.define(newPipName)
+            .withDynamicIp()
+            .withLeafDomainLabel(newPipName)
+            .create();
+        
+        System.out.println("Public IP addresses count: " + pips.list().size());
+        
+        pip.update()
+            .withLeafDomainLabel(newPipName + "x")
+            .apply();
+        
+        pips.delete(pip.name());
+        azure2.resourceGroups().delete(group.key());
     }
     
     /**
