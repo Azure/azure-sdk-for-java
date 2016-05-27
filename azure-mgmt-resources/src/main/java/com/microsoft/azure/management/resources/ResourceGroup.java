@@ -58,7 +58,7 @@ public interface ResourceGroup extends
      */
     interface DefinitionCreatable extends
             Creatable<ResourceGroup>,
-            Resource.DefinitionWithTags<ResourceGroup> {
+            Resource.DefinitionWithTags<DefinitionCreatable> {
     }
 
     /**

@@ -20,7 +20,7 @@ public class ResourceGroupsTests extends ResourceManagerTestBase {
         String location = "southcentralus";
         // Create
         resourceGroups.define(rgName)
-                .withLocation(Region.US_SOUTH_CENTRAL)
+                .withRegion(Region.US_SOUTH_CENTRAL)
                 .withTag("department", "finance")
                 .withTag("tagname", "tagvalue")
                 .create();
