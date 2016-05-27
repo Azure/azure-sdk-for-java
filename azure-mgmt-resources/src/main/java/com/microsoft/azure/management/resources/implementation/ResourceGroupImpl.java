@@ -21,7 +21,7 @@ import java.util.Map;
 /**
  * An instance of this class provides access to a resource group in Azure.
  */
-final class ResourceGroupImpl extends
+public class ResourceGroupImpl extends
         CreatableImpl<ResourceGroup, ResourceGroupInner>
         implements
         ResourceGroup,
@@ -32,7 +32,7 @@ final class ResourceGroupImpl extends
     private final ResourceGroupsInner client;
     private final ResourceManagementClientImpl serviceClient;
 
-    ResourceGroupImpl(final ResourceGroupInner innerModel, final ResourceManagementClientImpl serviceClient) {
+    protected ResourceGroupImpl(final ResourceGroupInner innerModel, final ResourceManagementClientImpl serviceClient) {
         super(innerModel.name(), innerModel);
         this.client = serviceClient.resourceGroups();
         this.serviceClient = serviceClient;
