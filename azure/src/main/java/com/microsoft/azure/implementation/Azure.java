@@ -22,6 +22,7 @@ import com.microsoft.azure.management.resources.Subscription;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.Tenants;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.collection.*;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
@@ -203,7 +204,7 @@ public final class Azure {
     }
 
     public interface  ResourceGroups extends SupportsListing<Azure.ResourceGroup>,
-            SupportsGetting<Azure.ResourceGroup>,
+            SupportsGettingByName<Azure.ResourceGroup>,
             SupportsCreating<Azure.ResourceGroup.DefinitionBlank>,
             SupportsDeleting,
             SupportsUpdating<Azure.ResourceGroup.Update> {

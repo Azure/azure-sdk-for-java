@@ -25,8 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class CreatableImpl<FluentModelT, InnerModelT>
-        extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
-        implements Creatable<FluentModelT> {
+        extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT> {
     private Map<String, Creatable<?>> prerequisites;
     private Map<String, Creatable<?>> provisioned;
 
@@ -36,13 +35,11 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT>
         provisioned = new HashMap<>();
 	}
 
-    @Override
-    public Map<String, Creatable<?>> prerequisites() {
+    protected Map<String, Creatable<?>> prerequisites() {
         return prerequisites;
     }
 
-    @Override
-    public Map<String, Creatable<?>> created() {
+    protected Map<String, Creatable<?>> created() {
         return provisioned;
     }
 

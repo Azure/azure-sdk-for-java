@@ -7,6 +7,10 @@ package com.microsoft.azure;
 
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.implementation.Azure;
+import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.PublicIpAddresses;
+import com.microsoft.azure.management.network.implementation.NetworkResourceConnector;
+import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.storage.StorageAccount;
@@ -34,6 +38,7 @@ public class AzureTests {
     public static void main(String[] args) throws IOException, CloudException {
         final File credFile = new File("my.azureauth");
         Azure azure = Azure.authenticate(credFile).withDefaultSubscription();
+        
         System.out.println(String.valueOf(azure.resourceGroups().list().size()));
 
         Azure.configure().withLogLevel(Level.BASIC).authenticate(credFile);
@@ -60,6 +65,7 @@ public class AzureTests {
         // Authenticate based on file
         this.azure2 = Azure.authenticate(new File("my.azureauth"))
                 .withDefaultSubscription();
+        
     }
 
     /**
@@ -67,15 +73,46 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testPublicIpAddresses() throws Exception {
-        new TestPublicIpAddress().runTest(azure2, azure2.publicIpAddresses());        
+        new TestPublicIpAddress().runTest(azure2.publicIpAddresses(), azure2);        
     }
 
+    /**
+     * Tests the public IP address implementation from an individual service client
+     * @throws Exception 
+     */
+    @Test
+    public void testPublicIpAddressesInGroup() throws Exception {
+        final String suffix = String.valueOf(System.currentTimeMillis());
+        final String newGroupName = "group" + suffix;
+        final String newPipName = "pip" + suffix;
+        ResourceGroup group = azure2.resourceGroups().define(newGroupName)
+                .withLocation(Region.US_WEST)
+                .create();
+        
+        PublicIpAddresses.InGroup pips = 
+                group.connectToResource(new NetworkResourceConnector.Builder()).publicIpAddresses();
+        
+        PublicIpAddress pip = pips.define(newPipName)
+            .withDynamicIp()
+            .withLeafDomainLabel(newPipName)
+            .create();
+        
+        System.out.println("Public IP addresses count: " + pips.list().size());
+        
+        pip.update()
+            .withLeafDomainLabel(newPipName + "x")
+            .apply();
+        
+        pips.delete(pip.name());
+        azure2.resourceGroups().delete(group.key());
+    }
+    
     /**
      * Tests the availability set implementation
      * @throws Exception
      */
     @Test public void testAvailabilitySets() throws Exception {
-        new TestAvailabilitySet().runTest(azure2, azure2.availabilitySets());
+        new TestAvailabilitySet().runTest(azure2.availabilitySets(), azure2);
     }
 
     /**
@@ -83,7 +120,7 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testNetworks() throws Exception {
-        new TestNetwork().runTest(azure2, azure2.networks());
+        new TestNetwork().runTest(azure2.networks(), azure2);
     }
     
     @Test

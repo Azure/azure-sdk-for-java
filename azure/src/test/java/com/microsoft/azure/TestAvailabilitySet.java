@@ -7,7 +7,6 @@ package com.microsoft.azure;
 
 import org.junit.Assert;
 
-import com.microsoft.azure.implementation.Azure;
 import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -15,9 +14,9 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 public class TestAvailabilitySet extends TestTemplate<AvailabilitySet, AvailabilitySets> {
 
     @Override
-    public AvailabilitySet createResource(Azure azure) throws Exception {
+    public AvailabilitySet createResource(AvailabilitySets availabilitySets) throws Exception {
         final String newName = "as" + this.testId;
-        AvailabilitySet aset = azure.availabilitySets().define(newName)
+        AvailabilitySet aset = availabilitySets.define(newName)
                 .withRegion(Region.US_WEST)
                 .withNewGroup()
                 .withFaultDomainCount(2)
