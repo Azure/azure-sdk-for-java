@@ -51,14 +51,6 @@ class NetworksImpl implements Networks {
     }
 
     @Override
-    public NetworkImpl get(String id) throws CloudException, IOException {
-    	VirtualNetworkInner inner = client.get(
-    			ResourceUtils.groupFromResourceId(id), 
-    			ResourceUtils.nameFromResourceId(id)).getBody();
-        return createFluentModel(inner);
-    }
-
-    @Override
     public NetworkImpl get(String groupName, String name) throws CloudException, IOException {
         ServiceResponse<VirtualNetworkInner> serviceResponse = this.client.get(groupName, name);
         return createFluentModel(serviceResponse.getBody());

@@ -47,17 +47,6 @@ class StorageAccountsImpl
     }
 
     @Override
-    public StorageAccount get(String name) throws CloudException, IOException {
-        ServiceResponse<List<StorageAccountInner>> response = client.list();
-        for (StorageAccountInner storageAccountInner : response.getBody()) {
-            if (storageAccountInner.name() == name) {
-                return createFluentModel(storageAccountInner);
-            }
-        }
-        return null;
-    }
-
-    @Override
     public StorageAccount get(String groupName, String name) throws CloudException, IOException {
         ServiceResponse<StorageAccountInner> serviceResponse = this.client.getProperties(groupName, name);
         return createFluentModel(serviceResponse.getBody());

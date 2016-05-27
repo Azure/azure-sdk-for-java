@@ -39,4 +39,9 @@ public class PublicIpAddressesInGroupImpl implements PublicIpAddresses.InGroup {
     public PagedList<PublicIpAddress> list() throws CloudException, IOException {
         return this.publicIpAddresses.list(resourceGroup.name());
     }
+
+    @Override
+    public PublicIpAddress get(String name) throws CloudException, IOException {
+        return this.publicIpAddresses.get(this.resourceGroup.name(), name);
+    }
 }

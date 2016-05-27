@@ -42,4 +42,10 @@ public class AvailabilitySetsInGroupImpl
                 .withRegion(this.resourceGroup.location())
                 .withExistingGroup(this.resourceGroup.name());
     }
+
+
+    @Override
+    public AvailabilitySet get(String name) throws CloudException, IOException {
+        return this.availabilitySets.get(resourceGroup.name(), name);
+    }
 }

@@ -35,4 +35,9 @@ public class StorageAccountsInGroupImpl implements StorageAccounts.InGroup {
     public PagedList<StorageAccount> list() throws CloudException, IOException {
         return storageAccounts.list(resourceGroup.name());
     }
+
+    @Override
+    public StorageAccount get(String name) throws CloudException, IOException {
+        return this.storageAccounts.get(this.resourceGroup.name(), name);
+    }
 }
