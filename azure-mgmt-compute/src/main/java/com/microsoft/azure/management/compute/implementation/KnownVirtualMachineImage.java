@@ -31,36 +31,28 @@ public enum KnownVirtualMachineImage {
     }
 
     /**
-     * The name of the image publisher.
-     *
-     * @return The publisher
+     * @return the name of the image publisher
      */
     public String publisher() {
         return this.publisher;
     }
 
     /**
-     * The name of the image offer.
-     *
-     * @return The offer
+     * @return the name of the image offer
      */
     public String offer() {
         return this.offer;
     }
 
     /**
-     * The name of the image SKU.
-     *
-     * @return The SKU
+     * @return the name of the image SKU
      */
     public String sku() {
         return this.sku;
     }
 
     /**
-     * The reference of the image.
-     *
-     * @return The image reference.
+     * @return the image reference
      */
     public ImageReference imageReference() {
         return new ImageReference()

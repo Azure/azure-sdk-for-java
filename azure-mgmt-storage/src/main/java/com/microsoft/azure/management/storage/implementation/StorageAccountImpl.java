@@ -33,7 +33,7 @@ class StorageAccountImpl
                               StorageAccountInner innerModel,
                               final StorageAccountsInner client,
                               final ResourceGroups resourceGroups) {
-        super(innerModel.id(), innerModel, resourceGroups);
+        super(name, innerModel, resourceGroups);
         this.name = name;
         this.client = client;
     }

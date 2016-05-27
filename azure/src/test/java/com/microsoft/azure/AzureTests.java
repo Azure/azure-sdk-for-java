@@ -7,6 +7,7 @@ package com.microsoft.azure;
 
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.implementation.Azure;
+import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceInner;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.storage.StorageAccount;
@@ -27,7 +28,7 @@ public class AzureTests {
             System.getenv("domain"),
             System.getenv("secret"),
             AzureEnvironment.AZURE);
-    private static final String subscriptionId = System.getenv("subscription-id");
+    private static final String subscriptionId = System.getenv("arm.subscriptionid");
     private Subscriptions subscriptions;
     private Azure azure, azure2;
 
@@ -58,8 +59,8 @@ public class AzureTests {
         azure = azureAuthed.withSubscription(subscriptionId);
 
         // Authenticate based on file
-        this.azure2 = Azure.authenticate(new File("my.azureauth"))
-                .withDefaultSubscription();
+        //this.azure2 = Azure.authenticate(new File("my.azureauth"))
+        //        .withDefaultSubscription();
     }
 
     /**
@@ -84,6 +85,10 @@ public class AzureTests {
      */
     @Test public void testNetworks() throws Exception {
         new TestNetwork().runTest(azure2, azure2.networks());
+    }
+
+    @Test public void testVirtualMachines() throws Exception {
+        new TestVirtualMachine().runTest(azure, azure.virtualMachines());
     }
 
     @Test
