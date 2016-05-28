@@ -105,13 +105,15 @@ an offset, in the snippet below it's simply the start of the log.
 				partitionId, 
 				PartitionReceiver.StartOfStream,
 				false).get();
+
+		receiver.setReceiveTimeout(Duration.ofSeconds(5));
 ``` 
 
 Once the receiver is initialized, getting events is just a matter of calling the *receive()* method in a loop. Each call 
-to *receive()* will fetch an eneumerable batch of events to process.    		
+to *receive()* will fetch an enumerable batch of events to process.    		
         
 ```Java        
-		Iterable<EventData> receivedEvents = receiver.receive().get();         
+		Iterable<EventData> receivedEvents = receiver.receive(maxEventsCount).get();         
 ```
 
 As you might imagine, there's quite a bit more to know about partitions, about distributing the workload of processing huge and 
@@ -134,7 +136,7 @@ the required version of Apache Qpid Proton-J, and the crytography library BCPKIX
    	<dependency> 
    		<groupId>com.microsoft.azure</groupId> 
    		<artifactId>azure-eventhubs</artifactId> 
-   		<version>0.7.0</version> 
+   		<version>0.7.1</version> 
    	</dependency>   
  ```
  
