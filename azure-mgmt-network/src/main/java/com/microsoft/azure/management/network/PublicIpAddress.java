@@ -58,7 +58,7 @@ public interface PublicIpAddress extends
 	int idleTimeoutInMinutes();
 
     /**************************************************************
-     * Fluent interfaces for provisioning
+     * Fluent interfaces for builder pattern
      **************************************************************/
 
 	/**
@@ -67,6 +67,7 @@ public interface PublicIpAddress extends
 	interface Definitions extends 
 	    DefinitionBlank,
 	    DefinitionWithGroup,
+	    DefinitionAfterGroup,
 	    DefinitionWithIpAddress,
 	    DefinitionWithLeafDomainLabel,
 	    DefinitionCreatable {}
@@ -82,7 +83,14 @@ public interface PublicIpAddress extends
      * The stage of the public IP address definition allowing to specify the resource group
      */
     interface DefinitionWithGroup 
-        extends GroupableResource.DefinitionWithGroup<DefinitionCreatable> {
+        extends GroupableResource.DefinitionWithGroup<DefinitionAfterGroup> {
+    }
+    
+    /**
+     * The stage of the public IP address definition after the resource group has been specified
+     */
+    interface DefinitionAfterGroup
+        extends DefinitionCreatable {
     }
 
     /**

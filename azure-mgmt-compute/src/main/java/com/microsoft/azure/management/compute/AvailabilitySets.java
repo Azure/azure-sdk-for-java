@@ -1,5 +1,6 @@
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.ResourcesInGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
@@ -10,18 +11,16 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 /**
  * Entry point to availability set management API.
  */
-public interface AvailabilitySets extends
-        SupportsListing<AvailabilitySet>,
+public interface AvailabilitySets extends 
         SupportsListingByGroup<AvailabilitySet>,
         SupportsGettingByGroup<AvailabilitySet>,
+        SupportsListing<AvailabilitySet>,
         SupportsCreating<AvailabilitySet.DefinitionBlank>,
         SupportsDeleting,
         SupportsDeletingByGroup {
-    /**
-     * Entry point to availability set management API within a specific resource group.
-     */
-    interface InGroup extends
-            SupportsListing<AvailabilitySet>,
-            SupportsCreating<AvailabilitySet.DefinitionCreatable>,
-            SupportsDeleting {}
+    
+    
+    interface InGroup 
+        extends ResourcesInGroup<AvailabilitySet, AvailabilitySet.DefinitionAfterGroup> {
+    }
 }

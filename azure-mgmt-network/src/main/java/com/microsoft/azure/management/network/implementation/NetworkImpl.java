@@ -62,7 +62,7 @@ class NetworkImpl
 
     @Override
     public NetworkImpl create() throws Exception {
-    	super.create();
+    	super.create(this.resourceGroupName());
 
     	// Ensure address spaces
     	if(this.addressSpaces().size() == 0) {

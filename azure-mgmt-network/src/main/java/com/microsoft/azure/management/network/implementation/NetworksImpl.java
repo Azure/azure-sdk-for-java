@@ -6,7 +6,6 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Networks;
@@ -18,13 +17,10 @@ import com.microsoft.azure.management.network.implementation.api.VirtualNetworks
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-import com.microsoft.azure.management.resources.implementation.api.PageImpl;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 class NetworksImpl implements Networks {
     private final VirtualNetworksInner client;
@@ -55,14 +51,6 @@ class NetworksImpl implements Networks {
     }
 
     @Override
-    public NetworkImpl get(String id) throws CloudException, IOException {
-    	VirtualNetworkInner inner = client.get(
-    			ResourceUtils.groupFromResourceId(id), 
-    			ResourceUtils.nameFromResourceId(id)).getBody();
-        return createFluentModel(inner);
-    }
-
-    @Override
     public NetworkImpl get(String groupName, String name) throws CloudException, IOException {
         ServiceResponse<VirtualNetworkInner> serviceResponse = this.client.get(groupName, name);
         return createFluentModel(serviceResponse.getBody());
@@ -81,18 +69,6 @@ class NetworksImpl implements Networks {
     @Override
     public NetworkImpl define(String name) {
         return createFluentModel(name);
-    }
-
-    private PagedList<VirtualNetworkInner> toPagedList(List<VirtualNetworkInner> list) {
-        PageImpl<VirtualNetworkInner> page = new PageImpl<>();
-        page.setItems(list);
-        page.setNextPageLink(null);
-        return new PagedList<VirtualNetworkInner>(page) {
-            @Override
-            public Page<VirtualNetworkInner> nextPage(String nextPageLink) throws RestException, IOException {
-                return null;
-            }
-        };
     }
 
     /** Fluent model create helpers **/    

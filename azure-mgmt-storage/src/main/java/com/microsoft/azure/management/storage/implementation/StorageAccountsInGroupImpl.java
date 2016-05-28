@@ -19,17 +19,25 @@ public class StorageAccountsInGroupImpl implements StorageAccounts.InGroup {
         this.resourceGroup = resourceGroup;
     }
 
-    public StorageAccount.DefinitionCreatable define(String name) {
+    @Override
+    public StorageAccount.DefinitionAfterGroup define(String name) {
         return storageAccounts.define(name)
                 .withRegion(resourceGroup.location())
                 .withExistingGroup(resourceGroup.name());
     }
 
+    @Override
     public void delete(String name) throws Exception {
         storageAccounts.delete(resourceGroup.name(), name);
     }
-
-     public PagedList<StorageAccount> list() throws CloudException, IOException {
+    
+    @Override
+    public PagedList<StorageAccount> list() throws CloudException, IOException {
         return storageAccounts.list(resourceGroup.name());
-     }
+    }
+
+    @Override
+    public StorageAccount get(String name) throws CloudException, IOException {
+        return this.storageAccounts.get(this.resourceGroup.name(), name);
+    }
 }

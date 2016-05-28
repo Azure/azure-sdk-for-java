@@ -1,22 +1,19 @@
 package com.microsoft.azure;
 
-import com.microsoft.azure.implementation.Azure;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.compute.implementation.KnownVirtualMachineImage;
 import com.microsoft.azure.management.compute.implementation.api.DataDisk;
 import com.microsoft.azure.management.compute.implementation.api.NetworkInterfaceReference;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.sun.org.apache.xml.internal.utils.StringBufferPool;
-
 
 public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMachines> {
     @Override
-    public VirtualMachine createResource(Azure azure) throws Exception {
+    public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
         final String vmName = "vm" + this.testId;
         final String nicName = "nic" + this.testId;
 
-        return azure.virtualMachines().define(vmName)
+        return virtualMachines.define(vmName)
                 .withRegion(Region.US_EAST)
                 .withNewGroup()
                 .withNewPrimaryNetworkInterface(nicName)
