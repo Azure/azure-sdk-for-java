@@ -8,6 +8,7 @@ package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.AvailabilitySet;
+import com.microsoft.azure.management.compute.AvailabilitySet.DefinitionCreatable;
 import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.resources.ResourceGroup;
 
@@ -36,7 +37,7 @@ public class AvailabilitySetsInGroupImpl
 
 
     @Override
-    public AvailabilitySet.DefinitionAfterGroup define(String name) {
+    public DefinitionCreatable define(String name) {
         return this.availabilitySets
                 .define(name)
                 .withRegion(this.resourceGroup.location())

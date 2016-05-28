@@ -10,7 +10,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCr
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
-public interface ResourcesInGroup<T, DefinitionT> extends
+public interface ResourcesInGroup<T, DefinitionT extends DefinitionAfterGroup> extends
     SupportsListing<T>,
     SupportsCreating<DefinitionT>,
     SupportsDeleting,

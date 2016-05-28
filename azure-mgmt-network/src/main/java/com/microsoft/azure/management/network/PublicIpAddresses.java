@@ -29,6 +29,6 @@ public interface PublicIpAddresses extends
      * Entry point to public IP address management within a specific resource group
      */
     interface InGroup extends 
-        ResourcesInGroup<PublicIpAddress, PublicIpAddress.DefinitionAfterGroup>{
+        ResourcesInGroup<PublicIpAddress, PublicIpAddress.DefinitionCreatable>{
     }
 }

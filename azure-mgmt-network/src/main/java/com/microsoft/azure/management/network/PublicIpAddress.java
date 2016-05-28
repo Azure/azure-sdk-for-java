@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressInner;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.DefinitionAfterGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -83,16 +84,9 @@ public interface PublicIpAddress extends
      * The stage of the public IP address definition allowing to specify the resource group
      */
     interface DefinitionWithGroup 
-        extends GroupableResource.DefinitionWithGroup<DefinitionAfterGroup> {
+        extends GroupableResource.DefinitionWithGroup<DefinitionCreatable> {
     }
     
-    /**
-     * The stage of the public IP address definition after the resource group has been specified
-     */
-    interface DefinitionAfterGroup
-        extends DefinitionCreatable {
-    }
-
     /**
      * A public IP address definition allowing to set the IP allocation method (static or dynamic)
      */
@@ -232,6 +226,7 @@ public interface PublicIpAddress extends
      */
     interface DefinitionCreatable extends 
         Creatable<PublicIpAddress>,
+        DefinitionAfterGroup,
         DefinitionWithLeafDomainLabel,
         DefinitionWithIpAddress,
         DefinitionWithReverseFQDN<DefinitionCreatable>,

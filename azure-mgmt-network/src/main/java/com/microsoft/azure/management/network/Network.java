@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.microsoft.azure.management.network.implementation.api.VirtualNetworkInner;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.DefinitionAfterGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -71,15 +72,9 @@ public interface Network extends
      * The stage of the virtual network definition allowing to specify the resource group
      */
     interface DefinitionWithGroup 
-        extends GroupableResource.DefinitionWithGroup<DefinitionAfterGroup> {
+        extends GroupableResource.DefinitionWithGroup<DefinitionCreatable> {
     }
 
-    /**
-     * The stage of the virtual network definition after with the resource group already specified
-     */
-    interface DefinitionAfterGroup
-        extends DefinitionCreatable {}
-    
     /**
      * The stage of the virtual network definition allowing to add subnets
      */
@@ -147,6 +142,7 @@ public interface Network extends
      * (see {@link DefinitionWithAddressSpace#withAddressSpace(String)).
      */
     interface DefinitionCreatable extends 
+        DefinitionAfterGroup,
         Creatable<Network>,
         Resource.DefinitionWithTags<DefinitionCreatable> { 
         

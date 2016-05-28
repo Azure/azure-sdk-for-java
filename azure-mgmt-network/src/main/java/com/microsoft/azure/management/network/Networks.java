@@ -28,6 +28,6 @@ public interface Networks extends
     /**
      * Entry point to virtual network management within a specific resource group
      */
-    interface InGroup extends ResourcesInGroup<Network, Network.DefinitionAfterGroup> {
+    interface InGroup extends ResourcesInGroup<Network, Network.DefinitionCreatable> {
     }
 }

@@ -21,6 +21,6 @@ public interface AvailabilitySets extends
     
     
     interface InGroup 
-        extends ResourcesInGroup<AvailabilitySet, AvailabilitySet.DefinitionAfterGroup> {
+        extends ResourcesInGroup<AvailabilitySet, AvailabilitySet.DefinitionCreatable> {
     }
 }

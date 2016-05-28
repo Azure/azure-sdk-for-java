@@ -23,7 +23,7 @@ public class PublicIpAddressesInGroupImpl implements PublicIpAddresses.InGroup {
     }
 
     @Override
-    public PublicIpAddress.DefinitionAfterGroup define(String name) {
+    public PublicIpAddress.DefinitionCreatable define(String name) {
         return this.publicIpAddresses
                 .define(name)
                 .withRegion(this.resourceGroup.location())

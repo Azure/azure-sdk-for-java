@@ -2,6 +2,7 @@ package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.compute.implementation.api.AvailabilitySetInner;
 import com.microsoft.azure.management.compute.implementation.api.InstanceViewStatus;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.DefinitionAfterGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -86,14 +87,9 @@ public interface AvailabilitySet extends
     /**
      * The stage of the availability set definition allowing to specify the resource group
      */
-    interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionAfterGroup> {
+    interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionCreatable> {
     }
     
-    /**
-     * The stage of the availability set definition after the resource group has been specified
-     */
-    interface DefinitionAfterGroup extends DefinitionCreatable {}
-
     /**
      * The stage of an availability set definition which contains all the minimum required inputs for
      * the resource to be created (via {@link DefinitionCreatable#create()}), but also allows 
@@ -101,6 +97,7 @@ public interface AvailabilitySet extends
      */     
     interface DefinitionCreatable extends 
         Creatable<AvailabilitySet>,
+        DefinitionAfterGroup,
         Resource.DefinitionWithTags<DefinitionCreatable> {
         /**
          * Specifies the update domain count for the availability set.
