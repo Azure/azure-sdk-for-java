@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.CloudException;
@@ -8,12 +14,16 @@ import com.microsoft.azure.management.resources.Deployment;
 
 import java.io.IOException;
 
-public class DeploymentsInGroupImpl
+
+/**
+ * The implementation of Deployments.InGroup and its parent interfaces.
+ */
+final class DeploymentsInGroupImpl
         implements Deployments.InGroup {
     private final Deployments deployments;
     private final ResourceGroup resourceGroup;
 
-    public DeploymentsInGroupImpl(Deployments deployments, ResourceGroup resourceGroup) {
+    DeploymentsInGroupImpl(Deployments deployments, ResourceGroup resourceGroup) {
         this.deployments = deployments;
         this.resourceGroup = resourceGroup;
     }
@@ -34,7 +44,7 @@ public class DeploymentsInGroupImpl
     }
 
     @Override
-    public Deployment.DefinitionWithGroup define(String name) {
+    public Deployment.DefinitionWithTemplate define(String name) {
         return this.deployments.define(name).withExistingResourceGroup(resourceGroup.name());
     }
 

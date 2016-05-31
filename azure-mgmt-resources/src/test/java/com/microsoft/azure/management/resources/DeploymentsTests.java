@@ -23,7 +23,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
         createClient();
         resourceGroups = resourceClient.resourceGroups();
         resourceGroup = resourceGroups.define(rgName)
-                .withLocation(Region.US_SOUTH_CENTRAL)
+                .withRegion(Region.US_SOUTH_CENTRAL)
                 .create();
     }
 

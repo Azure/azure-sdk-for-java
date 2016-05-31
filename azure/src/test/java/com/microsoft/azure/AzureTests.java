@@ -85,7 +85,7 @@ public class AzureTests {
         final String newGroupName = "group" + suffix;
         final String newPipName = "pip" + suffix;
         ResourceGroup group = azure2.resourceGroups().define(newGroupName)
-                .withLocation(Region.US_WEST)
+                .withRegion(Region.US_WEST)
                 .create();
         
         PublicIpAddresses.InGroup pips = 
