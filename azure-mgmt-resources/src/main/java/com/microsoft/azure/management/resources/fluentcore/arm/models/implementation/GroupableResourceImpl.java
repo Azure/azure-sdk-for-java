@@ -49,8 +49,7 @@ public abstract class GroupableResourceImpl<
         }
     }
 
-    @Override
-    public FluentModelT create() throws Exception {
+    protected FluentModelT create(String groupName) throws Exception {
         for (String id : prerequisites().keySet()) {
             if (!created().containsKey(id)) {
                 prerequisites().get(id).create();

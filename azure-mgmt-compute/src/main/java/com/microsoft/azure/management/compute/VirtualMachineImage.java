@@ -13,70 +13,52 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The type representing Azure virtual machine image.
+ * An immutable client-side representation of an Azure virtual machine image.
  */
 public interface VirtualMachineImage extends
         Wrapper<VirtualMachineImageInner> {
     /**
-     * The region in which virtual machine image is available.
-     *
-     * @return The region
+     * @return the region in which virtual machine image is available
      */
     Region location();
 
     /**
-     * The publisher name of the virtual machine image.
-     *
-     * @return The publisher name
+     * @return the publisher name of the virtual machine image
      */
     String publisher();
 
     /**
-     * The name of the virtual machine image offer.
-     *
-     * @return The offer name
+     * @return the name of the virtual machine image offer
      */
     String offer();
 
     /**
-     * The commercial name of the virtual machine image (SKU).
-     *
-     * @return The SKU name
+     * @return the commercial name of the virtual machine image (SKU)
      */
     String sku();
 
     /**
-     * The version of the virtual machine image.
-     *
-     * @return The version
+     * @return the version of the virtual machine image
      */
     String version();
 
     /**
-     * The image reference representing publisher, offer, sku and version of the virtual machine image.
-     *
-     * @return The image reference
+     * @return The image reference representing publisher, offer, sku and version of the virtual machine image
      */
     ImageReference imageReference();
 
     /**
-     * The purchase plan for the virtual machine image.
-     *
-     * @return The purchase plan.
+     * @return the purchase plan for the virtual machine image.
      */
     PurchasePlan plan();
 
     /**
-     * Describes the OS Disk image in the virtual machine image.
-     *
-     * @return The OS Disk image
+     * @return description of the OS Disk image in the virtual machine image.
      */
     OSDiskImage osDiskImage();
 
     /**
-     * Describes the Data disk images in the virtual machine.
-     *
-     * @return The data disks.
+     * @return description of the Data disk images in the virtual machine.
      */
     List<DataDiskImage> dataDiskImages();
 
@@ -85,16 +67,12 @@ public interface VirtualMachineImage extends
      */
     interface Publisher {
         /**
-         * Gets the region where virtual machine images from this publisher is available.
-         *
-         * @return The region name
+         * @return the region where virtual machine images from this publisher is available
          */
         Region region();
 
         /**
-         * Gets the name of the virtual machine image publisher.
-         *
-         * @return The publisher name
+         * @return the name of the virtual machine image publisher
          */
         String publisher();
 
@@ -102,8 +80,8 @@ public interface VirtualMachineImage extends
          * Lists the virtual machine image offers from this publisher in the specific region.
          *
          * @return list of virtual machine image offers
-         * @throws CloudException
-         * @throws IOException
+         * @throws CloudException thrown for an invalid response from the service
+         * @throws IOException thrown for IO exception
          */
         List<Offer> listOffers() throws CloudException, IOException;
     }
@@ -113,25 +91,27 @@ public interface VirtualMachineImage extends
      */
     interface Offer {
         /**
-         * Gets the region where this virtual machine image offer is available.
-         *
-         * @return The region name
+         * @return the region where this virtual machine image offer is available
          */
         Region region();
 
         /**
-         * Gets the publisher name of this virtual machine image offer.
-         *
-         * @return The publisher name
+         * @return the publisher name of this virtual machine image offer
          */
         String publisher();
 
         /**
-         * Gets the name of the virtual machine image offer.
-         *
-         * @return The offer name
+         * @return the name of the virtual machine image offer
          */
         String offer();
+
+        /**
+         * Lists the virtual machine image SKUs in this offer.
+         *
+         * @return the virtual machine image SKUs
+         * @throws CloudException thrown for an invalid response from the service
+         * @throws IOException thrown for IO exception
+         */
         List<Sku> listSkus() throws CloudException, IOException;
     }
 
@@ -140,32 +120,32 @@ public interface VirtualMachineImage extends
      */
     interface Sku {
         /**
-         * Gets the region where this virtual machine image offer SKU is available.
-         *
-         * @return The region name
+         * @return the region where this virtual machine image offer SKU is available
          */
         Region region();
 
         /**
-         * Gets the publisher name of this virtual machine image offer SKU.
-         *
-         * @return The publisher name
+         * @return the publisher name of this virtual machine image offer SKU
          */
         String publisher();
 
         /**
-         * Gets the virtual machine offer name that this SKU belongs to.
-         *
-         * @return The offer name
+         * @return the virtual machine offer name that this SKU belongs to
          */
         String offer();
 
         /**
-         * Gets the commercial name of the virtual machine image (SKU).
-         *
-         * @return The SKU name
+         * @return the commercial name of the virtual machine image (SKU)
          */
         String sku();
+
+        /**
+         * Lists the virtual machines in this SKU.
+         *
+         * @return the virtual machine images
+         * @throws CloudException thrown for an invalid response from the service
+         * @throws IOException thrown for IO exception
+         */
         List<VirtualMachineImage> listImages() throws CloudException, IOException;
     }
 }

@@ -53,14 +53,6 @@ class PublicIpAddressesImpl
     }
 
     @Override
-    public PublicIpAddressImpl get(String id) throws CloudException, IOException {
-    	PublicIPAddressInner inner = client.get(
-    			ResourceUtils.groupFromResourceId(id), 
-    			ResourceUtils.nameFromResourceId(id)).getBody();
-        return createFluentModel(inner);
-    }
-
-    @Override
     public PublicIpAddressImpl get(String groupName, String name) throws CloudException, IOException {
         ServiceResponse<PublicIPAddressInner> serviceResponse = this.client.get(groupName, name);
         return createFluentModel(serviceResponse.getBody());
@@ -107,6 +99,6 @@ class PublicIpAddressesImpl
 
     
     private PublicIpAddressImpl createFluentModel(PublicIPAddressInner inner) {
-        return new PublicIpAddressImpl(inner.name(), inner, this.client, this.resourceGroups);
+        return new PublicIpAddressImpl(inner.id(), inner, this.client, this.resourceGroups);
     }
 }

@@ -13,6 +13,7 @@ import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
+import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.Deployments;
@@ -21,6 +22,7 @@ import com.microsoft.azure.management.resources.Subscription;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.Tenants;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.collection.*;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
@@ -202,7 +204,7 @@ public final class Azure {
     }
 
     public interface  ResourceGroups extends SupportsListing<Azure.ResourceGroup>,
-            SupportsGetting<Azure.ResourceGroup>,
+            SupportsGettingByName<Azure.ResourceGroup>,
             SupportsCreating<Azure.ResourceGroup.DefinitionBlank>,
             SupportsDeleting,
             SupportsUpdating<Azure.ResourceGroup.Update> {
@@ -235,8 +237,7 @@ public final class Azure {
     }
     
     /**
-     * Entry point to managing resource groups
-     * @return the {@link ResourceGroups} interface exposing the resource group management functionality
+     * @return entry point to managing resource groups
      */
     public ResourceGroups resourceGroups() {
         return resourceGroups;
@@ -247,8 +248,7 @@ public final class Azure {
     }
 
     /**
-     * Entry point to managing storage accounts.
-     * @return the {@link StorageAccounts} interface exposing the storage account management functionality
+     * @return entry point to managing storage accounts
      */
     public StorageAccounts storageAccounts() {
         return storageManager.storageAccounts();
@@ -259,24 +259,28 @@ public final class Azure {
     }
 
     /**
-     * Entry point to managing availability sets.
-     * @return the {@link AvailabilitySets} interface exposing the availability set management functionality
+     * @return entry point to managing availability sets.
      */
     public AvailabilitySets availabilitySets() {
         return computeManager.availabilitySets();
     }
 
+    /**
+     * @return entry point to managing virtual networks
+     */
+    public Networks networks() {
+        return networkManager.networks();
+    }
+
     /** 
-     * Entry point to managing virtual machines.
-     * @return the {@link VirtualMachines} interface exposing the virtual machine management functionality
+     * @return entry point to managing virtual machines
      */
     public VirtualMachines virtualMachines() {
         return computeManager.virtualMachines();
     }
     
     /**
-     * Entry point to managing public IP addresses.
-     * @return the {@link PublicIpAddresses} interface exposing the public IP address management functionality
+     * @return entry point to managing public IP addresses
      */
     public PublicIpAddresses publicIpAddresses() {
     	return this.networkManager.publicIpAddresses();

@@ -15,20 +15,19 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 
 
 /**
- * Entry point to public IP address management
+ * Entry point to virtual network management
  */
-public interface PublicIpAddresses extends
-    SupportsListing<PublicIpAddress>,
-    SupportsCreating<PublicIpAddress.DefinitionBlank>,
+public interface Networks extends
+    SupportsCreating<Network.DefinitionBlank>,
+    SupportsListing<Network>,
+    SupportsListingByGroup<Network>,
+    SupportsGettingByGroup<Network>,
     SupportsDeleting,
-    SupportsListingByGroup<PublicIpAddress>,
-    SupportsGettingByGroup<PublicIpAddress>,
     SupportsDeletingByGroup {
 
     /**
-     * Entry point to public IP address management within a specific resource group
+     * Entry point to virtual network management within a specific resource group
      */
-    interface InGroup extends 
-        ResourcesInGroup<PublicIpAddress, PublicIpAddress.DefinitionAfterGroup>{
+    interface InGroup extends ResourcesInGroup<Network, Network.DefinitionAfterGroup> {
     }
 }

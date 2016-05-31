@@ -9,10 +9,10 @@ package com.microsoft.azure.management.resources;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsGetting;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
 import java.io.IOException;
@@ -23,7 +23,6 @@ import java.io.IOException;
 public interface GenericResources extends
         SupportsListing<GenericResource>,
         SupportsListingByGroup<GenericResource>,
-        SupportsGetting<GenericResource>,
         SupportsGettingByGroup<GenericResource>,
         SupportsCreating<GenericResource.DefinitionBlank>,
         SupportsDeleting,
@@ -48,6 +47,6 @@ public interface GenericResources extends
      */
     interface InGroup extends
             SupportsListing<GenericResource>,
-            SupportsGetting<GenericResource> {
+            SupportsGettingByName<GenericResource> {
     }
 }

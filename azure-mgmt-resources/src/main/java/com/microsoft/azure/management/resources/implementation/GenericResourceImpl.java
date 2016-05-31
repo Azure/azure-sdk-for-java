@@ -89,7 +89,7 @@ final class GenericResourceImpl
 
     @Override
     public GenericResource create() throws Exception {
-        super.create();
+        super.create(resourceGroupName());
         GenericResourceInner inner = client.createOrUpdate(
                 resourceGroupName(),
                 resourceProviderNamespace,

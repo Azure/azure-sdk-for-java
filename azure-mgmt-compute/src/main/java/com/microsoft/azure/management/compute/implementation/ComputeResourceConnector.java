@@ -21,19 +21,34 @@ public class ComputeResourceConnector extends ResourceConnectorBase {
     }
 
     public static class Builder implements ResourceConnector.Builder<ComputeResourceConnector> {
+        @Override
         public ComputeResourceConnector create(RestClient restClient, String subscriptionId, ResourceGroup resourceGroup) {
             return ComputeResourceConnector.create(restClient, subscriptionId, resourceGroup);
         }
     }
 
+    /**
+     * Get Azure availability set collection in the resource group.
+     * <p/>
+     * The collection supports performing CRUD operations on Azure availability sets
+     *
+     * @return The availability set collection
+     */
     public AvailabilitySets.InGroup availabilitySets() {
         if (availabilitySets == null) {
-            availabilitySets = new AvailabilitySetsInGroup(computeClient().availabilitySets(), resourceGroup);
+            availabilitySets = new AvailabilitySetsInGroupImpl(computeClient().availabilitySets(), resourceGroup);
         }
         return availabilitySets;
     }
 
-    public VirtualMachines.InGroup VirtualMachines() {
+    /**
+     * Get Azure virtual machine collection in the resource group.
+     * <p/>
+     * The collection supports performing CRUD operations on Azure virtual machines
+     *
+     * @return The virtual machine collection
+     */
+    public VirtualMachines.InGroup virtualMachines() {
         // TODO
         return null;
     }

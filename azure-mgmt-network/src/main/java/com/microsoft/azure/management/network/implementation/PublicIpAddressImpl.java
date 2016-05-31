@@ -55,7 +55,7 @@ class PublicIpAddressImpl
 
     @Override
     public PublicIpAddressImpl create() throws Exception {
-    	super.create();
+    	super.create(this.resourceGroupName());
 
         ServiceResponse<PublicIPAddressInner> response =
                 this.client.createOrUpdate(this.resourceGroupName(), this.key(), this.inner());

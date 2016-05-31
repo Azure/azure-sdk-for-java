@@ -10,7 +10,10 @@ import com.microsoft.azure.management.resources.implementation.api.ResourceManag
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.implementation.StorageResourceConnector;
 
-final class AzureResourceGroupImpl extends ResourceGroupImpl implements Azure.ResourceGroup {
+final class AzureResourceGroupImpl 
+    extends ResourceGroupImpl 
+    implements Azure.ResourceGroup {
+    
     private final ARMResourceConnector armResourceConnector;
     private final StorageResourceConnector storageResourceConnector;
     private final ComputeResourceConnector computeResourceConnector;

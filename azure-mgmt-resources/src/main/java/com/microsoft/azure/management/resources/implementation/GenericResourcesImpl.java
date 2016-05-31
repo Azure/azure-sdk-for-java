@@ -46,11 +46,6 @@ final class GenericResourcesImpl
     }
 
     @Override
-    public GenericResource get(String name) throws IOException, CloudException {
-        return getIntern(null, name);
-    }
-
-    @Override
     public GenericResource get(String groupName, String name) throws IOException, CloudException {
         return getIntern(groupName, name);
     }

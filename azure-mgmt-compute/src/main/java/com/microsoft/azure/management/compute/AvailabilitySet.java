@@ -64,9 +64,19 @@ public interface AvailabilitySet extends
 
 
     /**************************************************************
-     * Fluent interfaces to provision an AvailabilitySet
+     * Fluent interfaces to create an AvailabilitySet
      **************************************************************/
 
+    /**
+     * Container interface for all the definitions
+     */
+    interface Definitions extends
+        DefinitionBlank,
+        DefinitionWithGroup,
+        DefinitionAfterGroup,
+        DefinitionCreatable {
+    }
+    
     /**
      * The first stage of an availability set definition
      */
@@ -76,8 +86,13 @@ public interface AvailabilitySet extends
     /**
      * The stage of the availability set definition allowing to specify the resource group
      */
-    interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionCreatable> {
+    interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionAfterGroup> {
     }
+    
+    /**
+     * The stage of the availability set definition after the resource group has been specified
+     */
+    interface DefinitionAfterGroup extends DefinitionCreatable {}
 
     /**
      * The stage of an availability set definition which contains all the minimum required inputs for

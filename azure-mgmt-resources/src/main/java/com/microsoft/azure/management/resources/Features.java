@@ -7,7 +7,7 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsGetting;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
 import java.io.IOException;
@@ -30,7 +30,7 @@ public interface Features extends
      */
     interface InResourceProvider extends
             SupportsListing<Feature>,
-            SupportsGetting<Feature> {
+            SupportsGettingByName<Feature> {
         /**
          * Registers a feature in a resource provider.
          *

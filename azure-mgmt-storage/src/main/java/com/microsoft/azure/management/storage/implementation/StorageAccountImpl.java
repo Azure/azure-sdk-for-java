@@ -3,7 +3,6 @@ package com.microsoft.azure.management.storage.implementation;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.storage.AccountStatuses;
 import com.microsoft.azure.management.storage.KeyType;
 import com.microsoft.azure.management.storage.PublicEndpoints;
@@ -18,10 +17,7 @@ class StorageAccountImpl
         extends GroupableResourceImpl<StorageAccount, StorageAccountInner, StorageAccountImpl>
         implements
         StorageAccount,
-        StorageAccount.DefinitionBlank,
-        StorageAccount.DefinitionWithGroup,
-        StorageAccount.DefinitionCreatable
-        {
+        StorageAccount.Definitions {
 
     private PublicEndpoints publicEndpoints;
     private AccountStatuses accountStatuses;
@@ -33,7 +29,7 @@ class StorageAccountImpl
                               StorageAccountInner innerModel,
                               final StorageAccountsInner client,
                               final ResourceGroups resourceGroups) {
-        super(innerModel.id(), innerModel, resourceGroups);
+        super(name, innerModel, resourceGroups);
         this.name = name;
         this.client = client;
     }
@@ -112,10 +108,7 @@ class StorageAccountImpl
 
     @Override
     public StorageAccountImpl create() throws Exception {
-        // Prerequisites
-        for (Creatable<?> creatable : prerequisites().values()) {
-            creatable.create();
-        }
+        super.create(this.resourceGroupName());
         StorageAccountCreateParametersInner createParameters = new StorageAccountCreateParametersInner();
         createParameters.setAccountType(this.inner().accountType());
         createParameters.setLocation(this.region());

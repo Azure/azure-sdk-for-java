@@ -6,7 +6,7 @@
 
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsGetting;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
 /**
@@ -14,5 +14,5 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
  */
 public interface Subscriptions extends
         SupportsListing<Subscription>,
-        SupportsGetting<Subscription> {
+        SupportsGettingByName<Subscription> {
 }

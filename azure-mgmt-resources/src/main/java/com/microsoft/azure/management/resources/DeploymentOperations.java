@@ -7,8 +7,8 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsGetting;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
 /**
@@ -17,7 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 public interface DeploymentOperations extends
         SupportsListing<DeploymentOperation>,
         SupportsListingByGroup<DeploymentOperation>,
-        SupportsGetting<DeploymentOperation>,
+        SupportsGettingByName<DeploymentOperation>,
         SupportsGettingByGroup<DeploymentOperation> {
 
     /**
@@ -33,6 +33,6 @@ public interface DeploymentOperations extends
      */
     interface InGroup extends
             SupportsListing<DeploymentOperation>,
-            SupportsGetting<DeploymentOperation> {
+            SupportsGettingByName<DeploymentOperation> {
     }
 }

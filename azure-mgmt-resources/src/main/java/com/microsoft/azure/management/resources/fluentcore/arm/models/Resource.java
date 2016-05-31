@@ -23,12 +23,14 @@ public interface Resource extends Indexable {
 	 */	
 	interface DefinitionWithRegion<T> {
 		/**
+		 * Specifies the region for the resource by name.
 		 * @param regionName The name of the region for the resource
 		 * @return the next stage of the resource definition
 		 */
 	    T withRegion(String regionName);
 	    
 	    /**
+	     * Specifies the region for the resource.
 	     * @param region The location for the resource
 	     * @return the next stage of the resource definition
 	     */
@@ -55,7 +57,7 @@ public interface Resource extends Indexable {
 	    T withTag(String key, String value);
 	    
 	    /**
-	     * Removes a tag from the resource
+	     * Removes a tag from the resource.
 	     * @param key the key of the tag to remove
 	     * @return the next stage of the resource definition
 	     */
@@ -77,14 +79,14 @@ public interface Resource extends Indexable {
          * Adds a tag to the resource.
          * @param key the key for the tag
          * @param value the value for the tag
-         * @return the next stage of the resource definition
+         * @return the next stage of the resource update
          */
         T withTag(String key, String value);
 
         /**
          * Removes a tag from the resource
          * @param key the key of the tag to remove
-         * @return the next stage of the resource definition
+         * @return the next stage of the resource update
          */
         T withoutTag(String key);	    
 	}

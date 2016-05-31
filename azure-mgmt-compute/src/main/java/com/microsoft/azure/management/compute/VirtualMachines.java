@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 import java.io.IOException;
 
 /**
- *  The type representing Azure virtual machine collection.
+ *  Entry point to virtual machine management API.
  */
 public interface VirtualMachines extends
         SupportsListing<VirtualMachine>,
@@ -26,13 +26,13 @@ public interface VirtualMachines extends
      *
      * @param region The region upon which virtual-machine-sizes is queried.
      * @return the List&lt;VirtualMachineSize&gt; if successful.
-     * @throws CloudException Thrown for an invalid response from the service.
-     * @throws IOException Thrown for IO exception.
+     * @throws CloudException thrown for an invalid response from the service.
+     * @throws IOException thrown for IO exception.
      */
     PagedList<VirtualMachineSize> listSizes(String region) throws CloudException, IOException;
 
     /**
-     * A type representing Azure virtual machine under a resource gorup.
+     * Entry point to virtual machine management API within a specific resource group.
      */
     interface InGroup extends
             SupportsListing<VirtualMachine>,
@@ -41,10 +41,10 @@ public interface VirtualMachines extends
         /**
          * Lists all available virtual machine sizes in a region.
          *
-         * @param region The region upon which virtual-machine-sizes is queried.
+         * @param region the region upon which virtual-machine-sizes is queried.
          * @return the List&lt;VirtualMachineSize&gt; if successful.
-         * @throws CloudException
-         * @throws IOException
+         * @throws CloudException thrown for an invalid response from the service.
+         * @throws IOException thrown for IO exception.
          */
         PagedList<VirtualMachineSize> listSizes(String region) throws CloudException, IOException;
     }
