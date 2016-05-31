@@ -22,6 +22,6 @@ public interface StorageAccounts extends
         SupportsDeletingByGroup {
 
     interface InGroup extends
-            ResourcesInGroup<StorageAccount, StorageAccount.DefinitionAfterGroup> {
+            ResourcesInGroup<StorageAccount, StorageAccount.DefinitionCreatable> {
     }
 }
