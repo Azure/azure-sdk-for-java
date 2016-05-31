@@ -384,6 +384,7 @@ public class BlobTestHelper extends TestHelper {
         }
         else {
             assertNotNull(blob2);
+            assertEquals(blob1.getClass(), blob2.getClass());
             assertEquals(blob1.getUri(), blob2.getUri());
             assertEquals(blob1.getSnapshotID(), blob2.getSnapshotID());
             assertEquals(blob1.isSnapshot(), blob2.isSnapshot());
@@ -399,6 +400,7 @@ public class BlobTestHelper extends TestHelper {
         }
         else {
             assertNotNull(prop2);
+            assertEquals(prop1.getBlobType(), prop2.getBlobType());
             assertEquals(prop1.getCacheControl(), prop2.getCacheControl());
             assertEquals(prop1.getContentDisposition(), prop2.getContentDisposition());
             assertEquals(prop1.getContentEncoding(), prop2.getContentEncoding());
