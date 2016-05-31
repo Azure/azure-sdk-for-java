@@ -121,7 +121,17 @@ public class GroupPagedListTests {
             }
 
             @Override
-            public String location() {
+            public String region() {
+                return null;
+            }
+
+            @Override
+            public String id() {
+                return null;
+            }
+
+            @Override
+            public String type() {
                 return null;
             }
 

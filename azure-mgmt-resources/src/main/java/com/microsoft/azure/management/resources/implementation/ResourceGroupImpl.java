@@ -49,8 +49,18 @@ public class ResourceGroupImpl extends
     }
 
     @Override
-    public String location() {
+    public String region() {
         return this.inner().location();
+    }
+
+    @Override
+    public String id() {
+        return this.inner().id();
+    }
+
+    @Override
+    public String type() {
+        return null;
     }
 
     @Override
@@ -115,10 +125,7 @@ public class ResourceGroupImpl extends
 
     @Override
     public ResourceGroupImpl create() throws Exception {          //  FLUENT: implementation of ResourceGroup.DefinitionCreatable.Creatable<ResourceGroup>
-        ResourceGroupInner params = new ResourceGroupInner();
-        params.setLocation(this.inner().location());
-        params.setTags(this.inner().tags());
-        client.createOrUpdate(this.key, params);
+        super.creatablesCreate();
         return this;
     }
 
@@ -131,5 +138,13 @@ public class ResourceGroupImpl extends
     @Override
     public <T extends ResourceConnector> T connectToResource(ResourceConnector.Builder<T> adapterBuilder) {
         return adapterBuilder.create(this.serviceClient.restClient(), this.serviceClient.subscriptionId(), this);
+    }
+
+    @Override
+    protected void createResource() throws Exception {
+        ResourceGroupInner params = new ResourceGroupInner();
+        params.setLocation(this.inner().location());
+        params.setTags(this.inner().tags());
+        client.createOrUpdate(this.key, params);
     }
 }

@@ -33,7 +33,6 @@ import com.microsoft.azure.management.compute.implementation.api.NetworkInterfac
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
@@ -445,7 +444,7 @@ class VirtualMachineImpl
     @Override
     public DefinitionCreatable withNewStorageAccount(StorageAccount.DefinitionCreatable creatable) {
         this.storageAccountName = creatable.key();
-        this.prerequisites().put(creatable.key(), creatable);
+        this.addCreatableDependency(creatable);
         return this;
     }
 
@@ -469,7 +468,7 @@ class VirtualMachineImpl
     @Override
     public DefinitionCreatable withNewAvailabilitySet(AvailabilitySet.DefinitionCreatable creatable) {
         this.availabilitySetName = creatable.key();
-        this.prerequisites().put(creatable.key(), creatable);
+        this.addCreatableDependency(creatable);
         return this;
     }
 
@@ -485,18 +484,7 @@ class VirtualMachineImpl
             withNewStorageAccount(this.key() + UUID.randomUUID().toString());
         }
 
-        for (Creatable<?> creatable : prerequisites().values()) {
-            creatable.create();
-        }
-
-        // TODO This code to create NIC will be removed once we have the fluent model for NIC in place.
-        NetworkInterfaceReference nicReference = createPrimaryNetworkInterface();
-        this.innerModel.networkProfile().setNetworkInterfaces(new ArrayList<NetworkInterfaceReference>());
-        this.innerModel.networkProfile().networkInterfaces().add(nicReference);
-
-        setDefaults();
-        ServiceResponse<VirtualMachineInner> serviceResponse = this.client.createOrUpdate(this.resourceGroupName(), this.key(), this.innerModel);
-        this.setInner(serviceResponse.getBody());
+        super.creatablesCreate();
         return this;
     }
 
@@ -504,9 +492,9 @@ class VirtualMachineImpl
     //
 
     private void setDefaults() {
-        setOSDiskAndOSProfileDefaults();
-        setHardwareProfileDefaults();
-        setDataDisksDefaults();
+            setOSDiskAndOSProfileDefaults();
+            setHardwareProfileDefaults();
+            setDataDisksDefaults();
     }
 
     private void setOSDiskAndOSProfileDefaults() {
@@ -672,5 +660,17 @@ class VirtualMachineImpl
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    @Override
+    protected void createResource() throws Exception {
+        // TODO This code to create NIC will be removed once we have the fluent model for NIC in place.
+        NetworkInterfaceReference nicReference = createPrimaryNetworkInterface();
+        this.innerModel.networkProfile().setNetworkInterfaces(new ArrayList<NetworkInterfaceReference>());
+        this.innerModel.networkProfile().networkInterfaces().add(nicReference);
+
+        setDefaults();
+        ServiceResponse<VirtualMachineInner> serviceResponse = this.client.createOrUpdate(this.resourceGroupName(), this.key(), this.innerModel);
+        this.setInner(serviceResponse.getBody());
     }
 }

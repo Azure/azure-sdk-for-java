@@ -109,12 +109,7 @@ class AvailabilitySetImpl
 
     @Override
     public AvailabilitySetImpl create() throws Exception {
-        super.create(this.resourceGroupName());
-        ServiceResponse<AvailabilitySetInner> response = this.client.createOrUpdate(this.resourceGroupName(), this.key, this.inner());
-        AvailabilitySetInner availabilitySetInner = response.getBody();
-        this.setInner(availabilitySetInner);
-        this.idOfVMsInSet = null;
-        this.vmsInSet = null;
+        super.creatablesCreate();
         return this;
     }
 
@@ -126,5 +121,14 @@ class AvailabilitySetImpl
     @Override
     public AvailabilitySetImpl apply() throws Exception {
         return create();
+    }
+
+    @Override
+    protected void createResource() throws Exception {
+        ServiceResponse<AvailabilitySetInner> response = this.client.createOrUpdate(this.resourceGroupName(), this.key, this.inner());
+        AvailabilitySetInner availabilitySetInner = response.getBody();
+        this.setInner(availabilitySetInner);
+        this.idOfVMsInSet = null;
+        this.vmsInSet = null;
     }
 }
