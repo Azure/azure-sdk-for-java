@@ -1,5 +1,6 @@
 2016.x.x Version 4.3.0
  * Added support for getBlobReferenceFromServer methods on CloudBlobContainer to support retrieving a blob without knowing its type.
+ * Fixed a bug in the retry policies where 300 status codes were being retried when they shouldn't be.
 
 2016.04.07 Version 4.2.0
  * Added support for setting a library-wide proxy. The default proxy can be set on OperationContext.
