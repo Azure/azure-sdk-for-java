@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.CloudException;
@@ -11,11 +17,19 @@ import com.microsoft.azure.management.resources.implementation.api.ResourceGroup
 
 import java.io.IOException;
 
-public class ResourceGroupsImpl
+/**
+ * The implementation for ResourceGroups and its parent interfaces.
+ */
+public final class ResourceGroupsImpl
         implements ResourceGroups {
     private final ResourceGroupsInner client;
     private final ResourceManagementClientImpl serviceClient;
 
+    /**
+     * Creates an instance of the implementation.
+     *
+     * @param serviceClient the inner resource management client
+     */
     public ResourceGroupsImpl(final ResourceManagementClientImpl serviceClient) {
         this.serviceClient = serviceClient;
         this.client = serviceClient.resourceGroups();
@@ -57,8 +71,6 @@ public class ResourceGroupsImpl
     public boolean checkExistence(String name) throws CloudException, IOException {
         return client.checkExistence(name).getBody();
     }
-
-    /** Fluent model create helpers **/
 
     private ResourceGroupImpl createFluentModel(String name) {
         ResourceGroupInner resourceGroupInner = new ResourceGroupInner();

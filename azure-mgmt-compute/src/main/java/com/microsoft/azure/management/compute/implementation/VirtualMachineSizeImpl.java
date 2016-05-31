@@ -3,10 +3,10 @@ package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.management.compute.VirtualMachineSize;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeInner;
 
-public class VirtualMachineSizeImpl implements VirtualMachineSize {
+class VirtualMachineSizeImpl implements VirtualMachineSize {
     private VirtualMachineSizeInner innerModel;
 
-    public VirtualMachineSizeImpl(VirtualMachineSizeInner innerModel) {
+    VirtualMachineSizeImpl(VirtualMachineSizeInner innerModel) {
         this.innerModel = innerModel;
     }
 

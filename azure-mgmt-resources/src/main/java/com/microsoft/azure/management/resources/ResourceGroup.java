@@ -1,47 +1,80 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
-import com.microsoft.azure.management.resources.fluentcore.model.*;
+import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
+import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
+import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
 
 import java.util.Map;
 
+/**
+ * An immutable client-side representation of an Azure resource group.
+ */
 public interface ResourceGroup extends
         Indexable,
         Resource,
         Refreshable<ResourceGroup>,
-        Wrapper<ResourceGroupInner>{
+        Wrapper<ResourceGroupInner> {
+    /**
+     * @return the name of the resource group
+     */
+    String name();
 
-    /***********************************************************
-     * Getters
-     ***********************************************************/
-
+    /**
+     * @return the provisioning state of the resource group
+     */
     String provisioningState();
 
-    /**************************************************************
-     * Setters (fluent interface)
-     **************************************************************/
+    /**
+     * @return the region of the resource group
+     */
+    String region();
 
-    interface DefinitionBlank {
-        DefinitionCreatable withLocation(String regionName);
-        DefinitionCreatable withLocation(Region region);
+    /**
+     * @return the tags attached to the resource group
+     */
+    Map<String, String> tags();
+
+    /**
+     * A resource group definition allowing location to be set.
+     */
+    interface DefinitionBlank extends GroupableResource.DefinitionWithRegion<DefinitionCreatable> {
     }
 
-    interface DefinitionCreatable extends Creatable<ResourceGroup> {
-        DefinitionCreatable withTags(Map<String, String> tags);
-        DefinitionCreatable withTag(String key, String value);
+    /**
+     * A resource group definition with sufficient inputs to create a new
+     * resource group in the cloud, but exposing additional optional inputs to
+     * specify.
+     */
+    interface DefinitionCreatable extends
+            Creatable<ResourceGroup>,
+            Resource.DefinitionWithTags<DefinitionCreatable> {
     }
 
-    interface Update extends 
+    /**
+     * The template for a pet update operation, containing all the settings that can be modified.
+     */
+    interface Update extends
         Appliable<Update>,
         Resource.UpdateWithTags<Update> {
     }
 
-
-    /**************************************************************
-     * Adapter to other resources
-     **************************************************************/
-
+    /**
+     * Connects to other resources inside the resource group.
+     *
+     * @param adapterBuilder the builder for building a connector.
+     * @param <T> the type of the resource connector.
+     * @return the connector with access to other resource types.
+     */
     <T extends ResourceConnector> T connectToResource(ResourceConnector.Builder<T> adapterBuilder);
 }

@@ -3,6 +3,7 @@
  * Licensed under the MIT License. See License.txt in the project root for
  * license information.
  */
+
 package com.microsoft.azure.management.resources.fluentcore.arm.models.implementation;
 
 import com.microsoft.azure.management.resources.ResourceGroup;
@@ -54,7 +55,7 @@ public abstract class GroupableResourceImpl<
      ****************************************/
 
     public final FluentModelImplT withNewGroup(String groupName) {
-        return this.withNewGroup(resourceGroups.define(groupName).withLocation(this.region()));
+        return this.withNewGroup(resourceGroups.define(groupName).withRegion(this.region()));
     }
 
     public final FluentModelImplT withNewGroup() {
