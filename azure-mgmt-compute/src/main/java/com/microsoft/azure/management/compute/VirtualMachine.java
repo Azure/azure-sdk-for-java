@@ -122,7 +122,25 @@ public interface VirtualMachine extends
     /**
      * The stage of the virtual machine definition allowing to specify the resource group.
      */
-    interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionWithOS> {
+    interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionWithPrimaryNetworkInterface> {
+    }
+
+    /**
+     * The stage of the virtual machine definition allowing to specify the primary network interface.
+     */
+    interface DefinitionWithPrimaryNetworkInterface {
+        /**
+         * Specifies the name of the new primary network interface for the virtual machine.
+         *
+         * @param name the name for the new network interface
+         * @return The next stage of the virtual machine definition
+         */
+        DefinitionWithOS withNewPrimaryNetworkInterface(String name);
+        /**
+        DefinitionWithOS withNewPrimaryNetworkInterface(NetworkInterface.creatable creatable);
+        DefinitionWithOS withExistingPrimaryNetworkInterface(String name);
+        DefinitionWithOS withExistingPrimaryNetworkInterface(NetworkInterface networkInterface);
+        **/
     }
 
     /**
@@ -571,6 +589,15 @@ public interface VirtualMachine extends
          */
         T withExistingStorageAccount(String name);
     }
+
+    /**
+    interface DefinitionWithNetworkInterface<T extends DefinitionCreatable> {
+        T withNewNetworkInterface(String name);
+        T withNewNetworkInterface(NetworkInterface.DefinitionCreatable creatable);
+        T withExistingNetworkInterface(String name);
+        T withExistingNetworkInterface(NetworkInterface networkInterface);
+    }
+    **/
 
     /**
      * The stage of the virtual machine definition which contains all the minimum required inputs for

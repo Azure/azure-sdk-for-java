@@ -4,9 +4,12 @@ import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.compute.implementation.api.ComputeManagementClientImpl;
+import com.microsoft.azure.management.network.implementation.NetworkManager;
+import com.microsoft.azure.management.network.implementation.api.NetworkManagementClientImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
+import com.microsoft.azure.management.storage.implementation.StorageManager;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
@@ -16,8 +19,11 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 public final class ComputeManager {
     // The service managers
     private ResourceManager resourceManager;
+    private StorageManager storageManager;
+    private NetworkManager networkManager;
     // The sdk clients
     private ComputeManagementClientImpl computeManagementClient;
+    private NetworkManagementClientImpl networkManagementClient; // TODO this will be removed once we have NetworkInterfaces entry point available in NetworkManager
     // The collections
     private AvailabilitySets availabilitySets;
     private VirtualMachines virtualMachines;
@@ -76,7 +82,13 @@ public final class ComputeManager {
     private ComputeManager(RestClient restClient, String subscriptionId) {
         computeManagementClient = new ComputeManagementClientImpl(restClient);
         computeManagementClient.setSubscriptionId(subscriptionId);
+        // TODO this will be removed once we have NetworkInterfaces entry point available in NetworkManager
+        networkManagementClient = new NetworkManagementClientImpl(restClient);
+        networkManagementClient.setSubscriptionId(subscriptionId);
+
         resourceManager = ResourceManager.authenticate(restClient).withSubscription(subscriptionId);
+        storageManager = StorageManager.authenticate(restClient, subscriptionId);
+        networkManager = NetworkManager.authenticate(restClient, subscriptionId);
     }
 
     private ComputeManager() {
@@ -88,7 +100,8 @@ public final class ComputeManager {
     public AvailabilitySets availabilitySets() {
         if (availabilitySets == null) {
             availabilitySets = new AvailabilitySetsImpl(computeManagementClient.availabilitySets(),
-                    resourceManager.resourceGroups(), virtualMachines());
+                    resourceManager.resourceGroups(),
+                    null /**TODO Find a way to avoid circular dependency or provide some utility methods**/);
         }
         return availabilitySets;
     }
@@ -98,7 +111,13 @@ public final class ComputeManager {
      */
     public VirtualMachines virtualMachines() {
         if (virtualMachines == null) {
-            virtualMachines = new VirtualMachinesImpl(computeManagementClient.virtualMachines(), computeManagementClient.virtualMachineSizes());
+            virtualMachines = new VirtualMachinesImpl(computeManagementClient.virtualMachines(),
+                    computeManagementClient.virtualMachineSizes(),
+                    networkManagementClient.networkInterfaces(), // TODO this will be removed once we have NetworkInterfaces entry point available in NetworkManager
+                    availabilitySets(),
+                    resourceManager,
+                    storageManager,
+                    networkManager);
         }
         return virtualMachines;
     }

@@ -31,7 +31,7 @@ public class AzureTests {
             System.getenv("domain"),
             System.getenv("secret"),
             AzureEnvironment.AZURE);
-    private static final String subscriptionId = System.getenv("subscription-id");
+    private static final String subscriptionId = System.getenv("arm.subscriptionid");
     private Subscriptions subscriptions;
     private Azure azure, azure2;
 
@@ -65,7 +65,6 @@ public class AzureTests {
         // Authenticate based on file
         this.azure2 = Azure.authenticate(new File("my.azureauth"))
                 .withDefaultSubscription();
-        
     }
 
     /**
@@ -73,7 +72,7 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testPublicIpAddresses() throws Exception {
-        new TestPublicIpAddress().runTest(azure2.publicIpAddresses(), azure2);        
+        new TestPublicIpAddress().runTest(azure2.publicIpAddresses(), azure2);
     }
 
     /**
@@ -122,7 +121,11 @@ public class AzureTests {
     @Test public void testNetworks() throws Exception {
         new TestNetwork().runTest(azure2.networks(), azure2);
     }
-    
+
+    @Test public void testVirtualMachines() throws Exception {
+        new TestVirtualMachine().runTest(azure.virtualMachines(), azure);
+    }
+
     @Test
     public void listSubscriptions() throws Exception {
         Assert.assertTrue(0 < subscriptions.list().size());
