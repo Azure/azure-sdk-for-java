@@ -62,22 +62,7 @@ class NetworkImpl
 
     @Override
     public NetworkImpl create() throws Exception {
-    	super.create(this.resourceGroupName());
-
-    	// Ensure address spaces
-    	if(this.addressSpaces().size() == 0) {
-    	    this.withAddressSpace("10.0.0.0/16");
-    	}
-
-    	// Create a subnet as needed, covering the entire first address space 
-    	// TODO: this shouldn't happen during Update -- may need to move to initializer or something...
-    	if(this.inner().subnets().size() == 0) {
-    	    this.withSubnet("subnet1", this.addressSpaces().get(0));
-    	}
-
-        ServiceResponse<VirtualNetworkInner> response =
-                this.client.createOrUpdate(this.resourceGroupName(), this.key(), this.inner());
-        this.setInner(response.getBody());
+        super.creatablesCreate();
         return this;
     }
 
@@ -170,5 +155,23 @@ class NetworkImpl
     @Override
     public List<Subnet> subnets() {
         return Collections.unmodifiableList(this.subnets);
+    }
+
+    @Override
+    protected void createResource() throws Exception {
+        // Ensure address spaces
+        if(this.addressSpaces().size() == 0) {
+            this.withAddressSpace("10.0.0.0/16");
+        }
+
+        // Create a subnet as needed, covering the entire first address space
+        // TODO: this shouldn't happen during Update -- may need to move to initializer or something...
+        if(this.inner().subnets().size() == 0) {
+            this.withSubnet("subnet1", this.addressSpaces().get(0));
+        }
+
+        ServiceResponse<VirtualNetworkInner> response =
+                this.client.createOrUpdate(this.resourceGroupName(), this.key(), this.inner());
+        this.setInner(response.getBody());
     }
 }

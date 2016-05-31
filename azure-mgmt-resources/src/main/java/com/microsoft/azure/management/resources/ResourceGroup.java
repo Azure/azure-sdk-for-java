@@ -9,6 +9,7 @@ import java.util.Map;
 
 public interface ResourceGroup extends
         Indexable,
+        Resource,
         Refreshable<ResourceGroup>,
         Wrapper<ResourceGroupInner>{
 
@@ -16,10 +17,7 @@ public interface ResourceGroup extends
      * Getters
      ***********************************************************/
 
-    String name();
     String provisioningState();
-    String location();
-    Map<String, String> tags();
 
     /**************************************************************
      * Setters (fluent interface)

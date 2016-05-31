@@ -6,6 +6,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableImpl;
 import com.microsoft.azure.management.resources.implementation.api.*;
+import org.apache.commons.lang3.NotImplementedException;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
@@ -240,5 +241,10 @@ public class DeploymentImpl extends
     @Override
     public Deployment refresh() throws Exception {
         return null;
+    }
+
+    @Override
+    protected void createResource() throws Exception {
+        throw new NotImplementedException("Deployment::createResource");
     }
 }

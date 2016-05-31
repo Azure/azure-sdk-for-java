@@ -419,7 +419,7 @@ class VirtualMachineImpl
     @Override
     public DefinitionCreatable withNewStorageAccount(StorageAccount.DefinitionCreatable creatable) {
         this.storageAccountName = creatable.key();
-        this.prerequisites().put(creatable.key(), creatable);
+        this.addCreatableDependency(creatable);
         return this;
     }
 
@@ -443,7 +443,7 @@ class VirtualMachineImpl
     @Override
     public DefinitionCreatable withNewAvailabilitySet(AvailabilitySet.DefinitionCreatable creatable) {
         this.availabilitySetName = creatable.key();
-        this.prerequisites().put(creatable.key(), creatable);
+        this.addCreatableDependency(creatable);
         return this;
     }
 
@@ -455,17 +455,17 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachine create() throws Exception {
-        setDefaults();
-        return null;
+        super.creatablesCreate();
+        return null; // TODO
     }
 
     // helper methods to set various virtual machine's default properties
     //
 
     private void setDefaults() {
-        setOSDiskAndOSProfileDefaults();
-        setHardwareProfileDefaults();
-        setDataDisksDefaults();
+            setOSDiskAndOSProfileDefaults();
+            setHardwareProfileDefaults();
+            setDataDisksDefaults();
     }
 
     private void setOSDiskAndOSProfileDefaults() {
@@ -566,5 +566,10 @@ class VirtualMachineImpl
 
     private String blobUrl(String storageAccountName, String containerName, String blobName) {
         return storageAccountName + ".blob.core.windows.net" + "/" + containerName + "/" + blobName;
+    }
+
+    @Override
+    protected void createResource() throws Exception {
+        setDefaults();
     }
 }

@@ -27,4 +27,9 @@ public class GenericResourceImpl
     public GenericResource refresh() throws Exception {
         return null;
     }
+
+    @Override
+    protected void createResource() throws Exception {
+        throw new Exception("GenericResource is not creatable");
+    }
 }

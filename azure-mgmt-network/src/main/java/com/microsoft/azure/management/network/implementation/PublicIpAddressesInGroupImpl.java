@@ -26,7 +26,7 @@ public class PublicIpAddressesInGroupImpl implements PublicIpAddresses.InGroup {
     public PublicIpAddress.DefinitionAfterGroup define(String name) {
         return this.publicIpAddresses
                 .define(name)
-                .withRegion(this.resourceGroup.location())
+                .withRegion(this.resourceGroup.region())
                 .withExistingGroup(this.resourceGroup.name());
     }
 
