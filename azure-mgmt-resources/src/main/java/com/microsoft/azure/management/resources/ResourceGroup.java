@@ -23,10 +23,10 @@ import java.util.Map;
  */
 public interface ResourceGroup extends
         Indexable,
+        Resource,
         Refreshable<ResourceGroup>,
         Wrapper<ResourceGroupInner>,
         Updatable<ResourceGroup.Update> {
-
     /**
      * @return the name of the resource group
      */
@@ -38,9 +38,9 @@ public interface ResourceGroup extends
     String provisioningState();
 
     /**
-     * @return the location of the resource group
+     * @return the region of the resource group
      */
-    String location();
+    String region();
 
     /**
      * @return the tags attached to the resource group

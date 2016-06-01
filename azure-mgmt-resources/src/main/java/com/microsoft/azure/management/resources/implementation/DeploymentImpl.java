@@ -7,12 +7,10 @@
 package com.microsoft.azure.management.resources.implementation;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.microsoft.azure.management.resources.Deployment;
-import com.microsoft.azure.management.resources.DeploymentOperations;
-import com.microsoft.azure.management.resources.Provider;
-import com.microsoft.azure.management.resources.ResourceGroups;
+import com.microsoft.azure.management.resources.*;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableImpl;
 import com.microsoft.azure.management.resources.implementation.api.Dependency;
 import com.microsoft.azure.management.resources.implementation.api.DeploymentExtendedInner;
@@ -47,6 +45,7 @@ final class DeploymentImpl extends
     private final DeploymentOperationsInner deploymentOperationsClient;
     private final ResourceGroups resourceGroups;
     private String resourceGroupName;
+    private Creatable<ResourceGroup> creatableResourceGroup;
 
     DeploymentImpl(DeploymentExtendedInner innerModel,
                           final DeploymentsInner client,
@@ -168,7 +167,7 @@ final class DeploymentImpl extends
 
     @Override
     public DefinitionWithTemplate withNewResourceGroup(String resourceGroupName, Region region) {
-        prerequisites().put(resourceGroupName, this.resourceGroups.define(resourceGroupName).withRegion(region));
+        this.creatableResourceGroup = this.resourceGroups.define(resourceGroupName).withRegion(region);
         this.resourceGroupName = resourceGroupName;
         return this;
     }
@@ -257,6 +256,20 @@ final class DeploymentImpl extends
 
     @Override
     public Deployment create() throws Exception {         //  FLUENT: implementation of ResourceGroup.DefinitionCreatable.Creatable<ResourceGroup>
+        if (this.creatableResourceGroup != null) {
+            this.creatableResourceGroup.create();
+        }
+        createResource();
+        return this;
+    }
+
+    @Override
+    public Deployment refresh() throws Exception {
+        return null;
+    }
+
+    @Override
+    protected void createResource() throws Exception {
         DeploymentInner inner = new DeploymentInner()
                 .setProperties(new DeploymentProperties());
         inner.properties().setMode(mode());
@@ -265,11 +278,5 @@ final class DeploymentImpl extends
         inner.properties().setParameters(parameters());
         inner.properties().setParametersLink(parametersLink());
         client.createOrUpdate(resourceGroupName(), name(), inner);
-        return this;
-    }
-
-    @Override
-    public Deployment refresh() throws Exception {
-        return null;
     }
 }

@@ -57,7 +57,6 @@ final class GenericResourceImpl
         return null;
     }
 
-    @Override
     public DefinitionCreatable withProperties(Object properties) {
         inner().setProperties(properties);
         return this;
@@ -89,7 +88,12 @@ final class GenericResourceImpl
 
     @Override
     public GenericResource create() throws Exception {
-        super.create(resourceGroupName());
+        createResource();
+        return this;
+    }
+
+    @Override
+    protected void createResource() throws Exception {
         GenericResourceInner inner = client.createOrUpdate(
                 resourceGroupName(),
                 resourceProviderNamespace,
@@ -103,6 +107,5 @@ final class GenericResourceImpl
         this.resourceType = null;
         this.resourceProviderNamespace = null;
         this.parentResourceId = null;
-        return this;
     }
 }

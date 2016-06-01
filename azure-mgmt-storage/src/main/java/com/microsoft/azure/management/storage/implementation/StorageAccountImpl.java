@@ -108,17 +108,7 @@ class StorageAccountImpl
 
     @Override
     public StorageAccountImpl create() throws Exception {
-        super.create(this.resourceGroupName());
-        StorageAccountCreateParametersInner createParameters = new StorageAccountCreateParametersInner();
-        createParameters.setAccountType(this.inner().accountType());
-        createParameters.setLocation(this.region());
-        createParameters.setTags(this.inner().getTags());
-
-        ServiceResponse<StorageAccountInner> response =
-                this.client.create(this.resourceGroupName(), this.name(), createParameters);
-        StorageAccountInner storageAccountInner = response.getBody();
-        this.setInner(storageAccountInner);
-        clearWrapperProperties();
+        super.creatablesCreate();
         return this;
     }
 
@@ -131,5 +121,19 @@ class StorageAccountImpl
     private void clearWrapperProperties() {
         accountStatuses = null;
         publicEndpoints = null;
+    }
+
+    @Override
+    protected void createResource() throws Exception {
+        StorageAccountCreateParametersInner createParameters = new StorageAccountCreateParametersInner();
+        createParameters.setAccountType(this.inner().accountType());
+        createParameters.setLocation(this.region());
+        createParameters.setTags(this.inner().getTags());
+
+        ServiceResponse<StorageAccountInner> response =
+                this.client.create(this.resourceGroupName(), this.name(), createParameters);
+        StorageAccountInner storageAccountInner = response.getBody();
+        this.setInner(storageAccountInner);
+        clearWrapperProperties();
     }
 }

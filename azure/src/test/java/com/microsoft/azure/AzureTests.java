@@ -88,9 +88,9 @@ public class AzureTests {
                 .withRegion(Region.US_WEST)
                 .create();
         
-        PublicIpAddresses.InGroup pips = 
+        PublicIpAddresses.InGroup pips =
                 group.connectToResource(new NetworkResourceConnector.Builder()).publicIpAddresses();
-        
+
         PublicIpAddress pip = pips.define(newPipName)
             .withDynamicIp()
             .withLeafDomainLabel(newPipName)
