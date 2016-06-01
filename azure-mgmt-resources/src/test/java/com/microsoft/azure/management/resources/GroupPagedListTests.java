@@ -111,6 +111,11 @@ public class GroupPagedListTests {
     private static ResourceGroup resourceGroup(final String name) {
         return new ResourceGroup() {
             @Override
+            public Update update() throws Exception {
+                return null;
+            }
+
+            @Override
             public String name() {
                 return name;
             }

@@ -8,6 +8,8 @@ package com.microsoft.azure.management.resources;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
+import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
@@ -199,5 +201,12 @@ public interface Deployment extends
      * specify.
      */
     interface DefinitionCreatable extends Creatable<Deployment> {
+        Deployment beginCreate() throws Exception;
     }
+
+    interface Update extends
+            Appliable<DeploymentExtendedInner>,
+            Resource.UpdateWithTags<Update> {
+    }
+
 }

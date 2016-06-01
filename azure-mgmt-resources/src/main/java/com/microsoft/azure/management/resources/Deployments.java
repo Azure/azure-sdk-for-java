@@ -29,25 +29,26 @@ public interface Deployments extends
         SupportsDeleting,
         SupportsDeletingByGroup {
     /**
-     * Checks if a deployment exists in the subscription.
-     *
-     * @param deploymentName the deployment's name
-     * @return true if the deployment exists; false otherwise
-     * @throws IOException serialization failures
-     * @throws CloudException failures thrown from Azure
-     */
-    boolean checkExistence(String deploymentName) throws IOException, CloudException;
-
-    /**
      * Checks if a deployment exists in a resource group.
      *
-     * @param groupName the resource group's name
+     * @param resourceGroupName the resource group's name
      * @param deploymentName the deployment's name
      * @return true if the deployment exists; false otherwise
      * @throws IOException serialization failures
      * @throws CloudException failures thrown from Azure
      */
-    boolean checkExistence(String groupName, String deploymentName) throws IOException, CloudException;
+    boolean checkExistence(String resourceGroupName, String deploymentName) throws IOException, CloudException;
+
+    /**
+     * Cancel a currently running template deployment.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of the deployment.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    void cancel(String resourceGroupName, String deploymentName) throws IOException, CloudException;
 
     /**
      * Filters deployments by a resource group.

@@ -243,6 +243,19 @@ final class DeploymentImpl extends
     }
 
     @Override
+    public Deployment beginCreate() throws Exception {         //  FLUENT: implementation of ResourceGroup.DefinitionCreatable.Creatable<ResourceGroup>
+        DeploymentInner inner = new DeploymentInner()
+                .setProperties(new DeploymentProperties());
+        inner.properties().setMode(mode());
+        inner.properties().setTemplate(template());
+        inner.properties().setTemplateLink(templateLink());
+        inner.properties().setParameters(parameters());
+        inner.properties().setParametersLink(parametersLink());
+        client.beginCreateOrUpdate(resourceGroupName(), name(), inner);
+        return this;
+    }
+
+    @Override
     public Deployment create() throws Exception {         //  FLUENT: implementation of ResourceGroup.DefinitionCreatable.Creatable<ResourceGroup>
         DeploymentInner inner = new DeploymentInner()
                 .setProperties(new DeploymentProperties());

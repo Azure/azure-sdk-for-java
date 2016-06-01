@@ -132,4 +132,9 @@ public class ResourceGroupImpl extends
     public <T extends ResourceConnector> T connectToResource(ResourceConnector.Builder<T> adapterBuilder) {
         return adapterBuilder.create(this.serviceClient.restClient(), this.serviceClient.subscriptionId(), this);
     }
+
+    @Override
+    public Update update() throws Exception {
+        return this;
+    }
 }
