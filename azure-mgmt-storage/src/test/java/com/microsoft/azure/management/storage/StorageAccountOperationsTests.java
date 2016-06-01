@@ -2,7 +2,6 @@ package com.microsoft.azure.management.storage;
 
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.storage.implementation.StorageResourceConnector;
 import com.microsoft.azure.management.storage.implementation.api.AccountType;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -31,15 +30,6 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
 
     @Test
     public void getStorageAccountFromResource() throws Exception {
-        StorageAccounts.InGroup storageAccountsInGroup = resourceGroup
-                .connectToResource(new StorageResourceConnector.Builder())
-                .storageAccounts();
-
-        StorageAccount storageAccount1 = storageAccountsInGroup
-                .define(SA_NAME)
-                .withAccountType(AccountType.PREMIUM_LRS)
-                .create();
-
         StorageAccount storageAccount2 = storageManager.storageAccounts()
                 .define(SA_NAME + "6")
                 .withRegion(Region.ASIA_EAST)
@@ -47,7 +37,6 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
                 .withAccountType(AccountType.PREMIUM_LRS)
                 .create();
 
-        Assert.assertEquals(RG_NAME, storageAccount1.resourceGroupName());
         Assert.assertEquals(RG_NAME_2, storageAccount2.resourceGroupName());
     }
 

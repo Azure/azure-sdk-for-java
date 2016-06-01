@@ -670,7 +670,7 @@ class VirtualMachineImpl
         this.innerModel.networkProfile().networkInterfaces().add(nicReference);
 
         setDefaults();
-        ServiceResponse<VirtualMachineInner> serviceResponse = this.client.createOrUpdate(this.resourceGroupName(), this.key(), this.innerModel);
+        ServiceResponse<VirtualMachineInner> serviceResponse = this.client.createOrUpdate(this.resourceGroupName(), this.name(), this.innerModel);
         this.setInner(serviceResponse.getBody());
     }
 }

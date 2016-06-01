@@ -16,7 +16,6 @@ import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
-import com.microsoft.azure.management.resources.Deployments;
 import com.microsoft.azure.management.resources.GenericResources;
 import com.microsoft.azure.management.resources.Subscription;
 import com.microsoft.azure.management.resources.Subscriptions;
@@ -211,11 +210,6 @@ public final class Azure {
     }
 
     public interface ResourceGroup extends com.microsoft.azure.management.resources.ResourceGroup {
-        Deployments.InGroup deployments();
-        StorageAccounts.InGroup storageAccounts();
-        // VirtualMachinesInGroup virtualMachines(); //TODO
-        AvailabilitySets.InGroup availabilitySets();
-        // VirtualNetworksInGroup virtualNetworks(); //TODO
     }
 
     private Azure(RestClient restClient, String subscriptionId) {

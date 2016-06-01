@@ -1,8 +1,6 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.implementation.ARMResourceConnector;
-import com.microsoft.azure.management.resources.implementation.api.DeploymentMode;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -34,17 +32,8 @@ public class DeploymentsTests extends ResourceManagerTestBase {
 
     @Test
     public void canDeployVirtualNetwork() throws Exception {
-        ARMResourceConnector connector = resourceGroup.connectToResource(new ARMResourceConnector.Builder());
-        connector.deployments()
-                .define(deploymentName)
-                .withTemplateLink(templateUri, contentVersion)
-                .withParametersLink(parametersUri, contentVersion)
-                .withMode(DeploymentMode.COMPLETE)
-                .create();
         Deployment deployment = resourceClient.deployments().get(rgName, deploymentName);
         Assert.assertNotNull(deployment);
         Assert.assertEquals("Succeeded", deployment.provisioningState());
-        GenericResource generic = connector.genericResources().get("VNet1");
-        Assert.assertNotNull(generic);
     }
 }

@@ -125,7 +125,7 @@ class AvailabilitySetImpl
 
     @Override
     protected void createResource() throws Exception {
-        ServiceResponse<AvailabilitySetInner> response = this.client.createOrUpdate(this.resourceGroupName(), this.key, this.inner());
+        ServiceResponse<AvailabilitySetInner> response = this.client.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
         AvailabilitySetInner availabilitySetInner = response.getBody();
         this.setInner(availabilitySetInner);
         this.idOfVMsInSet = null;
