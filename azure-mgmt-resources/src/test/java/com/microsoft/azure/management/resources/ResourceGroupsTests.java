@@ -20,7 +20,7 @@ public class ResourceGroupsTests extends ResourceManagerTestBase {
         String location = "southcentralus";
         // Create
         resourceGroups.define(rgName)
-                .withLocation(Region.US_SOUTH_CENTRAL)
+                .withRegion(Region.US_SOUTH_CENTRAL)
                 .withTag("department", "finance")
                 .withTag("tagname", "tagvalue")
                 .create();
@@ -35,12 +35,12 @@ public class ResourceGroupsTests extends ResourceManagerTestBase {
         Assert.assertNotNull(groupResult);
         Assert.assertEquals("finance", groupResult.tags().get("department"));
         Assert.assertEquals("tagvalue", groupResult.tags().get("tagname"));
-        Assert.assertEquals(location, groupResult.location());
+        Assert.assertEquals(location, groupResult.region());
         // Get
         ResourceGroup getGroup = resourceGroups.get(rgName);
         Assert.assertNotNull(getGroup);
         Assert.assertEquals(rgName, getGroup.name());
-        Assert.assertEquals(location, getGroup.location());
+        Assert.assertEquals(location, getGroup.region());
         // Delete
         resourceGroups.delete(rgName);
         Assert.assertFalse(resourceGroups.checkExistence(rgName));

@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.CloudException;
@@ -17,7 +23,10 @@ import com.microsoft.rest.RestException;
 import java.io.IOException;
 import java.util.List;
 
-public class DeploymentsImpl
+/**
+ * The implementation for Deployments and its parent interfaces.
+ */
+final class DeploymentsImpl
     implements Deployments {
 
     private final DeploymentsInner client;
@@ -25,7 +34,7 @@ public class DeploymentsImpl
     private final ResourceGroups resourceGroups;
     private PagedListConverter<DeploymentExtendedInner, Deployment> converter;
 
-    public DeploymentsImpl(final DeploymentsInner client,
+    DeploymentsImpl(final DeploymentsInner client,
                            final DeploymentOperationsInner deploymentOperationsClient,
                            final ResourceGroups resourceGroups) {
         this.client = client;
@@ -68,6 +77,7 @@ public class DeploymentsImpl
                     return createFluentModel(inner);
                 }
             } catch (CloudException ex) {
+                // Do nothing
             }
         }
         return null;
@@ -106,13 +116,8 @@ public class DeploymentsImpl
 
     @Override
     public boolean checkExistence(String groupName, String deploymentName) throws IOException, CloudException {
-        if (client.checkExistence(groupName, deploymentName).getBody()) {
-            return true;
-        }
-        return false;
+        return client.checkExistence(groupName, deploymentName).getBody();
     }
-
-    /** Fluent model create helpers **/
 
     private DeploymentImpl createFluentModel(String name) {
         DeploymentExtendedInner deploymentExtendedInner = new DeploymentExtendedInner();

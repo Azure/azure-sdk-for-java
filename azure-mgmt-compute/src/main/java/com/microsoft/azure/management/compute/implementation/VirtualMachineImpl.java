@@ -29,11 +29,18 @@ import com.microsoft.azure.management.compute.implementation.api.WindowsConfigur
 import com.microsoft.azure.management.compute.implementation.api.WinRMConfiguration;
 import com.microsoft.azure.management.compute.implementation.api.SshConfiguration;
 import com.microsoft.azure.management.compute.implementation.api.SshPublicKey;
+import com.microsoft.azure.management.compute.implementation.api.NetworkInterfaceReference;
+import com.microsoft.azure.management.network.Network;
+import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
-
+import com.microsoft.rest.ServiceResponse;
+import com.microsoft.azure.management.network.implementation.api.SubnetInner;
+import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceInner;
+import com.microsoft.azure.management.network.implementation.api.NetworkInterfacesInner;
+import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceIPConfiguration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -47,6 +54,7 @@ class VirtualMachineImpl
             VirtualMachine,
             VirtualMachine.DefinitionBlank,
             VirtualMachine.DefinitionWithGroup,
+            VirtualMachine.DefinitionWithPrimaryNetworkInterface,
             VirtualMachine.DefinitionWithOS,
             VirtualMachine.DefinitionWithMarketplaceImage,
             VirtualMachine.DefinitionWithOSType,
@@ -61,29 +69,40 @@ class VirtualMachineImpl
             VirtualMachine.ConfigureExistingDataDisk {
     private final VirtualMachinesInner client;
     private final VirtualMachineInner innerModel;
+    private final AvailabilitySets availabilitySets;
+    private final NetworkInterfacesInner networkInterfaces;
     private final ResourceManager resourceManager;
     private final StorageManager storageManager;
-    private final AvailabilitySets availabilitySets;
+    private final NetworkManager networkManager;
 
     private String storageAccountName;
     private String availabilitySetName;
+    private String primaryNetworkInterfaceName;
 
-    VirtualMachineImpl(String name, VirtualMachineInner innerModel,
+    VirtualMachineImpl(String name,
+                       VirtualMachineInner innerModel,
                        VirtualMachinesInner client,
+                       NetworkInterfacesInner networkInterfaces, // TODO this will be removed once we have NetworkInterfaces entry point available in NetworkManager
                        AvailabilitySets availabilitySets,
-                       ResourceManager resourceManager, StorageManager storageManager) {
+                       ResourceManager resourceManager,
+                       StorageManager storageManager,
+                       NetworkManager networkManager) {
         super(name, innerModel, resourceManager.resourceGroups());
         this.client = client;
         this.innerModel = innerModel;
+        this.networkInterfaces = networkInterfaces;
+        this.availabilitySets = availabilitySets;
         this.resourceManager = resourceManager;
         this.storageManager = storageManager;
-        this.availabilitySets = availabilitySets;
+        this.networkManager = networkManager;
 
         this.innerModel.setStorageProfile(new StorageProfile());
         this.innerModel.storageProfile().setOsDisk(new OSDisk());
         this.innerModel.storageProfile().setDataDisks(new ArrayList<DataDisk>());
         this.innerModel.setOsProfile(new OSProfile());
         this.innerModel.setHardwareProfile(new HardwareProfile());
+        this.innerModel.setNetworkProfile(new NetworkProfile());
+        this.innerModel.osProfile().setComputerName(name);
     }
 
     @Override
@@ -143,6 +162,12 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachine refresh() throws Exception {
+        return this;
+    }
+
+    @Override
+    public DefinitionWithOS withNewPrimaryNetworkInterface(String name) {
+        this.primaryNetworkInterfaceName = name;
         return this;
     }
 
@@ -419,7 +444,7 @@ class VirtualMachineImpl
     @Override
     public DefinitionCreatable withNewStorageAccount(StorageAccount.DefinitionCreatable creatable) {
         this.storageAccountName = creatable.key();
-        this.prerequisites().put(creatable.key(), creatable);
+        this.addCreatableDependency(creatable);
         return this;
     }
 
@@ -443,7 +468,7 @@ class VirtualMachineImpl
     @Override
     public DefinitionCreatable withNewAvailabilitySet(AvailabilitySet.DefinitionCreatable creatable) {
         this.availabilitySetName = creatable.key();
-        this.prerequisites().put(creatable.key(), creatable);
+        this.addCreatableDependency(creatable);
         return this;
     }
 
@@ -455,17 +480,21 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachine create() throws Exception {
-        setDefaults();
-        return null;
+        if (requiresImplicitStorageAccountCreation()) {
+            withNewStorageAccount(this.key() + UUID.randomUUID().toString());
+        }
+
+        super.creatablesCreate();
+        return this;
     }
 
     // helper methods to set various virtual machine's default properties
     //
 
     private void setDefaults() {
-        setOSDiskAndOSProfileDefaults();
-        setHardwareProfileDefaults();
-        setDataDisksDefaults();
+            setOSDiskAndOSProfileDefaults();
+            setHardwareProfileDefaults();
+            setDataDisksDefaults();
     }
 
     private void setOSDiskAndOSProfileDefaults() {
@@ -473,7 +502,7 @@ class VirtualMachineImpl
         if (!isOSDiskAttached(osDisk)) {
             if (osDisk.vhd() == null) {
                 // Sets the OS disk VHD for "UserImage" and "VM(Platform)Image"
-                withOSDiskVhdLocation("vhds", this.name() + "-os-disk-" + UUID.randomUUID().toString() + ".vhd");
+                withOSDiskVhdLocation("vhds", this.key() + "-os-disk-" + UUID.randomUUID().toString() + ".vhd");
             }
             OSProfile osProfile = this.innerModel.osProfile();
             if (osDisk.osType() == OperatingSystemTypes.LINUX) {
@@ -489,7 +518,7 @@ class VirtualMachineImpl
         }
 
         if (osDisk.name() == null) {
-            withOSDiskName(this.name() + "-os-disk");
+            withOSDiskName(this.key() + "-os-disk");
         }
     }
 
@@ -527,12 +556,12 @@ class VirtualMachineImpl
             if (dataDisk.vhd() == null) {
                 VirtualHardDisk diskVhd = new VirtualHardDisk();
                 diskVhd.setUri(blobUrl(this.storageAccountName, "vhds",
-                        this.name() + "-data-disk-" + dataDisk.lun() + "-" + UUID.randomUUID().toString() + ".vhd"));
+                        this.key() + "-data-disk-" + dataDisk.lun() + "-" + UUID.randomUUID().toString() + ".vhd"));
                 dataDisk.setVhd(diskVhd);
             }
 
             if (dataDisk.name() == null) {
-                dataDisk.setName(this.name() + "-data-disk-" + dataDisk.lun());
+                dataDisk.setName(this.key() + "-data-disk-" + dataDisk.lun());
             }
 
             if (dataDisk.caching() == null) {
@@ -565,6 +594,83 @@ class VirtualMachineImpl
     }
 
     private String blobUrl(String storageAccountName, String containerName, String blobName) {
-        return storageAccountName + ".blob.core.windows.net" + "/" + containerName + "/" + blobName;
+        return  "https://" + storageAccountName + ".blob.core.windows.net" + "/" + containerName + "/" + blobName;
+    }
+
+    private boolean requiresImplicitStorageAccountCreation() {
+        if (this.storageAccountName == null) {
+            if (!isOSDiskAttached(this.innerModel.storageProfile().osDisk())) {
+                return true;
+            }
+
+            for (DataDisk dataDisk : this.innerModel.storageProfile().dataDisks()) {
+                if (dataDisk.createOption() != DiskCreateOptionTypes.ATTACH) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private NetworkInterfaceReference createPrimaryNetworkInterface() {
+        /**
+        // Note: This is a temporary code Once we have the fluent model for NIC, we will be simply doing
+        //
+        Network.DefinitionCreatable networkCreatable = networkManager.networks().define("vnet1")
+                .withRegion(this.region())
+                .withExistingGroup(this.resourceGroupName());
+
+         NetworkInterface networkInterface = networkManager.networkInterfaces().define(this.primaryNetworkInterfaceName)
+           .withNewNetwork(networkCreatable)
+           .create();
+
+         return networkInterface;
+         **/
+
+        Network virtualNetwork;
+        try {
+            virtualNetwork = networkManager.networks().define("vnet1-" + this.key())
+                    .withRegion(this.region())
+                    .withExistingGroup(this.resourceGroupName())
+                    .create();
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+
+        SubnetInner subnetInner = new SubnetInner();
+        subnetInner.setId(virtualNetwork.inner().subnets().get(0).id());
+
+        NetworkInterfaceInner networkInterfaceInner = new NetworkInterfaceInner();
+        networkInterfaceInner.setLocation(this.region());
+        networkInterfaceInner.setPrimary(true);
+        NetworkInterfaceIPConfiguration nicIPConfig = new NetworkInterfaceIPConfiguration();
+        nicIPConfig.setName("Nic-IP-config");
+        nicIPConfig.setSubnet(subnetInner);
+        ArrayList<NetworkInterfaceIPConfiguration> nicIPConfigs = new ArrayList<>();
+        nicIPConfigs.add(nicIPConfig);
+        networkInterfaceInner.setIpConfigurations(nicIPConfigs);
+
+        try {
+            ServiceResponse<NetworkInterfaceInner> newNic =
+                    networkInterfaces.createOrUpdate(this.resourceGroupName(), this.primaryNetworkInterfaceName, networkInterfaceInner);
+            NetworkInterfaceReference nicReference = new NetworkInterfaceReference();
+            nicReference.setPrimary(true);
+            nicReference.setId(newNic.getBody().id());
+            return nicReference;
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
+    protected void createResource() throws Exception {
+        // TODO This code to create NIC will be removed once we have the fluent model for NIC in place.
+        NetworkInterfaceReference nicReference = createPrimaryNetworkInterface();
+        this.innerModel.networkProfile().setNetworkInterfaces(new ArrayList<NetworkInterfaceReference>());
+        this.innerModel.networkProfile().networkInterfaces().add(nicReference);
+
+        setDefaults();
+        ServiceResponse<VirtualMachineInner> serviceResponse = this.client.createOrUpdate(this.resourceGroupName(), this.key(), this.innerModel);
+        this.setInner(serviceResponse.getBody());
     }
 }

@@ -40,7 +40,7 @@ public class AvailabilitySetsInGroupImpl
     public DefinitionCreatable define(String name) {
         return this.availabilitySets
                 .define(name)
-                .withRegion(this.resourceGroup.location())
+                .withRegion(this.resourceGroup.region())
                 .withExistingGroup(this.resourceGroup.name());
     }
 

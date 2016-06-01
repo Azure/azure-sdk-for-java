@@ -19,7 +19,7 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
     public static void setup() throws Exception {
         createClients();
         resourceGroup = resourceManager.resourceGroups().define(RG_NAME)
-                .withLocation(Region.US_SOUTH_CENTRAL)
+                .withRegion(Region.US_SOUTH_CENTRAL)
                 .create();
     }
 

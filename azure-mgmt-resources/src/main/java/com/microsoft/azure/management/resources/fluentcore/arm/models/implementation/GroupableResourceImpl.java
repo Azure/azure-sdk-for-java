@@ -3,12 +3,14 @@
  * Licensed under the MIT License. See License.txt in the project root for
  * license information.
  */
+
 package com.microsoft.azure.management.resources.fluentcore.arm.models.implementation;
 
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
 
 public abstract class GroupableResourceImpl<
@@ -31,7 +33,7 @@ public abstract class GroupableResourceImpl<
 
     protected GroupableResourceImpl(String key, InnerModelT innerObject, ResourceGroup resourceGroup) {
         super(key, innerObject);
-        this.withRegion(resourceGroup.location());
+        this.withRegion(resourceGroup.region());
         this.withExistingGroup(resourceGroup);
     }
 
@@ -48,22 +50,12 @@ public abstract class GroupableResourceImpl<
         }
     }
 
-    protected FluentModelT create(String groupName) throws Exception {
-        for (String id : prerequisites().keySet()) {
-            if (!created().containsKey(id)) {
-                prerequisites().get(id).create();
-                created().put(id, prerequisites().get(id));
-            }
-        }
-        return null;
-    }
-
     /****************************************
      * withGroup implementations
      ****************************************/
 
     public final FluentModelImplT withNewGroup(String groupName) {
-        return this.withNewGroup(resourceGroups.define(groupName).withLocation(this.region()));
+        return this.withNewGroup(resourceGroups.define(groupName).withRegion(this.region()));
     }
 
     public final FluentModelImplT withNewGroup() {
@@ -71,10 +63,10 @@ public abstract class GroupableResourceImpl<
     }
 
     @SuppressWarnings("unchecked")
-    public final FluentModelImplT withNewGroup(ResourceGroup.DefinitionCreatable groupDefinition) {
-        this.groupName = groupDefinition.key();
-        this.newGroup = groupDefinition;
-        this.prerequisites().put(groupDefinition.key(), this.newGroup);
+    public final FluentModelImplT withNewGroup(ResourceGroup.DefinitionCreatable creatable) {
+        this.groupName = creatable.key();
+        this.newGroup = creatable;
+        addCreatableDependency(creatable);
         return (FluentModelImplT) this;
     }
 

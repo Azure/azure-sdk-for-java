@@ -22,7 +22,7 @@ public class StorageAccountsInGroupImpl implements StorageAccounts.InGroup {
     @Override
     public StorageAccount.DefinitionCreatable define(String name) {
         return storageAccounts.define(name)
-                .withRegion(resourceGroup.location())
+                .withRegion(resourceGroup.region())
                 .withExistingGroup(resourceGroup.name());
     }
 

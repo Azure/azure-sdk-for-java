@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
@@ -8,7 +14,10 @@ import com.microsoft.azure.management.resources.implementation.api.DeploymentOpe
 import com.microsoft.azure.management.resources.implementation.api.TargetResource;
 import org.joda.time.DateTime;
 
-public class DeploymentOperationImpl extends
+/**
+ * The implementation of DeploymentOperation and its parent interfaces.
+ */
+final class DeploymentOperationImpl extends
         IndexableRefreshableWrapperImpl<DeploymentOperation, DeploymentOperationInner>
         implements
         DeploymentOperation {
@@ -17,16 +26,12 @@ public class DeploymentOperationImpl extends
 
     private final DeploymentOperationsInner client;
 
-    public DeploymentOperationImpl(DeploymentOperationInner innerModel, final DeploymentOperationsInner client) {
-        super (innerModel.id(), innerModel);
+    DeploymentOperationImpl(DeploymentOperationInner innerModel, final DeploymentOperationsInner client) {
+        super(innerModel.id(), innerModel);
         this.client = client;
         this.resourceGroupName = ResourceUtils.groupFromResourceId(innerModel.id());
         this.deploymentName = ResourceUtils.extractFromResourceId(innerModel.id(), "deployments");
     }
-
-    /***********************************************************
-     * Getters
-     ***********************************************************/
 
     @Override
     public String operationId() {

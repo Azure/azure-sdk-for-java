@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.management.resources.ResourceConnector;
@@ -12,6 +18,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * An instance of this class provides access to a resource group in Azure.
+ */
 public class ResourceGroupImpl extends
         CreatableImpl<ResourceGroup, ResourceGroupInner>
         implements
@@ -23,15 +32,11 @@ public class ResourceGroupImpl extends
     private final ResourceGroupsInner client;
     private final ResourceManagementClientImpl serviceClient;
 
-    public ResourceGroupImpl(final ResourceGroupInner innerModel, final ResourceManagementClientImpl serviceClient) {
+    protected ResourceGroupImpl(final ResourceGroupInner innerModel, final ResourceManagementClientImpl serviceClient) {
         super(innerModel.name(), innerModel);
         this.client = serviceClient.resourceGroups();
         this.serviceClient = serviceClient;
     }
-
-    /***********************************************************
-     * Getters
-     ***********************************************************/
 
     @Override
     public String name() {
@@ -44,8 +49,18 @@ public class ResourceGroupImpl extends
     }
 
     @Override
-    public String location() {
+    public String region() {
         return this.inner().location();
+    }
+
+    @Override
+    public String id() {
+        return this.inner().id();
+    }
+
+    @Override
+    public String type() {
+        return null;
     }
 
     @Override
@@ -53,30 +68,26 @@ public class ResourceGroupImpl extends
         return Collections.unmodifiableMap(this.inner().tags());
     }
 
-    /**************************************************************
-     * Setters (fluent interface)
-     **************************************************************/
-
     @Override
-    public ResourceGroupImpl withLocation(String regionName) {       //  FLUENT: implementation of ResourceGroup.DefinitionBlank
-        this.inner().setLocation(regionName);                        //
+    public ResourceGroupImpl withRegion(String regionName) {
+        this.inner().setLocation(regionName);
         return this;
     }
 
     @Override
-    public ResourceGroupImpl withLocation(Region region) {            //  FLUENT: implementation of ResourceGroup.DefinitionBlank
-        return this.withLocation(region.toString());                  //
+    public ResourceGroupImpl withRegion(Region region) {
+        return this.withRegion(region.toString());
     }
 
     @Override
-    public ResourceGroupImpl withTags(Map<String, String> tags) {     //  FLUENT: implementation of ResourceGroup.DefinitionCreatable
-        this.inner().setTags(new HashMap<>(tags));    //                  ResourceGroup.Update.UpdateBlank.Taggable<Update>
+    public ResourceGroupImpl withTags(Map<String, String> tags) {
+        this.inner().setTags(new HashMap<>(tags));
         return this;
     }
 
     @Override
-    public ResourceGroupImpl withTag(String key, String value) {      //  FLUENT: implementation of ResourceGroup.DefinitionCreatable
-        if(this.inner().tags() == null) {                             //  ResourceGroup.Update.UpdateBlank.Taggable<Update>
+    public ResourceGroupImpl withTag(String key, String value) {
+        if (this.inner().tags() == null) {
             this.inner().setTags(new HashMap<String, String>());
         }
         this.inner().tags().put(key, value);
@@ -84,41 +95,37 @@ public class ResourceGroupImpl extends
     }
 
     @Override
-    public ResourceGroupImpl withoutTag(String key) {                //  FLUENT: implementation of ResourceGroup.Update.UpdateBlank.Taggable<Update>
-        this.inner().tags().remove(key);                             //
+    public ResourceGroupImpl withoutTag(String key) {
+        this.inner().tags().remove(key);
         return this;
     }
 
-    /************************************************************
-     * Verbs
-     ************************************************************/
-
     @Override
-    public ResourceGroupImpl apply() throws Exception {             //  FLUENT: implementation of ResourceGroup.Update.Updatable<T>
+    public ResourceGroupImpl apply() throws Exception {
         ResourceGroupInner params = new ResourceGroupInner();
         ResourceGroupInner group;
 
         params.setTags(this.inner().tags());
 
         // Figure out the location, since the SDK requires on the params explicitly even though it cannot be changed
-        if(this.inner().location() != null) {
+        if (this.inner().location() != null) {
             params.setLocation(this.inner().location());
-        } else if(null == (group = client.get(this.key).getBody())) {
-            throw new Exception("Resource group not found");
         } else {
-            params.setLocation(group.location());
+            group = client.get(this.key).getBody();
+            if (null == group) {
+                throw new Exception("Resource group not found");
+            } else {
+                params.setLocation(group.location());
+            }
         }
 
         client.createOrUpdate(this.key, params);
         return this;
     }
-    
+
     @Override
     public ResourceGroupImpl create() throws Exception {          //  FLUENT: implementation of ResourceGroup.DefinitionCreatable.Creatable<ResourceGroup>
-        ResourceGroupInner params = new ResourceGroupInner();
-        params.setLocation(this.inner().location());
-        params.setTags(this.inner().tags());
-        client.createOrUpdate(this.key, params);
+        super.creatablesCreate();
         return this;
     }
 
@@ -131,5 +138,13 @@ public class ResourceGroupImpl extends
     @Override
     public <T extends ResourceConnector> T connectToResource(ResourceConnector.Builder<T> adapterBuilder) {
         return adapterBuilder.create(this.serviceClient.restClient(), this.serviceClient.subscriptionId(), this);
+    }
+
+    @Override
+    protected void createResource() throws Exception {
+        ResourceGroupInner params = new ResourceGroupInner();
+        params.setLocation(this.inner().location());
+        params.setTags(this.inner().tags());
+        client.createOrUpdate(this.key, params);
     }
 }

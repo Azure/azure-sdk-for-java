@@ -20,17 +20,17 @@ public interface VirtualMachineSize {
     Integer osDiskSizeInMB();
 
     /**
-     * @return Resource disk size allowed by a VM size
+     * @return resource disk size allowed by a VM size
      */
     Integer resourceDiskSizeInMB();
 
     /**
-     * @return the Memory size supported by a VM size
+     * @return the memory size supported by a VM size
      */
     Integer memoryInMB();
 
     /**
-     * @return the Maximum number of data disks allowed by a VM size
+     * @return the maximum number of data disks allowed by a VM size
      */
     Integer maxDataDiskCount();
 }

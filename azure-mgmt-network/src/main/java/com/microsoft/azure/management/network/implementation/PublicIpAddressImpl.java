@@ -55,12 +55,8 @@ class PublicIpAddressImpl
 
     @Override
     public PublicIpAddressImpl create() throws Exception {
-    	super.create(this.resourceGroupName());
-
-        ServiceResponse<PublicIPAddressInner> response =
-                this.client.createOrUpdate(this.resourceGroupName(), this.key(), this.inner());
-        this.setInner(response.getBody());
-        return this;
+		super.creatablesCreate();
+		return this;
     }
 
     /*****************************************
@@ -144,5 +140,12 @@ class PublicIpAddressImpl
 		} else {
 			return this.inner().dnsSettings().domainNameLabel();
 		}
+	}
+
+	@Override
+	protected void createResource() throws Exception {
+		ServiceResponse<PublicIPAddressInner> response =
+				this.client.createOrUpdate(this.resourceGroupName(), this.key(), this.inner());
+		this.setInner(response.getBody());
 	}
 }
