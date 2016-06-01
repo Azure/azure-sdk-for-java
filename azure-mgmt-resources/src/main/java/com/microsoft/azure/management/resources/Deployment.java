@@ -8,10 +8,10 @@ package com.microsoft.azure.management.resources;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
+import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.resources.implementation.api.Dependency;
 import com.microsoft.azure.management.resources.implementation.api.DeploymentExtendedInner;
@@ -27,6 +27,7 @@ import java.util.List;
  */
 public interface Deployment extends
         Refreshable<Deployment>,
+        Updatable<Deployment.Update>,
         Wrapper<DeploymentExtendedInner> {
 
     /**
@@ -204,9 +205,27 @@ public interface Deployment extends
         Deployment beginCreate() throws Exception;
     }
 
-    interface Update extends
-            Appliable<DeploymentExtendedInner>,
-            Resource.UpdateWithTags<Update> {
+    /**
+     * A deployment update allowing to change the deployment mode, if any
+     */
+    interface UpdateWithDeploymentMode {
+        /**
+         * Specifies the deployment mode.
+         *
+         * @param mode the mode of the deployment
+         * @return the next stage of the deployment update
+         */
+        Update withMode(DeploymentMode mode);
     }
 
+    /**
+     * The template for a deployment update operation, containing all the settings that
+     * can be modified.
+     * <p>
+     * Call {@link Update#apply()} to apply the changes to the deployment in Azure.
+     */
+    interface Update extends
+            Appliable<Deployment>,
+            UpdateWithDeploymentMode {
+    }
 }

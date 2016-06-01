@@ -39,7 +39,8 @@ final class DeploymentImpl extends
         Deployment.DefinitionWithTemplate,
         Deployment.DefinitionWithParameters,
         Deployment.DefinitionWithMode,
-        Deployment.DefinitionCreatable {
+        Deployment.DefinitionCreatable,
+        Deployment.Update {
 
     private final DeploymentsInner client;
     private final DeploymentOperationsInner deploymentOperationsClient;
@@ -206,7 +207,7 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public DefinitionCreatable withMode(DeploymentMode mode) {
+    public DeploymentImpl withMode(DeploymentMode mode) {
         if (this.inner().properties() == null) {
             this.inner().setProperties(new DeploymentPropertiesExtended());
         }
@@ -278,5 +279,21 @@ final class DeploymentImpl extends
         inner.properties().setParameters(parameters());
         inner.properties().setParametersLink(parametersLink());
         client.createOrUpdate(resourceGroupName(), name(), inner);
+    }
+
+    @Override
+    public Update update() throws Exception {
+        return this;
+    }
+
+    @Override
+    public Deployment apply() throws Exception {
+        if (this.templateLink() != null && this.template() != null) {
+            this.withTemplate(null);
+        }
+        if (this.parametersLink() != null && this.parameters() != null) {
+            this.withParameters(null);
+        }
+        return this.create();
     }
 }

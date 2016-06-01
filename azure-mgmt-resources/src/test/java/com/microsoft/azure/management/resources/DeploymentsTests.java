@@ -19,6 +19,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
     private static String rgName = "javacsmrg2";
     private static String dp1 = "javacsmdep1";
     private static String dp2 = "javacsmdep2";
+    private static String dp3 = "javacsmdep2";
     private static String templateUri = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vnet-two-subnets/azuredeploy.json";
     private static String parametersUri = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vnet-two-subnets/azuredeploy.parameters.json";
     private static String contentVersion = "1.0.0.0";
@@ -89,5 +90,32 @@ public class DeploymentsTests extends ResourceManagerTestBase {
         Assert.assertEquals("Canceled", deployment.provisioningState());
         GenericResource generic = connector.genericResources().get("VNet1");
         Assert.assertNull(generic);
+    }
+
+    @Test
+    public void canUpdateVirtualNetworkDeployment() throws Exception {
+        // Begin create
+        ARMResourceConnector connector = resourceGroup.connectToResource(new ARMResourceConnector.Builder());
+        connector.deployments()
+                .define(dp3)
+                .withTemplateLink(templateUri, contentVersion)
+                .withParametersLink(parametersUri, contentVersion)
+                .withMode(DeploymentMode.COMPLETE)
+                .beginCreate();
+        Deployment deployment = resourceClient.deployments().get(rgName, dp3);
+        Assert.assertEquals(dp3, deployment.name());
+        // Cancel
+        deployments.cancel(deployment.resourceGroupName(), deployment.name());
+        deployment = resourceClient.deployments().get(rgName, dp2);
+        Assert.assertEquals("Canceled", deployment.provisioningState());
+        // Update
+        deployment.update()
+                .withMode(DeploymentMode.INCREMENTAL)
+                .apply();
+        deployment = resourceClient.deployments().get(rgName, dp3);
+        Assert.assertEquals(DeploymentMode.INCREMENTAL, deployment.mode());
+        Assert.assertEquals("Succeeded", deployment.provisioningState());
+        GenericResource generic = connector.genericResources().get("VNet1");
+        Assert.assertNotNull(generic);
     }
 }
