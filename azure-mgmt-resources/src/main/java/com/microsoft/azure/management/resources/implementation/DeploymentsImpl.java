@@ -49,11 +49,6 @@ final class DeploymentsImpl
     }
 
     @Override
-    public InGroup resourceGroup(ResourceGroup resourceGroup) {
-        return new DeploymentsInGroupImpl(this, resourceGroup);
-    }
-
-    @Override
     public PagedList<Deployment> list() throws CloudException, IOException {
         return new GroupPagedList<Deployment>(resourceGroups.list()) {
             @Override

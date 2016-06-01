@@ -13,7 +13,7 @@ abstract class ResourceManagerTestBase {
     static void createClient() throws Exception {
         resourceClient = ResourceManager
                 .configure()
-                .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
+                .withLogLevel(HttpLoggingInterceptor.Level.BODY)
                 .authenticate(
                 new ApplicationTokenCredentials(
                         System.getenv("client-id"),

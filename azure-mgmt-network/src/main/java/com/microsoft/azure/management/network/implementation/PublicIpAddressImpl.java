@@ -145,7 +145,7 @@ class PublicIpAddressImpl
 	@Override
 	protected void createResource() throws Exception {
 		ServiceResponse<PublicIPAddressInner> response =
-				this.client.createOrUpdate(this.resourceGroupName(), this.key(), this.inner());
+				this.client.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
 		this.setInner(response.getBody());
 	}
 }

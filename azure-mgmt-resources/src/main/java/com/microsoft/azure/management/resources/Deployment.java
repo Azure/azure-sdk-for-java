@@ -20,6 +20,7 @@ import com.microsoft.azure.management.resources.implementation.api.ParametersLin
 import com.microsoft.azure.management.resources.implementation.api.TemplateLink;
 import org.joda.time.DateTime;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -166,12 +167,12 @@ public interface Deployment extends
         DefinitionWithMode withParameters(Object parameters);
 
         /**
-         * Specifies the parameters as a serialized JSON object.
+         * Specifies the parameters as a JSON string.
          *
-         * @param parameters the JSON object
+         * @param parametersJson the JSON string
          * @return the next stage of the deployment definition
          */
-        DefinitionWithMode withParameters(JsonNode parameters);
+        DefinitionWithMode withParameters(String parametersJson) throws IOException;
 
         /**
          * Specifies the parameters as a URL.
@@ -206,7 +207,7 @@ public interface Deployment extends
     }
 
     /**
-     * A deployment update allowing to change the deployment mode, if any
+     * A deployment update allowing to change the deployment mode.
      */
     interface UpdateWithDeploymentMode {
         /**
@@ -219,6 +220,36 @@ public interface Deployment extends
     }
 
     /**
+     * A deployment update allowing to change the parameters.
+     */
+    interface UpdateWithParameters {
+        /**
+         * Specifies the parameters as a Java object.
+         *
+         * @param parameters the Java object
+         * @return the next stage of the deployment definition
+         */
+        Update withParameters(Object parameters);
+
+        /**
+         * Specifies the parameters as a JSON string.
+         *
+         * @param parametersJson the JSON string
+         * @return the next stage of the deployment definition
+         */
+        Update withParameters(String parametersJson) throws IOException;
+
+        /**
+         * Specifies the parameters as a URL.
+         *
+         * @param uri the location of the remote parameters file
+         * @param contentVersion the version of the parameters file
+         * @return the next stage of the deployment definition
+         */
+        Update withParametersLink(String uri, String contentVersion);
+    }
+
+    /**
      * The template for a deployment update operation, containing all the settings that
      * can be modified.
      * <p>
@@ -226,6 +257,7 @@ public interface Deployment extends
      */
     interface Update extends
             Appliable<Deployment>,
+            UpdateWithParameters,
             UpdateWithDeploymentMode {
     }
 }

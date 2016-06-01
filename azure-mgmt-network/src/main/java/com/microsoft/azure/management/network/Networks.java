@@ -5,7 +5,6 @@
  */
 package com.microsoft.azure.management.network;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.ResourcesInGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
@@ -24,10 +23,4 @@ public interface Networks extends
     SupportsGettingByGroup<Network>,
     SupportsDeleting,
     SupportsDeletingByGroup {
-
-    /**
-     * Entry point to virtual network management within a specific resource group
-     */
-    interface InGroup extends ResourcesInGroup<Network, Network.DefinitionAfterGroup> {
-    }
 }

@@ -2,7 +2,6 @@ package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.implementation.ARMResourceConnector;
 import com.microsoft.azure.management.resources.implementation.api.DeploymentMode;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -22,6 +21,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
     private static String dp3 = "javacsmdep2";
     private static String templateUri = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vnet-two-subnets/azuredeploy.json";
     private static String parametersUri = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vnet-two-subnets/azuredeploy.parameters.json";
+    private static String updateParameters = "{\"vnetName\":{\"value\":\"VNet2\"},\"vnetAddressPrefix\":{\"value\":\"10.0.0.0/16\"},\"subnet1Name\":{\"value\":\"Subnet1\"},\"subnet1Prefix\":{\"value\":\"10.0.0.0/24\"},\"subnet2Name\":{\"value\":\"Subnet2\"},\"subnet2Prefix\":{\"value\":\"10.0.1.0/24\"}}";
     private static String contentVersion = "1.0.0.0";
 
     @BeforeClass
@@ -42,18 +42,17 @@ public class DeploymentsTests extends ResourceManagerTestBase {
     @Test
     public void canDeployVirtualNetwork() throws Exception {
         // Create
-        ARMResourceConnector connector = resourceGroup.connectToResource(new ARMResourceConnector.Builder());
-        connector.deployments()
+        resourceClient.deployments()
                 .define(dp1)
+                .withExistingResourceGroup(rgName)
                 .withTemplateLink(templateUri, contentVersion)
                 .withParametersLink(parametersUri, contentVersion)
                 .withMode(DeploymentMode.COMPLETE)
                 .create();
         // List
-        PagedList<Deployment> deployments = connector.deployments().list();
+        PagedList<Deployment> deployments = resourceClient.deployments().list(rgName);
         boolean found = false;
-        for (Deployment deployment :
-                deployments) {
+        for (Deployment deployment : deployments) {
             if (deployment.name().equals(dp1)) {
                 found = true;
             }
@@ -63,21 +62,22 @@ public class DeploymentsTests extends ResourceManagerTestBase {
         Deployment deployment = resourceClient.deployments().get(rgName, dp1);
         Assert.assertNotNull(deployment);
         Assert.assertEquals("Succeeded", deployment.provisioningState());
-        GenericResource generic = connector.genericResources().get("VNet1");
+        GenericResource generic = resourceClient.genericResources().get(rgName, "VNet1");
         Assert.assertNotNull(generic);
         // Deployment operations
         List<DeploymentOperation> operations = deployment.deploymentOperations().list();
         Assert.assertEquals(2, operations.size());
         DeploymentOperation op = deployment.deploymentOperations().get(operations.get(0).operationId());
         Assert.assertNotNull(op);
+        resourceClient.genericResources().delete(rgName, generic.id());
     }
 
     @Test
     public void canCancelVirtualNetworkDeployment() throws Exception {
         // Begin create
-        ARMResourceConnector connector = resourceGroup.connectToResource(new ARMResourceConnector.Builder());
-        connector.deployments()
+        resourceClient.deployments()
                 .define(dp2)
+                .withExistingResourceGroup(rgName)
                 .withTemplateLink(templateUri, contentVersion)
                 .withParametersLink(parametersUri, contentVersion)
                 .withMode(DeploymentMode.COMPLETE)
@@ -88,16 +88,16 @@ public class DeploymentsTests extends ResourceManagerTestBase {
         deployments.cancel(deployment.resourceGroupName(), deployment.name());
         deployment = resourceClient.deployments().get(rgName, dp2);
         Assert.assertEquals("Canceled", deployment.provisioningState());
-        GenericResource generic = connector.genericResources().get("VNet1");
+        GenericResource generic = resourceClient.genericResources().get(rgName, "VNet1");
         Assert.assertNull(generic);
     }
 
     @Test
     public void canUpdateVirtualNetworkDeployment() throws Exception {
         // Begin create
-        ARMResourceConnector connector = resourceGroup.connectToResource(new ARMResourceConnector.Builder());
-        connector.deployments()
+        resourceClient.deployments()
                 .define(dp3)
+                .withExistingResourceGroup(rgName)
                 .withTemplateLink(templateUri, contentVersion)
                 .withParametersLink(parametersUri, contentVersion)
                 .withMode(DeploymentMode.COMPLETE)
@@ -106,16 +106,18 @@ public class DeploymentsTests extends ResourceManagerTestBase {
         Assert.assertEquals(dp3, deployment.name());
         // Cancel
         deployments.cancel(deployment.resourceGroupName(), deployment.name());
-        deployment = resourceClient.deployments().get(rgName, dp2);
+        deployment = resourceClient.deployments().get(rgName, dp3);
         Assert.assertEquals("Canceled", deployment.provisioningState());
         // Update
         deployment.update()
+                .withParameters(updateParameters)
                 .withMode(DeploymentMode.INCREMENTAL)
                 .apply();
         deployment = resourceClient.deployments().get(rgName, dp3);
         Assert.assertEquals(DeploymentMode.INCREMENTAL, deployment.mode());
         Assert.assertEquals("Succeeded", deployment.provisioningState());
-        GenericResource generic = connector.genericResources().get("VNet1");
+        GenericResource generic = resourceClient.genericResources().get(rgName, "VNet2");
         Assert.assertNotNull(generic);
+        resourceClient.genericResources().delete(rgName, generic.id());
     }
 }

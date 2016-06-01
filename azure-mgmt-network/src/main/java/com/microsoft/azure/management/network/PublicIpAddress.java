@@ -67,7 +67,6 @@ public interface PublicIpAddress extends
 	interface Definitions extends 
 	    DefinitionBlank,
 	    DefinitionWithGroup,
-	    DefinitionAfterGroup,
 	    DefinitionWithIpAddress,
 	    DefinitionWithLeafDomainLabel,
 	    DefinitionCreatable {}
@@ -83,16 +82,9 @@ public interface PublicIpAddress extends
      * The stage of the public IP address definition allowing to specify the resource group
      */
     interface DefinitionWithGroup 
-        extends GroupableResource.DefinitionWithGroup<DefinitionAfterGroup> {
+        extends GroupableResource.DefinitionWithGroup<DefinitionCreatable> {
     }
     
-    /**
-     * The stage of the public IP address definition after the resource group has been specified
-     */
-    interface DefinitionAfterGroup
-        extends DefinitionCreatable {
-    }
-
     /**
      * A public IP address definition allowing to set the IP allocation method (static or dynamic)
      */

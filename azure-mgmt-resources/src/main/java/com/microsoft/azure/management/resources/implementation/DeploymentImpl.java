@@ -7,7 +7,12 @@
 package com.microsoft.azure.management.resources.implementation;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.microsoft.azure.management.resources.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.microsoft.azure.management.resources.Deployment;
+import com.microsoft.azure.management.resources.DeploymentOperations;
+import com.microsoft.azure.management.resources.Provider;
+import com.microsoft.azure.management.resources.ResourceGroup;
+import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -25,6 +30,7 @@ import com.microsoft.azure.management.resources.implementation.api.ProviderInner
 import com.microsoft.azure.management.resources.implementation.api.TemplateLink;
 import org.joda.time.DateTime;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +53,7 @@ final class DeploymentImpl extends
     private final ResourceGroups resourceGroups;
     private String resourceGroupName;
     private Creatable<ResourceGroup> creatableResourceGroup;
+    private ObjectMapper objectMapper;
 
     DeploymentImpl(DeploymentExtendedInner innerModel,
                           final DeploymentsInner client,
@@ -57,6 +64,7 @@ final class DeploymentImpl extends
         this.deploymentOperationsClient = deploymentOperationsClient;
         this.resourceGroupName = ResourceUtils.groupFromResourceId(innerModel.id());
         this.resourceGroups = resourceGroups;
+        this.objectMapper = new ObjectMapper();
     }
 
     @Override
@@ -185,6 +193,7 @@ final class DeploymentImpl extends
             this.inner().setProperties(new DeploymentPropertiesExtended());
         }
         this.inner().properties().setTemplate(template);
+        this.inner().properties().setTemplateLink(null);
         return this;
     }
 
@@ -194,6 +203,7 @@ final class DeploymentImpl extends
             this.inner().setProperties(new DeploymentPropertiesExtended());
         }
         this.inner().properties().setTemplate(template);
+        this.inner().properties().setTemplateLink(null);
         return this;
     }
 
@@ -203,6 +213,7 @@ final class DeploymentImpl extends
             this.inner().setProperties(new DeploymentPropertiesExtended());
         }
         this.inner().properties().setTemplateLink(new TemplateLink().setUri(uri).setContentVersion(contentVersion));
+        this.inner().properties().setTemplate(null);
         return this;
     }
 
@@ -216,29 +227,27 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public DefinitionWithMode withParameters(Object parameters) {
+    public DeploymentImpl withParameters(Object parameters) {
         if (this.inner().properties() == null) {
             this.inner().setProperties(new DeploymentPropertiesExtended());
         }
         this.inner().properties().setParameters(parameters);
+        this.inner().properties().setParametersLink(null);
         return this;
     }
 
     @Override
-    public DefinitionWithMode withParameters(JsonNode parameters) {
-        if (this.inner().properties() == null) {
-            this.inner().setProperties(new DeploymentPropertiesExtended());
-        }
-        this.inner().properties().setParameters(parameters);
-        return this;
+    public DeploymentImpl withParameters(String parametersJson) throws IOException {
+        return withParameters(objectMapper.readTree(parametersJson));
     }
 
     @Override
-    public DefinitionWithMode withParametersLink(String uri, String contentVersion) {
+    public DeploymentImpl withParametersLink(String uri, String contentVersion) {
         if (this.inner().properties() == null) {
             this.inner().setProperties(new DeploymentPropertiesExtended());
         }
         this.inner().properties().setParametersLink(new ParametersLink().setUri(uri).setContentVersion(contentVersion));
+        this.inner().properties().setParameters(null);
         return this;
     }
 
