@@ -50,7 +50,7 @@ public interface Network extends
      **************************************************************/
 
 	/**
-	 * Container interface for all the definitions
+	 * The entirety of the virtual network definition
 	 */
 	interface Definitions extends 
 	    DefinitionBlank,
@@ -96,6 +96,8 @@ public interface Network extends
          * @return the next stage of the virtual network definition
          */
         DefinitionCreatableWithSubnet withSubnets(Map<String, String> nameCidrPairs);
+        
+        Subnet.Definition<DefinitionCreatableWithSubnet> defineSubnet(String name);
     }
 
 

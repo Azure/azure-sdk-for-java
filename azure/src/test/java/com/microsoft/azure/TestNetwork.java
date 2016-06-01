@@ -22,7 +22,9 @@ public class TestNetwork extends TestTemplate<Network, Networks> {
                 .withNewGroup()
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnetA", "10.0.0.0/29")
-                .withSubnet("subnetB", "10.0.0.8/29")
+                .defineSubnet("subnetB")
+                    .withAddressPrefix("10.0.0.8/29")
+                    .attach()
                 .create();
     }
 

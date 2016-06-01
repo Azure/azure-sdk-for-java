@@ -37,7 +37,7 @@ class NetworkImpl
         super(name, innerModel, resourceGroups);
         this.client = client;
         initializeSubnetsFromInner();
-        }
+    }
 
     private void initializeSubnetsFromInner() {
         this.subnets = new ArrayList<>();
@@ -89,12 +89,9 @@ class NetworkImpl
     
     @Override
     public NetworkImpl withSubnet(String name, String cidr) {
-        SubnetInner azureSubnet = new SubnetInner();
-        azureSubnet.setName(name);
-        azureSubnet.setAddressPrefix(cidr);
-        this.inner().subnets().add(azureSubnet);
-        this.subnets.add(new SubnetImpl(name, azureSubnet, this));
-        return this;
+        return this.defineSubnet(name)
+            .withAddressPrefix(cidr)
+            .attach();
     }
 
     @Override
@@ -173,5 +170,13 @@ class NetworkImpl
         ServiceResponse<VirtualNetworkInner> response =
                 this.client.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
         this.setInner(response.getBody());
+        initializeSubnetsFromInner();
+    }
+
+    @Override
+    public SubnetImpl defineSubnet(String name) {
+        SubnetInner inner = new SubnetInner();
+        inner.setName(name);
+        return new SubnetImpl(name, inner, this);
     }
 }
