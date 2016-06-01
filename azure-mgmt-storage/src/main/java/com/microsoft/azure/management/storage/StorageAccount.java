@@ -1,7 +1,6 @@
 package com.microsoft.azure.management.storage;
 
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.DefinitionAfterGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
@@ -94,7 +93,6 @@ public interface StorageAccount extends
      * Container interface for all the definitions that need to be implemented
      */
     public interface Definitions extends 
-        DefinitionAfterGroup,
         DefinitionBlank,
         DefinitionWithGroup,
         DefinitionCreatable {
@@ -107,8 +105,7 @@ public interface StorageAccount extends
     }
 
     public interface DefinitionCreatable extends 
-        Creatable<StorageAccount>,
-        DefinitionAfterGroup {
+        Creatable<StorageAccount> {
         DefinitionCreatable withAccountType(AccountType accountType);
     }
 }

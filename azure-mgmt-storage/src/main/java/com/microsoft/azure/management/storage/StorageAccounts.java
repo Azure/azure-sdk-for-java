@@ -5,7 +5,6 @@
  */
 package com.microsoft.azure.management.storage;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.ResourcesInGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
@@ -20,8 +19,4 @@ public interface StorageAccounts extends
         SupportsListingByGroup<StorageAccount>,
         SupportsGettingByGroup<StorageAccount>,
         SupportsDeletingByGroup {
-
-    interface InGroup extends
-            ResourcesInGroup<StorageAccount, StorageAccount.DefinitionCreatable> {
-    }
 }

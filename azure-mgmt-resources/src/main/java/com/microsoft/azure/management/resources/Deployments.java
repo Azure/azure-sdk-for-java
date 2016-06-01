@@ -48,31 +48,4 @@ public interface Deployments extends
      * @throws CloudException failures thrown from Azure
      */
     boolean checkExistence(String groupName, String deploymentName) throws IOException, CloudException;
-
-    /**
-     * Filters deployments by a resource group.
-     *
-     * @param resourceGroup the resource group to filter by
-     * @return the instance for accessing deployments in a resource group
-     */
-    InGroup resourceGroup(ResourceGroup resourceGroup);
-
-    /**
-     * Entry point to template deployment in a specific resource group.
-     */
-    interface InGroup extends
-            SupportsListing<Deployment>,
-            SupportsGettingByName<Deployment>,
-            SupportsCreating<Deployment.DefinitionWithTemplate>,
-            SupportsDeleting {
-        /**
-         * Checks if a deployment exists in the resource group.
-         *
-         * @param deploymentName the deployment's name
-         * @return true if the deployment exists; false otherwise
-         * @throws IOException serialization failures
-         * @throws CloudException failures thrown from Azure
-         */
-        boolean checkExistence(String deploymentName) throws IOException, CloudException;
-    }
 }

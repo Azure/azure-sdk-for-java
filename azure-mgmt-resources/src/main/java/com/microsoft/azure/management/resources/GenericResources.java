@@ -9,7 +9,6 @@ package com.microsoft.azure.management.resources;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
@@ -41,12 +40,4 @@ public interface GenericResources extends
      * @throws CloudException failures thrown from Azure
      */
     boolean checkExistence(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws IOException, CloudException;
-
-    /**
-     * Entry point to generic resources management API in a specific resource group.
-     */
-    interface InGroup extends
-            SupportsListing<GenericResource>,
-            SupportsGettingByName<GenericResource> {
-    }
 }

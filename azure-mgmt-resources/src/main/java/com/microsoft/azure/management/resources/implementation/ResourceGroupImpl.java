@@ -145,6 +145,6 @@ public class ResourceGroupImpl extends
         ResourceGroupInner params = new ResourceGroupInner();
         params.setLocation(this.inner().location());
         params.setTags(this.inner().tags());
-        client.createOrUpdate(this.key, params);
+        client.createOrUpdate(this.name(), params);
     }
 }

@@ -1,6 +1,5 @@
 package com.microsoft.azure.management.compute;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.ResourcesInGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
@@ -18,9 +17,4 @@ public interface AvailabilitySets extends
         SupportsCreating<AvailabilitySet.DefinitionBlank>,
         SupportsDeleting,
         SupportsDeletingByGroup {
-    
-    
-    interface InGroup 
-        extends ResourcesInGroup<AvailabilitySet, AvailabilitySet.DefinitionCreatable> {
-    }
 }

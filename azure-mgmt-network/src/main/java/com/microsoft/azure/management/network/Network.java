@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.microsoft.azure.management.network.implementation.api.VirtualNetworkInner;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.DefinitionAfterGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -56,7 +55,6 @@ public interface Network extends
 	interface Definitions extends 
 	    DefinitionBlank,
 	    DefinitionWithGroup,
-	    DefinitionAfterGroup,
 	    DefinitionWithSubnet,
 	    DefinitionCreatable,
 	    DefinitionCreatableWithSubnet {}
@@ -142,7 +140,6 @@ public interface Network extends
      * (see {@link DefinitionWithAddressSpace#withAddressSpace(String)).
      */
     interface DefinitionCreatable extends 
-        DefinitionAfterGroup,
         Creatable<Network>,
         Resource.DefinitionWithTags<DefinitionCreatable> { 
         

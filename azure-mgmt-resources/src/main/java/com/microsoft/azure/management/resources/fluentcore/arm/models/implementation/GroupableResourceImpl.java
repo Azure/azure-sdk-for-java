@@ -10,7 +10,6 @@ import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
 
 public abstract class GroupableResourceImpl<
@@ -23,7 +22,6 @@ public abstract class GroupableResourceImpl<
         	GroupableResource {
 
     private ResourceGroups resourceGroups;
-    private ResourceGroup.DefinitionCreatable newGroup;
     private String groupName;
 
     protected GroupableResourceImpl(String key, InnerModelT innerObject, ResourceGroups resourceGroups) {
@@ -59,13 +57,12 @@ public abstract class GroupableResourceImpl<
     }
 
     public final FluentModelImplT withNewGroup() {
-        return this.withNewGroup(this.key() + "group");
+        return this.withNewGroup(this.name() + "group");
     }
 
     @SuppressWarnings("unchecked")
     public final FluentModelImplT withNewGroup(ResourceGroup.DefinitionCreatable creatable) {
         this.groupName = creatable.key();
-        this.newGroup = creatable;
         addCreatableDependency(creatable);
         return (FluentModelImplT) this;
     }

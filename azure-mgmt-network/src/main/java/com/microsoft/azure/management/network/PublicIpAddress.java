@@ -6,7 +6,6 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressInner;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.DefinitionAfterGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -68,7 +67,6 @@ public interface PublicIpAddress extends
 	interface Definitions extends 
 	    DefinitionBlank,
 	    DefinitionWithGroup,
-	    DefinitionAfterGroup,
 	    DefinitionWithIpAddress,
 	    DefinitionWithLeafDomainLabel,
 	    DefinitionCreatable {}
@@ -226,7 +224,6 @@ public interface PublicIpAddress extends
      */
     interface DefinitionCreatable extends 
         Creatable<PublicIpAddress>,
-        DefinitionAfterGroup,
         DefinitionWithLeafDomainLabel,
         DefinitionWithIpAddress,
         DefinitionWithReverseFQDN<DefinitionCreatable>,
