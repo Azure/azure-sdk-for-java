@@ -21,7 +21,8 @@ public class DeploymentsTests extends ResourceManagerTestBase {
     private static String dp3 = "javacsmdep2";
     private static String templateUri = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vnet-two-subnets/azuredeploy.json";
     private static String parametersUri = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vnet-two-subnets/azuredeploy.parameters.json";
-    private static String updateParameters = "{\"vnetName\":{\"value\":\"VNet2\"},\"vnetAddressPrefix\":{\"value\":\"10.0.0.0/16\"},\"subnet1Name\":{\"value\":\"Subnet1\"},\"subnet1Prefix\":{\"value\":\"10.0.0.0/24\"},\"subnet2Name\":{\"value\":\"Subnet2\"},\"subnet2Prefix\":{\"value\":\"10.0.1.0/24\"}}";
+    private static String updateTemplate = "{\"$schema\":\"https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#\",\"contentVersion\":\"1.0.0.0\",\"parameters\":{\"vnetName\":{\"type\":\"string\",\"defaultValue\":\"VNet2\",\"metadata\":{\"description\":\"VNet name\"}},\"vnetAddressPrefix\":{\"type\":\"string\",\"defaultValue\":\"10.0.0.0/16\",\"metadata\":{\"description\":\"Address prefix\"}},\"subnet1Prefix\":{\"type\":\"string\",\"defaultValue\":\"10.0.0.0/24\",\"metadata\":{\"description\":\"Subnet 1 Prefix\"}},\"subnet1Name\":{\"type\":\"string\",\"defaultValue\":\"Subnet1\",\"metadata\":{\"description\":\"Subnet 1 Name\"}},\"subnet2Prefix\":{\"type\":\"string\",\"defaultValue\":\"10.0.1.0/24\",\"metadata\":{\"description\":\"Subnet 2 Prefix\"}},\"subnet2Name\":{\"type\":\"string\",\"defaultValue\":\"Subnet222\",\"metadata\":{\"description\":\"Subnet 2 Name\"}}},\"variables\":{\"apiVersion\":\"2015-06-15\"},\"resources\":[{\"apiVersion\":\"[variables('apiVersion')]\",\"type\":\"Microsoft.Network/virtualNetworks\",\"name\":\"[parameters('vnetName')]\",\"location\":\"[resourceGroup().location]\",\"properties\":{\"addressSpace\":{\"addressPrefixes\":[\"[parameters('vnetAddressPrefix')]\"]},\"subnets\":[{\"name\":\"[parameters('subnet1Name')]\",\"properties\":{\"addressPrefix\":\"[parameters('subnet1Prefix')]\"}},{\"name\":\"[parameters('subnet2Name')]\",\"properties\":{\"addressPrefix\":\"[parameters('subnet2Prefix')]\"}}]}}]}";
+    private static String updateParameters = "{\"vnetAddressPrefix\":{\"value\":\"10.0.0.0/16\"},\"subnet1Name\":{\"value\":\"Subnet1\"},\"subnet1Prefix\":{\"value\":\"10.0.0.0/24\"}}";
     private static String contentVersion = "1.0.0.0";
 
     @BeforeClass
@@ -110,14 +111,15 @@ public class DeploymentsTests extends ResourceManagerTestBase {
         Assert.assertEquals("Canceled", deployment.provisioningState());
         // Update
         deployment.update()
+                .withTemplate(updateTemplate)
                 .withParameters(updateParameters)
                 .withMode(DeploymentMode.INCREMENTAL)
                 .apply();
         deployment = resourceClient.deployments().get(rgName, dp3);
         Assert.assertEquals(DeploymentMode.INCREMENTAL, deployment.mode());
         Assert.assertEquals("Succeeded", deployment.provisioningState());
-        GenericResource generic = resourceClient.genericResources().get(rgName, "VNet2");
-        Assert.assertNotNull(generic);
-        resourceClient.genericResources().delete(rgName, generic.id());
+        GenericResource genericVnet = resourceClient.genericResources().get(rgName, "VNet2");
+        Assert.assertNotNull(genericVnet);
+        resourceClient.genericResources().delete(rgName, genericVnet.id());
     }
 }

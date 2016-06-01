@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.DeploymentOperations;
@@ -188,7 +187,7 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public DefinitionWithParameters withTemplate(Object template) {
+    public DeploymentImpl withTemplate(Object template) {
         if (this.inner().properties() == null) {
             this.inner().setProperties(new DeploymentPropertiesExtended());
         }
@@ -198,17 +197,12 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public DefinitionWithParameters withTemplate(JsonNode template) {
-        if (this.inner().properties() == null) {
-            this.inner().setProperties(new DeploymentPropertiesExtended());
-        }
-        this.inner().properties().setTemplate(template);
-        this.inner().properties().setTemplateLink(null);
-        return this;
+    public DeploymentImpl withTemplate(String templateJson) throws IOException {
+        return withTemplate(objectMapper.readTree(templateJson));
     }
 
     @Override
-    public DefinitionWithParameters withTemplateLink(String uri, String contentVersion) {
+    public DeploymentImpl withTemplateLink(String uri, String contentVersion) {
         if (this.inner().properties() == null) {
             this.inner().setProperties(new DeploymentPropertiesExtended());
         }

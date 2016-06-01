@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.resources;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -137,12 +136,12 @@ public interface Deployment extends
         DefinitionWithParameters withTemplate(Object template);
 
         /**
-         * Specifies the template as a serialized JSON object.
+         * Specifies the template as a JSON string.
          *
-         * @param template the JSON object
+         * @param templateJson the JSON string
          * @return the next stage of the deployment definition
          */
-        DefinitionWithParameters withTemplate(JsonNode template);
+        DefinitionWithParameters withTemplate(String templateJson) throws IOException;
 
         /**
          * Specifies the template as a URL.
@@ -220,6 +219,36 @@ public interface Deployment extends
     }
 
     /**
+     * A deployment update allowing to change the template.
+     */
+    interface UpdateWithTemplate {
+        /**
+         * Specifies the template as a Java object.
+         *
+         * @param template the Java object
+         * @return the next stage of the deployment definition
+         */
+        Update withTemplate(Object template);
+
+        /**
+         * Specifies the template as a JSON string.
+         *
+         * @param templateJson the JSON string
+         * @return the next stage of the deployment definition
+         */
+        Update withTemplate(String templateJson) throws IOException;
+
+        /**
+         * Specifies the template as a URL.
+         *
+         * @param uri the location of the remote template file
+         * @param contentVersion the version of the template file
+         * @return the next stage of the deployment definition
+         */
+        Update withTemplateLink(String uri, String contentVersion);
+    }
+
+    /**
      * A deployment update allowing to change the parameters.
      */
     interface UpdateWithParameters {
@@ -257,6 +286,7 @@ public interface Deployment extends
      */
     interface Update extends
             Appliable<Deployment>,
+            UpdateWithTemplate,
             UpdateWithParameters,
             UpdateWithDeploymentMode {
     }
