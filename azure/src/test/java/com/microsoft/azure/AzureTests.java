@@ -68,7 +68,7 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testPublicIpAddresses() throws Exception {
-        new TestPublicIpAddress().runTest(azure2.publicIpAddresses(), azure2);
+        new TestPublicIpAddress().runTest(azure2.publicIpAddresses(), azure2.resourceGroups());
     }
 
     /**
@@ -76,7 +76,7 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testAvailabilitySets() throws Exception {
-        new TestAvailabilitySet().runTest(azure2.availabilitySets(), azure2);
+        new TestAvailabilitySet().runTest(azure2.availabilitySets(), azure2.resourceGroups());
     }
 
     /**
@@ -84,11 +84,11 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testNetworks() throws Exception {
-        new TestNetwork().runTest(azure2.networks(), azure2);
+        new TestNetwork().runTest(azure2.networks(), azure2.resourceGroups());
     }
 
     @Test public void testVirtualMachines() throws Exception {
-        new TestVirtualMachine().runTest(azure.virtualMachines(), azure);
+        new TestVirtualMachine().runTest(azure.virtualMachines(), azure2.resourceGroups());
     }
 
     @Test

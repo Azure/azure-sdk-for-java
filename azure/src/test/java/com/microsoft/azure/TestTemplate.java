@@ -10,7 +10,7 @@ import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.microsoft.azure.implementation.Azure;
+import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
@@ -23,6 +23,7 @@ public abstract class TestTemplate<
     protected String testId = String.valueOf(System.currentTimeMillis());
     private T resource;
     private C collection;
+    private ResourceGroups resourceGroups;
 
     /**
      * Resource creation logic
@@ -44,10 +45,8 @@ public abstract class TestTemplate<
      * @throws CloudException
      * @throws IOException
      */
-    public void verifyListing() throws CloudException, IOException {
-        int count = this.collection.list().size();
-        System.out.println("Collection size: " + count);
-        Assert.assertTrue(0 < count);
+    public int verifyListing() throws CloudException, IOException {
+        return this.collection.list().size();
     }
 
     /**
@@ -63,10 +62,10 @@ public abstract class TestTemplate<
      * Tests the deletion logic
      * @throws Exception
      */
-    public void verifyDeleting(Azure azure) throws Exception {
+    public void verifyDeleting() throws Exception {
         final String groupName = this.resource.resourceGroupName();
         this.collection.delete(this.resource.id());
-        azure.resourceGroups().delete(groupName);
+        this.resourceGroups.delete(groupName);
     }
 
     /**
@@ -81,8 +80,12 @@ public abstract class TestTemplate<
      * @throws Exception
      */
     @Test
-    public void runTest(C collection, Azure azure) throws Exception { //TODO Still need to find a way to eliminate Azure
+    public void runTest(C collection, ResourceGroups resourceGroups) throws Exception {
         this.collection = collection;
+        this.resourceGroups = resourceGroups;
+
+        // Initial listing
+        final int initialCount = verifyListing();
 
         // Verify creation
         this.resource = createResource(collection);
@@ -90,7 +93,7 @@ public abstract class TestTemplate<
         print(this.resource);
 
         // Verify listing
-        verifyListing();
+        Assert.assertTrue(verifyListing() - initialCount == 1);
 
         // Verify getting
         this.resource = verifyGetting();
@@ -105,6 +108,6 @@ public abstract class TestTemplate<
         print(this.resource);
 
         // Verify deletion
-        verifyDeleting(azure);
+        verifyDeleting();
     }
 }
