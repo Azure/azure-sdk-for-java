@@ -537,6 +537,16 @@ public final class Constants {
         public static final String SERVER = "Server";
 
         /**
+         * The header that specifies whether a resource is fully encrypted server-side
+         */
+        public static final String SERVER_ENCRYPTED = PREFIX_FOR_STORAGE_HEADER + "server-encrypted";
+
+        /**
+         * The header that acknowledges data used for a write operation is encrypted server-side
+         */
+        public static final String SERVER_REQUEST_ENCRYPTED = PREFIX_FOR_STORAGE_HEADER + "request-server-encrypted";
+
+        /**
          * The header that specifies the snapshot ID.
          */
         public static final String SNAPSHOT_ID_HEADER = PREFIX_FOR_STORAGE_HEADER + "snapshot";
@@ -581,7 +591,7 @@ public final class Constants {
         /**
          * The current storage version header value.
          */
-        public static final String TARGET_STORAGE_VERSION = "2015-07-08";
+        public static final String TARGET_STORAGE_VERSION = "2015-12-11";
 
         /**
          * The header that specifies the next visible time for a queue message.
@@ -1115,6 +1125,11 @@ public final class Constants {
      */
     public static final String PROPERTIES = "Properties";
 
+    /**
+     * XML element for the server encryption status.
+     */
+    public static final String SERVER_ENCRYPTION_STATUS_ELEMENT = "ServerEncrypted";
+    
     /**
      * XML element for a signed identifier.
      */

@@ -272,6 +272,9 @@ final class BlobListHandler extends DefaultHandler {
                 throw new SAXException(SR.INVALID_RESPONSE_RECEIVED);
             }
         }
+        else if (Constants.SERVER_ENCRYPTION_STATUS_ELEMENT.equals(currentNode)) {
+            this.properties.setServerEncrypted(Constants.TRUE.equals(value));
+        }
         else if (Constants.COPY_ID_ELEMENT.equals(currentNode)) {
             if (this.copyState == null) {
                 this.copyState = new CopyState();
