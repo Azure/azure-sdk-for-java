@@ -73,7 +73,6 @@ public interface AvailabilitySet extends
     interface Definitions extends
         DefinitionBlank,
         DefinitionWithGroup,
-        DefinitionAfterGroup,
         DefinitionCreatable {
     }
     
@@ -86,14 +85,9 @@ public interface AvailabilitySet extends
     /**
      * The stage of the availability set definition allowing to specify the resource group
      */
-    interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionAfterGroup> {
+    interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionCreatable> {
     }
     
-    /**
-     * The stage of the availability set definition after the resource group has been specified
-     */
-    interface DefinitionAfterGroup extends DefinitionCreatable {}
-
     /**
      * The stage of an availability set definition which contains all the minimum required inputs for
      * the resource to be created (via {@link DefinitionCreatable#create()}), but also allows 

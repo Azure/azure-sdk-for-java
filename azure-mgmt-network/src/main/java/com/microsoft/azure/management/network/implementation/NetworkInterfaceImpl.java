@@ -106,7 +106,7 @@ class NetworkInterfaceImpl
             .define(name)
             .withRegion(this.region());
 
-        Network.DefinitionAfterGroup definitionAfterGroup;
+        Network.DefinitionCreatable definitionAfterGroup;
         if (this.newGroup != null) {
             definitionAfterGroup = definitionWithGroup.withNewGroup(this.newGroup);
         } else {
@@ -342,7 +342,7 @@ class NetworkInterfaceImpl
                 .define(name)
                 .withRegion(this.region());
 
-        PublicIpAddress.DefinitionAfterGroup definitionAfterGroup;
+        PublicIpAddress.DefinitionCreatable definitionAfterGroup;
         if (this.newGroup != null) {
             definitionAfterGroup = definitionWithGroup.withNewGroup(this.newGroup);
         } else {

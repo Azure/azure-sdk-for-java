@@ -171,7 +171,7 @@ class NetworkImpl
         }
 
         ServiceResponse<VirtualNetworkInner> response =
-                this.client.createOrUpdate(this.resourceGroupName(), this.key(), this.inner());
+                this.client.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
         this.setInner(response.getBody());
     }
 }

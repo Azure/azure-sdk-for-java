@@ -64,7 +64,11 @@ public abstract class ResourceImpl<
 
     @Override
     public String name() {
-        return this.inner().name();
+        if(this.inner().name() == null) {
+            return this.key(); // Not yet created, so use the key
+        } else {
+            return this.inner().name();
+        }
     }
 
     /**************************************************
