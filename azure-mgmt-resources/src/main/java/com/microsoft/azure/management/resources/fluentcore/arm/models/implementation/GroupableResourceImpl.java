@@ -23,7 +23,7 @@ public abstract class GroupableResourceImpl<
         	GroupableResource {
 
     private ResourceGroups resourceGroups;
-    private ResourceGroup.DefinitionCreatable newGroup;
+    protected ResourceGroup.DefinitionCreatable newGroup;
     private String groupName;
 
     protected GroupableResourceImpl(String key, InnerModelT innerObject, ResourceGroups resourceGroups) {
