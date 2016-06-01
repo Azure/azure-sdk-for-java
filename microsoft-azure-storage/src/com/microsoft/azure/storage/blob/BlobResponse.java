@@ -71,6 +71,9 @@ final class BlobResponse extends BaseResponse {
         properties.setContentMD5(request.getHeaderField(Constants.HeaderConstants.CONTENT_MD5));
         properties.setContentType(request.getHeaderField(Constants.HeaderConstants.CONTENT_TYPE));
         properties.setEtag(BaseResponse.getEtag(request));
+        
+        properties.setServerEncrypted(
+                Constants.TRUE.equals(request.getHeaderField(Constants.HeaderConstants.SERVER_ENCRYPTED)));
 
         final Calendar lastModifiedCalendar = Calendar.getInstance(Utility.LOCALE_US);
         lastModifiedCalendar.setTimeZone(Utility.UTC_ZONE);

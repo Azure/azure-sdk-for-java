@@ -108,6 +108,11 @@ public final class BlobProperties {
     private Long pageBlobSequenceNumber;
     
     /**
+     * Represents the blob's server-side encryption status.
+     */
+    private boolean serverEncrypted;
+    
+    /**
      * Creates an instance of the <code>BlobProperties</code> class.
      */
     public BlobProperties() {
@@ -122,10 +127,13 @@ public final class BlobProperties {
      *        A <code>BlobProperties</code> object which represents the blob properties to copy.
      */
     public BlobProperties(final BlobProperties other) {
+        this.appendBlobCommittedBlockCount = other.appendBlobCommittedBlockCount;
         this.blobType = other.blobType;
+        this.cacheControl = other.cacheControl;
         this.contentDisposition = other.contentDisposition;
         this.contentEncoding = other.contentEncoding;
         this.contentLanguage = other.contentLanguage;
+        this.contentMD5 = other.contentMD5;
         this.contentType = other.contentType;
         this.copyState = other.copyState;
         this.etag = other.etag;
@@ -134,10 +142,8 @@ public final class BlobProperties {
         this.leaseDuration = other.leaseDuration;
         this.length = other.length;
         this.lastModified = other.lastModified;
-        this.contentMD5 = other.contentMD5;
-        this.cacheControl = other.cacheControl;
         this.pageBlobSequenceNumber = other.pageBlobSequenceNumber;
-        this.appendBlobCommittedBlockCount = other.appendBlobCommittedBlockCount;
+        this.serverEncrypted = other.serverEncrypted;
     }
 
     /**
@@ -305,6 +311,15 @@ public final class BlobProperties {
     }
     
     /**
+     * Gets the blob's server-side encryption status;
+     * 
+     * @return The blob's server-side encryption status.
+     */
+    public boolean isServerEncrypted() {
+        return serverEncrypted;
+    }
+
+    /**
      * Sets the cache control value for the blob.
      * 
      * @param cacheControl
@@ -462,5 +477,15 @@ public final class BlobProperties {
      */
     protected void setPageBlobSequenceNumber(final Long pageBlobSequenceNumber) {
     	this.pageBlobSequenceNumber = pageBlobSequenceNumber;
+    }
+
+    /**
+     * Sets the blob's server-side encryption status.
+     * 
+     * @param serverEncrypted
+     *        A <code>boolean</code> which specifies the encryption status to set.
+     */
+    void setServerEncrypted(boolean serverEncrypted) {
+        this.serverEncrypted = serverEncrypted;
     }
 }
