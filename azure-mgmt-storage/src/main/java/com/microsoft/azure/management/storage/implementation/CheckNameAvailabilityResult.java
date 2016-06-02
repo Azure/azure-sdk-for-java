@@ -7,89 +7,46 @@
 package com.microsoft.azure.management.storage.implementation;
 
 
+import com.microsoft.azure.management.storage.implementation.api.CheckNameAvailabilityResultInner;
 import com.microsoft.azure.management.storage.implementation.api.Reason;
 
 /**
  * The CheckNameAvailability operation response.
  */
 public class CheckNameAvailabilityResult {
+    private final CheckNameAvailabilityResultInner inner;
+
     /**
-     * Gets a boolean value that indicates whether the name is available for
+     * Creates an instance of CheckNameAvailabilityResult object.
+     *
+     * @param inner the inner result object
+     */
+    public CheckNameAvailabilityResult(CheckNameAvailabilityResultInner inner) {
+        this.inner = inner;
+    }
+
+    /**
+     * @return a boolean value that indicates whether the name is available for
      * you to use. If true, the name is available. If false, the name has
      * already been taken or invalid and cannot be used.
      */
-    private Boolean nameAvailable;
+    public Boolean isAvailable() {
+        return inner.nameAvailable();
+    }
 
     /**
-     * Gets the reason that a storage account name could not be used. The
+     * @return the reason that a storage account name could not be used. The
      * Reason element is only returned if NameAvailable is false. Possible
      * values include: 'AccountNameInvalid', 'AlreadyExists'.
      */
-    private Reason reason;
-
-    /**
-     * Gets an error message explaining the Reason value in more detail.
-     */
-    private String message;
-
-    /**
-     * Get the nameAvailable value.
-     *
-     * @return the nameAvailable value
-     */
-    public Boolean nameAvailable() {
-        return this.nameAvailable;
-    }
-
-    /**
-     * Set the nameAvailable value.
-     *
-     * @param nameAvailable the nameAvailable value to set
-     * @return the CheckNameAvailabilityResultInner object itself.
-     */
-    public CheckNameAvailabilityResult setNameAvailable(Boolean nameAvailable) {
-        this.nameAvailable = nameAvailable;
-        return this;
-    }
-
-    /**
-     * Get the reason value.
-     *
-     * @return the reason value
-     */
     public Reason reason() {
-        return this.reason;
+        return inner.reason();
     }
 
     /**
-     * Set the reason value.
-     *
-     * @param reason the reason value to set
-     * @return the CheckNameAvailabilityResultInner object itself.
-     */
-    public CheckNameAvailabilityResult setReason(Reason reason) {
-        this.reason = reason;
-        return this;
-    }
-
-    /**
-     * Get the message value.
-     *
-     * @return the message value
+     * @return an error message explaining the Reason value in more detail
      */
     public String message() {
-        return this.message;
+        return inner.message();
     }
-
-    /**
-     * Set the message value.
-     *
-     * @param message the message value to set
-     * @return the CheckNameAvailabilityResultInner object itself.
-     */
-    public CheckNameAvailabilityResult setMessage(String message) {
-        this.message = message;
-        return this;
-    }
-
 }

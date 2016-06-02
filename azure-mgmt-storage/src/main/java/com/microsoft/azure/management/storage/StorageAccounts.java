@@ -13,7 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
-import com.microsoft.azure.management.storage.implementation.api.CheckNameAvailabilityResultInner;
+import com.microsoft.azure.management.storage.implementation.CheckNameAvailabilityResult;
 
 import java.io.IOException;
 
@@ -31,8 +31,9 @@ public interface StorageAccounts extends
      * Checks that account name is valid and is not in use.
      *
      * @param name the account name to check
+     * @return whether the name is available and other info if not
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      */
-    CheckNameAvailabilityResultInner checkNameAvailability(String name) throws CloudException, IOException;
+    CheckNameAvailabilityResult checkNameAvailability(String name) throws CloudException, IOException;
 }

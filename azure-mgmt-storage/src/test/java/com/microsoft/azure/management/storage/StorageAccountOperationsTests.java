@@ -45,8 +45,7 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
         // List
         List<StorageAccount> accounts = storageManager.storageAccounts().list(RG_NAME);
         boolean found = false;
-        for (StorageAccount account :
-                accounts) {
+        for (StorageAccount account : accounts) {
             if (account.name().equals(SA_NAME)) {
                 found = true;
             }

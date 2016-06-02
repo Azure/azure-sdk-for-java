@@ -13,11 +13,10 @@ import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.api.PageImpl;
-import com.microsoft.azure.management.storage.StorageAccounts;
-import com.microsoft.azure.management.storage.implementation.api.CheckNameAvailabilityResultInner;
-import com.microsoft.azure.management.storage.implementation.api.StorageAccountsInner;
 import com.microsoft.azure.management.storage.StorageAccount;
+import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.implementation.api.StorageAccountInner;
+import com.microsoft.azure.management.storage.implementation.api.StorageAccountsInner;
 import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceResponse;
 
@@ -42,6 +41,11 @@ class StorageAccountsImpl
                 return createFluentModel(storageAccountInner);
             }
         };
+    }
+
+    @Override
+    public CheckNameAvailabilityResult checkNameAvailability(String name) throws CloudException, IOException {
+        return new CheckNameAvailabilityResult(client.checkNameAvailability(name).getBody());
     }
 
     @Override
@@ -89,8 +93,6 @@ class StorageAccountsImpl
         };
     }
 
-    /** Fluent model create helpers **/
-
     private StorageAccountImpl createFluentModel(String name) {
         StorageAccountInner storageAccountInner = new StorageAccountInner();
         return new StorageAccountImpl(name, storageAccountInner, this.client, this.resourceGroups);
@@ -98,10 +100,5 @@ class StorageAccountsImpl
 
     private StorageAccountImpl createFluentModel(StorageAccountInner storageAccountInner) {
         return new StorageAccountImpl(storageAccountInner.name(), storageAccountInner, this.client, this.resourceGroups);
-    }
-
-    @Override
-    public CheckNameAvailabilityResultInner checkNameAvailability(String name) throws CloudException, IOException {
-        return client.checkNameAvailability(name).getBody();
     }
 }

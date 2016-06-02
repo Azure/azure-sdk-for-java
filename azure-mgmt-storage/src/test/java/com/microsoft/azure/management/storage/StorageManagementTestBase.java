@@ -13,11 +13,14 @@ import com.microsoft.azure.management.storage.implementation.StorageManager;
 import com.microsoft.rest.RestClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
+/**
+ * The base for storage manager tests.
+ */
 public abstract class StorageManagementTestBase {
     protected static ResourceManager resourceManager;
     protected static StorageManager storageManager;
 
-    public static void createClients() {
+    protected static void createClients() {
         ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(
                 System.getenv("client-id"),
                 System.getenv("domain"),
