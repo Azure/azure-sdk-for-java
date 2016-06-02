@@ -7,11 +7,20 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.network.*;
-import com.microsoft.azure.management.network.implementation.api.*;
+import com.microsoft.azure.management.network.NetworkInterface;
+import com.microsoft.azure.management.network.Networks;
+import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.PublicIpAddresses;
+import com.microsoft.azure.management.network.Network;
+import com.microsoft.azure.management.network.Subnet;
+import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceInner;
+import com.microsoft.azure.management.network.implementation.api.NetworkInterfacesInner;
+import com.microsoft.azure.management.network.implementation.api.SubnetInner;
+import com.microsoft.azure.management.network.implementation.api.PublicIPAddressInner;
+import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceIPConfiguration;
+import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
@@ -50,14 +59,13 @@ class NetworkInterfaceImpl
                          final NetworkInterfacesInner client,
                          final Networks networks,
                          final PublicIpAddresses publicIpAddresses,
-                         final ResourceManager resourceManager) {
-        super(name, innerModel, resourceManager.resourceGroups());
+                         final ResourceGroups resourceGroups) {
+        super(name, innerModel, resourceGroups);
         this.client = client;
         this.networks = networks;
         this.publicIpAddresses = publicIpAddresses;
         this.nicName = name;
         this.uniqueId = this.nicName + String.valueOf(System.currentTimeMillis());
-        initialize();
     }
 
     /**************************************************.
@@ -308,16 +316,6 @@ class NetworkInterfaceImpl
     /**************************************************.
      * Helper methods
      **************************************************/
-
-    private void initialize() {
-        if (this.inner().ipConfigurations() == null) {
-            this.inner().setIpConfigurations(new ArrayList<NetworkInterfaceIPConfiguration>());
-        }
-
-        if (this.inner().dnsSettings() == null) {
-            this.inner().setDnsSettings(new NetworkInterfaceDnsSettings());
-        }
-    }
 
     private String nameWithPrefix(String prefix) {
         return prefix + "-" + this.uniqueId + "-" + this.resourceGroupName();
