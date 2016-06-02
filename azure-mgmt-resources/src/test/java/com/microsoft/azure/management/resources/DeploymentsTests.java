@@ -63,14 +63,14 @@ public class DeploymentsTests extends ResourceManagerTestBase {
         Deployment deployment = resourceClient.deployments().get(rgName, dp1);
         Assert.assertNotNull(deployment);
         Assert.assertEquals("Succeeded", deployment.provisioningState());
-        GenericResource generic = resourceClient.genericResources().get(rgName, "VNet1");
+        GenericResource generic = resourceClient.genericResources().get(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", "2015-06-15");
         Assert.assertNotNull(generic);
         // Deployment operations
         List<DeploymentOperation> operations = deployment.deploymentOperations().list();
         Assert.assertEquals(2, operations.size());
         DeploymentOperation op = deployment.deploymentOperations().get(operations.get(0).operationId());
         Assert.assertNotNull(op);
-        resourceClient.genericResources().delete(rgName, generic.id());
+        resourceClient.genericResources().delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", "2015-06-15");
     }
 
     @Test
@@ -89,8 +89,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
         deployments.cancel(deployment.resourceGroupName(), deployment.name());
         deployment = resourceClient.deployments().get(rgName, dp2);
         Assert.assertEquals("Canceled", deployment.provisioningState());
-        GenericResource generic = resourceClient.genericResources().get(rgName, "VNet1");
-        Assert.assertNull(generic);
+        Assert.assertFalse(resourceClient.genericResources().checkExistence(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", "2015-06-15"));
     }
 
     @Test
@@ -118,8 +117,8 @@ public class DeploymentsTests extends ResourceManagerTestBase {
         deployment = resourceClient.deployments().get(rgName, dp3);
         Assert.assertEquals(DeploymentMode.INCREMENTAL, deployment.mode());
         Assert.assertEquals("Succeeded", deployment.provisioningState());
-        GenericResource genericVnet = resourceClient.genericResources().get(rgName, "VNet2");
+        GenericResource genericVnet = resourceClient.genericResources().get(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet2", "2015-06-15");
         Assert.assertNotNull(genericVnet);
-        resourceClient.genericResources().delete(rgName, genericVnet.id());
+        resourceClient.genericResources().delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet2", "2015-06-15");
     }
 }

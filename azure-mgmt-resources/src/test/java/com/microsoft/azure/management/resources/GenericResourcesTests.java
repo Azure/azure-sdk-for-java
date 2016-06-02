@@ -14,8 +14,8 @@ public class GenericResourcesTests extends ResourceManagerTestBase {
     private static ResourceGroup resourceGroup;
     private static GenericResources genericResources;
 
-    private static String resourceName = "rgweb1";
-    private static String rgName = "javacsmrg6";
+    private static String resourceName = "rgweb8";
+    private static String rgName = "javacsmrg4";
     private static String newRgName = "javacsmrg7";
 
     @BeforeClass
@@ -34,8 +34,8 @@ public class GenericResourcesTests extends ResourceManagerTestBase {
 
     @AfterClass
     public static void cleanup() throws Exception {
-        resourceGroups.delete(rgName);
         resourceGroups.delete(newRgName);
+        resourceGroups.delete(rgName);
     }
 
     @Test
@@ -51,11 +51,15 @@ public class GenericResourcesTests extends ResourceManagerTestBase {
                 .withApiVersion("2015-08-01")
                 .withProperties(new ObjectMapper().readTree("{\"SiteMode\":\"Limited\",\"ComputeMode\":\"Shared\"}"))
                 .create();
-        Assert.assertNotNull(genericResources.get(rgName, resource.name()));
+        Assert.assertNotNull(genericResources.get(rgName, resource.resourceProviderNamespace(), resource.parentResourceId(), resource.resourceType(), resource.name(), resource.apiVersion()));
         // Move
         genericResources.moveResources(rgName, resourceGroups.get(newRgName), Arrays.asList(resource.id()));
-        Assert.assertNull(genericResources.get(rgName, resource.name()));
-        Assert.assertNotNull(genericResources.get(newRgName, resource.name()));
+        Assert.assertFalse(genericResources.checkExistence(rgName, resource.resourceProviderNamespace(), resource.parentResourceId(), resource.resourceType(), resource.name(), resource.apiVersion()));
+        resource = genericResources.get(newRgName, resource.resourceProviderNamespace(), resource.parentResourceId(), resource.resourceType(), resource.name(), resource.apiVersion());
+        Assert.assertNotNull(resource);
         // Update
+        resource.update()
+                .withProperties(new ObjectMapper().readTree("{\"SiteMode\":\"Limited\",\"ComputeMode\":\"Dynamic\"}"))
+                .apply();
     }
 }

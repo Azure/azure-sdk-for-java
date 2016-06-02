@@ -24,6 +24,25 @@ public interface GenericResource extends
         Refreshable<GenericResource>,
         Updatable<GenericResource.Update>,
         Wrapper<GenericResourceInner> {
+    /**
+     * @return the namespace of the resource provider
+     */
+    String resourceProviderNamespace();
+
+    /**
+     * @return the id of the parent resource if this is a child resource
+     */
+    String parentResourceId();
+
+    /**
+     * @return the type of the resource
+     */
+    String resourceType();
+
+    /**
+     * @return the api version of the resource
+     */
+    String apiVersion();
 
     /**
      * @return the plan of the resource
@@ -140,10 +159,62 @@ public interface GenericResource extends
     }
 
     /**
+     * A generic resource update allowing to change the resource properties.
+     */
+    interface UpdateWithProperties {
+        /**
+         * Specifies other properties of the resource.
+         *
+         * @param properties the properties object
+         * @return the next stage of generic resource update
+         */
+        Update withProperties(Object properties);
+    }
+
+    /**
+     * A generic resource update allowing to change the parent resource.
+     */
+    interface UpdateWithParentResource {
+        /**
+         * Specifies the parent resource.
+         *
+         * @param parentResourceId the UUID of the parent resource
+         * @return the next stage of the generic resource definition
+         */
+        Update withParentResource(String parentResourceId);
+    }
+
+    /**
+     * A generic resource update allowing to change the resource plan.
+     */
+    interface UpdateWithPlan {
+        /**
+         * Specifies the plan of the resource.
+         *
+         * @param name the name of the plan
+         * @param publisher the publisher of the plan
+         * @param product the name of the product
+         * @param promotionCode the promotion code, if any
+         * @return the next stage of the generic resource update
+         */
+        Update withPlan(String name, String publisher, String product, String promotionCode);
+
+        /**
+         * Specifies the plan of the resource.
+         *
+         * @return the next stage of the generic resource update
+         */
+        Update withoutPlan();
+    }
+
+    /**
      * The template for a generic resource update operation, containing all the settings that can be modified.
      */
     interface Update extends
             Appliable<GenericResource>,
+            UpdateWithPlan,
+            UpdateWithParentResource,
+            UpdateWithProperties,
             Resource.UpdateWithTags<Update> {
     }
 }
