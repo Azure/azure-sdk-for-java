@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the Patch operation.
+ * Additional parameters for the Pool_Patch operation.
  */
 public class PoolPatchOptions {
     /**
@@ -86,7 +86,7 @@ public class PoolPatchOptions {
      * @param timeout the timeout value to set
      * @return the PoolPatchOptions object itself.
      */
-    public PoolPatchOptions setTimeout(Integer timeout) {
+    public PoolPatchOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -106,7 +106,7 @@ public class PoolPatchOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the PoolPatchOptions object itself.
      */
-    public PoolPatchOptions setClientRequestId(String clientRequestId) {
+    public PoolPatchOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -126,7 +126,7 @@ public class PoolPatchOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the PoolPatchOptions object itself.
      */
-    public PoolPatchOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public PoolPatchOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -149,7 +149,7 @@ public class PoolPatchOptions {
      * @param ocpDate the ocpDate value to set
      * @return the PoolPatchOptions object itself.
      */
-    public PoolPatchOptions setOcpDate(DateTime ocpDate) {
+    public PoolPatchOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }
@@ -169,7 +169,7 @@ public class PoolPatchOptions {
      * @param ifMatch the ifMatch value to set
      * @return the PoolPatchOptions object itself.
      */
-    public PoolPatchOptions setIfMatch(String ifMatch) {
+    public PoolPatchOptions withIfMatch(String ifMatch) {
         this.ifMatch = ifMatch;
         return this;
     }
@@ -189,7 +189,7 @@ public class PoolPatchOptions {
      * @param ifNoneMatch the ifNoneMatch value to set
      * @return the PoolPatchOptions object itself.
      */
-    public PoolPatchOptions setIfNoneMatch(String ifNoneMatch) {
+    public PoolPatchOptions withIfNoneMatch(String ifNoneMatch) {
         this.ifNoneMatch = ifNoneMatch;
         return this;
     }
@@ -212,7 +212,7 @@ public class PoolPatchOptions {
      * @param ifModifiedSince the ifModifiedSince value to set
      * @return the PoolPatchOptions object itself.
      */
-    public PoolPatchOptions setIfModifiedSince(DateTime ifModifiedSince) {
+    public PoolPatchOptions withIfModifiedSince(DateTime ifModifiedSince) {
         this.ifModifiedSince = new DateTimeRfc1123(ifModifiedSince);
         return this;
     }
@@ -235,7 +235,7 @@ public class PoolPatchOptions {
      * @param ifUnmodifiedSince the ifUnmodifiedSince value to set
      * @return the PoolPatchOptions object itself.
      */
-    public PoolPatchOptions setIfUnmodifiedSince(DateTime ifUnmodifiedSince) {
+    public PoolPatchOptions withIfUnmodifiedSince(DateTime ifUnmodifiedSince) {
         this.ifUnmodifiedSince = new DateTimeRfc1123(ifUnmodifiedSince);
         return this;
     }

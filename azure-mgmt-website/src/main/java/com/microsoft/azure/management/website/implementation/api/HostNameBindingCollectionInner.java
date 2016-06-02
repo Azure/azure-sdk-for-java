@@ -37,7 +37,7 @@ public class HostNameBindingCollectionInner {
      * @param value the value value to set
      * @return the HostNameBindingCollectionInner object itself.
      */
-    public HostNameBindingCollectionInner setValue(List<HostNameBindingInner> value) {
+    public HostNameBindingCollectionInner withValue(List<HostNameBindingInner> value) {
         this.value = value;
         return this;
     }
@@ -57,7 +57,7 @@ public class HostNameBindingCollectionInner {
      * @param nextLink the nextLink value to set
      * @return the HostNameBindingCollectionInner object itself.
      */
-    public HostNameBindingCollectionInner setNextLink(String nextLink) {
+    public HostNameBindingCollectionInner withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }

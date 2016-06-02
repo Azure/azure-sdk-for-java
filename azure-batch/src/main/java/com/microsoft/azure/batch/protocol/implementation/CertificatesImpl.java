@@ -124,7 +124,7 @@ public final class CertificatesImpl implements Certificates {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.add(certificate, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         return addDelegate(call.execute());
     }
@@ -154,7 +154,7 @@ public final class CertificatesImpl implements Certificates {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.add(certificate, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -297,7 +297,7 @@ public final class CertificatesImpl implements Certificates {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> response = listDelegate(call.execute());
         PagedList<Certificate> result = new PagedList<Certificate>(response.getBody()) {
@@ -331,7 +331,7 @@ public final class CertificatesImpl implements Certificates {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<Certificate>>(serviceCallback) {
@@ -408,9 +408,9 @@ public final class CertificatesImpl implements Certificates {
                 CertificateListNextOptions certificateListNextOptions = null;
                 if (certificateListOptions != null) {
                     certificateListNextOptions = new CertificateListNextOptions();
-                    certificateListNextOptions.setClientRequestId(certificateListOptions.clientRequestId());
-                    certificateListNextOptions.setReturnClientRequestId(certificateListOptions.returnClientRequestId());
-                    certificateListNextOptions.setOcpDate(certificateListOptions.ocpDate());
+                    certificateListNextOptions.withClientRequestId(certificateListOptions.clientRequestId());
+                    certificateListNextOptions.withReturnClientRequestId(certificateListOptions.returnClientRequestId());
+                    certificateListNextOptions.withOcpDate(certificateListOptions.ocpDate());
                 }
                 return listNext(nextPageLink, certificateListNextOptions).getBody();
             }
@@ -480,9 +480,9 @@ public final class CertificatesImpl implements Certificates {
                         CertificateListNextOptions certificateListNextOptions = null;
                         if (certificateListOptions != null) {
                             certificateListNextOptions = new CertificateListNextOptions();
-                            certificateListNextOptions.setClientRequestId(certificateListOptions.clientRequestId());
-                            certificateListNextOptions.setReturnClientRequestId(certificateListOptions.returnClientRequestId());
-                            certificateListNextOptions.setOcpDate(certificateListOptions.ocpDate());
+                            certificateListNextOptions.withClientRequestId(certificateListOptions.clientRequestId());
+                            certificateListNextOptions.withReturnClientRequestId(certificateListOptions.returnClientRequestId());
+                            certificateListNextOptions.withOcpDate(certificateListOptions.ocpDate());
                         }
                         listNextAsync(result.getBody().getNextPageLink(), certificateListNextOptions, serviceCall, serviceCallback);
                     } else {
@@ -527,7 +527,7 @@ public final class CertificatesImpl implements Certificates {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.cancelDeletion(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         return cancelDeletionDelegate(call.execute());
     }
@@ -561,7 +561,7 @@ public final class CertificatesImpl implements Certificates {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.cancelDeletion(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -716,7 +716,7 @@ public final class CertificatesImpl implements Certificates {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.delete(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         return deleteDelegate(call.execute());
     }
@@ -750,7 +750,7 @@ public final class CertificatesImpl implements Certificates {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.delete(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -906,7 +906,7 @@ public final class CertificatesImpl implements Certificates {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.get(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         return getDelegate(call.execute());
     }
@@ -941,7 +941,7 @@ public final class CertificatesImpl implements Certificates {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.get(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Certificate>(serviceCallback) {
@@ -1096,7 +1096,7 @@ public final class CertificatesImpl implements Certificates {
         final CertificateListNextOptions certificateListNextOptions = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         return listNextDelegate(call.execute());
     }
@@ -1121,7 +1121,7 @@ public final class CertificatesImpl implements Certificates {
         final CertificateListNextOptions certificateListNextOptions = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<Certificate>>(serviceCallback) {

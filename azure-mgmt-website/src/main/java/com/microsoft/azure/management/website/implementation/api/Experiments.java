@@ -32,7 +32,7 @@ public class Experiments {
      * @param rampUpRules the rampUpRules value to set
      * @return the Experiments object itself.
      */
-    public Experiments setRampUpRules(List<RampUpRule> rampUpRules) {
+    public Experiments withRampUpRules(List<RampUpRule> rampUpRules) {
         this.rampUpRules = rampUpRules;
         return this;
     }

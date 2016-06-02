@@ -362,7 +362,7 @@ public final class VirtualMachineScaleSetsInner {
         }
         final String instanceIdsConverted = null;
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-        vmInstanceIDs = null;
+        vmInstanceIDs.withInstanceIds(null);
         Response<ResponseBody> result = service.deallocate(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
@@ -394,7 +394,7 @@ public final class VirtualMachineScaleSetsInner {
         }
         final String instanceIdsConverted = null;
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-        vmInstanceIDs = null;
+        vmInstanceIDs.withInstanceIds(null);
         Call<ResponseBody> call = service.deallocate(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
@@ -438,7 +438,7 @@ public final class VirtualMachineScaleSetsInner {
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
         if (instanceIds != null) {
             vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
+            vmInstanceIDs.withInstanceIds(instanceIds);
         }
         Response<ResponseBody> result = service.deallocate(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
@@ -474,7 +474,7 @@ public final class VirtualMachineScaleSetsInner {
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
         if (instanceIds != null) {
             vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
+            vmInstanceIDs.withInstanceIds(instanceIds);
         }
         Call<ResponseBody> call = service.deallocate(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
@@ -516,7 +516,7 @@ public final class VirtualMachineScaleSetsInner {
         }
         final String instanceIdsConverted = null;
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-        vmInstanceIDs = null;
+        vmInstanceIDs.withInstanceIds(null);
         Call<ResponseBody> call = service.beginDeallocate(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
         return beginDeallocateDelegate(call.execute());
     }
@@ -552,7 +552,7 @@ public final class VirtualMachineScaleSetsInner {
         }
         final String instanceIdsConverted = null;
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-        vmInstanceIDs = null;
+        vmInstanceIDs.withInstanceIds(null);
         Call<ResponseBody> call = service.beginDeallocate(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -596,7 +596,7 @@ public final class VirtualMachineScaleSetsInner {
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
         if (instanceIds != null) {
             vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
+            vmInstanceIDs.withInstanceIds(instanceIds);
         }
         Call<ResponseBody> call = service.beginDeallocate(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
         return beginDeallocateDelegate(call.execute());
@@ -636,7 +636,7 @@ public final class VirtualMachineScaleSetsInner {
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
         if (instanceIds != null) {
             vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
+            vmInstanceIDs.withInstanceIds(instanceIds);
         }
         Call<ResponseBody> call = service.beginDeallocate(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
@@ -914,7 +914,7 @@ public final class VirtualMachineScaleSetsInner {
         }
         Validator.validate(instanceIds);
         VirtualMachineScaleSetVMInstanceRequiredIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceRequiredIDs();
-        vmInstanceIDs.setInstanceIds(instanceIds);
+        vmInstanceIDs.withInstanceIds(instanceIds);
         Response<ResponseBody> result = service.deleteInstances(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
@@ -950,7 +950,7 @@ public final class VirtualMachineScaleSetsInner {
         }
         Validator.validate(instanceIds, serviceCallback);
         VirtualMachineScaleSetVMInstanceRequiredIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceRequiredIDs();
-        vmInstanceIDs.setInstanceIds(instanceIds);
+        vmInstanceIDs.withInstanceIds(instanceIds);
         Call<ResponseBody> call = service.deleteInstances(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
@@ -995,7 +995,7 @@ public final class VirtualMachineScaleSetsInner {
         }
         Validator.validate(instanceIds);
         VirtualMachineScaleSetVMInstanceRequiredIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceRequiredIDs();
-        vmInstanceIDs.setInstanceIds(instanceIds);
+        vmInstanceIDs.withInstanceIds(instanceIds);
         Call<ResponseBody> call = service.beginDeleteInstances(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
         return beginDeleteInstancesDelegate(call.execute());
     }
@@ -1036,7 +1036,7 @@ public final class VirtualMachineScaleSetsInner {
         }
         Validator.validate(instanceIds, serviceCallback);
         VirtualMachineScaleSetVMInstanceRequiredIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceRequiredIDs();
-        vmInstanceIDs.setInstanceIds(instanceIds);
+        vmInstanceIDs.withInstanceIds(instanceIds);
         Call<ResponseBody> call = service.beginDeleteInstances(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1411,7 +1411,7 @@ public final class VirtualMachineScaleSetsInner {
         }
         final String instanceIdsConverted = null;
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-        vmInstanceIDs = null;
+        vmInstanceIDs.withInstanceIds(null);
         Response<ResponseBody> result = service.powerOff(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
@@ -1443,7 +1443,7 @@ public final class VirtualMachineScaleSetsInner {
         }
         final String instanceIdsConverted = null;
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-        vmInstanceIDs = null;
+        vmInstanceIDs.withInstanceIds(null);
         Call<ResponseBody> call = service.powerOff(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
@@ -1487,7 +1487,7 @@ public final class VirtualMachineScaleSetsInner {
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
         if (instanceIds != null) {
             vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
+            vmInstanceIDs.withInstanceIds(instanceIds);
         }
         Response<ResponseBody> result = service.powerOff(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
@@ -1523,7 +1523,7 @@ public final class VirtualMachineScaleSetsInner {
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
         if (instanceIds != null) {
             vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
+            vmInstanceIDs.withInstanceIds(instanceIds);
         }
         Call<ResponseBody> call = service.powerOff(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
@@ -1565,7 +1565,7 @@ public final class VirtualMachineScaleSetsInner {
         }
         final String instanceIdsConverted = null;
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-        vmInstanceIDs = null;
+        vmInstanceIDs.withInstanceIds(null);
         Call<ResponseBody> call = service.beginPowerOff(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
         return beginPowerOffDelegate(call.execute());
     }
@@ -1601,7 +1601,7 @@ public final class VirtualMachineScaleSetsInner {
         }
         final String instanceIdsConverted = null;
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-        vmInstanceIDs = null;
+        vmInstanceIDs.withInstanceIds(null);
         Call<ResponseBody> call = service.beginPowerOff(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1645,7 +1645,7 @@ public final class VirtualMachineScaleSetsInner {
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
         if (instanceIds != null) {
             vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
+            vmInstanceIDs.withInstanceIds(instanceIds);
         }
         Call<ResponseBody> call = service.beginPowerOff(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
         return beginPowerOffDelegate(call.execute());
@@ -1685,7 +1685,7 @@ public final class VirtualMachineScaleSetsInner {
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
         if (instanceIds != null) {
             vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
+            vmInstanceIDs.withInstanceIds(instanceIds);
         }
         Call<ResponseBody> call = service.beginPowerOff(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
@@ -1734,7 +1734,7 @@ public final class VirtualMachineScaleSetsInner {
         }
         final String instanceIdsConverted = null;
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-        vmInstanceIDs = null;
+        vmInstanceIDs.withInstanceIds(null);
         Response<ResponseBody> result = service.restart(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
@@ -1766,7 +1766,7 @@ public final class VirtualMachineScaleSetsInner {
         }
         final String instanceIdsConverted = null;
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-        vmInstanceIDs = null;
+        vmInstanceIDs.withInstanceIds(null);
         Call<ResponseBody> call = service.restart(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
@@ -1810,7 +1810,7 @@ public final class VirtualMachineScaleSetsInner {
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
         if (instanceIds != null) {
             vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
+            vmInstanceIDs.withInstanceIds(instanceIds);
         }
         Response<ResponseBody> result = service.restart(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
@@ -1846,7 +1846,7 @@ public final class VirtualMachineScaleSetsInner {
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
         if (instanceIds != null) {
             vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
+            vmInstanceIDs.withInstanceIds(instanceIds);
         }
         Call<ResponseBody> call = service.restart(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
@@ -1888,7 +1888,7 @@ public final class VirtualMachineScaleSetsInner {
         }
         final String instanceIdsConverted = null;
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-        vmInstanceIDs = null;
+        vmInstanceIDs.withInstanceIds(null);
         Call<ResponseBody> call = service.beginRestart(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
         return beginRestartDelegate(call.execute());
     }
@@ -1924,7 +1924,7 @@ public final class VirtualMachineScaleSetsInner {
         }
         final String instanceIdsConverted = null;
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-        vmInstanceIDs = null;
+        vmInstanceIDs.withInstanceIds(null);
         Call<ResponseBody> call = service.beginRestart(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1968,7 +1968,7 @@ public final class VirtualMachineScaleSetsInner {
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
         if (instanceIds != null) {
             vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
+            vmInstanceIDs.withInstanceIds(instanceIds);
         }
         Call<ResponseBody> call = service.beginRestart(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
         return beginRestartDelegate(call.execute());
@@ -2008,7 +2008,7 @@ public final class VirtualMachineScaleSetsInner {
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
         if (instanceIds != null) {
             vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
+            vmInstanceIDs.withInstanceIds(instanceIds);
         }
         Call<ResponseBody> call = service.beginRestart(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
@@ -2057,7 +2057,7 @@ public final class VirtualMachineScaleSetsInner {
         }
         final String instanceIdsConverted = null;
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-        vmInstanceIDs = null;
+        vmInstanceIDs.withInstanceIds(null);
         Response<ResponseBody> result = service.start(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
@@ -2089,7 +2089,7 @@ public final class VirtualMachineScaleSetsInner {
         }
         final String instanceIdsConverted = null;
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-        vmInstanceIDs = null;
+        vmInstanceIDs.withInstanceIds(null);
         Call<ResponseBody> call = service.start(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
@@ -2133,7 +2133,7 @@ public final class VirtualMachineScaleSetsInner {
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
         if (instanceIds != null) {
             vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
+            vmInstanceIDs.withInstanceIds(instanceIds);
         }
         Response<ResponseBody> result = service.start(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
@@ -2169,7 +2169,7 @@ public final class VirtualMachineScaleSetsInner {
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
         if (instanceIds != null) {
             vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
+            vmInstanceIDs.withInstanceIds(instanceIds);
         }
         Call<ResponseBody> call = service.start(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
@@ -2211,7 +2211,7 @@ public final class VirtualMachineScaleSetsInner {
         }
         final String instanceIdsConverted = null;
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-        vmInstanceIDs = null;
+        vmInstanceIDs.withInstanceIds(null);
         Call<ResponseBody> call = service.beginStart(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
         return beginStartDelegate(call.execute());
     }
@@ -2247,7 +2247,7 @@ public final class VirtualMachineScaleSetsInner {
         }
         final String instanceIdsConverted = null;
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-        vmInstanceIDs = null;
+        vmInstanceIDs.withInstanceIds(null);
         Call<ResponseBody> call = service.beginStart(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -2291,7 +2291,7 @@ public final class VirtualMachineScaleSetsInner {
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
         if (instanceIds != null) {
             vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
+            vmInstanceIDs.withInstanceIds(instanceIds);
         }
         Call<ResponseBody> call = service.beginStart(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
         return beginStartDelegate(call.execute());
@@ -2331,7 +2331,7 @@ public final class VirtualMachineScaleSetsInner {
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
         if (instanceIds != null) {
             vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
-            vmInstanceIDs.setInstanceIds(instanceIds);
+            vmInstanceIDs.withInstanceIds(instanceIds);
         }
         Call<ResponseBody> call = service.beginStart(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
@@ -2384,7 +2384,7 @@ public final class VirtualMachineScaleSetsInner {
         }
         Validator.validate(instanceIds);
         VirtualMachineScaleSetVMInstanceRequiredIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceRequiredIDs();
-        vmInstanceIDs.setInstanceIds(instanceIds);
+        vmInstanceIDs.withInstanceIds(instanceIds);
         Response<ResponseBody> result = service.updateInstances(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
@@ -2420,7 +2420,7 @@ public final class VirtualMachineScaleSetsInner {
         }
         Validator.validate(instanceIds, serviceCallback);
         VirtualMachineScaleSetVMInstanceRequiredIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceRequiredIDs();
-        vmInstanceIDs.setInstanceIds(instanceIds);
+        vmInstanceIDs.withInstanceIds(instanceIds);
         Call<ResponseBody> call = service.updateInstances(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
@@ -2465,7 +2465,7 @@ public final class VirtualMachineScaleSetsInner {
         }
         Validator.validate(instanceIds);
         VirtualMachineScaleSetVMInstanceRequiredIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceRequiredIDs();
-        vmInstanceIDs.setInstanceIds(instanceIds);
+        vmInstanceIDs.withInstanceIds(instanceIds);
         Call<ResponseBody> call = service.beginUpdateInstances(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
         return beginUpdateInstancesDelegate(call.execute());
     }
@@ -2506,7 +2506,7 @@ public final class VirtualMachineScaleSetsInner {
         }
         Validator.validate(instanceIds, serviceCallback);
         VirtualMachineScaleSetVMInstanceRequiredIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceRequiredIDs();
-        vmInstanceIDs.setInstanceIds(instanceIds);
+        vmInstanceIDs.withInstanceIds(instanceIds);
         Call<ResponseBody> call = service.beginUpdateInstances(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {

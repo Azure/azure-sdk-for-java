@@ -36,7 +36,7 @@ public class SiteInstance extends Resource {
      * @param siteInstanceName the siteInstanceName value to set
      * @return the SiteInstance object itself.
      */
-    public SiteInstance setSiteInstanceName(String siteInstanceName) {
+    public SiteInstance withSiteInstanceName(String siteInstanceName) {
         this.siteInstanceName = siteInstanceName;
         return this;
     }

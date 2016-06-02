@@ -89,7 +89,7 @@ public class JobPreparationTaskExecutionInformation {
      * @param startTime the startTime value to set
      * @return the JobPreparationTaskExecutionInformation object itself.
      */
-    public JobPreparationTaskExecutionInformation setStartTime(DateTime startTime) {
+    public JobPreparationTaskExecutionInformation withStartTime(DateTime startTime) {
         this.startTime = startTime;
         return this;
     }
@@ -109,7 +109,7 @@ public class JobPreparationTaskExecutionInformation {
      * @param endTime the endTime value to set
      * @return the JobPreparationTaskExecutionInformation object itself.
      */
-    public JobPreparationTaskExecutionInformation setEndTime(DateTime endTime) {
+    public JobPreparationTaskExecutionInformation withEndTime(DateTime endTime) {
         this.endTime = endTime;
         return this;
     }
@@ -129,7 +129,7 @@ public class JobPreparationTaskExecutionInformation {
      * @param state the state value to set
      * @return the JobPreparationTaskExecutionInformation object itself.
      */
-    public JobPreparationTaskExecutionInformation setState(JobPreparationTaskState state) {
+    public JobPreparationTaskExecutionInformation withState(JobPreparationTaskState state) {
         this.state = state;
         return this;
     }
@@ -149,7 +149,7 @@ public class JobPreparationTaskExecutionInformation {
      * @param taskRootDirectory the taskRootDirectory value to set
      * @return the JobPreparationTaskExecutionInformation object itself.
      */
-    public JobPreparationTaskExecutionInformation setTaskRootDirectory(String taskRootDirectory) {
+    public JobPreparationTaskExecutionInformation withTaskRootDirectory(String taskRootDirectory) {
         this.taskRootDirectory = taskRootDirectory;
         return this;
     }
@@ -169,7 +169,7 @@ public class JobPreparationTaskExecutionInformation {
      * @param taskRootDirectoryUrl the taskRootDirectoryUrl value to set
      * @return the JobPreparationTaskExecutionInformation object itself.
      */
-    public JobPreparationTaskExecutionInformation setTaskRootDirectoryUrl(String taskRootDirectoryUrl) {
+    public JobPreparationTaskExecutionInformation withTaskRootDirectoryUrl(String taskRootDirectoryUrl) {
         this.taskRootDirectoryUrl = taskRootDirectoryUrl;
         return this;
     }
@@ -189,7 +189,7 @@ public class JobPreparationTaskExecutionInformation {
      * @param exitCode the exitCode value to set
      * @return the JobPreparationTaskExecutionInformation object itself.
      */
-    public JobPreparationTaskExecutionInformation setExitCode(Integer exitCode) {
+    public JobPreparationTaskExecutionInformation withExitCode(Integer exitCode) {
         this.exitCode = exitCode;
         return this;
     }
@@ -209,7 +209,7 @@ public class JobPreparationTaskExecutionInformation {
      * @param schedulingError the schedulingError value to set
      * @return the JobPreparationTaskExecutionInformation object itself.
      */
-    public JobPreparationTaskExecutionInformation setSchedulingError(TaskSchedulingError schedulingError) {
+    public JobPreparationTaskExecutionInformation withSchedulingError(TaskSchedulingError schedulingError) {
         this.schedulingError = schedulingError;
         return this;
     }
@@ -229,7 +229,7 @@ public class JobPreparationTaskExecutionInformation {
      * @param retryCount the retryCount value to set
      * @return the JobPreparationTaskExecutionInformation object itself.
      */
-    public JobPreparationTaskExecutionInformation setRetryCount(int retryCount) {
+    public JobPreparationTaskExecutionInformation withRetryCount(int retryCount) {
         this.retryCount = retryCount;
         return this;
     }
@@ -249,7 +249,7 @@ public class JobPreparationTaskExecutionInformation {
      * @param lastRetryTime the lastRetryTime value to set
      * @return the JobPreparationTaskExecutionInformation object itself.
      */
-    public JobPreparationTaskExecutionInformation setLastRetryTime(DateTime lastRetryTime) {
+    public JobPreparationTaskExecutionInformation withLastRetryTime(DateTime lastRetryTime) {
         this.lastRetryTime = lastRetryTime;
         return this;
     }

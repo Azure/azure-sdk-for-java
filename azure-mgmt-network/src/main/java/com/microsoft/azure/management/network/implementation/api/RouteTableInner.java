@@ -56,7 +56,7 @@ public class RouteTableInner extends Resource {
      * @param routes the routes value to set
      * @return the RouteTableInner object itself.
      */
-    public RouteTableInner setRoutes(List<RouteInner> routes) {
+    public RouteTableInner withRoutes(List<RouteInner> routes) {
         this.routes = routes;
         return this;
     }
@@ -76,7 +76,7 @@ public class RouteTableInner extends Resource {
      * @param subnets the subnets value to set
      * @return the RouteTableInner object itself.
      */
-    public RouteTableInner setSubnets(List<SubnetInner> subnets) {
+    public RouteTableInner withSubnets(List<SubnetInner> subnets) {
         this.subnets = subnets;
         return this;
     }
@@ -96,7 +96,7 @@ public class RouteTableInner extends Resource {
      * @param provisioningState the provisioningState value to set
      * @return the RouteTableInner object itself.
      */
-    public RouteTableInner setProvisioningState(String provisioningState) {
+    public RouteTableInner withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -116,7 +116,7 @@ public class RouteTableInner extends Resource {
      * @param etag the etag value to set
      * @return the RouteTableInner object itself.
      */
-    public RouteTableInner setEtag(String etag) {
+    public RouteTableInner withEtag(String etag) {
         this.etag = etag;
         return this;
     }

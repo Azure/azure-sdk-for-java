@@ -42,7 +42,7 @@ public class VirtualMachineAgentInstanceView {
      * @param vmAgentVersion the vmAgentVersion value to set
      * @return the VirtualMachineAgentInstanceView object itself.
      */
-    public VirtualMachineAgentInstanceView setVmAgentVersion(String vmAgentVersion) {
+    public VirtualMachineAgentInstanceView withVmAgentVersion(String vmAgentVersion) {
         this.vmAgentVersion = vmAgentVersion;
         return this;
     }
@@ -62,7 +62,7 @@ public class VirtualMachineAgentInstanceView {
      * @param extensionHandlers the extensionHandlers value to set
      * @return the VirtualMachineAgentInstanceView object itself.
      */
-    public VirtualMachineAgentInstanceView setExtensionHandlers(List<VirtualMachineExtensionHandlerInstanceView> extensionHandlers) {
+    public VirtualMachineAgentInstanceView withExtensionHandlers(List<VirtualMachineExtensionHandlerInstanceView> extensionHandlers) {
         this.extensionHandlers = extensionHandlers;
         return this;
     }
@@ -82,7 +82,7 @@ public class VirtualMachineAgentInstanceView {
      * @param statuses the statuses value to set
      * @return the VirtualMachineAgentInstanceView object itself.
      */
-    public VirtualMachineAgentInstanceView setStatuses(List<InstanceViewStatus> statuses) {
+    public VirtualMachineAgentInstanceView withStatuses(List<InstanceViewStatus> statuses) {
         this.statuses = statuses;
         return this;
     }

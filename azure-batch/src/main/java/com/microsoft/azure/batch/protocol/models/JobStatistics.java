@@ -122,7 +122,7 @@ public class JobStatistics {
      * @param url the url value to set
      * @return the JobStatistics object itself.
      */
-    public JobStatistics setUrl(String url) {
+    public JobStatistics withUrl(String url) {
         this.url = url;
         return this;
     }
@@ -142,7 +142,7 @@ public class JobStatistics {
      * @param startTime the startTime value to set
      * @return the JobStatistics object itself.
      */
-    public JobStatistics setStartTime(DateTime startTime) {
+    public JobStatistics withStartTime(DateTime startTime) {
         this.startTime = startTime;
         return this;
     }
@@ -162,7 +162,7 @@ public class JobStatistics {
      * @param lastUpdateTime the lastUpdateTime value to set
      * @return the JobStatistics object itself.
      */
-    public JobStatistics setLastUpdateTime(DateTime lastUpdateTime) {
+    public JobStatistics withLastUpdateTime(DateTime lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
         return this;
     }
@@ -182,7 +182,7 @@ public class JobStatistics {
      * @param userCPUTime the userCPUTime value to set
      * @return the JobStatistics object itself.
      */
-    public JobStatistics setUserCPUTime(Period userCPUTime) {
+    public JobStatistics withUserCPUTime(Period userCPUTime) {
         this.userCPUTime = userCPUTime;
         return this;
     }
@@ -202,7 +202,7 @@ public class JobStatistics {
      * @param kernelCPUTime the kernelCPUTime value to set
      * @return the JobStatistics object itself.
      */
-    public JobStatistics setKernelCPUTime(Period kernelCPUTime) {
+    public JobStatistics withKernelCPUTime(Period kernelCPUTime) {
         this.kernelCPUTime = kernelCPUTime;
         return this;
     }
@@ -222,7 +222,7 @@ public class JobStatistics {
      * @param wallClockTime the wallClockTime value to set
      * @return the JobStatistics object itself.
      */
-    public JobStatistics setWallClockTime(Period wallClockTime) {
+    public JobStatistics withWallClockTime(Period wallClockTime) {
         this.wallClockTime = wallClockTime;
         return this;
     }
@@ -242,7 +242,7 @@ public class JobStatistics {
      * @param readIOps the readIOps value to set
      * @return the JobStatistics object itself.
      */
-    public JobStatistics setReadIOps(long readIOps) {
+    public JobStatistics withReadIOps(long readIOps) {
         this.readIOps = readIOps;
         return this;
     }
@@ -262,7 +262,7 @@ public class JobStatistics {
      * @param writeIOps the writeIOps value to set
      * @return the JobStatistics object itself.
      */
-    public JobStatistics setWriteIOps(long writeIOps) {
+    public JobStatistics withWriteIOps(long writeIOps) {
         this.writeIOps = writeIOps;
         return this;
     }
@@ -282,7 +282,7 @@ public class JobStatistics {
      * @param readIOGiB the readIOGiB value to set
      * @return the JobStatistics object itself.
      */
-    public JobStatistics setReadIOGiB(double readIOGiB) {
+    public JobStatistics withReadIOGiB(double readIOGiB) {
         this.readIOGiB = readIOGiB;
         return this;
     }
@@ -302,7 +302,7 @@ public class JobStatistics {
      * @param writeIOGiB the writeIOGiB value to set
      * @return the JobStatistics object itself.
      */
-    public JobStatistics setWriteIOGiB(double writeIOGiB) {
+    public JobStatistics withWriteIOGiB(double writeIOGiB) {
         this.writeIOGiB = writeIOGiB;
         return this;
     }
@@ -322,7 +322,7 @@ public class JobStatistics {
      * @param numSucceededTasks the numSucceededTasks value to set
      * @return the JobStatistics object itself.
      */
-    public JobStatistics setNumSucceededTasks(long numSucceededTasks) {
+    public JobStatistics withNumSucceededTasks(long numSucceededTasks) {
         this.numSucceededTasks = numSucceededTasks;
         return this;
     }
@@ -342,7 +342,7 @@ public class JobStatistics {
      * @param numFailedTasks the numFailedTasks value to set
      * @return the JobStatistics object itself.
      */
-    public JobStatistics setNumFailedTasks(long numFailedTasks) {
+    public JobStatistics withNumFailedTasks(long numFailedTasks) {
         this.numFailedTasks = numFailedTasks;
         return this;
     }
@@ -362,7 +362,7 @@ public class JobStatistics {
      * @param numTaskRetries the numTaskRetries value to set
      * @return the JobStatistics object itself.
      */
-    public JobStatistics setNumTaskRetries(long numTaskRetries) {
+    public JobStatistics withNumTaskRetries(long numTaskRetries) {
         this.numTaskRetries = numTaskRetries;
         return this;
     }
@@ -382,7 +382,7 @@ public class JobStatistics {
      * @param waitTime the waitTime value to set
      * @return the JobStatistics object itself.
      */
-    public JobStatistics setWaitTime(Period waitTime) {
+    public JobStatistics withWaitTime(Period waitTime) {
         this.waitTime = waitTime;
         return this;
     }

@@ -33,7 +33,7 @@ public class PoolEvaluateAutoScaleParameter {
      * @param autoScaleFormula the autoScaleFormula value to set
      * @return the PoolEvaluateAutoScaleParameter object itself.
      */
-    public PoolEvaluateAutoScaleParameter setAutoScaleFormula(String autoScaleFormula) {
+    public PoolEvaluateAutoScaleParameter withAutoScaleFormula(String autoScaleFormula) {
         this.autoScaleFormula = autoScaleFormula;
         return this;
     }

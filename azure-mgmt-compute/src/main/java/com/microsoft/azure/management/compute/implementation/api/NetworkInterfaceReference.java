@@ -36,7 +36,7 @@ public class NetworkInterfaceReference extends SubResource {
      * @param primary the primary value to set
      * @return the NetworkInterfaceReference object itself.
      */
-    public NetworkInterfaceReference setPrimary(Boolean primary) {
+    public NetworkInterfaceReference withPrimary(Boolean primary) {
         this.primary = primary;
         return this;
     }

@@ -106,7 +106,7 @@ public class ServerFarmWithRichSkuInner extends Resource {
      * @param serverFarmWithRichSkuName the serverFarmWithRichSkuName value to set
      * @return the ServerFarmWithRichSkuInner object itself.
      */
-    public ServerFarmWithRichSkuInner setServerFarmWithRichSkuName(String serverFarmWithRichSkuName) {
+    public ServerFarmWithRichSkuInner withServerFarmWithRichSkuName(String serverFarmWithRichSkuName) {
         this.serverFarmWithRichSkuName = serverFarmWithRichSkuName;
         return this;
     }
@@ -126,7 +126,7 @@ public class ServerFarmWithRichSkuInner extends Resource {
      * @param workerTierName the workerTierName value to set
      * @return the ServerFarmWithRichSkuInner object itself.
      */
-    public ServerFarmWithRichSkuInner setWorkerTierName(String workerTierName) {
+    public ServerFarmWithRichSkuInner withWorkerTierName(String workerTierName) {
         this.workerTierName = workerTierName;
         return this;
     }
@@ -164,7 +164,7 @@ public class ServerFarmWithRichSkuInner extends Resource {
      * @param adminSiteName the adminSiteName value to set
      * @return the ServerFarmWithRichSkuInner object itself.
      */
-    public ServerFarmWithRichSkuInner setAdminSiteName(String adminSiteName) {
+    public ServerFarmWithRichSkuInner withAdminSiteName(String adminSiteName) {
         this.adminSiteName = adminSiteName;
         return this;
     }
@@ -184,7 +184,7 @@ public class ServerFarmWithRichSkuInner extends Resource {
      * @param hostingEnvironmentProfile the hostingEnvironmentProfile value to set
      * @return the ServerFarmWithRichSkuInner object itself.
      */
-    public ServerFarmWithRichSkuInner setHostingEnvironmentProfile(HostingEnvironmentProfile hostingEnvironmentProfile) {
+    public ServerFarmWithRichSkuInner withHostingEnvironmentProfile(HostingEnvironmentProfile hostingEnvironmentProfile) {
         this.hostingEnvironmentProfile = hostingEnvironmentProfile;
         return this;
     }
@@ -204,7 +204,7 @@ public class ServerFarmWithRichSkuInner extends Resource {
      * @param maximumNumberOfWorkers the maximumNumberOfWorkers value to set
      * @return the ServerFarmWithRichSkuInner object itself.
      */
-    public ServerFarmWithRichSkuInner setMaximumNumberOfWorkers(Integer maximumNumberOfWorkers) {
+    public ServerFarmWithRichSkuInner withMaximumNumberOfWorkers(Integer maximumNumberOfWorkers) {
         this.maximumNumberOfWorkers = maximumNumberOfWorkers;
         return this;
     }
@@ -233,7 +233,7 @@ public class ServerFarmWithRichSkuInner extends Resource {
      * @param perSiteScaling the perSiteScaling value to set
      * @return the ServerFarmWithRichSkuInner object itself.
      */
-    public ServerFarmWithRichSkuInner setPerSiteScaling(Boolean perSiteScaling) {
+    public ServerFarmWithRichSkuInner withPerSiteScaling(Boolean perSiteScaling) {
         this.perSiteScaling = perSiteScaling;
         return this;
     }
@@ -271,7 +271,7 @@ public class ServerFarmWithRichSkuInner extends Resource {
      * @param sku the sku value to set
      * @return the ServerFarmWithRichSkuInner object itself.
      */
-    public ServerFarmWithRichSkuInner setSku(SkuDescription sku) {
+    public ServerFarmWithRichSkuInner withSku(SkuDescription sku) {
         this.sku = sku;
         return this;
     }

@@ -97,7 +97,7 @@ public class USqlTableStatisticsInner extends CatalogItem {
      * @param databaseName the databaseName value to set
      * @return the USqlTableStatisticsInner object itself.
      */
-    public USqlTableStatisticsInner setDatabaseName(String databaseName) {
+    public USqlTableStatisticsInner withDatabaseName(String databaseName) {
         this.databaseName = databaseName;
         return this;
     }
@@ -117,7 +117,7 @@ public class USqlTableStatisticsInner extends CatalogItem {
      * @param schemaName the schemaName value to set
      * @return the USqlTableStatisticsInner object itself.
      */
-    public USqlTableStatisticsInner setSchemaName(String schemaName) {
+    public USqlTableStatisticsInner withSchemaName(String schemaName) {
         this.schemaName = schemaName;
         return this;
     }
@@ -137,7 +137,7 @@ public class USqlTableStatisticsInner extends CatalogItem {
      * @param tableName the tableName value to set
      * @return the USqlTableStatisticsInner object itself.
      */
-    public USqlTableStatisticsInner setTableName(String tableName) {
+    public USqlTableStatisticsInner withTableName(String tableName) {
         this.tableName = tableName;
         return this;
     }
@@ -157,7 +157,7 @@ public class USqlTableStatisticsInner extends CatalogItem {
      * @param name the name value to set
      * @return the USqlTableStatisticsInner object itself.
      */
-    public USqlTableStatisticsInner setName(String name) {
+    public USqlTableStatisticsInner withName(String name) {
         this.name = name;
         return this;
     }
@@ -177,7 +177,7 @@ public class USqlTableStatisticsInner extends CatalogItem {
      * @param userStatName the userStatName value to set
      * @return the USqlTableStatisticsInner object itself.
      */
-    public USqlTableStatisticsInner setUserStatName(String userStatName) {
+    public USqlTableStatisticsInner withUserStatName(String userStatName) {
         this.userStatName = userStatName;
         return this;
     }
@@ -197,7 +197,7 @@ public class USqlTableStatisticsInner extends CatalogItem {
      * @param statDataPath the statDataPath value to set
      * @return the USqlTableStatisticsInner object itself.
      */
-    public USqlTableStatisticsInner setStatDataPath(String statDataPath) {
+    public USqlTableStatisticsInner withStatDataPath(String statDataPath) {
         this.statDataPath = statDataPath;
         return this;
     }
@@ -217,7 +217,7 @@ public class USqlTableStatisticsInner extends CatalogItem {
      * @param createTime the createTime value to set
      * @return the USqlTableStatisticsInner object itself.
      */
-    public USqlTableStatisticsInner setCreateTime(DateTime createTime) {
+    public USqlTableStatisticsInner withCreateTime(DateTime createTime) {
         this.createTime = createTime;
         return this;
     }
@@ -237,7 +237,7 @@ public class USqlTableStatisticsInner extends CatalogItem {
      * @param updateTime the updateTime value to set
      * @return the USqlTableStatisticsInner object itself.
      */
-    public USqlTableStatisticsInner setUpdateTime(DateTime updateTime) {
+    public USqlTableStatisticsInner withUpdateTime(DateTime updateTime) {
         this.updateTime = updateTime;
         return this;
     }
@@ -257,7 +257,7 @@ public class USqlTableStatisticsInner extends CatalogItem {
      * @param isUserCreated the isUserCreated value to set
      * @return the USqlTableStatisticsInner object itself.
      */
-    public USqlTableStatisticsInner setIsUserCreated(Boolean isUserCreated) {
+    public USqlTableStatisticsInner withIsUserCreated(Boolean isUserCreated) {
         this.isUserCreated = isUserCreated;
         return this;
     }
@@ -277,7 +277,7 @@ public class USqlTableStatisticsInner extends CatalogItem {
      * @param isAutoCreated the isAutoCreated value to set
      * @return the USqlTableStatisticsInner object itself.
      */
-    public USqlTableStatisticsInner setIsAutoCreated(Boolean isAutoCreated) {
+    public USqlTableStatisticsInner withIsAutoCreated(Boolean isAutoCreated) {
         this.isAutoCreated = isAutoCreated;
         return this;
     }
@@ -297,7 +297,7 @@ public class USqlTableStatisticsInner extends CatalogItem {
      * @param hasFilter the hasFilter value to set
      * @return the USqlTableStatisticsInner object itself.
      */
-    public USqlTableStatisticsInner setHasFilter(Boolean hasFilter) {
+    public USqlTableStatisticsInner withHasFilter(Boolean hasFilter) {
         this.hasFilter = hasFilter;
         return this;
     }
@@ -317,7 +317,7 @@ public class USqlTableStatisticsInner extends CatalogItem {
      * @param filterDefinition the filterDefinition value to set
      * @return the USqlTableStatisticsInner object itself.
      */
-    public USqlTableStatisticsInner setFilterDefinition(String filterDefinition) {
+    public USqlTableStatisticsInner withFilterDefinition(String filterDefinition) {
         this.filterDefinition = filterDefinition;
         return this;
     }
@@ -337,7 +337,7 @@ public class USqlTableStatisticsInner extends CatalogItem {
      * @param colNames the colNames value to set
      * @return the USqlTableStatisticsInner object itself.
      */
-    public USqlTableStatisticsInner setColNames(List<String> colNames) {
+    public USqlTableStatisticsInner withColNames(List<String> colNames) {
         this.colNames = colNames;
         return this;
     }

@@ -77,6 +77,10 @@ public final class CatalogsInner {
         Call<ResponseBody> deleteSecret(@Path("databaseName") String databaseName, @Path("secretName") String secretName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
+        @HTTP(path = "catalog/usql/databases/{databaseName}/secrets", method = "DELETE", hasBody = true)
+        Call<ResponseBody> deleteAllSecrets(@Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/externaldatasources/{externalDataSourceName}")
         Call<ResponseBody> getExternalDataSource(@Path("databaseName") String databaseName, @Path("externalDataSourceName") String externalDataSourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
@@ -123,6 +127,14 @@ public final class CatalogsInner {
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/statistics")
         Call<ResponseBody> listTableStatistics(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("tableName") String tableName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/partitions/{partitionName}")
+        Call<ResponseBody> getTablePartition(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("tableName") String tableName, @Path("partitionName") String partitionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/partitions")
+        Call<ResponseBody> listTablePartitions(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("tableName") String tableName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/types")
@@ -183,6 +195,10 @@ public final class CatalogsInner {
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
         Call<ResponseBody> listTableStatisticsNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET
+        Call<ResponseBody> listTablePartitionsNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
@@ -578,6 +594,85 @@ public final class CatalogsInner {
     }
 
     private ServiceResponse<Void> deleteSecretDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .build(response);
+    }
+
+    /**
+     * Deletes all secrets in the specified database.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the secret.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public ServiceResponse<Void> deleteAllSecrets(String accountName, String databaseName) throws CloudException, IOException, IllegalArgumentException {
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.adlaCatalogDnsSuffix() == null) {
+            throw new IllegalArgumentException("Parameter this.client.adlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        Call<ResponseBody> call = service.deleteAllSecrets(databaseName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return deleteAllSecretsDelegate(call.execute());
+    }
+
+    /**
+     * Deletes all secrets in the specified database.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the secret.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall deleteAllSecretsAsync(String accountName, String databaseName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (accountName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.adlaCatalogDnsSuffix() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        Call<ResponseBody> call = service.deleteAllSecrets(databaseName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(deleteAllSecretsDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<Void> deleteAllSecretsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -2155,7 +2250,7 @@ public final class CatalogsInner {
     }
 
     /**
-     * Retrieves the specified table from the Data Lake Analytics catalog.
+     * Retrieves the specified table statistics from the Data Lake Analytics catalog.
      *
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the statistics.
@@ -2195,7 +2290,7 @@ public final class CatalogsInner {
     }
 
     /**
-     * Retrieves the specified table from the Data Lake Analytics catalog.
+     * Retrieves the specified table statistics from the Data Lake Analytics catalog.
      *
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the statistics.
@@ -2262,7 +2357,7 @@ public final class CatalogsInner {
     }
 
     /**
-     * Retrieves the list of tables from the Data Lake Analytics catalog.
+     * Retrieves the list of table statistics from the Data Lake Analytics catalog.
      *
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the statistics.
@@ -2312,7 +2407,7 @@ public final class CatalogsInner {
     }
 
     /**
-     * Retrieves the list of tables from the Data Lake Analytics catalog.
+     * Retrieves the list of table statistics from the Data Lake Analytics catalog.
      *
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the statistics.
@@ -2381,7 +2476,7 @@ public final class CatalogsInner {
     }
 
     /**
-     * Retrieves the list of tables from the Data Lake Analytics catalog.
+     * Retrieves the list of table statistics from the Data Lake Analytics catalog.
      *
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the statistics.
@@ -2431,7 +2526,7 @@ public final class CatalogsInner {
     }
 
     /**
-     * Retrieves the list of tables from the Data Lake Analytics catalog.
+     * Retrieves the list of table statistics from the Data Lake Analytics catalog.
      *
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the statistics.
@@ -2502,6 +2597,358 @@ public final class CatalogsInner {
     private ServiceResponse<PageImpl<USqlTableStatisticsInner>> listTableStatisticsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<USqlTableStatisticsInner>, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<PageImpl<USqlTableStatisticsInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Retrieves the specified table partition from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the partition.
+     * @param schemaName The name of the schema containing the partition.
+     * @param tableName The name of the table containing the partition.
+     * @param partitionName The name of the table partition.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the USqlTablePartitionInner object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<USqlTablePartitionInner> getTablePartition(String accountName, String databaseName, String schemaName, String tableName, String partitionName) throws CloudException, IOException, IllegalArgumentException {
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.adlaCatalogDnsSuffix() == null) {
+            throw new IllegalArgumentException("Parameter this.client.adlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (schemaName == null) {
+            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
+        }
+        if (tableName == null) {
+            throw new IllegalArgumentException("Parameter tableName is required and cannot be null.");
+        }
+        if (partitionName == null) {
+            throw new IllegalArgumentException("Parameter partitionName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        Call<ResponseBody> call = service.getTablePartition(databaseName, schemaName, tableName, partitionName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return getTablePartitionDelegate(call.execute());
+    }
+
+    /**
+     * Retrieves the specified table partition from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the partition.
+     * @param schemaName The name of the schema containing the partition.
+     * @param tableName The name of the table containing the partition.
+     * @param partitionName The name of the table partition.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getTablePartitionAsync(String accountName, String databaseName, String schemaName, String tableName, String partitionName, final ServiceCallback<USqlTablePartitionInner> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (accountName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.adlaCatalogDnsSuffix() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (schemaName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
+            return null;
+        }
+        if (tableName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
+            return null;
+        }
+        if (partitionName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter partitionName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        Call<ResponseBody> call = service.getTablePartition(databaseName, schemaName, tableName, partitionName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<USqlTablePartitionInner>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getTablePartitionDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<USqlTablePartitionInner> getTablePartitionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<USqlTablePartitionInner, CloudException>(this.client.restClient().mapperAdapter())
+                .register(200, new TypeToken<USqlTablePartitionInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Retrieves the list of table partitions from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the partitions.
+     * @param schemaName The name of the schema containing the partitions.
+     * @param tableName The name of the table containing the partitions.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;USqlTablePartitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<USqlTablePartitionInner>> listTablePartitions(final String accountName, final String databaseName, final String schemaName, final String tableName) throws CloudException, IOException, IllegalArgumentException {
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.adlaCatalogDnsSuffix() == null) {
+            throw new IllegalArgumentException("Parameter this.client.adlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (schemaName == null) {
+            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
+        }
+        if (tableName == null) {
+            throw new IllegalArgumentException("Parameter tableName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final String filter = null;
+        final Integer top = null;
+        final Integer skip = null;
+        final String expand = null;
+        final String select = null;
+        final String orderby = null;
+        final Boolean count = null;
+        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        Call<ResponseBody> call = service.listTablePartitions(databaseName, schemaName, tableName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        ServiceResponse<PageImpl<USqlTablePartitionInner>> response = listTablePartitionsDelegate(call.execute());
+        PagedList<USqlTablePartitionInner> result = new PagedList<USqlTablePartitionInner>(response.getBody()) {
+            @Override
+            public Page<USqlTablePartitionInner> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listTablePartitionsNext(nextPageLink).getBody();
+            }
+        };
+        return new ServiceResponse<>(result, response.getResponse());
+    }
+
+    /**
+     * Retrieves the list of table partitions from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the partitions.
+     * @param schemaName The name of the schema containing the partitions.
+     * @param tableName The name of the table containing the partitions.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listTablePartitionsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final ListOperationCallback<USqlTablePartitionInner> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (accountName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.adlaCatalogDnsSuffix() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (schemaName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
+            return null;
+        }
+        if (tableName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String filter = null;
+        final Integer top = null;
+        final Integer skip = null;
+        final String expand = null;
+        final String select = null;
+        final String orderby = null;
+        final Boolean count = null;
+        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        Call<ResponseBody> call = service.listTablePartitions(databaseName, schemaName, tableName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<List<USqlTablePartitionInner>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<PageImpl<USqlTablePartitionInner>> result = listTablePartitionsDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        listTablePartitionsNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+                    }
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Retrieves the list of table partitions from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the partitions.
+     * @param schemaName The name of the schema containing the partitions.
+     * @param tableName The name of the table containing the partitions.
+     * @param filter OData filter. Optional.
+     * @param top The number of items to return. Optional.
+     * @param skip The number of items to skip over before returning elements. Optional.
+     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
+     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;USqlTablePartitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<USqlTablePartitionInner>> listTablePartitions(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.adlaCatalogDnsSuffix() == null) {
+            throw new IllegalArgumentException("Parameter this.client.adlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (schemaName == null) {
+            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
+        }
+        if (tableName == null) {
+            throw new IllegalArgumentException("Parameter tableName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        Call<ResponseBody> call = service.listTablePartitions(databaseName, schemaName, tableName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        ServiceResponse<PageImpl<USqlTablePartitionInner>> response = listTablePartitionsDelegate(call.execute());
+        PagedList<USqlTablePartitionInner> result = new PagedList<USqlTablePartitionInner>(response.getBody()) {
+            @Override
+            public Page<USqlTablePartitionInner> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listTablePartitionsNext(nextPageLink).getBody();
+            }
+        };
+        return new ServiceResponse<>(result, response.getResponse());
+    }
+
+    /**
+     * Retrieves the list of table partitions from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the partitions.
+     * @param schemaName The name of the schema containing the partitions.
+     * @param tableName The name of the table containing the partitions.
+     * @param filter OData filter. Optional.
+     * @param top The number of items to return. Optional.
+     * @param skip The number of items to skip over before returning elements. Optional.
+     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
+     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listTablePartitionsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTablePartitionInner> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (accountName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.adlaCatalogDnsSuffix() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (schemaName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
+            return null;
+        }
+        if (tableName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        Call<ResponseBody> call = service.listTablePartitions(databaseName, schemaName, tableName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<List<USqlTablePartitionInner>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<PageImpl<USqlTablePartitionInner>> result = listTablePartitionsDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        listTablePartitionsNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+                    }
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<PageImpl<USqlTablePartitionInner>> listTablePartitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<USqlTablePartitionInner>, CloudException>(this.client.restClient().mapperAdapter())
+                .register(200, new TypeToken<PageImpl<USqlTablePartitionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -4251,7 +4698,7 @@ public final class CatalogsInner {
     }
 
     /**
-     * Retrieves the list of tables from the Data Lake Analytics catalog.
+     * Retrieves the list of table statistics from the Data Lake Analytics catalog.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws CloudException exception thrown from REST call
@@ -4269,7 +4716,7 @@ public final class CatalogsInner {
     }
 
     /**
-     * Retrieves the list of tables from the Data Lake Analytics catalog.
+     * Retrieves the list of table statistics from the Data Lake Analytics catalog.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -4311,6 +4758,71 @@ public final class CatalogsInner {
     private ServiceResponse<PageImpl<USqlTableStatisticsInner>> listTableStatisticsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<USqlTableStatisticsInner>, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<PageImpl<USqlTableStatisticsInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Retrieves the list of table partitions from the Data Lake Analytics catalog.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;USqlTablePartitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PageImpl<USqlTablePartitionInner>> listTablePartitionsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        this.client.restClient().setBaseUrl();
+        Call<ResponseBody> call = service.listTablePartitionsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
+        return listTablePartitionsNextDelegate(call.execute());
+    }
+
+    /**
+     * Retrieves the list of table partitions from the Data Lake Analytics catalog.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listTablePartitionsNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<USqlTablePartitionInner> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (nextPageLink == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            return null;
+        }
+        this.client.restClient().setBaseUrl();
+        Call<ResponseBody> call = service.listTablePartitionsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
+        serviceCall.newCall(call);
+        call.enqueue(new ServiceResponseCallback<List<USqlTablePartitionInner>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<PageImpl<USqlTablePartitionInner>> result = listTablePartitionsNextDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        listTablePartitionsNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+                    }
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<PageImpl<USqlTablePartitionInner>> listTablePartitionsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<USqlTablePartitionInner>, CloudException>(this.client.restClient().mapperAdapter())
+                .register(200, new TypeToken<PageImpl<USqlTablePartitionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

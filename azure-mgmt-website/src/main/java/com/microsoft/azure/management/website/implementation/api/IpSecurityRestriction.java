@@ -36,7 +36,7 @@ public class IpSecurityRestriction {
      * @param ipAddress the ipAddress value to set
      * @return the IpSecurityRestriction object itself.
      */
-    public IpSecurityRestriction setIpAddress(String ipAddress) {
+    public IpSecurityRestriction withIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
         return this;
     }
@@ -56,7 +56,7 @@ public class IpSecurityRestriction {
      * @param subnetMask the subnetMask value to set
      * @return the IpSecurityRestriction object itself.
      */
-    public IpSecurityRestriction setSubnetMask(String subnetMask) {
+    public IpSecurityRestriction withSubnetMask(String subnetMask) {
         this.subnetMask = subnetMask;
         return this;
     }

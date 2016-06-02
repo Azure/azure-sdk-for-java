@@ -53,7 +53,7 @@ public class SiteCloneabilityInner {
      * @param result the result value to set
      * @return the SiteCloneabilityInner object itself.
      */
-    public SiteCloneabilityInner setResult(CloneAbilityResult result) {
+    public SiteCloneabilityInner withResult(CloneAbilityResult result) {
         this.result = result;
         return this;
     }
@@ -73,7 +73,7 @@ public class SiteCloneabilityInner {
      * @param blockingFeatures the blockingFeatures value to set
      * @return the SiteCloneabilityInner object itself.
      */
-    public SiteCloneabilityInner setBlockingFeatures(List<SiteCloneabilityCriterion> blockingFeatures) {
+    public SiteCloneabilityInner withBlockingFeatures(List<SiteCloneabilityCriterion> blockingFeatures) {
         this.blockingFeatures = blockingFeatures;
         return this;
     }
@@ -93,7 +93,7 @@ public class SiteCloneabilityInner {
      * @param unsupportedFeatures the unsupportedFeatures value to set
      * @return the SiteCloneabilityInner object itself.
      */
-    public SiteCloneabilityInner setUnsupportedFeatures(List<SiteCloneabilityCriterion> unsupportedFeatures) {
+    public SiteCloneabilityInner withUnsupportedFeatures(List<SiteCloneabilityCriterion> unsupportedFeatures) {
         this.unsupportedFeatures = unsupportedFeatures;
         return this;
     }
@@ -113,7 +113,7 @@ public class SiteCloneabilityInner {
      * @param blockingCharacteristics the blockingCharacteristics value to set
      * @return the SiteCloneabilityInner object itself.
      */
-    public SiteCloneabilityInner setBlockingCharacteristics(List<SiteCloneabilityCriterion> blockingCharacteristics) {
+    public SiteCloneabilityInner withBlockingCharacteristics(List<SiteCloneabilityCriterion> blockingCharacteristics) {
         this.blockingCharacteristics = blockingCharacteristics;
         return this;
     }

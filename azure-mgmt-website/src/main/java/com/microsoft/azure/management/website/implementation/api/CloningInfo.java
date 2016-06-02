@@ -90,7 +90,7 @@ public class CloningInfo {
      * @param correlationId the correlationId value to set
      * @return the CloningInfo object itself.
      */
-    public CloningInfo setCorrelationId(String correlationId) {
+    public CloningInfo withCorrelationId(String correlationId) {
         this.correlationId = correlationId;
         return this;
     }
@@ -110,7 +110,7 @@ public class CloningInfo {
      * @param overwrite the overwrite value to set
      * @return the CloningInfo object itself.
      */
-    public CloningInfo setOverwrite(Boolean overwrite) {
+    public CloningInfo withOverwrite(Boolean overwrite) {
         this.overwrite = overwrite;
         return this;
     }
@@ -130,7 +130,7 @@ public class CloningInfo {
      * @param cloneCustomHostNames the cloneCustomHostNames value to set
      * @return the CloningInfo object itself.
      */
-    public CloningInfo setCloneCustomHostNames(Boolean cloneCustomHostNames) {
+    public CloningInfo withCloneCustomHostNames(Boolean cloneCustomHostNames) {
         this.cloneCustomHostNames = cloneCustomHostNames;
         return this;
     }
@@ -150,7 +150,7 @@ public class CloningInfo {
      * @param cloneSourceControl the cloneSourceControl value to set
      * @return the CloningInfo object itself.
      */
-    public CloningInfo setCloneSourceControl(Boolean cloneSourceControl) {
+    public CloningInfo withCloneSourceControl(Boolean cloneSourceControl) {
         this.cloneSourceControl = cloneSourceControl;
         return this;
     }
@@ -170,7 +170,7 @@ public class CloningInfo {
      * @param sourceWebAppId the sourceWebAppId value to set
      * @return the CloningInfo object itself.
      */
-    public CloningInfo setSourceWebAppId(String sourceWebAppId) {
+    public CloningInfo withSourceWebAppId(String sourceWebAppId) {
         this.sourceWebAppId = sourceWebAppId;
         return this;
     }
@@ -190,7 +190,7 @@ public class CloningInfo {
      * @param hostingEnvironment the hostingEnvironment value to set
      * @return the CloningInfo object itself.
      */
-    public CloningInfo setHostingEnvironment(String hostingEnvironment) {
+    public CloningInfo withHostingEnvironment(String hostingEnvironment) {
         this.hostingEnvironment = hostingEnvironment;
         return this;
     }
@@ -210,7 +210,7 @@ public class CloningInfo {
      * @param appSettingsOverrides the appSettingsOverrides value to set
      * @return the CloningInfo object itself.
      */
-    public CloningInfo setAppSettingsOverrides(Map<String, String> appSettingsOverrides) {
+    public CloningInfo withAppSettingsOverrides(Map<String, String> appSettingsOverrides) {
         this.appSettingsOverrides = appSettingsOverrides;
         return this;
     }
@@ -230,7 +230,7 @@ public class CloningInfo {
      * @param configureLoadBalancing the configureLoadBalancing value to set
      * @return the CloningInfo object itself.
      */
-    public CloningInfo setConfigureLoadBalancing(Boolean configureLoadBalancing) {
+    public CloningInfo withConfigureLoadBalancing(Boolean configureLoadBalancing) {
         this.configureLoadBalancing = configureLoadBalancing;
         return this;
     }
@@ -250,7 +250,7 @@ public class CloningInfo {
      * @param trafficManagerProfileId the trafficManagerProfileId value to set
      * @return the CloningInfo object itself.
      */
-    public CloningInfo setTrafficManagerProfileId(String trafficManagerProfileId) {
+    public CloningInfo withTrafficManagerProfileId(String trafficManagerProfileId) {
         this.trafficManagerProfileId = trafficManagerProfileId;
         return this;
     }
@@ -270,7 +270,7 @@ public class CloningInfo {
      * @param trafficManagerProfileName the trafficManagerProfileName value to set
      * @return the CloningInfo object itself.
      */
-    public CloningInfo setTrafficManagerProfileName(String trafficManagerProfileName) {
+    public CloningInfo withTrafficManagerProfileName(String trafficManagerProfileName) {
         this.trafficManagerProfileName = trafficManagerProfileName;
         return this;
     }

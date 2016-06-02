@@ -43,7 +43,7 @@ public class TagValueInner {
      * @param id the id value to set
      * @return the TagValueInner object itself.
      */
-    public TagValueInner setId(String id) {
+    public TagValueInner withId(String id) {
         this.id = id;
         return this;
     }
@@ -63,7 +63,7 @@ public class TagValueInner {
      * @param tagValueProperty the tagValueProperty value to set
      * @return the TagValueInner object itself.
      */
-    public TagValueInner setTagValueProperty(String tagValueProperty) {
+    public TagValueInner withTagValueProperty(String tagValueProperty) {
         this.tagValueProperty = tagValueProperty;
         return this;
     }
@@ -83,7 +83,7 @@ public class TagValueInner {
      * @param count the count value to set
      * @return the TagValueInner object itself.
      */
-    public TagValueInner setCount(TagCount count) {
+    public TagValueInner withCount(TagCount count) {
         this.count = count;
         return this;
     }

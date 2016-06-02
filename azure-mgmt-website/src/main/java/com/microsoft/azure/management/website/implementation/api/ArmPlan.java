@@ -51,7 +51,7 @@ public class ArmPlan {
      * @param name the name value to set
      * @return the ArmPlan object itself.
      */
-    public ArmPlan setName(String name) {
+    public ArmPlan withName(String name) {
         this.name = name;
         return this;
     }
@@ -71,7 +71,7 @@ public class ArmPlan {
      * @param publisher the publisher value to set
      * @return the ArmPlan object itself.
      */
-    public ArmPlan setPublisher(String publisher) {
+    public ArmPlan withPublisher(String publisher) {
         this.publisher = publisher;
         return this;
     }
@@ -91,7 +91,7 @@ public class ArmPlan {
      * @param product the product value to set
      * @return the ArmPlan object itself.
      */
-    public ArmPlan setProduct(String product) {
+    public ArmPlan withProduct(String product) {
         this.product = product;
         return this;
     }
@@ -111,7 +111,7 @@ public class ArmPlan {
      * @param promotionCode the promotionCode value to set
      * @return the ArmPlan object itself.
      */
-    public ArmPlan setPromotionCode(String promotionCode) {
+    public ArmPlan withPromotionCode(String promotionCode) {
         this.promotionCode = promotionCode;
         return this;
     }
@@ -131,7 +131,7 @@ public class ArmPlan {
      * @param version the version value to set
      * @return the ArmPlan object itself.
      */
-    public ArmPlan setVersion(String version) {
+    public ArmPlan withVersion(String version) {
         this.version = version;
         return this;
     }

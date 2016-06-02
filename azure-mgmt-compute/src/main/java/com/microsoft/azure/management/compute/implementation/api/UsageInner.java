@@ -58,7 +58,7 @@ public class UsageInner {
      * @param unit the unit value to set
      * @return the UsageInner object itself.
      */
-    public UsageInner setUnit(String unit) {
+    public UsageInner withUnit(String unit) {
         this.unit = unit;
         return this;
     }
@@ -78,7 +78,7 @@ public class UsageInner {
      * @param currentValue the currentValue value to set
      * @return the UsageInner object itself.
      */
-    public UsageInner setCurrentValue(int currentValue) {
+    public UsageInner withCurrentValue(int currentValue) {
         this.currentValue = currentValue;
         return this;
     }
@@ -98,7 +98,7 @@ public class UsageInner {
      * @param limit the limit value to set
      * @return the UsageInner object itself.
      */
-    public UsageInner setLimit(long limit) {
+    public UsageInner withLimit(long limit) {
         this.limit = limit;
         return this;
     }
@@ -118,7 +118,7 @@ public class UsageInner {
      * @param name the name value to set
      * @return the UsageInner object itself.
      */
-    public UsageInner setName(UsageName name) {
+    public UsageInner withName(UsageName name) {
         this.name = name;
         return this;
     }

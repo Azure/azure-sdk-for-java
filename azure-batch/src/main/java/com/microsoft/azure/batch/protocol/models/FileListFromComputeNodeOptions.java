@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the ListFromComputeNode operation.
+ * Additional parameters for the File_ListFromComputeNode operation.
  */
 public class FileListFromComputeNodeOptions {
     /**
@@ -70,7 +70,7 @@ public class FileListFromComputeNodeOptions {
      * @param filter the filter value to set
      * @return the FileListFromComputeNodeOptions object itself.
      */
-    public FileListFromComputeNodeOptions setFilter(String filter) {
+    public FileListFromComputeNodeOptions withFilter(String filter) {
         this.filter = filter;
         return this;
     }
@@ -90,7 +90,7 @@ public class FileListFromComputeNodeOptions {
      * @param maxResults the maxResults value to set
      * @return the FileListFromComputeNodeOptions object itself.
      */
-    public FileListFromComputeNodeOptions setMaxResults(Integer maxResults) {
+    public FileListFromComputeNodeOptions withMaxResults(Integer maxResults) {
         this.maxResults = maxResults;
         return this;
     }
@@ -110,7 +110,7 @@ public class FileListFromComputeNodeOptions {
      * @param timeout the timeout value to set
      * @return the FileListFromComputeNodeOptions object itself.
      */
-    public FileListFromComputeNodeOptions setTimeout(Integer timeout) {
+    public FileListFromComputeNodeOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -130,7 +130,7 @@ public class FileListFromComputeNodeOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the FileListFromComputeNodeOptions object itself.
      */
-    public FileListFromComputeNodeOptions setClientRequestId(String clientRequestId) {
+    public FileListFromComputeNodeOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -150,7 +150,7 @@ public class FileListFromComputeNodeOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the FileListFromComputeNodeOptions object itself.
      */
-    public FileListFromComputeNodeOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public FileListFromComputeNodeOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -173,7 +173,7 @@ public class FileListFromComputeNodeOptions {
      * @param ocpDate the ocpDate value to set
      * @return the FileListFromComputeNodeOptions object itself.
      */
-    public FileListFromComputeNodeOptions setOcpDate(DateTime ocpDate) {
+    public FileListFromComputeNodeOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }

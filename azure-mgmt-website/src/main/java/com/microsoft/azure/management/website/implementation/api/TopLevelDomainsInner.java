@@ -216,7 +216,7 @@ public final class TopLevelDomainsInner {
         }
         final Boolean includePrivacy = null;
         TopLevelDomainAgreementOption agreementOption = new TopLevelDomainAgreementOption();
-        agreementOption = null;
+        agreementOption.withIncludePrivacy(null);
         Call<ResponseBody> call = service.listTopLevelDomainAgreements(name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), agreementOption, this.client.userAgent());
         return listTopLevelDomainAgreementsDelegate(call.execute());
     }
@@ -247,7 +247,7 @@ public final class TopLevelDomainsInner {
         }
         final Boolean includePrivacy = null;
         TopLevelDomainAgreementOption agreementOption = new TopLevelDomainAgreementOption();
-        agreementOption = null;
+        agreementOption.withIncludePrivacy(null);
         Call<ResponseBody> call = service.listTopLevelDomainAgreements(name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), agreementOption, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<TldLegalAgreementCollectionInner>(serviceCallback) {
@@ -284,7 +284,7 @@ public final class TopLevelDomainsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         TopLevelDomainAgreementOption agreementOption = new TopLevelDomainAgreementOption();
-        agreementOption.setIncludePrivacy(includePrivacy);
+        agreementOption.withIncludePrivacy(includePrivacy);
         Call<ResponseBody> call = service.listTopLevelDomainAgreements(name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), agreementOption, this.client.userAgent());
         return listTopLevelDomainAgreementsDelegate(call.execute());
     }
@@ -315,7 +315,7 @@ public final class TopLevelDomainsInner {
             return null;
         }
         TopLevelDomainAgreementOption agreementOption = new TopLevelDomainAgreementOption();
-        agreementOption.setIncludePrivacy(includePrivacy);
+        agreementOption.withIncludePrivacy(includePrivacy);
         Call<ResponseBody> call = service.listTopLevelDomainAgreements(name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), agreementOption, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<TldLegalAgreementCollectionInner>(serviceCallback) {

@@ -86,7 +86,7 @@ public class Usage extends Resource {
      * @param displayName the displayName value to set
      * @return the Usage object itself.
      */
-    public Usage setDisplayName(String displayName) {
+    public Usage withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -106,7 +106,7 @@ public class Usage extends Resource {
      * @param usageName the usageName value to set
      * @return the Usage object itself.
      */
-    public Usage setUsageName(String usageName) {
+    public Usage withUsageName(String usageName) {
         this.usageName = usageName;
         return this;
     }
@@ -126,7 +126,7 @@ public class Usage extends Resource {
      * @param resourceName the resourceName value to set
      * @return the Usage object itself.
      */
-    public Usage setResourceName(String resourceName) {
+    public Usage withResourceName(String resourceName) {
         this.resourceName = resourceName;
         return this;
     }
@@ -146,7 +146,7 @@ public class Usage extends Resource {
      * @param unit the unit value to set
      * @return the Usage object itself.
      */
-    public Usage setUnit(String unit) {
+    public Usage withUnit(String unit) {
         this.unit = unit;
         return this;
     }
@@ -166,7 +166,7 @@ public class Usage extends Resource {
      * @param currentValue the currentValue value to set
      * @return the Usage object itself.
      */
-    public Usage setCurrentValue(Long currentValue) {
+    public Usage withCurrentValue(Long currentValue) {
         this.currentValue = currentValue;
         return this;
     }
@@ -186,7 +186,7 @@ public class Usage extends Resource {
      * @param limit the limit value to set
      * @return the Usage object itself.
      */
-    public Usage setLimit(Long limit) {
+    public Usage withLimit(Long limit) {
         this.limit = limit;
         return this;
     }
@@ -206,7 +206,7 @@ public class Usage extends Resource {
      * @param nextResetTime the nextResetTime value to set
      * @return the Usage object itself.
      */
-    public Usage setNextResetTime(DateTime nextResetTime) {
+    public Usage withNextResetTime(DateTime nextResetTime) {
         this.nextResetTime = nextResetTime;
         return this;
     }
@@ -226,7 +226,7 @@ public class Usage extends Resource {
      * @param computeMode the computeMode value to set
      * @return the Usage object itself.
      */
-    public Usage setComputeMode(ComputeModeOptions computeMode) {
+    public Usage withComputeMode(ComputeModeOptions computeMode) {
         this.computeMode = computeMode;
         return this;
     }
@@ -246,7 +246,7 @@ public class Usage extends Resource {
      * @param siteMode the siteMode value to set
      * @return the Usage object itself.
      */
-    public Usage setSiteMode(String siteMode) {
+    public Usage withSiteMode(String siteMode) {
         this.siteMode = siteMode;
         return this;
     }

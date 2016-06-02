@@ -60,7 +60,7 @@ public class TaskUpdateHeaders {
      * @param clientRequestId the clientRequestId value to set
      * @return the TaskUpdateHeaders object itself.
      */
-    public TaskUpdateHeaders setClientRequestId(String clientRequestId) {
+    public TaskUpdateHeaders withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -80,7 +80,7 @@ public class TaskUpdateHeaders {
      * @param requestId the requestId value to set
      * @return the TaskUpdateHeaders object itself.
      */
-    public TaskUpdateHeaders setRequestId(String requestId) {
+    public TaskUpdateHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -100,7 +100,7 @@ public class TaskUpdateHeaders {
      * @param eTag the eTag value to set
      * @return the TaskUpdateHeaders object itself.
      */
-    public TaskUpdateHeaders setETag(String eTag) {
+    public TaskUpdateHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -123,7 +123,7 @@ public class TaskUpdateHeaders {
      * @param lastModified the lastModified value to set
      * @return the TaskUpdateHeaders object itself.
      */
-    public TaskUpdateHeaders setLastModified(DateTime lastModified) {
+    public TaskUpdateHeaders withLastModified(DateTime lastModified) {
         this.lastModified = new DateTimeRfc1123(lastModified);
         return this;
     }
@@ -143,7 +143,7 @@ public class TaskUpdateHeaders {
      * @param dataServiceId the dataServiceId value to set
      * @return the TaskUpdateHeaders object itself.
      */
-    public TaskUpdateHeaders setDataServiceId(String dataServiceId) {
+    public TaskUpdateHeaders withDataServiceId(String dataServiceId) {
         this.dataServiceId = dataServiceId;
         return this;
     }

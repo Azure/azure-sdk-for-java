@@ -41,7 +41,7 @@ public class ApplicationLogsConfig {
      * @param fileSystem the fileSystem value to set
      * @return the ApplicationLogsConfig object itself.
      */
-    public ApplicationLogsConfig setFileSystem(FileSystemApplicationLogsConfig fileSystem) {
+    public ApplicationLogsConfig withFileSystem(FileSystemApplicationLogsConfig fileSystem) {
         this.fileSystem = fileSystem;
         return this;
     }
@@ -61,7 +61,7 @@ public class ApplicationLogsConfig {
      * @param azureTableStorage the azureTableStorage value to set
      * @return the ApplicationLogsConfig object itself.
      */
-    public ApplicationLogsConfig setAzureTableStorage(AzureTableStorageApplicationLogsConfig azureTableStorage) {
+    public ApplicationLogsConfig withAzureTableStorage(AzureTableStorageApplicationLogsConfig azureTableStorage) {
         this.azureTableStorage = azureTableStorage;
         return this;
     }
@@ -81,7 +81,7 @@ public class ApplicationLogsConfig {
      * @param azureBlobStorage the azureBlobStorage value to set
      * @return the ApplicationLogsConfig object itself.
      */
-    public ApplicationLogsConfig setAzureBlobStorage(AzureBlobStorageApplicationLogsConfig azureBlobStorage) {
+    public ApplicationLogsConfig withAzureBlobStorage(AzureBlobStorageApplicationLogsConfig azureBlobStorage) {
         this.azureBlobStorage = azureBlobStorage;
         return this;
     }

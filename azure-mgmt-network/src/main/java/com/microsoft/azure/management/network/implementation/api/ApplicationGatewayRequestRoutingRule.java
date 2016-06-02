@@ -79,7 +79,7 @@ public class ApplicationGatewayRequestRoutingRule extends SubResource {
      * @param ruleType the ruleType value to set
      * @return the ApplicationGatewayRequestRoutingRule object itself.
      */
-    public ApplicationGatewayRequestRoutingRule setRuleType(String ruleType) {
+    public ApplicationGatewayRequestRoutingRule withRuleType(String ruleType) {
         this.ruleType = ruleType;
         return this;
     }
@@ -99,7 +99,7 @@ public class ApplicationGatewayRequestRoutingRule extends SubResource {
      * @param backendAddressPool the backendAddressPool value to set
      * @return the ApplicationGatewayRequestRoutingRule object itself.
      */
-    public ApplicationGatewayRequestRoutingRule setBackendAddressPool(SubResource backendAddressPool) {
+    public ApplicationGatewayRequestRoutingRule withBackendAddressPool(SubResource backendAddressPool) {
         this.backendAddressPool = backendAddressPool;
         return this;
     }
@@ -119,7 +119,7 @@ public class ApplicationGatewayRequestRoutingRule extends SubResource {
      * @param backendHttpSettings the backendHttpSettings value to set
      * @return the ApplicationGatewayRequestRoutingRule object itself.
      */
-    public ApplicationGatewayRequestRoutingRule setBackendHttpSettings(SubResource backendHttpSettings) {
+    public ApplicationGatewayRequestRoutingRule withBackendHttpSettings(SubResource backendHttpSettings) {
         this.backendHttpSettings = backendHttpSettings;
         return this;
     }
@@ -139,7 +139,7 @@ public class ApplicationGatewayRequestRoutingRule extends SubResource {
      * @param httpListener the httpListener value to set
      * @return the ApplicationGatewayRequestRoutingRule object itself.
      */
-    public ApplicationGatewayRequestRoutingRule setHttpListener(SubResource httpListener) {
+    public ApplicationGatewayRequestRoutingRule withHttpListener(SubResource httpListener) {
         this.httpListener = httpListener;
         return this;
     }
@@ -159,7 +159,7 @@ public class ApplicationGatewayRequestRoutingRule extends SubResource {
      * @param urlPathMap the urlPathMap value to set
      * @return the ApplicationGatewayRequestRoutingRule object itself.
      */
-    public ApplicationGatewayRequestRoutingRule setUrlPathMap(SubResource urlPathMap) {
+    public ApplicationGatewayRequestRoutingRule withUrlPathMap(SubResource urlPathMap) {
         this.urlPathMap = urlPathMap;
         return this;
     }
@@ -179,7 +179,7 @@ public class ApplicationGatewayRequestRoutingRule extends SubResource {
      * @param provisioningState the provisioningState value to set
      * @return the ApplicationGatewayRequestRoutingRule object itself.
      */
-    public ApplicationGatewayRequestRoutingRule setProvisioningState(String provisioningState) {
+    public ApplicationGatewayRequestRoutingRule withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -199,7 +199,7 @@ public class ApplicationGatewayRequestRoutingRule extends SubResource {
      * @param name the name value to set
      * @return the ApplicationGatewayRequestRoutingRule object itself.
      */
-    public ApplicationGatewayRequestRoutingRule setName(String name) {
+    public ApplicationGatewayRequestRoutingRule withName(String name) {
         this.name = name;
         return this;
     }
@@ -219,7 +219,7 @@ public class ApplicationGatewayRequestRoutingRule extends SubResource {
      * @param etag the etag value to set
      * @return the ApplicationGatewayRequestRoutingRule object itself.
      */
-    public ApplicationGatewayRequestRoutingRule setEtag(String etag) {
+    public ApplicationGatewayRequestRoutingRule withEtag(String etag) {
         this.etag = etag;
         return this;
     }

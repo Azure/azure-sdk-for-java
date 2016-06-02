@@ -37,7 +37,7 @@ public class MetricDefinitionCollectionInner {
      * @param value the value value to set
      * @return the MetricDefinitionCollectionInner object itself.
      */
-    public MetricDefinitionCollectionInner setValue(List<MetricDefinitionInner> value) {
+    public MetricDefinitionCollectionInner withValue(List<MetricDefinitionInner> value) {
         this.value = value;
         return this;
     }
@@ -57,7 +57,7 @@ public class MetricDefinitionCollectionInner {
      * @param nextLink the nextLink value to set
      * @return the MetricDefinitionCollectionInner object itself.
      */
-    public MetricDefinitionCollectionInner setNextLink(String nextLink) {
+    public MetricDefinitionCollectionInner withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }

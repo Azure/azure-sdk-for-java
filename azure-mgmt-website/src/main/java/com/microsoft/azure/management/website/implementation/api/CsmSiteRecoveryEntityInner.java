@@ -50,7 +50,7 @@ public class CsmSiteRecoveryEntityInner {
      * @param snapshotTime the snapshotTime value to set
      * @return the CsmSiteRecoveryEntityInner object itself.
      */
-    public CsmSiteRecoveryEntityInner setSnapshotTime(DateTime snapshotTime) {
+    public CsmSiteRecoveryEntityInner withSnapshotTime(DateTime snapshotTime) {
         this.snapshotTime = snapshotTime;
         return this;
     }
@@ -70,7 +70,7 @@ public class CsmSiteRecoveryEntityInner {
      * @param recoverConfig the recoverConfig value to set
      * @return the CsmSiteRecoveryEntityInner object itself.
      */
-    public CsmSiteRecoveryEntityInner setRecoverConfig(Boolean recoverConfig) {
+    public CsmSiteRecoveryEntityInner withRecoverConfig(Boolean recoverConfig) {
         this.recoverConfig = recoverConfig;
         return this;
     }
@@ -90,7 +90,7 @@ public class CsmSiteRecoveryEntityInner {
      * @param siteName the siteName value to set
      * @return the CsmSiteRecoveryEntityInner object itself.
      */
-    public CsmSiteRecoveryEntityInner setSiteName(String siteName) {
+    public CsmSiteRecoveryEntityInner withSiteName(String siteName) {
         this.siteName = siteName;
         return this;
     }
@@ -110,7 +110,7 @@ public class CsmSiteRecoveryEntityInner {
      * @param slotName the slotName value to set
      * @return the CsmSiteRecoveryEntityInner object itself.
      */
-    public CsmSiteRecoveryEntityInner setSlotName(String slotName) {
+    public CsmSiteRecoveryEntityInner withSlotName(String slotName) {
         this.slotName = slotName;
         return this;
     }

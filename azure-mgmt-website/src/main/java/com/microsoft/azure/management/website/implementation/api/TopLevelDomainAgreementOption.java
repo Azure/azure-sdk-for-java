@@ -32,7 +32,7 @@ public class TopLevelDomainAgreementOption {
      * @param includePrivacy the includePrivacy value to set
      * @return the TopLevelDomainAgreementOption object itself.
      */
-    public TopLevelDomainAgreementOption setIncludePrivacy(Boolean includePrivacy) {
+    public TopLevelDomainAgreementOption withIncludePrivacy(Boolean includePrivacy) {
         this.includePrivacy = includePrivacy;
         return this;
     }

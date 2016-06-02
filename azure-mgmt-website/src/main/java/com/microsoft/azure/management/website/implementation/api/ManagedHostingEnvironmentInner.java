@@ -109,7 +109,7 @@ public class ManagedHostingEnvironmentInner extends Resource {
      * @param managedHostingEnvironmentName the managedHostingEnvironmentName value to set
      * @return the ManagedHostingEnvironmentInner object itself.
      */
-    public ManagedHostingEnvironmentInner setManagedHostingEnvironmentName(String managedHostingEnvironmentName) {
+    public ManagedHostingEnvironmentInner withManagedHostingEnvironmentName(String managedHostingEnvironmentName) {
         this.managedHostingEnvironmentName = managedHostingEnvironmentName;
         return this;
     }
@@ -129,7 +129,7 @@ public class ManagedHostingEnvironmentInner extends Resource {
      * @param managedHostingEnvironmentLocation the managedHostingEnvironmentLocation value to set
      * @return the ManagedHostingEnvironmentInner object itself.
      */
-    public ManagedHostingEnvironmentInner setManagedHostingEnvironmentLocation(String managedHostingEnvironmentLocation) {
+    public ManagedHostingEnvironmentInner withManagedHostingEnvironmentLocation(String managedHostingEnvironmentLocation) {
         this.managedHostingEnvironmentLocation = managedHostingEnvironmentLocation;
         return this;
     }
@@ -149,7 +149,7 @@ public class ManagedHostingEnvironmentInner extends Resource {
      * @param status the status value to set
      * @return the ManagedHostingEnvironmentInner object itself.
      */
-    public ManagedHostingEnvironmentInner setStatus(ManagedHostingEnvironmentStatus status) {
+    public ManagedHostingEnvironmentInner withStatus(ManagedHostingEnvironmentStatus status) {
         this.status = status;
         return this;
     }
@@ -169,7 +169,7 @@ public class ManagedHostingEnvironmentInner extends Resource {
      * @param virtualNetwork the virtualNetwork value to set
      * @return the ManagedHostingEnvironmentInner object itself.
      */
-    public ManagedHostingEnvironmentInner setVirtualNetwork(VirtualNetworkProfile virtualNetwork) {
+    public ManagedHostingEnvironmentInner withVirtualNetwork(VirtualNetworkProfile virtualNetwork) {
         this.virtualNetwork = virtualNetwork;
         return this;
     }
@@ -189,7 +189,7 @@ public class ManagedHostingEnvironmentInner extends Resource {
      * @param ipsslAddressCount the ipsslAddressCount value to set
      * @return the ManagedHostingEnvironmentInner object itself.
      */
-    public ManagedHostingEnvironmentInner setIpsslAddressCount(Integer ipsslAddressCount) {
+    public ManagedHostingEnvironmentInner withIpsslAddressCount(Integer ipsslAddressCount) {
         this.ipsslAddressCount = ipsslAddressCount;
         return this;
     }
@@ -209,7 +209,7 @@ public class ManagedHostingEnvironmentInner extends Resource {
      * @param dnsSuffix the dnsSuffix value to set
      * @return the ManagedHostingEnvironmentInner object itself.
      */
-    public ManagedHostingEnvironmentInner setDnsSuffix(String dnsSuffix) {
+    public ManagedHostingEnvironmentInner withDnsSuffix(String dnsSuffix) {
         this.dnsSuffix = dnsSuffix;
         return this;
     }
@@ -229,7 +229,7 @@ public class ManagedHostingEnvironmentInner extends Resource {
      * @param subscriptionId the subscriptionId value to set
      * @return the ManagedHostingEnvironmentInner object itself.
      */
-    public ManagedHostingEnvironmentInner setSubscriptionId(String subscriptionId) {
+    public ManagedHostingEnvironmentInner withSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -249,7 +249,7 @@ public class ManagedHostingEnvironmentInner extends Resource {
      * @param resourceGroup the resourceGroup value to set
      * @return the ManagedHostingEnvironmentInner object itself.
      */
-    public ManagedHostingEnvironmentInner setResourceGroup(String resourceGroup) {
+    public ManagedHostingEnvironmentInner withResourceGroup(String resourceGroup) {
         this.resourceGroup = resourceGroup;
         return this;
     }
@@ -269,7 +269,7 @@ public class ManagedHostingEnvironmentInner extends Resource {
      * @param environmentIsHealthy the environmentIsHealthy value to set
      * @return the ManagedHostingEnvironmentInner object itself.
      */
-    public ManagedHostingEnvironmentInner setEnvironmentIsHealthy(Boolean environmentIsHealthy) {
+    public ManagedHostingEnvironmentInner withEnvironmentIsHealthy(Boolean environmentIsHealthy) {
         this.environmentIsHealthy = environmentIsHealthy;
         return this;
     }
@@ -289,7 +289,7 @@ public class ManagedHostingEnvironmentInner extends Resource {
      * @param environmentStatus the environmentStatus value to set
      * @return the ManagedHostingEnvironmentInner object itself.
      */
-    public ManagedHostingEnvironmentInner setEnvironmentStatus(String environmentStatus) {
+    public ManagedHostingEnvironmentInner withEnvironmentStatus(String environmentStatus) {
         this.environmentStatus = environmentStatus;
         return this;
     }
@@ -309,7 +309,7 @@ public class ManagedHostingEnvironmentInner extends Resource {
      * @param suspended the suspended value to set
      * @return the ManagedHostingEnvironmentInner object itself.
      */
-    public ManagedHostingEnvironmentInner setSuspended(Boolean suspended) {
+    public ManagedHostingEnvironmentInner withSuspended(Boolean suspended) {
         this.suspended = suspended;
         return this;
     }
@@ -329,7 +329,7 @@ public class ManagedHostingEnvironmentInner extends Resource {
      * @param apiManagementAccount the apiManagementAccount value to set
      * @return the ManagedHostingEnvironmentInner object itself.
      */
-    public ManagedHostingEnvironmentInner setApiManagementAccount(String apiManagementAccount) {
+    public ManagedHostingEnvironmentInner withApiManagementAccount(String apiManagementAccount) {
         this.apiManagementAccount = apiManagementAccount;
         return this;
     }

@@ -49,7 +49,7 @@ public class NodeAgentSku {
      * @param id the id value to set
      * @return the NodeAgentSku object itself.
      */
-    public NodeAgentSku setId(String id) {
+    public NodeAgentSku withId(String id) {
         this.id = id;
         return this;
     }
@@ -69,7 +69,7 @@ public class NodeAgentSku {
      * @param verifiedImageReferences the verifiedImageReferences value to set
      * @return the NodeAgentSku object itself.
      */
-    public NodeAgentSku setVerifiedImageReferences(List<ImageReference> verifiedImageReferences) {
+    public NodeAgentSku withVerifiedImageReferences(List<ImageReference> verifiedImageReferences) {
         this.verifiedImageReferences = verifiedImageReferences;
         return this;
     }
@@ -89,7 +89,7 @@ public class NodeAgentSku {
      * @param osType the osType value to set
      * @return the NodeAgentSku object itself.
      */
-    public NodeAgentSku setOsType(OSType osType) {
+    public NodeAgentSku withOsType(OSType osType) {
         this.osType = osType;
         return this;
     }

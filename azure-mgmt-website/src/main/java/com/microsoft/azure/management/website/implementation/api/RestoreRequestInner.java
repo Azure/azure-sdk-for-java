@@ -94,7 +94,7 @@ public class RestoreRequestInner extends Resource {
      * @param storageAccountUrl the storageAccountUrl value to set
      * @return the RestoreRequestInner object itself.
      */
-    public RestoreRequestInner setStorageAccountUrl(String storageAccountUrl) {
+    public RestoreRequestInner withStorageAccountUrl(String storageAccountUrl) {
         this.storageAccountUrl = storageAccountUrl;
         return this;
     }
@@ -114,7 +114,7 @@ public class RestoreRequestInner extends Resource {
      * @param blobName the blobName value to set
      * @return the RestoreRequestInner object itself.
      */
-    public RestoreRequestInner setBlobName(String blobName) {
+    public RestoreRequestInner withBlobName(String blobName) {
         this.blobName = blobName;
         return this;
     }
@@ -134,7 +134,7 @@ public class RestoreRequestInner extends Resource {
      * @param overwrite the overwrite value to set
      * @return the RestoreRequestInner object itself.
      */
-    public RestoreRequestInner setOverwrite(Boolean overwrite) {
+    public RestoreRequestInner withOverwrite(Boolean overwrite) {
         this.overwrite = overwrite;
         return this;
     }
@@ -154,7 +154,7 @@ public class RestoreRequestInner extends Resource {
      * @param siteName the siteName value to set
      * @return the RestoreRequestInner object itself.
      */
-    public RestoreRequestInner setSiteName(String siteName) {
+    public RestoreRequestInner withSiteName(String siteName) {
         this.siteName = siteName;
         return this;
     }
@@ -174,7 +174,7 @@ public class RestoreRequestInner extends Resource {
      * @param databases the databases value to set
      * @return the RestoreRequestInner object itself.
      */
-    public RestoreRequestInner setDatabases(List<DatabaseBackupSetting> databases) {
+    public RestoreRequestInner withDatabases(List<DatabaseBackupSetting> databases) {
         this.databases = databases;
         return this;
     }
@@ -194,7 +194,7 @@ public class RestoreRequestInner extends Resource {
      * @param ignoreConflictingHostNames the ignoreConflictingHostNames value to set
      * @return the RestoreRequestInner object itself.
      */
-    public RestoreRequestInner setIgnoreConflictingHostNames(Boolean ignoreConflictingHostNames) {
+    public RestoreRequestInner withIgnoreConflictingHostNames(Boolean ignoreConflictingHostNames) {
         this.ignoreConflictingHostNames = ignoreConflictingHostNames;
         return this;
     }
@@ -214,7 +214,7 @@ public class RestoreRequestInner extends Resource {
      * @param operationType the operationType value to set
      * @return the RestoreRequestInner object itself.
      */
-    public RestoreRequestInner setOperationType(BackupRestoreOperationType operationType) {
+    public RestoreRequestInner withOperationType(BackupRestoreOperationType operationType) {
         this.operationType = operationType;
         return this;
     }
@@ -234,7 +234,7 @@ public class RestoreRequestInner extends Resource {
      * @param adjustConnectionStrings the adjustConnectionStrings value to set
      * @return the RestoreRequestInner object itself.
      */
-    public RestoreRequestInner setAdjustConnectionStrings(Boolean adjustConnectionStrings) {
+    public RestoreRequestInner withAdjustConnectionStrings(Boolean adjustConnectionStrings) {
         this.adjustConnectionStrings = adjustConnectionStrings;
         return this;
     }
@@ -254,7 +254,7 @@ public class RestoreRequestInner extends Resource {
      * @param hostingEnvironment the hostingEnvironment value to set
      * @return the RestoreRequestInner object itself.
      */
-    public RestoreRequestInner setHostingEnvironment(String hostingEnvironment) {
+    public RestoreRequestInner withHostingEnvironment(String hostingEnvironment) {
         this.hostingEnvironment = hostingEnvironment;
         return this;
     }

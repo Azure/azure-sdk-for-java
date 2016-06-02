@@ -37,7 +37,7 @@ public class GenericResourceInner extends Resource {
      * @param plan the plan value to set
      * @return the GenericResourceInner object itself.
      */
-    public GenericResourceInner setPlan(Plan plan) {
+    public GenericResourceInner withPlan(Plan plan) {
         this.plan = plan;
         return this;
     }
@@ -57,7 +57,7 @@ public class GenericResourceInner extends Resource {
      * @param properties the properties value to set
      * @return the GenericResourceInner object itself.
      */
-    public GenericResourceInner setProperties(Object properties) {
+    public GenericResourceInner withProperties(Object properties) {
         this.properties = properties;
         return this;
     }

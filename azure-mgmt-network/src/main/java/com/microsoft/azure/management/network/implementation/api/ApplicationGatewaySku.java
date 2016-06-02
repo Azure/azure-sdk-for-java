@@ -43,7 +43,7 @@ public class ApplicationGatewaySku {
      * @param name the name value to set
      * @return the ApplicationGatewaySku object itself.
      */
-    public ApplicationGatewaySku setName(String name) {
+    public ApplicationGatewaySku withName(String name) {
         this.name = name;
         return this;
     }
@@ -63,7 +63,7 @@ public class ApplicationGatewaySku {
      * @param tier the tier value to set
      * @return the ApplicationGatewaySku object itself.
      */
-    public ApplicationGatewaySku setTier(String tier) {
+    public ApplicationGatewaySku withTier(String tier) {
         this.tier = tier;
         return this;
     }
@@ -83,7 +83,7 @@ public class ApplicationGatewaySku {
      * @param capacity the capacity value to set
      * @return the ApplicationGatewaySku object itself.
      */
-    public ApplicationGatewaySku setCapacity(Integer capacity) {
+    public ApplicationGatewaySku withCapacity(Integer capacity) {
         this.capacity = capacity;
         return this;
     }

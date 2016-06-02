@@ -36,7 +36,7 @@ public class BatchErrorDetail {
      * @param key the key value to set
      * @return the BatchErrorDetail object itself.
      */
-    public BatchErrorDetail setKey(String key) {
+    public BatchErrorDetail withKey(String key) {
         this.key = key;
         return this;
     }
@@ -56,7 +56,7 @@ public class BatchErrorDetail {
      * @param value the value value to set
      * @return the BatchErrorDetail object itself.
      */
-    public BatchErrorDetail setValue(String value) {
+    public BatchErrorDetail withValue(String value) {
         this.value = value;
         return this;
     }

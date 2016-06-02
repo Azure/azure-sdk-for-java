@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the Reimage operation.
+ * Additional parameters for the ComputeNode_Reimage operation.
  */
 public class ComputeNodeReimageOptions {
     /**
@@ -58,7 +58,7 @@ public class ComputeNodeReimageOptions {
      * @param timeout the timeout value to set
      * @return the ComputeNodeReimageOptions object itself.
      */
-    public ComputeNodeReimageOptions setTimeout(Integer timeout) {
+    public ComputeNodeReimageOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -78,7 +78,7 @@ public class ComputeNodeReimageOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the ComputeNodeReimageOptions object itself.
      */
-    public ComputeNodeReimageOptions setClientRequestId(String clientRequestId) {
+    public ComputeNodeReimageOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -98,7 +98,7 @@ public class ComputeNodeReimageOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the ComputeNodeReimageOptions object itself.
      */
-    public ComputeNodeReimageOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public ComputeNodeReimageOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -121,7 +121,7 @@ public class ComputeNodeReimageOptions {
      * @param ocpDate the ocpDate value to set
      * @return the ComputeNodeReimageOptions object itself.
      */
-    public ComputeNodeReimageOptions setOcpDate(DateTime ocpDate) {
+    public ComputeNodeReimageOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }

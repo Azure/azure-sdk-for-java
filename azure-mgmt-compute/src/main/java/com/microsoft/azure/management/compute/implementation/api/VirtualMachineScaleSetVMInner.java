@@ -155,7 +155,7 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @param hardwareProfile the hardwareProfile value to set
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
-    public VirtualMachineScaleSetVMInner setHardwareProfile(HardwareProfile hardwareProfile) {
+    public VirtualMachineScaleSetVMInner withHardwareProfile(HardwareProfile hardwareProfile) {
         this.hardwareProfile = hardwareProfile;
         return this;
     }
@@ -175,7 +175,7 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @param storageProfile the storageProfile value to set
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
-    public VirtualMachineScaleSetVMInner setStorageProfile(StorageProfile storageProfile) {
+    public VirtualMachineScaleSetVMInner withStorageProfile(StorageProfile storageProfile) {
         this.storageProfile = storageProfile;
         return this;
     }
@@ -195,7 +195,7 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @param osProfile the osProfile value to set
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
-    public VirtualMachineScaleSetVMInner setOsProfile(OSProfile osProfile) {
+    public VirtualMachineScaleSetVMInner withOsProfile(OSProfile osProfile) {
         this.osProfile = osProfile;
         return this;
     }
@@ -215,7 +215,7 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @param networkProfile the networkProfile value to set
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
-    public VirtualMachineScaleSetVMInner setNetworkProfile(NetworkProfile networkProfile) {
+    public VirtualMachineScaleSetVMInner withNetworkProfile(NetworkProfile networkProfile) {
         this.networkProfile = networkProfile;
         return this;
     }
@@ -235,7 +235,7 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @param diagnosticsProfile the diagnosticsProfile value to set
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
-    public VirtualMachineScaleSetVMInner setDiagnosticsProfile(DiagnosticsProfile diagnosticsProfile) {
+    public VirtualMachineScaleSetVMInner withDiagnosticsProfile(DiagnosticsProfile diagnosticsProfile) {
         this.diagnosticsProfile = diagnosticsProfile;
         return this;
     }
@@ -255,7 +255,7 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @param availabilitySet the availabilitySet value to set
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
-    public VirtualMachineScaleSetVMInner setAvailabilitySet(SubResource availabilitySet) {
+    public VirtualMachineScaleSetVMInner withAvailabilitySet(SubResource availabilitySet) {
         this.availabilitySet = availabilitySet;
         return this;
     }
@@ -275,7 +275,7 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @param provisioningState the provisioningState value to set
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
-    public VirtualMachineScaleSetVMInner setProvisioningState(String provisioningState) {
+    public VirtualMachineScaleSetVMInner withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -295,7 +295,7 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @param licenseType the licenseType value to set
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
-    public VirtualMachineScaleSetVMInner setLicenseType(String licenseType) {
+    public VirtualMachineScaleSetVMInner withLicenseType(String licenseType) {
         this.licenseType = licenseType;
         return this;
     }
@@ -315,7 +315,7 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * @param plan the plan value to set
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
-    public VirtualMachineScaleSetVMInner setPlan(Plan plan) {
+    public VirtualMachineScaleSetVMInner withPlan(Plan plan) {
         this.plan = plan;
         return this;
     }

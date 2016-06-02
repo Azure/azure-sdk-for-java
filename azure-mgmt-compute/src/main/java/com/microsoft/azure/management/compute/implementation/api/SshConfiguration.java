@@ -33,7 +33,7 @@ public class SshConfiguration {
      * @param publicKeys the publicKeys value to set
      * @return the SshConfiguration object itself.
      */
-    public SshConfiguration setPublicKeys(List<SshPublicKey> publicKeys) {
+    public SshConfiguration withPublicKeys(List<SshPublicKey> publicKeys) {
         this.publicKeys = publicKeys;
         return this;
     }

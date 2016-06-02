@@ -41,7 +41,7 @@ public class SkuInfo {
      * @param resourceType the resourceType value to set
      * @return the SkuInfo object itself.
      */
-    public SkuInfo setResourceType(String resourceType) {
+    public SkuInfo withResourceType(String resourceType) {
         this.resourceType = resourceType;
         return this;
     }
@@ -61,7 +61,7 @@ public class SkuInfo {
      * @param sku the sku value to set
      * @return the SkuInfo object itself.
      */
-    public SkuInfo setSku(SkuDescription sku) {
+    public SkuInfo withSku(SkuDescription sku) {
         this.sku = sku;
         return this;
     }
@@ -81,7 +81,7 @@ public class SkuInfo {
      * @param capacity the capacity value to set
      * @return the SkuInfo object itself.
      */
-    public SkuInfo setCapacity(SkuCapacity capacity) {
+    public SkuInfo withCapacity(SkuCapacity capacity) {
         this.capacity = capacity;
         return this;
     }

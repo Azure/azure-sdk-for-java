@@ -111,7 +111,7 @@ public class DataLakeAnalyticsAccountProperties {
      * @param defaultDataLakeStoreAccount the defaultDataLakeStoreAccount value to set
      * @return the DataLakeAnalyticsAccountProperties object itself.
      */
-    public DataLakeAnalyticsAccountProperties setDefaultDataLakeStoreAccount(String defaultDataLakeStoreAccount) {
+    public DataLakeAnalyticsAccountProperties withDefaultDataLakeStoreAccount(String defaultDataLakeStoreAccount) {
         this.defaultDataLakeStoreAccount = defaultDataLakeStoreAccount;
         return this;
     }
@@ -131,7 +131,7 @@ public class DataLakeAnalyticsAccountProperties {
      * @param maxDegreeOfParallelism the maxDegreeOfParallelism value to set
      * @return the DataLakeAnalyticsAccountProperties object itself.
      */
-    public DataLakeAnalyticsAccountProperties setMaxDegreeOfParallelism(Integer maxDegreeOfParallelism) {
+    public DataLakeAnalyticsAccountProperties withMaxDegreeOfParallelism(Integer maxDegreeOfParallelism) {
         this.maxDegreeOfParallelism = maxDegreeOfParallelism;
         return this;
     }
@@ -151,7 +151,7 @@ public class DataLakeAnalyticsAccountProperties {
      * @param maxJobCount the maxJobCount value to set
      * @return the DataLakeAnalyticsAccountProperties object itself.
      */
-    public DataLakeAnalyticsAccountProperties setMaxJobCount(Integer maxJobCount) {
+    public DataLakeAnalyticsAccountProperties withMaxJobCount(Integer maxJobCount) {
         this.maxJobCount = maxJobCount;
         return this;
     }
@@ -171,7 +171,7 @@ public class DataLakeAnalyticsAccountProperties {
      * @param dataLakeStoreAccounts the dataLakeStoreAccounts value to set
      * @return the DataLakeAnalyticsAccountProperties object itself.
      */
-    public DataLakeAnalyticsAccountProperties setDataLakeStoreAccounts(List<DataLakeStoreAccountInfoInner> dataLakeStoreAccounts) {
+    public DataLakeAnalyticsAccountProperties withDataLakeStoreAccounts(List<DataLakeStoreAccountInfoInner> dataLakeStoreAccounts) {
         this.dataLakeStoreAccounts = dataLakeStoreAccounts;
         return this;
     }
@@ -191,7 +191,7 @@ public class DataLakeAnalyticsAccountProperties {
      * @param storageAccounts the storageAccounts value to set
      * @return the DataLakeAnalyticsAccountProperties object itself.
      */
-    public DataLakeAnalyticsAccountProperties setStorageAccounts(List<StorageAccountInfoInner> storageAccounts) {
+    public DataLakeAnalyticsAccountProperties withStorageAccounts(List<StorageAccountInfoInner> storageAccounts) {
         this.storageAccounts = storageAccounts;
         return this;
     }

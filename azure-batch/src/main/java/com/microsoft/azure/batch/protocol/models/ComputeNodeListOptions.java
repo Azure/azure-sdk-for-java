@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the List operation.
+ * Additional parameters for the ComputeNode_List operation.
  */
 public class ComputeNodeListOptions {
     /**
@@ -76,7 +76,7 @@ public class ComputeNodeListOptions {
      * @param filter the filter value to set
      * @return the ComputeNodeListOptions object itself.
      */
-    public ComputeNodeListOptions setFilter(String filter) {
+    public ComputeNodeListOptions withFilter(String filter) {
         this.filter = filter;
         return this;
     }
@@ -96,7 +96,7 @@ public class ComputeNodeListOptions {
      * @param select the select value to set
      * @return the ComputeNodeListOptions object itself.
      */
-    public ComputeNodeListOptions setSelect(String select) {
+    public ComputeNodeListOptions withSelect(String select) {
         this.select = select;
         return this;
     }
@@ -116,7 +116,7 @@ public class ComputeNodeListOptions {
      * @param maxResults the maxResults value to set
      * @return the ComputeNodeListOptions object itself.
      */
-    public ComputeNodeListOptions setMaxResults(Integer maxResults) {
+    public ComputeNodeListOptions withMaxResults(Integer maxResults) {
         this.maxResults = maxResults;
         return this;
     }
@@ -136,7 +136,7 @@ public class ComputeNodeListOptions {
      * @param timeout the timeout value to set
      * @return the ComputeNodeListOptions object itself.
      */
-    public ComputeNodeListOptions setTimeout(Integer timeout) {
+    public ComputeNodeListOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -156,7 +156,7 @@ public class ComputeNodeListOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the ComputeNodeListOptions object itself.
      */
-    public ComputeNodeListOptions setClientRequestId(String clientRequestId) {
+    public ComputeNodeListOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -176,7 +176,7 @@ public class ComputeNodeListOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the ComputeNodeListOptions object itself.
      */
-    public ComputeNodeListOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public ComputeNodeListOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -199,7 +199,7 @@ public class ComputeNodeListOptions {
      * @param ocpDate the ocpDate value to set
      * @return the ComputeNodeListOptions object itself.
      */
-    public ComputeNodeListOptions setOcpDate(DateTime ocpDate) {
+    public ComputeNodeListOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }

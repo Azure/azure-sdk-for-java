@@ -106,7 +106,7 @@ public class VirtualNetworkGatewayInner extends Resource {
      * @param ipConfigurations the ipConfigurations value to set
      * @return the VirtualNetworkGatewayInner object itself.
      */
-    public VirtualNetworkGatewayInner setIpConfigurations(List<VirtualNetworkGatewayIPConfiguration> ipConfigurations) {
+    public VirtualNetworkGatewayInner withIpConfigurations(List<VirtualNetworkGatewayIPConfiguration> ipConfigurations) {
         this.ipConfigurations = ipConfigurations;
         return this;
     }
@@ -126,7 +126,7 @@ public class VirtualNetworkGatewayInner extends Resource {
      * @param gatewayType the gatewayType value to set
      * @return the VirtualNetworkGatewayInner object itself.
      */
-    public VirtualNetworkGatewayInner setGatewayType(String gatewayType) {
+    public VirtualNetworkGatewayInner withGatewayType(String gatewayType) {
         this.gatewayType = gatewayType;
         return this;
     }
@@ -146,7 +146,7 @@ public class VirtualNetworkGatewayInner extends Resource {
      * @param vpnType the vpnType value to set
      * @return the VirtualNetworkGatewayInner object itself.
      */
-    public VirtualNetworkGatewayInner setVpnType(String vpnType) {
+    public VirtualNetworkGatewayInner withVpnType(String vpnType) {
         this.vpnType = vpnType;
         return this;
     }
@@ -166,7 +166,7 @@ public class VirtualNetworkGatewayInner extends Resource {
      * @param enableBgp the enableBgp value to set
      * @return the VirtualNetworkGatewayInner object itself.
      */
-    public VirtualNetworkGatewayInner setEnableBgp(Boolean enableBgp) {
+    public VirtualNetworkGatewayInner withEnableBgp(Boolean enableBgp) {
         this.enableBgp = enableBgp;
         return this;
     }
@@ -186,7 +186,7 @@ public class VirtualNetworkGatewayInner extends Resource {
      * @param gatewayDefaultSite the gatewayDefaultSite value to set
      * @return the VirtualNetworkGatewayInner object itself.
      */
-    public VirtualNetworkGatewayInner setGatewayDefaultSite(SubResource gatewayDefaultSite) {
+    public VirtualNetworkGatewayInner withGatewayDefaultSite(SubResource gatewayDefaultSite) {
         this.gatewayDefaultSite = gatewayDefaultSite;
         return this;
     }
@@ -206,7 +206,7 @@ public class VirtualNetworkGatewayInner extends Resource {
      * @param sku the sku value to set
      * @return the VirtualNetworkGatewayInner object itself.
      */
-    public VirtualNetworkGatewayInner setSku(VirtualNetworkGatewaySku sku) {
+    public VirtualNetworkGatewayInner withSku(VirtualNetworkGatewaySku sku) {
         this.sku = sku;
         return this;
     }
@@ -226,7 +226,7 @@ public class VirtualNetworkGatewayInner extends Resource {
      * @param vpnClientConfiguration the vpnClientConfiguration value to set
      * @return the VirtualNetworkGatewayInner object itself.
      */
-    public VirtualNetworkGatewayInner setVpnClientConfiguration(VpnClientConfiguration vpnClientConfiguration) {
+    public VirtualNetworkGatewayInner withVpnClientConfiguration(VpnClientConfiguration vpnClientConfiguration) {
         this.vpnClientConfiguration = vpnClientConfiguration;
         return this;
     }
@@ -246,7 +246,7 @@ public class VirtualNetworkGatewayInner extends Resource {
      * @param bgpSettings the bgpSettings value to set
      * @return the VirtualNetworkGatewayInner object itself.
      */
-    public VirtualNetworkGatewayInner setBgpSettings(BgpSettings bgpSettings) {
+    public VirtualNetworkGatewayInner withBgpSettings(BgpSettings bgpSettings) {
         this.bgpSettings = bgpSettings;
         return this;
     }
@@ -266,7 +266,7 @@ public class VirtualNetworkGatewayInner extends Resource {
      * @param resourceGuid the resourceGuid value to set
      * @return the VirtualNetworkGatewayInner object itself.
      */
-    public VirtualNetworkGatewayInner setResourceGuid(String resourceGuid) {
+    public VirtualNetworkGatewayInner withResourceGuid(String resourceGuid) {
         this.resourceGuid = resourceGuid;
         return this;
     }
@@ -286,7 +286,7 @@ public class VirtualNetworkGatewayInner extends Resource {
      * @param provisioningState the provisioningState value to set
      * @return the VirtualNetworkGatewayInner object itself.
      */
-    public VirtualNetworkGatewayInner setProvisioningState(String provisioningState) {
+    public VirtualNetworkGatewayInner withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -306,7 +306,7 @@ public class VirtualNetworkGatewayInner extends Resource {
      * @param etag the etag value to set
      * @return the VirtualNetworkGatewayInner object itself.
      */
-    public VirtualNetworkGatewayInner setEtag(String etag) {
+    public VirtualNetworkGatewayInner withEtag(String etag) {
         this.etag = etag;
         return this;
     }

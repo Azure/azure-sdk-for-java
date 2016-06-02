@@ -38,7 +38,7 @@ public class EntityId {
      * @param name the name value to set
      * @return the EntityId object itself.
      */
-    public EntityId setName(DdlName name) {
+    public EntityId withName(DdlName name) {
         this.name = name;
         return this;
     }
@@ -58,7 +58,7 @@ public class EntityId {
      * @param version the version value to set
      * @return the EntityId object itself.
      */
-    public EntityId setVersion(UUID version) {
+    public EntityId withVersion(UUID version) {
         this.version = version;
         return this;
     }

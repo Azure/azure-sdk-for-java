@@ -47,7 +47,7 @@ public class Dependency {
      * @param dependsOn the dependsOn value to set
      * @return the Dependency object itself.
      */
-    public Dependency setDependsOn(List<BasicDependency> dependsOn) {
+    public Dependency withDependsOn(List<BasicDependency> dependsOn) {
         this.dependsOn = dependsOn;
         return this;
     }
@@ -67,7 +67,7 @@ public class Dependency {
      * @param id the id value to set
      * @return the Dependency object itself.
      */
-    public Dependency setId(String id) {
+    public Dependency withId(String id) {
         this.id = id;
         return this;
     }
@@ -87,7 +87,7 @@ public class Dependency {
      * @param resourceType the resourceType value to set
      * @return the Dependency object itself.
      */
-    public Dependency setResourceType(String resourceType) {
+    public Dependency withResourceType(String resourceType) {
         this.resourceType = resourceType;
         return this;
     }
@@ -107,7 +107,7 @@ public class Dependency {
      * @param resourceName the resourceName value to set
      * @return the Dependency object itself.
      */
-    public Dependency setResourceName(String resourceName) {
+    public Dependency withResourceName(String resourceName) {
         this.resourceName = resourceName;
         return this;
     }

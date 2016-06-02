@@ -49,7 +49,7 @@ public class ExpressRouteCircuitRoutesTableInner {
      * @param addressPrefix the addressPrefix value to set
      * @return the ExpressRouteCircuitRoutesTableInner object itself.
      */
-    public ExpressRouteCircuitRoutesTableInner setAddressPrefix(String addressPrefix) {
+    public ExpressRouteCircuitRoutesTableInner withAddressPrefix(String addressPrefix) {
         this.addressPrefix = addressPrefix;
         return this;
     }
@@ -69,7 +69,7 @@ public class ExpressRouteCircuitRoutesTableInner {
      * @param nextHopType the nextHopType value to set
      * @return the ExpressRouteCircuitRoutesTableInner object itself.
      */
-    public ExpressRouteCircuitRoutesTableInner setNextHopType(String nextHopType) {
+    public ExpressRouteCircuitRoutesTableInner withNextHopType(String nextHopType) {
         this.nextHopType = nextHopType;
         return this;
     }
@@ -89,7 +89,7 @@ public class ExpressRouteCircuitRoutesTableInner {
      * @param nextHopIP the nextHopIP value to set
      * @return the ExpressRouteCircuitRoutesTableInner object itself.
      */
-    public ExpressRouteCircuitRoutesTableInner setNextHopIP(String nextHopIP) {
+    public ExpressRouteCircuitRoutesTableInner withNextHopIP(String nextHopIP) {
         this.nextHopIP = nextHopIP;
         return this;
     }
@@ -109,7 +109,7 @@ public class ExpressRouteCircuitRoutesTableInner {
      * @param asPath the asPath value to set
      * @return the ExpressRouteCircuitRoutesTableInner object itself.
      */
-    public ExpressRouteCircuitRoutesTableInner setAsPath(String asPath) {
+    public ExpressRouteCircuitRoutesTableInner withAsPath(String asPath) {
         this.asPath = asPath;
         return this;
     }

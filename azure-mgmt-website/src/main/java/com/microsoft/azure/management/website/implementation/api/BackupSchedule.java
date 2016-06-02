@@ -64,7 +64,7 @@ public class BackupSchedule {
      * @param frequencyInterval the frequencyInterval value to set
      * @return the BackupSchedule object itself.
      */
-    public BackupSchedule setFrequencyInterval(Integer frequencyInterval) {
+    public BackupSchedule withFrequencyInterval(Integer frequencyInterval) {
         this.frequencyInterval = frequencyInterval;
         return this;
     }
@@ -84,7 +84,7 @@ public class BackupSchedule {
      * @param frequencyUnit the frequencyUnit value to set
      * @return the BackupSchedule object itself.
      */
-    public BackupSchedule setFrequencyUnit(FrequencyUnit frequencyUnit) {
+    public BackupSchedule withFrequencyUnit(FrequencyUnit frequencyUnit) {
         this.frequencyUnit = frequencyUnit;
         return this;
     }
@@ -104,7 +104,7 @@ public class BackupSchedule {
      * @param keepAtLeastOneBackup the keepAtLeastOneBackup value to set
      * @return the BackupSchedule object itself.
      */
-    public BackupSchedule setKeepAtLeastOneBackup(Boolean keepAtLeastOneBackup) {
+    public BackupSchedule withKeepAtLeastOneBackup(Boolean keepAtLeastOneBackup) {
         this.keepAtLeastOneBackup = keepAtLeastOneBackup;
         return this;
     }
@@ -124,7 +124,7 @@ public class BackupSchedule {
      * @param retentionPeriodInDays the retentionPeriodInDays value to set
      * @return the BackupSchedule object itself.
      */
-    public BackupSchedule setRetentionPeriodInDays(Integer retentionPeriodInDays) {
+    public BackupSchedule withRetentionPeriodInDays(Integer retentionPeriodInDays) {
         this.retentionPeriodInDays = retentionPeriodInDays;
         return this;
     }
@@ -144,7 +144,7 @@ public class BackupSchedule {
      * @param startTime the startTime value to set
      * @return the BackupSchedule object itself.
      */
-    public BackupSchedule setStartTime(DateTime startTime) {
+    public BackupSchedule withStartTime(DateTime startTime) {
         this.startTime = startTime;
         return this;
     }
@@ -164,7 +164,7 @@ public class BackupSchedule {
      * @param lastExecutionTime the lastExecutionTime value to set
      * @return the BackupSchedule object itself.
      */
-    public BackupSchedule setLastExecutionTime(DateTime lastExecutionTime) {
+    public BackupSchedule withLastExecutionTime(DateTime lastExecutionTime) {
         this.lastExecutionTime = lastExecutionTime;
         return this;
     }

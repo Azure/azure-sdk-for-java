@@ -36,7 +36,7 @@ public class CatalogItemList {
      * @param count the count value to set
      * @return the CatalogItemList object itself.
      */
-    public CatalogItemList setCount(Integer count) {
+    public CatalogItemList withCount(Integer count) {
         this.count = count;
         return this;
     }
@@ -56,7 +56,7 @@ public class CatalogItemList {
      * @param nextLink the nextLink value to set
      * @return the CatalogItemList object itself.
      */
-    public CatalogItemList setNextLink(String nextLink) {
+    public CatalogItemList withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }

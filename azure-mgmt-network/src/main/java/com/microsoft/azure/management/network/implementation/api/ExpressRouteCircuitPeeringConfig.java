@@ -49,7 +49,7 @@ public class ExpressRouteCircuitPeeringConfig {
      * @param advertisedPublicPrefixes the advertisedPublicPrefixes value to set
      * @return the ExpressRouteCircuitPeeringConfig object itself.
      */
-    public ExpressRouteCircuitPeeringConfig setAdvertisedPublicPrefixes(List<String> advertisedPublicPrefixes) {
+    public ExpressRouteCircuitPeeringConfig withAdvertisedPublicPrefixes(List<String> advertisedPublicPrefixes) {
         this.advertisedPublicPrefixes = advertisedPublicPrefixes;
         return this;
     }
@@ -69,7 +69,7 @@ public class ExpressRouteCircuitPeeringConfig {
      * @param advertisedPublicPrefixesState the advertisedPublicPrefixesState value to set
      * @return the ExpressRouteCircuitPeeringConfig object itself.
      */
-    public ExpressRouteCircuitPeeringConfig setAdvertisedPublicPrefixesState(String advertisedPublicPrefixesState) {
+    public ExpressRouteCircuitPeeringConfig withAdvertisedPublicPrefixesState(String advertisedPublicPrefixesState) {
         this.advertisedPublicPrefixesState = advertisedPublicPrefixesState;
         return this;
     }
@@ -89,7 +89,7 @@ public class ExpressRouteCircuitPeeringConfig {
      * @param customerASN the customerASN value to set
      * @return the ExpressRouteCircuitPeeringConfig object itself.
      */
-    public ExpressRouteCircuitPeeringConfig setCustomerASN(Integer customerASN) {
+    public ExpressRouteCircuitPeeringConfig withCustomerASN(Integer customerASN) {
         this.customerASN = customerASN;
         return this;
     }
@@ -109,7 +109,7 @@ public class ExpressRouteCircuitPeeringConfig {
      * @param routingRegistryName the routingRegistryName value to set
      * @return the ExpressRouteCircuitPeeringConfig object itself.
      */
-    public ExpressRouteCircuitPeeringConfig setRoutingRegistryName(String routingRegistryName) {
+    public ExpressRouteCircuitPeeringConfig withRoutingRegistryName(String routingRegistryName) {
         this.routingRegistryName = routingRegistryName;
         return this;
     }

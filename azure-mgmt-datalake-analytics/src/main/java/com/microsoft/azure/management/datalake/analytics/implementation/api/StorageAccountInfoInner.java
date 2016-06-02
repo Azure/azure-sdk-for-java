@@ -39,7 +39,7 @@ public class StorageAccountInfoInner {
      * @param name the name value to set
      * @return the StorageAccountInfoInner object itself.
      */
-    public StorageAccountInfoInner setName(String name) {
+    public StorageAccountInfoInner withName(String name) {
         this.name = name;
         return this;
     }
@@ -59,7 +59,7 @@ public class StorageAccountInfoInner {
      * @param properties the properties value to set
      * @return the StorageAccountInfoInner object itself.
      */
-    public StorageAccountInfoInner setProperties(StorageAccountProperties properties) {
+    public StorageAccountInfoInner withProperties(StorageAccountProperties properties) {
         this.properties = properties;
         return this;
     }

@@ -691,7 +691,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         }
         final Long keyLength = null;
         ConnectionResetSharedKeyInner parameters = new ConnectionResetSharedKeyInner();
-        parameters = null;
+        parameters.withKeyLength(null);
         Response<ResponseBody> result = service.resetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<ConnectionResetSharedKeyInner>() { }.getType());
     }
@@ -723,7 +723,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         }
         final Long keyLength = null;
         ConnectionResetSharedKeyInner parameters = new ConnectionResetSharedKeyInner();
-        parameters = null;
+        parameters.withKeyLength(null);
         Call<ResponseBody> call = service.resetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
@@ -764,7 +764,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         ConnectionResetSharedKeyInner parameters = new ConnectionResetSharedKeyInner();
-        parameters.setKeyLength(keyLength);
+        parameters.withKeyLength(keyLength);
         Response<ResponseBody> result = service.resetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<ConnectionResetSharedKeyInner>() { }.getType());
     }
@@ -796,7 +796,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
         ConnectionResetSharedKeyInner parameters = new ConnectionResetSharedKeyInner();
-        parameters.setKeyLength(keyLength);
+        parameters.withKeyLength(keyLength);
         Call<ResponseBody> call = service.resetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
@@ -837,7 +837,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         }
         final Long keyLength = null;
         ConnectionResetSharedKeyInner parameters = new ConnectionResetSharedKeyInner();
-        parameters = null;
+        parameters.withKeyLength(null);
         Call<ResponseBody> call = service.beginResetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
         return beginResetSharedKeyDelegate(call.execute());
     }
@@ -873,7 +873,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         }
         final Long keyLength = null;
         ConnectionResetSharedKeyInner parameters = new ConnectionResetSharedKeyInner();
-        parameters = null;
+        parameters.withKeyLength(null);
         Call<ResponseBody> call = service.beginResetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ConnectionResetSharedKeyInner>(serviceCallback) {
@@ -914,7 +914,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         ConnectionResetSharedKeyInner parameters = new ConnectionResetSharedKeyInner();
-        parameters.setKeyLength(keyLength);
+        parameters.withKeyLength(keyLength);
         Call<ResponseBody> call = service.beginResetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
         return beginResetSharedKeyDelegate(call.execute());
     }
@@ -950,7 +950,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
             return null;
         }
         ConnectionResetSharedKeyInner parameters = new ConnectionResetSharedKeyInner();
-        parameters.setKeyLength(keyLength);
+        parameters.withKeyLength(keyLength);
         Call<ResponseBody> call = service.beginResetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ConnectionResetSharedKeyInner>(serviceCallback) {
@@ -1000,7 +1000,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         }
         final String value = null;
         ConnectionSharedKeyInner parameters = new ConnectionSharedKeyInner();
-        parameters = null;
+        parameters.withValue(null);
         Response<ResponseBody> result = service.setSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent()).execute();
         return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<ConnectionSharedKeyInner>() { }.getType());
     }
@@ -1032,7 +1032,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         }
         final String value = null;
         ConnectionSharedKeyInner parameters = new ConnectionSharedKeyInner();
-        parameters = null;
+        parameters.withValue(null);
         Call<ResponseBody> call = service.setSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
@@ -1073,7 +1073,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         ConnectionSharedKeyInner parameters = new ConnectionSharedKeyInner();
-        parameters.setValue(value);
+        parameters.withValue(value);
         Response<ResponseBody> result = service.setSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent()).execute();
         return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<ConnectionSharedKeyInner>() { }.getType());
     }
@@ -1105,7 +1105,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
         ConnectionSharedKeyInner parameters = new ConnectionSharedKeyInner();
-        parameters.setValue(value);
+        parameters.withValue(value);
         Call<ResponseBody> call = service.setSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
@@ -1146,7 +1146,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         }
         final String value = null;
         ConnectionSharedKeyInner parameters = new ConnectionSharedKeyInner();
-        parameters = null;
+        parameters.withValue(null);
         Call<ResponseBody> call = service.beginSetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
         return beginSetSharedKeyDelegate(call.execute());
     }
@@ -1182,7 +1182,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         }
         final String value = null;
         ConnectionSharedKeyInner parameters = new ConnectionSharedKeyInner();
-        parameters = null;
+        parameters.withValue(null);
         Call<ResponseBody> call = service.beginSetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ConnectionSharedKeyInner>(serviceCallback) {
@@ -1223,7 +1223,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         ConnectionSharedKeyInner parameters = new ConnectionSharedKeyInner();
-        parameters.setValue(value);
+        parameters.withValue(value);
         Call<ResponseBody> call = service.beginSetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
         return beginSetSharedKeyDelegate(call.execute());
     }
@@ -1259,7 +1259,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
             return null;
         }
         ConnectionSharedKeyInner parameters = new ConnectionSharedKeyInner();
-        parameters.setValue(value);
+        parameters.withValue(value);
         Call<ResponseBody> call = service.beginSetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ConnectionSharedKeyInner>(serviceCallback) {

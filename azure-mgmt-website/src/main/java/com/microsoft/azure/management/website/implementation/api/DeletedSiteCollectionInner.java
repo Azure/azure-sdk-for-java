@@ -37,7 +37,7 @@ public class DeletedSiteCollectionInner {
      * @param value the value value to set
      * @return the DeletedSiteCollectionInner object itself.
      */
-    public DeletedSiteCollectionInner setValue(List<DeletedSite> value) {
+    public DeletedSiteCollectionInner withValue(List<DeletedSite> value) {
         this.value = value;
         return this;
     }
@@ -57,7 +57,7 @@ public class DeletedSiteCollectionInner {
      * @param nextLink the nextLink value to set
      * @return the DeletedSiteCollectionInner object itself.
      */
-    public DeletedSiteCollectionInner setNextLink(String nextLink) {
+    public DeletedSiteCollectionInner withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }

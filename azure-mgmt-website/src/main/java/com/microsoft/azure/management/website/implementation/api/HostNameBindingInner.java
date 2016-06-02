@@ -73,7 +73,7 @@ public class HostNameBindingInner extends Resource {
      * @param hostNameBindingName the hostNameBindingName value to set
      * @return the HostNameBindingInner object itself.
      */
-    public HostNameBindingInner setHostNameBindingName(String hostNameBindingName) {
+    public HostNameBindingInner withHostNameBindingName(String hostNameBindingName) {
         this.hostNameBindingName = hostNameBindingName;
         return this;
     }
@@ -93,7 +93,7 @@ public class HostNameBindingInner extends Resource {
      * @param siteName the siteName value to set
      * @return the HostNameBindingInner object itself.
      */
-    public HostNameBindingInner setSiteName(String siteName) {
+    public HostNameBindingInner withSiteName(String siteName) {
         this.siteName = siteName;
         return this;
     }
@@ -113,7 +113,7 @@ public class HostNameBindingInner extends Resource {
      * @param domainId the domainId value to set
      * @return the HostNameBindingInner object itself.
      */
-    public HostNameBindingInner setDomainId(String domainId) {
+    public HostNameBindingInner withDomainId(String domainId) {
         this.domainId = domainId;
         return this;
     }
@@ -133,7 +133,7 @@ public class HostNameBindingInner extends Resource {
      * @param azureResourceName the azureResourceName value to set
      * @return the HostNameBindingInner object itself.
      */
-    public HostNameBindingInner setAzureResourceName(String azureResourceName) {
+    public HostNameBindingInner withAzureResourceName(String azureResourceName) {
         this.azureResourceName = azureResourceName;
         return this;
     }
@@ -153,7 +153,7 @@ public class HostNameBindingInner extends Resource {
      * @param azureResourceType the azureResourceType value to set
      * @return the HostNameBindingInner object itself.
      */
-    public HostNameBindingInner setAzureResourceType(AzureResourceType azureResourceType) {
+    public HostNameBindingInner withAzureResourceType(AzureResourceType azureResourceType) {
         this.azureResourceType = azureResourceType;
         return this;
     }
@@ -173,7 +173,7 @@ public class HostNameBindingInner extends Resource {
      * @param customHostNameDnsRecordType the customHostNameDnsRecordType value to set
      * @return the HostNameBindingInner object itself.
      */
-    public HostNameBindingInner setCustomHostNameDnsRecordType(CustomHostNameDnsRecordType customHostNameDnsRecordType) {
+    public HostNameBindingInner withCustomHostNameDnsRecordType(CustomHostNameDnsRecordType customHostNameDnsRecordType) {
         this.customHostNameDnsRecordType = customHostNameDnsRecordType;
         return this;
     }
@@ -193,7 +193,7 @@ public class HostNameBindingInner extends Resource {
      * @param hostNameType the hostNameType value to set
      * @return the HostNameBindingInner object itself.
      */
-    public HostNameBindingInner setHostNameType(HostNameType hostNameType) {
+    public HostNameBindingInner withHostNameType(HostNameType hostNameType) {
         this.hostNameType = hostNameType;
         return this;
     }

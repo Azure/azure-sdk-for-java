@@ -54,7 +54,7 @@ public class PoolListHeaders {
      * @param clientRequestId the clientRequestId value to set
      * @return the PoolListHeaders object itself.
      */
-    public PoolListHeaders setClientRequestId(String clientRequestId) {
+    public PoolListHeaders withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -74,7 +74,7 @@ public class PoolListHeaders {
      * @param requestId the requestId value to set
      * @return the PoolListHeaders object itself.
      */
-    public PoolListHeaders setRequestId(String requestId) {
+    public PoolListHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -94,7 +94,7 @@ public class PoolListHeaders {
      * @param eTag the eTag value to set
      * @return the PoolListHeaders object itself.
      */
-    public PoolListHeaders setETag(String eTag) {
+    public PoolListHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -117,7 +117,7 @@ public class PoolListHeaders {
      * @param lastModified the lastModified value to set
      * @return the PoolListHeaders object itself.
      */
-    public PoolListHeaders setLastModified(DateTime lastModified) {
+    public PoolListHeaders withLastModified(DateTime lastModified) {
         this.lastModified = new DateTimeRfc1123(lastModified);
         return this;
     }

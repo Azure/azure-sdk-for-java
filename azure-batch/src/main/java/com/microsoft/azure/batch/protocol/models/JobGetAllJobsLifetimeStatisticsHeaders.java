@@ -54,7 +54,7 @@ public class JobGetAllJobsLifetimeStatisticsHeaders {
      * @param clientRequestId the clientRequestId value to set
      * @return the JobGetAllJobsLifetimeStatisticsHeaders object itself.
      */
-    public JobGetAllJobsLifetimeStatisticsHeaders setClientRequestId(String clientRequestId) {
+    public JobGetAllJobsLifetimeStatisticsHeaders withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -74,7 +74,7 @@ public class JobGetAllJobsLifetimeStatisticsHeaders {
      * @param requestId the requestId value to set
      * @return the JobGetAllJobsLifetimeStatisticsHeaders object itself.
      */
-    public JobGetAllJobsLifetimeStatisticsHeaders setRequestId(String requestId) {
+    public JobGetAllJobsLifetimeStatisticsHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -94,7 +94,7 @@ public class JobGetAllJobsLifetimeStatisticsHeaders {
      * @param eTag the eTag value to set
      * @return the JobGetAllJobsLifetimeStatisticsHeaders object itself.
      */
-    public JobGetAllJobsLifetimeStatisticsHeaders setETag(String eTag) {
+    public JobGetAllJobsLifetimeStatisticsHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -117,7 +117,7 @@ public class JobGetAllJobsLifetimeStatisticsHeaders {
      * @param lastModified the lastModified value to set
      * @return the JobGetAllJobsLifetimeStatisticsHeaders object itself.
      */
-    public JobGetAllJobsLifetimeStatisticsHeaders setLastModified(DateTime lastModified) {
+    public JobGetAllJobsLifetimeStatisticsHeaders withLastModified(DateTime lastModified) {
         this.lastModified = new DateTimeRfc1123(lastModified);
         return this;
     }

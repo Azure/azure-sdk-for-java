@@ -31,7 +31,7 @@ public class NameIdentifier {
      * @param name the name value to set
      * @return the NameIdentifier object itself.
      */
-    public NameIdentifier setName(String name) {
+    public NameIdentifier withName(String name) {
         this.name = name;
         return this;
     }

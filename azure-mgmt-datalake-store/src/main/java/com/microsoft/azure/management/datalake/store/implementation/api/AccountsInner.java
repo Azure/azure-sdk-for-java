@@ -74,10 +74,6 @@ public final class AccountsInner {
         Call<ResponseBody> listFirewallRules(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Call<ResponseBody> firewallRulesListNext(@Path("nextLink") String nextLink, @Path("subscriptionId") String subscriptionId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/firewallRules/{name}")
         Call<ResponseBody> createOrUpdateFirewallRule(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body FirewallRuleInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
@@ -120,10 +116,6 @@ public final class AccountsInner {
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
         Call<ResponseBody> listFirewallRulesNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> firewallRulesListNextNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
@@ -395,82 +387,6 @@ public final class AccountsInner {
     }
 
     private ServiceResponse<PageImpl<FirewallRuleInner>> listFirewallRulesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<FirewallRuleInner>, CloudException>(this.client.restClient().mapperAdapter())
-                .register(200, new TypeToken<PageImpl<FirewallRuleInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Gets the next page of Data Lake Store firewall rules, if any, for the specified account. The response includes a link to the next page of results, if any.
-     *
-     * @param nextLink The URL to the next page of the firewall rules list.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;FirewallRuleInner&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<PagedList<FirewallRuleInner>> firewallRulesListNext(final String nextLink) throws CloudException, IOException, IllegalArgumentException {
-        if (nextLink == null) {
-            throw new IllegalArgumentException("Parameter nextLink is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.firewallRulesListNext(nextLink, this.client.subscriptionId(), this.client.acceptLanguage(), this.client.userAgent());
-        ServiceResponse<PageImpl<FirewallRuleInner>> response = firewallRulesListNextDelegate(call.execute());
-        PagedList<FirewallRuleInner> result = new PagedList<FirewallRuleInner>(response.getBody()) {
-            @Override
-            public Page<FirewallRuleInner> nextPage(String nextPageLink) throws CloudException, IOException {
-                return firewallRulesListNextNext(nextPageLink).getBody();
-            }
-        };
-        return new ServiceResponse<>(result, response.getResponse());
-    }
-
-    /**
-     * Gets the next page of Data Lake Store firewall rules, if any, for the specified account. The response includes a link to the next page of results, if any.
-     *
-     * @param nextLink The URL to the next page of the firewall rules list.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall firewallRulesListNextAsync(final String nextLink, final ListOperationCallback<FirewallRuleInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (nextLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.firewallRulesListNext(nextLink, this.client.subscriptionId(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<FirewallRuleInner>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<FirewallRuleInner>> result = firewallRulesListNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        firewallRulesListNextNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                    }
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<PageImpl<FirewallRuleInner>> firewallRulesListNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<FirewallRuleInner>, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<PageImpl<FirewallRuleInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -1566,69 +1482,6 @@ public final class AccountsInner {
     }
 
     private ServiceResponse<PageImpl<FirewallRuleInner>> listFirewallRulesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<FirewallRuleInner>, CloudException>(this.client.restClient().mapperAdapter())
-                .register(200, new TypeToken<PageImpl<FirewallRuleInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Gets the next page of Data Lake Store firewall rules, if any, for the specified account. The response includes a link to the next page of results, if any.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;FirewallRuleInner&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<PageImpl<FirewallRuleInner>> firewallRulesListNextNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.firewallRulesListNextNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
-        return firewallRulesListNextNextDelegate(call.execute());
-    }
-
-    /**
-     * Gets the next page of Data Lake Store firewall rules, if any, for the specified account. The response includes a link to the next page of results, if any.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall firewallRulesListNextNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<FirewallRuleInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.firewallRulesListNextNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<FirewallRuleInner>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<FirewallRuleInner>> result = firewallRulesListNextNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        firewallRulesListNextNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                    }
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<PageImpl<FirewallRuleInner>> firewallRulesListNextNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<FirewallRuleInner>, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<PageImpl<FirewallRuleInner>>() { }.getType())
                 .registerError(CloudException.class)

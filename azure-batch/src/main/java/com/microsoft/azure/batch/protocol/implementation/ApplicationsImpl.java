@@ -98,7 +98,7 @@ public final class ApplicationsImpl implements Applications {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> response = listDelegate(call.execute());
         PagedList<ApplicationSummary> result = new PagedList<ApplicationSummary>(response.getBody()) {
@@ -130,7 +130,7 @@ public final class ApplicationsImpl implements Applications {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<ApplicationSummary>>(serviceCallback) {
@@ -199,9 +199,9 @@ public final class ApplicationsImpl implements Applications {
                 ApplicationListNextOptions applicationListNextOptions = null;
                 if (applicationListOptions != null) {
                     applicationListNextOptions = new ApplicationListNextOptions();
-                    applicationListNextOptions.setClientRequestId(applicationListOptions.clientRequestId());
-                    applicationListNextOptions.setReturnClientRequestId(applicationListOptions.returnClientRequestId());
-                    applicationListNextOptions.setOcpDate(applicationListOptions.ocpDate());
+                    applicationListNextOptions.withClientRequestId(applicationListOptions.clientRequestId());
+                    applicationListNextOptions.withReturnClientRequestId(applicationListOptions.returnClientRequestId());
+                    applicationListNextOptions.withOcpDate(applicationListOptions.ocpDate());
                 }
                 return listNext(nextPageLink, applicationListNextOptions).getBody();
             }
@@ -263,9 +263,9 @@ public final class ApplicationsImpl implements Applications {
                         ApplicationListNextOptions applicationListNextOptions = null;
                         if (applicationListOptions != null) {
                             applicationListNextOptions = new ApplicationListNextOptions();
-                            applicationListNextOptions.setClientRequestId(applicationListOptions.clientRequestId());
-                            applicationListNextOptions.setReturnClientRequestId(applicationListOptions.returnClientRequestId());
-                            applicationListNextOptions.setOcpDate(applicationListOptions.ocpDate());
+                            applicationListNextOptions.withClientRequestId(applicationListOptions.clientRequestId());
+                            applicationListNextOptions.withReturnClientRequestId(applicationListOptions.returnClientRequestId());
+                            applicationListNextOptions.withOcpDate(applicationListOptions.ocpDate());
                         }
                         listNextAsync(result.getBody().getNextPageLink(), applicationListNextOptions, serviceCall, serviceCallback);
                     } else {
@@ -306,7 +306,7 @@ public final class ApplicationsImpl implements Applications {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.get(applicationId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         return getDelegate(call.execute());
     }
@@ -335,7 +335,7 @@ public final class ApplicationsImpl implements Applications {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.get(applicationId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ApplicationSummary>(serviceCallback) {
@@ -473,7 +473,7 @@ public final class ApplicationsImpl implements Applications {
         final ApplicationListNextOptions applicationListNextOptions = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         return listNextDelegate(call.execute());
     }
@@ -498,7 +498,7 @@ public final class ApplicationsImpl implements Applications {
         final ApplicationListNextOptions applicationListNextOptions = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<ApplicationSummary>>(serviceCallback) {

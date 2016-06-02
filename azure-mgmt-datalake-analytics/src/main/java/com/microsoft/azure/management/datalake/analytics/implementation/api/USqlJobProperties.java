@@ -34,6 +34,11 @@ public class USqlJobProperties extends JobProperties {
     private JobDataPathInner debugData;
 
     /**
+     * Gets or sets the diagnostics for the job.
+     */
+    private List<Diagnostics> diagnostics;
+
+    /**
      * Gets the algebra file path after the job has completed.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -111,7 +116,7 @@ public class USqlJobProperties extends JobProperties {
      * @param resources the resources value to set
      * @return the USqlJobProperties object itself.
      */
-    public USqlJobProperties setResources(List<JobResource> resources) {
+    public USqlJobProperties withResources(List<JobResource> resources) {
         this.resources = resources;
         return this;
     }
@@ -131,7 +136,7 @@ public class USqlJobProperties extends JobProperties {
      * @param statistics the statistics value to set
      * @return the USqlJobProperties object itself.
      */
-    public USqlJobProperties setStatistics(JobStatisticsInner statistics) {
+    public USqlJobProperties withStatistics(JobStatisticsInner statistics) {
         this.statistics = statistics;
         return this;
     }
@@ -151,8 +156,28 @@ public class USqlJobProperties extends JobProperties {
      * @param debugData the debugData value to set
      * @return the USqlJobProperties object itself.
      */
-    public USqlJobProperties setDebugData(JobDataPathInner debugData) {
+    public USqlJobProperties withDebugData(JobDataPathInner debugData) {
         this.debugData = debugData;
+        return this;
+    }
+
+    /**
+     * Get the diagnostics value.
+     *
+     * @return the diagnostics value
+     */
+    public List<Diagnostics> diagnostics() {
+        return this.diagnostics;
+    }
+
+    /**
+     * Set the diagnostics value.
+     *
+     * @param diagnostics the diagnostics value to set
+     * @return the USqlJobProperties object itself.
+     */
+    public USqlJobProperties withDiagnostics(List<Diagnostics> diagnostics) {
+        this.diagnostics = diagnostics;
         return this;
     }
 
@@ -243,7 +268,7 @@ public class USqlJobProperties extends JobProperties {
      * @param compileMode the compileMode value to set
      * @return the USqlJobProperties object itself.
      */
-    public USqlJobProperties setCompileMode(CompileMode compileMode) {
+    public USqlJobProperties withCompileMode(CompileMode compileMode) {
         this.compileMode = compileMode;
         return this;
     }

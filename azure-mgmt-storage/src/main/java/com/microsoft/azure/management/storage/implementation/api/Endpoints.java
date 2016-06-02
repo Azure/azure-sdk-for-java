@@ -47,7 +47,7 @@ public class Endpoints {
      * @param blob the blob value to set
      * @return the Endpoints object itself.
      */
-    public Endpoints setBlob(String blob) {
+    public Endpoints withBlob(String blob) {
         this.blob = blob;
         return this;
     }
@@ -67,7 +67,7 @@ public class Endpoints {
      * @param queue the queue value to set
      * @return the Endpoints object itself.
      */
-    public Endpoints setQueue(String queue) {
+    public Endpoints withQueue(String queue) {
         this.queue = queue;
         return this;
     }
@@ -87,7 +87,7 @@ public class Endpoints {
      * @param table the table value to set
      * @return the Endpoints object itself.
      */
-    public Endpoints setTable(String table) {
+    public Endpoints withTable(String table) {
         this.table = table;
         return this;
     }
@@ -107,7 +107,7 @@ public class Endpoints {
      * @param file the file value to set
      * @return the Endpoints object itself.
      */
-    public Endpoints setFile(String file) {
+    public Endpoints withFile(String file) {
         this.file = file;
         return this;
     }

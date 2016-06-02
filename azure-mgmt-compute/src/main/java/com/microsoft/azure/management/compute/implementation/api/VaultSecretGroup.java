@@ -40,7 +40,7 @@ public class VaultSecretGroup {
      * @param sourceVault the sourceVault value to set
      * @return the VaultSecretGroup object itself.
      */
-    public VaultSecretGroup setSourceVault(SubResource sourceVault) {
+    public VaultSecretGroup withSourceVault(SubResource sourceVault) {
         this.sourceVault = sourceVault;
         return this;
     }
@@ -60,7 +60,7 @@ public class VaultSecretGroup {
      * @param vaultCertificates the vaultCertificates value to set
      * @return the VaultSecretGroup object itself.
      */
-    public VaultSecretGroup setVaultCertificates(List<VaultCertificate> vaultCertificates) {
+    public VaultSecretGroup withVaultCertificates(List<VaultCertificate> vaultCertificates) {
         this.vaultCertificates = vaultCertificates;
         return this;
     }

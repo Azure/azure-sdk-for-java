@@ -33,7 +33,7 @@ public class ConnectionStringDictionaryInner extends Resource {
      * @param properties the properties value to set
      * @return the ConnectionStringDictionaryInner object itself.
      */
-    public ConnectionStringDictionaryInner setProperties(Map<String, ConnStringValueTypePair> properties) {
+    public ConnectionStringDictionaryInner withProperties(Map<String, ConnStringValueTypePair> properties) {
         this.properties = properties;
         return this;
     }
