@@ -201,7 +201,6 @@ public final class Azure {
 		}
     }
 
-
     private Azure(RestClient restClient, String subscriptionId) {
         ResourceManagementClientImpl resourceManagementClient = new ResourceManagementClientImpl(restClient);
         resourceManagementClient.setSubscriptionId(subscriptionId);

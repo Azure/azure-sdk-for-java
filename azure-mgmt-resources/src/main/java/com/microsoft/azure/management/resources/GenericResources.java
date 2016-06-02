@@ -15,6 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDe
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Entry point to generic resources management API.
@@ -40,4 +41,16 @@ public interface GenericResources extends
      * @throws CloudException failures thrown from Azure
      */
     boolean checkExistence(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws IOException, CloudException;
+
+    /**
+     * Move resources from one resource group to another.
+     *
+     * @param sourceResourceGroupName Source resource group name
+     * @param targetResourceGroup target resource group, can be in a different subscription
+     * @param resources the list of IDs of the resources to move
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws InterruptedException exception thrown when long running operation is interrupted
+     */
+    void moveResources(String sourceResourceGroupName, ResourceGroup targetResourceGroup, List<String> resources) throws CloudException, IOException, InterruptedException;
 }

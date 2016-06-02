@@ -58,11 +58,6 @@ public final class ResourceGroupsImpl
     }
 
     @Override
-    public ResourceGroupImpl update(String name) {
-        return createFluentModel(name);
-    }
-
-    @Override
     public ResourceGroupImpl define(String name) {
         return createFluentModel(name);
     }

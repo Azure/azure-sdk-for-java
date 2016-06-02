@@ -102,25 +102,7 @@ public class ResourceGroupImpl extends
 
     @Override
     public ResourceGroupImpl apply() throws Exception {
-        ResourceGroupInner params = new ResourceGroupInner();
-        ResourceGroupInner group;
-
-        params.setTags(this.inner().tags());
-
-        // Figure out the location, since the SDK requires on the params explicitly even though it cannot be changed
-        if (this.inner().location() != null) {
-            params.setLocation(this.inner().location());
-        } else {
-            group = client.get(this.key).getBody();
-            if (null == group) {
-                throw new Exception("Resource group not found");
-            } else {
-                params.setLocation(group.location());
-            }
-        }
-
-        client.createOrUpdate(this.key, params);
-        return this;
+        return this.create();
     }
 
     @Override
@@ -138,6 +120,11 @@ public class ResourceGroupImpl extends
     @Override
     public <T extends ResourceConnector> T connectToResource(ResourceConnector.Builder<T> adapterBuilder) {
         return adapterBuilder.create(this.serviceClient.restClient(), this.serviceClient.subscriptionId(), this);
+    }
+
+    @Override
+    public Update update() throws Exception {
+        return this;
     }
 
     @Override
