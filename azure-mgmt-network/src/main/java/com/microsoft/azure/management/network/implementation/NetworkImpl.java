@@ -52,7 +52,7 @@ class NetworkImpl
      **************************************************/
 
     @Override
-    public Network refresh() throws Exception {
+    public NetworkImpl refresh() throws Exception {
         ServiceResponse<VirtualNetworkInner> response =
             this.client.get(this.resourceGroupName(), this.name());
         this.setInner(response.getBody());
@@ -72,7 +72,7 @@ class NetworkImpl
     }
 
     @Override
-    public Network apply() throws Exception {
+    public NetworkImpl apply() throws Exception {
         return this.create();
     }
 
@@ -134,6 +134,12 @@ class NetworkImpl
         return this;
     }
 
+    @Override
+    public SubnetImpl defineSubnet(String name) {
+        SubnetInner inner = new SubnetInner();
+        inner.setName(name);
+        return new SubnetImpl(name, inner, this);
+    }
 
     /**********************************************
      * Getters
@@ -171,12 +177,5 @@ class NetworkImpl
                 this.client.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
         this.setInner(response.getBody());
         initializeSubnetsFromInner();
-    }
-
-    @Override
-    public SubnetImpl defineSubnet(String name) {
-        SubnetInner inner = new SubnetInner();
-        inner.setName(name);
-        return new SubnetImpl(name, inner, this);
     }
 }

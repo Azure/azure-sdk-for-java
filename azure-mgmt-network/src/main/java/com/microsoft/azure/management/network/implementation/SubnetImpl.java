@@ -16,8 +16,8 @@ class SubnetImpl
         Subnet,
         Subnet.Definition<Network.DefinitionCreatableWithSubnet> {
 
-    protected SubnetImpl(String name, SubnetInner inner, NetworkImpl network) {
-        super(name, inner, network);
+    protected SubnetImpl(String name, SubnetInner inner, NetworkImpl parent) {
+        super(name, inner, parent);
     }
 
     /********************************************
