@@ -21,6 +21,7 @@ import com.microsoft.azure.management.network.implementation.api.NetworkInterfac
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
@@ -67,7 +68,7 @@ class NetworkInterfaceImpl
         this.networks = networks;
         this.publicIpAddresses = publicIpAddresses;
         this.nicName = name;
-        this.uniqueId = this.nicName + String.valueOf(System.currentTimeMillis() / 1000L);
+        this.uniqueId = Utils.randomId(this.nicName);
     }
 
     /**************************************************.
@@ -95,8 +96,7 @@ class NetworkInterfaceImpl
 
     @Override
     public NetworkInterfaceImpl apply() throws Exception {
-        this.create();
-        return this;
+        return this.create();
     }
 
     /**************************************************.
@@ -312,6 +312,10 @@ class NetworkInterfaceImpl
      * Helper methods
      **************************************************/
 
+    /**
+     * @param prefix the prefix
+     * @return a random value (derived from the resource and resource group name) with the given prefix
+     */
     private String nameWithPrefix(String prefix) {
         return prefix + "-" + this.uniqueId + "-" + this.resourceGroupName();
     }
@@ -327,6 +331,9 @@ class NetworkInterfaceImpl
         return this.inner().ipConfigurations().get(0);
     }
 
+    /**
+     * @return the list of DNS server IPs from the DNS settings
+     */
     private List<String> dnsServerIps() {
         if (this.inner().dnsSettings().dnsServers() == null) {
             this.inner().dnsSettings().setDnsServers(new ArrayList<String>());
@@ -360,6 +367,8 @@ class NetworkInterfaceImpl
      * <p>
      * this method will never return null as subnet is required for a network interface, in case of
      * update mode if user didn't choose to change the subnet then existing subnet will be returned.
+     * Updating the nic subnet has a restriction, the new subnet must reside in the same virtual network
+     * as the current one.
      *
      * @return the subnet resource
      */

@@ -223,4 +223,12 @@ public class Utils {
 			return null;
 		}
 	}
+
+	/**
+	 * @param prefix the prefix for the random value
+	 * @return a random value with the given prefix
+     */
+	public static String randomId(String prefix) {
+		return prefix + String.valueOf(System.currentTimeMillis() % 100000L);
+	}
 }
