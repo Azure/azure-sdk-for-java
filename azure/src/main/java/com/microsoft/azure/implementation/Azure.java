@@ -13,6 +13,7 @@ import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
+import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
@@ -254,13 +255,20 @@ public final class Azure {
         return networkManager.networks();
     }
 
+    /**
+     * @return entry point to managing network security groups
+     */
+    public NetworkSecurityGroups networkSecurityGroups() {
+        return networkManager.networkSecurityGroups();
+    }
+
     /** 
      * @return entry point to managing virtual machines
      */
     public VirtualMachines virtualMachines() {
         return computeManager.virtualMachines();
     }
-    
+
     /**
      * @return entry point to managing public IP addresses
      */

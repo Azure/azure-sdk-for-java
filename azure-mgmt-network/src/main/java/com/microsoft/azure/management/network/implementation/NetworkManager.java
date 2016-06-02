@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.network.implementation.api.NetworkManagementClientImpl;
@@ -24,6 +25,7 @@ public final class NetworkManager {
     // Collections
     private PublicIpAddresses publicIpAddresses;
     private Networks networks;
+    private NetworkSecurityGroups networkSecurityGroups;
     
     public static Configurable configure() {
         return new NetworkManager.ConfigurableImpl();
@@ -65,6 +67,18 @@ public final class NetworkManager {
                     this.resourceManager.resourceGroups());
         }
         return this.networks;
+    }
+    
+    /**
+     * @return entry point to network security group management
+     */
+    public NetworkSecurityGroups networkSecurityGroups() {
+        if(this.networkSecurityGroups == null) {
+            this.networkSecurityGroups = new NetworkSecurityGroupsImpl(
+                    this.networkManagementClient.networkSecurityGroups(),
+                    this.resourceManager.resourceGroups());
+        }
+        return this.networkSecurityGroups;
     }
     
     /**

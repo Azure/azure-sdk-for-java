@@ -64,6 +64,14 @@ public class AzureTests {
     }
 
     /**
+     * Tests the network security group implementation
+     * @throws Exception
+     */
+    @Test public void testNetworkSecurityGroups() throws Exception {
+        new TestNSG().runTest(azure2.networkSecurityGroups(), azure2.resourceGroups());
+    }
+
+    /**
      * Tests the public IP address implementation
      * @throws Exception
      */
