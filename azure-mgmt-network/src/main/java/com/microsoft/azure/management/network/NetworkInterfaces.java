@@ -8,7 +8,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDe
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
 /**
- * Entry point to network interface management
+ * Entry point to network interface management.
  */
 public interface NetworkInterfaces  extends
         SupportsCreating<NetworkInterface.DefinitionBlank>,

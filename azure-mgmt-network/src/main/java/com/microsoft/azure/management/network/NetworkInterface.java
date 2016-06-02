@@ -31,12 +31,12 @@ public interface NetworkInterface extends
     /**
      * @return <tt>true</tt> if IP forwarding is enabled in this network interface
      */
-    boolean isIPForwardingEnabled();
+    Boolean isIPForwardingEnabled();
 
     /**
      * @return <tt>true</tt> if this is primary network interface in a virtual machine
      */
-    boolean isPrimary();
+    Boolean isPrimary();
 
     /**
      * @return the MAC Address of the network interface
@@ -259,13 +259,6 @@ public interface NetworkInterface extends
         DefinitionCreatable withNewPublicIpAddress(String leafDnsLabel);
 
         /**
-         * Specifies that no public IP address should be associated with the network interface.
-         *
-         * @return the next stage of the network interface definition
-         */
-        DefinitionCreatable withoutPublicIpAddress();
-
-        /**
          * Associates an existing public IP address with the network interface.
          *
          * @param publicIpAddress an existing public IP address
@@ -385,5 +378,54 @@ public interface NetworkInterface extends
          * @return the next stage of the network interface update
          */
         Update withAzureDnsServer();
+
+        /**
+         * Create a new public IP address to associate the network interface with, based on the provided definition.
+         * <p>
+         * if there is an existing public IP association then that will be removed in favour of this
+         *
+         * @param creatable a creatable definition for a new public IP
+         * @return the next stage of the network interface update
+         */
+        Update withNewPublicIpAddress(PublicIpAddress.DefinitionCreatable creatable);
+
+        /**
+         * Creates a new public IP address in the same region and group as the resource and associate it
+         * with the network interface.
+         * <p>
+         * the internal name and DNS label for the public IP address will be derived from the network interface name,
+         * if there is an existing public IP association then that will be removed in favour of this
+         *
+         * @return the next stage of the network interface update
+         */
+        Update withNewPublicIpAddress();
+
+        /**
+         * Creates a new public IP address in the same region and group as the resource, with the specified DNS label
+         * and associate it with the network interface.
+         * <p>
+         * the internal name for the public IP address will be derived from the DNS label, if there is an existing
+         * public IP association then that will be removed in favour of this
+         *
+         * @param leafDnsLabel the leaf domain label
+         * @return the next stage of the network interface update
+         */
+        Update withNewPublicIpAddress(String leafDnsLabel);
+
+        /**
+         * Specifies that remove any public IP associated with the network interface.
+         *
+         * @return the next stage of the network interface update
+         */
+        Update withoutPublicIpAddress();
+
+        /**
+         * Associates an existing public IP address with the network interface. if there is an existing
+         * public IP association then that will be removed in favour of this
+         *
+         * @param publicIpAddress an existing public IP address
+         * @return the next stage of the network interface update
+         */
+        Update withExistingPublicIpAddress(PublicIpAddress publicIpAddress);
     }
 }

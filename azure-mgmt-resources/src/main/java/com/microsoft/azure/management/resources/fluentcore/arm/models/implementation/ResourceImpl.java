@@ -106,4 +106,11 @@ public abstract class ResourceImpl<
     public final FluentModelImplT withRegion(Region region) {
         return this.withRegion(region.toString());
     }
+
+    /**
+     * @return <tt>true</tt> if currently in define..create mode
+     */
+    protected boolean isInCreateMode() {
+        return this.inner().id() == null;
+    }
 }
