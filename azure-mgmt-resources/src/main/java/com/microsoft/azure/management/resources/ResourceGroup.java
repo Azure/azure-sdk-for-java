@@ -64,7 +64,7 @@ public interface ResourceGroup extends
     }
 
     /**
-     * The template for a pet update operation, containing all the settings that can be modified.
+     * The template for a resource group update operation, containing all the settings that can be modified.
      */
     interface Update extends
         Appliable<ResourceGroup>,

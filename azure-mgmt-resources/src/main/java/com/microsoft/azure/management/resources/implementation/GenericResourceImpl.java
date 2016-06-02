@@ -26,12 +26,15 @@ final class GenericResourceImpl
         GenericResource.DefinitionWithProviderNamespace,
         GenericResource.DefinitionWithOrWithoutParentResource,
         GenericResource.DefinitionWithPlan,
-        GenericResource.DefinitionCreatable {
+        GenericResource.DefinitionWithApiVersion,
+        GenericResource.DefinitionCreatable,
+        GenericResource.Update {
     private final ResourcesInner client;
     private final ResourceManagementClientImpl serviceClient;
     private String resourceProviderNamespace;
     private String parentResourceId;
     private String resourceType;
+    private String apiVersion;
 
     GenericResourceImpl(String key,
                         GenericResourceInner innerModel,
@@ -69,8 +72,14 @@ final class GenericResourceImpl
     }
 
     @Override
-    public DefinitionCreatable withPlan(String name, String publisher, String product, String promotionCode) {
+    public DefinitionWithApiVersion withPlan(String name, String publisher, String product, String promotionCode) {
         inner().setPlan(new Plan().setName(name).setPublisher(publisher).setProduct(product).setPromotionCode(promotionCode));
+        return this;
+    }
+
+    @Override
+    public DefinitionWithApiVersion withoutPlan() {
+        inner().setPlan(null);
         return this;
     }
 
@@ -83,6 +92,12 @@ final class GenericResourceImpl
     @Override
     public DefinitionWithProviderNamespace withResourceType(String resourceType) {
         this.resourceType = resourceType;
+        return this;
+    }
+
+    @Override
+    public DefinitionCreatable withApiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
         return this;
     }
 
@@ -100,12 +115,22 @@ final class GenericResourceImpl
                 parentResourceId,
                 resourceType,
                 key(),
-                serviceClient.apiVersion(),
+                apiVersion,
                 inner()
         ).getBody();
         this.setInner(inner);
         this.resourceType = null;
         this.resourceProviderNamespace = null;
         this.parentResourceId = null;
+    }
+
+    @Override
+    public Update update() throws Exception {
+        return this;
+    }
+
+    @Override
+    public GenericResource apply() throws Exception {
+        return create();
     }
 }

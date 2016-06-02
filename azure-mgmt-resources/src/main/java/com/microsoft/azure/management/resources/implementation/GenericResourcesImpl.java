@@ -9,12 +9,14 @@ package com.microsoft.azure.management.resources.implementation;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.GenericResources;
+import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupsInner;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourcesInner;
 import com.microsoft.azure.management.resources.GenericResource;
 import com.microsoft.azure.management.resources.implementation.api.GenericResourceInner;
+import com.microsoft.azure.management.resources.implementation.api.ResourcesMoveInfoInner;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,12 +28,12 @@ final class GenericResourcesImpl
     implements GenericResources {
 
     private final ResourceManagementClientImpl serviceClient;
-    private final ResourcesInner resources;
+    private final ResourcesInner client;
     private final ResourceGroupsInner resourceGroups;
 
     GenericResourcesImpl(ResourceManagementClientImpl serviceClient) {
         this.serviceClient = serviceClient;
-        this.resources = serviceClient.resources();
+        this.client = serviceClient.resources();
         this.resourceGroups = serviceClient.resourceGroups();
     }
 
@@ -62,19 +64,27 @@ final class GenericResourcesImpl
 
     @Override
     public GenericResource.DefinitionBlank define(String name) {
-        return new GenericResourceImpl(name, new GenericResourceInner(), resources, serviceClient);
+        return new GenericResourceImpl(name, new GenericResourceInner(), client, serviceClient);
     }
 
     @Override
     public boolean checkExistence(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws IOException, CloudException {
-        return resources.checkExistence(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).getBody();
+        return client.checkExistence(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).getBody();
+    }
+
+    @Override
+    public void moveResources(String sourceResourceGroupName, ResourceGroup targetResourceGroup, List<String> resources) throws CloudException, IOException, InterruptedException {
+        ResourcesMoveInfoInner moveInfo = new ResourcesMoveInfoInner();
+        moveInfo.setTargetResourceGroup(targetResourceGroup.id());
+        moveInfo.setResources(resources);
+        client.moveResources(sourceResourceGroupName, moveInfo);
     }
 
     private PagedList<GenericResource> listIntern(String groupName) throws IOException, CloudException {
         PagedListConverter<GenericResourceInner, GenericResource> converter = new PagedListConverter<GenericResourceInner, GenericResource>() {
             @Override
             public GenericResource typeConvert(GenericResourceInner genericResourceInner) {
-                return new GenericResourceImpl(genericResourceInner.id(), genericResourceInner, resources, serviceClient);
+                return new GenericResourceImpl(genericResourceInner.id(), genericResourceInner, client, serviceClient);
             }
         };
         return converter.convert(resourceGroups.listResources(groupName).getBody());
@@ -87,7 +97,7 @@ final class GenericResourcesImpl
         List<GenericResourceInner> innerList = resourceGroups.listResources(groupName).getBody();
         for (GenericResourceInner inner : innerList) {
             if (name.equals(inner.name())) {
-                return new GenericResourceImpl(inner.id(), inner, resources, serviceClient);
+                return new GenericResourceImpl(inner.id(), inner, client, serviceClient);
             }
         }
         return null;
