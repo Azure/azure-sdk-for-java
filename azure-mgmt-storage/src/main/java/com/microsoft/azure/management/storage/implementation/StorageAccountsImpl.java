@@ -17,6 +17,9 @@ import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * The implementation of StorageAccounts and its parent interfaces.
+ */
 class StorageAccountsImpl
         implements StorageAccounts {
     private final StorageAccountsInner client;

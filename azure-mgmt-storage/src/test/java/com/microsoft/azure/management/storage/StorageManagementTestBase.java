@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.storage;
 
 import com.microsoft.azure.AzureEnvironment;
@@ -20,7 +26,7 @@ public abstract class StorageManagementTestBase {
 
         RestClient restClient = AzureEnvironment.AZURE.newRestClientBuilder()
                 .withCredentials(credentials)
-                .withLogLevel(HttpLoggingInterceptor.Level.HEADERS)
+                .withLogLevel(HttpLoggingInterceptor.Level.BODY)
                 .build();
 
         resourceManager = ResourceManager
