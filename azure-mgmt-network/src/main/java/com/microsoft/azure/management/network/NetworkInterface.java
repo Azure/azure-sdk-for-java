@@ -31,7 +31,7 @@ public interface NetworkInterface extends
     /**
      * @return <tt>true</tt> if IP forwarding is enabled in this network interface
      */
-    Boolean isIPForwardingEnabled();
+    Boolean isIpForwardingEnabled();
 
     /**
      * @return <tt>true</tt> if this is primary network interface in a virtual machine
@@ -47,7 +47,7 @@ public interface NetworkInterface extends
      *
      * @return the Internal DNS name assigned to this network interface
      */
-    String internalDNSNameLabel();
+    String internalDnsNameLabel();
 
     /**
      * Gets the fully qualified domain name of this network interface.
@@ -56,7 +56,7 @@ public interface NetworkInterface extends
      *
      * @return the qualified domain name
      */
-    String internalFQDN();
+    String internalFqdn();
 
     /**
      * @return IP addresses this network interface's DNS servers
@@ -280,7 +280,7 @@ public interface NetworkInterface extends
          *
          * @return the next stage of the network interface definition
          */
-        DefinitionCreatable withIPForwardingEnabled();
+        DefinitionCreatable withIpForwardingEnabled();
 
         /**
          * Specifies the IP address of the custom DNS server to associate with the network interface.
@@ -342,14 +342,14 @@ public interface NetworkInterface extends
          *
          * @return the next stage of the network interface update
          */
-        Update withIPForwardingEnabled();
+        Update withIpForwardingEnabled();
 
         /**
          * Disable IP forwarding in the network interface.
          *
          * @return the next stage of the network interface update
          */
-        Update withIPForwardingDisabled();
+        Update withIpForwardingDisabled();
 
         /**
          * Specifies the IP address of the custom DNS server to associate with the network interface.

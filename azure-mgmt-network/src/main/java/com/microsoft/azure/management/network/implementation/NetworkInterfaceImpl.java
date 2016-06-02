@@ -181,13 +181,13 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public NetworkInterfaceImpl withIPForwardingEnabled() {
+    public NetworkInterfaceImpl withIpForwardingEnabled() {
         this.inner().setEnableIPForwarding(true);
         return this;
     }
 
     @Override
-    public NetworkInterfaceImpl withIPForwardingDisabled() {
+    public NetworkInterfaceImpl withIpForwardingDisabled() {
         this.inner().setEnableIPForwarding(false);
         return this;
     }
@@ -227,7 +227,7 @@ class NetworkInterfaceImpl
      **************************************************/
 
     @Override
-    public Boolean isIPForwardingEnabled() {
+    public Boolean isIpForwardingEnabled() {
         return this.inner().enableIPForwarding();
     }
 
@@ -242,12 +242,12 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public String internalDNSNameLabel() {
+    public String internalDnsNameLabel() {
         return this.inner().dnsSettings().internalDnsNameLabel();
     }
 
     @Override
-    public String internalFQDN() {
+    public String internalFqdn() {
         return this.inner().dnsSettings().internalFqdn();
     }
 

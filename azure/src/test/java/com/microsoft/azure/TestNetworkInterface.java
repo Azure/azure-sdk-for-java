@@ -21,7 +21,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
                 .withNewNetwork("10.0.0.0/28")
                 .withPrivateIpAddressDynamic()
                 .withNewPublicIpAddress("pipdns" + this.testId)
-                .withIPForwardingEnabled()
+                .withIpForwardingEnabled()
                 .create();
     }
 
@@ -30,7 +30,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
         resource =  resource.update()
                 .withTag("tag1", "value1")
                 .withTag("tag2", "value2")
-                .withIPForwardingDisabled()
+                .withIpForwardingDisabled()
                 .apply();
         Assert.assertTrue(resource.tags().containsKey("tag1"));
 
@@ -45,15 +45,15 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
                 .append("\n\tResource group: ").append(resource.resourceGroupName())
                 .append("\n\tRegion: ").append(resource.region())
                 .append("\n\tTags: ").append(resource.tags())
-                .append("\n\tInternal DNS name label: ").append(resource.internalDNSNameLabel())
-                .append("\n\tInternal FQDN: ").append(resource.internalFQDN())
+                .append("\n\tInternal DNS name label: ").append(resource.internalDnsNameLabel())
+                .append("\n\tInternal FQDN: ").append(resource.internalFqdn())
                 .append("\n\tDNS server IPs: ");
 
         // Output dns servers
         for(String dnsServerIp : resource.dnsServers()) {
             info.append("\n\t\t").append(dnsServerIp);
         }
-        info.append("\n\t IP forwarding enabled: ").append(resource.isIPForwardingEnabled())
+        info.append("\n\t IP forwarding enabled: ").append(resource.isIpForwardingEnabled())
                 .append("\n\tIs Primary:").append(resource.isPrimary())
                 .append("\n\tMAC Address:").append(resource.macAddress())
                 .append("\n\tPrivate IP:").append(resource.privateIp())
