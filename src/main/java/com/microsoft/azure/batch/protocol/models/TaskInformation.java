@@ -59,7 +59,7 @@ public class TaskInformation {
      * @param taskUrl the taskUrl value to set
      * @return the TaskInformation object itself.
      */
-    public TaskInformation setTaskUrl(String taskUrl) {
+    public TaskInformation withTaskUrl(String taskUrl) {
         this.taskUrl = taskUrl;
         return this;
     }
@@ -79,7 +79,7 @@ public class TaskInformation {
      * @param jobId the jobId value to set
      * @return the TaskInformation object itself.
      */
-    public TaskInformation setJobId(String jobId) {
+    public TaskInformation withJobId(String jobId) {
         this.jobId = jobId;
         return this;
     }
@@ -99,7 +99,7 @@ public class TaskInformation {
      * @param taskId the taskId value to set
      * @return the TaskInformation object itself.
      */
-    public TaskInformation setTaskId(String taskId) {
+    public TaskInformation withTaskId(String taskId) {
         this.taskId = taskId;
         return this;
     }
@@ -119,7 +119,7 @@ public class TaskInformation {
      * @param subtaskId the subtaskId value to set
      * @return the TaskInformation object itself.
      */
-    public TaskInformation setSubtaskId(Integer subtaskId) {
+    public TaskInformation withSubtaskId(Integer subtaskId) {
         this.subtaskId = subtaskId;
         return this;
     }
@@ -139,7 +139,7 @@ public class TaskInformation {
      * @param taskState the taskState value to set
      * @return the TaskInformation object itself.
      */
-    public TaskInformation setTaskState(TaskState taskState) {
+    public TaskInformation withTaskState(TaskState taskState) {
         this.taskState = taskState;
         return this;
     }
@@ -159,7 +159,7 @@ public class TaskInformation {
      * @param executionInfo the executionInfo value to set
      * @return the TaskInformation object itself.
      */
-    public TaskInformation setExecutionInfo(TaskExecutionInformation executionInfo) {
+    public TaskInformation withExecutionInfo(TaskExecutionInformation executionInfo) {
         this.executionInfo = executionInfo;
         return this;
     }

@@ -146,7 +146,7 @@ public class CloudJob {
      * @param id the id value to set
      * @return the CloudJob object itself.
      */
-    public CloudJob setId(String id) {
+    public CloudJob withId(String id) {
         this.id = id;
         return this;
     }
@@ -166,7 +166,7 @@ public class CloudJob {
      * @param displayName the displayName value to set
      * @return the CloudJob object itself.
      */
-    public CloudJob setDisplayName(String displayName) {
+    public CloudJob withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -186,7 +186,7 @@ public class CloudJob {
      * @param usesTaskDependencies the usesTaskDependencies value to set
      * @return the CloudJob object itself.
      */
-    public CloudJob setUsesTaskDependencies(Boolean usesTaskDependencies) {
+    public CloudJob withUsesTaskDependencies(Boolean usesTaskDependencies) {
         this.usesTaskDependencies = usesTaskDependencies;
         return this;
     }
@@ -206,7 +206,7 @@ public class CloudJob {
      * @param url the url value to set
      * @return the CloudJob object itself.
      */
-    public CloudJob setUrl(String url) {
+    public CloudJob withUrl(String url) {
         this.url = url;
         return this;
     }
@@ -226,7 +226,7 @@ public class CloudJob {
      * @param eTag the eTag value to set
      * @return the CloudJob object itself.
      */
-    public CloudJob setETag(String eTag) {
+    public CloudJob withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -246,7 +246,7 @@ public class CloudJob {
      * @param lastModified the lastModified value to set
      * @return the CloudJob object itself.
      */
-    public CloudJob setLastModified(DateTime lastModified) {
+    public CloudJob withLastModified(DateTime lastModified) {
         this.lastModified = lastModified;
         return this;
     }
@@ -266,7 +266,7 @@ public class CloudJob {
      * @param creationTime the creationTime value to set
      * @return the CloudJob object itself.
      */
-    public CloudJob setCreationTime(DateTime creationTime) {
+    public CloudJob withCreationTime(DateTime creationTime) {
         this.creationTime = creationTime;
         return this;
     }
@@ -286,7 +286,7 @@ public class CloudJob {
      * @param state the state value to set
      * @return the CloudJob object itself.
      */
-    public CloudJob setState(JobState state) {
+    public CloudJob withState(JobState state) {
         this.state = state;
         return this;
     }
@@ -306,7 +306,7 @@ public class CloudJob {
      * @param stateTransitionTime the stateTransitionTime value to set
      * @return the CloudJob object itself.
      */
-    public CloudJob setStateTransitionTime(DateTime stateTransitionTime) {
+    public CloudJob withStateTransitionTime(DateTime stateTransitionTime) {
         this.stateTransitionTime = stateTransitionTime;
         return this;
     }
@@ -326,7 +326,7 @@ public class CloudJob {
      * @param previousState the previousState value to set
      * @return the CloudJob object itself.
      */
-    public CloudJob setPreviousState(JobState previousState) {
+    public CloudJob withPreviousState(JobState previousState) {
         this.previousState = previousState;
         return this;
     }
@@ -346,7 +346,7 @@ public class CloudJob {
      * @param previousStateTransitionTime the previousStateTransitionTime value to set
      * @return the CloudJob object itself.
      */
-    public CloudJob setPreviousStateTransitionTime(DateTime previousStateTransitionTime) {
+    public CloudJob withPreviousStateTransitionTime(DateTime previousStateTransitionTime) {
         this.previousStateTransitionTime = previousStateTransitionTime;
         return this;
     }
@@ -366,7 +366,7 @@ public class CloudJob {
      * @param priority the priority value to set
      * @return the CloudJob object itself.
      */
-    public CloudJob setPriority(Integer priority) {
+    public CloudJob withPriority(Integer priority) {
         this.priority = priority;
         return this;
     }
@@ -386,7 +386,7 @@ public class CloudJob {
      * @param constraints the constraints value to set
      * @return the CloudJob object itself.
      */
-    public CloudJob setConstraints(JobConstraints constraints) {
+    public CloudJob withConstraints(JobConstraints constraints) {
         this.constraints = constraints;
         return this;
     }
@@ -406,7 +406,7 @@ public class CloudJob {
      * @param jobManagerTask the jobManagerTask value to set
      * @return the CloudJob object itself.
      */
-    public CloudJob setJobManagerTask(JobManagerTask jobManagerTask) {
+    public CloudJob withJobManagerTask(JobManagerTask jobManagerTask) {
         this.jobManagerTask = jobManagerTask;
         return this;
     }
@@ -426,7 +426,7 @@ public class CloudJob {
      * @param jobPreparationTask the jobPreparationTask value to set
      * @return the CloudJob object itself.
      */
-    public CloudJob setJobPreparationTask(JobPreparationTask jobPreparationTask) {
+    public CloudJob withJobPreparationTask(JobPreparationTask jobPreparationTask) {
         this.jobPreparationTask = jobPreparationTask;
         return this;
     }
@@ -446,7 +446,7 @@ public class CloudJob {
      * @param jobReleaseTask the jobReleaseTask value to set
      * @return the CloudJob object itself.
      */
-    public CloudJob setJobReleaseTask(JobReleaseTask jobReleaseTask) {
+    public CloudJob withJobReleaseTask(JobReleaseTask jobReleaseTask) {
         this.jobReleaseTask = jobReleaseTask;
         return this;
     }
@@ -466,7 +466,7 @@ public class CloudJob {
      * @param commonEnvironmentSettings the commonEnvironmentSettings value to set
      * @return the CloudJob object itself.
      */
-    public CloudJob setCommonEnvironmentSettings(List<EnvironmentSetting> commonEnvironmentSettings) {
+    public CloudJob withCommonEnvironmentSettings(List<EnvironmentSetting> commonEnvironmentSettings) {
         this.commonEnvironmentSettings = commonEnvironmentSettings;
         return this;
     }
@@ -486,7 +486,7 @@ public class CloudJob {
      * @param poolInfo the poolInfo value to set
      * @return the CloudJob object itself.
      */
-    public CloudJob setPoolInfo(PoolInformation poolInfo) {
+    public CloudJob withPoolInfo(PoolInformation poolInfo) {
         this.poolInfo = poolInfo;
         return this;
     }
@@ -506,7 +506,7 @@ public class CloudJob {
      * @param metadata the metadata value to set
      * @return the CloudJob object itself.
      */
-    public CloudJob setMetadata(List<MetadataItem> metadata) {
+    public CloudJob withMetadata(List<MetadataItem> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -526,7 +526,7 @@ public class CloudJob {
      * @param executionInfo the executionInfo value to set
      * @return the CloudJob object itself.
      */
-    public CloudJob setExecutionInfo(JobExecutionInformation executionInfo) {
+    public CloudJob withExecutionInfo(JobExecutionInformation executionInfo) {
         this.executionInfo = executionInfo;
         return this;
     }
@@ -546,7 +546,7 @@ public class CloudJob {
      * @param stats the stats value to set
      * @return the CloudJob object itself.
      */
-    public CloudJob setStats(JobStatistics stats) {
+    public CloudJob withStats(JobStatistics stats) {
         this.stats = stats;
         return this;
     }

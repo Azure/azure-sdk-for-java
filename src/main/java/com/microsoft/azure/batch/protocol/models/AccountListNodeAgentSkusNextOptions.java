@@ -51,7 +51,7 @@ public class AccountListNodeAgentSkusNextOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the AccountListNodeAgentSkusNextOptions object itself.
      */
-    public AccountListNodeAgentSkusNextOptions setClientRequestId(String clientRequestId) {
+    public AccountListNodeAgentSkusNextOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -71,7 +71,7 @@ public class AccountListNodeAgentSkusNextOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the AccountListNodeAgentSkusNextOptions object itself.
      */
-    public AccountListNodeAgentSkusNextOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public AccountListNodeAgentSkusNextOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -94,7 +94,7 @@ public class AccountListNodeAgentSkusNextOptions {
      * @param ocpDate the ocpDate value to set
      * @return the AccountListNodeAgentSkusNextOptions object itself.
      */
-    public AccountListNodeAgentSkusNextOptions setOcpDate(DateTime ocpDate) {
+    public AccountListNodeAgentSkusNextOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }

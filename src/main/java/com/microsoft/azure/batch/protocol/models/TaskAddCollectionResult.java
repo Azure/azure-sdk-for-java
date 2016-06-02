@@ -32,7 +32,7 @@ public class TaskAddCollectionResult {
      * @param value the value value to set
      * @return the TaskAddCollectionResult object itself.
      */
-    public TaskAddCollectionResult setValue(List<TaskAddResult> value) {
+    public TaskAddCollectionResult withValue(List<TaskAddResult> value) {
         this.value = value;
         return this;
     }

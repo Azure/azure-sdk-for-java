@@ -38,7 +38,7 @@ public class MetadataItem {
      * @param name the name value to set
      * @return the MetadataItem object itself.
      */
-    public MetadataItem setName(String name) {
+    public MetadataItem withName(String name) {
         this.name = name;
         return this;
     }
@@ -58,7 +58,7 @@ public class MetadataItem {
      * @param value the value value to set
      * @return the MetadataItem object itself.
      */
-    public MetadataItem setValue(String value) {
+    public MetadataItem withValue(String value) {
         this.value = value;
         return this;
     }

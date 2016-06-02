@@ -54,7 +54,7 @@ public class JobGetHeaders {
      * @param clientRequestId the clientRequestId value to set
      * @return the JobGetHeaders object itself.
      */
-    public JobGetHeaders setClientRequestId(String clientRequestId) {
+    public JobGetHeaders withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -74,7 +74,7 @@ public class JobGetHeaders {
      * @param requestId the requestId value to set
      * @return the JobGetHeaders object itself.
      */
-    public JobGetHeaders setRequestId(String requestId) {
+    public JobGetHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -94,7 +94,7 @@ public class JobGetHeaders {
      * @param eTag the eTag value to set
      * @return the JobGetHeaders object itself.
      */
-    public JobGetHeaders setETag(String eTag) {
+    public JobGetHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -117,7 +117,7 @@ public class JobGetHeaders {
      * @param lastModified the lastModified value to set
      * @return the JobGetHeaders object itself.
      */
-    public JobGetHeaders setLastModified(DateTime lastModified) {
+    public JobGetHeaders withLastModified(DateTime lastModified) {
         this.lastModified = new DateTimeRfc1123(lastModified);
         return this;
     }

@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the Get operation.
+ * Additional parameters for the Certificate_Get operation.
  */
 public class CertificateGetOptions {
     /**
@@ -64,7 +64,7 @@ public class CertificateGetOptions {
      * @param select the select value to set
      * @return the CertificateGetOptions object itself.
      */
-    public CertificateGetOptions setSelect(String select) {
+    public CertificateGetOptions withSelect(String select) {
         this.select = select;
         return this;
     }
@@ -84,7 +84,7 @@ public class CertificateGetOptions {
      * @param timeout the timeout value to set
      * @return the CertificateGetOptions object itself.
      */
-    public CertificateGetOptions setTimeout(Integer timeout) {
+    public CertificateGetOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -104,7 +104,7 @@ public class CertificateGetOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the CertificateGetOptions object itself.
      */
-    public CertificateGetOptions setClientRequestId(String clientRequestId) {
+    public CertificateGetOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -124,7 +124,7 @@ public class CertificateGetOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the CertificateGetOptions object itself.
      */
-    public CertificateGetOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public CertificateGetOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -147,7 +147,7 @@ public class CertificateGetOptions {
      * @param ocpDate the ocpDate value to set
      * @return the CertificateGetOptions object itself.
      */
-    public CertificateGetOptions setOcpDate(DateTime ocpDate) {
+    public CertificateGetOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }

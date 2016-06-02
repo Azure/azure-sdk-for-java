@@ -32,7 +32,7 @@ public class CloudTaskListSubtasksResult {
      * @param value the value value to set
      * @return the CloudTaskListSubtasksResult object itself.
      */
-    public CloudTaskListSubtasksResult setValue(List<SubtaskInformation> value) {
+    public CloudTaskListSubtasksResult withValue(List<SubtaskInformation> value) {
         this.value = value;
         return this;
     }

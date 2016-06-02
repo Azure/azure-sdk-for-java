@@ -60,7 +60,7 @@ public class CertificateCancelDeletionHeaders {
      * @param clientRequestId the clientRequestId value to set
      * @return the CertificateCancelDeletionHeaders object itself.
      */
-    public CertificateCancelDeletionHeaders setClientRequestId(String clientRequestId) {
+    public CertificateCancelDeletionHeaders withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -80,7 +80,7 @@ public class CertificateCancelDeletionHeaders {
      * @param requestId the requestId value to set
      * @return the CertificateCancelDeletionHeaders object itself.
      */
-    public CertificateCancelDeletionHeaders setRequestId(String requestId) {
+    public CertificateCancelDeletionHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -100,7 +100,7 @@ public class CertificateCancelDeletionHeaders {
      * @param eTag the eTag value to set
      * @return the CertificateCancelDeletionHeaders object itself.
      */
-    public CertificateCancelDeletionHeaders setETag(String eTag) {
+    public CertificateCancelDeletionHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -123,7 +123,7 @@ public class CertificateCancelDeletionHeaders {
      * @param lastModified the lastModified value to set
      * @return the CertificateCancelDeletionHeaders object itself.
      */
-    public CertificateCancelDeletionHeaders setLastModified(DateTime lastModified) {
+    public CertificateCancelDeletionHeaders withLastModified(DateTime lastModified) {
         this.lastModified = new DateTimeRfc1123(lastModified);
         return this;
     }
@@ -143,7 +143,7 @@ public class CertificateCancelDeletionHeaders {
      * @param dataServiceId the dataServiceId value to set
      * @return the CertificateCancelDeletionHeaders object itself.
      */
-    public CertificateCancelDeletionHeaders setDataServiceId(String dataServiceId) {
+    public CertificateCancelDeletionHeaders withDataServiceId(String dataServiceId) {
         this.dataServiceId = dataServiceId;
         return this;
     }

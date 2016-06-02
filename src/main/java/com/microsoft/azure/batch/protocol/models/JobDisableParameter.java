@@ -34,7 +34,7 @@ public class JobDisableParameter {
      * @param disableTasks the disableTasks value to set
      * @return the JobDisableParameter object itself.
      */
-    public JobDisableParameter setDisableTasks(DisableJobOption disableTasks) {
+    public JobDisableParameter withDisableTasks(DisableJobOption disableTasks) {
         this.disableTasks = disableTasks;
         return this;
     }

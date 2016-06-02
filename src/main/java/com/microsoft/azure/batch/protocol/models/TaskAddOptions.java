@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the Add operation.
+ * Additional parameters for the Task_Add operation.
  */
 public class TaskAddOptions {
     /**
@@ -58,7 +58,7 @@ public class TaskAddOptions {
      * @param timeout the timeout value to set
      * @return the TaskAddOptions object itself.
      */
-    public TaskAddOptions setTimeout(Integer timeout) {
+    public TaskAddOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -78,7 +78,7 @@ public class TaskAddOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the TaskAddOptions object itself.
      */
-    public TaskAddOptions setClientRequestId(String clientRequestId) {
+    public TaskAddOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -98,7 +98,7 @@ public class TaskAddOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the TaskAddOptions object itself.
      */
-    public TaskAddOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public TaskAddOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -121,7 +121,7 @@ public class TaskAddOptions {
      * @param ocpDate the ocpDate value to set
      * @return the TaskAddOptions object itself.
      */
-    public TaskAddOptions setOcpDate(DateTime ocpDate) {
+    public TaskAddOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }

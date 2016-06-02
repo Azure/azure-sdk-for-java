@@ -54,7 +54,7 @@ public class ApplicationGetHeaders {
      * @param clientRequestId the clientRequestId value to set
      * @return the ApplicationGetHeaders object itself.
      */
-    public ApplicationGetHeaders setClientRequestId(String clientRequestId) {
+    public ApplicationGetHeaders withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -74,7 +74,7 @@ public class ApplicationGetHeaders {
      * @param requestId the requestId value to set
      * @return the ApplicationGetHeaders object itself.
      */
-    public ApplicationGetHeaders setRequestId(String requestId) {
+    public ApplicationGetHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -94,7 +94,7 @@ public class ApplicationGetHeaders {
      * @param eTag the eTag value to set
      * @return the ApplicationGetHeaders object itself.
      */
-    public ApplicationGetHeaders setETag(String eTag) {
+    public ApplicationGetHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -117,7 +117,7 @@ public class ApplicationGetHeaders {
      * @param lastModified the lastModified value to set
      * @return the ApplicationGetHeaders object itself.
      */
-    public ApplicationGetHeaders setLastModified(DateTime lastModified) {
+    public ApplicationGetHeaders withLastModified(DateTime lastModified) {
         this.lastModified = new DateTimeRfc1123(lastModified);
         return this;
     }

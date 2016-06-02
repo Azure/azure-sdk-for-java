@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the List operation.
+ * Additional parameters for the Task_List operation.
  */
 public class TaskListOptions {
     /**
@@ -82,7 +82,7 @@ public class TaskListOptions {
      * @param filter the filter value to set
      * @return the TaskListOptions object itself.
      */
-    public TaskListOptions setFilter(String filter) {
+    public TaskListOptions withFilter(String filter) {
         this.filter = filter;
         return this;
     }
@@ -102,7 +102,7 @@ public class TaskListOptions {
      * @param select the select value to set
      * @return the TaskListOptions object itself.
      */
-    public TaskListOptions setSelect(String select) {
+    public TaskListOptions withSelect(String select) {
         this.select = select;
         return this;
     }
@@ -122,7 +122,7 @@ public class TaskListOptions {
      * @param expand the expand value to set
      * @return the TaskListOptions object itself.
      */
-    public TaskListOptions setExpand(String expand) {
+    public TaskListOptions withExpand(String expand) {
         this.expand = expand;
         return this;
     }
@@ -142,7 +142,7 @@ public class TaskListOptions {
      * @param maxResults the maxResults value to set
      * @return the TaskListOptions object itself.
      */
-    public TaskListOptions setMaxResults(Integer maxResults) {
+    public TaskListOptions withMaxResults(Integer maxResults) {
         this.maxResults = maxResults;
         return this;
     }
@@ -162,7 +162,7 @@ public class TaskListOptions {
      * @param timeout the timeout value to set
      * @return the TaskListOptions object itself.
      */
-    public TaskListOptions setTimeout(Integer timeout) {
+    public TaskListOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -182,7 +182,7 @@ public class TaskListOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the TaskListOptions object itself.
      */
-    public TaskListOptions setClientRequestId(String clientRequestId) {
+    public TaskListOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -202,7 +202,7 @@ public class TaskListOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the TaskListOptions object itself.
      */
-    public TaskListOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public TaskListOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -225,7 +225,7 @@ public class TaskListOptions {
      * @param ocpDate the ocpDate value to set
      * @return the TaskListOptions object itself.
      */
-    public TaskListOptions setOcpDate(DateTime ocpDate) {
+    public TaskListOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }

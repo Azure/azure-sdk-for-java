@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the List operation.
+ * Additional parameters for the Application_List operation.
  */
 public class ApplicationListOptions {
     /**
@@ -64,7 +64,7 @@ public class ApplicationListOptions {
      * @param maxResults the maxResults value to set
      * @return the ApplicationListOptions object itself.
      */
-    public ApplicationListOptions setMaxResults(Integer maxResults) {
+    public ApplicationListOptions withMaxResults(Integer maxResults) {
         this.maxResults = maxResults;
         return this;
     }
@@ -84,7 +84,7 @@ public class ApplicationListOptions {
      * @param timeout the timeout value to set
      * @return the ApplicationListOptions object itself.
      */
-    public ApplicationListOptions setTimeout(Integer timeout) {
+    public ApplicationListOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -104,7 +104,7 @@ public class ApplicationListOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the ApplicationListOptions object itself.
      */
-    public ApplicationListOptions setClientRequestId(String clientRequestId) {
+    public ApplicationListOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -124,7 +124,7 @@ public class ApplicationListOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the ApplicationListOptions object itself.
      */
-    public ApplicationListOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public ApplicationListOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -147,7 +147,7 @@ public class ApplicationListOptions {
      * @param ocpDate the ocpDate value to set
      * @return the ApplicationListOptions object itself.
      */
-    public ApplicationListOptions setOcpDate(DateTime ocpDate) {
+    public ApplicationListOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }

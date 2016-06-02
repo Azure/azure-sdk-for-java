@@ -52,7 +52,7 @@ public class TaskSchedulingError {
      * @param category the category value to set
      * @return the TaskSchedulingError object itself.
      */
-    public TaskSchedulingError setCategory(SchedulingErrorCategory category) {
+    public TaskSchedulingError withCategory(SchedulingErrorCategory category) {
         this.category = category;
         return this;
     }
@@ -72,7 +72,7 @@ public class TaskSchedulingError {
      * @param code the code value to set
      * @return the TaskSchedulingError object itself.
      */
-    public TaskSchedulingError setCode(String code) {
+    public TaskSchedulingError withCode(String code) {
         this.code = code;
         return this;
     }
@@ -92,7 +92,7 @@ public class TaskSchedulingError {
      * @param message the message value to set
      * @return the TaskSchedulingError object itself.
      */
-    public TaskSchedulingError setMessage(String message) {
+    public TaskSchedulingError withMessage(String message) {
         this.message = message;
         return this;
     }
@@ -112,7 +112,7 @@ public class TaskSchedulingError {
      * @param details the details value to set
      * @return the TaskSchedulingError object itself.
      */
-    public TaskSchedulingError setDetails(List<NameValuePair> details) {
+    public TaskSchedulingError withDetails(List<NameValuePair> details) {
         this.details = details;
         return this;
     }

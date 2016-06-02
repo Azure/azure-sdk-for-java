@@ -207,7 +207,7 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.listPoolUsageMetrics(this.client.apiVersion(), this.client.acceptLanguage(), startTime, endTime, filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> response = listPoolUsageMetricsDelegate(call.execute());
         PagedList<PoolUsageMetrics> result = new PagedList<PoolUsageMetrics>(response.getBody()) {
@@ -242,7 +242,7 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.listPoolUsageMetrics(this.client.apiVersion(), this.client.acceptLanguage(), startTime, endTime, filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<PoolUsageMetrics>>(serviceCallback) {
@@ -323,9 +323,9 @@ public final class PoolsImpl implements Pools {
                 PoolListPoolUsageMetricsNextOptions poolListPoolUsageMetricsNextOptions = null;
                 if (poolListPoolUsageMetricsOptions != null) {
                     poolListPoolUsageMetricsNextOptions = new PoolListPoolUsageMetricsNextOptions();
-                    poolListPoolUsageMetricsNextOptions.setClientRequestId(poolListPoolUsageMetricsOptions.clientRequestId());
-                    poolListPoolUsageMetricsNextOptions.setReturnClientRequestId(poolListPoolUsageMetricsOptions.returnClientRequestId());
-                    poolListPoolUsageMetricsNextOptions.setOcpDate(poolListPoolUsageMetricsOptions.ocpDate());
+                    poolListPoolUsageMetricsNextOptions.withClientRequestId(poolListPoolUsageMetricsOptions.clientRequestId());
+                    poolListPoolUsageMetricsNextOptions.withReturnClientRequestId(poolListPoolUsageMetricsOptions.returnClientRequestId());
+                    poolListPoolUsageMetricsNextOptions.withOcpDate(poolListPoolUsageMetricsOptions.ocpDate());
                 }
                 return listPoolUsageMetricsNext(nextPageLink, poolListPoolUsageMetricsNextOptions).getBody();
             }
@@ -399,9 +399,9 @@ public final class PoolsImpl implements Pools {
                         PoolListPoolUsageMetricsNextOptions poolListPoolUsageMetricsNextOptions = null;
                         if (poolListPoolUsageMetricsOptions != null) {
                             poolListPoolUsageMetricsNextOptions = new PoolListPoolUsageMetricsNextOptions();
-                            poolListPoolUsageMetricsNextOptions.setClientRequestId(poolListPoolUsageMetricsOptions.clientRequestId());
-                            poolListPoolUsageMetricsNextOptions.setReturnClientRequestId(poolListPoolUsageMetricsOptions.returnClientRequestId());
-                            poolListPoolUsageMetricsNextOptions.setOcpDate(poolListPoolUsageMetricsOptions.ocpDate());
+                            poolListPoolUsageMetricsNextOptions.withClientRequestId(poolListPoolUsageMetricsOptions.clientRequestId());
+                            poolListPoolUsageMetricsNextOptions.withReturnClientRequestId(poolListPoolUsageMetricsOptions.returnClientRequestId());
+                            poolListPoolUsageMetricsNextOptions.withOcpDate(poolListPoolUsageMetricsOptions.ocpDate());
                         }
                         listPoolUsageMetricsNextAsync(result.getBody().getNextPageLink(), poolListPoolUsageMetricsNextOptions, serviceCall, serviceCallback);
                     } else {
@@ -438,7 +438,7 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.getAllPoolsLifetimeStatistics(this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         return getAllPoolsLifetimeStatisticsDelegate(call.execute());
     }
@@ -462,7 +462,7 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.getAllPoolsLifetimeStatistics(this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<PoolStatistics>(serviceCallback) {
@@ -596,7 +596,7 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.add(pool, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         return addDelegate(call.execute());
     }
@@ -626,7 +626,7 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.add(pool, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -770,7 +770,7 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> response = listDelegate(call.execute());
         PagedList<CloudPool> result = new PagedList<CloudPool>(response.getBody()) {
@@ -805,7 +805,7 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<CloudPool>>(serviceCallback) {
@@ -886,9 +886,9 @@ public final class PoolsImpl implements Pools {
                 PoolListNextOptions poolListNextOptions = null;
                 if (poolListOptions != null) {
                     poolListNextOptions = new PoolListNextOptions();
-                    poolListNextOptions.setClientRequestId(poolListOptions.clientRequestId());
-                    poolListNextOptions.setReturnClientRequestId(poolListOptions.returnClientRequestId());
-                    poolListNextOptions.setOcpDate(poolListOptions.ocpDate());
+                    poolListNextOptions.withClientRequestId(poolListOptions.clientRequestId());
+                    poolListNextOptions.withReturnClientRequestId(poolListOptions.returnClientRequestId());
+                    poolListNextOptions.withOcpDate(poolListOptions.ocpDate());
                 }
                 return listNext(nextPageLink, poolListNextOptions).getBody();
             }
@@ -962,9 +962,9 @@ public final class PoolsImpl implements Pools {
                         PoolListNextOptions poolListNextOptions = null;
                         if (poolListOptions != null) {
                             poolListNextOptions = new PoolListNextOptions();
-                            poolListNextOptions.setClientRequestId(poolListOptions.clientRequestId());
-                            poolListNextOptions.setReturnClientRequestId(poolListOptions.returnClientRequestId());
-                            poolListNextOptions.setOcpDate(poolListOptions.ocpDate());
+                            poolListNextOptions.withClientRequestId(poolListOptions.clientRequestId());
+                            poolListNextOptions.withReturnClientRequestId(poolListOptions.returnClientRequestId());
+                            poolListNextOptions.withOcpDate(poolListOptions.ocpDate());
                         }
                         listNextAsync(result.getBody().getNextPageLink(), poolListNextOptions, serviceCall, serviceCallback);
                     } else {
@@ -1005,11 +1005,11 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         String ifMatch = null;
         String ifNoneMatch = null;
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
         Call<ResponseBody> call = service.delete(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         return deleteDelegate(call.execute());
     }
@@ -1038,11 +1038,11 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         String ifMatch = null;
         String ifNoneMatch = null;
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
         Call<ResponseBody> call = service.delete(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1232,11 +1232,11 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         String ifMatch = null;
         String ifNoneMatch = null;
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
         Call<Void> call = service.exists(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         return existsDelegate(call.execute());
     }
@@ -1265,11 +1265,11 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         String ifMatch = null;
         String ifNoneMatch = null;
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
         Call<Void> call = service.exists(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseEmptyCallback<Boolean>(serviceCallback) {
@@ -1462,11 +1462,11 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         String ifMatch = null;
         String ifNoneMatch = null;
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
         Call<ResponseBody> call = service.get(poolId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         return getDelegate(call.execute());
     }
@@ -1497,11 +1497,11 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         String ifMatch = null;
         String ifNoneMatch = null;
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
         Call<ResponseBody> call = service.get(poolId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CloudPool>(serviceCallback) {
@@ -1712,11 +1712,11 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         String ifMatch = null;
         String ifNoneMatch = null;
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
         Call<ResponseBody> call = service.patch(poolId, poolPatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         return patchDelegate(call.execute());
     }
@@ -1751,11 +1751,11 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         String ifMatch = null;
         String ifNoneMatch = null;
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
         Call<ResponseBody> call = service.patch(poolId, poolPatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1956,7 +1956,7 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.disableAutoScale(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         return disableAutoScaleDelegate(call.execute());
     }
@@ -1985,7 +1985,7 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.disableAutoScale(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -2132,11 +2132,11 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         String ifMatch = null;
         String ifNoneMatch = null;
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
         Call<ResponseBody> call = service.enableAutoScale(poolId, poolEnableAutoScaleParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         return enableAutoScaleDelegate(call.execute());
     }
@@ -2171,11 +2171,11 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         String ifMatch = null;
         String ifNoneMatch = null;
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
         Call<ResponseBody> call = service.enableAutoScale(poolId, poolEnableAutoScaleParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -2380,9 +2380,9 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         PoolEvaluateAutoScaleParameter poolEvaluateAutoScaleParameter = new PoolEvaluateAutoScaleParameter();
-        poolEvaluateAutoScaleParameter.setAutoScaleFormula(autoScaleFormula);
+        poolEvaluateAutoScaleParameter.withAutoScaleFormula(autoScaleFormula);
         Call<ResponseBody> call = service.evaluateAutoScale(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, poolEvaluateAutoScaleParameter, this.client.userAgent());
         return evaluateAutoScaleDelegate(call.execute());
     }
@@ -2416,9 +2416,9 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         PoolEvaluateAutoScaleParameter poolEvaluateAutoScaleParameter = new PoolEvaluateAutoScaleParameter();
-        poolEvaluateAutoScaleParameter.setAutoScaleFormula(autoScaleFormula);
+        poolEvaluateAutoScaleParameter.withAutoScaleFormula(autoScaleFormula);
         Call<ResponseBody> call = service.evaluateAutoScale(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, poolEvaluateAutoScaleParameter, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<AutoScaleRun>(serviceCallback) {
@@ -2473,7 +2473,7 @@ public final class PoolsImpl implements Pools {
             ocpDate = poolEvaluateAutoScaleOptions.ocpDate();
         }
         PoolEvaluateAutoScaleParameter poolEvaluateAutoScaleParameter = new PoolEvaluateAutoScaleParameter();
-        poolEvaluateAutoScaleParameter.setAutoScaleFormula(autoScaleFormula);
+        poolEvaluateAutoScaleParameter.withAutoScaleFormula(autoScaleFormula);
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -2526,7 +2526,7 @@ public final class PoolsImpl implements Pools {
             ocpDate = poolEvaluateAutoScaleOptions.ocpDate();
         }
         PoolEvaluateAutoScaleParameter poolEvaluateAutoScaleParameter = new PoolEvaluateAutoScaleParameter();
-        poolEvaluateAutoScaleParameter.setAutoScaleFormula(autoScaleFormula);
+        poolEvaluateAutoScaleParameter.withAutoScaleFormula(autoScaleFormula);
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -2578,11 +2578,11 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         String ifMatch = null;
         String ifNoneMatch = null;
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
         Call<ResponseBody> call = service.resize(poolId, poolResizeParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         return resizeDelegate(call.execute());
     }
@@ -2617,11 +2617,11 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         String ifMatch = null;
         String ifNoneMatch = null;
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
         Call<ResponseBody> call = service.resize(poolId, poolResizeParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -2822,11 +2822,11 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         String ifMatch = null;
         String ifNoneMatch = null;
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
         Call<ResponseBody> call = service.stopResize(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         return stopResizeDelegate(call.execute());
     }
@@ -2855,11 +2855,11 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         String ifMatch = null;
         String ifNoneMatch = null;
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
         Call<ResponseBody> call = service.stopResize(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -3054,7 +3054,7 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.updateProperties(poolId, poolUpdatePropertiesParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         return updatePropertiesDelegate(call.execute());
     }
@@ -3089,7 +3089,7 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.updateProperties(poolId, poolUpdatePropertiesParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -3246,13 +3246,13 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         String ifMatch = null;
         String ifNoneMatch = null;
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
         PoolUpgradeOSParameter poolUpgradeOSParameter = new PoolUpgradeOSParameter();
-        poolUpgradeOSParameter.setTargetOSVersion(targetOSVersion);
+        poolUpgradeOSParameter.withTargetOSVersion(targetOSVersion);
         Call<ResponseBody> call = service.upgradeOS(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, poolUpgradeOSParameter, this.client.userAgent());
         return upgradeOSDelegate(call.execute());
     }
@@ -3286,13 +3286,13 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         String ifMatch = null;
         String ifNoneMatch = null;
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
         PoolUpgradeOSParameter poolUpgradeOSParameter = new PoolUpgradeOSParameter();
-        poolUpgradeOSParameter.setTargetOSVersion(targetOSVersion);
+        poolUpgradeOSParameter.withTargetOSVersion(targetOSVersion);
         Call<ResponseBody> call = service.upgradeOS(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, poolUpgradeOSParameter, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -3363,7 +3363,7 @@ public final class PoolsImpl implements Pools {
             ifUnmodifiedSince = poolUpgradeOSOptions.ifUnmodifiedSince();
         }
         PoolUpgradeOSParameter poolUpgradeOSParameter = new PoolUpgradeOSParameter();
-        poolUpgradeOSParameter.setTargetOSVersion(targetOSVersion);
+        poolUpgradeOSParameter.withTargetOSVersion(targetOSVersion);
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -3440,7 +3440,7 @@ public final class PoolsImpl implements Pools {
             ifUnmodifiedSince = poolUpgradeOSOptions.ifUnmodifiedSince();
         }
         PoolUpgradeOSParameter poolUpgradeOSParameter = new PoolUpgradeOSParameter();
-        poolUpgradeOSParameter.setTargetOSVersion(targetOSVersion);
+        poolUpgradeOSParameter.withTargetOSVersion(targetOSVersion);
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -3500,11 +3500,11 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         String ifMatch = null;
         String ifNoneMatch = null;
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
         Call<ResponseBody> call = service.removeNodes(poolId, nodeRemoveParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         return removeNodesDelegate(call.execute());
     }
@@ -3539,11 +3539,11 @@ public final class PoolsImpl implements Pools {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         String ifMatch = null;
         String ifNoneMatch = null;
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
         Call<ResponseBody> call = service.removeNodes(poolId, nodeRemoveParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -3740,7 +3740,7 @@ public final class PoolsImpl implements Pools {
         final PoolListPoolUsageMetricsNextOptions poolListPoolUsageMetricsNextOptions = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.listPoolUsageMetricsNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         return listPoolUsageMetricsNextDelegate(call.execute());
     }
@@ -3765,7 +3765,7 @@ public final class PoolsImpl implements Pools {
         final PoolListPoolUsageMetricsNextOptions poolListPoolUsageMetricsNextOptions = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.listPoolUsageMetricsNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<PoolUsageMetrics>>(serviceCallback) {
@@ -3903,7 +3903,7 @@ public final class PoolsImpl implements Pools {
         final PoolListNextOptions poolListNextOptions = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         return listNextDelegate(call.execute());
     }
@@ -3928,7 +3928,7 @@ public final class PoolsImpl implements Pools {
         final PoolListNextOptions poolListNextOptions = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<CloudPool>>(serviceCallback) {

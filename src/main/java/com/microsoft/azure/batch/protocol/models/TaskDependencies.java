@@ -41,7 +41,7 @@ public class TaskDependencies {
      * @param taskIds the taskIds value to set
      * @return the TaskDependencies object itself.
      */
-    public TaskDependencies setTaskIds(List<String> taskIds) {
+    public TaskDependencies withTaskIds(List<String> taskIds) {
         this.taskIds = taskIds;
         return this;
     }
@@ -61,7 +61,7 @@ public class TaskDependencies {
      * @param taskIdRanges the taskIdRanges value to set
      * @return the TaskDependencies object itself.
      */
-    public TaskDependencies setTaskIdRanges(List<TaskIdRange> taskIdRanges) {
+    public TaskDependencies withTaskIdRanges(List<TaskIdRange> taskIdRanges) {
         this.taskIdRanges = taskIdRanges;
         return this;
     }

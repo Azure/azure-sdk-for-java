@@ -60,7 +60,7 @@ public class JobScheduleTerminateHeaders {
      * @param clientRequestId the clientRequestId value to set
      * @return the JobScheduleTerminateHeaders object itself.
      */
-    public JobScheduleTerminateHeaders setClientRequestId(String clientRequestId) {
+    public JobScheduleTerminateHeaders withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -80,7 +80,7 @@ public class JobScheduleTerminateHeaders {
      * @param requestId the requestId value to set
      * @return the JobScheduleTerminateHeaders object itself.
      */
-    public JobScheduleTerminateHeaders setRequestId(String requestId) {
+    public JobScheduleTerminateHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -100,7 +100,7 @@ public class JobScheduleTerminateHeaders {
      * @param eTag the eTag value to set
      * @return the JobScheduleTerminateHeaders object itself.
      */
-    public JobScheduleTerminateHeaders setETag(String eTag) {
+    public JobScheduleTerminateHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -123,7 +123,7 @@ public class JobScheduleTerminateHeaders {
      * @param lastModified the lastModified value to set
      * @return the JobScheduleTerminateHeaders object itself.
      */
-    public JobScheduleTerminateHeaders setLastModified(DateTime lastModified) {
+    public JobScheduleTerminateHeaders withLastModified(DateTime lastModified) {
         this.lastModified = new DateTimeRfc1123(lastModified);
         return this;
     }
@@ -143,7 +143,7 @@ public class JobScheduleTerminateHeaders {
      * @param dataServiceId the dataServiceId value to set
      * @return the JobScheduleTerminateHeaders object itself.
      */
-    public JobScheduleTerminateHeaders setDataServiceId(String dataServiceId) {
+    public JobScheduleTerminateHeaders withDataServiceId(String dataServiceId) {
         this.dataServiceId = dataServiceId;
         return this;
     }

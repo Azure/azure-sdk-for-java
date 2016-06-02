@@ -52,7 +52,7 @@ public class JobPatchParameter {
      * @param priority the priority value to set
      * @return the JobPatchParameter object itself.
      */
-    public JobPatchParameter setPriority(Integer priority) {
+    public JobPatchParameter withPriority(Integer priority) {
         this.priority = priority;
         return this;
     }
@@ -72,7 +72,7 @@ public class JobPatchParameter {
      * @param constraints the constraints value to set
      * @return the JobPatchParameter object itself.
      */
-    public JobPatchParameter setConstraints(JobConstraints constraints) {
+    public JobPatchParameter withConstraints(JobConstraints constraints) {
         this.constraints = constraints;
         return this;
     }
@@ -92,7 +92,7 @@ public class JobPatchParameter {
      * @param poolInfo the poolInfo value to set
      * @return the JobPatchParameter object itself.
      */
-    public JobPatchParameter setPoolInfo(PoolInformation poolInfo) {
+    public JobPatchParameter withPoolInfo(PoolInformation poolInfo) {
         this.poolInfo = poolInfo;
         return this;
     }
@@ -112,7 +112,7 @@ public class JobPatchParameter {
      * @param metadata the metadata value to set
      * @return the JobPatchParameter object itself.
      */
-    public JobPatchParameter setMetadata(List<MetadataItem> metadata) {
+    public JobPatchParameter withMetadata(List<MetadataItem> metadata) {
         this.metadata = metadata;
         return this;
     }

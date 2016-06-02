@@ -11,7 +11,8 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the ListPreparationAndReleaseTaskStatus operation.
+ * Additional parameters for the Job_ListPreparationAndReleaseTaskStatus
+ * operation.
  */
 public class JobListPreparationAndReleaseTaskStatusOptions {
     /**
@@ -76,7 +77,7 @@ public class JobListPreparationAndReleaseTaskStatusOptions {
      * @param filter the filter value to set
      * @return the JobListPreparationAndReleaseTaskStatusOptions object itself.
      */
-    public JobListPreparationAndReleaseTaskStatusOptions setFilter(String filter) {
+    public JobListPreparationAndReleaseTaskStatusOptions withFilter(String filter) {
         this.filter = filter;
         return this;
     }
@@ -96,7 +97,7 @@ public class JobListPreparationAndReleaseTaskStatusOptions {
      * @param select the select value to set
      * @return the JobListPreparationAndReleaseTaskStatusOptions object itself.
      */
-    public JobListPreparationAndReleaseTaskStatusOptions setSelect(String select) {
+    public JobListPreparationAndReleaseTaskStatusOptions withSelect(String select) {
         this.select = select;
         return this;
     }
@@ -116,7 +117,7 @@ public class JobListPreparationAndReleaseTaskStatusOptions {
      * @param maxResults the maxResults value to set
      * @return the JobListPreparationAndReleaseTaskStatusOptions object itself.
      */
-    public JobListPreparationAndReleaseTaskStatusOptions setMaxResults(Integer maxResults) {
+    public JobListPreparationAndReleaseTaskStatusOptions withMaxResults(Integer maxResults) {
         this.maxResults = maxResults;
         return this;
     }
@@ -136,7 +137,7 @@ public class JobListPreparationAndReleaseTaskStatusOptions {
      * @param timeout the timeout value to set
      * @return the JobListPreparationAndReleaseTaskStatusOptions object itself.
      */
-    public JobListPreparationAndReleaseTaskStatusOptions setTimeout(Integer timeout) {
+    public JobListPreparationAndReleaseTaskStatusOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -156,7 +157,7 @@ public class JobListPreparationAndReleaseTaskStatusOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the JobListPreparationAndReleaseTaskStatusOptions object itself.
      */
-    public JobListPreparationAndReleaseTaskStatusOptions setClientRequestId(String clientRequestId) {
+    public JobListPreparationAndReleaseTaskStatusOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -176,7 +177,7 @@ public class JobListPreparationAndReleaseTaskStatusOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the JobListPreparationAndReleaseTaskStatusOptions object itself.
      */
-    public JobListPreparationAndReleaseTaskStatusOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public JobListPreparationAndReleaseTaskStatusOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -199,7 +200,7 @@ public class JobListPreparationAndReleaseTaskStatusOptions {
      * @param ocpDate the ocpDate value to set
      * @return the JobListPreparationAndReleaseTaskStatusOptions object itself.
      */
-    public JobListPreparationAndReleaseTaskStatusOptions setOcpDate(DateTime ocpDate) {
+    public JobListPreparationAndReleaseTaskStatusOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }

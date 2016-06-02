@@ -54,7 +54,7 @@ public class CertificateListHeaders {
      * @param clientRequestId the clientRequestId value to set
      * @return the CertificateListHeaders object itself.
      */
-    public CertificateListHeaders setClientRequestId(String clientRequestId) {
+    public CertificateListHeaders withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -74,7 +74,7 @@ public class CertificateListHeaders {
      * @param requestId the requestId value to set
      * @return the CertificateListHeaders object itself.
      */
-    public CertificateListHeaders setRequestId(String requestId) {
+    public CertificateListHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -94,7 +94,7 @@ public class CertificateListHeaders {
      * @param eTag the eTag value to set
      * @return the CertificateListHeaders object itself.
      */
-    public CertificateListHeaders setETag(String eTag) {
+    public CertificateListHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -117,7 +117,7 @@ public class CertificateListHeaders {
      * @param lastModified the lastModified value to set
      * @return the CertificateListHeaders object itself.
      */
-    public CertificateListHeaders setLastModified(DateTime lastModified) {
+    public CertificateListHeaders withLastModified(DateTime lastModified) {
         this.lastModified = new DateTimeRfc1123(lastModified);
         return this;
     }

@@ -90,7 +90,7 @@ public class FileGetNodeFilePropertiesFromTaskHeaders {
      * @param clientRequestId the clientRequestId value to set
      * @return the FileGetNodeFilePropertiesFromTaskHeaders object itself.
      */
-    public FileGetNodeFilePropertiesFromTaskHeaders setClientRequestId(String clientRequestId) {
+    public FileGetNodeFilePropertiesFromTaskHeaders withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -110,7 +110,7 @@ public class FileGetNodeFilePropertiesFromTaskHeaders {
      * @param requestId the requestId value to set
      * @return the FileGetNodeFilePropertiesFromTaskHeaders object itself.
      */
-    public FileGetNodeFilePropertiesFromTaskHeaders setRequestId(String requestId) {
+    public FileGetNodeFilePropertiesFromTaskHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -130,7 +130,7 @@ public class FileGetNodeFilePropertiesFromTaskHeaders {
      * @param eTag the eTag value to set
      * @return the FileGetNodeFilePropertiesFromTaskHeaders object itself.
      */
-    public FileGetNodeFilePropertiesFromTaskHeaders setETag(String eTag) {
+    public FileGetNodeFilePropertiesFromTaskHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -153,7 +153,7 @@ public class FileGetNodeFilePropertiesFromTaskHeaders {
      * @param lastModified the lastModified value to set
      * @return the FileGetNodeFilePropertiesFromTaskHeaders object itself.
      */
-    public FileGetNodeFilePropertiesFromTaskHeaders setLastModified(DateTime lastModified) {
+    public FileGetNodeFilePropertiesFromTaskHeaders withLastModified(DateTime lastModified) {
         this.lastModified = new DateTimeRfc1123(lastModified);
         return this;
     }
@@ -176,7 +176,7 @@ public class FileGetNodeFilePropertiesFromTaskHeaders {
      * @param ocpCreationTime the ocpCreationTime value to set
      * @return the FileGetNodeFilePropertiesFromTaskHeaders object itself.
      */
-    public FileGetNodeFilePropertiesFromTaskHeaders setOcpCreationTime(DateTime ocpCreationTime) {
+    public FileGetNodeFilePropertiesFromTaskHeaders withOcpCreationTime(DateTime ocpCreationTime) {
         this.ocpCreationTime = new DateTimeRfc1123(ocpCreationTime);
         return this;
     }
@@ -196,7 +196,7 @@ public class FileGetNodeFilePropertiesFromTaskHeaders {
      * @param ocpBatchFileIsdirectory the ocpBatchFileIsdirectory value to set
      * @return the FileGetNodeFilePropertiesFromTaskHeaders object itself.
      */
-    public FileGetNodeFilePropertiesFromTaskHeaders setOcpBatchFileIsdirectory(Boolean ocpBatchFileIsdirectory) {
+    public FileGetNodeFilePropertiesFromTaskHeaders withOcpBatchFileIsdirectory(Boolean ocpBatchFileIsdirectory) {
         this.ocpBatchFileIsdirectory = ocpBatchFileIsdirectory;
         return this;
     }
@@ -216,7 +216,7 @@ public class FileGetNodeFilePropertiesFromTaskHeaders {
      * @param ocpBatchFileUrl the ocpBatchFileUrl value to set
      * @return the FileGetNodeFilePropertiesFromTaskHeaders object itself.
      */
-    public FileGetNodeFilePropertiesFromTaskHeaders setOcpBatchFileUrl(String ocpBatchFileUrl) {
+    public FileGetNodeFilePropertiesFromTaskHeaders withOcpBatchFileUrl(String ocpBatchFileUrl) {
         this.ocpBatchFileUrl = ocpBatchFileUrl;
         return this;
     }
@@ -236,7 +236,7 @@ public class FileGetNodeFilePropertiesFromTaskHeaders {
      * @param ocpBatchFileMode the ocpBatchFileMode value to set
      * @return the FileGetNodeFilePropertiesFromTaskHeaders object itself.
      */
-    public FileGetNodeFilePropertiesFromTaskHeaders setOcpBatchFileMode(String ocpBatchFileMode) {
+    public FileGetNodeFilePropertiesFromTaskHeaders withOcpBatchFileMode(String ocpBatchFileMode) {
         this.ocpBatchFileMode = ocpBatchFileMode;
         return this;
     }
@@ -256,7 +256,7 @@ public class FileGetNodeFilePropertiesFromTaskHeaders {
      * @param contentType the contentType value to set
      * @return the FileGetNodeFilePropertiesFromTaskHeaders object itself.
      */
-    public FileGetNodeFilePropertiesFromTaskHeaders setContentType(String contentType) {
+    public FileGetNodeFilePropertiesFromTaskHeaders withContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -276,7 +276,7 @@ public class FileGetNodeFilePropertiesFromTaskHeaders {
      * @param contentLength the contentLength value to set
      * @return the FileGetNodeFilePropertiesFromTaskHeaders object itself.
      */
-    public FileGetNodeFilePropertiesFromTaskHeaders setContentLength(Long contentLength) {
+    public FileGetNodeFilePropertiesFromTaskHeaders withContentLength(Long contentLength) {
         this.contentLength = contentLength;
         return this;
     }

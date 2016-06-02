@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the Add operation.
+ * Additional parameters for the JobSchedule_Add operation.
  */
 public class JobScheduleAddOptions {
     /**
@@ -58,7 +58,7 @@ public class JobScheduleAddOptions {
      * @param timeout the timeout value to set
      * @return the JobScheduleAddOptions object itself.
      */
-    public JobScheduleAddOptions setTimeout(Integer timeout) {
+    public JobScheduleAddOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -78,7 +78,7 @@ public class JobScheduleAddOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the JobScheduleAddOptions object itself.
      */
-    public JobScheduleAddOptions setClientRequestId(String clientRequestId) {
+    public JobScheduleAddOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -98,7 +98,7 @@ public class JobScheduleAddOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the JobScheduleAddOptions object itself.
      */
-    public JobScheduleAddOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public JobScheduleAddOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -121,7 +121,7 @@ public class JobScheduleAddOptions {
      * @param ocpDate the ocpDate value to set
      * @return the JobScheduleAddOptions object itself.
      */
-    public JobScheduleAddOptions setOcpDate(DateTime ocpDate) {
+    public JobScheduleAddOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }
