@@ -43,7 +43,7 @@ class NetworkInterfaceImpl
     private final PublicIpAddresses publicIpAddresses;
     private final String nicName;
     // used to generate unique name for any dependency resources
-    private final String uniqueId;
+    private final String randomId;
     // unique key of a creatable virtual network to be associated with a new network interface
     private String creatableVirtualNetworkKey;
     // unique key of a creatable public IP to be associated with the network interface
@@ -68,7 +68,7 @@ class NetworkInterfaceImpl
         this.networks = networks;
         this.publicIpAddresses = publicIpAddresses;
         this.nicName = name;
-        this.uniqueId = Utils.randomId(this.nicName);
+        this.randomId = Utils.randomId(this.nicName);
     }
 
     /**************************************************.
@@ -317,7 +317,7 @@ class NetworkInterfaceImpl
      * @return a random value (derived from the resource and resource group name) with the given prefix
      */
     private String nameWithPrefix(String prefix) {
-        return prefix + "-" + this.uniqueId + "-" + this.resourceGroupName();
+        return prefix + "-" + this.randomId + "-" + this.resourceGroupName();
     }
 
     /**
