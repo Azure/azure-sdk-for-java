@@ -227,13 +227,13 @@ class NetworkInterfaceImpl
      **************************************************/
 
     @Override
-    public Boolean isIpForwardingEnabled() {
-        return this.inner().enableIPForwarding();
+    public boolean isIpForwardingEnabled() {
+        return Utils.toPrimitiveBoolean(this.inner().enableIPForwarding());
     }
 
     @Override
-    public Boolean isPrimary() {
-        return this.inner().primary();
+    public boolean isPrimary() {
+        return Utils.toPrimitiveBoolean(this.inner().primary());
     }
 
     @Override
