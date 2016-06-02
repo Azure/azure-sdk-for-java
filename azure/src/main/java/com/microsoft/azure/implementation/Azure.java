@@ -203,11 +203,10 @@ public final class Azure {
 		}
     }
 
-    public interface  ResourceGroups extends SupportsListing<Azure.ResourceGroup>,
+    public interface ResourceGroups extends SupportsListing<Azure.ResourceGroup>,
             SupportsGettingByName<Azure.ResourceGroup>,
             SupportsCreating<Azure.ResourceGroup.DefinitionBlank>,
-            SupportsDeleting,
-            SupportsUpdating<Azure.ResourceGroup.Update> {
+            SupportsDeleting {
     }
 
     public interface ResourceGroup extends com.microsoft.azure.management.resources.ResourceGroup {

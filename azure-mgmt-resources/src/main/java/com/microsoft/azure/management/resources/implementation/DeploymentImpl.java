@@ -6,8 +6,12 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.microsoft.azure.management.resources.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.microsoft.azure.management.resources.Deployment;
+import com.microsoft.azure.management.resources.DeploymentOperations;
+import com.microsoft.azure.management.resources.Provider;
+import com.microsoft.azure.management.resources.ResourceGroup;
+import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -25,6 +29,7 @@ import com.microsoft.azure.management.resources.implementation.api.ProviderInner
 import com.microsoft.azure.management.resources.implementation.api.TemplateLink;
 import org.joda.time.DateTime;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,13 +44,15 @@ final class DeploymentImpl extends
         Deployment.DefinitionWithTemplate,
         Deployment.DefinitionWithParameters,
         Deployment.DefinitionWithMode,
-        Deployment.DefinitionCreatable {
+        Deployment.DefinitionCreatable,
+        Deployment.Update {
 
     private final DeploymentsInner client;
     private final DeploymentOperationsInner deploymentOperationsClient;
     private final ResourceGroups resourceGroups;
     private String resourceGroupName;
     private Creatable<ResourceGroup> creatableResourceGroup;
+    private ObjectMapper objectMapper;
 
     DeploymentImpl(DeploymentExtendedInner innerModel,
                           final DeploymentsInner client,
@@ -56,6 +63,7 @@ final class DeploymentImpl extends
         this.deploymentOperationsClient = deploymentOperationsClient;
         this.resourceGroupName = ResourceUtils.groupFromResourceId(innerModel.id());
         this.resourceGroups = resourceGroups;
+        this.objectMapper = new ObjectMapper();
     }
 
     @Override
@@ -179,34 +187,32 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public DefinitionWithParameters withTemplate(Object template) {
+    public DeploymentImpl withTemplate(Object template) {
         if (this.inner().properties() == null) {
             this.inner().setProperties(new DeploymentPropertiesExtended());
         }
         this.inner().properties().setTemplate(template);
+        this.inner().properties().setTemplateLink(null);
         return this;
     }
 
     @Override
-    public DefinitionWithParameters withTemplate(JsonNode template) {
-        if (this.inner().properties() == null) {
-            this.inner().setProperties(new DeploymentPropertiesExtended());
-        }
-        this.inner().properties().setTemplate(template);
-        return this;
+    public DeploymentImpl withTemplate(String templateJson) throws IOException {
+        return withTemplate(objectMapper.readTree(templateJson));
     }
 
     @Override
-    public DefinitionWithParameters withTemplateLink(String uri, String contentVersion) {
+    public DeploymentImpl withTemplateLink(String uri, String contentVersion) {
         if (this.inner().properties() == null) {
             this.inner().setProperties(new DeploymentPropertiesExtended());
         }
         this.inner().properties().setTemplateLink(new TemplateLink().setUri(uri).setContentVersion(contentVersion));
+        this.inner().properties().setTemplate(null);
         return this;
     }
 
     @Override
-    public DefinitionCreatable withMode(DeploymentMode mode) {
+    public DeploymentImpl withMode(DeploymentMode mode) {
         if (this.inner().properties() == null) {
             this.inner().setProperties(new DeploymentPropertiesExtended());
         }
@@ -215,29 +221,40 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public DefinitionWithMode withParameters(Object parameters) {
+    public DeploymentImpl withParameters(Object parameters) {
         if (this.inner().properties() == null) {
             this.inner().setProperties(new DeploymentPropertiesExtended());
         }
         this.inner().properties().setParameters(parameters);
+        this.inner().properties().setParametersLink(null);
         return this;
     }
 
     @Override
-    public DefinitionWithMode withParameters(JsonNode parameters) {
-        if (this.inner().properties() == null) {
-            this.inner().setProperties(new DeploymentPropertiesExtended());
-        }
-        this.inner().properties().setParameters(parameters);
-        return this;
+    public DeploymentImpl withParameters(String parametersJson) throws IOException {
+        return withParameters(objectMapper.readTree(parametersJson));
     }
 
     @Override
-    public DefinitionWithMode withParametersLink(String uri, String contentVersion) {
+    public DeploymentImpl withParametersLink(String uri, String contentVersion) {
         if (this.inner().properties() == null) {
             this.inner().setProperties(new DeploymentPropertiesExtended());
         }
         this.inner().properties().setParametersLink(new ParametersLink().setUri(uri).setContentVersion(contentVersion));
+        this.inner().properties().setParameters(null);
+        return this;
+    }
+
+    @Override
+    public Deployment beginCreate() throws Exception {         //  FLUENT: implementation of ResourceGroup.DefinitionCreatable.Creatable<ResourceGroup>
+        DeploymentInner inner = new DeploymentInner()
+                .setProperties(new DeploymentProperties());
+        inner.properties().setMode(mode());
+        inner.properties().setTemplate(template());
+        inner.properties().setTemplateLink(templateLink());
+        inner.properties().setParameters(parameters());
+        inner.properties().setParametersLink(parametersLink());
+        client.beginCreateOrUpdate(resourceGroupName(), name(), inner);
         return this;
     }
 
@@ -265,5 +282,21 @@ final class DeploymentImpl extends
         inner.properties().setParameters(parameters());
         inner.properties().setParametersLink(parametersLink());
         client.createOrUpdate(resourceGroupName(), name(), inner);
+    }
+
+    @Override
+    public Update update() throws Exception {
+        return this;
+    }
+
+    @Override
+    public Deployment apply() throws Exception {
+        if (this.templateLink() != null && this.template() != null) {
+            this.withTemplate(null);
+        }
+        if (this.parametersLink() != null && this.parameters() != null) {
+            this.withParameters(null);
+        }
+        return this.create();
     }
 }

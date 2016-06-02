@@ -11,7 +11,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsUpdating;
 
 import java.io.IOException;
 
@@ -22,8 +21,7 @@ public interface ResourceGroups extends
         SupportsListing<ResourceGroup>,
         SupportsGettingByName<ResourceGroup>,
         SupportsCreating<ResourceGroup.DefinitionBlank>,
-        SupportsDeleting,
-        SupportsUpdating<ResourceGroup.Update> {
+        SupportsDeleting {
     /**
      * Checks whether resource group exists.
      *

@@ -6,10 +6,11 @@
 
 package com.microsoft.azure.management.resources;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
+import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.resources.implementation.api.Dependency;
 import com.microsoft.azure.management.resources.implementation.api.DeploymentExtendedInner;
@@ -18,6 +19,7 @@ import com.microsoft.azure.management.resources.implementation.api.ParametersLin
 import com.microsoft.azure.management.resources.implementation.api.TemplateLink;
 import org.joda.time.DateTime;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -25,6 +27,7 @@ import java.util.List;
  */
 public interface Deployment extends
         Refreshable<Deployment>,
+        Updatable<Deployment.Update>,
         Wrapper<DeploymentExtendedInner> {
 
     /**
@@ -133,12 +136,12 @@ public interface Deployment extends
         DefinitionWithParameters withTemplate(Object template);
 
         /**
-         * Specifies the template as a serialized JSON object.
+         * Specifies the template as a JSON string.
          *
-         * @param template the JSON object
+         * @param templateJson the JSON string
          * @return the next stage of the deployment definition
          */
-        DefinitionWithParameters withTemplate(JsonNode template);
+        DefinitionWithParameters withTemplate(String templateJson) throws IOException;
 
         /**
          * Specifies the template as a URL.
@@ -163,12 +166,12 @@ public interface Deployment extends
         DefinitionWithMode withParameters(Object parameters);
 
         /**
-         * Specifies the parameters as a serialized JSON object.
+         * Specifies the parameters as a JSON string.
          *
-         * @param parameters the JSON object
+         * @param parametersJson the JSON string
          * @return the next stage of the deployment definition
          */
-        DefinitionWithMode withParameters(JsonNode parameters);
+        DefinitionWithMode withParameters(String parametersJson) throws IOException;
 
         /**
          * Specifies the parameters as a URL.
@@ -199,5 +202,92 @@ public interface Deployment extends
      * specify.
      */
     interface DefinitionCreatable extends Creatable<Deployment> {
+        Deployment beginCreate() throws Exception;
+    }
+
+    /**
+     * A deployment update allowing to change the deployment mode.
+     */
+    interface UpdateWithDeploymentMode {
+        /**
+         * Specifies the deployment mode.
+         *
+         * @param mode the mode of the deployment
+         * @return the next stage of the deployment update
+         */
+        Update withMode(DeploymentMode mode);
+    }
+
+    /**
+     * A deployment update allowing to change the template.
+     */
+    interface UpdateWithTemplate {
+        /**
+         * Specifies the template as a Java object.
+         *
+         * @param template the Java object
+         * @return the next stage of the deployment definition
+         */
+        Update withTemplate(Object template);
+
+        /**
+         * Specifies the template as a JSON string.
+         *
+         * @param templateJson the JSON string
+         * @return the next stage of the deployment definition
+         */
+        Update withTemplate(String templateJson) throws IOException;
+
+        /**
+         * Specifies the template as a URL.
+         *
+         * @param uri the location of the remote template file
+         * @param contentVersion the version of the template file
+         * @return the next stage of the deployment definition
+         */
+        Update withTemplateLink(String uri, String contentVersion);
+    }
+
+    /**
+     * A deployment update allowing to change the parameters.
+     */
+    interface UpdateWithParameters {
+        /**
+         * Specifies the parameters as a Java object.
+         *
+         * @param parameters the Java object
+         * @return the next stage of the deployment definition
+         */
+        Update withParameters(Object parameters);
+
+        /**
+         * Specifies the parameters as a JSON string.
+         *
+         * @param parametersJson the JSON string
+         * @return the next stage of the deployment definition
+         */
+        Update withParameters(String parametersJson) throws IOException;
+
+        /**
+         * Specifies the parameters as a URL.
+         *
+         * @param uri the location of the remote parameters file
+         * @param contentVersion the version of the parameters file
+         * @return the next stage of the deployment definition
+         */
+        Update withParametersLink(String uri, String contentVersion);
+    }
+
+    /**
+     * The template for a deployment update operation, containing all the settings that
+     * can be modified.
+     * <p>
+     * Call {@link Update#apply()} to apply the changes to the deployment in Azure.
+     */
+    interface Update extends
+            Appliable<Deployment>,
+            UpdateWithTemplate,
+            UpdateWithParameters,
+            UpdateWithDeploymentMode {
     }
 }
