@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.storage.implementation;
 
 import com.microsoft.azure.CloudException;
@@ -7,17 +13,28 @@ import com.microsoft.azure.management.storage.AccountStatuses;
 import com.microsoft.azure.management.storage.KeyType;
 import com.microsoft.azure.management.storage.PublicEndpoints;
 import com.microsoft.azure.management.storage.StorageAccount;
-import com.microsoft.azure.management.storage.implementation.api.*;
+import com.microsoft.azure.management.storage.implementation.api.AccountType;
+import com.microsoft.azure.management.storage.implementation.api.CustomDomain;
+import com.microsoft.azure.management.storage.implementation.api.ProvisioningState;
+import com.microsoft.azure.management.storage.implementation.api.StorageAccountCreateParametersInner;
+import com.microsoft.azure.management.storage.implementation.api.StorageAccountInner;
+import com.microsoft.azure.management.storage.implementation.api.StorageAccountKeysInner;
+import com.microsoft.azure.management.storage.implementation.api.StorageAccountUpdateParametersInner;
+import com.microsoft.azure.management.storage.implementation.api.StorageAccountsInner;
 import com.microsoft.rest.ServiceResponse;
 import org.joda.time.DateTime;
 
 import java.io.IOException;
 
+/**
+ * Implementation for StorageAccount and its parent interfaces.
+ */
 class StorageAccountImpl
         extends GroupableResourceImpl<StorageAccount, StorageAccountInner, StorageAccountImpl>
         implements
         StorageAccount,
-        StorageAccount.Definitions {
+        StorageAccount.Definitions,
+        StorageAccount.Update {
 
     private PublicEndpoints publicEndpoints;
     private AccountStatuses accountStatuses;
@@ -135,5 +152,35 @@ class StorageAccountImpl
         StorageAccountInner storageAccountInner = response.getBody();
         this.setInner(storageAccountInner);
         clearWrapperProperties();
+    }
+
+    @Override
+    public Update update() throws Exception {
+        return this;
+    }
+
+    @Override
+    public StorageAccount apply() throws Exception {
+        StorageAccountUpdateParametersInner updateParameters = new StorageAccountUpdateParametersInner();
+        updateParameters.setAccountType(accountType());
+        updateParameters.setCustomDomain(customDomain());
+        this.setInner(client.update(resourceGroupName(), name(), updateParameters).getBody());
+        return this;
+    }
+
+    @Override
+    public Update withCustomDomain(CustomDomain customDomain) {
+        inner().setCustomDomain(customDomain);
+        return this;
+    }
+
+    @Override
+    public Update withCustomDomain(String name) {
+        return withCustomDomain(new CustomDomain().setName(name));
+    }
+
+    @Override
+    public Update withCustomDomain(String name, boolean useSubDomain) {
+        return withCustomDomain(new CustomDomain().setName(name).setUseSubDomain(useSubDomain));
     }
 }
