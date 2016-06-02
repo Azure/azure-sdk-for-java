@@ -12,6 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
+import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
 
@@ -24,7 +25,8 @@ public interface ResourceGroup extends
         Indexable,
         Resource,
         Refreshable<ResourceGroup>,
-        Wrapper<ResourceGroupInner> {
+        Wrapper<ResourceGroupInner>,
+        Updatable<ResourceGroup.Update> {
     /**
      * @return the name of the resource group
      */
@@ -62,10 +64,10 @@ public interface ResourceGroup extends
     }
 
     /**
-     * The template for a pet update operation, containing all the settings that can be modified.
+     * The template for a resource group update operation, containing all the settings that can be modified.
      */
     interface Update extends
-        Appliable<Update>,
+        Appliable<ResourceGroup>,
         Resource.UpdateWithTags<Update> {
     }
 

@@ -100,18 +100,13 @@ final class DeploymentsImpl
     }
 
     @Override
-    public boolean checkExistence(String deploymentName) throws IOException, CloudException {
-        for (ResourceGroup group : resourceGroups.list()) {
-            if (client.checkExistence(group.name(), deploymentName).getBody()) {
-                return true;
-            }
-        }
-        return false;
+    public boolean checkExistence(String resourceGroupName, String deploymentName) throws IOException, CloudException {
+        return client.checkExistence(resourceGroupName, deploymentName).getBody();
     }
 
     @Override
-    public boolean checkExistence(String groupName, String deploymentName) throws IOException, CloudException {
-        return client.checkExistence(groupName, deploymentName).getBody();
+    public void cancel(String resourceGroupName, String deploymentName) throws IOException, CloudException {
+        client.cancel(resourceGroupName, deploymentName);
     }
 
     private DeploymentImpl createFluentModel(String name) {

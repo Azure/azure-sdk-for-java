@@ -8,8 +8,10 @@ package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
+import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
+import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.resources.implementation.api.GenericResourceInner;
 import com.microsoft.azure.management.resources.implementation.api.Plan;
@@ -20,6 +22,7 @@ import com.microsoft.azure.management.resources.implementation.api.Plan;
 public interface GenericResource extends
         GroupableResource,
         Refreshable<GenericResource>,
+        Updatable<GenericResource.Update>,
         Wrapper<GenericResourceInner> {
 
     /**
@@ -88,7 +91,7 @@ public interface GenericResource extends
      */
     interface DefinitionWithPlan {
         /**
-         * Specifies the plan of the resource.
+         * Specifies the plan of the resource. The plan can only be set for 3rd party resources.
          *
          * @param name the name of the plan
          * @param publisher the publisher of the plan
@@ -96,7 +99,27 @@ public interface GenericResource extends
          * @param promotionCode the promotion code, if any
          * @return the next stage of the generic resource definition
          */
-        DefinitionCreatable withPlan(String name, String publisher, String product, String promotionCode);
+        DefinitionWithApiVersion withPlan(String name, String publisher, String product, String promotionCode);
+
+        /**
+         * Specifies the plan of the resource.
+         *
+         * @return the next stage of the generic resource definition
+         */
+        DefinitionWithApiVersion withoutPlan();
+    }
+
+    /**
+     * A generic resource definition allowing api version to be specified.
+     */
+    interface DefinitionWithApiVersion {
+        /**
+         * Specifies the api version.
+         *
+         * @param apiVersion the API version of the resource
+         * @return the next stage of the generic resource definition
+         */
+        DefinitionCreatable withApiVersion(String apiVersion);
     }
 
     /**
@@ -114,5 +137,13 @@ public interface GenericResource extends
          * @return the next stage of generic resource definition
          */
         DefinitionCreatable withProperties(Object properties);
+    }
+
+    /**
+     * The template for a generic resource update operation, containing all the settings that can be modified.
+     */
+    interface Update extends
+            Appliable<GenericResource>,
+            Resource.UpdateWithTags<Update> {
     }
 }

@@ -30,12 +30,12 @@ class DeploymentOperationsInGroupImpl
 
     @Override
     public PagedList<DeploymentOperation> list() throws CloudException, IOException {
-        return deploymentOperations.list(this.resourceGroup.name());
+        return deploymentOperations.list();
     }
 
     @Override
     public DeploymentOperation get(String operationId) throws IOException, CloudException {
-        return deploymentOperations.get(this.resourceGroup.name(), operationId);
+        return deploymentOperations.get(operationId);
 
     }
 }
