@@ -25,6 +25,35 @@ public final class ResourceUtils {
     }
 
     /**
+     * Extract resource provider from a resource ID string.
+     * @param id the resource ID string
+     * @return the resource group name
+     */
+    public static String resourceProviderFromResourceId(String id) {
+        return extractFromResourceId(id, "providers");
+    }
+
+    /**
+     * Extract resource type from a resource ID string.
+     * @param id the resource ID string
+     * @return the resource type
+     */
+    public static String resourceTypeFromResourceId(String id) {
+        String[] splits = id.split("/");
+        return splits[splits.length - 2];
+    }
+
+    /**
+     * Extract parent resource path from a resource ID string.
+     * @param id the resource ID string
+     * @return the parent resource path
+     */
+    public static String parentResourcePathFromResourceId(String id) {
+        String parent = id.replace("/" + resourceTypeFromResourceId(id) + "/" + nameFromResourceId(id), "");
+        return extractFromResourceId(parent, resourceProviderFromResourceId(parent));
+    }
+
+    /**
      * Extract information from a resource ID string with the resource type
      * as the identifier.
      *
@@ -51,6 +80,7 @@ public final class ResourceUtils {
      * @return the name of the resource
      */
     public static String nameFromResourceId(String id) {
-        return id.split("/")[8];
+        String[] splits = id.split("/");
+        return splits[splits.length - 1];
     }
 }

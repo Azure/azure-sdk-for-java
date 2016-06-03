@@ -28,6 +28,7 @@ final class GenericResourceImpl
         GenericResource.DefinitionWithPlan,
         GenericResource.DefinitionWithApiVersion,
         GenericResource.DefinitionCreatable,
+        GenericResource.UpdateWithApiVersion,
         GenericResource.Update {
     private final ResourcesInner client;
     private final ResourceManagementClientImpl serviceClient;
@@ -142,7 +143,7 @@ final class GenericResourceImpl
     }
 
     @Override
-    public Update update() throws Exception {
+    public UpdateWithApiVersion update() throws Exception {
         return this;
     }
 

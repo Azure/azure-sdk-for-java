@@ -10,6 +10,7 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.GenericResources;
 import com.microsoft.azure.management.resources.ResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupsInner;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
@@ -85,7 +86,11 @@ final class GenericResourcesImpl
         PagedListConverter<GenericResourceInner, GenericResource> converter = new PagedListConverter<GenericResourceInner, GenericResource>() {
             @Override
             public GenericResource typeConvert(GenericResourceInner genericResourceInner) {
-                return new GenericResourceImpl(genericResourceInner.id(), genericResourceInner, client, serviceClient);
+                return new GenericResourceImpl(genericResourceInner.id(), genericResourceInner, client, serviceClient)
+                        .withExistingGroup(ResourceUtils.groupFromResourceId(genericResourceInner.id()))
+                        .withProviderNamespace(ResourceUtils.resourceProviderFromResourceId(genericResourceInner.id()))
+                        .withResourceType(ResourceUtils.resourceTypeFromResourceId(genericResourceInner.id()))
+                        .withParentResource(ResourceUtils.parentResourcePathFromResourceId(genericResourceInner.id()));
             }
         };
         return converter.convert(resourceGroups.listResources(groupName).getBody());

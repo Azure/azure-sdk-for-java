@@ -22,7 +22,7 @@ import com.microsoft.azure.management.resources.implementation.api.Plan;
 public interface GenericResource extends
         GroupableResource,
         Refreshable<GenericResource>,
-        Updatable<GenericResource.Update>,
+        Updatable<GenericResource.UpdateWithApiVersion>,
         Wrapper<GenericResourceInner> {
     /**
      * @return the namespace of the resource provider
@@ -205,6 +205,18 @@ public interface GenericResource extends
          * @return the next stage of the generic resource update
          */
         Update withoutPlan();
+    }
+
+    /**
+     * The template for a generic resource update operation for specifying the resource provider API version.
+     */
+    interface UpdateWithApiVersion {
+        /**
+         * Specifies the API version of the resource provider.
+         *
+         * @return the next stage of the generic resource update
+         */
+        Update withApiVersion(String apiVersion);
     }
 
     /**
