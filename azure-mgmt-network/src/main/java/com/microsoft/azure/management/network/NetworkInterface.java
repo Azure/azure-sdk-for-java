@@ -31,12 +31,12 @@ public interface NetworkInterface extends
     /**
      * @return <tt>true</tt> if IP forwarding is enabled in this network interface
      */
-    Boolean isIpForwardingEnabled();
+    boolean isIpForwardingEnabled();
 
     /**
      * @return <tt>true</tt> if this is primary network interface in a virtual machine
      */
-    Boolean isPrimary();
+    boolean isPrimary();
 
     /**
      * @return the MAC Address of the network interface
