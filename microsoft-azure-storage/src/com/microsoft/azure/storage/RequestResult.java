@@ -41,6 +41,11 @@ public final class RequestResult {
      * Represents the date header returned by the storage service.
      */
     private String requestDate;
+    
+    /**
+     * Represents whether or not the data for a write operation is encrypted on the server-side.
+     */
+    private boolean requestServiceEncrypted;
 
     /**
      * Represents the ETag header returned by the storage service.
@@ -115,6 +120,15 @@ public final class RequestResult {
      */
     public String getRequestDate() {
         return this.requestDate;
+    }
+    
+    /**
+     * Gets whether the request is server-side encrypted.
+     * 
+     * @return A <code>boolean</code> which contains the server-side encryption status of the request.
+     */
+    public boolean isRequestServiceEncrypted() {
+        return requestServiceEncrypted;
     }
 
     /**
@@ -200,6 +214,16 @@ public final class RequestResult {
      */
     public void setRequestDate(final String requestDate) {
         this.requestDate = requestDate;
+    }
+
+    /**
+     * Sets the request's server-encryption status.
+     * 
+     * @param requestServiceEncrypted
+     *            A <code>boolean</code> object which represents the server-encryption status to set.
+     */
+    public void setRequestServiceEncrypted(boolean requestServiceEncrypted) {
+        this.requestServiceEncrypted = requestServiceEncrypted;
     }
 
     /**
