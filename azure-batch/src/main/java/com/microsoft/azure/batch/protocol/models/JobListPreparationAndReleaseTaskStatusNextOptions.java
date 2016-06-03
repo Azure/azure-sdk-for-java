@@ -52,7 +52,7 @@ public class JobListPreparationAndReleaseTaskStatusNextOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the JobListPreparationAndReleaseTaskStatusNextOptions object itself.
      */
-    public JobListPreparationAndReleaseTaskStatusNextOptions setClientRequestId(String clientRequestId) {
+    public JobListPreparationAndReleaseTaskStatusNextOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -72,7 +72,7 @@ public class JobListPreparationAndReleaseTaskStatusNextOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the JobListPreparationAndReleaseTaskStatusNextOptions object itself.
      */
-    public JobListPreparationAndReleaseTaskStatusNextOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public JobListPreparationAndReleaseTaskStatusNextOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -95,7 +95,7 @@ public class JobListPreparationAndReleaseTaskStatusNextOptions {
      * @param ocpDate the ocpDate value to set
      * @return the JobListPreparationAndReleaseTaskStatusNextOptions object itself.
      */
-    public JobListPreparationAndReleaseTaskStatusNextOptions setOcpDate(DateTime ocpDate) {
+    public JobListPreparationAndReleaseTaskStatusNextOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }

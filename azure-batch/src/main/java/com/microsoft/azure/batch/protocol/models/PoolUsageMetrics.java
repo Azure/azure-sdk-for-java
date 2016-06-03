@@ -73,7 +73,7 @@ public class PoolUsageMetrics {
      * @param poolId the poolId value to set
      * @return the PoolUsageMetrics object itself.
      */
-    public PoolUsageMetrics setPoolId(String poolId) {
+    public PoolUsageMetrics withPoolId(String poolId) {
         this.poolId = poolId;
         return this;
     }
@@ -93,7 +93,7 @@ public class PoolUsageMetrics {
      * @param startTime the startTime value to set
      * @return the PoolUsageMetrics object itself.
      */
-    public PoolUsageMetrics setStartTime(DateTime startTime) {
+    public PoolUsageMetrics withStartTime(DateTime startTime) {
         this.startTime = startTime;
         return this;
     }
@@ -113,7 +113,7 @@ public class PoolUsageMetrics {
      * @param endTime the endTime value to set
      * @return the PoolUsageMetrics object itself.
      */
-    public PoolUsageMetrics setEndTime(DateTime endTime) {
+    public PoolUsageMetrics withEndTime(DateTime endTime) {
         this.endTime = endTime;
         return this;
     }
@@ -133,7 +133,7 @@ public class PoolUsageMetrics {
      * @param vmSize the vmSize value to set
      * @return the PoolUsageMetrics object itself.
      */
-    public PoolUsageMetrics setVmSize(String vmSize) {
+    public PoolUsageMetrics withVmSize(String vmSize) {
         this.vmSize = vmSize;
         return this;
     }
@@ -153,7 +153,7 @@ public class PoolUsageMetrics {
      * @param totalCoreHours the totalCoreHours value to set
      * @return the PoolUsageMetrics object itself.
      */
-    public PoolUsageMetrics setTotalCoreHours(double totalCoreHours) {
+    public PoolUsageMetrics withTotalCoreHours(double totalCoreHours) {
         this.totalCoreHours = totalCoreHours;
         return this;
     }
@@ -173,7 +173,7 @@ public class PoolUsageMetrics {
      * @param dataIngressGiB the dataIngressGiB value to set
      * @return the PoolUsageMetrics object itself.
      */
-    public PoolUsageMetrics setDataIngressGiB(double dataIngressGiB) {
+    public PoolUsageMetrics withDataIngressGiB(double dataIngressGiB) {
         this.dataIngressGiB = dataIngressGiB;
         return this;
     }
@@ -193,7 +193,7 @@ public class PoolUsageMetrics {
      * @param dataEgressGiB the dataEgressGiB value to set
      * @return the PoolUsageMetrics object itself.
      */
-    public PoolUsageMetrics setDataEgressGiB(double dataEgressGiB) {
+    public PoolUsageMetrics withDataEgressGiB(double dataEgressGiB) {
         this.dataEgressGiB = dataEgressGiB;
         return this;
     }

@@ -85,7 +85,7 @@ public class CertificateDetails extends Resource {
      * @param version the version value to set
      * @return the CertificateDetails object itself.
      */
-    public CertificateDetails setVersion(Integer version) {
+    public CertificateDetails withVersion(Integer version) {
         this.version = version;
         return this;
     }
@@ -105,7 +105,7 @@ public class CertificateDetails extends Resource {
      * @param serialNumber the serialNumber value to set
      * @return the CertificateDetails object itself.
      */
-    public CertificateDetails setSerialNumber(String serialNumber) {
+    public CertificateDetails withSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
         return this;
     }
@@ -125,7 +125,7 @@ public class CertificateDetails extends Resource {
      * @param thumbprint the thumbprint value to set
      * @return the CertificateDetails object itself.
      */
-    public CertificateDetails setThumbprint(String thumbprint) {
+    public CertificateDetails withThumbprint(String thumbprint) {
         this.thumbprint = thumbprint;
         return this;
     }
@@ -145,7 +145,7 @@ public class CertificateDetails extends Resource {
      * @param subject the subject value to set
      * @return the CertificateDetails object itself.
      */
-    public CertificateDetails setSubject(String subject) {
+    public CertificateDetails withSubject(String subject) {
         this.subject = subject;
         return this;
     }
@@ -165,7 +165,7 @@ public class CertificateDetails extends Resource {
      * @param notBefore the notBefore value to set
      * @return the CertificateDetails object itself.
      */
-    public CertificateDetails setNotBefore(DateTime notBefore) {
+    public CertificateDetails withNotBefore(DateTime notBefore) {
         this.notBefore = notBefore;
         return this;
     }
@@ -185,7 +185,7 @@ public class CertificateDetails extends Resource {
      * @param notAfter the notAfter value to set
      * @return the CertificateDetails object itself.
      */
-    public CertificateDetails setNotAfter(DateTime notAfter) {
+    public CertificateDetails withNotAfter(DateTime notAfter) {
         this.notAfter = notAfter;
         return this;
     }
@@ -205,7 +205,7 @@ public class CertificateDetails extends Resource {
      * @param signatureAlgorithm the signatureAlgorithm value to set
      * @return the CertificateDetails object itself.
      */
-    public CertificateDetails setSignatureAlgorithm(String signatureAlgorithm) {
+    public CertificateDetails withSignatureAlgorithm(String signatureAlgorithm) {
         this.signatureAlgorithm = signatureAlgorithm;
         return this;
     }
@@ -225,7 +225,7 @@ public class CertificateDetails extends Resource {
      * @param issuer the issuer value to set
      * @return the CertificateDetails object itself.
      */
-    public CertificateDetails setIssuer(String issuer) {
+    public CertificateDetails withIssuer(String issuer) {
         this.issuer = issuer;
         return this;
     }
@@ -245,7 +245,7 @@ public class CertificateDetails extends Resource {
      * @param rawData the rawData value to set
      * @return the CertificateDetails object itself.
      */
-    public CertificateDetails setRawData(String rawData) {
+    public CertificateDetails withRawData(String rawData) {
         this.rawData = rawData;
         return this;
     }

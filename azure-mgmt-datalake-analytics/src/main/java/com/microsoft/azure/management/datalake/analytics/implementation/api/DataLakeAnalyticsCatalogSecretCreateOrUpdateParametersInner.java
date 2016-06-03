@@ -39,7 +39,7 @@ public class DataLakeAnalyticsCatalogSecretCreateOrUpdateParametersInner {
      * @param password the password value to set
      * @return the DataLakeAnalyticsCatalogSecretCreateOrUpdateParametersInner object itself.
      */
-    public DataLakeAnalyticsCatalogSecretCreateOrUpdateParametersInner setPassword(String password) {
+    public DataLakeAnalyticsCatalogSecretCreateOrUpdateParametersInner withPassword(String password) {
         this.password = password;
         return this;
     }
@@ -59,7 +59,7 @@ public class DataLakeAnalyticsCatalogSecretCreateOrUpdateParametersInner {
      * @param uri the uri value to set
      * @return the DataLakeAnalyticsCatalogSecretCreateOrUpdateParametersInner object itself.
      */
-    public DataLakeAnalyticsCatalogSecretCreateOrUpdateParametersInner setUri(String uri) {
+    public DataLakeAnalyticsCatalogSecretCreateOrUpdateParametersInner withUri(String uri) {
         this.uri = uri;
         return this;
     }

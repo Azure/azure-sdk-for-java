@@ -87,7 +87,7 @@ public class DeploymentPropertiesExtended {
      * @param provisioningState the provisioningState value to set
      * @return the DeploymentPropertiesExtended object itself.
      */
-    public DeploymentPropertiesExtended setProvisioningState(String provisioningState) {
+    public DeploymentPropertiesExtended withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -107,7 +107,7 @@ public class DeploymentPropertiesExtended {
      * @param correlationId the correlationId value to set
      * @return the DeploymentPropertiesExtended object itself.
      */
-    public DeploymentPropertiesExtended setCorrelationId(String correlationId) {
+    public DeploymentPropertiesExtended withCorrelationId(String correlationId) {
         this.correlationId = correlationId;
         return this;
     }
@@ -127,7 +127,7 @@ public class DeploymentPropertiesExtended {
      * @param timestamp the timestamp value to set
      * @return the DeploymentPropertiesExtended object itself.
      */
-    public DeploymentPropertiesExtended setTimestamp(DateTime timestamp) {
+    public DeploymentPropertiesExtended withTimestamp(DateTime timestamp) {
         this.timestamp = timestamp;
         return this;
     }
@@ -147,7 +147,7 @@ public class DeploymentPropertiesExtended {
      * @param outputs the outputs value to set
      * @return the DeploymentPropertiesExtended object itself.
      */
-    public DeploymentPropertiesExtended setOutputs(Object outputs) {
+    public DeploymentPropertiesExtended withOutputs(Object outputs) {
         this.outputs = outputs;
         return this;
     }
@@ -167,7 +167,7 @@ public class DeploymentPropertiesExtended {
      * @param providers the providers value to set
      * @return the DeploymentPropertiesExtended object itself.
      */
-    public DeploymentPropertiesExtended setProviders(List<ProviderInner> providers) {
+    public DeploymentPropertiesExtended withProviders(List<ProviderInner> providers) {
         this.providers = providers;
         return this;
     }
@@ -187,7 +187,7 @@ public class DeploymentPropertiesExtended {
      * @param dependencies the dependencies value to set
      * @return the DeploymentPropertiesExtended object itself.
      */
-    public DeploymentPropertiesExtended setDependencies(List<Dependency> dependencies) {
+    public DeploymentPropertiesExtended withDependencies(List<Dependency> dependencies) {
         this.dependencies = dependencies;
         return this;
     }
@@ -207,7 +207,7 @@ public class DeploymentPropertiesExtended {
      * @param template the template value to set
      * @return the DeploymentPropertiesExtended object itself.
      */
-    public DeploymentPropertiesExtended setTemplate(Object template) {
+    public DeploymentPropertiesExtended withTemplate(Object template) {
         this.template = template;
         return this;
     }
@@ -227,7 +227,7 @@ public class DeploymentPropertiesExtended {
      * @param templateLink the templateLink value to set
      * @return the DeploymentPropertiesExtended object itself.
      */
-    public DeploymentPropertiesExtended setTemplateLink(TemplateLink templateLink) {
+    public DeploymentPropertiesExtended withTemplateLink(TemplateLink templateLink) {
         this.templateLink = templateLink;
         return this;
     }
@@ -247,7 +247,7 @@ public class DeploymentPropertiesExtended {
      * @param parameters the parameters value to set
      * @return the DeploymentPropertiesExtended object itself.
      */
-    public DeploymentPropertiesExtended setParameters(Object parameters) {
+    public DeploymentPropertiesExtended withParameters(Object parameters) {
         this.parameters = parameters;
         return this;
     }
@@ -267,7 +267,7 @@ public class DeploymentPropertiesExtended {
      * @param parametersLink the parametersLink value to set
      * @return the DeploymentPropertiesExtended object itself.
      */
-    public DeploymentPropertiesExtended setParametersLink(ParametersLink parametersLink) {
+    public DeploymentPropertiesExtended withParametersLink(ParametersLink parametersLink) {
         this.parametersLink = parametersLink;
         return this;
     }
@@ -287,7 +287,7 @@ public class DeploymentPropertiesExtended {
      * @param mode the mode value to set
      * @return the DeploymentPropertiesExtended object itself.
      */
-    public DeploymentPropertiesExtended setMode(DeploymentMode mode) {
+    public DeploymentPropertiesExtended withMode(DeploymentMode mode) {
         this.mode = mode;
         return this;
     }

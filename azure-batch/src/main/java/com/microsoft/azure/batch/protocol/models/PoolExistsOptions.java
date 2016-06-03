@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the Exists operation.
+ * Additional parameters for the Pool_Exists operation.
  */
 public class PoolExistsOptions {
     /**
@@ -86,7 +86,7 @@ public class PoolExistsOptions {
      * @param timeout the timeout value to set
      * @return the PoolExistsOptions object itself.
      */
-    public PoolExistsOptions setTimeout(Integer timeout) {
+    public PoolExistsOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -106,7 +106,7 @@ public class PoolExistsOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the PoolExistsOptions object itself.
      */
-    public PoolExistsOptions setClientRequestId(String clientRequestId) {
+    public PoolExistsOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -126,7 +126,7 @@ public class PoolExistsOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the PoolExistsOptions object itself.
      */
-    public PoolExistsOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public PoolExistsOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -149,7 +149,7 @@ public class PoolExistsOptions {
      * @param ocpDate the ocpDate value to set
      * @return the PoolExistsOptions object itself.
      */
-    public PoolExistsOptions setOcpDate(DateTime ocpDate) {
+    public PoolExistsOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }
@@ -169,7 +169,7 @@ public class PoolExistsOptions {
      * @param ifMatch the ifMatch value to set
      * @return the PoolExistsOptions object itself.
      */
-    public PoolExistsOptions setIfMatch(String ifMatch) {
+    public PoolExistsOptions withIfMatch(String ifMatch) {
         this.ifMatch = ifMatch;
         return this;
     }
@@ -189,7 +189,7 @@ public class PoolExistsOptions {
      * @param ifNoneMatch the ifNoneMatch value to set
      * @return the PoolExistsOptions object itself.
      */
-    public PoolExistsOptions setIfNoneMatch(String ifNoneMatch) {
+    public PoolExistsOptions withIfNoneMatch(String ifNoneMatch) {
         this.ifNoneMatch = ifNoneMatch;
         return this;
     }
@@ -212,7 +212,7 @@ public class PoolExistsOptions {
      * @param ifModifiedSince the ifModifiedSince value to set
      * @return the PoolExistsOptions object itself.
      */
-    public PoolExistsOptions setIfModifiedSince(DateTime ifModifiedSince) {
+    public PoolExistsOptions withIfModifiedSince(DateTime ifModifiedSince) {
         this.ifModifiedSince = new DateTimeRfc1123(ifModifiedSince);
         return this;
     }
@@ -235,7 +235,7 @@ public class PoolExistsOptions {
      * @param ifUnmodifiedSince the ifUnmodifiedSince value to set
      * @return the PoolExistsOptions object itself.
      */
-    public PoolExistsOptions setIfUnmodifiedSince(DateTime ifUnmodifiedSince) {
+    public PoolExistsOptions withIfUnmodifiedSince(DateTime ifUnmodifiedSince) {
         this.ifUnmodifiedSince = new DateTimeRfc1123(ifUnmodifiedSince);
         return this;
     }

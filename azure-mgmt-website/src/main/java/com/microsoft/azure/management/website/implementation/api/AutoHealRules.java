@@ -37,7 +37,7 @@ public class AutoHealRules {
      * @param triggers the triggers value to set
      * @return the AutoHealRules object itself.
      */
-    public AutoHealRules setTriggers(AutoHealTriggers triggers) {
+    public AutoHealRules withTriggers(AutoHealTriggers triggers) {
         this.triggers = triggers;
         return this;
     }
@@ -57,7 +57,7 @@ public class AutoHealRules {
      * @param actions the actions value to set
      * @return the AutoHealRules object itself.
      */
-    public AutoHealRules setActions(AutoHealActions actions) {
+    public AutoHealRules withActions(AutoHealActions actions) {
         this.actions = actions;
         return this;
     }

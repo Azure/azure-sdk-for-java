@@ -41,7 +41,7 @@ public class BasicDependency {
      * @param id the id value to set
      * @return the BasicDependency object itself.
      */
-    public BasicDependency setId(String id) {
+    public BasicDependency withId(String id) {
         this.id = id;
         return this;
     }
@@ -61,7 +61,7 @@ public class BasicDependency {
      * @param resourceType the resourceType value to set
      * @return the BasicDependency object itself.
      */
-    public BasicDependency setResourceType(String resourceType) {
+    public BasicDependency withResourceType(String resourceType) {
         this.resourceType = resourceType;
         return this;
     }
@@ -81,7 +81,7 @@ public class BasicDependency {
      * @param resourceName the resourceName value to set
      * @return the BasicDependency object itself.
      */
-    public BasicDependency setResourceName(String resourceName) {
+    public BasicDependency withResourceName(String resourceName) {
         this.resourceName = resourceName;
         return this;
     }

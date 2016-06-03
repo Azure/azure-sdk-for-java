@@ -11,7 +11,6 @@ import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.serializer.AzureJacksonMapperAdapter;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
-import java.util.UUID;
 
 /**
  * Initializes a new instance of the DataLakeStoreFileSystemManagementClientImpl class.
@@ -57,7 +56,7 @@ public final class DataLakeStoreFileSystemManagementClientImpl extends AzureServ
      *
      * @param adlsFileSystemDnsSuffix the adlsFileSystemDnsSuffix value.
      */
-    public void setAdlsFileSystemDnsSuffix(String adlsFileSystemDnsSuffix) {
+    public void withAdlsFileSystemDnsSuffix(String adlsFileSystemDnsSuffix) {
         this.adlsFileSystemDnsSuffix = adlsFileSystemDnsSuffix;
     }
 
@@ -78,7 +77,7 @@ public final class DataLakeStoreFileSystemManagementClientImpl extends AzureServ
      *
      * @param acceptLanguage the acceptLanguage value.
      */
-    public void setAcceptLanguage(String acceptLanguage) {
+    public void withAcceptLanguage(String acceptLanguage) {
         this.acceptLanguage = acceptLanguage;
     }
 
@@ -99,7 +98,7 @@ public final class DataLakeStoreFileSystemManagementClientImpl extends AzureServ
      *
      * @param longRunningOperationRetryTimeout the longRunningOperationRetryTimeout value.
      */
-    public void setLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout) {
+    public void withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout) {
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
     }
 
@@ -120,7 +119,7 @@ public final class DataLakeStoreFileSystemManagementClientImpl extends AzureServ
      *
      * @param generateClientRequestId the generateClientRequestId value.
      */
-    public void setGenerateClientRequestId(boolean generateClientRequestId) {
+    public void withGenerateClientRequestId(boolean generateClientRequestId) {
         this.generateClientRequestId = generateClientRequestId;
     }
 
@@ -184,6 +183,7 @@ public final class DataLakeStoreFileSystemManagementClientImpl extends AzureServ
      *
      * @return the user agent string.
      */
+    @Override
     public String userAgent() {
         return String.format("Azure-SDK-For-Java/%s (%s)",
                 getClass().getPackage().getImplementationVersion(),

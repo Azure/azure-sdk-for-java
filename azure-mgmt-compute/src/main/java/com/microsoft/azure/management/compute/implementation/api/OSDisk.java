@@ -77,7 +77,7 @@ public class OSDisk {
      * @param osType the osType value to set
      * @return the OSDisk object itself.
      */
-    public OSDisk setOsType(OperatingSystemTypes osType) {
+    public OSDisk withOsType(OperatingSystemTypes osType) {
         this.osType = osType;
         return this;
     }
@@ -97,7 +97,7 @@ public class OSDisk {
      * @param encryptionSettings the encryptionSettings value to set
      * @return the OSDisk object itself.
      */
-    public OSDisk setEncryptionSettings(DiskEncryptionSettings encryptionSettings) {
+    public OSDisk withEncryptionSettings(DiskEncryptionSettings encryptionSettings) {
         this.encryptionSettings = encryptionSettings;
         return this;
     }
@@ -117,7 +117,7 @@ public class OSDisk {
      * @param name the name value to set
      * @return the OSDisk object itself.
      */
-    public OSDisk setName(String name) {
+    public OSDisk withName(String name) {
         this.name = name;
         return this;
     }
@@ -137,7 +137,7 @@ public class OSDisk {
      * @param vhd the vhd value to set
      * @return the OSDisk object itself.
      */
-    public OSDisk setVhd(VirtualHardDisk vhd) {
+    public OSDisk withVhd(VirtualHardDisk vhd) {
         this.vhd = vhd;
         return this;
     }
@@ -157,7 +157,7 @@ public class OSDisk {
      * @param image the image value to set
      * @return the OSDisk object itself.
      */
-    public OSDisk setImage(VirtualHardDisk image) {
+    public OSDisk withImage(VirtualHardDisk image) {
         this.image = image;
         return this;
     }
@@ -177,7 +177,7 @@ public class OSDisk {
      * @param caching the caching value to set
      * @return the OSDisk object itself.
      */
-    public OSDisk setCaching(CachingTypes caching) {
+    public OSDisk withCaching(CachingTypes caching) {
         this.caching = caching;
         return this;
     }
@@ -197,7 +197,7 @@ public class OSDisk {
      * @param createOption the createOption value to set
      * @return the OSDisk object itself.
      */
-    public OSDisk setCreateOption(DiskCreateOptionTypes createOption) {
+    public OSDisk withCreateOption(DiskCreateOptionTypes createOption) {
         this.createOption = createOption;
         return this;
     }
@@ -217,7 +217,7 @@ public class OSDisk {
      * @param diskSizeGB the diskSizeGB value to set
      * @return the OSDisk object itself.
      */
-    public OSDisk setDiskSizeGB(Integer diskSizeGB) {
+    public OSDisk withDiskSizeGB(Integer diskSizeGB) {
         this.diskSizeGB = diskSizeGB;
         return this;
     }

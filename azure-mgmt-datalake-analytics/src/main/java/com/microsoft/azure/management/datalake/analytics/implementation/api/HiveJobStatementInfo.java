@@ -46,7 +46,7 @@ public class HiveJobStatementInfo {
      * @param logLocation the logLocation value to set
      * @return the HiveJobStatementInfo object itself.
      */
-    public HiveJobStatementInfo setLogLocation(String logLocation) {
+    public HiveJobStatementInfo withLogLocation(String logLocation) {
         this.logLocation = logLocation;
         return this;
     }
@@ -66,7 +66,7 @@ public class HiveJobStatementInfo {
      * @param resultPreviewLocation the resultPreviewLocation value to set
      * @return the HiveJobStatementInfo object itself.
      */
-    public HiveJobStatementInfo setResultPreviewLocation(String resultPreviewLocation) {
+    public HiveJobStatementInfo withResultPreviewLocation(String resultPreviewLocation) {
         this.resultPreviewLocation = resultPreviewLocation;
         return this;
     }
@@ -86,7 +86,7 @@ public class HiveJobStatementInfo {
      * @param resultLocation the resultLocation value to set
      * @return the HiveJobStatementInfo object itself.
      */
-    public HiveJobStatementInfo setResultLocation(String resultLocation) {
+    public HiveJobStatementInfo withResultLocation(String resultLocation) {
         this.resultLocation = resultLocation;
         return this;
     }
@@ -106,7 +106,7 @@ public class HiveJobStatementInfo {
      * @param errorMessage the errorMessage value to set
      * @return the HiveJobStatementInfo object itself.
      */
-    public HiveJobStatementInfo setErrorMessage(String errorMessage) {
+    public HiveJobStatementInfo withErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
         return this;
     }

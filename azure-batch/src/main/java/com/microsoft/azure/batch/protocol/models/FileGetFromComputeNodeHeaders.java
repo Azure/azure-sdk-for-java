@@ -90,7 +90,7 @@ public class FileGetFromComputeNodeHeaders {
      * @param clientRequestId the clientRequestId value to set
      * @return the FileGetFromComputeNodeHeaders object itself.
      */
-    public FileGetFromComputeNodeHeaders setClientRequestId(String clientRequestId) {
+    public FileGetFromComputeNodeHeaders withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -110,7 +110,7 @@ public class FileGetFromComputeNodeHeaders {
      * @param requestId the requestId value to set
      * @return the FileGetFromComputeNodeHeaders object itself.
      */
-    public FileGetFromComputeNodeHeaders setRequestId(String requestId) {
+    public FileGetFromComputeNodeHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -130,7 +130,7 @@ public class FileGetFromComputeNodeHeaders {
      * @param eTag the eTag value to set
      * @return the FileGetFromComputeNodeHeaders object itself.
      */
-    public FileGetFromComputeNodeHeaders setETag(String eTag) {
+    public FileGetFromComputeNodeHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -153,7 +153,7 @@ public class FileGetFromComputeNodeHeaders {
      * @param lastModified the lastModified value to set
      * @return the FileGetFromComputeNodeHeaders object itself.
      */
-    public FileGetFromComputeNodeHeaders setLastModified(DateTime lastModified) {
+    public FileGetFromComputeNodeHeaders withLastModified(DateTime lastModified) {
         this.lastModified = new DateTimeRfc1123(lastModified);
         return this;
     }
@@ -176,7 +176,7 @@ public class FileGetFromComputeNodeHeaders {
      * @param ocpCreationTime the ocpCreationTime value to set
      * @return the FileGetFromComputeNodeHeaders object itself.
      */
-    public FileGetFromComputeNodeHeaders setOcpCreationTime(DateTime ocpCreationTime) {
+    public FileGetFromComputeNodeHeaders withOcpCreationTime(DateTime ocpCreationTime) {
         this.ocpCreationTime = new DateTimeRfc1123(ocpCreationTime);
         return this;
     }
@@ -196,7 +196,7 @@ public class FileGetFromComputeNodeHeaders {
      * @param ocpBatchFileIsdirectory the ocpBatchFileIsdirectory value to set
      * @return the FileGetFromComputeNodeHeaders object itself.
      */
-    public FileGetFromComputeNodeHeaders setOcpBatchFileIsdirectory(Boolean ocpBatchFileIsdirectory) {
+    public FileGetFromComputeNodeHeaders withOcpBatchFileIsdirectory(Boolean ocpBatchFileIsdirectory) {
         this.ocpBatchFileIsdirectory = ocpBatchFileIsdirectory;
         return this;
     }
@@ -216,7 +216,7 @@ public class FileGetFromComputeNodeHeaders {
      * @param ocpBatchFileUrl the ocpBatchFileUrl value to set
      * @return the FileGetFromComputeNodeHeaders object itself.
      */
-    public FileGetFromComputeNodeHeaders setOcpBatchFileUrl(String ocpBatchFileUrl) {
+    public FileGetFromComputeNodeHeaders withOcpBatchFileUrl(String ocpBatchFileUrl) {
         this.ocpBatchFileUrl = ocpBatchFileUrl;
         return this;
     }
@@ -236,7 +236,7 @@ public class FileGetFromComputeNodeHeaders {
      * @param ocpBatchFileMode the ocpBatchFileMode value to set
      * @return the FileGetFromComputeNodeHeaders object itself.
      */
-    public FileGetFromComputeNodeHeaders setOcpBatchFileMode(String ocpBatchFileMode) {
+    public FileGetFromComputeNodeHeaders withOcpBatchFileMode(String ocpBatchFileMode) {
         this.ocpBatchFileMode = ocpBatchFileMode;
         return this;
     }
@@ -256,7 +256,7 @@ public class FileGetFromComputeNodeHeaders {
      * @param contentType the contentType value to set
      * @return the FileGetFromComputeNodeHeaders object itself.
      */
-    public FileGetFromComputeNodeHeaders setContentType(String contentType) {
+    public FileGetFromComputeNodeHeaders withContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -276,7 +276,7 @@ public class FileGetFromComputeNodeHeaders {
      * @param contentLength the contentLength value to set
      * @return the FileGetFromComputeNodeHeaders object itself.
      */
-    public FileGetFromComputeNodeHeaders setContentLength(Long contentLength) {
+    public FileGetFromComputeNodeHeaders withContentLength(Long contentLength) {
         this.contentLength = contentLength;
         return this;
     }

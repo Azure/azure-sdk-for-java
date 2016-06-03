@@ -48,7 +48,7 @@ public class GeoRegion extends Resource {
      * @param geoRegionName the geoRegionName value to set
      * @return the GeoRegion object itself.
      */
-    public GeoRegion setGeoRegionName(String geoRegionName) {
+    public GeoRegion withGeoRegionName(String geoRegionName) {
         this.geoRegionName = geoRegionName;
         return this;
     }
@@ -68,7 +68,7 @@ public class GeoRegion extends Resource {
      * @param description the description value to set
      * @return the GeoRegion object itself.
      */
-    public GeoRegion setDescription(String description) {
+    public GeoRegion withDescription(String description) {
         this.description = description;
         return this;
     }
@@ -88,7 +88,7 @@ public class GeoRegion extends Resource {
      * @param displayName the displayName value to set
      * @return the GeoRegion object itself.
      */
-    public GeoRegion setDisplayName(String displayName) {
+    public GeoRegion withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }

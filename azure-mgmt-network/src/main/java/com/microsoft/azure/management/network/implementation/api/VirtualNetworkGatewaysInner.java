@@ -772,7 +772,7 @@ public final class VirtualNetworkGatewaysInner {
         }
         final String processorArchitecture = null;
         VpnClientParameters parameters = new VpnClientParameters();
-        parameters = null;
+        parameters.withProcessorArchitecture(null);
         Call<ResponseBody> call = service.generatevpnclientpackage(resourceGroupName, virtualNetworkGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
         return generatevpnclientpackageDelegate(call.execute());
     }
@@ -808,7 +808,7 @@ public final class VirtualNetworkGatewaysInner {
         }
         final String processorArchitecture = null;
         VpnClientParameters parameters = new VpnClientParameters();
-        parameters = null;
+        parameters.withProcessorArchitecture(null);
         Call<ResponseBody> call = service.generatevpnclientpackage(resourceGroupName, virtualNetworkGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<String>(serviceCallback) {
@@ -849,7 +849,7 @@ public final class VirtualNetworkGatewaysInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         VpnClientParameters parameters = new VpnClientParameters();
-        parameters.setProcessorArchitecture(processorArchitecture);
+        parameters.withProcessorArchitecture(processorArchitecture);
         Call<ResponseBody> call = service.generatevpnclientpackage(resourceGroupName, virtualNetworkGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
         return generatevpnclientpackageDelegate(call.execute());
     }
@@ -885,7 +885,7 @@ public final class VirtualNetworkGatewaysInner {
             return null;
         }
         VpnClientParameters parameters = new VpnClientParameters();
-        parameters.setProcessorArchitecture(processorArchitecture);
+        parameters.withProcessorArchitecture(processorArchitecture);
         Call<ResponseBody> call = service.generatevpnclientpackage(resourceGroupName, virtualNetworkGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<String>(serviceCallback) {

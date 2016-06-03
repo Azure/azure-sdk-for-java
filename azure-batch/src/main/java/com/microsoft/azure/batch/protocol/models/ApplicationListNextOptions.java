@@ -51,7 +51,7 @@ public class ApplicationListNextOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the ApplicationListNextOptions object itself.
      */
-    public ApplicationListNextOptions setClientRequestId(String clientRequestId) {
+    public ApplicationListNextOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -71,7 +71,7 @@ public class ApplicationListNextOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the ApplicationListNextOptions object itself.
      */
-    public ApplicationListNextOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public ApplicationListNextOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -94,7 +94,7 @@ public class ApplicationListNextOptions {
      * @param ocpDate the ocpDate value to set
      * @return the ApplicationListNextOptions object itself.
      */
-    public ApplicationListNextOptions setOcpDate(DateTime ocpDate) {
+    public ApplicationListNextOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }

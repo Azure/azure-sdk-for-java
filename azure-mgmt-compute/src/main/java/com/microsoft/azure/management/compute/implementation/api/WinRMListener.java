@@ -38,7 +38,7 @@ public class WinRMListener {
      * @param protocol the protocol value to set
      * @return the WinRMListener object itself.
      */
-    public WinRMListener setProtocol(ProtocolTypes protocol) {
+    public WinRMListener withProtocol(ProtocolTypes protocol) {
         this.protocol = protocol;
         return this;
     }
@@ -58,7 +58,7 @@ public class WinRMListener {
      * @param certificateUrl the certificateUrl value to set
      * @return the WinRMListener object itself.
      */
-    public WinRMListener setCertificateUrl(String certificateUrl) {
+    public WinRMListener withCertificateUrl(String certificateUrl) {
         this.certificateUrl = certificateUrl;
         return this;
     }

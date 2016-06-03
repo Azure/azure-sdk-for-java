@@ -37,7 +37,7 @@ public class NameIdentifierCollectionInner {
      * @param value the value value to set
      * @return the NameIdentifierCollectionInner object itself.
      */
-    public NameIdentifierCollectionInner setValue(List<NameIdentifier> value) {
+    public NameIdentifierCollectionInner withValue(List<NameIdentifier> value) {
         this.value = value;
         return this;
     }
@@ -57,7 +57,7 @@ public class NameIdentifierCollectionInner {
      * @param nextLink the nextLink value to set
      * @return the NameIdentifierCollectionInner object itself.
      */
-    public NameIdentifierCollectionInner setNextLink(String nextLink) {
+    public NameIdentifierCollectionInner withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }

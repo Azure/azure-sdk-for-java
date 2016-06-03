@@ -44,7 +44,7 @@ public class DiskEncryptionSettings {
      * @param diskEncryptionKey the diskEncryptionKey value to set
      * @return the DiskEncryptionSettings object itself.
      */
-    public DiskEncryptionSettings setDiskEncryptionKey(KeyVaultSecretReference diskEncryptionKey) {
+    public DiskEncryptionSettings withDiskEncryptionKey(KeyVaultSecretReference diskEncryptionKey) {
         this.diskEncryptionKey = diskEncryptionKey;
         return this;
     }
@@ -64,7 +64,7 @@ public class DiskEncryptionSettings {
      * @param keyEncryptionKey the keyEncryptionKey value to set
      * @return the DiskEncryptionSettings object itself.
      */
-    public DiskEncryptionSettings setKeyEncryptionKey(KeyVaultKeyReference keyEncryptionKey) {
+    public DiskEncryptionSettings withKeyEncryptionKey(KeyVaultKeyReference keyEncryptionKey) {
         this.keyEncryptionKey = keyEncryptionKey;
         return this;
     }
@@ -84,7 +84,7 @@ public class DiskEncryptionSettings {
      * @param enabled the enabled value to set
      * @return the DiskEncryptionSettings object itself.
      */
-    public DiskEncryptionSettings setEnabled(Boolean enabled) {
+    public DiskEncryptionSettings withEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }

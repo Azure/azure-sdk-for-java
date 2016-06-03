@@ -23,7 +23,9 @@ public class JobResource {
 
     /**
      * Gets or sets the job resource type. Possible values include:
-     * 'VertexResource', 'StatisticsResource'.
+     * 'VertexResource', 'JobManagerResource', 'StatisticsResource',
+     * 'VertexResourceInUserFolder', 'JobManagerResourceInUserFolder',
+     * 'StatisticsResourceInUserFolder'.
      */
     private JobResourceType type;
 
@@ -42,7 +44,7 @@ public class JobResource {
      * @param name the name value to set
      * @return the JobResource object itself.
      */
-    public JobResource setName(String name) {
+    public JobResource withName(String name) {
         this.name = name;
         return this;
     }
@@ -62,7 +64,7 @@ public class JobResource {
      * @param resourcePath the resourcePath value to set
      * @return the JobResource object itself.
      */
-    public JobResource setResourcePath(String resourcePath) {
+    public JobResource withResourcePath(String resourcePath) {
         this.resourcePath = resourcePath;
         return this;
     }
@@ -82,7 +84,7 @@ public class JobResource {
      * @param type the type value to set
      * @return the JobResource object itself.
      */
-    public JobResource setType(JobResourceType type) {
+    public JobResource withType(JobResourceType type) {
         this.type = type;
         return this;
     }

@@ -54,7 +54,7 @@ public class TaskListHeaders {
      * @param clientRequestId the clientRequestId value to set
      * @return the TaskListHeaders object itself.
      */
-    public TaskListHeaders setClientRequestId(String clientRequestId) {
+    public TaskListHeaders withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -74,7 +74,7 @@ public class TaskListHeaders {
      * @param requestId the requestId value to set
      * @return the TaskListHeaders object itself.
      */
-    public TaskListHeaders setRequestId(String requestId) {
+    public TaskListHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -94,7 +94,7 @@ public class TaskListHeaders {
      * @param eTag the eTag value to set
      * @return the TaskListHeaders object itself.
      */
-    public TaskListHeaders setETag(String eTag) {
+    public TaskListHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -117,7 +117,7 @@ public class TaskListHeaders {
      * @param lastModified the lastModified value to set
      * @return the TaskListHeaders object itself.
      */
-    public TaskListHeaders setLastModified(DateTime lastModified) {
+    public TaskListHeaders withLastModified(DateTime lastModified) {
         this.lastModified = new DateTimeRfc1123(lastModified);
         return this;
     }

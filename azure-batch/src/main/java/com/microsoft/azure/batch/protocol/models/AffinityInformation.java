@@ -35,7 +35,7 @@ public class AffinityInformation {
      * @param affinityId the affinityId value to set
      * @return the AffinityInformation object itself.
      */
-    public AffinityInformation setAffinityId(String affinityId) {
+    public AffinityInformation withAffinityId(String affinityId) {
         this.affinityId = affinityId;
         return this;
     }

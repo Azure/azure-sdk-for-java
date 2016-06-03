@@ -36,7 +36,7 @@ public class ResourceGroupFilter {
      * @param tagName the tagName value to set
      * @return the ResourceGroupFilter object itself.
      */
-    public ResourceGroupFilter setTagName(String tagName) {
+    public ResourceGroupFilter withTagName(String tagName) {
         this.tagName = tagName;
         return this;
     }
@@ -56,7 +56,7 @@ public class ResourceGroupFilter {
      * @param tagValue the tagValue value to set
      * @return the ResourceGroupFilter object itself.
      */
-    public ResourceGroupFilter setTagValue(String tagValue) {
+    public ResourceGroupFilter withTagValue(String tagValue) {
         this.tagValue = tagValue;
         return this;
     }

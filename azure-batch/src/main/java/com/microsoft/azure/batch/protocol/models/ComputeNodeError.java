@@ -44,7 +44,7 @@ public class ComputeNodeError {
      * @param code the code value to set
      * @return the ComputeNodeError object itself.
      */
-    public ComputeNodeError setCode(String code) {
+    public ComputeNodeError withCode(String code) {
         this.code = code;
         return this;
     }
@@ -64,7 +64,7 @@ public class ComputeNodeError {
      * @param message the message value to set
      * @return the ComputeNodeError object itself.
      */
-    public ComputeNodeError setMessage(String message) {
+    public ComputeNodeError withMessage(String message) {
         this.message = message;
         return this;
     }
@@ -84,7 +84,7 @@ public class ComputeNodeError {
      * @param errorDetails the errorDetails value to set
      * @return the ComputeNodeError object itself.
      */
-    public ComputeNodeError setErrorDetails(List<NameValuePair> errorDetails) {
+    public ComputeNodeError withErrorDetails(List<NameValuePair> errorDetails) {
         this.errorDetails = errorDetails;
         return this;
     }

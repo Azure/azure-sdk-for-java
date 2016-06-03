@@ -37,7 +37,7 @@ public class SourceControlCollectionInner {
      * @param value the value value to set
      * @return the SourceControlCollectionInner object itself.
      */
-    public SourceControlCollectionInner setValue(List<SourceControlInner> value) {
+    public SourceControlCollectionInner withValue(List<SourceControlInner> value) {
         this.value = value;
         return this;
     }
@@ -57,7 +57,7 @@ public class SourceControlCollectionInner {
      * @param nextLink the nextLink value to set
      * @return the SourceControlCollectionInner object itself.
      */
-    public SourceControlCollectionInner setNextLink(String nextLink) {
+    public SourceControlCollectionInner withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }

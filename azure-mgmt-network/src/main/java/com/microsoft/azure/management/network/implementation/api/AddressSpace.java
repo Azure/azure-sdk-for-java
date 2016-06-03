@@ -34,7 +34,7 @@ public class AddressSpace {
      * @param addressPrefixes the addressPrefixes value to set
      * @return the AddressSpace object itself.
      */
-    public AddressSpace setAddressPrefixes(List<String> addressPrefixes) {
+    public AddressSpace withAddressPrefixes(List<String> addressPrefixes) {
         this.addressPrefixes = addressPrefixes;
         return this;
     }

@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the GetFromComputeNode operation.
+ * Additional parameters for the File_GetFromComputeNode operation.
  */
 public class FileGetFromComputeNodeOptions {
     /**
@@ -79,7 +79,7 @@ public class FileGetFromComputeNodeOptions {
      * @param timeout the timeout value to set
      * @return the FileGetFromComputeNodeOptions object itself.
      */
-    public FileGetFromComputeNodeOptions setTimeout(Integer timeout) {
+    public FileGetFromComputeNodeOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -99,7 +99,7 @@ public class FileGetFromComputeNodeOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the FileGetFromComputeNodeOptions object itself.
      */
-    public FileGetFromComputeNodeOptions setClientRequestId(String clientRequestId) {
+    public FileGetFromComputeNodeOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -119,7 +119,7 @@ public class FileGetFromComputeNodeOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the FileGetFromComputeNodeOptions object itself.
      */
-    public FileGetFromComputeNodeOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public FileGetFromComputeNodeOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -142,7 +142,7 @@ public class FileGetFromComputeNodeOptions {
      * @param ocpDate the ocpDate value to set
      * @return the FileGetFromComputeNodeOptions object itself.
      */
-    public FileGetFromComputeNodeOptions setOcpDate(DateTime ocpDate) {
+    public FileGetFromComputeNodeOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }
@@ -162,7 +162,7 @@ public class FileGetFromComputeNodeOptions {
      * @param ocpRange the ocpRange value to set
      * @return the FileGetFromComputeNodeOptions object itself.
      */
-    public FileGetFromComputeNodeOptions setOcpRange(String ocpRange) {
+    public FileGetFromComputeNodeOptions withOcpRange(String ocpRange) {
         this.ocpRange = ocpRange;
         return this;
     }
@@ -185,7 +185,7 @@ public class FileGetFromComputeNodeOptions {
      * @param ifModifiedSince the ifModifiedSince value to set
      * @return the FileGetFromComputeNodeOptions object itself.
      */
-    public FileGetFromComputeNodeOptions setIfModifiedSince(DateTime ifModifiedSince) {
+    public FileGetFromComputeNodeOptions withIfModifiedSince(DateTime ifModifiedSince) {
         this.ifModifiedSince = new DateTimeRfc1123(ifModifiedSince);
         return this;
     }
@@ -208,7 +208,7 @@ public class FileGetFromComputeNodeOptions {
      * @param ifUnmodifiedSince the ifUnmodifiedSince value to set
      * @return the FileGetFromComputeNodeOptions object itself.
      */
-    public FileGetFromComputeNodeOptions setIfUnmodifiedSince(DateTime ifUnmodifiedSince) {
+    public FileGetFromComputeNodeOptions withIfUnmodifiedSince(DateTime ifUnmodifiedSince) {
         this.ifUnmodifiedSince = new DateTimeRfc1123(ifUnmodifiedSince);
         return this;
     }

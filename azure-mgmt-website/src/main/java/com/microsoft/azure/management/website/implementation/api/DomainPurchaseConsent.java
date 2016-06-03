@@ -45,7 +45,7 @@ public class DomainPurchaseConsent {
      * @param agreementKeys the agreementKeys value to set
      * @return the DomainPurchaseConsent object itself.
      */
-    public DomainPurchaseConsent setAgreementKeys(List<String> agreementKeys) {
+    public DomainPurchaseConsent withAgreementKeys(List<String> agreementKeys) {
         this.agreementKeys = agreementKeys;
         return this;
     }
@@ -65,7 +65,7 @@ public class DomainPurchaseConsent {
      * @param agreedBy the agreedBy value to set
      * @return the DomainPurchaseConsent object itself.
      */
-    public DomainPurchaseConsent setAgreedBy(String agreedBy) {
+    public DomainPurchaseConsent withAgreedBy(String agreedBy) {
         this.agreedBy = agreedBy;
         return this;
     }
@@ -85,7 +85,7 @@ public class DomainPurchaseConsent {
      * @param agreedAt the agreedAt value to set
      * @return the DomainPurchaseConsent object itself.
      */
-    public DomainPurchaseConsent setAgreedAt(DateTime agreedAt) {
+    public DomainPurchaseConsent withAgreedAt(DateTime agreedAt) {
         this.agreedAt = agreedAt;
         return this;
     }

@@ -51,7 +51,7 @@ public class NetworkFeaturesInner extends Resource {
      * @param virtualNetworkName the virtualNetworkName value to set
      * @return the NetworkFeaturesInner object itself.
      */
-    public NetworkFeaturesInner setVirtualNetworkName(String virtualNetworkName) {
+    public NetworkFeaturesInner withVirtualNetworkName(String virtualNetworkName) {
         this.virtualNetworkName = virtualNetworkName;
         return this;
     }
@@ -71,7 +71,7 @@ public class NetworkFeaturesInner extends Resource {
      * @param virtualNetworkConnection the virtualNetworkConnection value to set
      * @return the NetworkFeaturesInner object itself.
      */
-    public NetworkFeaturesInner setVirtualNetworkConnection(VnetInfoInner virtualNetworkConnection) {
+    public NetworkFeaturesInner withVirtualNetworkConnection(VnetInfoInner virtualNetworkConnection) {
         this.virtualNetworkConnection = virtualNetworkConnection;
         return this;
     }
@@ -91,7 +91,7 @@ public class NetworkFeaturesInner extends Resource {
      * @param hybridConnections the hybridConnections value to set
      * @return the NetworkFeaturesInner object itself.
      */
-    public NetworkFeaturesInner setHybridConnections(List<RelayServiceConnectionEntityInner> hybridConnections) {
+    public NetworkFeaturesInner withHybridConnections(List<RelayServiceConnectionEntityInner> hybridConnections) {
         this.hybridConnections = hybridConnections;
         return this;
     }

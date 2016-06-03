@@ -123,7 +123,7 @@ public class ApplicationGatewayInner extends Resource {
      * @param sku the sku value to set
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner setSku(ApplicationGatewaySku sku) {
+    public ApplicationGatewayInner withSku(ApplicationGatewaySku sku) {
         this.sku = sku;
         return this;
     }
@@ -152,7 +152,7 @@ public class ApplicationGatewayInner extends Resource {
      * @param gatewayIPConfigurations the gatewayIPConfigurations value to set
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner setGatewayIPConfigurations(List<ApplicationGatewayIPConfiguration> gatewayIPConfigurations) {
+    public ApplicationGatewayInner withGatewayIPConfigurations(List<ApplicationGatewayIPConfiguration> gatewayIPConfigurations) {
         this.gatewayIPConfigurations = gatewayIPConfigurations;
         return this;
     }
@@ -172,7 +172,7 @@ public class ApplicationGatewayInner extends Resource {
      * @param sslCertificates the sslCertificates value to set
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner setSslCertificates(List<ApplicationGatewaySslCertificate> sslCertificates) {
+    public ApplicationGatewayInner withSslCertificates(List<ApplicationGatewaySslCertificate> sslCertificates) {
         this.sslCertificates = sslCertificates;
         return this;
     }
@@ -192,7 +192,7 @@ public class ApplicationGatewayInner extends Resource {
      * @param frontendIPConfigurations the frontendIPConfigurations value to set
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner setFrontendIPConfigurations(List<ApplicationGatewayFrontendIPConfiguration> frontendIPConfigurations) {
+    public ApplicationGatewayInner withFrontendIPConfigurations(List<ApplicationGatewayFrontendIPConfiguration> frontendIPConfigurations) {
         this.frontendIPConfigurations = frontendIPConfigurations;
         return this;
     }
@@ -212,7 +212,7 @@ public class ApplicationGatewayInner extends Resource {
      * @param frontendPorts the frontendPorts value to set
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner setFrontendPorts(List<ApplicationGatewayFrontendPort> frontendPorts) {
+    public ApplicationGatewayInner withFrontendPorts(List<ApplicationGatewayFrontendPort> frontendPorts) {
         this.frontendPorts = frontendPorts;
         return this;
     }
@@ -232,7 +232,7 @@ public class ApplicationGatewayInner extends Resource {
      * @param probes the probes value to set
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner setProbes(List<ApplicationGatewayProbe> probes) {
+    public ApplicationGatewayInner withProbes(List<ApplicationGatewayProbe> probes) {
         this.probes = probes;
         return this;
     }
@@ -252,7 +252,7 @@ public class ApplicationGatewayInner extends Resource {
      * @param backendAddressPools the backendAddressPools value to set
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner setBackendAddressPools(List<ApplicationGatewayBackendAddressPool> backendAddressPools) {
+    public ApplicationGatewayInner withBackendAddressPools(List<ApplicationGatewayBackendAddressPool> backendAddressPools) {
         this.backendAddressPools = backendAddressPools;
         return this;
     }
@@ -272,7 +272,7 @@ public class ApplicationGatewayInner extends Resource {
      * @param backendHttpSettingsCollection the backendHttpSettingsCollection value to set
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner setBackendHttpSettingsCollection(List<ApplicationGatewayBackendHttpSettings> backendHttpSettingsCollection) {
+    public ApplicationGatewayInner withBackendHttpSettingsCollection(List<ApplicationGatewayBackendHttpSettings> backendHttpSettingsCollection) {
         this.backendHttpSettingsCollection = backendHttpSettingsCollection;
         return this;
     }
@@ -292,7 +292,7 @@ public class ApplicationGatewayInner extends Resource {
      * @param httpListeners the httpListeners value to set
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner setHttpListeners(List<ApplicationGatewayHttpListener> httpListeners) {
+    public ApplicationGatewayInner withHttpListeners(List<ApplicationGatewayHttpListener> httpListeners) {
         this.httpListeners = httpListeners;
         return this;
     }
@@ -312,7 +312,7 @@ public class ApplicationGatewayInner extends Resource {
      * @param urlPathMaps the urlPathMaps value to set
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner setUrlPathMaps(List<ApplicationGatewayUrlPathMap> urlPathMaps) {
+    public ApplicationGatewayInner withUrlPathMaps(List<ApplicationGatewayUrlPathMap> urlPathMaps) {
         this.urlPathMaps = urlPathMaps;
         return this;
     }
@@ -332,7 +332,7 @@ public class ApplicationGatewayInner extends Resource {
      * @param requestRoutingRules the requestRoutingRules value to set
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner setRequestRoutingRules(List<ApplicationGatewayRequestRoutingRule> requestRoutingRules) {
+    public ApplicationGatewayInner withRequestRoutingRules(List<ApplicationGatewayRequestRoutingRule> requestRoutingRules) {
         this.requestRoutingRules = requestRoutingRules;
         return this;
     }
@@ -352,7 +352,7 @@ public class ApplicationGatewayInner extends Resource {
      * @param resourceGuid the resourceGuid value to set
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner setResourceGuid(String resourceGuid) {
+    public ApplicationGatewayInner withResourceGuid(String resourceGuid) {
         this.resourceGuid = resourceGuid;
         return this;
     }
@@ -372,7 +372,7 @@ public class ApplicationGatewayInner extends Resource {
      * @param provisioningState the provisioningState value to set
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner setProvisioningState(String provisioningState) {
+    public ApplicationGatewayInner withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -392,7 +392,7 @@ public class ApplicationGatewayInner extends Resource {
      * @param etag the etag value to set
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner setEtag(String etag) {
+    public ApplicationGatewayInner withEtag(String etag) {
         this.etag = etag;
         return this;
     }

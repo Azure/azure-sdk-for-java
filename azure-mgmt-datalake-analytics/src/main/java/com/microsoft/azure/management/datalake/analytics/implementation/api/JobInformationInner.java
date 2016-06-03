@@ -93,6 +93,20 @@ public class JobInformationInner {
     private JobResult result;
 
     /**
+     * Gets or sets the log folder path to use in the following format:
+     * adl://&lt;accountName&gt;.azuredatalakestore.net/system/jobservice/jobs/Usql/2016/03/13/17/18/5fe51957-93bc-4de0-8ddc-c5a4753b068b/logs/.
+     */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String logFolder;
+
+    /**
+     * Gets or sets the list of log file name patterns to find in the
+     * logFolder. '*' is the only matching character allowed. Example format:
+     * jobExecution*.log or *mylog*.txt.
+     */
+    private List<String> logFilePatterns;
+
+    /**
      * Gets the job state audit records, indicating when various operations
      * have been performed on this job.
      */
@@ -120,7 +134,7 @@ public class JobInformationInner {
      * @param jobId the jobId value to set
      * @return the JobInformationInner object itself.
      */
-    public JobInformationInner setJobId(UUID jobId) {
+    public JobInformationInner withJobId(UUID jobId) {
         this.jobId = jobId;
         return this;
     }
@@ -140,7 +154,7 @@ public class JobInformationInner {
      * @param name the name value to set
      * @return the JobInformationInner object itself.
      */
-    public JobInformationInner setName(String name) {
+    public JobInformationInner withName(String name) {
         this.name = name;
         return this;
     }
@@ -160,7 +174,7 @@ public class JobInformationInner {
      * @param type the type value to set
      * @return the JobInformationInner object itself.
      */
-    public JobInformationInner setType(JobType type) {
+    public JobInformationInner withType(JobType type) {
         this.type = type;
         return this;
     }
@@ -180,7 +194,7 @@ public class JobInformationInner {
      * @param submitter the submitter value to set
      * @return the JobInformationInner object itself.
      */
-    public JobInformationInner setSubmitter(String submitter) {
+    public JobInformationInner withSubmitter(String submitter) {
         this.submitter = submitter;
         return this;
     }
@@ -209,7 +223,7 @@ public class JobInformationInner {
      * @param degreeOfParallelism the degreeOfParallelism value to set
      * @return the JobInformationInner object itself.
      */
-    public JobInformationInner setDegreeOfParallelism(Integer degreeOfParallelism) {
+    public JobInformationInner withDegreeOfParallelism(Integer degreeOfParallelism) {
         this.degreeOfParallelism = degreeOfParallelism;
         return this;
     }
@@ -229,7 +243,7 @@ public class JobInformationInner {
      * @param priority the priority value to set
      * @return the JobInformationInner object itself.
      */
-    public JobInformationInner setPriority(Integer priority) {
+    public JobInformationInner withPriority(Integer priority) {
         this.priority = priority;
         return this;
     }
@@ -280,6 +294,35 @@ public class JobInformationInner {
     }
 
     /**
+     * Get the logFolder value.
+     *
+     * @return the logFolder value
+     */
+    public String logFolder() {
+        return this.logFolder;
+    }
+
+    /**
+     * Get the logFilePatterns value.
+     *
+     * @return the logFilePatterns value
+     */
+    public List<String> logFilePatterns() {
+        return this.logFilePatterns;
+    }
+
+    /**
+     * Set the logFilePatterns value.
+     *
+     * @param logFilePatterns the logFilePatterns value to set
+     * @return the JobInformationInner object itself.
+     */
+    public JobInformationInner withLogFilePatterns(List<String> logFilePatterns) {
+        this.logFilePatterns = logFilePatterns;
+        return this;
+    }
+
+    /**
      * Get the stateAuditRecords value.
      *
      * @return the stateAuditRecords value
@@ -303,7 +346,7 @@ public class JobInformationInner {
      * @param properties the properties value to set
      * @return the JobInformationInner object itself.
      */
-    public JobInformationInner setProperties(JobProperties properties) {
+    public JobInformationInner withProperties(JobProperties properties) {
         this.properties = properties;
         return this;
     }

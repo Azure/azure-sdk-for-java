@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the Add operation.
+ * Additional parameters for the Job_Add operation.
  */
 public class JobAddOptions {
     /**
@@ -58,7 +58,7 @@ public class JobAddOptions {
      * @param timeout the timeout value to set
      * @return the JobAddOptions object itself.
      */
-    public JobAddOptions setTimeout(Integer timeout) {
+    public JobAddOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -78,7 +78,7 @@ public class JobAddOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the JobAddOptions object itself.
      */
-    public JobAddOptions setClientRequestId(String clientRequestId) {
+    public JobAddOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -98,7 +98,7 @@ public class JobAddOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the JobAddOptions object itself.
      */
-    public JobAddOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public JobAddOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -121,7 +121,7 @@ public class JobAddOptions {
      * @param ocpDate the ocpDate value to set
      * @return the JobAddOptions object itself.
      */
-    public JobAddOptions setOcpDate(DateTime ocpDate) {
+    public JobAddOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }

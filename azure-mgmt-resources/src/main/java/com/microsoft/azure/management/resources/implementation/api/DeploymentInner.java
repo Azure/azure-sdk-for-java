@@ -31,7 +31,7 @@ public class DeploymentInner {
      * @param properties the properties value to set
      * @return the DeploymentInner object itself.
      */
-    public DeploymentInner setProperties(DeploymentProperties properties) {
+    public DeploymentInner withProperties(DeploymentProperties properties) {
         this.properties = properties;
         return this;
     }

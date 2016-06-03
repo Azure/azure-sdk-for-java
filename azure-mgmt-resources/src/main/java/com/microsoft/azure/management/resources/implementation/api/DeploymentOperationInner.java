@@ -41,7 +41,7 @@ public class DeploymentOperationInner {
      * @param id the id value to set
      * @return the DeploymentOperationInner object itself.
      */
-    public DeploymentOperationInner setId(String id) {
+    public DeploymentOperationInner withId(String id) {
         this.id = id;
         return this;
     }
@@ -61,7 +61,7 @@ public class DeploymentOperationInner {
      * @param operationId the operationId value to set
      * @return the DeploymentOperationInner object itself.
      */
-    public DeploymentOperationInner setOperationId(String operationId) {
+    public DeploymentOperationInner withOperationId(String operationId) {
         this.operationId = operationId;
         return this;
     }
@@ -81,7 +81,7 @@ public class DeploymentOperationInner {
      * @param properties the properties value to set
      * @return the DeploymentOperationInner object itself.
      */
-    public DeploymentOperationInner setProperties(DeploymentOperationProperties properties) {
+    public DeploymentOperationInner withProperties(DeploymentOperationProperties properties) {
         this.properties = properties;
         return this;
     }

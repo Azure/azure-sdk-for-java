@@ -84,7 +84,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
      * @param frontendIPConfiguration the frontendIPConfiguration value to set
      * @return the ApplicationGatewayHttpListener object itself.
      */
-    public ApplicationGatewayHttpListener setFrontendIPConfiguration(SubResource frontendIPConfiguration) {
+    public ApplicationGatewayHttpListener withFrontendIPConfiguration(SubResource frontendIPConfiguration) {
         this.frontendIPConfiguration = frontendIPConfiguration;
         return this;
     }
@@ -104,7 +104,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
      * @param frontendPort the frontendPort value to set
      * @return the ApplicationGatewayHttpListener object itself.
      */
-    public ApplicationGatewayHttpListener setFrontendPort(SubResource frontendPort) {
+    public ApplicationGatewayHttpListener withFrontendPort(SubResource frontendPort) {
         this.frontendPort = frontendPort;
         return this;
     }
@@ -124,7 +124,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
      * @param protocol the protocol value to set
      * @return the ApplicationGatewayHttpListener object itself.
      */
-    public ApplicationGatewayHttpListener setProtocol(String protocol) {
+    public ApplicationGatewayHttpListener withProtocol(String protocol) {
         this.protocol = protocol;
         return this;
     }
@@ -144,7 +144,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
      * @param hostName the hostName value to set
      * @return the ApplicationGatewayHttpListener object itself.
      */
-    public ApplicationGatewayHttpListener setHostName(String hostName) {
+    public ApplicationGatewayHttpListener withHostName(String hostName) {
         this.hostName = hostName;
         return this;
     }
@@ -164,7 +164,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
      * @param sslCertificate the sslCertificate value to set
      * @return the ApplicationGatewayHttpListener object itself.
      */
-    public ApplicationGatewayHttpListener setSslCertificate(SubResource sslCertificate) {
+    public ApplicationGatewayHttpListener withSslCertificate(SubResource sslCertificate) {
         this.sslCertificate = sslCertificate;
         return this;
     }
@@ -184,7 +184,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
      * @param requireServerNameIndication the requireServerNameIndication value to set
      * @return the ApplicationGatewayHttpListener object itself.
      */
-    public ApplicationGatewayHttpListener setRequireServerNameIndication(Boolean requireServerNameIndication) {
+    public ApplicationGatewayHttpListener withRequireServerNameIndication(Boolean requireServerNameIndication) {
         this.requireServerNameIndication = requireServerNameIndication;
         return this;
     }
@@ -204,7 +204,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
      * @param provisioningState the provisioningState value to set
      * @return the ApplicationGatewayHttpListener object itself.
      */
-    public ApplicationGatewayHttpListener setProvisioningState(String provisioningState) {
+    public ApplicationGatewayHttpListener withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -224,7 +224,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
      * @param name the name value to set
      * @return the ApplicationGatewayHttpListener object itself.
      */
-    public ApplicationGatewayHttpListener setName(String name) {
+    public ApplicationGatewayHttpListener withName(String name) {
         this.name = name;
         return this;
     }
@@ -244,7 +244,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
      * @param etag the etag value to set
      * @return the ApplicationGatewayHttpListener object itself.
      */
-    public ApplicationGatewayHttpListener setEtag(String etag) {
+    public ApplicationGatewayHttpListener withEtag(String etag) {
         this.etag = etag;
         return this;
     }

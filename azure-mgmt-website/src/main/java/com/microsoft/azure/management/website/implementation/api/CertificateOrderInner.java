@@ -132,7 +132,7 @@ public class CertificateOrderInner extends Resource {
      * @param certificates the certificates value to set
      * @return the CertificateOrderInner object itself.
      */
-    public CertificateOrderInner setCertificates(Map<String, CertificateOrderCertificateInner> certificates) {
+    public CertificateOrderInner withCertificates(Map<String, CertificateOrderCertificateInner> certificates) {
         this.certificates = certificates;
         return this;
     }
@@ -152,7 +152,7 @@ public class CertificateOrderInner extends Resource {
      * @param distinguishedName the distinguishedName value to set
      * @return the CertificateOrderInner object itself.
      */
-    public CertificateOrderInner setDistinguishedName(String distinguishedName) {
+    public CertificateOrderInner withDistinguishedName(String distinguishedName) {
         this.distinguishedName = distinguishedName;
         return this;
     }
@@ -172,7 +172,7 @@ public class CertificateOrderInner extends Resource {
      * @param domainVerificationToken the domainVerificationToken value to set
      * @return the CertificateOrderInner object itself.
      */
-    public CertificateOrderInner setDomainVerificationToken(String domainVerificationToken) {
+    public CertificateOrderInner withDomainVerificationToken(String domainVerificationToken) {
         this.domainVerificationToken = domainVerificationToken;
         return this;
     }
@@ -192,7 +192,7 @@ public class CertificateOrderInner extends Resource {
      * @param validityInYears the validityInYears value to set
      * @return the CertificateOrderInner object itself.
      */
-    public CertificateOrderInner setValidityInYears(Integer validityInYears) {
+    public CertificateOrderInner withValidityInYears(Integer validityInYears) {
         this.validityInYears = validityInYears;
         return this;
     }
@@ -212,7 +212,7 @@ public class CertificateOrderInner extends Resource {
      * @param keySize the keySize value to set
      * @return the CertificateOrderInner object itself.
      */
-    public CertificateOrderInner setKeySize(Integer keySize) {
+    public CertificateOrderInner withKeySize(Integer keySize) {
         this.keySize = keySize;
         return this;
     }
@@ -232,7 +232,7 @@ public class CertificateOrderInner extends Resource {
      * @param productType the productType value to set
      * @return the CertificateOrderInner object itself.
      */
-    public CertificateOrderInner setProductType(CertificateProductType productType) {
+    public CertificateOrderInner withProductType(CertificateProductType productType) {
         this.productType = productType;
         return this;
     }
@@ -252,7 +252,7 @@ public class CertificateOrderInner extends Resource {
      * @param autoRenew the autoRenew value to set
      * @return the CertificateOrderInner object itself.
      */
-    public CertificateOrderInner setAutoRenew(Boolean autoRenew) {
+    public CertificateOrderInner withAutoRenew(Boolean autoRenew) {
         this.autoRenew = autoRenew;
         return this;
     }
@@ -272,7 +272,7 @@ public class CertificateOrderInner extends Resource {
      * @param provisioningState the provisioningState value to set
      * @return the CertificateOrderInner object itself.
      */
-    public CertificateOrderInner setProvisioningState(ProvisioningState provisioningState) {
+    public CertificateOrderInner withProvisioningState(ProvisioningState provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -292,7 +292,7 @@ public class CertificateOrderInner extends Resource {
      * @param status the status value to set
      * @return the CertificateOrderInner object itself.
      */
-    public CertificateOrderInner setStatus(CertificateOrderStatus status) {
+    public CertificateOrderInner withStatus(CertificateOrderStatus status) {
         this.status = status;
         return this;
     }
@@ -312,7 +312,7 @@ public class CertificateOrderInner extends Resource {
      * @param signedCertificate the signedCertificate value to set
      * @return the CertificateOrderInner object itself.
      */
-    public CertificateOrderInner setSignedCertificate(CertificateDetails signedCertificate) {
+    public CertificateOrderInner withSignedCertificate(CertificateDetails signedCertificate) {
         this.signedCertificate = signedCertificate;
         return this;
     }
@@ -332,7 +332,7 @@ public class CertificateOrderInner extends Resource {
      * @param csr the csr value to set
      * @return the CertificateOrderInner object itself.
      */
-    public CertificateOrderInner setCsr(String csr) {
+    public CertificateOrderInner withCsr(String csr) {
         this.csr = csr;
         return this;
     }
@@ -352,7 +352,7 @@ public class CertificateOrderInner extends Resource {
      * @param intermediate the intermediate value to set
      * @return the CertificateOrderInner object itself.
      */
-    public CertificateOrderInner setIntermediate(CertificateDetails intermediate) {
+    public CertificateOrderInner withIntermediate(CertificateDetails intermediate) {
         this.intermediate = intermediate;
         return this;
     }
@@ -372,7 +372,7 @@ public class CertificateOrderInner extends Resource {
      * @param root the root value to set
      * @return the CertificateOrderInner object itself.
      */
-    public CertificateOrderInner setRoot(CertificateDetails root) {
+    public CertificateOrderInner withRoot(CertificateDetails root) {
         this.root = root;
         return this;
     }
@@ -392,7 +392,7 @@ public class CertificateOrderInner extends Resource {
      * @param serialNumber the serialNumber value to set
      * @return the CertificateOrderInner object itself.
      */
-    public CertificateOrderInner setSerialNumber(String serialNumber) {
+    public CertificateOrderInner withSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
         return this;
     }
@@ -412,7 +412,7 @@ public class CertificateOrderInner extends Resource {
      * @param lastCertificateIssuanceTime the lastCertificateIssuanceTime value to set
      * @return the CertificateOrderInner object itself.
      */
-    public CertificateOrderInner setLastCertificateIssuanceTime(DateTime lastCertificateIssuanceTime) {
+    public CertificateOrderInner withLastCertificateIssuanceTime(DateTime lastCertificateIssuanceTime) {
         this.lastCertificateIssuanceTime = lastCertificateIssuanceTime;
         return this;
     }
@@ -432,7 +432,7 @@ public class CertificateOrderInner extends Resource {
      * @param expirationTime the expirationTime value to set
      * @return the CertificateOrderInner object itself.
      */
-    public CertificateOrderInner setExpirationTime(DateTime expirationTime) {
+    public CertificateOrderInner withExpirationTime(DateTime expirationTime) {
         this.expirationTime = expirationTime;
         return this;
     }

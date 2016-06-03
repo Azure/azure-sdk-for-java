@@ -44,7 +44,7 @@ public class AzureAsyncOperationResult {
      * @param status the status value to set
      * @return the AzureAsyncOperationResult object itself.
      */
-    public AzureAsyncOperationResult setStatus(String status) {
+    public AzureAsyncOperationResult withStatus(String status) {
         this.status = status;
         return this;
     }
@@ -64,7 +64,7 @@ public class AzureAsyncOperationResult {
      * @param error the error value to set
      * @return the AzureAsyncOperationResult object itself.
      */
-    public AzureAsyncOperationResult setError(Error error) {
+    public AzureAsyncOperationResult withError(Error error) {
         this.error = error;
         return this;
     }

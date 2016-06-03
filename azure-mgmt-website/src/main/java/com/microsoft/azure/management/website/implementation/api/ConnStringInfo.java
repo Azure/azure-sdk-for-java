@@ -44,7 +44,7 @@ public class ConnStringInfo {
      * @param name the name value to set
      * @return the ConnStringInfo object itself.
      */
-    public ConnStringInfo setName(String name) {
+    public ConnStringInfo withName(String name) {
         this.name = name;
         return this;
     }
@@ -64,7 +64,7 @@ public class ConnStringInfo {
      * @param connectionString the connectionString value to set
      * @return the ConnStringInfo object itself.
      */
-    public ConnStringInfo setConnectionString(String connectionString) {
+    public ConnStringInfo withConnectionString(String connectionString) {
         this.connectionString = connectionString;
         return this;
     }
@@ -84,7 +84,7 @@ public class ConnStringInfo {
      * @param type the type value to set
      * @return the ConnStringInfo object itself.
      */
-    public ConnStringInfo setType(DatabaseServerType type) {
+    public ConnStringInfo withType(DatabaseServerType type) {
         this.type = type;
         return this;
     }

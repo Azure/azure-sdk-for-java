@@ -47,7 +47,7 @@ public class ProviderInner {
      * @param id the id value to set
      * @return the ProviderInner object itself.
      */
-    public ProviderInner setId(String id) {
+    public ProviderInner withId(String id) {
         this.id = id;
         return this;
     }
@@ -67,7 +67,7 @@ public class ProviderInner {
      * @param namespace the namespace value to set
      * @return the ProviderInner object itself.
      */
-    public ProviderInner setNamespace(String namespace) {
+    public ProviderInner withNamespace(String namespace) {
         this.namespace = namespace;
         return this;
     }
@@ -87,7 +87,7 @@ public class ProviderInner {
      * @param registrationState the registrationState value to set
      * @return the ProviderInner object itself.
      */
-    public ProviderInner setRegistrationState(String registrationState) {
+    public ProviderInner withRegistrationState(String registrationState) {
         this.registrationState = registrationState;
         return this;
     }
@@ -107,7 +107,7 @@ public class ProviderInner {
      * @param resourceTypes the resourceTypes value to set
      * @return the ProviderInner object itself.
      */
-    public ProviderInner setResourceTypes(List<ProviderResourceType> resourceTypes) {
+    public ProviderInner withResourceTypes(List<ProviderResourceType> resourceTypes) {
         this.resourceTypes = resourceTypes;
         return this;
     }

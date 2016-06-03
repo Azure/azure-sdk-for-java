@@ -58,7 +58,7 @@ public class PoolUpdatePropertiesParameter {
      * @param startTask the startTask value to set
      * @return the PoolUpdatePropertiesParameter object itself.
      */
-    public PoolUpdatePropertiesParameter setStartTask(StartTask startTask) {
+    public PoolUpdatePropertiesParameter withStartTask(StartTask startTask) {
         this.startTask = startTask;
         return this;
     }
@@ -78,7 +78,7 @@ public class PoolUpdatePropertiesParameter {
      * @param certificateReferences the certificateReferences value to set
      * @return the PoolUpdatePropertiesParameter object itself.
      */
-    public PoolUpdatePropertiesParameter setCertificateReferences(List<CertificateReference> certificateReferences) {
+    public PoolUpdatePropertiesParameter withCertificateReferences(List<CertificateReference> certificateReferences) {
         this.certificateReferences = certificateReferences;
         return this;
     }
@@ -98,7 +98,7 @@ public class PoolUpdatePropertiesParameter {
      * @param applicationPackageReferences the applicationPackageReferences value to set
      * @return the PoolUpdatePropertiesParameter object itself.
      */
-    public PoolUpdatePropertiesParameter setApplicationPackageReferences(List<ApplicationPackageReference> applicationPackageReferences) {
+    public PoolUpdatePropertiesParameter withApplicationPackageReferences(List<ApplicationPackageReference> applicationPackageReferences) {
         this.applicationPackageReferences = applicationPackageReferences;
         return this;
     }
@@ -118,7 +118,7 @@ public class PoolUpdatePropertiesParameter {
      * @param metadata the metadata value to set
      * @return the PoolUpdatePropertiesParameter object itself.
      */
-    public PoolUpdatePropertiesParameter setMetadata(List<MetadataItem> metadata) {
+    public PoolUpdatePropertiesParameter withMetadata(List<MetadataItem> metadata) {
         this.metadata = metadata;
         return this;
     }

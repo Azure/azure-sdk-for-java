@@ -51,7 +51,7 @@ public class JobListNextOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the JobListNextOptions object itself.
      */
-    public JobListNextOptions setClientRequestId(String clientRequestId) {
+    public JobListNextOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -71,7 +71,7 @@ public class JobListNextOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the JobListNextOptions object itself.
      */
-    public JobListNextOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public JobListNextOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -94,7 +94,7 @@ public class JobListNextOptions {
      * @param ocpDate the ocpDate value to set
      * @return the JobListNextOptions object itself.
      */
-    public JobListNextOptions setOcpDate(DateTime ocpDate) {
+    public JobListNextOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }

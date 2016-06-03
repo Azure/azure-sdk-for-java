@@ -34,7 +34,7 @@ public class DhcpOptions {
      * @param dnsServers the dnsServers value to set
      * @return the DhcpOptions object itself.
      */
-    public DhcpOptions setDnsServers(List<String> dnsServers) {
+    public DhcpOptions withDnsServers(List<String> dnsServers) {
         this.dnsServers = dnsServers;
         return this;
     }

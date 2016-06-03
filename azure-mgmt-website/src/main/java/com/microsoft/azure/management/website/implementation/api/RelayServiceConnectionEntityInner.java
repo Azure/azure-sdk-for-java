@@ -72,7 +72,7 @@ public class RelayServiceConnectionEntityInner extends Resource {
      * @param entityName the entityName value to set
      * @return the RelayServiceConnectionEntityInner object itself.
      */
-    public RelayServiceConnectionEntityInner setEntityName(String entityName) {
+    public RelayServiceConnectionEntityInner withEntityName(String entityName) {
         this.entityName = entityName;
         return this;
     }
@@ -92,7 +92,7 @@ public class RelayServiceConnectionEntityInner extends Resource {
      * @param entityConnectionString the entityConnectionString value to set
      * @return the RelayServiceConnectionEntityInner object itself.
      */
-    public RelayServiceConnectionEntityInner setEntityConnectionString(String entityConnectionString) {
+    public RelayServiceConnectionEntityInner withEntityConnectionString(String entityConnectionString) {
         this.entityConnectionString = entityConnectionString;
         return this;
     }
@@ -112,7 +112,7 @@ public class RelayServiceConnectionEntityInner extends Resource {
      * @param resourceType the resourceType value to set
      * @return the RelayServiceConnectionEntityInner object itself.
      */
-    public RelayServiceConnectionEntityInner setResourceType(String resourceType) {
+    public RelayServiceConnectionEntityInner withResourceType(String resourceType) {
         this.resourceType = resourceType;
         return this;
     }
@@ -132,7 +132,7 @@ public class RelayServiceConnectionEntityInner extends Resource {
      * @param resourceConnectionString the resourceConnectionString value to set
      * @return the RelayServiceConnectionEntityInner object itself.
      */
-    public RelayServiceConnectionEntityInner setResourceConnectionString(String resourceConnectionString) {
+    public RelayServiceConnectionEntityInner withResourceConnectionString(String resourceConnectionString) {
         this.resourceConnectionString = resourceConnectionString;
         return this;
     }
@@ -152,7 +152,7 @@ public class RelayServiceConnectionEntityInner extends Resource {
      * @param hostname the hostname value to set
      * @return the RelayServiceConnectionEntityInner object itself.
      */
-    public RelayServiceConnectionEntityInner setHostname(String hostname) {
+    public RelayServiceConnectionEntityInner withHostname(String hostname) {
         this.hostname = hostname;
         return this;
     }
@@ -172,7 +172,7 @@ public class RelayServiceConnectionEntityInner extends Resource {
      * @param port the port value to set
      * @return the RelayServiceConnectionEntityInner object itself.
      */
-    public RelayServiceConnectionEntityInner setPort(Integer port) {
+    public RelayServiceConnectionEntityInner withPort(Integer port) {
         this.port = port;
         return this;
     }
@@ -192,7 +192,7 @@ public class RelayServiceConnectionEntityInner extends Resource {
      * @param biztalkUri the biztalkUri value to set
      * @return the RelayServiceConnectionEntityInner object itself.
      */
-    public RelayServiceConnectionEntityInner setBiztalkUri(String biztalkUri) {
+    public RelayServiceConnectionEntityInner withBiztalkUri(String biztalkUri) {
         this.biztalkUri = biztalkUri;
         return this;
     }

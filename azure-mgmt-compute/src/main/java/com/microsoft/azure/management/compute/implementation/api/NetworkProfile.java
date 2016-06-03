@@ -32,7 +32,7 @@ public class NetworkProfile {
      * @param networkInterfaces the networkInterfaces value to set
      * @return the NetworkProfile object itself.
      */
-    public NetworkProfile setNetworkInterfaces(List<NetworkInterfaceReference> networkInterfaces) {
+    public NetworkProfile withNetworkInterfaces(List<NetworkInterfaceReference> networkInterfaces) {
         this.networkInterfaces = networkInterfaces;
         return this;
     }
