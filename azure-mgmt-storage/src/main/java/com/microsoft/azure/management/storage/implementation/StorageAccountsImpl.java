@@ -15,6 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConver
 import com.microsoft.azure.management.resources.implementation.api.PageImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccounts;
+import com.microsoft.azure.management.storage.implementation.api.CheckNameAvailabilityResultInner;
 import com.microsoft.azure.management.storage.implementation.api.StorageAccountInner;
 import com.microsoft.azure.management.storage.implementation.api.StorageAccountsInner;
 import com.microsoft.rest.RestException;
@@ -45,7 +46,15 @@ class StorageAccountsImpl
 
     @Override
     public CheckNameAvailabilityResult checkNameAvailability(String name) throws CloudException, IOException {
-        return new CheckNameAvailabilityResult(client.checkNameAvailability(name, "Microsoft.Storage/storageAccounts").getBody());
+        CheckNameAvailabilityResultInner inner = client.checkNameAvailability(name, "Microsoft.Storage/storageAccounts").getBody();
+        CheckNameAvailabilityResult result;
+        if (inner.nameAvailable()) {
+            result = CheckNameAvailabilityResult.AVAILABLE;
+        } else {
+            result = CheckNameAvailabilityResult.UNAVAILABLE;
+            result = result.withReason(inner.reason()).withMessage(inner.message());
+        }
+        return result;
     }
 
     @Override

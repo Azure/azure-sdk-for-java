@@ -37,7 +37,7 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
         // Name available
         CheckNameAvailabilityResult result = storageManager.storageAccounts()
                 .checkNameAvailability(SA_NAME);
-        Assert.assertTrue(result.isAvailable());
+        Assert.assertEquals(CheckNameAvailabilityResult.AVAILABLE, result);
         // Create
         StorageAccount storageAccount = storageManager.storageAccounts()
                 .define(SA_NAME)
