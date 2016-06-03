@@ -99,7 +99,7 @@ public interface GenericResource extends
         /**
          * Specifies the parent resource.
          *
-         * @param parentResourceId the UUID of the parent resource
+         * @param parentResourceId the parent resource id
          * @return the next stage of the generic resource definition
          */
         DefinitionWithPlan withParentResource(String parentResourceId); // ParentResource is optional so user can navigate to DefinitionWithPlan with or without it.
