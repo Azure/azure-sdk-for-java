@@ -8,6 +8,7 @@ package com.microsoft.azure.management.storage;
 
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.storage.implementation.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.storage.implementation.api.AccountType;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -33,6 +34,10 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
 
     @Test
     public void canCRUDStorageAccount() throws Exception {
+        // Name available
+        CheckNameAvailabilityResult result = storageManager.storageAccounts()
+                .checkNameAvailability(SA_NAME);
+        Assert.assertEquals(CheckNameAvailabilityResult.AVAILABLE, result);
         // Create
         StorageAccount storageAccount = storageManager.storageAccounts()
                 .define(SA_NAME)
@@ -45,8 +50,7 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
         // List
         List<StorageAccount> accounts = storageManager.storageAccounts().list(RG_NAME);
         boolean found = false;
-        for (StorageAccount account :
-                accounts) {
+        for (StorageAccount account : accounts) {
             if (account.name().equals(SA_NAME)) {
                 found = true;
             }

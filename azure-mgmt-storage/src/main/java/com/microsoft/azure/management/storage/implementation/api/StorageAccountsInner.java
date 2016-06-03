@@ -122,7 +122,7 @@ public final class StorageAccountsInner {
         final String type = null;
         StorageAccountCheckNameAvailabilityParameters accountName = new StorageAccountCheckNameAvailabilityParameters();
         accountName.setName(name);
-        accountName = null;
+        accountName.setType(type);
         Call<ResponseBody> call = service.checkNameAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), accountName, this.client.userAgent());
         return checkNameAvailabilityDelegate(call.execute());
     }
@@ -154,7 +154,7 @@ public final class StorageAccountsInner {
         final String type = null;
         StorageAccountCheckNameAvailabilityParameters accountName = new StorageAccountCheckNameAvailabilityParameters();
         accountName.setName(name);
-        accountName = null;
+        accountName.setType(type);
         Call<ResponseBody> call = service.checkNameAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), accountName, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CheckNameAvailabilityResultInner>(serviceCallback) {
