@@ -22,6 +22,7 @@ public abstract class GroupableResourceImpl<
         	GroupableResource {
 
     private ResourceGroups resourceGroups;
+    protected ResourceGroup.DefinitionCreatable newGroup;
     private String groupName;
 
     protected GroupableResourceImpl(String key, InnerModelT innerObject, ResourceGroups resourceGroups) {
@@ -63,6 +64,7 @@ public abstract class GroupableResourceImpl<
     @SuppressWarnings("unchecked")
     public final FluentModelImplT withNewGroup(ResourceGroup.DefinitionCreatable creatable) {
         this.groupName = creatable.key();
+        this.newGroup = creatable;
         addCreatableDependency(creatable);
         return (FluentModelImplT) this;
     }

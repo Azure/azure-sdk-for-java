@@ -51,7 +51,7 @@ public class AzureTests {
     public void setup() throws Exception {
         // Authenticate based on credentials instance
         Azure.Authenticated azureAuthed = Azure.configure()
-                .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
+                .withLogLevel(Level.BODY)
                 .withUserAgent("AzureTests")
                 .authenticate(credentials);
 
@@ -85,6 +85,14 @@ public class AzureTests {
      */
     @Test public void testNetworks() throws Exception {
         new TestNetwork().runTest(azure2.networks(), azure2);
+    }
+
+    /**
+     * Tests the network interface implementation
+     * @throws Exception
+     */
+    @Test public void testNetworkInterface() throws Exception {
+        new TestNetworkInterface().runTest(azure.networkInterfaces(), azure);
     }
 
     @Test public void testVirtualMachines() throws Exception {

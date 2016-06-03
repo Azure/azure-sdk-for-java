@@ -64,7 +64,7 @@ public abstract class ResourceImpl<
 
     @Override
     public String name() {
-        if(this.inner().name()==null) {
+        if(this.inner().name() == null) {
             return this.key(); // Not yet created, so use the key
         } else {
             return this.inner().name();
@@ -105,5 +105,12 @@ public abstract class ResourceImpl<
 
     public final FluentModelImplT withRegion(Region region) {
         return this.withRegion(region.toString());
+    }
+
+    /**
+     * @return <tt>true</tt> if currently in define..create mode
+     */
+    protected boolean isInCreateMode() {
+        return this.inner().id() == null;
     }
 }
