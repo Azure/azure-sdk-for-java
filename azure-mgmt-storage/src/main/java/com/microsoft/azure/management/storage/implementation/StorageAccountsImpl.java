@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.storage.implementation;
 
 import com.microsoft.azure.CloudException;
@@ -7,16 +13,20 @@ import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.api.PageImpl;
-import com.microsoft.azure.management.storage.StorageAccounts;
-import com.microsoft.azure.management.storage.implementation.api.StorageAccountsInner;
 import com.microsoft.azure.management.storage.StorageAccount;
+import com.microsoft.azure.management.storage.StorageAccounts;
+import com.microsoft.azure.management.storage.implementation.api.CheckNameAvailabilityResultInner;
 import com.microsoft.azure.management.storage.implementation.api.StorageAccountInner;
+import com.microsoft.azure.management.storage.implementation.api.StorageAccountsInner;
 import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * The implementation of StorageAccounts and its parent interfaces.
+ */
 class StorageAccountsImpl
         implements StorageAccounts {
     private final StorageAccountsInner client;
@@ -32,6 +42,19 @@ class StorageAccountsImpl
                 return createFluentModel(storageAccountInner);
             }
         };
+    }
+
+    @Override
+    public CheckNameAvailabilityResult checkNameAvailability(String name) throws CloudException, IOException {
+        CheckNameAvailabilityResultInner inner = client.checkNameAvailability(name, "Microsoft.Storage/storageAccounts").getBody();
+        CheckNameAvailabilityResult result;
+        if (inner.nameAvailable()) {
+            result = CheckNameAvailabilityResult.AVAILABLE;
+        } else {
+            result = CheckNameAvailabilityResult.UNAVAILABLE;
+            result = result.withReason(inner.reason()).withMessage(inner.message());
+        }
+        return result;
     }
 
     @Override
@@ -78,8 +101,6 @@ class StorageAccountsImpl
             }
         };
     }
-
-    /** Fluent model create helpers **/
 
     private StorageAccountImpl createFluentModel(String name) {
         StorageAccountInner storageAccountInner = new StorageAccountInner();

@@ -1,84 +1,68 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.storage;
 
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.storage.implementation.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.storage.implementation.api.AccountType;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.List;
+
 public class StorageAccountOperationsTests extends StorageManagementTestBase {
-    private static final String RG_NAME = "javacsmrg";
-    private static final String RG_NAME_2 = "javacsmrg2";
-    private static final String SA_NAME = "javacsmsa6";
+    private static final String RG_NAME = "javacsmrg7";
+    private static final String SA_NAME = "javacsmsa2";
     private static ResourceGroup resourceGroup;
 
     @BeforeClass
     public static void setup() throws Exception {
         createClients();
-        resourceGroup = resourceManager.resourceGroups().define(RG_NAME)
-                .withRegion(Region.US_SOUTH_CENTRAL)
-                .create();
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
         resourceManager.resourceGroups().delete(RG_NAME);
-        resourceManager.resourceGroups().delete(RG_NAME_2);
     }
 
     @Test
-    public void getStorageAccountFromResource() throws Exception {
-        StorageAccount storageAccount2 = storageManager.storageAccounts()
-                .define(SA_NAME + "6")
-                .withRegion(Region.ASIA_EAST)
-                .withNewGroup(RG_NAME_2)
-                .withAccountType(AccountType.PREMIUM_LRS)
-                .create();
-
-        Assert.assertEquals(RG_NAME_2, storageAccount2.resourceGroupName());
-    }
-
-    @Test
-    public void canCreateStorageAccount() throws Exception {
+    public void canCRUDStorageAccount() throws Exception {
+        // Name available
+        CheckNameAvailabilityResult result = storageManager.storageAccounts()
+                .checkNameAvailability(SA_NAME);
+        Assert.assertEquals(CheckNameAvailabilityResult.AVAILABLE, result);
         // Create
-        // TODO use fluent style
-        /**
-        String accountName = "javasto";
-        StorageAccountCreateParameters parameters = new StorageAccountCreateParameters();
-        parameters.setLocation(location);
-        parameters.setAccountType(AccountType.STANDARD_LRS);
-        parameters.setTags(new HashMap<String, String>());
-        parameters.getTags().put("department", "finance");
-        parameters.getTags().put("tagname", "tagvalue");
-        StorageAccount storageAccount = storageManagementClient.storageAccounts().create(rgName, accountName, parameters).getBody();
-        Assert.assertEquals(location, storageAccount.getLocation());
-        Assert.assertEquals(AccountType.STANDARD_LRS, storageAccount.getAccountType());
-        Assert.assertEquals(2, storageAccount.getTags().size());
+        StorageAccount storageAccount = storageManager.storageAccounts()
+                .define(SA_NAME)
+                .withRegion(Region.ASIA_EAST)
+                .withNewGroup(RG_NAME)
+                .withAccountType(AccountType.STANDARD_LRS)
+                .create();
+        Assert.assertEquals(RG_NAME, storageAccount.resourceGroupName());
+        Assert.assertEquals(AccountType.STANDARD_LRS, storageAccount.accountType());
         // List
-        List<StorageAccount> listResult = storageManagementClient.storageAccounts().list().getBody();
-        StorageAccount storageResult = null;
-        for (StorageAccount sa : listResult) {
-            if (sa.getName().equals(accountName)) {
-                storageResult = sa;
-                break;
+        List<StorageAccount> accounts = storageManager.storageAccounts().list(RG_NAME);
+        boolean found = false;
+        for (StorageAccount account : accounts) {
+            if (account.name().equals(SA_NAME)) {
+                found = true;
             }
         }
-        Assert.assertNotNull(storageResult);
-        Assert.assertEquals("finance", storageResult.getTags().get("department"));
-        Assert.assertEquals("tagvalue", storageResult.getTags().get("tagname"));
-        Assert.assertEquals(location, storageResult.getLocation());
+        Assert.assertTrue(found);
         // Get
-        StorageAccount getResult = storageManagementClient.storageAccounts().getProperties(rgName, accountName).getBody();
-        Assert.assertNotNull(getResult);
-        Assert.assertEquals("finance", getResult.getTags().get("department"));
-        Assert.assertEquals("tagvalue", getResult.getTags().get("tagname"));
-        Assert.assertEquals(location, getResult.getLocation());
-        // Delete
-        storageManagementClient.storageAccounts().delete(rgName, accountName);
-        CheckNameAvailabilityResult availabilityResult = storageManagementClient.storageAccounts().checkNameAvailability(accountName, "Microsoft.Storage/storageAccounts").getBody();
-        Assert.assertTrue(availabilityResult.getNameAvailable());
-        **/
+        storageAccount = storageManager.storageAccounts().get(RG_NAME, SA_NAME);
+        Assert.assertNotNull(storageAccount);
+        // Update
+        storageAccount = storageAccount.update()
+                .withAccountType(AccountType.STANDARD_GRS)
+                .apply();
+        Assert.assertEquals(AccountType.STANDARD_GRS, storageAccount.accountType());
     }
 }
