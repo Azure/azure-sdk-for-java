@@ -45,7 +45,7 @@ class StorageAccountsImpl
 
     @Override
     public CheckNameAvailabilityResult checkNameAvailability(String name) throws CloudException, IOException {
-        return new CheckNameAvailabilityResult(client.checkNameAvailability(name).getBody());
+        return new CheckNameAvailabilityResult(client.checkNameAvailability(name, "Microsoft.Storage/storageAccounts").getBody());
     }
 
     @Override
