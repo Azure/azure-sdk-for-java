@@ -12,7 +12,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.api.AccountType;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
-import okhttp3.logging.HttpLoggingInterceptor;
 import okhttp3.logging.HttpLoggingInterceptor.Level;
 import org.junit.Assert;
 import org.junit.Before;
@@ -59,8 +58,8 @@ public class AzureTests {
         azure = azureAuthed.withSubscription(subscriptionId);
 
         // Authenticate based on file
-        this.azure2 = Azure.authenticate(new File("my.azureauth"))
-                .withDefaultSubscription();
+        // this.azure2 = Azure.authenticate(new File("my.azureauth"))
+        //        .withDefaultSubscription();
     }
 
     /**

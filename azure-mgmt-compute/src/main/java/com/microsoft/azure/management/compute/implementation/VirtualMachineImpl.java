@@ -1,6 +1,6 @@
 package com.microsoft.azure.management.compute.implementation;
 
-import com.microsoft.azure.SubResource;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.VirtualMachine;
@@ -9,7 +9,6 @@ import com.microsoft.azure.management.compute.implementation.api.Plan;
 import com.microsoft.azure.management.compute.implementation.api.HardwareProfile;
 import com.microsoft.azure.management.compute.implementation.api.StorageProfile;
 import com.microsoft.azure.management.compute.implementation.api.OSProfile;
-import com.microsoft.azure.management.compute.implementation.api.NetworkProfile;
 import com.microsoft.azure.management.compute.implementation.api.DiagnosticsProfile;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineInstanceView;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineExtensionInner;
@@ -30,17 +29,19 @@ import com.microsoft.azure.management.compute.implementation.api.WinRMConfigurat
 import com.microsoft.azure.management.compute.implementation.api.SshConfiguration;
 import com.microsoft.azure.management.compute.implementation.api.SshPublicKey;
 import com.microsoft.azure.management.compute.implementation.api.NetworkInterfaceReference;
-import com.microsoft.azure.management.network.Network;
+import com.microsoft.azure.management.network.NetworkInterface;
+import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
+import com.microsoft.azure.management.storage.implementation.api.AccountType;
 import com.microsoft.rest.ServiceResponse;
-import com.microsoft.azure.management.network.implementation.api.SubnetInner;
-import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceInner;
-import com.microsoft.azure.management.network.implementation.api.NetworkInterfacesInner;
-import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceIPConfiguration;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -67,100 +68,97 @@ class VirtualMachineImpl
             VirtualMachine.ConfigureNewDataDiskWithStoreAt,
             VirtualMachine.ConfigureNewDataDisk,
             VirtualMachine.ConfigureExistingDataDisk {
+    // Clients
     private final VirtualMachinesInner client;
     private final AvailabilitySets availabilitySets;
-    private final NetworkInterfacesInner networkInterfaces;
-    private final ResourceManager resourceManager;
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
-
-    private String storageAccountName;
-    private String availabilitySetName;
-    private String primaryNetworkInterfaceName;
+    // the name of the virtual machine
+    private final String vmName;
+    // used to generate unique name for any dependency resources
+    private final String randomId;
+    // unique key of a creatable storage account to be used for virtual machine child resources that
+    // requires storage [OS disk, data disk etc..]
+    private String creatableStorageAccountKey;
+    // unique key of a creatable availability set that this virtual machine to put
+    private String creatableAvailabilitySetKey;
+    // unique key of a creatable network interface that needs to be used as virtual machine's primary network interface
+    private String creatableNetworkInterfaceKey;
+    // reference to an existing storage account to be used for virtual machine child resources that
+    // requires storage [OS disk, data disk etc..]
+    private StorageAccount existingStorageAccountToAssociate;
+    // reference to an existing availability set that this virtual machine to put
+    private AvailabilitySet existingAvailabilitySetToAssociate;
+    // reference to an existing network interface that needs to be used as virtual machine's primary network interface
+    private NetworkInterface existingNetworkInterfaceToAssociate;
 
     VirtualMachineImpl(String name,
                        VirtualMachineInner innerModel,
                        VirtualMachinesInner client,
-                       NetworkInterfacesInner networkInterfaces, // TODO this will be removed once we have NetworkInterfaces entry point available in NetworkManager
                        AvailabilitySets availabilitySets,
                        final ResourceManager resourceManager,
                        final StorageManager storageManager,
                        final NetworkManager networkManager) {
         super(name, innerModel, resourceManager.resourceGroups());
         this.client = client;
-        this.networkInterfaces = networkInterfaces;
         this.availabilitySets = availabilitySets;
-        this.resourceManager = resourceManager;
         this.storageManager = storageManager;
         this.networkManager = networkManager;
-        initialize(name);
+        this.vmName = name;
+        this.randomId = Utils.randomId(this.vmName);
     }
 
-    @Override
-    public Plan plan() {
-        return inner().plan();
-    }
-
-    @Override
-    public HardwareProfile hardwareProfile() {
-        return inner().hardwareProfile();
-    }
-
-    @Override
-    public StorageProfile storageProfile() {
-        return inner().storageProfile();
-    }
-
-    @Override
-    public OSProfile osProfile() {
-        return inner().osProfile();
-    }
-
-    @Override
-    public NetworkProfile networkProfile() {
-        return inner().networkProfile();
-    }
-
-    @Override
-    public DiagnosticsProfile diagnosticsProfile() {
-        return inner().diagnosticsProfile();
-    }
-
-    @Override
-    public SubResource availabilitySet() {
-        return inner().availabilitySet();
-    }
-
-    @Override
-    public String provisioningState() {
-        return inner().provisioningState();
-    }
-
-    @Override
-    public VirtualMachineInstanceView instanceView() {
-        return inner().instanceView();
-    }
-
-    @Override
-    public String licenseType() {
-        return inner().licenseType();
-    }
-
-    @Override
-    public List<VirtualMachineExtensionInner> resources() {
-        return inner().resources();
-    }
+    /**************************************************.
+     * Verbs
+     **************************************************/
 
     @Override
     public VirtualMachine refresh() throws Exception {
+        ServiceResponse<VirtualMachineInner> response =
+                this.client.get(this.resourceGroupName(), this.name());
+        this.setInner(response.getBody());
+        return this;
+    }
+
+    @Override
+    public VirtualMachine create() throws Exception {
+        super.creatablesCreate();
+        return this;
+    }
+
+    /**************************************************.
+     * Setters
+     **************************************************/
+
+    // Virtual machine network interface specific fluent methods
+    //
+
+    @Override
+    public DefinitionWithOS withNewPrimaryNetworkInterface(NetworkInterface.DefinitionCreatable creatable) {
+        this.creatableNetworkInterfaceKey = creatable.key();
+        this.addCreatableDependency(creatable);
         return this;
     }
 
     @Override
     public DefinitionWithOS withNewPrimaryNetworkInterface(String name) {
-        this.primaryNetworkInterfaceName = name;
+        return withNewPrimaryNetworkInterface(prepareNetworkInterface(name));
+    }
+
+    public DefinitionWithOS withNewPrimaryNetworkInterface(String name, String publicDnsNameLabel) {
+        NetworkInterface.DefinitionCreatable definitionCreatable = prepareNetworkInterface(name)
+                .withNewPublicIpAddress(publicDnsNameLabel);
+        return withNewPrimaryNetworkInterface(definitionCreatable);
+    }
+
+    @Override
+    public DefinitionWithOS withExistingPrimaryNetworkInterface(NetworkInterface networkInterface) {
+        this.existingNetworkInterfaceToAssociate = networkInterface;
         return this;
     }
+
+    // Virtual machine image specific fluent methods
+    //
 
     @Override
     public DefinitionWithMarketplaceImage withMarketplaceImage() {
@@ -208,6 +206,9 @@ class VirtualMachineImpl
         return version(knownImage.imageReference());
     }
 
+    // Virtual machine operating system type fluent methods
+    //
+
     @Override
     public DefinitionWithRootUserName withLinuxOS() {
         OSDisk osDisk = this.inner().storageProfile().osDisk();
@@ -233,6 +234,9 @@ class VirtualMachineImpl
         return this;
     }
 
+    // Virtual machine user name fluent methods
+    //
+
     @Override
     public DefinitionLinuxCreatable withRootUserName(String rootUserName) {
         this.inner().osProfile().setAdminUsername(rootUserName);
@@ -244,6 +248,9 @@ class VirtualMachineImpl
         this.inner().osProfile().setAdminUsername(adminUserName);
         return this;
     }
+
+    // Virtual machine optional fluent methods
+    //
 
     @Override
     public DefinitionLinuxCreatable withSsh(String publicKeyData) {
@@ -320,7 +327,7 @@ class VirtualMachineImpl
     @Override
     public DefinitionCreatable withOSDiskVhdLocation(String containerName, String vhdName) {
         VirtualHardDisk osVhd = new VirtualHardDisk();
-        osVhd.setUri(blobUrl(this.storageAccountName, containerName, vhdName));
+        osVhd.setUri(temporaryBlobUrl(containerName, vhdName));
         this.inner().storageProfile().osDisk().setVhd(osVhd);
         return this;
     }
@@ -343,7 +350,7 @@ class VirtualMachineImpl
         return this;
     }
 
-    // Virtual machine data disk fluent methods
+    // Virtual machine optional data disk fluent methods
     //
 
     @Override
@@ -369,7 +376,8 @@ class VirtualMachineImpl
     public ConfigureDataDisk<DefinitionCreatable> storeAt(String storageAccountName, String containerName, String vhdName) {
         DataDisk dataDisk = currentDataDisk();
         dataDisk.setVhd(new VirtualHardDisk());
-        dataDisk.vhd().setUri(blobUrl(storageAccountName, containerName, vhdName)); // URL points to where the new data disk needs to be stored.
+        // URL points to where the new data disk needs to be stored
+        dataDisk.vhd().setUri(blobUrl(storageAccountName, containerName, vhdName));
         return this;
     }
 
@@ -384,7 +392,8 @@ class VirtualMachineImpl
     public ConfigureDataDisk<DefinitionCreatable> from(String storageAccountName, String containerName, String vhdName) {
         DataDisk dataDisk = currentDataDisk();
         dataDisk.setVhd(new VirtualHardDisk());
-        dataDisk.vhd().setUri(blobUrl(storageAccountName, containerName, vhdName)); // URL points to an existing data disk to be attached.
+        //URL points to an existing data disk to be attached
+        dataDisk.vhd().setUri(blobUrl(storageAccountName, containerName, vhdName));
         return this;
     }
 
@@ -422,31 +431,52 @@ class VirtualMachineImpl
         return this;
     }
 
-    // Virtual machine storage account fluent methods
+    // Virtual machine optional storage account fluent methods
     //
-
-    @Override
-    public DefinitionCreatable withNewStorageAccount(String name) {
-        return withNewStorageAccount(storageManager.storageAccounts().define(name)
-                .withRegion(region())
-                .withExistingGroup(this.resourceGroupName()));
-    }
 
     @Override
     public DefinitionCreatable withNewStorageAccount(StorageAccount.DefinitionCreatable creatable) {
-        this.storageAccountName = creatable.key();
-        this.addCreatableDependency(creatable);
+        // This method's effect is NOT additive.
+        if (this.creatableStorageAccountKey == null) {
+            this.creatableStorageAccountKey = creatable.key();
+            this.addCreatableDependency(creatable);
+        }
         return this;
     }
 
     @Override
-    public DefinitionCreatable withExistingStorageAccount(String name) {
-        this.storageAccountName = name;
+    public DefinitionCreatable withNewStorageAccount(String name) {
+        StorageAccount.DefinitionWithGroup definitionWithGroup = this.storageManager
+                .storageAccounts()
+                .define(name)
+                .withRegion(this.region());
+        StorageAccount.DefinitionCreatable definitionAfterGroup;
+        if (this.newGroup != null) {
+            definitionAfterGroup = definitionWithGroup.withNewGroup(this.newGroup);
+        } else {
+            definitionAfterGroup = definitionWithGroup.withExistingGroup(this.resourceGroupName());
+        }
+        return withNewStorageAccount(definitionAfterGroup.withAccountType(AccountType.STANDARD_GRS));
+    }
+
+    @Override
+    public DefinitionCreatable withExistingStorageAccount(StorageAccount storageAccount) {
+        this.existingStorageAccountToAssociate = storageAccount;
         return this;
     }
 
-    // Virtual machine availability set fluent methods
+    // Virtual machine optional availability set fluent methods
     //
+
+    @Override
+    public DefinitionCreatable withNewAvailabilitySet(AvailabilitySet.DefinitionCreatable creatable) {
+        // This method's effect is NOT additive.
+        if (this.creatableAvailabilitySetKey == null) {
+            this.creatableAvailabilitySetKey = creatable.key();
+            this.addCreatableDependency(creatable);
+        }
+        return this;
+    }
 
     @Override
     public DefinitionCreatable withNewAvailabilitySet(String name) {
@@ -457,43 +487,171 @@ class VirtualMachineImpl
     }
 
     @Override
-    public DefinitionCreatable withNewAvailabilitySet(AvailabilitySet.DefinitionCreatable creatable) {
-        this.availabilitySetName = creatable.key();
-        this.addCreatableDependency(creatable);
+    public DefinitionCreatable withExistingAvailabilitySet(AvailabilitySet availabilitySet) {
+        this.existingAvailabilitySetToAssociate = availabilitySet;
         return this;
     }
 
+    /**************************************************.
+     * Getters
+     **************************************************/
+
     @Override
-    public DefinitionCreatable withExistingAvailabilitySet(String name) {
-        this.availabilitySetName = name;
-        return this;
+    public String computerName() {
+        return inner().osProfile().computerName();
     }
 
     @Override
-    public VirtualMachine create() throws Exception {
-        if (requiresImplicitStorageAccountCreation()) {
-            withNewStorageAccount(this.key() + UUID.randomUUID().toString());
+    public String size() {
+        return inner().hardwareProfile().vmSize();
+    }
+
+    @Override
+    public OperatingSystemTypes osType() {
+        return inner().storageProfile().osDisk().osType();
+    }
+
+    @Override
+    public String osDiskVhdUri() {
+        return inner().storageProfile().osDisk().vhd().uri();
+    }
+
+    @Override
+    public CachingTypes osDiskCachingType() {
+        return inner().storageProfile().osDisk().caching();
+    }
+
+    @Override
+    public Integer osDiskSize() {
+        return inner().storageProfile().osDisk().diskSizeGB();
+    }
+
+    @Override
+    public List<DataDisk> dataDisks() {
+        return inner().storageProfile().dataDisks();
+    }
+
+    @Override
+    public NetworkInterface primaryNetworkInterface() throws CloudException, IOException {
+        String primaryNicId = primaryNetworkInterfaceId();
+        return this.networkManager.networkInterfaces()
+                .get(ResourceUtils.groupFromResourceId(primaryNicId), ResourceUtils.nameFromResourceId(primaryNicId));
+    }
+
+    @Override
+    public PublicIpAddress primaryPublicIpAddress()  throws CloudException, IOException {
+        return this.primaryNetworkInterface().publicIpAddress();
+    }
+
+    @Override
+    public List<String> networkInterfaceIds() {
+        List nicIds = new ArrayList();
+        for (NetworkInterfaceReference nicRef : inner().networkProfile().networkInterfaces()) {
+            nicIds.add(nicRef.id());
         }
-
-        super.creatablesCreate();
-        return this;
+        return nicIds;
     }
 
-    // helper methods to set various virtual machine's default properties
-    //
+    @Override
+    public String primaryNetworkInterfaceId() {
+        for (NetworkInterfaceReference nicRef : inner().networkProfile().networkInterfaces()) {
+            if (nicRef.primary() != null && nicRef.primary()) {
+                return nicRef.id();
+            }
+        }
+        return null;
+    }
 
-    private void setDefaults() {
+    @Override
+    public String availabilitySetId() {
+        if (inner().availabilitySet() != null) {
+            return inner().availabilitySet().id();
+        }
+        return null;
+    }
+
+    @Override
+    public String provisioningState() {
+        return inner().provisioningState();
+    }
+
+    @Override
+    public VirtualMachineInstanceView instanceView() {
+        return inner().instanceView();
+    }
+
+    @Override
+    public String licenseType() {
+        return inner().licenseType();
+    }
+
+    @Override
+    public List<VirtualMachineExtensionInner> resources() {
+        return inner().resources();
+    }
+
+    @Override
+    public Plan plan() {
+        return inner().plan();
+    }
+
+    @Override
+    public StorageProfile storageProfile() {
+        return inner().storageProfile();
+    }
+
+    @Override
+    public OSProfile osProfile() {
+        return inner().osProfile();
+    }
+
+    @Override
+    public DiagnosticsProfile diagnosticsProfile() {
+        return inner().diagnosticsProfile();
+    }
+
+
+    /**************************************************.
+     * CreatableImpl::createResource
+     **************************************************/
+
+    @Override
+    protected void createResource() throws Exception {
+        if (isInCreateMode()) {
             setOSDiskAndOSProfileDefaults();
             setHardwareProfileDefaults();
-            setDataDisksDefaults();
+        }
+        setDataDisksDefaults();
+        handleStorageSettings();
+        handleNetworkSettings();
+        handleAvailabilitySettings();
+
+        ServiceResponse<VirtualMachineInner> serviceResponse = this.client.createOrUpdate(this.resourceGroupName(), this.vmName, this.inner());
+        this.setInner(serviceResponse.getBody());
+    }
+
+    /**************************************************.
+     * Helper methods
+     **************************************************/
+
+    /**
+     * @param prefix the prefix
+     * @return a random value (derived from the resource and resource group name) with the given prefix
+     */
+    private String nameWithPrefix(String prefix) {
+        return prefix + "-" + this.randomId + "-" + this.resourceGroupName();
     }
 
     private void setOSDiskAndOSProfileDefaults() {
+        if (!isInCreateMode()) {
+            return;
+        }
+
         OSDisk osDisk = this.inner().storageProfile().osDisk();
-        if (!isOSDiskAttached(osDisk)) {
+        if (isOSDiskFromImage(osDisk)) {
             if (osDisk.vhd() == null) {
                 // Sets the OS disk VHD for "UserImage" and "VM(Platform)Image"
-                withOSDiskVhdLocation("vhds", this.key() + "-os-disk-" + UUID.randomUUID().toString() + ".vhd");
+                withOSDiskVhdLocation("vhds", this.vmName + "-os-disk-" + UUID.randomUUID().toString() + ".vhd");
             }
             OSProfile osProfile = this.inner().osProfile();
             if (osDisk.osType() == OperatingSystemTypes.LINUX) {
@@ -509,11 +667,15 @@ class VirtualMachineImpl
         }
 
         if (osDisk.name() == null) {
-            withOSDiskName(this.key() + "-os-disk");
+            withOSDiskName(this.vmName + "-os-disk");
         }
     }
 
     private void setHardwareProfileDefaults() {
+        if (!isInCreateMode()) {
+            return;
+        }
+
         HardwareProfile hardwareProfile = this.inner().hardwareProfile();
         if (hardwareProfile.vmSize() == null) {
             hardwareProfile.setVmSize(VirtualMachineSizeTypes.BASIC_A0);
@@ -546,13 +708,13 @@ class VirtualMachineImpl
 
             if (dataDisk.vhd() == null) {
                 VirtualHardDisk diskVhd = new VirtualHardDisk();
-                diskVhd.setUri(blobUrl(this.storageAccountName, "vhds",
-                        this.key() + "-data-disk-" + dataDisk.lun() + "-" + UUID.randomUUID().toString() + ".vhd"));
+                diskVhd.setUri(temporaryBlobUrl("vhds",
+                        this.vmName + "-data-disk-" + dataDisk.lun() + "-" + UUID.randomUUID().toString() + ".vhd"));
                 dataDisk.setVhd(diskVhd);
             }
 
             if (dataDisk.name() == null) {
-                dataDisk.setName(this.key() + "-data-disk-" + dataDisk.lun());
+                dataDisk.setName(this.vmName + "-data-disk-" + dataDisk.lun());
             }
 
             if (dataDisk.caching() == null) {
@@ -561,8 +723,77 @@ class VirtualMachineImpl
         }
     }
 
-    // Helper methods
-    //
+    private void handleStorageSettings() throws Exception {
+        StorageAccount storageAccount = null;
+        if (this.creatableStorageAccountKey != null) {
+            storageAccount = (StorageAccount) this.createdResource(this.creatableStorageAccountKey);
+        } else if (this.existingStorageAccountToAssociate != null) {
+            storageAccount = this.existingStorageAccountToAssociate;
+        } else if (requiresImplicitStorageAccountCreation()) {
+            storageAccount = this.storageManager.storageAccounts()
+                    .define(nameWithPrefix("stg"))
+                    .withRegion(this.region())
+                    .withExistingGroup(this.resourceGroupName())
+                    .create();
+        }
+
+        if (storageAccount != null) {
+            replaceTemporaryBlobUrls(storageAccount);
+        }
+    }
+
+    private void handleNetworkSettings() {
+        if (isInCreateMode()) {
+            NetworkInterface networkInterface = null;
+            if (this.creatableNetworkInterfaceKey != null) {
+                networkInterface = (NetworkInterface) this.createdResource(this.creatableNetworkInterfaceKey);
+            } else if (this.existingNetworkInterfaceToAssociate != null) {
+                networkInterface = this.existingNetworkInterfaceToAssociate;
+            }
+
+            if (networkInterface != null) {
+                NetworkInterfaceReference nicReference = new NetworkInterfaceReference();
+                nicReference.setPrimary(true);
+                nicReference.setId(networkInterface.id());
+                this.inner().networkProfile().networkInterfaces().add(nicReference);
+            }
+        }
+    }
+
+    private void handleAvailabilitySettings() {
+        if (!isInCreateMode()) {
+            return;
+        }
+
+        AvailabilitySet availabilitySet = null;
+        if (this.creatableAvailabilitySetKey != null) {
+            availabilitySet = (AvailabilitySet) this.createdResource(this.creatableAvailabilitySetKey);
+        } else if (this.existingAvailabilitySetToAssociate != null) {
+            availabilitySet = this.existingAvailabilitySetToAssociate;
+        }
+
+        if (availabilitySet != null) {
+            this.inner().availabilitySet().setId(availabilitySet.id());
+        }
+    }
+
+    private boolean requiresImplicitStorageAccountCreation() {
+        if (this.creatableStorageAccountKey == null && this.existingStorageAccountToAssociate == null) {
+            if (this.isInCreateMode()) {
+                if (isOSDiskFromImage(this.inner().storageProfile().osDisk())) {
+                    return true;
+                }
+            }
+            for (DataDisk dataDisk : this.inner().storageProfile().dataDisks()) {
+                if (dataDisk.createOption() != DiskCreateOptionTypes.ATTACH) {
+                    if (isTemporaryBlobUrl(dataDisk.vhd().uri())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
     private boolean isStoredImage(OSDisk osDisk) {
         return osDisk.image() != null;
@@ -570,6 +801,43 @@ class VirtualMachineImpl
 
     private boolean isOSDiskAttached(OSDisk osDisk) {
         return osDisk.createOption() == DiskCreateOptionTypes.ATTACH;
+    }
+
+    private boolean isOSDiskFromImage(OSDisk osDisk) {
+        return !isOSDiskAttached(osDisk);
+    }
+
+    private String blobUrl(String storageAccountName, String containerName, String blobName) {
+        return  "https://" + storageAccountName + ".blob.core.windows.net" + "/" + containerName + "/" + blobName;
+    }
+
+    private String temporaryBlobUrl(String containerName, String blobName) {
+        return "{storage-base-url}" + "/" + containerName + "/" + blobName;
+    }
+
+    private boolean isTemporaryBlobUrl(String blobUrl) {
+        return blobUrl.startsWith("{storage-base-url}");
+    }
+
+    private void replaceTemporaryBlobUrls(StorageAccount storageAccount) {
+        if (this.isInCreateMode()) {
+            if (isOSDiskFromImage(this.inner().storageProfile().osDisk())) {
+                String uri = this.inner()
+                        .storageProfile()
+                        .osDisk().vhd().uri()
+                        .replaceFirst("\\{storage-base-url}", storageAccount.endPoints().primary().blob());
+                this.inner().storageProfile().osDisk().vhd().setUri(uri);
+            }
+        }
+        for (DataDisk dataDisk : this.inner().storageProfile().dataDisks()) {
+            if (dataDisk.createOption() != DiskCreateOptionTypes.ATTACH) {
+                if (isTemporaryBlobUrl(dataDisk.vhd().uri())) {
+                    String uri = dataDisk.vhd().uri()
+                            .replaceFirst("\\{storage-base-url}", storageAccount.endPoints().primary().blob());
+                    dataDisk.vhd().setUri(uri);
+                }
+            }
+        }
     }
 
     private DataDisk prepareNewDataDisk() {
@@ -584,96 +852,19 @@ class VirtualMachineImpl
         return dataDisks.get(dataDisks.size() - 1);
     }
 
-    private String blobUrl(String storageAccountName, String containerName, String blobName) {
-        return  "https://" + storageAccountName + ".blob.core.windows.net" + "/" + containerName + "/" + blobName;
-    }
-
-    private boolean requiresImplicitStorageAccountCreation() {
-        if (this.storageAccountName == null) {
-            if (!isOSDiskAttached(this.inner().storageProfile().osDisk())) {
-                return true;
-            }
-
-            for (DataDisk dataDisk : this.inner().storageProfile().dataDisks()) {
-                if (dataDisk.createOption() != DiskCreateOptionTypes.ATTACH) {
-                    return true;
-                }
-            }
+    private NetworkInterface.DefinitionWithPublicIpAddress prepareNetworkInterface(String name) {
+        NetworkInterface.DefinitionWithGroup definitionWithGroup = this.networkManager
+                .networkInterfaces()
+                .define(name)
+                .withRegion(this.region());
+        NetworkInterface.DefinitionWithNetwork definitionWithNetwork;
+        if (this.newGroup != null) {
+            definitionWithNetwork = definitionWithGroup.withNewGroup(this.newGroup);
+        } else {
+            definitionWithNetwork = definitionWithGroup.withExistingGroup(this.resourceGroupName());
         }
-        return false;
-    }
-
-    private NetworkInterfaceReference createPrimaryNetworkInterface() {
-        /**
-        // Note: This is a temporary code Once we have the fluent model for NIC, we will be simply doing
-        //
-        Network.DefinitionCreatable networkCreatable = networkManager.networks().define("vnet1")
-                .withRegion(this.region())
-                .withExistingGroup(this.resourceGroupName());
-
-         NetworkInterface networkInterface = networkManager.networkInterfaces().define(this.primaryNetworkInterfaceName)
-           .withNewNetwork(networkCreatable)
-           .create();
-
-         return networkInterface;
-         **/
-
-        Network virtualNetwork;
-        try {
-            virtualNetwork = networkManager.networks().define("vnet1-" + this.key())
-                    .withRegion(this.region())
-                    .withExistingGroup(this.resourceGroupName())
-                    .create();
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-
-        SubnetInner subnetInner = new SubnetInner();
-        subnetInner.setId(virtualNetwork.inner().subnets().get(0).id());
-
-        NetworkInterfaceInner networkInterfaceInner = new NetworkInterfaceInner();
-        networkInterfaceInner.setLocation(this.region());
-        networkInterfaceInner.setPrimary(true);
-        NetworkInterfaceIPConfiguration nicIPConfig = new NetworkInterfaceIPConfiguration();
-        nicIPConfig.setName("Nic-IP-config");
-        nicIPConfig.setSubnet(subnetInner);
-        ArrayList<NetworkInterfaceIPConfiguration> nicIPConfigs = new ArrayList<>();
-        nicIPConfigs.add(nicIPConfig);
-        networkInterfaceInner.setIpConfigurations(nicIPConfigs);
-
-        try {
-            ServiceResponse<NetworkInterfaceInner> newNic =
-                    networkInterfaces.createOrUpdate(this.resourceGroupName(), this.primaryNetworkInterfaceName, networkInterfaceInner);
-            NetworkInterfaceReference nicReference = new NetworkInterfaceReference();
-            nicReference.setPrimary(true);
-            nicReference.setId(newNic.getBody().id());
-            return nicReference;
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
-    @Override
-    protected void createResource() throws Exception {
-        // TODO This code to create NIC will be removed once we have the fluent model for NIC in place.
-        NetworkInterfaceReference nicReference = createPrimaryNetworkInterface();
-        this.inner().networkProfile().setNetworkInterfaces(new ArrayList<NetworkInterfaceReference>());
-        this.inner().networkProfile().networkInterfaces().add(nicReference);
-
-        setDefaults();
-        ServiceResponse<VirtualMachineInner> serviceResponse = this.client.createOrUpdate(this.resourceGroupName(), this.key(), this.inner());
-        this.setInner(serviceResponse.getBody());
-    }
-
-    private void initialize(String name) {
-        if (this.inner().id() == null) {
-            this.inner().setStorageProfile(new StorageProfile());
-            this.inner().storageProfile().setOsDisk(new OSDisk());
-            this.inner().storageProfile().setDataDisks(new ArrayList<DataDisk>());
-            this.inner().setOsProfile(new OSProfile());
-            this.inner().setHardwareProfile(new HardwareProfile());
-            this.inner().setNetworkProfile(new NetworkProfile());
-            this.inner().osProfile().setComputerName(name);
-        }
+        return definitionWithNetwork
+                .withNewNetwork("vnet" + name)
+                .withPrivateIpAddressDynamic();
     }
 }

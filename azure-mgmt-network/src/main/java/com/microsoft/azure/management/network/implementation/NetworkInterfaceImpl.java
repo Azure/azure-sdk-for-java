@@ -41,6 +41,7 @@ class NetworkInterfaceImpl
     private final NetworkInterfacesInner client;
     private final Networks networks;
     private final PublicIpAddresses publicIpAddresses;
+    // the name of the network interface
     private final String nicName;
     // used to generate unique name for any dependency resources
     private final String randomId;

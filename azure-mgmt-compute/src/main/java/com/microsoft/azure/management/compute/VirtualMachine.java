@@ -1,28 +1,18 @@
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.compute.implementation.KnownVirtualMachineImage;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineInner;
-import com.microsoft.azure.management.compute.implementation.api.Plan;
-import com.microsoft.azure.management.compute.implementation.api.HardwareProfile;
-import com.microsoft.azure.management.compute.implementation.api.StorageProfile;
-import com.microsoft.azure.management.compute.implementation.api.OSProfile;
-import com.microsoft.azure.management.compute.implementation.api.NetworkProfile;
-import com.microsoft.azure.management.compute.implementation.api.DiagnosticsProfile;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineInstanceView;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineExtensionInner;
-import com.microsoft.azure.management.compute.implementation.api.OperatingSystemTypes;
-import com.microsoft.azure.management.compute.implementation.api.ImageReference;
-import com.microsoft.azure.management.compute.implementation.api.WinRMListener;
-import com.microsoft.azure.management.compute.implementation.api.CachingTypes;
-import com.microsoft.azure.management.compute.implementation.api.DiskEncryptionSettings;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeTypes;
+import com.microsoft.azure.management.compute.implementation.api.*;
+import com.microsoft.azure.management.network.NetworkInterface;
+import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.storage.StorageAccount;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -33,65 +23,81 @@ public interface VirtualMachine extends
         Refreshable<VirtualMachine>,
         Wrapper<VirtualMachineInner> {
     /**
-     * @return the plan value
+     * @return name of this virtual machine
      */
-    Plan plan();
+    String computerName();
 
     /**
-     * Returns the hardware profile of an Azure virtual machine.
+     * @return the virtual machine size
+     */
+    String size();
+
+    /**
+     * @return the operating system of this virtual machine
+     */
+    OperatingSystemTypes osType();
+
+    /**
+     * @return the uri to the vhd file backing this virtual machine's operating system disk
+     */
+    String osDiskVhdUri();
+
+    /**
+     * @return the operating system disk caching type, valid values are 'None', 'ReadOnly', 'ReadWrite'
+     */
+    CachingTypes osDiskCachingType();
+
+    /**
+     * @return the size of the operating system disk in GB
+     */
+    Integer osDiskSize();
+
+    /**
+     * @return the list of data disks attached to this virtual machine
+     */
+    List<DataDisk> dataDisks();
+
+    /**
+     * Gets the primary network interface of this virtual machine.
      * <p>
-     * Currently the profile contains only virtual machine size information.
+     * note that this method makes a rest API call to fetch the network interface
      *
-     * @return the hardwareProfile value
+     * @return the primary network interface associated with this network interface.
+     * @throws CloudException exceptions thrown from the cloud.
+     * @throws IOException exceptions thrown from serialization/deserialization.
      */
-    HardwareProfile hardwareProfile();
+    NetworkInterface primaryNetworkInterface() throws CloudException, IOException;
 
     /**
-     * Returns the storage profile of an Azure virtual machine.
+     * Gets the public IP address associated with this virtual machine's primary network interface
      * <p>
-     * The storage profile contains information such as the details of the VM image or user image
-     * from which this virtual machine is created, the Azure storage account where the operating system
-     * disk is stored, details of the data disk attached to the virtual machine.
+     * note that this method makes a rest API call to fetch the resource
      *
-     * @return the storageProfile value
+     * @return the public IP of the primary network interface
+     * @throws CloudException exceptions thrown from the cloud.
+     * @throws IOException exceptions thrown from serialization/deserialization.
      */
-    StorageProfile storageProfile();
+    PublicIpAddress primaryPublicIpAddress()  throws CloudException, IOException;
 
     /**
-     * Returns the operating system profile of an Azure virtual machine.
-     *
-     * @return the osProfile value
+     * @return the list of reference ids of the network interfaces associated with this virtual machine
      */
-    OSProfile osProfile();
+    List<String> networkInterfaceIds();
 
     /**
-     * Returns the network profile of an Azure virtual machine.
-     * <p>
-     * The network profile describes the network interfaces associated with the virtual machine.
-     *
-     * @return the networkProfile value
+     * @return the reference id of the primary network interface of this virtual machine
      */
-    NetworkProfile networkProfile();
+    String primaryNetworkInterfaceId();
 
     /**
-     * Returns the diagnostics profile of an Azure virtual machine.
-     * <p>
-     * Enabling diagnostic features in a virtual machine enable you to easily diagnose and recover
-     * virtual machine from boot failures.
-     *
-     * @return the diagnosticsProfile value
-     */
-    DiagnosticsProfile diagnosticsProfile();
-
-    /**
-     * Returns reference to the availability set an Azure virtual machine associated with.
+     * Returns id to the availability set this virtual machine associated with.
      * <p>
      * Having a set of virtual machines in an availability set ensures that during maintenance
      * event at least one virtual machine will be available.
      *
-     * @return the availabilitySet reference
+     * @return the availabilitySet reference id
      */
-    SubResource availabilitySet();
+    String availabilitySetId();
 
     /**
      * @return the provisioningState value
@@ -114,6 +120,39 @@ public interface VirtualMachine extends
     List<VirtualMachineExtensionInner> resources();
 
     /**
+     * @return the plan value
+     */
+    Plan plan();
+
+    /**
+     * Returns the storage profile of an Azure virtual machine.
+     * <p>
+     * The storage profile contains information such as the details of the VM image or user image
+     * from which this virtual machine is created, the Azure storage account where the operating system
+     * disk is stored, details of the data disk attached to the virtual machine.
+     *
+     * @return the storageProfile value
+     */
+    StorageProfile storageProfile();
+
+    /**
+     * Gets the operating system profile of an Azure virtual machine
+     *
+     * @return the osProfile value
+     */
+    OSProfile osProfile();
+
+    /**
+     * Returns the diagnostics profile of an Azure virtual machine.
+     * <p>
+     * Enabling diagnostic features in a virtual machine enable you to easily diagnose and recover
+     * virtual machine from boot failures.
+     *
+     * @return the diagnosticsProfile value
+     */
+    DiagnosticsProfile diagnosticsProfile();
+
+    /**
      * The first stage of a virtual machine definition.
      */
     interface DefinitionBlank extends GroupableResource.DefinitionWithRegion<DefinitionWithGroup> {
@@ -130,17 +169,29 @@ public interface VirtualMachine extends
      */
     interface DefinitionWithPrimaryNetworkInterface {
         /**
-         * Specifies the name of the new primary network interface for the virtual machine.
+         * Create a new network interface to associate with the virtual machine as it's primary network interface
          *
          * @param name the name for the new network interface
          * @return The next stage of the virtual machine definition
          */
         DefinitionWithOS withNewPrimaryNetworkInterface(String name);
+
         /**
-        DefinitionWithOS withNewPrimaryNetworkInterface(NetworkInterface.creatable creatable);
-        DefinitionWithOS withExistingPrimaryNetworkInterface(String name);
+         * Create a new network interface to associate the virtual machine with as it's primary network interface,
+         * based on the provided definition.
+         *
+         * @param creatable a creatable definition for a new network interface
+         * @return The next stage of the virtual machine definition
+         */
+        DefinitionWithOS withNewPrimaryNetworkInterface(NetworkInterface.DefinitionCreatable creatable);
+
+        /**
+         * Associate an existing network interface as the virtual machine with as it's primary network interface.
+         *
+         * @param networkInterface an existing network interface
+         * @return The next stage of the virtual machine definition
+         */
         DefinitionWithOS withExistingPrimaryNetworkInterface(NetworkInterface networkInterface);
-        **/
     }
 
     /**
@@ -538,15 +589,15 @@ public interface VirtualMachine extends
         T withNewAvailabilitySet(AvailabilitySet.DefinitionCreatable creatable);
 
         /**
-         * Specifies the name of an existing availability set to to associate the virtual machine with.
+         * Specifies an existing {@link AvailabilitySet} availability set to to associate the virtual machine with.
          * <p>
          * Adding virtual machines running your application to an availability set ensures that during
          * maintenance event at least one virtual machine will be available.
          *
-         * @param name the name of an existing availability set
+         * @param availabilitySet an existing availability set
          * @return the stage representing creatable VM definition
          */
-        T withExistingAvailabilitySet(String name);
+        T withExistingAvailabilitySet(AvailabilitySet availabilitySet);
     }
 
     /**
@@ -556,7 +607,7 @@ public interface VirtualMachine extends
      */
     interface DefinitionStorageAccount<T extends DefinitionCreatable> {
         /**
-         * Specifies the name of a new storage account to put the VM's OS disk VHD in.
+         * Specifies the name of a new storage account to put the VM's OS and data disk VHD in.
          * <p>
          * Only the OS disk based on marketplace image will be stored in the new storage account,
          * an OS disk based on user image will be stored in the same storage account as user image.
@@ -568,7 +619,7 @@ public interface VirtualMachine extends
 
         /**
          * Specifies definition of a not-yet-created {@link StorageAccount.DefinitionCreatable} storage account
-         * to put the VM's OS disk VHD in.
+         * to put the VM's OS and data disk VHD in.
          * <p>
          * Only the OS disk based on marketplace image will be stored in the new storage account,
          * an OS disk based on user image will be stored in the same storage account as user image.
@@ -579,15 +630,15 @@ public interface VirtualMachine extends
         T withNewStorageAccount(StorageAccount.DefinitionCreatable creatable);
 
         /**
-         * Specifies the name of an existing storage account to put the VM's OS disk in.
+         * Specifies an existing {@link StorageAccount} storage account to put the VM's OS and data disk VHD in.
          * <p>
          * An OS disk based on marketplace or user image (generalized image) will be stored in this
          * storage account.
          *
-         * @param name the name of an existing storage account
+         * @param storageAccount an existing storage account
          * @return the stage representing creatable VM definition
          */
-        T withExistingStorageAccount(String name);
+        T withExistingStorageAccount(StorageAccount storageAccount);
     }
 
     /**

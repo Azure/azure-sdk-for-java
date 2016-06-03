@@ -90,6 +90,8 @@ public interface NetworkInterface extends
 
     /**
      * Gets the virtual network associated with this network interface.
+     * <p>
+     * note that this method makes a rest API call to fetch the public IP
      *
      * @return the virtual network associated with this network interface.
      * @throws CloudException exceptions thrown from the cloud.
@@ -176,6 +178,7 @@ public interface NetworkInterface extends
         DefinitionWithPrivateIp<DefinitionWithPublicIpAddress> withNewNetwork(String addressSpace);
 
         /**
+         * Associate an existing virtual network with the network interface.
          *
          * @param network an existing virtual network
          * @return the next stage of the network interface definition

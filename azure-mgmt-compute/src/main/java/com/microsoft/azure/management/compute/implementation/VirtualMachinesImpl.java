@@ -7,10 +7,7 @@ import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSize;
 import com.microsoft.azure.management.compute.VirtualMachines;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineInner;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeInner;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizesInner;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachinesInner;
+import com.microsoft.azure.management.compute.implementation.api.*;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.network.implementation.api.NetworkInterfacesInner;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
@@ -20,6 +17,7 @@ import com.microsoft.azure.management.storage.implementation.StorageManager;
 import com.microsoft.rest.RestException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 class VirtualMachinesImpl
         implements VirtualMachines {
@@ -100,10 +98,18 @@ class VirtualMachinesImpl
     }
 
     private VirtualMachineImpl createFluentModel(String name) {
+        VirtualMachineInner inner = new VirtualMachineInner();
+        inner.setStorageProfile(new StorageProfile());
+        inner.storageProfile().setOsDisk(new OSDisk());
+        inner.storageProfile().setDataDisks(new ArrayList<DataDisk>());
+        inner.setOsProfile(new OSProfile());
+        inner.setHardwareProfile(new HardwareProfile());
+        inner.setNetworkProfile(new NetworkProfile());
+        inner.osProfile().setComputerName(name);
+
         return new VirtualMachineImpl(name,
-            new VirtualMachineInner(),
+            inner,
             this.client,
-            this.networkInterfaces, // TODO this will be removed once we have NetworkInterfaces entry point available in NetworkManager
             this.availabilitySets,
             this.resourceManager,
             this.storageManager,
@@ -114,7 +120,6 @@ class VirtualMachinesImpl
         return new VirtualMachineImpl(virtualMachineInner.name(),
                 virtualMachineInner,
                 this.client,
-                this.networkInterfaces,
                 this.availabilitySets,
                 this.resourceManager,
                 this.storageManager,
