@@ -87,10 +87,10 @@ public class CertificateOperations implements IInheritedBehaviors {
         X509Certificate cert = (X509Certificate)x509CertFact.generateCertificate(certStream);
 
         CertificateAddParameter addParam = new CertificateAddParameter();
-        addParam.setCertificateFormat(CertificateFormat.CER);
-        addParam.setThumbprintAlgorithm(SHA1_CERTIFICATE_ALGORITHM);
-        addParam.setThumbprint(getThumbPrint(cert));
-        addParam.setData(Base64.encodeBase64String(cert.getEncoded()));
+        addParam.withCertificateFormat(CertificateFormat.CER);
+        addParam.withThumbprintAlgorithm(SHA1_CERTIFICATE_ALGORITHM);
+        addParam.withThumbprint(getThumbPrint(cert));
+        addParam.withData(Base64.encodeBase64String(cert.getEncoded()));
 
         createCertificate(addParam, additionalBehaviors);
     }
@@ -99,11 +99,11 @@ public class CertificateOperations implements IInheritedBehaviors {
         // Need load cert to Keystore first
 
         CertificateAddParameter addParam = new CertificateAddParameter();
-        addParam.setCertificateFormat(CertificateFormat.PFX);
-        addParam.setThumbprintAlgorithm(SHA1_CERTIFICATE_ALGORITHM);
+        addParam.withCertificateFormat(CertificateFormat.PFX);
+        addParam.withThumbprintAlgorithm(SHA1_CERTIFICATE_ALGORITHM);
         //addParam.setThumbprint(getThumbPrint(cert));
         //addParam.setData(Base64.getEncoder().encodeToString(cert.getEncoded());
-        addParam.setPassword(password);
+        addParam.withPassword(password);
 
         createCertificate(addParam, additionalBehaviors);
     }

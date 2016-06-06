@@ -163,13 +163,12 @@ public class FileOperations implements IInheritedBehaviors {
 
         ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromTaskHeaders> response = this._parentBatchClient.getProtocolLayer().files().getNodeFilePropertiesFromTask(jobId, taskId, fileName, options);
 
-        FileProperties properties = new FileProperties();
-        properties.setContentLength(response.getHeaders().contentLength());
-        properties.setContentType(response.getHeaders().contentType());
-        properties.setCreationTime(response.getHeaders().ocpCreationTime());
-        properties.setLastModified(response.getHeaders().lastModified());
-        properties.setFileMode(response.getHeaders().ocpBatchFileMode());
-        return properties;
+        return new FileProperties()
+                .withContentLength(response.getHeaders().contentLength())
+                .withContentType(response.getHeaders().contentType())
+                .withCreationTime(response.getHeaders().ocpCreationTime())
+                .withLastModified(response.getHeaders().lastModified())
+                .withFileMode(response.getHeaders().ocpBatchFileMode());
     }
 
     public FileProperties getFilePropertiesFromComputeNode(String poolId, String nodeId, String fileName) throws BatchErrorException, IOException {
@@ -183,13 +182,12 @@ public class FileOperations implements IInheritedBehaviors {
 
         ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromComputeNodeHeaders> response = this._parentBatchClient.getProtocolLayer().files().getNodeFilePropertiesFromComputeNode(poolId, nodeId, fileName, options);
 
-        FileProperties properties = new FileProperties();
-        properties.setContentLength(response.getHeaders().contentLength());
-        properties.setContentType(response.getHeaders().contentType());
-        properties.setCreationTime(response.getHeaders().ocpCreationTime());
-        properties.setLastModified(response.getHeaders().lastModified());
-        properties.setFileMode(response.getHeaders().ocpBatchFileMode());
-        return properties;
+        return new FileProperties()
+                .withContentLength(response.getHeaders().contentLength())
+                .withContentType(response.getHeaders().contentType())
+                .withCreationTime(response.getHeaders().ocpCreationTime())
+                .withLastModified(response.getHeaders().lastModified())
+                .withFileMode(response.getHeaders().ocpBatchFileMode());
     }
 
 }
