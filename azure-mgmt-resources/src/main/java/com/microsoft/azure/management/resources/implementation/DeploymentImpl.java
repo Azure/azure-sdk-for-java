@@ -85,7 +85,7 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public String correlationid() {
+    public String correlationId() {
         if (this.inner().properties() == null) {
             return null;
         }

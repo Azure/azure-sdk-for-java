@@ -56,6 +56,6 @@ public interface GroupableResource extends Resource {
 		 * @param groupDefinition a creatable definition for a new resource group
 		 * @return the next stage of the resource definition
 		 */
-		T withNewGroup(ResourceGroup.DefinitionCreatable groupDefinition) throws Exception;
+		T withNewGroup(ResourceGroup.DefinitionCreatable groupDefinition);
 	}
 }

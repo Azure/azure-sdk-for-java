@@ -14,6 +14,7 @@ import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
+import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
@@ -273,5 +274,12 @@ public final class Azure {
      */
     public PublicIpAddresses publicIpAddresses() {
     	return this.networkManager.publicIpAddresses();
+    }
+
+    /**
+     * @return entry point to managing network interfaces
+     */
+    public NetworkInterfaces networkInterfaces() {
+        return this.networkManager.networkInterfaces();
     }
 }

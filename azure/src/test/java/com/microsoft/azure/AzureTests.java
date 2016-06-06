@@ -12,7 +12,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.api.AccountType;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
-import okhttp3.logging.HttpLoggingInterceptor;
 import okhttp3.logging.HttpLoggingInterceptor.Level;
 import org.junit.Assert;
 import org.junit.Before;
@@ -51,7 +50,7 @@ public class AzureTests {
     public void setup() throws Exception {
         // Authenticate based on credentials instance
         Azure.Authenticated azureAuthed = Azure.configure()
-                .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
+                .withLogLevel(Level.BODY)
                 .withUserAgent("AzureTests")
                 .authenticate(credentials);
 
@@ -93,6 +92,14 @@ public class AzureTests {
      */
     @Test public void testNetworks() throws Exception {
         new TestNetwork().runTest(azure2.networks(), azure2.resourceGroups());
+    }
+
+    /**
+     * Tests the network interface implementation
+     * @throws Exception
+     */
+    @Test public void testNetworkInterface() throws Exception {
+        new TestNetworkInterface().runTest(azure.networkInterfaces(), azure.resourceGroups());
     }
 
     @Test public void testVirtualMachines() throws Exception {

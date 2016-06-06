@@ -48,7 +48,7 @@ public interface Deployment extends
     /**
      * @return the correlation ID of the deployment
      */
-    String correlationid();
+    String correlationId();
 
     /**
      * @return the timestamp of the template deployment

@@ -223,4 +223,23 @@ public class Utils {
 			return null;
 		}
 	}
+
+	/**
+	 * @param prefix the prefix for the random value
+	 * @return a random value with the given prefix
+     */
+	public static String randomId(String prefix) {
+		return prefix + String.valueOf(System.currentTimeMillis() % 100000L);
+	}
+
+	/**
+	 * @param value the <tt>Boolean</tt> value
+	 * @return <tt>false</tt> if the given Boolean value is null or false else <tt>true</tt>
+     */
+	public static boolean toPrimitiveBoolean(Boolean value) {
+		if (value == null) {
+			return false;
+		}
+		return value.booleanValue();
+	}
 }

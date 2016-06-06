@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
+import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.network.implementation.api.NetworkManagementClientImpl;
@@ -26,6 +27,7 @@ public final class NetworkManager {
     private PublicIpAddresses publicIpAddresses;
     private Networks networks;
     private NetworkSecurityGroups networkSecurityGroups;
+    private NetworkInterfaces networkInterfaces;
     
     public static Configurable configure() {
         return new NetworkManager.ConfigurableImpl();
@@ -91,5 +93,20 @@ public final class NetworkManager {
     			this.resourceManager.resourceGroups());
     	}
     	return this.publicIpAddresses;
+    }
+
+    /**
+     * @return entry point to network interface management
+     */
+    public NetworkInterfaces networkInterfaces() {
+        if (networkInterfaces == null) {
+            this.networkInterfaces = new NetworkInterfacesImpl(
+                this.networkManagementClient.networkInterfaces(),
+                this.networks(),
+                this.publicIpAddresses(),
+                this.resourceManager.resourceGroups()
+            );
+        }
+        return this.networkInterfaces;
     }
  }
