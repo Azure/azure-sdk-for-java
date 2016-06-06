@@ -169,7 +169,7 @@ public final class FileSystemsInner {
         final String op = "CONCURRENTAPPEND";
         final String transferEncoding = "chunked";
         final AppendModeType appendMode = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
         Call<ResponseBody> call = service.concurrentAppend(filePath, streamContentsConverted, appendMode, op, transferEncoding, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return concurrentAppendDelegate(call.execute());
@@ -212,7 +212,7 @@ public final class FileSystemsInner {
         final String op = "CONCURRENTAPPEND";
         final String transferEncoding = "chunked";
         final AppendModeType appendMode = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
         Call<ResponseBody> call = service.concurrentAppend(filePath, streamContentsConverted, appendMode, op, transferEncoding, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
@@ -259,7 +259,7 @@ public final class FileSystemsInner {
         }
         final String op = "CONCURRENTAPPEND";
         final String transferEncoding = "chunked";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
         Call<ResponseBody> call = service.concurrentAppend(filePath, streamContentsConverted, appendMode, op, transferEncoding, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return concurrentAppendDelegate(call.execute());
@@ -302,7 +302,7 @@ public final class FileSystemsInner {
         }
         final String op = "CONCURRENTAPPEND";
         final String transferEncoding = "chunked";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
         Call<ResponseBody> call = service.concurrentAppend(filePath, streamContentsConverted, appendMode, op, transferEncoding, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
@@ -351,7 +351,7 @@ public final class FileSystemsInner {
         }
         final String op = "CHECKACCESS";
         final String fsaction = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.checkAccess(path, fsaction, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return checkAccessDelegate(call.execute());
     }
@@ -387,7 +387,7 @@ public final class FileSystemsInner {
         }
         final String op = "CHECKACCESS";
         final String fsaction = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.checkAccess(path, fsaction, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -428,7 +428,7 @@ public final class FileSystemsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "CHECKACCESS";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.checkAccess(path, fsaction, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return checkAccessDelegate(call.execute());
     }
@@ -464,7 +464,7 @@ public final class FileSystemsInner {
             return null;
         }
         final String op = "CHECKACCESS";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.checkAccess(path, fsaction, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -511,7 +511,7 @@ public final class FileSystemsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "MKDIRS";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.mkdirs(path, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return mkdirsDelegate(call.execute());
     }
@@ -546,7 +546,7 @@ public final class FileSystemsInner {
             return null;
         }
         final String op = "MKDIRS";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.mkdirs(path, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<FileOperationResultInner>(serviceCallback) {
@@ -598,7 +598,7 @@ public final class FileSystemsInner {
         }
         Validator.validate(sources);
         final String op = "CONCAT";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         String sourcesConverted = this.client.restClient().mapperAdapter().serializeList(sources, CollectionFormat.CSV);
         Call<ResponseBody> call = service.concat(destinationPath, sourcesConverted, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return concatDelegate(call.execute());
@@ -640,7 +640,7 @@ public final class FileSystemsInner {
         }
         Validator.validate(sources, serviceCallback);
         final String op = "CONCAT";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         String sourcesConverted = this.client.restClient().mapperAdapter().serializeList(sources, CollectionFormat.CSV);
         Call<ResponseBody> call = service.concat(destinationPath, sourcesConverted, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
@@ -693,7 +693,7 @@ public final class FileSystemsInner {
         }
         final String op = "MSCONCAT";
         final Boolean deleteSourceDirectory = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
         Call<ResponseBody> call = service.msConcat(msConcatDestinationPath, deleteSourceDirectory, streamContentsConverted, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return msConcatDelegate(call.execute());
@@ -735,7 +735,7 @@ public final class FileSystemsInner {
         }
         final String op = "MSCONCAT";
         final Boolean deleteSourceDirectory = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
         Call<ResponseBody> call = service.msConcat(msConcatDestinationPath, deleteSourceDirectory, streamContentsConverted, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
@@ -781,7 +781,7 @@ public final class FileSystemsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "MSCONCAT";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
         Call<ResponseBody> call = service.msConcat(msConcatDestinationPath, deleteSourceDirectory, streamContentsConverted, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return msConcatDelegate(call.execute());
@@ -823,7 +823,7 @@ public final class FileSystemsInner {
             return null;
         }
         final String op = "MSCONCAT";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
         Call<ResponseBody> call = service.msConcat(msConcatDestinationPath, deleteSourceDirectory, streamContentsConverted, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
@@ -874,7 +874,7 @@ public final class FileSystemsInner {
         final Integer listSize = null;
         final String listAfter = null;
         final String listBefore = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.listFileStatus(listFilePath, listSize, listAfter, listBefore, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return listFileStatusDelegate(call.execute());
     }
@@ -912,7 +912,7 @@ public final class FileSystemsInner {
         final Integer listSize = null;
         final String listAfter = null;
         final String listBefore = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.listFileStatus(listFilePath, listSize, listAfter, listBefore, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<FileStatusesResultInner>(serviceCallback) {
@@ -955,7 +955,7 @@ public final class FileSystemsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "MSLISTSTATUS";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.listFileStatus(listFilePath, listSize, listAfter, listBefore, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return listFileStatusDelegate(call.execute());
     }
@@ -993,7 +993,7 @@ public final class FileSystemsInner {
             return null;
         }
         final String op = "MSLISTSTATUS";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.listFileStatus(listFilePath, listSize, listAfter, listBefore, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<FileStatusesResultInner>(serviceCallback) {
@@ -1040,7 +1040,7 @@ public final class FileSystemsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "GETCONTENTSUMMARY";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.getContentSummary(getContentSummaryFilePath, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getContentSummaryDelegate(call.execute());
     }
@@ -1075,7 +1075,7 @@ public final class FileSystemsInner {
             return null;
         }
         final String op = "GETCONTENTSUMMARY";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.getContentSummary(getContentSummaryFilePath, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ContentSummaryResultInner>(serviceCallback) {
@@ -1122,7 +1122,7 @@ public final class FileSystemsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "GETFILESTATUS";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.getFileStatus(getFilePath, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getFileStatusDelegate(call.execute());
     }
@@ -1157,7 +1157,7 @@ public final class FileSystemsInner {
             return null;
         }
         final String op = "GETFILESTATUS";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.getFileStatus(getFilePath, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<FileStatusResultInner>(serviceCallback) {
@@ -1210,7 +1210,7 @@ public final class FileSystemsInner {
         final String op = "APPEND";
         final String append = "true";
         final String transferEncoding = "chunked";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
         Call<ResponseBody> call = service.append(directFilePath, streamContentsConverted, op, append, transferEncoding, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return appendDelegate(call.execute());
@@ -1253,7 +1253,7 @@ public final class FileSystemsInner {
         final String op = "APPEND";
         final String append = "true";
         final String transferEncoding = "chunked";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
         Call<ResponseBody> call = service.append(directFilePath, streamContentsConverted, op, append, transferEncoding, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
@@ -1305,7 +1305,7 @@ public final class FileSystemsInner {
         final String transferEncoding = "chunked";
         final RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), new byte[0]);
         final Boolean overwrite = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.create(directFilePath, streamContentsConverted, overwrite, op, write, transferEncoding, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return createDelegate(call.execute());
     }
@@ -1344,7 +1344,7 @@ public final class FileSystemsInner {
         final String transferEncoding = "chunked";
         final RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), new byte[0]);
         final Boolean overwrite = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.create(directFilePath, streamContentsConverted, overwrite, op, write, transferEncoding, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1388,7 +1388,7 @@ public final class FileSystemsInner {
         final String op = "CREATE";
         final String write = "true";
         final String transferEncoding = "chunked";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), new byte[0]);
         if (streamContents != null) {
             streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
@@ -1431,7 +1431,7 @@ public final class FileSystemsInner {
         final String op = "CREATE";
         final String write = "true";
         final String transferEncoding = "chunked";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), new byte[0]);
         if (streamContents != null) {
             streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
@@ -1485,7 +1485,7 @@ public final class FileSystemsInner {
         final String read = "true";
         final Long length = null;
         final Long offset = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.open(directFilePath, length, offset, op, read, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return openDelegate(call.execute());
     }
@@ -1523,7 +1523,7 @@ public final class FileSystemsInner {
         final String read = "true";
         final Long length = null;
         final Long offset = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.open(directFilePath, length, offset, op, read, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
@@ -1566,7 +1566,7 @@ public final class FileSystemsInner {
         }
         final String op = "OPEN";
         final String read = "true";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.open(directFilePath, length, offset, op, read, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return openDelegate(call.execute());
     }
@@ -1604,7 +1604,7 @@ public final class FileSystemsInner {
         }
         final String op = "OPEN";
         final String read = "true";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.open(directFilePath, length, offset, op, read, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
@@ -1655,8 +1655,8 @@ public final class FileSystemsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "SETACL";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.setAcl(setAclFilePath, aclspec, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        Call<ResponseBody> call = service.withAcl(setAclFilePath, aclspec, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return setAclDelegate(call.execute());
     }
 
@@ -1695,8 +1695,8 @@ public final class FileSystemsInner {
             return null;
         }
         final String op = "SETACL";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.setAcl(setAclFilePath, aclspec, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        Call<ResponseBody> call = service.withAcl(setAclFilePath, aclspec, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -1746,7 +1746,7 @@ public final class FileSystemsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "MODIFYACLENTRIES";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.modifyAclEntries(modifyAclFilePath, aclspec, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return modifyAclEntriesDelegate(call.execute());
     }
@@ -1786,7 +1786,7 @@ public final class FileSystemsInner {
             return null;
         }
         final String op = "MODIFYACLENTRIES";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.modifyAclEntries(modifyAclFilePath, aclspec, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1837,7 +1837,7 @@ public final class FileSystemsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "REMOVEACLENTRIES";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.removeAclEntries(removeAclFilePath, aclspec, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return removeAclEntriesDelegate(call.execute());
     }
@@ -1877,7 +1877,7 @@ public final class FileSystemsInner {
             return null;
         }
         final String op = "REMOVEACLENTRIES";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.removeAclEntries(removeAclFilePath, aclspec, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1924,7 +1924,7 @@ public final class FileSystemsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "GETACLSTATUS";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.getAclStatus(aclFilePath, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getAclStatusDelegate(call.execute());
     }
@@ -1959,7 +1959,7 @@ public final class FileSystemsInner {
             return null;
         }
         final String op = "GETACLSTATUS";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.getAclStatus(aclFilePath, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<AclStatusResultInner>(serviceCallback) {
@@ -2007,7 +2007,7 @@ public final class FileSystemsInner {
         }
         final String op = "DELETE";
         final Boolean recursive = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.delete(filePath, recursive, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return deleteDelegate(call.execute());
     }
@@ -2043,7 +2043,7 @@ public final class FileSystemsInner {
         }
         final String op = "DELETE";
         final Boolean recursive = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.delete(filePath, recursive, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<FileOperationResultInner>(serviceCallback) {
@@ -2084,7 +2084,7 @@ public final class FileSystemsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "DELETE";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.delete(filePath, recursive, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return deleteDelegate(call.execute());
     }
@@ -2120,7 +2120,7 @@ public final class FileSystemsInner {
             return null;
         }
         final String op = "DELETE";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.delete(filePath, recursive, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<FileOperationResultInner>(serviceCallback) {
@@ -2171,7 +2171,7 @@ public final class FileSystemsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "RENAME";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.rename(renameFilePath, destination, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return renameDelegate(call.execute());
     }
@@ -2211,7 +2211,7 @@ public final class FileSystemsInner {
             return null;
         }
         final String op = "RENAME";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.rename(renameFilePath, destination, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<FileOperationResultInner>(serviceCallback) {
@@ -2260,8 +2260,8 @@ public final class FileSystemsInner {
         final String op = "SETOWNER";
         final String owner = null;
         final String group = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.setOwner(setOwnerFilePath, owner, group, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        Call<ResponseBody> call = service.withOwner(setOwnerFilePath, owner, group, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return setOwnerDelegate(call.execute());
     }
 
@@ -2297,8 +2297,8 @@ public final class FileSystemsInner {
         final String op = "SETOWNER";
         final String owner = null;
         final String group = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.setOwner(setOwnerFilePath, owner, group, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        Call<ResponseBody> call = service.withOwner(setOwnerFilePath, owner, group, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -2339,8 +2339,8 @@ public final class FileSystemsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "SETOWNER";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.setOwner(setOwnerFilePath, owner, group, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        Call<ResponseBody> call = service.withOwner(setOwnerFilePath, owner, group, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return setOwnerDelegate(call.execute());
     }
 
@@ -2376,8 +2376,8 @@ public final class FileSystemsInner {
             return null;
         }
         final String op = "SETOWNER";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.setOwner(setOwnerFilePath, owner, group, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        Call<ResponseBody> call = service.withOwner(setOwnerFilePath, owner, group, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -2424,8 +2424,8 @@ public final class FileSystemsInner {
         }
         final String op = "SETPERMISSION";
         final String permission = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.setPermission(setPermissionFilePath, permission, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        Call<ResponseBody> call = service.withPermission(setPermissionFilePath, permission, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return setPermissionDelegate(call.execute());
     }
 
@@ -2460,8 +2460,8 @@ public final class FileSystemsInner {
         }
         final String op = "SETPERMISSION";
         final String permission = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.setPermission(setPermissionFilePath, permission, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        Call<ResponseBody> call = service.withPermission(setPermissionFilePath, permission, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -2501,8 +2501,8 @@ public final class FileSystemsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "SETPERMISSION";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.setPermission(setPermissionFilePath, permission, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        Call<ResponseBody> call = service.withPermission(setPermissionFilePath, permission, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return setPermissionDelegate(call.execute());
     }
 
@@ -2537,8 +2537,8 @@ public final class FileSystemsInner {
             return null;
         }
         final String op = "SETPERMISSION";
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
-        Call<ResponseBody> call = service.setPermission(setPermissionFilePath, permission, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        Call<ResponseBody> call = service.withPermission(setPermissionFilePath, permission, op, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override

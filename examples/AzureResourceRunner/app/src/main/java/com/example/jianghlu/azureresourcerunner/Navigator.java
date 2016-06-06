@@ -50,17 +50,17 @@ public class Navigator extends AppCompatActivity {
         rClient = new ResourceManagementClientImpl(credentials);
         sClient = new StorageManagementClientImpl(credentials);
         cClient = new ComputeManagementClientImpl(credentials);
-        rClient.setSubscriptionId(subscription.getSubscriptionId());
-        sClient.setSubscriptionId(subscription.getSubscriptionId());
-        cClient.setSubscriptionId(subscription.getSubscriptionId());
+        rClient.withSubscriptionId(subscription.getSubscriptionId());
+        sClient.withSubscriptionId(subscription.getSubscriptionId());
+        cClient.withSubscriptionId(subscription.getSubscriptionId());
     }
 
     public void listResourceGroups(View view) {
         Intent intent = new Intent(this, ResourceOperator.class);
         startActivity(intent);
 //        final ProgressDialog progress = new ProgressDialog(this);
-//        progress.setTitle("Please wait...");
-//        progress.setMessage("Loading resource groups...");
+//        progress.withTitle("Please wait...");
+//        progress.withMessage("Loading resource groups...");
 //        rClient.getResourceGroupsOperations().listAsync(null, null, new ListOperationCallback<ResourceGroup>() {
 //            @Override
 //            public void failure(Throwable t) {
@@ -84,8 +84,8 @@ public class Navigator extends AppCompatActivity {
 //                        TextView text2 = (TextView) view.findViewById(android.R.id.text2);
 //
 //                        ResourceGroup group = result.getBody().get(position);
-//                        text1.setText(group.getName());
-//                        text2.setText("Location: " + group.getLocation());
+//                        text1.withText(group.getName());
+//                        text2.withText("Location: " + group.getLocation());
 //                        return view;
 //                    }
 //                };
@@ -93,7 +93,7 @@ public class Navigator extends AppCompatActivity {
 //                runOnUiThread(new Runnable() {
 //                    @Override
 //                    public void run() {
-//                        listView.setAdapter(adapter);
+//                        listView.withAdapter(adapter);
 //                    }
 //                });
 //            }
@@ -102,8 +102,8 @@ public class Navigator extends AppCompatActivity {
 
     public void listStorageAccounts(View view) {
         final ProgressDialog progress = new ProgressDialog(this);
-        progress.setTitle("Please wait...");
-        progress.setMessage("Loading storage accounts...");
+        progress.withTitle("Please wait...");
+        progress.withMessage("Loading storage accounts...");
         sClient.getStorageAccountsOperations().listAsync(new ServiceCallback<List<StorageAccount>>() {
             @Override
             public void failure(Throwable t) {
@@ -127,8 +127,8 @@ public class Navigator extends AppCompatActivity {
                         TextView text2 = (TextView) view.findViewById(android.R.id.text2);
 
                         StorageAccount account = result.getBody().get(position);
-                        text1.setText(account.getName());
-                        text2.setText("Type: " + account.getType() + "\t" + "Location: " + account.getPrimaryLocation() + ", " + account.getSecondaryLocation());
+                        text1.withText(account.getName());
+                        text2.withText("Type: " + account.getType() + "\t" + "Location: " + account.getPrimaryLocation() + ", " + account.getSecondaryLocation());
                         return view;
                     }
                 };
@@ -136,7 +136,7 @@ public class Navigator extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        listView.setAdapter(adapter);
+                        listView.withAdapter(adapter);
                     }
                 });
             }
@@ -145,8 +145,8 @@ public class Navigator extends AppCompatActivity {
 
     public void listVirtualMachines(View view) {
         final ProgressDialog progress = new ProgressDialog(this);
-        progress.setTitle("Please wait...");
-        progress.setMessage("Loading storage accounts...");
+        progress.withTitle("Please wait...");
+        progress.withMessage("Loading storage accounts...");
         cClient.getVirtualMachinesOperations().listAllAsync(new ListOperationCallback<VirtualMachine>() {
             @Override
             public void failure(Throwable t) {
@@ -170,7 +170,7 @@ public class Navigator extends AppCompatActivity {
                         TextView text2 = (TextView) view.findViewById(android.R.id.text2);
 
                         VirtualMachine vm = result.getBody().get(position);
-                        text1.setText(vm.getName());
+                        text1.withText(vm.getName());
                         String desc = "";
                         if (vm.getPlan() != null) {
                             desc = desc + "Plan: " + vm.getPlan().getName() + "\t";
@@ -179,7 +179,7 @@ public class Navigator extends AppCompatActivity {
                             desc = desc + "Size: " + vm.getHardwareProfile().getVmSize() + "\t";
                         }
                         desc += "Location: " + vm.getLocation();
-                        text2.setText(desc);
+                        text2.withText(desc);
                         return view;
                     }
                 };
@@ -187,7 +187,7 @@ public class Navigator extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        listView.setAdapter(adapter);
+                        listView.withAdapter(adapter);
                     }
                 });
             }

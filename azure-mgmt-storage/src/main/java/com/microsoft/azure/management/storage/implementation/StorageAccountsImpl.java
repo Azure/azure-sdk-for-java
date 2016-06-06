@@ -72,8 +72,8 @@ class StorageAccountsImpl
 
     private PagedList<StorageAccountInner> toPagedList(List<StorageAccountInner> list) {
         PageImpl<StorageAccountInner> page = new PageImpl<>();
-        page.setItems(list);
-        page.setNextPageLink(null);
+        page.withItems(list);
+        page.withNextPageLink(null);
         return new PagedList<StorageAccountInner>(page) {
             @Override
             public Page<StorageAccountInner> nextPage(String nextPageLink) throws RestException, IOException {

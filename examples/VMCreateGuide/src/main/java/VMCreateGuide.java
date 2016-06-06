@@ -111,16 +111,16 @@ public class VMCreateGuide {
 
         // Client creation
         resourceManagementClient = new ResourceManagementClientImpl(credentials);
-        resourceManagementClient.setSubscriptionId(subscription);
+        resourceManagementClient.withSubscriptionId(subscription);
         storageManagementClient = new StorageManagementClientImpl(credentials);
-        storageManagementClient.setSubscriptionId(subscription);
+        storageManagementClient.withSubscriptionId(subscription);
         networkManagementClient = new NetworkManagementClientImpl(credentials);
-        networkManagementClient.setSubscriptionId(subscription);
+        networkManagementClient.withSubscriptionId(subscription);
         computeManagementClient = new ComputeManagementClientImpl(credentials);
-        computeManagementClient.setSubscriptionId(subscription);
+        computeManagementClient.withSubscriptionId(subscription);
         // Create resource group
         ResourceGroup resourceGroupParameters = new ResourceGroup();
-        resourceGroupParameters.setLocation(location);
+        resourceGroupParameters.withLocation(location);
         System.out.println("Creating resource group...");
         resourceManagementClient.getResourceGroupsOperations().createOrUpdate(resourceGroupName, resourceGroupParameters);
         while (!resourceManagementClient.getResourceGroupsOperations().checkExistence(resourceGroupName).getBody()) {
@@ -138,26 +138,26 @@ public class VMCreateGuide {
         }
         if (!found) {
             StorageAccountCreateParameters storageParameters = new StorageAccountCreateParameters();
-            storageParameters.setLocation(location);
-            storageParameters.setAccountType(AccountType.STANDARD_GRS);
+            storageParameters.withLocation(location);
+            storageParameters.withAccountType(AccountType.STANDARD_GRS);
             System.out.println("Creating storage account...");
             storageManagementClient.getStorageAccountsOperations().create(resourceGroupName, storageAccountName, storageParameters);
         }
 
         // Create VNET
         VirtualNetwork vnet = new VirtualNetwork();
-        vnet.setLocation(location);
-        vnet.setAddressSpace(new AddressSpace());
-        vnet.getAddressSpace().setAddressPrefixes(new ArrayList<String>());
+        vnet.withLocation(location);
+        vnet.withAddressSpace(new AddressSpace());
+        vnet.getAddressSpace().withAddressPrefixes(new ArrayList<String>());
         vnet.getAddressSpace().getAddressPrefixes().add("10.0.0.0/16");
-        vnet.setDhcpOptions(new DhcpOptions());
-        vnet.getDhcpOptions().setDnsServers(new ArrayList<String>());
+        vnet.withDhcpOptions(new DhcpOptions());
+        vnet.getDhcpOptions().withDnsServers(new ArrayList<String>());
         vnet.getDhcpOptions().getDnsServers().add("10.1.1.1");
         vnet.getDhcpOptions().getDnsServers().add("10.1.2.4");
-        vnet.setSubnets(new ArrayList<Subnet>());
+        vnet.withSubnets(new ArrayList<Subnet>());
         Subnet subnet = new Subnet();
-        subnet.setName(subnetName);
-        subnet.setAddressPrefix("10.0.0.0/24");
+        subnet.withName(subnetName);
+        subnet.withAddressPrefix("10.0.0.0/24");
         vnet.getSubnets().add(subnet);
         System.out.println("Creating vnet...");
         networkManagementClient.getVirtualNetworksOperations().createOrUpdate(resourceGroupName, vnetName, vnet);
@@ -165,10 +165,10 @@ public class VMCreateGuide {
 
         // Create public IP
         PublicIPAddress publicIPAddress = new PublicIPAddress();
-        publicIPAddress.setLocation(location);
-        publicIPAddress.setPublicIPAllocationMethod("Dynamic");
-        publicIPAddress.setDnsSettings(new PublicIPAddressDnsSettings());
-        publicIPAddress.getDnsSettings().setDomainNameLabel(domainNameLabel);
+        publicIPAddress.withLocation(location);
+        publicIPAddress.withPublicIPAllocationMethod("Dynamic");
+        publicIPAddress.withDnsSettings(new PublicIPAddressDnsSettings());
+        publicIPAddress.getDnsSettings().withDomainNameLabel(domainNameLabel);
 
         System.out.println("Creating public IP...");
         networkManagementClient.getPublicIPAddressesOperations().createOrUpdate(resourceGroupName, publicIPName, publicIPAddress);
@@ -176,20 +176,20 @@ public class VMCreateGuide {
 
         // Create Network interface
         NetworkInterface nic = new NetworkInterface();
-        nic.setLocation(location);
-        nic.setIpConfigurations(new ArrayList<NetworkInterfaceIPConfiguration>());
+        nic.withLocation(location);
+        nic.withIpConfigurations(new ArrayList<NetworkInterfaceIPConfiguration>());
         NetworkInterfaceIPConfiguration configuration = new NetworkInterfaceIPConfiguration();
-        configuration.setName(ipConfigName);
-        configuration.setPrivateIPAllocationMethod("Dynamic");
-        configuration.setSubnet(subnet);
-        configuration.setPublicIPAddress(publicIPAddress);
+        configuration.withName(ipConfigName);
+        configuration.withPrivateIPAllocationMethod("Dynamic");
+        configuration.withSubnet(subnet);
+        configuration.withPublicIPAddress(publicIPAddress);
         nic.getIpConfigurations().add(configuration);
         NetworkSecurityGroup networkSecurityGroup = new NetworkSecurityGroup();
-        networkSecurityGroup.setLocation(location);
-        networkSecurityGroup.setSubnets(networkManagementClient.getSubnetsOperations().list(resourceGroupName, vnetName).getBody());
+        networkSecurityGroup.withLocation(location);
+        networkSecurityGroup.withSubnets(networkManagementClient.getSubnetsOperations().list(resourceGroupName, vnetName).getBody());
         System.out.println("Creating network security group...");
         networkSecurityGroup = networkManagementClient.getNetworkSecurityGroupsOperations().createOrUpdate(resourceGroupName, securityGroupName, networkSecurityGroup).getBody();
-        nic.setNetworkSecurityGroup(networkSecurityGroup);
+        nic.withNetworkSecurityGroup(networkSecurityGroup);
         System.out.println("Creating network interface...");
         networkManagementClient.getNetworkInterfacesOperations().createOrUpdate(resourceGroupName, networkInterfaceName, nic);
         nic = networkManagementClient.getNetworkInterfacesOperations().get(resourceGroupName, networkInterfaceName, null).getBody();
@@ -197,34 +197,34 @@ public class VMCreateGuide {
         // Get VM Image
         String name = computeManagementClient.getVirtualMachineImagesOperations().list(location, publisher, offer, sku, null, 1, null).getBody().get(0).getName();
         ImageReference imageReference = new ImageReference();
-        imageReference.setOffer(offer);
-        imageReference.setPublisher(publisher);
-        imageReference.setSku(sku);
-        imageReference.setVersion(name);
+        imageReference.withOffer(offer);
+        imageReference.withPublisher(publisher);
+        imageReference.withSku(sku);
+        imageReference.withVersion(name);
 
         // Create VM
         VirtualMachine request = new VirtualMachine();
-        request.setLocation(location);
-        request.setOsProfile(new OSProfile());
-        request.getOsProfile().setComputerName(vmName);
-        request.getOsProfile().setAdminUsername(adminUsername);
-        request.getOsProfile().setAdminPassword(adminPassword);
-        request.setHardwareProfile(new HardwareProfile());
-        request.getHardwareProfile().setVmSize("Basic_A0");
-        request.setStorageProfile(new StorageProfile());
-        request.getStorageProfile().setImageReference(imageReference);
-        request.getStorageProfile().setDataDisks(null);
-        request.getStorageProfile().setOsDisk(new OSDisk());
-        request.getStorageProfile().getOsDisk().setCaching("None");
-        request.getStorageProfile().getOsDisk().setCreateOption("fromImage");
-        request.getStorageProfile().getOsDisk().setName(osDiskName);
-        request.getStorageProfile().getOsDisk().setVhd(new VirtualHardDisk());
-        request.getStorageProfile().getOsDisk().getVhd().setUri("https://" + storageAccountName + ".blob.core.windows.net/javacontainer/osjavawindows.vhd");
-        request.setNetworkProfile(new NetworkProfile());
-        request.getNetworkProfile().setNetworkInterfaces(new ArrayList<NetworkInterfaceReference>());
+        request.withLocation(location);
+        request.withOsProfile(new OSProfile());
+        request.getOsProfile().withComputerName(vmName);
+        request.getOsProfile().withAdminUsername(adminUsername);
+        request.getOsProfile().withAdminPassword(adminPassword);
+        request.withHardwareProfile(new HardwareProfile());
+        request.getHardwareProfile().withVmSize("Basic_A0");
+        request.withStorageProfile(new StorageProfile());
+        request.getStorageProfile().withImageReference(imageReference);
+        request.getStorageProfile().withDataDisks(null);
+        request.getStorageProfile().withOsDisk(new OSDisk());
+        request.getStorageProfile().getOsDisk().withCaching("None");
+        request.getStorageProfile().getOsDisk().withCreateOption("fromImage");
+        request.getStorageProfile().getOsDisk().withName(osDiskName);
+        request.getStorageProfile().getOsDisk().withVhd(new VirtualHardDisk());
+        request.getStorageProfile().getOsDisk().getVhd().withUri("https://" + storageAccountName + ".blob.core.windows.net/javacontainer/osjavawindows.vhd");
+        request.withNetworkProfile(new NetworkProfile());
+        request.getNetworkProfile().withNetworkInterfaces(new ArrayList<NetworkInterfaceReference>());
         NetworkInterfaceReference nir = new NetworkInterfaceReference();
-        nir.setPrimary(true);
-        nir.setId(nic.getId());
+        nir.withPrimary(true);
+        nir.withId(nic.getId());
         request.getNetworkProfile().getNetworkInterfaces().add(nir);
         System.out.println("Creating VM...");
         VirtualMachine vm = computeManagementClient.getVirtualMachinesOperations().createOrUpdate(resourceGroupName, vmName, request).getBody();

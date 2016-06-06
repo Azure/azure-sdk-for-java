@@ -80,7 +80,7 @@ final class DeploymentOperationImpl extends
 
     @Override
     public DeploymentOperation refresh() throws Exception {
-        this.setInner(client.get(resourceGroupName, deploymentName, operationId()).getBody());
+        this.withInner(client.get(resourceGroupName, deploymentName, operationId()).getBody());
         return this;
     }
 }

@@ -69,7 +69,7 @@ public final class ResourceGroupsImpl
 
     private ResourceGroupImpl createFluentModel(String name) {
         ResourceGroupInner resourceGroupInner = new ResourceGroupInner();
-        resourceGroupInner.setName(name);
+        resourceGroupInner.withName(name);
         return new ResourceGroupImpl(resourceGroupInner, serviceClient);
     }
 

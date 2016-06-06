@@ -65,7 +65,7 @@ public class ResourceFragment extends Fragment {
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+        fragment.withArguments(args);
         return fragment;
     }
 
@@ -81,8 +81,8 @@ public class ResourceFragment extends Fragment {
 
     public void listResourceGroups() {
         final ProgressDialog progress = new ProgressDialog(getActivity());
-        progress.setTitle("Please wait...");
-        progress.setMessage("Loading resource groups...");
+        progress.withTitle("Please wait...");
+        progress.withMessage("Loading resource groups...");
         resourceManagementClient.getResourceGroupsOperations().listAsync(null, null, new ListOperationCallback<ResourceGroup>() {
             @Override
             public void failure(Throwable t) {
@@ -106,8 +106,8 @@ public class ResourceFragment extends Fragment {
                         TextView text2 = (TextView) view.findViewById(android.R.id.text2);
 
                         ResourceGroup group = result.getBody().get(position);
-                        text1.setText(group.getName());
-                        text2.setText("Location: " + group.getLocation());
+                        text1.withText(group.getName());
+                        text2.withText("Location: " + group.getLocation());
                         return view;
                     }
                 };
@@ -115,7 +115,7 @@ public class ResourceFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        listView.setAdapter(adapter);
+                        listView.withAdapter(adapter);
                     }
                 });
             }
@@ -126,7 +126,7 @@ public class ResourceFragment extends Fragment {
         EditText name = (EditText) getActivity().findViewById(R.id.resource_group_name);
         EditText location = (EditText) getActivity().findViewById(R.id.resource_group_location);
         ResourceGroup resourceGroup = new ResourceGroup();
-        resourceGroup.setLocation(location.getText().toString());
+        resourceGroup.withLocation(location.getText().toString());
         resourceManagementClient.getResourceGroupsOperations().createOrUpdateAsync(name.getText().toString(), resourceGroup, new ServiceCallback<ResourceGroup>() {
             @Override
             public void failure(Throwable t) {
@@ -154,7 +154,7 @@ public class ResourceFragment extends Fragment {
     public void deleteResourceGroup() {
         EditText name = (EditText) getActivity().findViewById(R.id.resource_group_name);
         final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage("Deleting resource group " + name.getText().toString() + ", please wait...");
+        progressDialog.withMessage("Deleting resource group " + name.getText().toString() + ", please wait...");
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -198,13 +198,13 @@ public class ResourceFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        view.findViewById(R.id.resource_create_btn).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.resource_create_btn).withOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 createResourceGroup();
             }
         });
-        view.findViewById(R.id.resource_delete_btn).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.resource_delete_btn).withOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 deleteResourceGroup();

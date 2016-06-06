@@ -171,7 +171,7 @@ public class UserTokenCredentials extends TokenCredentials {
                     @Override
                     public void onSuccess(AuthenticationResult authenticationResult) {
                         if (authenticationResult != null && authenticationResult.getAccessToken() != null) {
-                            self.setToken(authenticationResult.getAccessToken());
+                            self.withToken(authenticationResult.getAccessToken());
                             signal.countDown();
                         } else {
                             onError(new IOException("Failed to acquire access token"));

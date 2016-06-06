@@ -50,8 +50,8 @@ public class AvailabilitySetsImpl implements AvailabilitySets {
             @Override
             public List<AvailabilitySet> listNextGroup(String resourceGroupName) throws RestException, IOException {
                 PageImpl<AvailabilitySetInner> page = new PageImpl<>();
-                page.setItems(client.list(resourceGroupName).getBody());
-                page.setNextPageLink(null);
+                page.withItems(client.list(resourceGroupName).getBody());
+                page.withNextPageLink(null);
                 return converter.convert(new PagedList<AvailabilitySetInner>(page) {
                     @Override
                     public Page<AvailabilitySetInner> nextPage(String nextPageLink) throws RestException, IOException {
@@ -65,8 +65,8 @@ public class AvailabilitySetsImpl implements AvailabilitySets {
     @Override
     public PagedList<AvailabilitySet> list(String groupName) throws CloudException, IOException {
         PageImpl<AvailabilitySetInner> page = new PageImpl<>();
-        page.setItems(client.list(groupName).getBody());
-        page.setNextPageLink(null);
+        page.withItems(client.list(groupName).getBody());
+        page.withNextPageLink(null);
         return this.converter.convert(new PagedList<AvailabilitySetInner>(page) {
             @Override
             public Page<AvailabilitySetInner> nextPage(String nextPageLink) throws RestException, IOException {

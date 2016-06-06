@@ -213,7 +213,7 @@ public final class Azure {
 
     private Azure(RestClient restClient, String subscriptionId) {
         ResourceManagementClientImpl resourceManagementClient = new ResourceManagementClientImpl(restClient);
-        resourceManagementClient.setSubscriptionId(subscriptionId);
+        resourceManagementClient.withSubscriptionId(subscriptionId);
         this.resourceGroups = new AzureResourceGroupsImpl(resourceManagementClient);
         this.resourceManager = ResourceManager.authenticate(restClient).withSubscription(subscriptionId);
         this.storageManager = StorageManager.authenticate(restClient, subscriptionId);

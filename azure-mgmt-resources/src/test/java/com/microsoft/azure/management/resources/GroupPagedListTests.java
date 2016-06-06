@@ -26,33 +26,33 @@ public class GroupPagedListTests {
                 new PageImpl<ResourceGroup>()
         );
 
-        pages.get(0).setItems(Arrays.asList(resourceGroup("RG1"),
+        pages.get(0).withItems(Arrays.asList(resourceGroup("RG1"),
                 resourceGroup("RG2"),
                 resourceGroup("RG3"),
                 resourceGroup("RG4"),
                 resourceGroup("RG5")));
-        pages.get(0).setNextPageLink("1");
+        pages.get(0).withNextPageLink("1");
 
-        pages.get(1).setItems(Arrays.asList(resourceGroup("RG6"),
+        pages.get(1).withItems(Arrays.asList(resourceGroup("RG6"),
                 resourceGroup("RG7"),
                 resourceGroup("RG8"),
                 resourceGroup("RG9"),
                 resourceGroup("RG10")));
-        pages.get(1).setNextPageLink("2");
+        pages.get(1).withNextPageLink("2");
 
-        pages.get(2).setItems(Arrays.asList(resourceGroup("RG11"),
+        pages.get(2).withItems(Arrays.asList(resourceGroup("RG11"),
                 resourceGroup("RG12"),
                 resourceGroup("RG13"),
                 resourceGroup("RG14"),
                 resourceGroup("RG15")));
-        pages.get(2).setNextPageLink("3");
+        pages.get(2).withNextPageLink("3");
 
-        pages.get(3).setItems(Arrays.asList(resourceGroup("RG16"),
+        pages.get(3).withItems(Arrays.asList(resourceGroup("RG16"),
                 resourceGroup("RG17"),
                 resourceGroup("RG18"),
                 resourceGroup("RG19"),
                 resourceGroup("RG20")));
-        pages.get(3).setNextPageLink(null);
+        pages.get(3).withNextPageLink(null);
 
         List<String> expected = Arrays.asList(
                 "RG1Vm1", "RG1Vm2",

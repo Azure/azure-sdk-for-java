@@ -31,28 +31,28 @@ public class DataLakeAnalyticsJobOperationsTests extends DataLakeAnalyticsManage
         createClients();
         location = environmentLocation;
         ResourceGroupInner group = new ResourceGroupInner();
-        group.setLocation(location);
+        group.withLocation(location);
         resourceManagementClient.resourceGroups().createOrUpdate(rgName, group);
         // create storage and ADLS accounts, setting the accessKey
         DataLakeStoreAccountInner adlsAccount = new DataLakeStoreAccountInner();
-        adlsAccount.setLocation(location);
-        adlsAccount.setName(adlsAcct);
+        adlsAccount.withLocation(location);
+        adlsAccount.withName(adlsAcct);
         dataLakeStoreAccountManagementClient.accounts().create(rgName, adlsAcct, adlsAccount);
 
         // Create the ADLA acct to use.
         DataLakeAnalyticsAccountProperties createProperties = new DataLakeAnalyticsAccountProperties();
         List<DataLakeStoreAccountInfoInner> adlsAccts = new ArrayList<DataLakeStoreAccountInfoInner>();
         DataLakeStoreAccountInfoInner adlsInfo = new DataLakeStoreAccountInfoInner();
-        adlsInfo.setName(adlsAcct);
+        adlsInfo.withName(adlsAcct);
         adlsAccts.add(adlsInfo);
 
-        createProperties.setDataLakeStoreAccounts(adlsAccts);
-        createProperties.setDefaultDataLakeStoreAccount(adlsAcct);
+        createProperties.withDataLakeStoreAccounts(adlsAccts);
+        createProperties.withDefaultDataLakeStoreAccount(adlsAcct);
 
         DataLakeAnalyticsAccountInner createParams = new DataLakeAnalyticsAccountInner();
-        createParams.setLocation(location);
-        createParams.setName(adlaAcct);
-        createParams.setProperties(createProperties);
+        createParams.withLocation(location);
+        createParams.withName(adlaAcct);
+        createParams.withProperties(createProperties);
         dataLakeAnalyticsAccountManagementClient.accounts().create(rgName, adlaAcct, createParams);
         // Sleep for two minutes to ensure the account is totally provisioned.
         Thread.sleep(180000);
@@ -73,11 +73,11 @@ public class DataLakeAnalyticsJobOperationsTests extends DataLakeAnalyticsManage
         // submit a job
         JobInformationInner jobToSubmit = new JobInformationInner();
         USqlJobProperties jobProperties = new USqlJobProperties();
-        jobProperties.setScript(jobScript);
-        jobToSubmit.setName("java azure sdk data lake analytics job");
-        jobToSubmit.setDegreeOfParallelism(2);
-        jobToSubmit.setType(JobType.USQL);
-        jobToSubmit.setProperties(jobProperties);
+        jobProperties.withScript(jobScript);
+        jobToSubmit.withName("java azure sdk data lake analytics job");
+        jobToSubmit.withDegreeOfParallelism(2);
+        jobToSubmit.withType(JobType.USQL);
+        jobToSubmit.withProperties(jobProperties);
         UUID jobId = UUID.randomUUID();
         UUID secondJobId = UUID.randomUUID();
 
@@ -133,7 +133,7 @@ public class DataLakeAnalyticsJobOperationsTests extends DataLakeAnalyticsManage
         Assert.assertTrue(foundJob);
 
         // Just compile the job, which requires a jobId in the job object.
-        jobToSubmit.setJobId(getJobResponse.jobId());
+        jobToSubmit.withJobId(getJobResponse.jobId());
         JobInformationInner compileResponse = dataLakeAnalyticsJobManagementClient.jobs().build(adlaAcct, jobToSubmit).getBody();
         Assert.assertNotNull(compileResponse);
 

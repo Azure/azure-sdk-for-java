@@ -59,7 +59,7 @@ public class CloudErrorDeserializer extends JsonDeserializer<CloudError> {
             return null;
         }
         JsonParser parser = new JsonFactory().createParser(errorNode.toString());
-        parser.setCodec(mapper);
+        parser.withCodec(mapper);
         return parser.readValueAs(CloudError.class);
     }
 }

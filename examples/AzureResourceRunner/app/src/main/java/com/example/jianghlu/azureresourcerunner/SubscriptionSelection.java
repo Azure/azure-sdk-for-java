@@ -39,13 +39,13 @@ public class SubscriptionSelection extends AppCompatActivity {
                 TextView text2 = (TextView) view.findViewById(android.R.id.text2);
 
                 SubscriptionInfo sub = subscriptionList.get(position);
-                text1.setText(sub.getSubscriptionName());
-                text2.setText("ID: " + sub.getSubscriptionId() + " Under Tenant: " + sub.getTenantId());
+                text1.withText(sub.getSubscriptionName());
+                text2.withText("ID: " + sub.getSubscriptionId() + " Under Tenant: " + sub.getTenantId());
                 return view;
             }
         };
-        subListView.setAdapter(adapter);
-        subListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        subListView.withAdapter(adapter);
+        subListView.withOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), ResourceOperator.class);

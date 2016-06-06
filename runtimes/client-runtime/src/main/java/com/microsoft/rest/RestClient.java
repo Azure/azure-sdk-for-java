@@ -115,7 +115,7 @@ public final class RestClient {
      * @param replacements the string replacements in pairs.
      */
     public void setBaseUrl(String... replacements) {
-        baseUrlHandler.setBaseUrl(replacements);
+        baseUrlHandler.withBaseUrl(replacements);
     }
 
     /**
@@ -173,7 +173,7 @@ public final class RestClient {
                 throw new IllegalArgumentException("retrofitBuilder == null");
             }
             CookieManager cookieManager = new CookieManager();
-            cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+            cookieManager.withCookiePolicy(CookiePolicy.ACCEPT_ALL);
             customHeadersInterceptor = new CustomHeadersInterceptor();
             baseUrlHandler = new BaseUrlHandler(baseUrl);
             userAgentInterceptor = new UserAgentInterceptor();
@@ -192,7 +192,7 @@ public final class RestClient {
          * @return the builder itself for chaining.
          */
         public Builder withUserAgent(String userAgent) {
-            this.userAgentInterceptor.setUserAgent(userAgent);
+            this.userAgentInterceptor.withUserAgent(userAgent);
             return this;
         }
 
@@ -228,7 +228,7 @@ public final class RestClient {
          * @return the builder itself for chaining.
          */
         public Builder withLogLevel(HttpLoggingInterceptor.Level logLevel) {
-            this.httpClientBuilder.addInterceptor(new HttpLoggingInterceptor().setLevel(logLevel));
+            this.httpClientBuilder.addInterceptor(new HttpLoggingInterceptor().withLevel(logLevel));
             return this;
         }
 

@@ -79,27 +79,27 @@ class NetworksImpl implements Networks {
         AddressSpace addressSpace = inner.addressSpace();
         if(addressSpace == null) {
             addressSpace = new AddressSpace();
-            inner.setAddressSpace(addressSpace);
+            inner.withAddressSpace(addressSpace);
         }
         
         if(addressSpace.addressPrefixes() == null) {
-            addressSpace.setAddressPrefixes(new ArrayList<String>());
+            addressSpace.withAddressPrefixes(new ArrayList<String>());
         }
 
         // Initialize subnets
         if(inner.subnets() == null) {
-            inner.setSubnets(new ArrayList<SubnetInner>());
+            inner.withSubnets(new ArrayList<SubnetInner>());
         }
 
         // Initialize DHCP options (DNS servers)
         DhcpOptions dhcp = inner.dhcpOptions();
         if(dhcp == null) {
             dhcp = new DhcpOptions();
-            inner.setDhcpOptions(dhcp);
+            inner.withDhcpOptions(dhcp);
         }
         
         if(dhcp.dnsServers() == null) {
-            dhcp.setDnsServers(new ArrayList<String>());
+            dhcp.withDnsServers(new ArrayList<String>());
         }
         
         return new NetworkImpl(name, inner, this.client, this.resourceGroups);

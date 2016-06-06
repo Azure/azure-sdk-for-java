@@ -38,13 +38,13 @@ public class PerformanceUploadTests extends DataLakeUploaderTestBase {
 
         ResourceGroupInner group = new ResourceGroupInner();
         String location = "eastus2";
-        group.setLocation(location);
+        group.withLocation(location);
         resourceManagementClient.resourceGroups().createOrUpdate(rgName, group);
 
         // create storage and ADLS accounts, setting the accessKey
         DataLakeStoreAccountInner adlsAccount = new DataLakeStoreAccountInner();
-        adlsAccount.setLocation(location);
-        adlsAccount.setName(adlsAcct);
+        adlsAccount.withLocation(location);
+        adlsAccount.withName(adlsAcct);
         dataLakeStoreAccountManagementClient.accounts().create(rgName, adlsAcct, adlsAccount);
 
         File smallFile = new File(localFileName);
@@ -60,7 +60,7 @@ public class PerformanceUploadTests extends DataLakeUploaderTestBase {
         File largeFile = new File(localLargeFileName);
         if (!largeFile.exists()) {
             try (RandomAccessFile stream = new RandomAccessFile(largeFile, "rw")) {
-                stream.setLength((long)(2.5* 1024 * 1024 * 1024) - 10); // 2.5GB minus 10 bytes
+                stream.withLength((long)(2.5* 1024 * 1024 * 1024) - 10); // 2.5GB minus 10 bytes
                 byte[] content = new byte[10];
                 Arrays.fill(content, (byte)'a');
                 stream.write(content);
@@ -70,7 +70,7 @@ public class PerformanceUploadTests extends DataLakeUploaderTestBase {
         File tenGBFile = new File(Local10GbFileName);
         if (!tenGBFile.exists()) {
             try (RandomAccessFile stream = new RandomAccessFile(tenGBFile, "rw")) {
-                stream.setLength((long)(10* 1024 * 1024 * 1024) - 10); // 10GB minus 10 bytes
+                stream.withLength((long)(10* 1024 * 1024 * 1024) - 10); // 10GB minus 10 bytes
                 byte[] content = new byte[10];
                 Arrays.fill(content, (byte)'a');
                 stream.write(content);

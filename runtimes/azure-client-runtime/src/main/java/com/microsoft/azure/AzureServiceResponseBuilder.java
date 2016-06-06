@@ -54,7 +54,7 @@ public class AzureServiceResponseBuilder<T, E extends RestException> extends Ser
         if (responseTypes.containsKey(statusCode)) {
             if (new TypeToken<T>(getClass()) { }.getRawType().isAssignableFrom(Boolean.class)) {
                 ServiceResponse<T> serviceResponse =  new ServiceResponse<>(response);
-                serviceResponse.setBody((T) (Object) (statusCode / 100 == 2));
+                serviceResponse.withBody((T) (Object) (statusCode / 100 == 2));
                 return serviceResponse;
             } else {
                 return new ServiceResponse<>(response);

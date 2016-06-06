@@ -42,12 +42,12 @@ public class ResourceOperator extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.withDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setItemIconTintList(null);
-        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.withItemIconTintList(null);
+        navigationView.withNavigationItemSelectedListener(this);
 
 
         Intent intent = getIntent();
@@ -60,9 +60,9 @@ public class ResourceOperator extends AppCompatActivity
         rClient = new ResourceManagementClientImpl(credentials);
         sClient = new StorageManagementClientImpl(credentials);
         cClient = new ComputeManagementClientImpl(credentials);
-        rClient.setSubscriptionId(subscription.getSubscriptionId());
-        sClient.setSubscriptionId(subscription.getSubscriptionId());
-        cClient.setSubscriptionId(subscription.getSubscriptionId());
+        rClient.withSubscriptionId(subscription.getSubscriptionId());
+        sClient.withSubscriptionId(subscription.getSubscriptionId());
+        cClient.withSubscriptionId(subscription.getSubscriptionId());
     }
 
     @Override
@@ -105,8 +105,8 @@ public class ResourceOperator extends AppCompatActivity
 
         if (id == R.id.nav_resource) {
             ResourceFragment fragment = new ResourceFragment();
-            fragment.setRetainInstance(true);
-            fragment.setResourceManagementClient(rClient);
+            fragment.withRetainInstance(true);
+            fragment.withResourceManagementClient(rClient);
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.resource_operator_main_content, fragment)
@@ -115,13 +115,13 @@ public class ResourceOperator extends AppCompatActivity
             // Highlight the selected item, update the title, and close the drawer
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-            navigationView.setCheckedItem(0);
+            navigationView.withCheckedItem(0);
             setTitle(this.getTitle() + " - Resources");
             drawer.closeDrawer(navigationView);
         } else if (id == R.id.nav_storage) {
 //            StorageFragment fragment = new StorageFragment();
-//            fragment.setRetainInstance(true);
-//            fragment.setStorageManagementClient(sClient);
+//            fragment.withRetainInstance(true);
+//            fragment.withStorageManagementClient(sClient);
 //            FragmentManager fragmentManager = getFragmentManager();
 //            fragmentManager.beginTransaction()
 //                    .replace(R.id.resource_operator_main_content, fragment)
@@ -130,7 +130,7 @@ public class ResourceOperator extends AppCompatActivity
 //            // Highlight the selected item, update the title, and close the drawer
 //            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 //            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-//            navigationView.setCheckedItem(0);
+//            navigationView.withCheckedItem(0);
 //            setTitle(this.getTitle() + " - Storage");
 //            drawer.closeDrawer(navigationView);
         } else if (id == R.id.nav_compute) {

@@ -67,7 +67,7 @@ public class FlatteningSerializer extends StdSerializer<Object> implements Resol
      */
     public static SimpleModule getModule(final ObjectMapper mapper) {
         SimpleModule module = new SimpleModule();
-        module.setSerializerModifier(new BeanSerializerModifier() {
+        module.withSerializerModifier(new BeanSerializerModifier() {
             @Override
             public JsonSerializer<?> modifySerializer(SerializationConfig config, BeanDescription beanDesc, JsonSerializer<?> serializer) {
                 if (beanDesc.getBeanClass().getAnnotation(JsonFlatten.class) != null) {

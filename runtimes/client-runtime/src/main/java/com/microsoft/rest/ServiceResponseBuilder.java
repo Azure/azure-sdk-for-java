@@ -240,7 +240,7 @@ public class ServiceResponseBuilder<T, E extends RestException> {
                 mapperAdapter.serialize(response.headers()),
                 headerType);
         ServiceResponseWithHeaders<T, THeader> serviceResponse = new ServiceResponseWithHeaders<>(headers, bodyResponse.getHeadResponse());
-        serviceResponse.setBody(bodyResponse.getBody());
+        serviceResponse.withBody(bodyResponse.getBody());
         return serviceResponse;
     }
 

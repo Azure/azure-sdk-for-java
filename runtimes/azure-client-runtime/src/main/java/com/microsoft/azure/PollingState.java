@@ -52,7 +52,7 @@ public class PollingState<T> {
      */
     public PollingState(Response<ResponseBody> response, Integer retryTimeout, Type resourceType, JacksonMapperAdapter mapperAdapter) throws IOException {
         this.retryTimeout = retryTimeout;
-        this.setResponse(response);
+        this.withResponse(response);
         this.resourceType = resourceType;
         this.mapperAdapter = mapperAdapter;
 
@@ -101,23 +101,23 @@ public class PollingState<T> {
 
         if (responseContent == null || responseContent.isEmpty()) {
             CloudException exception = new CloudException("no body");
-            exception.setResponse(response);
+            exception.withResponse(response);
             throw exception;
         }
 
         PollingResource resource = mapperAdapter.deserialize(responseContent, PollingResource.class);
         if (resource != null && resource.getProperties() != null && resource.getProperties().getProvisioningState() != null) {
-            this.setStatus(resource.getProperties().getProvisioningState());
+            this.withStatus(resource.getProperties().getProvisioningState());
         } else {
-            this.setStatus(AzureAsyncOperation.SUCCESS_STATUS);
+            this.withStatus(AzureAsyncOperation.SUCCESS_STATUS);
         }
 
         CloudError error = new CloudError();
-        this.setError(error);
-        error.setCode(this.getStatus());
-        error.setMessage("Long running operation failed");
-        this.setResponse(response);
-        this.setResource(mapperAdapter.<T>deserialize(responseContent, resourceType));
+        this.withError(error);
+        error.withCode(this.getStatus());
+        error.withMessage("Long running operation failed");
+        this.withResponse(response);
+        this.withResource(mapperAdapter.<T>deserialize(responseContent, resourceType));
     }
 
     /**
@@ -128,13 +128,13 @@ public class PollingState<T> {
      */
 
     public void updateFromResponseOnDeletePost(Response<ResponseBody> response) throws IOException {
-        this.setResponse(response);
+        this.withResponse(response);
         String responseContent = null;
         if (response.body() != null) {
             responseContent = response.body().string();
             response.body().close();
         }
-        this.setResource(mapperAdapter.<T>deserialize(responseContent, resourceType));
+        this.withResource(mapperAdapter.<T>deserialize(responseContent, resourceType));
         setStatus(AzureAsyncOperation.SUCCESS_STATUS);
     }
 

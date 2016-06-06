@@ -82,26 +82,26 @@ public class UploadParameters {
      * @param localMetadataLocation Indicates the directory path where to store the local upload metadata file while the upload is in progress. This location must be writeable from this application. Default location if null: File.createTempFile()
      */
     public UploadParameters(String inputFilePath, String targetStreamPath, String accountName, int threadCount, boolean isOverwrite, boolean isResume, boolean isBinary, long maxSegmentLength, String localMetadataLocation) {
-        this.setInputFilePath(inputFilePath);
-        this.setTargetStreamPath(targetStreamPath);
-        this.setThreadCount(threadCount);
-        this.setAccountName(accountName);
-        this.setOverwrite(isOverwrite);
-        this.setResume(isResume);
-        this.setBinary(isBinary);
-        this.setMaxSegementLength(maxSegmentLength);
+        this.withInputFilePath(inputFilePath);
+        this.withTargetStreamPath(targetStreamPath);
+        this.withThreadCount(threadCount);
+        this.withAccountName(accountName);
+        this.withOverwrite(isOverwrite);
+        this.withResume(isResume);
+        this.withBinary(isBinary);
+        this.withMaxSegementLength(maxSegmentLength);
 
         if (localMetadataLocation == null || StringUtils.isEmpty(localMetadataLocation)) {
             localMetadataLocation = System.getProperty("java.io.tmpdir");
         }
 
-        this.setLocalMetadataLocation(localMetadataLocation);
+        this.withLocalMetadataLocation(localMetadataLocation);
 
-        this.setUseSegmentBlockBackOffRetryStrategy(true);
+        this.withUseSegmentBlockBackOffRetryStrategy(true);
 
         // TODO: in the future we will expose these as optional parameters, allowing customers to specify encoding and delimiters.
-        this.setFileEncoding(StandardCharsets.UTF_8);
-        this.setDelimiter(null);
+        this.withFileEncoding(StandardCharsets.UTF_8);
+        this.withDelimiter(null);
     }
 
     /**
@@ -120,7 +120,7 @@ public class UploadParameters {
      */
     protected UploadParameters(String inputFilePath, String targetStreamPath, String accountName, boolean useSegmentBlockBackOffRetryStrategy, int threadCount, boolean isOverwrite, boolean isResume, boolean isBinary, long maxSegmentLength, String localMetadataLocation) {
         this(inputFilePath, targetStreamPath, accountName, threadCount, isOverwrite, isResume, isBinary, maxSegmentLength, localMetadataLocation);
-        this.setUseSegmentBlockBackOffRetryStrategy(useSegmentBlockBackOffRetryStrategy);
+        this.withUseSegmentBlockBackOffRetryStrategy(useSegmentBlockBackOffRetryStrategy);
     }
 
     /**

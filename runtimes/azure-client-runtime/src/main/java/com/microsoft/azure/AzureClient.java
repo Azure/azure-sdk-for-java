@@ -84,9 +84,9 @@ public class AzureClient extends AzureServiceClient {
         }
         if (statusCode != 200 && statusCode != 201 && statusCode != 202) {
             CloudException exception = new CloudException(statusCode + " is not a valid polling status code");
-            exception.setResponse(response);
+            exception.withResponse(response);
             if (responseBody != null) {
-                exception.setBody((CloudError) restClient().mapperAdapter().deserialize(responseBody.string(), CloudError.class));
+                exception.withBody((CloudError) restClient().mapperAdapter().deserialize(responseBody.string(), CloudError.class));
                 responseBody.close();
             }
             throw exception;
@@ -171,10 +171,10 @@ public class AzureClient extends AzureServiceClient {
         }
         if (statusCode != 200 && statusCode != 201 && statusCode != 202) {
             CloudException exception = new CloudException(statusCode + " is not a valid polling status code");
-            exception.setResponse(response);
+            exception.withResponse(response);
             try {
                 if (responseBody != null) {
-                    exception.setBody((CloudError) restClient().mapperAdapter().deserialize(responseBody.string(), CloudError.class));
+                    exception.withBody((CloudError) restClient().mapperAdapter().deserialize(responseBody.string(), CloudError.class));
                     responseBody.close();
                 }
             } catch (Exception e) { /* ignore serialization errors on top of service errors */ }
@@ -259,9 +259,9 @@ public class AzureClient extends AzureServiceClient {
         }
         if (statusCode != 200 && statusCode != 202 && statusCode != 204) {
             CloudException exception = new CloudException(statusCode + " is not a valid polling status code");
-            exception.setResponse(response);
+            exception.withResponse(response);
             if (responseBody != null) {
-                exception.setBody((CloudError) restClient().mapperAdapter().deserialize(responseBody.string(), CloudError.class));
+                exception.withBody((CloudError) restClient().mapperAdapter().deserialize(responseBody.string(), CloudError.class));
                 responseBody.close();
             }
             throw exception;
@@ -281,7 +281,7 @@ public class AzureClient extends AzureServiceClient {
                 updateStateFromLocationHeaderOnPostOrDelete(pollingState);
             } else {
                 CloudException exception = new CloudException("No header in response");
-                exception.setResponse(response);
+                exception.withResponse(response);
                 throw exception;
             }
         }
@@ -344,10 +344,10 @@ public class AzureClient extends AzureServiceClient {
         }
         if (statusCode != 200 && statusCode != 202 && statusCode != 204) {
             CloudException exception = new CloudException(statusCode + " is not a valid polling status code");
-            exception.setResponse(response);
+            exception.withResponse(response);
             try {
                 if (responseBody != null) {
-                    exception.setBody((CloudError) restClient().mapperAdapter().deserialize(responseBody.string(), CloudError.class));
+                    exception.withBody((CloudError) restClient().mapperAdapter().deserialize(responseBody.string(), CloudError.class));
                     responseBody.close();
                 }
             } catch (Exception e) { /* ignore serialization errors on top of service errors */ }
@@ -418,8 +418,8 @@ public class AzureClient extends AzureServiceClient {
         Response<ResponseBody> response = poll(pollingState.getLocationHeaderLink());
         int statusCode = response.code();
         if (statusCode == 202) {
-            pollingState.setResponse(response);
-            pollingState.setStatus(AzureAsyncOperation.IN_PROGRESS_STATUS);
+            pollingState.withResponse(response);
+            pollingState.withStatus(AzureAsyncOperation.IN_PROGRESS_STATUS);
         } else if (statusCode == 200 || statusCode == 201) {
             pollingState.updateFromResponseOnPutPatch(response);
         }
@@ -446,8 +446,8 @@ public class AzureClient extends AzureServiceClient {
                 try {
                     int statusCode = result.getResponse().code();
                     if (statusCode == 202) {
-                        pollingState.setResponse(result.getResponse());
-                        pollingState.setStatus(AzureAsyncOperation.IN_PROGRESS_STATUS);
+                        pollingState.withResponse(result.getResponse());
+                        pollingState.withStatus(AzureAsyncOperation.IN_PROGRESS_STATUS);
                     } else if (statusCode == 200 || statusCode == 201) {
                         pollingState.updateFromResponseOnPutPatch(result.<ResponseBody>getResponse());
                     }
@@ -472,8 +472,8 @@ public class AzureClient extends AzureServiceClient {
         Response<ResponseBody> response = poll(pollingState.getLocationHeaderLink());
         int statusCode = response.code();
         if (statusCode == 202) {
-            pollingState.setResponse(response);
-            pollingState.setStatus(AzureAsyncOperation.IN_PROGRESS_STATUS);
+            pollingState.withResponse(response);
+            pollingState.withStatus(AzureAsyncOperation.IN_PROGRESS_STATUS);
         } else if (statusCode == 200 || statusCode == 201 || statusCode == 204) {
             pollingState.updateFromResponseOnDeletePost(response);
         }
@@ -500,8 +500,8 @@ public class AzureClient extends AzureServiceClient {
                 try {
                     int statusCode = result.getResponse().code();
                     if (statusCode == 202) {
-                        pollingState.setResponse(result.getResponse());
-                        pollingState.setStatus(AzureAsyncOperation.IN_PROGRESS_STATUS);
+                        pollingState.withResponse(result.getResponse());
+                        pollingState.withStatus(AzureAsyncOperation.IN_PROGRESS_STATUS);
                     } else if (statusCode == 200 || statusCode == 201 || statusCode == 204) {
                         pollingState.updateFromResponseOnDeletePost(result.getResponse());
                     }
@@ -577,17 +577,17 @@ public class AzureClient extends AzureServiceClient {
 
         if (body == null || body.getStatus() == null) {
             CloudException exception = new CloudException("no body");
-            exception.setResponse(response);
+            exception.withResponse(response);
             if (response.errorBody() != null) {
-                exception.setBody((CloudError) restClient().mapperAdapter().deserialize(response.errorBody().string(), CloudError.class));
+                exception.withBody((CloudError) restClient().mapperAdapter().deserialize(response.errorBody().string(), CloudError.class));
                 response.errorBody().close();
             }
             throw exception;
         }
 
-        pollingState.setStatus(body.getStatus());
-        pollingState.setResponse(response);
-        pollingState.setResource(null);
+        pollingState.withStatus(body.getStatus());
+        pollingState.withResponse(response);
+        pollingState.withResource(null);
     }
 
     /**
@@ -616,16 +616,16 @@ public class AzureClient extends AzureServiceClient {
                     }
                     if (body == null || body.getStatus() == null) {
                         CloudException exception = new CloudException("no body");
-                        exception.setResponse(result.getResponse());
+                        exception.withResponse(result.getResponse());
                         if (result.getResponse().errorBody() != null) {
-                            exception.setBody((CloudError) restClient().mapperAdapter().deserialize(result.getResponse().errorBody().string(), CloudError.class));
+                            exception.withBody((CloudError) restClient().mapperAdapter().deserialize(result.getResponse().errorBody().string(), CloudError.class));
                             result.getResponse().errorBody().close();
                         }
                         failure(exception);
                     } else {
-                        pollingState.setStatus(body.getStatus());
-                        pollingState.setResponse(result.getResponse());
-                        pollingState.setResource(null);
+                        pollingState.withStatus(body.getStatus());
+                        pollingState.withResponse(result.getResponse());
+                        pollingState.withResource(null);
                         callback.success(new ServiceResponse<>(pollingState.getResource(), pollingState.getResponse()));
                     }
                 } catch (IOException ex) {
@@ -655,12 +655,12 @@ public class AzureClient extends AzureServiceClient {
         int statusCode = response.code();
         if (statusCode != 200 && statusCode != 201 && statusCode != 202 && statusCode != 204) {
             CloudException exception = new CloudException(statusCode + " is not a valid polling status code");
-            exception.setResponse(response);
+            exception.withResponse(response);
             if (response.body() != null) {
-                exception.setBody((CloudError) restClient().mapperAdapter().deserialize(response.body().string(), CloudError.class));
+                exception.withBody((CloudError) restClient().mapperAdapter().deserialize(response.body().string(), CloudError.class));
                 response.body().close();
             } else if (response.errorBody() != null) {
-                exception.setBody((CloudError) restClient().mapperAdapter().deserialize(response.errorBody().string(), CloudError.class));
+                exception.withBody((CloudError) restClient().mapperAdapter().deserialize(response.errorBody().string(), CloudError.class));
                 response.errorBody().close();
             }
             throw exception;
@@ -696,12 +696,12 @@ public class AzureClient extends AzureServiceClient {
                     int statusCode = response.code();
                     if (statusCode != 200 && statusCode != 201 && statusCode != 202 && statusCode != 204) {
                         CloudException exception = new CloudException(statusCode + " is not a valid polling status code");
-                        exception.setResponse(response);
+                        exception.withResponse(response);
                         if (response.body() != null) {
-                            exception.setBody((CloudError) restClient().mapperAdapter().deserialize(response.body().string(), CloudError.class));
+                            exception.withBody((CloudError) restClient().mapperAdapter().deserialize(response.body().string(), CloudError.class));
                             response.body().close();
                         } else if (response.errorBody() != null) {
-                            exception.setBody((CloudError) restClient().mapperAdapter().deserialize(response.errorBody().string(), CloudError.class));
+                            exception.withBody((CloudError) restClient().mapperAdapter().deserialize(response.errorBody().string(), CloudError.class));
                             response.errorBody().close();
                         }
                         callback.failure(exception);

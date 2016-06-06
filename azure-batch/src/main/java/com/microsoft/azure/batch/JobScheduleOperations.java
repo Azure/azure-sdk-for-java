@@ -96,9 +96,9 @@ public class JobScheduleOperations implements IInheritedBehaviors {
         bhMgr.applyRequestBehaviors(options);
 
         JobSchedulePatchParameter param = new JobSchedulePatchParameter();
-        param.setJobSpecification(jobSpecification);
-        param.setMetadata(metadata);
-        param.setSchedule(schedule);
+        param.withJobSpecification(jobSpecification);
+        param.withMetadata(metadata);
+        param.withSchedule(schedule);
         this._parentBatchClient.getProtocolLayer().jobSchedules().patch(jobScheduleId, param, options);
     }
 
@@ -116,9 +116,9 @@ public class JobScheduleOperations implements IInheritedBehaviors {
         bhMgr.applyRequestBehaviors(options);
 
         JobScheduleUpdateParameter param = new JobScheduleUpdateParameter();
-        param.setJobSpecification(jobSpecification);
-        param.setMetadata(metadata);
-        param.setSchedule(schedule);
+        param.withJobSpecification(jobSpecification);
+        param.withMetadata(metadata);
+        param.withSchedule(schedule);
         this._parentBatchClient.getProtocolLayer().jobSchedules().update(jobScheduleId, param, options);
     }
 
@@ -164,9 +164,9 @@ public class JobScheduleOperations implements IInheritedBehaviors {
 
     public void createJobSchedule(String jobScheduleId, Schedule schedule, JobSpecification jobSpecification, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         JobScheduleAddParameter param = new JobScheduleAddParameter();
-        param.setJobSpecification(jobSpecification);
-        param.setSchedule(schedule);
-        param.setId(jobScheduleId);
+        param.withJobSpecification(jobSpecification);
+        param.withSchedule(schedule);
+        param.withId(jobScheduleId);
         createJobSchedule(param, additionalBehaviors);
     }
 

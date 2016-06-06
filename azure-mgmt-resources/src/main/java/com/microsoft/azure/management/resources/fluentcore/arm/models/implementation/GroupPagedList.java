@@ -42,7 +42,7 @@ public abstract class GroupPagedList<E> extends PagedList<E> {
 
         ResourceGroup resourceGroup = queue.poll();
         PageImpl<E> page = new PageImpl<>();
-        page.setItems(listNextGroup(resourceGroup.name()));
+        page.withItems(listNextGroup(resourceGroup.name()));
         return page;
     }
 

@@ -137,8 +137,8 @@ public class JobOperations implements IInheritedBehaviors {
 
     public void createJob(String jobId, PoolInformation poolInfo, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         JobAddParameter param = new JobAddParameter();
-        param.setId(jobId);
-        param.setPoolInfo(poolInfo);
+        param.withId(jobId);
+        param.withPoolInfo(poolInfo);
 
         createJob(param, additionalBehaviors);
     }
@@ -225,10 +225,10 @@ public class JobOperations implements IInheritedBehaviors {
         bhMgr.applyRequestBehaviors(options);
 
         JobUpdateParameter param = new JobUpdateParameter();
-        param.setPriority(priority);
-        param.setPoolInfo(poolInfo);
-        param.setConstraints(constraints);
-        param.setMetadata(metadata);
+        param.withPriority(priority);
+        param.withPoolInfo(poolInfo);
+        param.withConstraints(constraints);
+        param.withMetadata(metadata);
 
         this._parentBatchClient.getProtocolLayer().jobs().update(jobId, param, options);
     }
@@ -243,10 +243,10 @@ public class JobOperations implements IInheritedBehaviors {
 
     public void patchJob(String jobId, PoolInformation poolInfo, Integer priority, JobConstraints constraints, List<MetadataItem> metadata, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         JobPatchParameter param = new JobPatchParameter();
-        param.setPriority(priority);
-        param.setPoolInfo(poolInfo);
-        param.setConstraints(constraints);
-        param.setMetadata(metadata);
+        param.withPriority(priority);
+        param.withPoolInfo(poolInfo);
+        param.withConstraints(constraints);
+        param.withMetadata(metadata);
 
         patchJob(jobId, param, additionalBehaviors);
     }

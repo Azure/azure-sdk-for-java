@@ -89,8 +89,8 @@ class VirtualMachinesImpl
         };
 
         PageImpl<VirtualMachineSizeInner> page = new PageImpl<>();
-        page.setItems(virtualMachineSizesClient.list(region).getBody());
-        page.setNextPageLink(null);
+        page.withItems(virtualMachineSizesClient.list(region).getBody());
+        page.withNextPageLink(null);
         return converter.convert(new PagedList<VirtualMachineSizeInner>(page) {
             @Override
             public Page<VirtualMachineSizeInner> nextPage(String nextPageLink) throws RestException, IOException {

@@ -68,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void login(View view) {
         final MainActivity self = this;
-        progress.setTitle("Please wait...");
-        progress.setMessage("We are loading all your tenants and subscriptions...");
+        progress.withTitle("Please wait...");
+        progress.withMessage("We are loading all your tenants and subscriptions...");
         UserTokenCredentials credentials = new UserTokenCredentials(
                 self, CLIENT_ID, "common", REDIRECT_URI, PromptBehavior.REFRESH_SESSION, AzureEnvironment.AZURE
         );
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void abort(String msg) {
         final TextView textOutput = (TextView)findViewById(R.id.text_output);
-        textOutput.setText(msg);
+        textOutput.withText(msg);
         progress.dismiss();
     }
 

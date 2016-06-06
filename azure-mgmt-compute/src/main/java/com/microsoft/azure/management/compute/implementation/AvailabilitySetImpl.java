@@ -89,7 +89,7 @@ class AvailabilitySetImpl
     @Override
     public AvailabilitySet refresh() throws Exception {
         ServiceResponse<AvailabilitySetInner> response = client.get(this.resourceGroupName(), this.name());
-        this.setInner(response.getBody());
+        this.withInner(response.getBody());
         this.idOfVMsInSet = null;
         this.vmsInSet = null;
         return this;
@@ -97,13 +97,13 @@ class AvailabilitySetImpl
 
     @Override
     public AvailabilitySetImpl withUpdateDomainCount(int updateDomainCount) {
-        this.inner().setPlatformUpdateDomainCount(updateDomainCount);
+        this.inner().withPlatformUpdateDomainCount(updateDomainCount);
         return this;
     }
 
     @Override
     public AvailabilitySetImpl withFaultDomainCount(int faultDomainCount) {
-        this.inner().setPlatformFaultDomainCount(faultDomainCount);
+        this.inner().withPlatformFaultDomainCount(faultDomainCount);
         return this;
     }
 
@@ -127,7 +127,7 @@ class AvailabilitySetImpl
     protected void createResource() throws Exception {
         ServiceResponse<AvailabilitySetInner> response = this.client.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
         AvailabilitySetInner availabilitySetInner = response.getBody();
-        this.setInner(availabilitySetInner);
+        this.withInner(availabilitySetInner);
         this.idOfVMsInSet = null;
         this.vmsInSet = null;
     }

@@ -44,13 +44,13 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
         createClients();
         ResourceGroupInner group = new ResourceGroupInner();
         String location = "eastus2";
-        group.setLocation(location);
+        group.withLocation(location);
         resourceManagementClient.resourceGroups().createOrUpdate(rgName, group);
 
         // create storage and ADLS accounts, setting the accessKey
         DataLakeStoreAccountInner adlsAccount = new DataLakeStoreAccountInner();
-        adlsAccount.setLocation(location);
-        adlsAccount.setName(adlsAcct);
+        adlsAccount.withLocation(location);
+        adlsAccount.withName(adlsAcct);
         dataLakeStoreAccountManagementClient.accounts().create(rgName, adlsAcct, adlsAccount);
     }
 
@@ -448,7 +448,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
         Assert.assertFalse(originalOther == null || StringUtils.isEmpty(originalOther));
 
         // Set the other acl to RWX
-        dataLakeStoreFileSystemManagementClient.fileSystems().setAcl(adlsAcct, "/",
+        dataLakeStoreFileSystemManagementClient.fileSystems().withAcl(adlsAcct, "/",
                 StringUtils.join(aclToReplaceWith, ","));
 
         AclStatusResultInner newAcl = dataLakeStoreFileSystemManagementClient.fileSystems().getAclStatus(adlsAcct, "/").getBody();
@@ -571,7 +571,7 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
         String aclUserId = UUID.randomUUID().toString();
         newAcls += String.format(",user:%s:rwx", aclUserId);
 
-        dataLakeStoreFileSystemManagementClient.fileSystems().setAcl(adlsAcct, 
+        dataLakeStoreFileSystemManagementClient.fileSystems().withAcl(adlsAcct, 
                 "/",
                 newAcls);
 

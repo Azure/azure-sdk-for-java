@@ -254,7 +254,7 @@ public final class CatalogsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.createSecret(databaseName, secretName, parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return createSecretDelegate(call.execute());
     }
@@ -299,7 +299,7 @@ public final class CatalogsInner {
             return null;
         }
         Validator.validate(parameters, serviceCallback);
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.createSecret(databaseName, secretName, parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlSecretInner>(serviceCallback) {
@@ -354,7 +354,7 @@ public final class CatalogsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.updateSecret(databaseName, secretName, parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return updateSecretDelegate(call.execute());
     }
@@ -399,7 +399,7 @@ public final class CatalogsInner {
             return null;
         }
         Validator.validate(parameters, serviceCallback);
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.updateSecret(databaseName, secretName, parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlSecretInner>(serviceCallback) {
@@ -449,7 +449,7 @@ public final class CatalogsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.getSecret(databaseName, secretName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSecretDelegate(call.execute());
     }
@@ -488,7 +488,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.getSecret(databaseName, secretName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlSecretInner>(serviceCallback) {
@@ -538,7 +538,7 @@ public final class CatalogsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.deleteSecret(databaseName, secretName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return deleteSecretDelegate(call.execute());
     }
@@ -577,7 +577,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.deleteSecret(databaseName, secretName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -622,7 +622,7 @@ public final class CatalogsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.deleteAllSecrets(databaseName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return deleteAllSecretsDelegate(call.execute());
     }
@@ -656,7 +656,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.deleteAllSecrets(databaseName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -705,7 +705,7 @@ public final class CatalogsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.getExternalDataSource(databaseName, externalDataSourceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getExternalDataSourceDelegate(call.execute());
     }
@@ -744,7 +744,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.getExternalDataSource(databaseName, externalDataSourceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlExternalDataSourceInner>(serviceCallback) {
@@ -797,7 +797,7 @@ public final class CatalogsInner {
         final String select = null;
         final String orderby = null;
         final Boolean count = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listExternalDataSources(databaseName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<USqlExternalDataSourceInner>> response = listExternalDataSourcesDelegate(call.execute());
         PagedList<USqlExternalDataSourceInner> result = new PagedList<USqlExternalDataSourceInner>(response.getBody()) {
@@ -845,7 +845,7 @@ public final class CatalogsInner {
         final String select = null;
         final String orderby = null;
         final Boolean count = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listExternalDataSources(databaseName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlExternalDataSourceInner>>(serviceCallback) {
@@ -898,7 +898,7 @@ public final class CatalogsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listExternalDataSources(databaseName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<USqlExternalDataSourceInner>> response = listExternalDataSourcesDelegate(call.execute());
         PagedList<USqlExternalDataSourceInner> result = new PagedList<USqlExternalDataSourceInner>(response.getBody()) {
@@ -946,7 +946,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listExternalDataSources(databaseName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlExternalDataSourceInner>>(serviceCallback) {
@@ -1003,7 +1003,7 @@ public final class CatalogsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.getCredential(databaseName, credentialName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getCredentialDelegate(call.execute());
     }
@@ -1042,7 +1042,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.getCredential(databaseName, credentialName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlCredentialInner>(serviceCallback) {
@@ -1095,7 +1095,7 @@ public final class CatalogsInner {
         final String select = null;
         final String orderby = null;
         final Boolean count = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listCredentials(databaseName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<USqlCredentialInner>> response = listCredentialsDelegate(call.execute());
         PagedList<USqlCredentialInner> result = new PagedList<USqlCredentialInner>(response.getBody()) {
@@ -1143,7 +1143,7 @@ public final class CatalogsInner {
         final String select = null;
         final String orderby = null;
         final Boolean count = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listCredentials(databaseName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlCredentialInner>>(serviceCallback) {
@@ -1196,7 +1196,7 @@ public final class CatalogsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listCredentials(databaseName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<USqlCredentialInner>> response = listCredentialsDelegate(call.execute());
         PagedList<USqlCredentialInner> result = new PagedList<USqlCredentialInner>(response.getBody()) {
@@ -1244,7 +1244,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listCredentials(databaseName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlCredentialInner>>(serviceCallback) {
@@ -1305,7 +1305,7 @@ public final class CatalogsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.getProcedure(databaseName, schemaName, procedureName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getProcedureDelegate(call.execute());
     }
@@ -1349,7 +1349,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.getProcedure(databaseName, schemaName, procedureName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlProcedureInner>(serviceCallback) {
@@ -1406,7 +1406,7 @@ public final class CatalogsInner {
         final String select = null;
         final String orderby = null;
         final Boolean count = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listProcedures(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<USqlProcedureInner>> response = listProceduresDelegate(call.execute());
         PagedList<USqlProcedureInner> result = new PagedList<USqlProcedureInner>(response.getBody()) {
@@ -1459,7 +1459,7 @@ public final class CatalogsInner {
         final String select = null;
         final String orderby = null;
         final Boolean count = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listProcedures(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlProcedureInner>>(serviceCallback) {
@@ -1516,7 +1516,7 @@ public final class CatalogsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listProcedures(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<USqlProcedureInner>> response = listProceduresDelegate(call.execute());
         PagedList<USqlProcedureInner> result = new PagedList<USqlProcedureInner>(response.getBody()) {
@@ -1569,7 +1569,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listProcedures(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlProcedureInner>>(serviceCallback) {
@@ -1630,7 +1630,7 @@ public final class CatalogsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.getTable(databaseName, schemaName, tableName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getTableDelegate(call.execute());
     }
@@ -1674,7 +1674,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.getTable(databaseName, schemaName, tableName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlTableInner>(serviceCallback) {
@@ -1731,7 +1731,7 @@ public final class CatalogsInner {
         final String select = null;
         final String orderby = null;
         final Boolean count = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listTables(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<USqlTableInner>> response = listTablesDelegate(call.execute());
         PagedList<USqlTableInner> result = new PagedList<USqlTableInner>(response.getBody()) {
@@ -1784,7 +1784,7 @@ public final class CatalogsInner {
         final String select = null;
         final String orderby = null;
         final Boolean count = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listTables(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTableInner>>(serviceCallback) {
@@ -1841,7 +1841,7 @@ public final class CatalogsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listTables(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<USqlTableInner>> response = listTablesDelegate(call.execute());
         PagedList<USqlTableInner> result = new PagedList<USqlTableInner>(response.getBody()) {
@@ -1894,7 +1894,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listTables(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTableInner>>(serviceCallback) {
@@ -1955,7 +1955,7 @@ public final class CatalogsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.getView(databaseName, schemaName, viewName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getViewDelegate(call.execute());
     }
@@ -1999,7 +1999,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.getView(databaseName, schemaName, viewName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlViewInner>(serviceCallback) {
@@ -2056,7 +2056,7 @@ public final class CatalogsInner {
         final String select = null;
         final String orderby = null;
         final Boolean count = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listViews(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<USqlViewInner>> response = listViewsDelegate(call.execute());
         PagedList<USqlViewInner> result = new PagedList<USqlViewInner>(response.getBody()) {
@@ -2109,7 +2109,7 @@ public final class CatalogsInner {
         final String select = null;
         final String orderby = null;
         final Boolean count = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listViews(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlViewInner>>(serviceCallback) {
@@ -2166,7 +2166,7 @@ public final class CatalogsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listViews(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<USqlViewInner>> response = listViewsDelegate(call.execute());
         PagedList<USqlViewInner> result = new PagedList<USqlViewInner>(response.getBody()) {
@@ -2219,7 +2219,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listViews(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlViewInner>>(serviceCallback) {
@@ -2284,7 +2284,7 @@ public final class CatalogsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.getTableStatistic(databaseName, schemaName, tableName, statisticsName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getTableStatisticDelegate(call.execute());
     }
@@ -2333,7 +2333,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.getTableStatistic(databaseName, schemaName, tableName, statisticsName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlTableStatisticsInner>(serviceCallback) {
@@ -2394,7 +2394,7 @@ public final class CatalogsInner {
         final String select = null;
         final String orderby = null;
         final Boolean count = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listTableStatistics(databaseName, schemaName, tableName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<USqlTableStatisticsInner>> response = listTableStatisticsDelegate(call.execute());
         PagedList<USqlTableStatisticsInner> result = new PagedList<USqlTableStatisticsInner>(response.getBody()) {
@@ -2452,7 +2452,7 @@ public final class CatalogsInner {
         final String select = null;
         final String orderby = null;
         final Boolean count = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listTableStatistics(databaseName, schemaName, tableName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTableStatisticsInner>>(serviceCallback) {
@@ -2513,7 +2513,7 @@ public final class CatalogsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listTableStatistics(databaseName, schemaName, tableName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<USqlTableStatisticsInner>> response = listTableStatisticsDelegate(call.execute());
         PagedList<USqlTableStatisticsInner> result = new PagedList<USqlTableStatisticsInner>(response.getBody()) {
@@ -2571,7 +2571,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listTableStatistics(databaseName, schemaName, tableName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTableStatisticsInner>>(serviceCallback) {
@@ -2636,7 +2636,7 @@ public final class CatalogsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.getTablePartition(databaseName, schemaName, tableName, partitionName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getTablePartitionDelegate(call.execute());
     }
@@ -2685,7 +2685,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.getTablePartition(databaseName, schemaName, tableName, partitionName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlTablePartitionInner>(serviceCallback) {
@@ -2746,7 +2746,7 @@ public final class CatalogsInner {
         final String select = null;
         final String orderby = null;
         final Boolean count = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listTablePartitions(databaseName, schemaName, tableName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<USqlTablePartitionInner>> response = listTablePartitionsDelegate(call.execute());
         PagedList<USqlTablePartitionInner> result = new PagedList<USqlTablePartitionInner>(response.getBody()) {
@@ -2804,7 +2804,7 @@ public final class CatalogsInner {
         final String select = null;
         final String orderby = null;
         final Boolean count = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listTablePartitions(databaseName, schemaName, tableName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTablePartitionInner>>(serviceCallback) {
@@ -2865,7 +2865,7 @@ public final class CatalogsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listTablePartitions(databaseName, schemaName, tableName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<USqlTablePartitionInner>> response = listTablePartitionsDelegate(call.execute());
         PagedList<USqlTablePartitionInner> result = new PagedList<USqlTablePartitionInner>(response.getBody()) {
@@ -2923,7 +2923,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listTablePartitions(databaseName, schemaName, tableName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTablePartitionInner>>(serviceCallback) {
@@ -2987,7 +2987,7 @@ public final class CatalogsInner {
         final String select = null;
         final String orderby = null;
         final Boolean count = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listTypes(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<USqlTypeInner>> response = listTypesDelegate(call.execute());
         PagedList<USqlTypeInner> result = new PagedList<USqlTypeInner>(response.getBody()) {
@@ -3040,7 +3040,7 @@ public final class CatalogsInner {
         final String select = null;
         final String orderby = null;
         final Boolean count = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listTypes(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTypeInner>>(serviceCallback) {
@@ -3097,7 +3097,7 @@ public final class CatalogsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listTypes(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<USqlTypeInner>> response = listTypesDelegate(call.execute());
         PagedList<USqlTypeInner> result = new PagedList<USqlTypeInner>(response.getBody()) {
@@ -3150,7 +3150,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listTypes(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTypeInner>>(serviceCallback) {
@@ -3211,7 +3211,7 @@ public final class CatalogsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.getTableValuedFunction(databaseName, schemaName, tableValuedFunctionName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getTableValuedFunctionDelegate(call.execute());
     }
@@ -3255,7 +3255,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.getTableValuedFunction(databaseName, schemaName, tableValuedFunctionName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlTableValuedFunctionInner>(serviceCallback) {
@@ -3312,7 +3312,7 @@ public final class CatalogsInner {
         final String select = null;
         final String orderby = null;
         final Boolean count = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listTableValuedFunctions(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<USqlTableValuedFunctionInner>> response = listTableValuedFunctionsDelegate(call.execute());
         PagedList<USqlTableValuedFunctionInner> result = new PagedList<USqlTableValuedFunctionInner>(response.getBody()) {
@@ -3365,7 +3365,7 @@ public final class CatalogsInner {
         final String select = null;
         final String orderby = null;
         final Boolean count = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listTableValuedFunctions(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTableValuedFunctionInner>>(serviceCallback) {
@@ -3422,7 +3422,7 @@ public final class CatalogsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listTableValuedFunctions(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<USqlTableValuedFunctionInner>> response = listTableValuedFunctionsDelegate(call.execute());
         PagedList<USqlTableValuedFunctionInner> result = new PagedList<USqlTableValuedFunctionInner>(response.getBody()) {
@@ -3475,7 +3475,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listTableValuedFunctions(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTableValuedFunctionInner>>(serviceCallback) {
@@ -3532,7 +3532,7 @@ public final class CatalogsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.getAssembly(databaseName, assemblyName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getAssemblyDelegate(call.execute());
     }
@@ -3571,7 +3571,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.getAssembly(databaseName, assemblyName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlAssemblyInner>(serviceCallback) {
@@ -3624,7 +3624,7 @@ public final class CatalogsInner {
         final String select = null;
         final String orderby = null;
         final Boolean count = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listAssemblies(databaseName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<USqlAssemblyClrInner>> response = listAssembliesDelegate(call.execute());
         PagedList<USqlAssemblyClrInner> result = new PagedList<USqlAssemblyClrInner>(response.getBody()) {
@@ -3672,7 +3672,7 @@ public final class CatalogsInner {
         final String select = null;
         final String orderby = null;
         final Boolean count = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listAssemblies(databaseName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlAssemblyClrInner>>(serviceCallback) {
@@ -3725,7 +3725,7 @@ public final class CatalogsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listAssemblies(databaseName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<USqlAssemblyClrInner>> response = listAssembliesDelegate(call.execute());
         PagedList<USqlAssemblyClrInner> result = new PagedList<USqlAssemblyClrInner>(response.getBody()) {
@@ -3773,7 +3773,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listAssemblies(databaseName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlAssemblyClrInner>>(serviceCallback) {
@@ -3830,7 +3830,7 @@ public final class CatalogsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.getSchema(databaseName, schemaName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getSchemaDelegate(call.execute());
     }
@@ -3869,7 +3869,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.getSchema(databaseName, schemaName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlSchemaInner>(serviceCallback) {
@@ -3922,7 +3922,7 @@ public final class CatalogsInner {
         final String select = null;
         final String orderby = null;
         final Boolean count = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listSchemas(databaseName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<USqlSchemaInner>> response = listSchemasDelegate(call.execute());
         PagedList<USqlSchemaInner> result = new PagedList<USqlSchemaInner>(response.getBody()) {
@@ -3970,7 +3970,7 @@ public final class CatalogsInner {
         final String select = null;
         final String orderby = null;
         final Boolean count = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listSchemas(databaseName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlSchemaInner>>(serviceCallback) {
@@ -4023,7 +4023,7 @@ public final class CatalogsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listSchemas(databaseName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<USqlSchemaInner>> response = listSchemasDelegate(call.execute());
         PagedList<USqlSchemaInner> result = new PagedList<USqlSchemaInner>(response.getBody()) {
@@ -4071,7 +4071,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listSchemas(databaseName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlSchemaInner>>(serviceCallback) {
@@ -4124,7 +4124,7 @@ public final class CatalogsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.getDatabase(databaseName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getDatabaseDelegate(call.execute());
     }
@@ -4158,7 +4158,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.getDatabase(databaseName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<USqlDatabaseInner>(serviceCallback) {
@@ -4207,7 +4207,7 @@ public final class CatalogsInner {
         final String select = null;
         final String orderby = null;
         final Boolean count = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listDatabases(filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<USqlDatabaseInner>> response = listDatabasesDelegate(call.execute());
         PagedList<USqlDatabaseInner> result = new PagedList<USqlDatabaseInner>(response.getBody()) {
@@ -4250,7 +4250,7 @@ public final class CatalogsInner {
         final String select = null;
         final String orderby = null;
         final Boolean count = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listDatabases(filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlDatabaseInner>>(serviceCallback) {
@@ -4299,7 +4299,7 @@ public final class CatalogsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listDatabases(filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<USqlDatabaseInner>> response = listDatabasesDelegate(call.execute());
         PagedList<USqlDatabaseInner> result = new PagedList<USqlDatabaseInner>(response.getBody()) {
@@ -4342,7 +4342,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        this.client.restClient().withBaseUrl("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
         Call<ResponseBody> call = service.listDatabases(filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlDatabaseInner>>(serviceCallback) {
@@ -4385,7 +4385,7 @@ public final class CatalogsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl();
+        this.client.restClient().withBaseUrl();
         Call<ResponseBody> call = service.listExternalDataSourcesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return listExternalDataSourcesNextDelegate(call.execute());
     }
@@ -4407,7 +4407,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl();
+        this.client.restClient().withBaseUrl();
         Call<ResponseBody> call = service.listExternalDataSourcesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlExternalDataSourceInner>>(serviceCallback) {
@@ -4450,7 +4450,7 @@ public final class CatalogsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl();
+        this.client.restClient().withBaseUrl();
         Call<ResponseBody> call = service.listCredentialsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return listCredentialsNextDelegate(call.execute());
     }
@@ -4472,7 +4472,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl();
+        this.client.restClient().withBaseUrl();
         Call<ResponseBody> call = service.listCredentialsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlCredentialInner>>(serviceCallback) {
@@ -4515,7 +4515,7 @@ public final class CatalogsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl();
+        this.client.restClient().withBaseUrl();
         Call<ResponseBody> call = service.listProceduresNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return listProceduresNextDelegate(call.execute());
     }
@@ -4537,7 +4537,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl();
+        this.client.restClient().withBaseUrl();
         Call<ResponseBody> call = service.listProceduresNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlProcedureInner>>(serviceCallback) {
@@ -4580,7 +4580,7 @@ public final class CatalogsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl();
+        this.client.restClient().withBaseUrl();
         Call<ResponseBody> call = service.listTablesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return listTablesNextDelegate(call.execute());
     }
@@ -4602,7 +4602,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl();
+        this.client.restClient().withBaseUrl();
         Call<ResponseBody> call = service.listTablesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTableInner>>(serviceCallback) {
@@ -4645,7 +4645,7 @@ public final class CatalogsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl();
+        this.client.restClient().withBaseUrl();
         Call<ResponseBody> call = service.listViewsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return listViewsNextDelegate(call.execute());
     }
@@ -4667,7 +4667,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl();
+        this.client.restClient().withBaseUrl();
         Call<ResponseBody> call = service.listViewsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlViewInner>>(serviceCallback) {
@@ -4710,7 +4710,7 @@ public final class CatalogsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl();
+        this.client.restClient().withBaseUrl();
         Call<ResponseBody> call = service.listTableStatisticsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return listTableStatisticsNextDelegate(call.execute());
     }
@@ -4732,7 +4732,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl();
+        this.client.restClient().withBaseUrl();
         Call<ResponseBody> call = service.listTableStatisticsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTableStatisticsInner>>(serviceCallback) {
@@ -4775,7 +4775,7 @@ public final class CatalogsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl();
+        this.client.restClient().withBaseUrl();
         Call<ResponseBody> call = service.listTablePartitionsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return listTablePartitionsNextDelegate(call.execute());
     }
@@ -4797,7 +4797,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl();
+        this.client.restClient().withBaseUrl();
         Call<ResponseBody> call = service.listTablePartitionsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTablePartitionInner>>(serviceCallback) {
@@ -4840,7 +4840,7 @@ public final class CatalogsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl();
+        this.client.restClient().withBaseUrl();
         Call<ResponseBody> call = service.listTypesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return listTypesNextDelegate(call.execute());
     }
@@ -4862,7 +4862,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl();
+        this.client.restClient().withBaseUrl();
         Call<ResponseBody> call = service.listTypesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTypeInner>>(serviceCallback) {
@@ -4905,7 +4905,7 @@ public final class CatalogsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl();
+        this.client.restClient().withBaseUrl();
         Call<ResponseBody> call = service.listTableValuedFunctionsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return listTableValuedFunctionsNextDelegate(call.execute());
     }
@@ -4927,7 +4927,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl();
+        this.client.restClient().withBaseUrl();
         Call<ResponseBody> call = service.listTableValuedFunctionsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlTableValuedFunctionInner>>(serviceCallback) {
@@ -4970,7 +4970,7 @@ public final class CatalogsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl();
+        this.client.restClient().withBaseUrl();
         Call<ResponseBody> call = service.listAssembliesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return listAssembliesNextDelegate(call.execute());
     }
@@ -4992,7 +4992,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl();
+        this.client.restClient().withBaseUrl();
         Call<ResponseBody> call = service.listAssembliesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlAssemblyClrInner>>(serviceCallback) {
@@ -5035,7 +5035,7 @@ public final class CatalogsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl();
+        this.client.restClient().withBaseUrl();
         Call<ResponseBody> call = service.listSchemasNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return listSchemasNextDelegate(call.execute());
     }
@@ -5057,7 +5057,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl();
+        this.client.restClient().withBaseUrl();
         Call<ResponseBody> call = service.listSchemasNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlSchemaInner>>(serviceCallback) {
@@ -5100,7 +5100,7 @@ public final class CatalogsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl();
+        this.client.restClient().withBaseUrl();
         Call<ResponseBody> call = service.listDatabasesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return listDatabasesNextDelegate(call.execute());
     }
@@ -5122,7 +5122,7 @@ public final class CatalogsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl();
+        this.client.restClient().withBaseUrl();
         Call<ResponseBody> call = service.listDatabasesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<USqlDatabaseInner>>(serviceCallback) {

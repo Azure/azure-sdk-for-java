@@ -33,10 +33,10 @@ public abstract class DataLakeUploaderTestBase {
                 .build();
 
         resourceManagementClient = new ResourceManagementClientImpl(restClient);
-        resourceManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
+        resourceManagementClient.withSubscriptionId(System.getenv("arm.subscriptionid"));
 
         dataLakeStoreAccountManagementClient = new DataLakeStoreAccountManagementClientImpl(restClient);
-        dataLakeStoreAccountManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
+        dataLakeStoreAccountManagementClient.withSubscriptionId(System.getenv("arm.subscriptionid"));
 
         dataLakeStoreFileSystemManagementClient = new DataLakeStoreFileSystemManagementClientImpl(restClient);
     }

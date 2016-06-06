@@ -75,8 +75,8 @@ class PublicIpAddressesImpl
 
     private PagedList<PublicIPAddressInner> toPagedList(List<PublicIPAddressInner> list) {
         PageImpl<PublicIPAddressInner> page = new PageImpl<>();
-        page.setItems(list);
-        page.setNextPageLink(null);
+        page.withItems(list);
+        page.withNextPageLink(null);
         return new PagedList<PublicIPAddressInner>(page) {
             @Override
             public Page<PublicIPAddressInner> nextPage(String nextPageLink) throws RestException, IOException {
@@ -91,7 +91,7 @@ class PublicIpAddressesImpl
         PublicIPAddressInner inner = new PublicIPAddressInner();
 
         if(null == inner.dnsSettings()) {
-            inner.setDnsSettings(new PublicIPAddressDnsSettings());
+            inner.withDnsSettings(new PublicIPAddressDnsSettings());
         }
         
         return new PublicIpAddressImpl(name, inner, this.client, this.resourceGroups);

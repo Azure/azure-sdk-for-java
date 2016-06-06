@@ -74,7 +74,7 @@ public class DataLakeStoreUploader {
         if (metadata.SegmentCount < this.Parameters.getThreadCount()) {
             // reducing the thread count to make it equal to the segment count
             // if it is larger, since those extra threads will not be used.
-            this.Parameters.setThreadCount(metadata.SegmentCount);
+            this.Parameters.withThreadCount(metadata.SegmentCount);
         }
 
         //begin (or resume) uploading the file
