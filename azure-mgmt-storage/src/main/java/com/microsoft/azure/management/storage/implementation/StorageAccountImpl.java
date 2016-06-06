@@ -131,7 +131,7 @@ class StorageAccountImpl
 
     @Override
     public StorageAccountImpl withAccountType(AccountType accountType) {
-        this.inner().setAccountType(accountType);
+        this.inner().withAccountType(accountType);
         return this;
     }
 
@@ -143,9 +143,9 @@ class StorageAccountImpl
     @Override
     protected void createResource() throws Exception {
         StorageAccountCreateParametersInner createParameters = new StorageAccountCreateParametersInner();
-        createParameters.setAccountType(this.inner().accountType());
-        createParameters.setLocation(this.region());
-        createParameters.setTags(this.inner().getTags());
+        createParameters.withAccountType(this.inner().accountType());
+        createParameters.withLocation(this.region());
+        createParameters.withTags(this.inner().getTags());
 
         ServiceResponse<StorageAccountInner> response =
                 this.client.create(this.resourceGroupName(), this.name(), createParameters);
@@ -162,25 +162,25 @@ class StorageAccountImpl
     @Override
     public StorageAccount apply() throws Exception {
         StorageAccountUpdateParametersInner updateParameters = new StorageAccountUpdateParametersInner();
-        updateParameters.setAccountType(accountType());
-        updateParameters.setCustomDomain(customDomain());
+        updateParameters.withAccountType(accountType());
+        updateParameters.withCustomDomain(customDomain());
         this.setInner(client.update(resourceGroupName(), name(), updateParameters).getBody());
         return this;
     }
 
     @Override
     public Update withCustomDomain(CustomDomain customDomain) {
-        inner().setCustomDomain(customDomain);
+        inner().withCustomDomain(customDomain);
         return this;
     }
 
     @Override
     public Update withCustomDomain(String name) {
-        return withCustomDomain(new CustomDomain().setName(name));
+        return withCustomDomain(new CustomDomain().withName(name));
     }
 
     @Override
     public Update withCustomDomain(String name, boolean useSubDomain) {
-        return withCustomDomain(new CustomDomain().setName(name).setUseSubDomain(useSubDomain));
+        return withCustomDomain(new CustomDomain().withName(name).withUseSubDomain(useSubDomain));
     }
 }

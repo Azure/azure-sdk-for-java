@@ -30,7 +30,7 @@ public abstract class ResourceImpl<
         
         // Initialize tags
         if(innerObject.getTags() == null) {
-            innerObject.setTags(new TreeMap<String, String>());
+            innerObject.withTags(new TreeMap<String, String>());
         }
     }
 
@@ -77,7 +77,7 @@ public abstract class ResourceImpl<
 
     @SuppressWarnings("unchecked")
     public final FluentModelImplT withTags(Map<String, String> tags) {
-        this.inner().setTags(new HashMap<>(tags));
+        this.inner().withTags(new HashMap<>(tags));
         return (FluentModelImplT) this;
     }
 
@@ -99,7 +99,7 @@ public abstract class ResourceImpl<
 
     @SuppressWarnings("unchecked")
     public final FluentModelImplT withRegion(String regionName) {
-        this.inner().setLocation(regionName);
+        this.inner().withLocation(regionName);
         return (FluentModelImplT) this;
     }
 

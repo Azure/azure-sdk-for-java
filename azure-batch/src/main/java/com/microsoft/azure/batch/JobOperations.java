@@ -7,12 +7,35 @@
 package com.microsoft.azure.batch;
 
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.batch.protocol.models.*;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceResponse;
+import com.microsoft.azure.batch.protocol.models.BatchErrorException;
+import com.microsoft.azure.batch.protocol.models.CloudJob;
+import com.microsoft.azure.batch.protocol.models.DisableJobOption;
+import com.microsoft.azure.batch.protocol.models.JobAddOptions;
+import com.microsoft.azure.batch.protocol.models.JobAddParameter;
+import com.microsoft.azure.batch.protocol.models.JobConstraints;
+import com.microsoft.azure.batch.protocol.models.JobDeleteOptions;
+import com.microsoft.azure.batch.protocol.models.JobDisableOptions;
+import com.microsoft.azure.batch.protocol.models.JobEnableOptions;
+import com.microsoft.azure.batch.protocol.models.JobGetAllJobsLifetimeStatisticsHeaders;
+import com.microsoft.azure.batch.protocol.models.JobGetAllJobsLifetimeStatisticsOptions;
+import com.microsoft.azure.batch.protocol.models.JobGetHeaders;
+import com.microsoft.azure.batch.protocol.models.JobGetOptions;
+import com.microsoft.azure.batch.protocol.models.JobListFromJobScheduleHeaders;
+import com.microsoft.azure.batch.protocol.models.JobListFromJobScheduleOptions;
+import com.microsoft.azure.batch.protocol.models.JobListHeaders;
+import com.microsoft.azure.batch.protocol.models.JobListOptions;
+import com.microsoft.azure.batch.protocol.models.JobListPreparationAndReleaseTaskStatusHeaders;
+import com.microsoft.azure.batch.protocol.models.JobListPreparationAndReleaseTaskStatusOptions;
+import com.microsoft.azure.batch.protocol.models.JobPatchOptions;
+import com.microsoft.azure.batch.protocol.models.JobPatchParameter;
+import com.microsoft.azure.batch.protocol.models.JobPreparationAndReleaseTaskExecutionInformation;
+import com.microsoft.azure.batch.protocol.models.JobStatistics;
+import com.microsoft.azure.batch.protocol.models.JobTerminateOptions;
+import com.microsoft.azure.batch.protocol.models.JobUpdateOptions;
+import com.microsoft.azure.batch.protocol.models.JobUpdateParameter;
+import com.microsoft.azure.batch.protocol.models.MetadataItem;
+import com.microsoft.azure.batch.protocol.models.PoolInformation;
 import com.microsoft.rest.ServiceResponseWithHeaders;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -136,9 +159,9 @@ public class JobOperations implements IInheritedBehaviors {
     }
 
     public void createJob(String jobId, PoolInformation poolInfo, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        JobAddParameter param = new JobAddParameter();
-        param.setId(jobId);
-        param.setPoolInfo(poolInfo);
+        JobAddParameter param = new JobAddParameter()
+                .withId(jobId)
+                .withPoolInfo(poolInfo);
 
         createJob(param, additionalBehaviors);
     }
@@ -224,11 +247,11 @@ public class JobOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        JobUpdateParameter param = new JobUpdateParameter();
-        param.setPriority(priority);
-        param.setPoolInfo(poolInfo);
-        param.setConstraints(constraints);
-        param.setMetadata(metadata);
+        JobUpdateParameter param = new JobUpdateParameter()
+                .withPriority(priority)
+                .withPoolInfo(poolInfo)
+                .withConstraints(constraints)
+                .withMetadata(metadata);
 
         this._parentBatchClient.getProtocolLayer().jobs().update(jobId, param, options);
     }
@@ -242,11 +265,11 @@ public class JobOperations implements IInheritedBehaviors {
     }
 
     public void patchJob(String jobId, PoolInformation poolInfo, Integer priority, JobConstraints constraints, List<MetadataItem> metadata, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        JobPatchParameter param = new JobPatchParameter();
-        param.setPriority(priority);
-        param.setPoolInfo(poolInfo);
-        param.setConstraints(constraints);
-        param.setMetadata(metadata);
+        JobPatchParameter param = new JobPatchParameter()
+                .withPriority(priority)
+                .withPoolInfo(poolInfo)
+                .withConstraints(constraints)
+                .withMetadata(metadata);
 
         patchJob(jobId, param, additionalBehaviors);
     }

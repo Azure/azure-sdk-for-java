@@ -71,8 +71,8 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
 
     public void updateComputeNodeUser(String poolId, String nodeId, String userName, String password, DateTime expiryTime, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         NodeUpdateUserParameter param = new NodeUpdateUserParameter();
-        param.setPassword(password);
-        param.setExpiryTime(expiryTime);
+        param.withPassword(password);
+        param.withExpiryTime(expiryTime);
 
         updateComputeNodeUser(poolId, nodeId, userName, param, additionalBehaviors);
     }
@@ -83,7 +83,7 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
 
     public void updateComputeNodeUser(String poolId, String nodeId, String userName, String sshPublicKey, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         NodeUpdateUserParameter param = new NodeUpdateUserParameter();
-        param.setSshPublicKey(sshPublicKey);
+        param.withSshPublicKey(sshPublicKey);
 
         updateComputeNodeUser(poolId, nodeId, userName, param, additionalBehaviors);
     }

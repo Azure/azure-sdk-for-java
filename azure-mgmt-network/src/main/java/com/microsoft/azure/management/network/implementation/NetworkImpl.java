@@ -90,8 +90,8 @@ class NetworkImpl
     @Override
     public NetworkImpl withSubnet(String name, String cidr) {
         SubnetInner azureSubnet = new SubnetInner();
-        azureSubnet.setName(name);
-        azureSubnet.setAddressPrefix(cidr);
+        azureSubnet.withName(name);
+        azureSubnet.withAddressPrefix(cidr);
         this.inner().subnets().add(azureSubnet);
         this.subnets.add(new SubnetImpl(name, azureSubnet, this));
         return this;
@@ -100,7 +100,7 @@ class NetworkImpl
     @Override
     public NetworkImpl withSubnets(Map<String, String> nameCidrPairs) {
         List<SubnetInner> azureSubnets = new ArrayList<>();
-        this.inner().setSubnets(azureSubnets);
+        this.inner().withSubnets(azureSubnets);
         initializeSubnetsFromInner();
         for(Entry<String, String> pair : nameCidrPairs.entrySet()) {
             this.withSubnet(pair.getKey(), pair.getValue());

@@ -81,10 +81,10 @@ public final class ComputeManager {
 
     private ComputeManager(RestClient restClient, String subscriptionId) {
         computeManagementClient = new ComputeManagementClientImpl(restClient);
-        computeManagementClient.setSubscriptionId(subscriptionId);
+        computeManagementClient.withSubscriptionId(subscriptionId);
         // TODO this will be removed once we have NetworkInterfaces entry point available in NetworkManager
         networkManagementClient = new NetworkManagementClientImpl(restClient);
-        networkManagementClient.setSubscriptionId(subscriptionId);
+        networkManagementClient.withSubscriptionId(subscriptionId);
 
         resourceManager = ResourceManager.authenticate(restClient).withSubscription(subscriptionId);
         storageManager = StorageManager.authenticate(restClient, subscriptionId);

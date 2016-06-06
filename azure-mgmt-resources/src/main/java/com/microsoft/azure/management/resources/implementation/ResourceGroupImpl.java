@@ -70,7 +70,7 @@ public class ResourceGroupImpl extends
 
     @Override
     public ResourceGroupImpl withRegion(String regionName) {
-        this.inner().setLocation(regionName);
+        this.inner().withLocation(regionName);
         return this;
     }
 
@@ -81,14 +81,14 @@ public class ResourceGroupImpl extends
 
     @Override
     public ResourceGroupImpl withTags(Map<String, String> tags) {
-        this.inner().setTags(new HashMap<>(tags));
+        this.inner().withTags(new HashMap<>(tags));
         return this;
     }
 
     @Override
     public ResourceGroupImpl withTag(String key, String value) {
         if (this.inner().tags() == null) {
-            this.inner().setTags(new HashMap<String, String>());
+            this.inner().withTags(new HashMap<String, String>());
         }
         this.inner().tags().put(key, value);
         return this;
@@ -130,8 +130,8 @@ public class ResourceGroupImpl extends
     @Override
     protected void createResource() throws Exception {
         ResourceGroupInner params = new ResourceGroupInner();
-        params.setLocation(this.inner().location());
-        params.setTags(this.inner().tags());
+        params.withLocation(this.inner().location());
+        params.withTags(this.inner().tags());
         client.createOrUpdate(this.name(), params);
     }
 }
