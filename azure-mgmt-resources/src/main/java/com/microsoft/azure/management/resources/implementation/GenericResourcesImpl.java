@@ -10,6 +10,7 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.GenericResources;
 import com.microsoft.azure.management.resources.ResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupsInner;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
@@ -48,21 +49,6 @@ final class GenericResourcesImpl
     }
 
     @Override
-    public GenericResource get(String groupName, String name) throws IOException, CloudException {
-        return getIntern(groupName, name);
-    }
-
-    @Override
-    public void delete(String id) throws Exception {
-        // TODO
-    }
-
-    @Override
-    public void delete(String groupName, String name) throws Exception {
-        // TODO
-    }
-
-    @Override
     public GenericResource.DefinitionBlank define(String name) {
         return new GenericResourceImpl(name, new GenericResourceInner(), client, serviceClient);
     }
@@ -73,6 +59,17 @@ final class GenericResourcesImpl
     }
 
     @Override
+    public GenericResource get(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws CloudException, IOException {
+        GenericResourceInner inner = client.get(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).getBody();
+        GenericResourceImpl resource = new GenericResourceImpl(resourceName, inner, client, serviceClient);
+        return resource.withExistingGroup(resourceGroupName)
+                .withProviderNamespace(resourceProviderNamespace)
+                .withParentResource(parentResourcePath)
+                .withResourceType(resourceType)
+                .withApiVersion(apiVersion);
+    }
+
+    @Override
     public void moveResources(String sourceResourceGroupName, ResourceGroup targetResourceGroup, List<String> resources) throws CloudException, IOException, InterruptedException {
         ResourcesMoveInfoInner moveInfo = new ResourcesMoveInfoInner();
         moveInfo.setTargetResourceGroup(targetResourceGroup.id());
@@ -80,26 +77,22 @@ final class GenericResourcesImpl
         client.moveResources(sourceResourceGroupName, moveInfo);
     }
 
+    @Override
+    public void delete(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws CloudException, IOException {
+        client.delete(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion);
+    }
+
     private PagedList<GenericResource> listIntern(String groupName) throws IOException, CloudException {
         PagedListConverter<GenericResourceInner, GenericResource> converter = new PagedListConverter<GenericResourceInner, GenericResource>() {
             @Override
             public GenericResource typeConvert(GenericResourceInner genericResourceInner) {
-                return new GenericResourceImpl(genericResourceInner.id(), genericResourceInner, client, serviceClient);
+                return new GenericResourceImpl(genericResourceInner.id(), genericResourceInner, client, serviceClient)
+                        .withExistingGroup(ResourceUtils.groupFromResourceId(genericResourceInner.id()))
+                        .withProviderNamespace(ResourceUtils.resourceProviderFromResourceId(genericResourceInner.id()))
+                        .withResourceType(ResourceUtils.resourceTypeFromResourceId(genericResourceInner.id()))
+                        .withParentResource(ResourceUtils.parentResourcePathFromResourceId(genericResourceInner.id()));
             }
         };
         return converter.convert(resourceGroups.listResources(groupName).getBody());
-    }
-
-    private GenericResource getIntern(String groupName, String name) throws IOException, CloudException {
-        if (name == null) {
-            return null;
-        }
-        List<GenericResourceInner> innerList = resourceGroups.listResources(groupName).getBody();
-        for (GenericResourceInner inner : innerList) {
-            if (name.equals(inner.name())) {
-                return new GenericResourceImpl(inner.id(), inner, client, serviceClient);
-            }
-        }
-        return null;
     }
 }
