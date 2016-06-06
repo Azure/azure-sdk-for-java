@@ -638,7 +638,7 @@ class VirtualMachineImpl
         }
 
         SubnetInner subnetInner = new SubnetInner();
-        subnetInner.setId(virtualNetwork.inner().subnets().get(0).id());
+        subnetInner.withId(virtualNetwork.inner().subnets().get(0).id());
 
         NetworkInterfaceInner networkInterfaceInner = new NetworkInterfaceInner();
         networkInterfaceInner.withLocation(this.region());
@@ -655,7 +655,7 @@ class VirtualMachineImpl
                     networkInterfaces.createOrUpdate(this.resourceGroupName(), this.primaryNetworkInterfaceName, networkInterfaceInner);
             NetworkInterfaceReference nicReference = new NetworkInterfaceReference();
             nicReference.withPrimary(true);
-            nicReference.setId(newNic.getBody().id());
+            nicReference.withId(newNic.getBody().id());
             return nicReference;
         } catch (Exception ex) {
             throw new RuntimeException(ex);

@@ -36,19 +36,19 @@ public class DataLakeAnalyticsAccountOperationsTests extends DataLakeAnalyticsMa
         createClients();
         location =environmentLocation;
         ResourceGroupInner group = new ResourceGroupInner();
-        group.setLocation(location);
+        group.withLocation(location);
         resourceManagementClient.resourceGroups().createOrUpdate(rgName, group);
         // create storage and ADLS accounts, setting the accessKey
         DataLakeStoreAccountInner adlsAccount = new DataLakeStoreAccountInner();
-        adlsAccount.setLocation(location);
-        adlsAccount.setName(adlsAcct);
+        adlsAccount.withLocation(location);
+        adlsAccount.withName(adlsAcct);
         dataLakeStoreAccountManagementClient.accounts().create(rgName, adlsAcct, adlsAccount);
-        adlsAccount.setName(adlsAcct2);
+        adlsAccount.withName(adlsAcct2);
         dataLakeStoreAccountManagementClient.accounts().create(rgName, adlsAcct2, adlsAccount);
 
         StorageAccountCreateParametersInner createParams = new StorageAccountCreateParametersInner();
-        createParams.setLocation(location);
-        createParams.setAccountType(AccountType.STANDARD_LRS);
+        createParams.withLocation(location);
+        createParams.withAccountType(AccountType.STANDARD_LRS);
         storageManagementClient.storageAccounts().create(rgName, storageAcct, createParams);
         storageAccessKey = storageManagementClient.storageAccounts().listKeys(rgName, storageAcct).getBody().key1();
     }
@@ -69,17 +69,17 @@ public class DataLakeAnalyticsAccountOperationsTests extends DataLakeAnalyticsMa
         DataLakeAnalyticsAccountProperties createProperties = new DataLakeAnalyticsAccountProperties();
         List<DataLakeStoreAccountInfoInner> adlsAccts = new ArrayList<DataLakeStoreAccountInfoInner>();
         DataLakeStoreAccountInfoInner adlsInfo = new DataLakeStoreAccountInfoInner();
-        adlsInfo.setName(adlsAcct);
+        adlsInfo.withName(adlsAcct);
         adlsAccts.add(adlsInfo);
 
-        createProperties.setDataLakeStoreAccounts(adlsAccts);
-        createProperties.setDefaultDataLakeStoreAccount(adlsAcct);
+        createProperties.withDataLakeStoreAccounts(adlsAccts);
+        createProperties.withDefaultDataLakeStoreAccount(adlsAcct);
 
         DataLakeAnalyticsAccountInner createParams = new DataLakeAnalyticsAccountInner();
-        createParams.setLocation(location);
-        createParams.setName(adlaAcct);
-        createParams.setProperties(createProperties);
-        createParams.setTags(new HashMap<String, String>());
+        createParams.withLocation(location);
+        createParams.withName(adlaAcct);
+        createParams.withProperties(createProperties);
+        createParams.withTags(new HashMap<String, String>());
         createParams.tags().put("testkey", "testvalue");
 
         DataLakeAnalyticsAccountInner createResponse = dataLakeAnalyticsAccountManagementClient.accounts().create(rgName, adlaAcct, createParams).getBody();
@@ -93,7 +93,7 @@ public class DataLakeAnalyticsAccountOperationsTests extends DataLakeAnalyticsMa
 
         // update the tags
         createParams.tags().put("testkey2", "testvalue2");
-        createParams.setProperties(null);
+        createParams.withProperties(null);
         DataLakeAnalyticsAccountInner updateResponse = dataLakeAnalyticsAccountManagementClient.accounts().update(rgName, adlaAcct, createParams).getBody();
         Assert.assertEquals(location, updateResponse.location());
         Assert.assertEquals("Microsoft.DataLakeAnalytics/accounts", updateResponse.type());
@@ -157,7 +157,7 @@ public class DataLakeAnalyticsAccountOperationsTests extends DataLakeAnalyticsMa
         AddDataLakeStoreParametersInner addAdlsParams = new AddDataLakeStoreParametersInner();
 
         // This needs to be set and empty for now due to the front end expecting a valid json body
-        addAdlsParams.setProperties(new DataLakeStoreAccountInfoProperties());
+        addAdlsParams.withProperties(new DataLakeStoreAccountInfoProperties());
         dataLakeAnalyticsAccountManagementClient.accounts().addDataLakeStoreAccount(rgName, adlaAcct, adlsAcct2, addAdlsParams);
 
         // list ADLS accounts
@@ -179,8 +179,8 @@ public class DataLakeAnalyticsAccountOperationsTests extends DataLakeAnalyticsMa
         AddStorageAccountParametersInner addStoreParams = new AddStorageAccountParametersInner();
 
         StorageAccountProperties storageAccountProperties = new StorageAccountProperties();
-        storageAccountProperties.setAccessKey(storageAccessKey);
-        addStoreParams.setProperties(storageAccountProperties);
+        storageAccountProperties.withAccessKey(storageAccessKey);
+        addStoreParams.withProperties(storageAccountProperties);
         dataLakeAnalyticsAccountManagementClient.accounts().addStorageAccount(rgName, adlaAcct, storageAcct, addStoreParams);
 
         // list ADLS accounts
