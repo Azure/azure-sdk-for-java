@@ -19,7 +19,7 @@ public abstract class IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
 		return this.innerObject;
 	}
 	
-	protected void setInner(InnerModelT inner) {
+	protected void withInner(InnerModelT inner) {
 		this.innerObject = inner;
 	}
 }

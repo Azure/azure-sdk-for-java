@@ -60,7 +60,7 @@ class BehaviorManager {
         return baseBehaviors;
     }
 
-    public void setBaseBehaviors(Collection<BatchClientBehavior> baseBehaviors) {
+    public void withBaseBehaviors(Collection<BatchClientBehavior> baseBehaviors) {
         this.baseBehaviors = baseBehaviors;
     }
 
@@ -68,7 +68,7 @@ class BehaviorManager {
         return perCallBehaviors;
     }
 
-    public void setPerCallBehaviors(Collection<BatchClientBehavior> perCallBehaviors) {
+    public void withPerCallBehaviors(Collection<BatchClientBehavior> perCallBehaviors) {
         this.perCallBehaviors = perCallBehaviors;
     }
 }

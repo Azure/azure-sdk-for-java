@@ -123,7 +123,7 @@ public class UserTokenCredentials extends TokenCredentials {
      *
      * @param domain the tenant or domain containing the application.
      */
-    public void setDomain(String domain) {
+    public void withDomain(String domain) {
         this.domain = domain;
     }
 

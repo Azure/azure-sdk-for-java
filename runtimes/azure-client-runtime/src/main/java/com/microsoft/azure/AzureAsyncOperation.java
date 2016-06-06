@@ -84,7 +84,7 @@ public class AzureAsyncOperation {
      *
      * @param status the status of the asynchronous request.
      */
-    public void setStatus(String status) {
+    public void withStatus(String status) {
         this.status = status;
     }
 
@@ -109,7 +109,7 @@ public class AzureAsyncOperation {
      *
      * @param error the cloud error.
      */
-    public void setError(CloudError error) {
+    public void withError(CloudError error) {
         this.error = error;
     }
 
@@ -133,7 +133,7 @@ public class AzureAsyncOperation {
      *
      * @param retryAfter the delay in seconds.
      */
-    public void setRetryAfter(int retryAfter) {
+    public void withRetryAfter(int retryAfter) {
         this.retryAfter = retryAfter;
     }
 }

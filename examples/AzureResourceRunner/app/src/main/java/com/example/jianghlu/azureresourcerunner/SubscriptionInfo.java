@@ -20,7 +20,7 @@ public class SubscriptionInfo implements Serializable {
         return tenantId;
     }
 
-    public void setTenantId(String tenantId) {
+    public void withTenantId(String tenantId) {
         this.tenantId = tenantId;
     }
 
@@ -28,7 +28,7 @@ public class SubscriptionInfo implements Serializable {
         return subscriptionId;
     }
 
-    public void setSubscriptionId(String subscriptionId) {
+    public void withSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
     }
 
@@ -36,7 +36,7 @@ public class SubscriptionInfo implements Serializable {
         return subscriptionName;
     }
 
-    public void setSubscriptionName(String subscriptionName) {
+    public void withSubscriptionName(String subscriptionName) {
         this.subscriptionName = subscriptionName;
     }
 }

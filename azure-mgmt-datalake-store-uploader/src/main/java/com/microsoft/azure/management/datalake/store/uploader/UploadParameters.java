@@ -137,7 +137,7 @@ public class UploadParameters {
      *
      * @param useSegmentBlockBackOffRetryStrategy
      */
-    private void setUseSegmentBlockBackOffRetryStrategy(boolean useSegmentBlockBackOffRetryStrategy) {
+    private void withUseSegmentBlockBackOffRetryStrategy(boolean useSegmentBlockBackOffRetryStrategy) {
         this.useSegmentBlockBackOffRetryStrategy = useSegmentBlockBackOffRetryStrategy;
     }
 
@@ -155,7 +155,7 @@ public class UploadParameters {
      *
      * @param inputFilePath
      */
-    private void setInputFilePath(String inputFilePath) {
+    private void withInputFilePath(String inputFilePath) {
         this.inputFilePath = inputFilePath;
     }
 
@@ -173,7 +173,7 @@ public class UploadParameters {
      *
      * @param targetStreamPath
      */
-    private void setTargetStreamPath(String targetStreamPath) {
+    private void withTargetStreamPath(String targetStreamPath) {
         this.targetStreamPath = targetStreamPath;
     }
 
@@ -191,7 +191,7 @@ public class UploadParameters {
      *
      * @param accountName
      */
-    private void setAccountName(String accountName) {
+    private void withAccountName(String accountName) {
         this.accountName = accountName;
     }
 
@@ -209,7 +209,7 @@ public class UploadParameters {
      *
      * @param threadCount The number of threads to use for the upload.
      */
-    protected void setThreadCount(int threadCount) {
+    protected void withThreadCount(int threadCount) {
         this.threadCount = threadCount;
     }
 
@@ -227,7 +227,7 @@ public class UploadParameters {
      *
      * @param overwrite
      */
-    private void setOverwrite(boolean overwrite) {
+    private void withOverwrite(boolean overwrite) {
         this.overwrite = overwrite;
     }
 
@@ -245,7 +245,7 @@ public class UploadParameters {
      *
      * @param resume
      */
-    private void setResume(boolean resume) {
+    private void withResume(boolean resume) {
         this.resume = resume;
     }
 
@@ -263,7 +263,7 @@ public class UploadParameters {
      *
      * @param binary
      */
-    private void setBinary(boolean binary) {
+    private void withBinary(boolean binary) {
         this.binary = binary;
     }
 
@@ -281,7 +281,7 @@ public class UploadParameters {
      *
      * @param maxSegementLength
      */
-    private void setMaxSegementLength(long maxSegementLength) {
+    private void withMaxSegementLength(long maxSegementLength) {
         this.maxSegementLength = maxSegementLength;
     }
 
@@ -299,7 +299,7 @@ public class UploadParameters {
      *
      * @param localMetadataLocation
      */
-    private void setLocalMetadataLocation(String localMetadataLocation) {
+    private void withLocalMetadataLocation(String localMetadataLocation) {
         this.localMetadataLocation = localMetadataLocation;
     }
 
@@ -317,7 +317,7 @@ public class UploadParameters {
      *
      * @param fileEncoding
      */
-    private void setFileEncoding(Charset fileEncoding) {
+    private void withFileEncoding(Charset fileEncoding) {
         this.fileEncoding = fileEncoding;
     }
 
@@ -335,7 +335,7 @@ public class UploadParameters {
      *
      * @param delimiter
      */
-    private void setDelimiter(String delimiter) {
+    private void withDelimiter(String delimiter) {
         this.delimiter = delimiter;
     }
 

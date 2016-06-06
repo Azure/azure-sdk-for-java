@@ -45,7 +45,7 @@ public class AzureResponse<T> extends ServiceResponse<T> {
      *
      * @param requestId the request id value.
      */
-    public void setRequestId(String requestId) {
+    public void withRequestId(String requestId) {
         this.requestId = requestId;
     }
 }

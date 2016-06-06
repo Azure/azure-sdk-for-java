@@ -55,7 +55,7 @@ public class CloudError {
      *
      * @param code the error code.
      */
-    public void setCode(String code) {
+    public void withCode(String code) {
         this.code = code;
     }
 
@@ -73,7 +73,7 @@ public class CloudError {
      *
      * @param message the error message.
      */
-    public void setMessage(String message) {
+    public void withMessage(String message) {
         this.message = message;
     }
 
@@ -91,7 +91,7 @@ public class CloudError {
      *
      * @param target the target of the error.
      */
-    public void setTarget(String target) {
+    public void withTarget(String target) {
         this.target = target;
     }
 

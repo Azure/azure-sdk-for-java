@@ -37,7 +37,7 @@ public class BatchSharedKeyCredentials extends BatchCredentials implements Servi
             throw new IllegalArgumentException("Parameter keyValue is required and cannot be null.");
         }
 
-        this.withBaseUrl(baseUrl);
+        this.setBaseUrl(baseUrl);
         this.accountName = accountName;
         this.keyValue = keyValue;
     }

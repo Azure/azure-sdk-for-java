@@ -30,7 +30,7 @@ public class SubResource {
      *
      * @param id the id value to set
      */
-    public void setId(String id) {
+    public void withId(String id) {
         this.id = id;
     }
 }

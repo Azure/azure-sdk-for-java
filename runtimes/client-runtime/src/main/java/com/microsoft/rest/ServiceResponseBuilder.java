@@ -145,8 +145,8 @@ public class ServiceResponseBuilder<T, E extends RestException> {
         } else {
             try {
                 E exception = (E) exceptionType.getConstructor(String.class).newInstance("Invalid status code " + statusCode);
-                exceptionType.getMethod("setResponse", response.getClass()).invoke(exception, response);
-                exceptionType.getMethod("setBody", (Class<?>) responseTypes.get(0)).invoke(exception, buildBody(statusCode, responseBody));
+                exceptionType.getMethod("withResponse", response.getClass()).invoke(exception, response);
+                exceptionType.getMethod("withBody", (Class<?>) responseTypes.get(0)).invoke(exception, buildBody(statusCode, responseBody));
                 throw exception;
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 throw new IOException("Invalid status code " + statusCode + ", but an instance of " + exceptionType.getCanonicalName()
@@ -180,7 +180,7 @@ public class ServiceResponseBuilder<T, E extends RestException> {
         } else {
             try {
                 E exception = (E) exceptionType.getConstructor(String.class).newInstance("Invalid status code " + statusCode);
-                exceptionType.getMethod("setResponse", response.getClass()).invoke(exception, response);
+                exceptionType.getMethod("withResponse", response.getClass()).invoke(exception, response);
                 response.errorBody().close();
                 throw exception;
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {

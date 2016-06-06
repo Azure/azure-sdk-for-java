@@ -71,7 +71,7 @@ public class BatchErrorException extends RestException {
      *
      * @param response the HTTP response
      */
-    public void setResponse(Response response) {
+    public void withResponse(Response response) {
         this.response = response;
     }
     /**
@@ -79,7 +79,7 @@ public class BatchErrorException extends RestException {
      *
      * @param body the response body
      */
-    public void setBody(BatchError body) {
+    public void withBody(BatchError body) {
         this.body = body;
     }
 }

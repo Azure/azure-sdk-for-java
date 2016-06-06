@@ -236,7 +236,7 @@ public class ResourceFragment extends Fragment {
         mListener = null;
     }
 
-    public void setResourceManagementClient(ResourceManagementClient resourceManagementClient) {
+    public void withResourceManagementClient(ResourceManagementClient resourceManagementClient) {
         this.resourceManagementClient = resourceManagementClient;
     }
 

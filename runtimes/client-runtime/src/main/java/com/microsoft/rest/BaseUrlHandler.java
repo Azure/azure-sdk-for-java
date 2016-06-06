@@ -50,11 +50,11 @@ public class BaseUrlHandler implements Interceptor {
      * Handles dynamic replacements on base URL. The arguments must be in pairs
      * with the string in raw URL to replace as replacements[i] and the dynamic
      * part as replacements[i+1]. E.g. {subdomain}.microsoft.com can be set
-     * dynamically by calling setBaseUrl("{subdomain}", "azure").
+     * dynamically by calling withBaseUrl("{subdomain}", "azure").
      *
      * @param replacements the string replacements in pairs.
      */
-    public void setBaseUrl(String... replacements) {
+    public void withBaseUrl(String... replacements) {
         if (replacements.length % 2 != 0) {
             throw new IllegalArgumentException("Must provide a replacement value for each pattern");
         }

@@ -68,19 +68,19 @@ public class PollingState<T> {
         }
         if (resource != null && resource.getProperties() != null
                 && resource.getProperties().getProvisioningState() != null) {
-            setStatus(resource.getProperties().getProvisioningState());
+            withStatus(resource.getProperties().getProvisioningState());
         } else {
             switch (this.response.code()) {
                 case 202:
-                    setStatus(AzureAsyncOperation.IN_PROGRESS_STATUS);
+                    withStatus(AzureAsyncOperation.IN_PROGRESS_STATUS);
                     break;
                 case 204:
                 case 201:
                 case 200:
-                    setStatus(AzureAsyncOperation.SUCCESS_STATUS);
+                    withStatus(AzureAsyncOperation.SUCCESS_STATUS);
                     break;
                 default:
-                    setStatus(AzureAsyncOperation.FAILED_STATUS);
+                    withStatus(AzureAsyncOperation.FAILED_STATUS);
             }
         }
     }
@@ -135,7 +135,7 @@ public class PollingState<T> {
             response.body().close();
         }
         this.withResource(mapperAdapter.<T>deserialize(responseContent, resourceType));
-        setStatus(AzureAsyncOperation.SUCCESS_STATUS);
+        withStatus(AzureAsyncOperation.SUCCESS_STATUS);
     }
 
     /**
@@ -169,7 +169,7 @@ public class PollingState<T> {
      * @param status the polling status.
      * @throws IllegalArgumentException thrown if status is null.
      */
-    public void setStatus(String status) throws IllegalArgumentException {
+    public void withStatus(String status) throws IllegalArgumentException {
         if (status == null) {
             throw new IllegalArgumentException("Status is null.");
         }
@@ -191,7 +191,7 @@ public class PollingState<T> {
      *
      * @param response the last operation response.
      */
-    public void setResponse(Response<ResponseBody> response) {
+    public void withResponse(Response<ResponseBody> response) {
         this.response = response;
         if (response != null) {
             String asyncHeader = response.headers().get("Azure-AsyncOperation");
@@ -237,7 +237,7 @@ public class PollingState<T> {
      *
      * @param resource the resource.
      */
-    public void setResource(T resource) {
+    public void withResource(T resource) {
         this.resource = resource;
     }
 
@@ -255,7 +255,7 @@ public class PollingState<T> {
      *
      * @param error the cloud error.
      */
-    public void setError(CloudError error) {
+    public void withError(CloudError error) {
         this.error = error;
     }
 
@@ -282,7 +282,7 @@ public class PollingState<T> {
          *
          * @param properties the inner properties.
          */
-        public void setProperties(Properties properties) {
+        public void withProperties(Properties properties) {
             this.properties = properties;
         }
 
@@ -308,7 +308,7 @@ public class PollingState<T> {
              *
              * @param provisioningState the provisioning state.
              */
-            public void setProvisioningState(String provisioningState) {
+            public void withProvisioningState(String provisioningState) {
                 this.provisioningState = provisioningState;
             }
         }

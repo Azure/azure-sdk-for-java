@@ -16,7 +16,7 @@ public abstract class IndexableImpl implements Indexable {
 		this.key = key;
 	}
 	
-	public void setKey(String key) {
+	public void withKey(String key) {
 		this.key = key;
 	}
 	

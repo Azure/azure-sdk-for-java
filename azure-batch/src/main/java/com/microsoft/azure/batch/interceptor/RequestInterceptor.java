@@ -29,7 +29,7 @@ public class RequestInterceptor extends BatchClientBehavior {
         return _handler;
     }
 
-    public void setHandler(BatchRequestInterceptHandler handler) {
+    public void withHandler(BatchRequestInterceptHandler handler) {
         this._handler = handler;
     }
 }

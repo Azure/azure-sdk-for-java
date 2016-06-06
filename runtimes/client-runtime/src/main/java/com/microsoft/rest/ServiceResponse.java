@@ -64,7 +64,7 @@ public class ServiceResponse<T> {
      *
      * @param body the response object.
      */
-    public void setBody(T body) {
+    public void withBody(T body) {
         this.body = body;
     }
 

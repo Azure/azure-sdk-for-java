@@ -40,7 +40,7 @@ public class UserAgentInterceptor implements Interceptor {
      *
      * @param userAgent the new user agent value.
      */
-    public void setUserAgent(String userAgent) {
+    public void withUserAgent(String userAgent) {
         this.userAgent = userAgent;
     }
 

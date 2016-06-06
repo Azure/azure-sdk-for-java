@@ -96,11 +96,7 @@ public final class RestClient {
      * URL instead of the raw one might be returned.
      *
      * @return the base URL.
-<<<<<<< HEAD
-     * @see {@link RestClient#setBaseUrl(String...)}
-=======
-     * @see RestClient#setBaseUrl(String...)
->>>>>>> fddca6a8917951772a65a3e5b47c5e72c1f42fb5
+     * @see {@link RestClient#withBaseUrl(String...)}
      */
     public String baseUrl() {
         return baseUrlHandler.baseUrl();
@@ -110,11 +106,11 @@ public final class RestClient {
      * Handles dynamic replacements on base URL. The arguments must be in pairs
      * with the string in raw URL to replace as replacements[i] and the dynamic
      * part as replacements[i+1]. E.g. {subdomain}.microsoft.com can be set
-     * dynamically by calling setBaseUrl("{subdomain}", "azure").
+     * dynamically by calling withBaseUrl("{subdomain}", "azure").
      *
      * @param replacements the string replacements in pairs.
      */
-    public void setBaseUrl(String... replacements) {
+    public void withBaseUrl(String... replacements) {
         baseUrlHandler.withBaseUrl(replacements);
     }
 
@@ -173,7 +169,7 @@ public final class RestClient {
                 throw new IllegalArgumentException("retrofitBuilder == null");
             }
             CookieManager cookieManager = new CookieManager();
-            cookieManager.withCookiePolicy(CookiePolicy.ACCEPT_ALL);
+            cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
             customHeadersInterceptor = new CustomHeadersInterceptor();
             baseUrlHandler = new BaseUrlHandler(baseUrl);
             userAgentInterceptor = new UserAgentInterceptor();
@@ -228,7 +224,7 @@ public final class RestClient {
          * @return the builder itself for chaining.
          */
         public Builder withLogLevel(HttpLoggingInterceptor.Level logLevel) {
-            this.httpClientBuilder.addInterceptor(new HttpLoggingInterceptor().withLevel(logLevel));
+            this.httpClientBuilder.addInterceptor(new HttpLoggingInterceptor().setLevel(logLevel));
             return this;
         }
 

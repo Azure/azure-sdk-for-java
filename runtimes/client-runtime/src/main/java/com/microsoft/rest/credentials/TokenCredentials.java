@@ -58,7 +58,7 @@ public class TokenCredentials implements ServiceClientCredentials {
      *
      * @param token the token string
      */
-    public void setToken(String token) {
+    public void withToken(String token) {
         this.token = token;
     }
 

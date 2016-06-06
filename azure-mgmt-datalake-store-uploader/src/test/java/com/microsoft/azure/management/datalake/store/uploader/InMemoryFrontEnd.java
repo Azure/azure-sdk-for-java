@@ -255,7 +255,7 @@ public class InMemoryFrontEnd implements FrontEndAdapter {
             return Name;
         }
 
-        public void setName(String name) {
+        public void withName(String name) {
             Name = name;
         }
 

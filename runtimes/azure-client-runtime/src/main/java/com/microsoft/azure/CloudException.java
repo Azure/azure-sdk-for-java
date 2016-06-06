@@ -80,7 +80,7 @@ public class CloudException extends RestException {
      *
      * @param response the HTTP response
      */
-    public void setResponse(Response response) {
+    public void withResponse(Response response) {
         this.response = response;
     }
 
@@ -89,7 +89,7 @@ public class CloudException extends RestException {
      *
      * @param body the response object
      */
-    public void setBody(CloudError body) {
+    public void withBody(CloudError body) {
         this.body = body;
     }
 

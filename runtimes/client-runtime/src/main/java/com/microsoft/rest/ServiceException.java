@@ -79,7 +79,7 @@ public class ServiceException extends RestException {
      *
      * @param response the HTTP response
      */
-    public void setResponse(Response response) {
+    public void withResponse(Response response) {
         this.response = response;
     }
 
@@ -88,7 +88,7 @@ public class ServiceException extends RestException {
      *
      * @param body the response object
      */
-    public void setBody(Object body) {
+    public void withBody(Object body) {
         this.body = body;
     }
 }

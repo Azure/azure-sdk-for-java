@@ -491,13 +491,13 @@ class VirtualMachineImpl
     // helper methods to set various virtual machine's default properties
     //
 
-    private void setDefaults() {
+    private void withDefaults() {
             setOSDiskAndOSProfileDefaults();
             setHardwareProfileDefaults();
             setDataDisksDefaults();
     }
 
-    private void setOSDiskAndOSProfileDefaults() {
+    private void withOSDiskAndOSProfileDefaults() {
         OSDisk osDisk = this.innerModel.storageProfile().osDisk();
         if (!isOSDiskAttached(osDisk)) {
             if (osDisk.vhd() == null) {
@@ -522,14 +522,14 @@ class VirtualMachineImpl
         }
     }
 
-    private void setHardwareProfileDefaults() {
+    private void withHardwareProfileDefaults() {
         HardwareProfile hardwareProfile = this.innerModel.hardwareProfile();
         if (hardwareProfile.vmSize() == null) {
             hardwareProfile.withVmSize(VirtualMachineSizeTypes.BASIC_A0);
         }
     }
 
-    private void setDataDisksDefaults() {
+    private void withDataDisksDefaults() {
         List<DataDisk> dataDisks = this.innerModel.storageProfile().dataDisks();
         if (dataDisks.size() == 0) {
             this.innerModel.storageProfile().withDataDisks(null);

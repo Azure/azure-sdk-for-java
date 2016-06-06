@@ -62,7 +62,7 @@ public class AzureServiceResponseBuilder<T, E extends RestException> extends Ser
         } else {
             try {
                 E exception = (E) exceptionType.getConstructor(String.class).newInstance("Invalid status code " + statusCode);
-                exceptionType.getMethod("setResponse", response.getClass()).invoke(exception, response);
+                exceptionType.getMethod("withResponse", response.getClass()).invoke(exception, response);
                 throw exception;
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 throw new IOException("Invalid status code " + statusCode + ", but an instance of " + exceptionType.getCanonicalName()

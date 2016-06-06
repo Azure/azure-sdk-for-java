@@ -62,7 +62,7 @@ public final class Validator {
                 continue;
             }
             for (Field field : c.getDeclaredFields()) {
-                field.withAccessible(true);
+                field.setAccessible(true);
                 JsonProperty annotation = field.getAnnotation(JsonProperty.class);
                 Object property;
                 try {
