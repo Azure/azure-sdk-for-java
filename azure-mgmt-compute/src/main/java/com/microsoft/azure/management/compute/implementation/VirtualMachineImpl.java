@@ -68,7 +68,6 @@ class VirtualMachineImpl
             VirtualMachine.ConfigureNewDataDisk,
             VirtualMachine.ConfigureExistingDataDisk {
     private final VirtualMachinesInner client;
-    private final VirtualMachineInner innerModel;
     private final AvailabilitySets availabilitySets;
     private final NetworkInterfacesInner networkInterfaces;
     private final ResourceManager resourceManager;
@@ -84,25 +83,17 @@ class VirtualMachineImpl
                        VirtualMachinesInner client,
                        NetworkInterfacesInner networkInterfaces, // TODO this will be removed once we have NetworkInterfaces entry point available in NetworkManager
                        AvailabilitySets availabilitySets,
-                       ResourceManager resourceManager,
-                       StorageManager storageManager,
-                       NetworkManager networkManager) {
+                       final ResourceManager resourceManager,
+                       final StorageManager storageManager,
+                       final NetworkManager networkManager) {
         super(name, innerModel, resourceManager.resourceGroups());
         this.client = client;
-        this.innerModel = innerModel;
         this.networkInterfaces = networkInterfaces;
         this.availabilitySets = availabilitySets;
         this.resourceManager = resourceManager;
         this.storageManager = storageManager;
         this.networkManager = networkManager;
-
-        this.innerModel.withStorageProfile(new StorageProfile());
-        this.innerModel.storageProfile().withOsDisk(new OSDisk());
-        this.innerModel.storageProfile().withDataDisks(new ArrayList<DataDisk>());
-        this.innerModel.withOsProfile(new OSProfile());
-        this.innerModel.withHardwareProfile(new HardwareProfile());
-        this.innerModel.withNetworkProfile(new NetworkProfile());
-        this.innerModel.osProfile().withComputerName(name);
+        initialize(name);
     }
 
     @Override
@@ -180,8 +171,8 @@ class VirtualMachineImpl
     public DefinitionWithOSType withStoredImage(String imageUrl) {
         VirtualHardDisk userImageVhd = new VirtualHardDisk();
         userImageVhd.withUri(imageUrl);
-        this.innerModel.storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
-        this.innerModel.storageProfile().osDisk().withImage(userImageVhd);
+        this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
+        this.inner().storageProfile().osDisk().withImage(userImageVhd);
         return this;
     }
 
@@ -189,16 +180,16 @@ class VirtualMachineImpl
     public DefinitionCreatable withOSDisk(String osDiskUrl, OperatingSystemTypes osType) {
         VirtualHardDisk osDisk = new VirtualHardDisk();
         osDisk.withUri(osDiskUrl);
-        this.innerModel.storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.ATTACH);
-        this.innerModel.storageProfile().osDisk().withVhd(osDisk);
-        this.innerModel.storageProfile().osDisk().withOsType(osType);
+        this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.ATTACH);
+        this.inner().storageProfile().osDisk().withVhd(osDisk);
+        this.inner().storageProfile().osDisk().withOsType(osType);
         return this;
     }
 
     @Override
     public DefinitionWithOSType version(ImageReference imageReference) {
-        this.innerModel.storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
-        this.innerModel.storageProfile().withImageReference(imageReference);
+        this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
+        this.inner().storageProfile().withImageReference(imageReference);
         return this;
     }
 
@@ -219,44 +210,44 @@ class VirtualMachineImpl
 
     @Override
     public DefinitionWithRootUserName withLinuxOS() {
-        OSDisk osDisk = this.innerModel.storageProfile().osDisk();
+        OSDisk osDisk = this.inner().storageProfile().osDisk();
         if (isStoredImage(osDisk)) {
             // For platform image osType should be null, azure will pick it from the image metadata.
             osDisk.withOsType(OperatingSystemTypes.LINUX);
         }
-        this.innerModel.osProfile().withLinuxConfiguration(new LinuxConfiguration());
+        this.inner().osProfile().withLinuxConfiguration(new LinuxConfiguration());
         return this;
     }
 
     @Override
     public DefinitionWithAdminUserName withWindowsOS() {
-        OSDisk osDisk = this.innerModel.storageProfile().osDisk();
+        OSDisk osDisk = this.inner().storageProfile().osDisk();
         if (isStoredImage(osDisk)) {
             // For platform image osType should be null, azure will pick it from the image metadata.
             osDisk.withOsType(OperatingSystemTypes.WINDOWS);
         }
-        this.innerModel.osProfile().withWindowsConfiguration(new WindowsConfiguration());
+        this.inner().osProfile().withWindowsConfiguration(new WindowsConfiguration());
         // sets defaults for "Stored(User)Image" or "VM(Platform)Image"
-        this.innerModel.osProfile().windowsConfiguration().withProvisionVMAgent(true);
-        this.innerModel.osProfile().windowsConfiguration().withEnableAutomaticUpdates(true);
+        this.inner().osProfile().windowsConfiguration().withProvisionVMAgent(true);
+        this.inner().osProfile().windowsConfiguration().withEnableAutomaticUpdates(true);
         return this;
     }
 
     @Override
     public DefinitionLinuxCreatable withRootUserName(String rootUserName) {
-        this.innerModel.osProfile().withAdminUsername(rootUserName);
+        this.inner().osProfile().withAdminUsername(rootUserName);
         return this;
     }
 
     @Override
     public DefinitionWindowsCreatable withAdminUserName(String adminUserName) {
-        this.innerModel.osProfile().withAdminUsername(adminUserName);
+        this.inner().osProfile().withAdminUsername(adminUserName);
         return this;
     }
 
     @Override
     public DefinitionLinuxCreatable withSsh(String publicKeyData) {
-        OSProfile osProfile = this.innerModel.osProfile();
+        OSProfile osProfile = this.inner().osProfile();
         if (osProfile.linuxConfiguration().ssh() == null) {
             SshConfiguration sshConfiguration = new SshConfiguration();
             sshConfiguration.withPublicKeys(new ArrayList<SshPublicKey>());
@@ -271,30 +262,30 @@ class VirtualMachineImpl
 
     @Override
     public DefinitionWindowsCreatable disableVMAgent() {
-        this.innerModel.osProfile().windowsConfiguration().withProvisionVMAgent(false);
+        this.inner().osProfile().windowsConfiguration().withProvisionVMAgent(false);
         return this;
     }
 
     @Override
     public DefinitionWindowsCreatable disableAutoUpdate() {
-        this.innerModel.osProfile().windowsConfiguration().withEnableAutomaticUpdates(false);
+        this.inner().osProfile().windowsConfiguration().withEnableAutomaticUpdates(false);
         return this;
     }
 
     @Override
     public DefinitionWindowsCreatable withTimeZone(String timeZone) {
-        this.innerModel.osProfile().windowsConfiguration().withTimeZone(timeZone);
+        this.inner().osProfile().windowsConfiguration().withTimeZone(timeZone);
         return this;
     }
 
     @Override
     public DefinitionWindowsCreatable withWinRM(WinRMListener listener) {
-        if (this.innerModel.osProfile().windowsConfiguration().winRM() == null) {
+        if (this.inner().osProfile().windowsConfiguration().winRM() == null) {
             WinRMConfiguration winRMConfiguration = new WinRMConfiguration();
-            this.innerModel.osProfile().windowsConfiguration().withWinRM(winRMConfiguration);
+            this.inner().osProfile().windowsConfiguration().withWinRM(winRMConfiguration);
         }
 
-        this.innerModel.osProfile()
+        this.inner().osProfile()
                 .windowsConfiguration()
                 .winRM()
                 .listeners()
@@ -304,25 +295,25 @@ class VirtualMachineImpl
 
     @Override
     public DefinitionCreatable withPassword(String password) {
-        this.innerModel.osProfile().withAdminPassword(password);
+        this.inner().osProfile().withAdminPassword(password);
         return this;
     }
 
     @Override
     public DefinitionCreatable withSize(String sizeName) {
-        this.innerModel.hardwareProfile().withVmSize(sizeName);
+        this.inner().hardwareProfile().withVmSize(sizeName);
         return this;
     }
 
     @Override
     public DefinitionCreatable withSize(VirtualMachineSizeTypes size) {
-        this.innerModel.hardwareProfile().withVmSize(size.toString());
+        this.inner().hardwareProfile().withVmSize(size.toString());
         return this;
     }
 
     @Override
     public DefinitionCreatable withOSDiskCaching(CachingTypes cachingType) {
-        this.innerModel.storageProfile().osDisk().withCaching(cachingType);
+        this.inner().storageProfile().osDisk().withCaching(cachingType);
         return this;
     }
 
@@ -330,25 +321,25 @@ class VirtualMachineImpl
     public DefinitionCreatable withOSDiskVhdLocation(String containerName, String vhdName) {
         VirtualHardDisk osVhd = new VirtualHardDisk();
         osVhd.withUri(blobUrl(this.storageAccountName, containerName, vhdName));
-        this.innerModel.storageProfile().osDisk().withVhd(osVhd);
+        this.inner().storageProfile().osDisk().withVhd(osVhd);
         return this;
     }
 
     @Override
     public DefinitionCreatable withOSDiskEncryptionSettings(DiskEncryptionSettings settings) {
-        this.innerModel.storageProfile().osDisk().withEncryptionSettings(settings);
+        this.inner().storageProfile().osDisk().withEncryptionSettings(settings);
         return this;
     }
 
     @Override
     public DefinitionCreatable withOSDiskSizeInGB(Integer size) {
-        this.innerModel.storageProfile().osDisk().withDiskSizeGB(size);
+        this.inner().storageProfile().osDisk().withDiskSizeGB(size);
         return this;
     }
 
     @Override
     public DefinitionCreatable withOSDiskName(String name) {
-        this.innerModel.storageProfile().osDisk().withName(name);
+        this.inner().storageProfile().osDisk().withName(name);
         return this;
     }
 
@@ -498,18 +489,18 @@ class VirtualMachineImpl
     }
 
     private void setOSDiskAndOSProfileDefaults() {
-        OSDisk osDisk = this.innerModel.storageProfile().osDisk();
+        OSDisk osDisk = this.inner().storageProfile().osDisk();
         if (!isOSDiskAttached(osDisk)) {
             if (osDisk.vhd() == null) {
                 // Sets the OS disk VHD for "UserImage" and "VM(Platform)Image"
                 withOSDiskVhdLocation("vhds", this.key() + "-os-disk-" + UUID.randomUUID().toString() + ".vhd");
             }
-            OSProfile osProfile = this.innerModel.osProfile();
+            OSProfile osProfile = this.inner().osProfile();
             if (osDisk.osType() == OperatingSystemTypes.LINUX) {
                 if (osProfile.linuxConfiguration() == null) {
                     osProfile.withLinuxConfiguration(new LinuxConfiguration());
                 }
-                this.innerModel.osProfile().linuxConfiguration().withDisablePasswordAuthentication(osProfile.adminPassword() == null);
+                this.inner().osProfile().linuxConfiguration().withDisablePasswordAuthentication(osProfile.adminPassword() == null);
             }
         }
 
@@ -523,16 +514,16 @@ class VirtualMachineImpl
     }
 
     private void setHardwareProfileDefaults() {
-        HardwareProfile hardwareProfile = this.innerModel.hardwareProfile();
+        HardwareProfile hardwareProfile = this.inner().hardwareProfile();
         if (hardwareProfile.vmSize() == null) {
             hardwareProfile.withVmSize(VirtualMachineSizeTypes.BASIC_A0);
         }
     }
 
     private void setDataDisksDefaults() {
-        List<DataDisk> dataDisks = this.innerModel.storageProfile().dataDisks();
+        List<DataDisk> dataDisks = this.inner().storageProfile().dataDisks();
         if (dataDisks.size() == 0) {
-            this.innerModel.storageProfile().withDataDisks(null);
+            this.inner().storageProfile().withDataDisks(null);
             return;
         }
 
@@ -584,12 +575,12 @@ class VirtualMachineImpl
     private DataDisk prepareNewDataDisk() {
         DataDisk dataDisk = new DataDisk();
         dataDisk.withLun(-1);
-        this.innerModel.storageProfile().dataDisks().add(dataDisk);
+        this.inner().storageProfile().dataDisks().add(dataDisk);
         return dataDisk;
     }
 
     private DataDisk currentDataDisk() {
-        List<DataDisk> dataDisks = this.innerModel.storageProfile().dataDisks();
+        List<DataDisk> dataDisks = this.inner().storageProfile().dataDisks();
         return dataDisks.get(dataDisks.size() - 1);
     }
 
@@ -599,11 +590,11 @@ class VirtualMachineImpl
 
     private boolean requiresImplicitStorageAccountCreation() {
         if (this.storageAccountName == null) {
-            if (!isOSDiskAttached(this.innerModel.storageProfile().osDisk())) {
+            if (!isOSDiskAttached(this.inner().storageProfile().osDisk())) {
                 return true;
             }
 
-            for (DataDisk dataDisk : this.innerModel.storageProfile().dataDisks()) {
+            for (DataDisk dataDisk : this.inner().storageProfile().dataDisks()) {
                 if (dataDisk.createOption() != DiskCreateOptionTypes.ATTACH) {
                     return true;
                 }
@@ -666,11 +657,23 @@ class VirtualMachineImpl
     protected void createResource() throws Exception {
         // TODO This code to create NIC will be removed once we have the fluent model for NIC in place.
         NetworkInterfaceReference nicReference = createPrimaryNetworkInterface();
-        this.innerModel.networkProfile().withNetworkInterfaces(new ArrayList<NetworkInterfaceReference>());
-        this.innerModel.networkProfile().networkInterfaces().add(nicReference);
+        this.inner().networkProfile().withNetworkInterfaces(new ArrayList<NetworkInterfaceReference>());
+        this.inner().networkProfile().networkInterfaces().add(nicReference);
 
         setDefaults();
-        ServiceResponse<VirtualMachineInner> serviceResponse = this.client.createOrUpdate(this.resourceGroupName(), this.name(), this.innerModel);
+        ServiceResponse<VirtualMachineInner> serviceResponse = this.client.createOrUpdate(this.resourceGroupName(), this.key(), this.inner());
         this.setInner(serviceResponse.getBody());
+    }
+
+    private void initialize(String name) {
+        if (this.inner().id() == null) {
+            this.inner().withStorageProfile(new StorageProfile());
+            this.inner().storageProfile().withOsDisk(new OSDisk());
+            this.inner().storageProfile().withDataDisks(new ArrayList<DataDisk>());
+            this.inner().withOsProfile(new OSProfile());
+            this.inner().withHardwareProfile(new HardwareProfile());
+            this.inner().withNetworkProfile(new NetworkProfile());
+            this.inner().osProfile().withComputerName(name);
+        }
     }
 }

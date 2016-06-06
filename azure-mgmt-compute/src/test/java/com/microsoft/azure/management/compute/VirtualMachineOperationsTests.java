@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.compute.implementation.api.CachingTypes;
 import com.microsoft.azure.management.compute.implementation.api.DiskCreateOptionTypes;
 import com.microsoft.azure.management.compute.implementation.api.HardwareProfile;
@@ -116,7 +117,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
         configuration.withPrivateIPAllocationMethod("Dynamic");
         configuration.withSubnet(subnet);
         if (publicIP != null) {
-            configuration.withPublicIPAddress(networkManagementClient.publicIPAddresses().get(rgName, publicIP, null).getBody());
+            SubResource subResource = new SubResource();
+            subResource.withId(networkManagementClient.publicIPAddresses().get(rgName, publicIP, null).getBody().id());
+            configuration.withPublicIPAddress(subResource);
         }
         nic.ipConfigurations().add(configuration);
         networkManagementClient.networkInterfaces().createOrUpdate(rgName, "javanic", nic);

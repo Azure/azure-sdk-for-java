@@ -14,6 +14,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.storage.implementation.AccountStatuses;
+import com.microsoft.azure.management.storage.implementation.PublicEndpoints;
 import com.microsoft.azure.management.storage.implementation.StorageAccountKeys;
 import com.microsoft.azure.management.storage.implementation.api.AccountType;
 import com.microsoft.azure.management.storage.implementation.api.CustomDomain;

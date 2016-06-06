@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
 /**
@@ -56,6 +57,10 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT>
     @Override
     public void createRootResource() throws Exception {
         this.createResource();
+    }
+
+    protected Resource createdResource(String key) {
+        return this.creatableTaskGroup.taskResult(key);
     }
 
     /**
