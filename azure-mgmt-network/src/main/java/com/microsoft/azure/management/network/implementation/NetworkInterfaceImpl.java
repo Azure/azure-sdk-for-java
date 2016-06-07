@@ -44,7 +44,7 @@ class NetworkInterfaceImpl
     // reference to the primary ip configuration
     private NicIpConfigurationImpl nicPrimaryIpConfiguration;
     // list of references to all ip configuration
-    private List<NicIpConfigurationImpl> nicIpConfigurations;
+    private List<NicIpConfiguration> nicIpConfigurations;
 
     NetworkInterfaceImpl(String name,
                          NetworkInterfaceInner innerModel,
@@ -167,9 +167,9 @@ class NetworkInterfaceImpl
 
     @Override
     public NicIpConfigurationImpl updateIpConfiguration(String name) {
-        for (NicIpConfigurationImpl nicIpConfiguration : this.nicIpConfigurations) {
+        for (NicIpConfiguration nicIpConfiguration : this.nicIpConfigurations) {
             if (name.compareToIgnoreCase(nicIpConfiguration.name()) == 0) {
-                return nicIpConfiguration;
+                return (NicIpConfigurationImpl)nicIpConfiguration;
             }
         }
         throw new RuntimeException("An Ip configuration with name'" + name + "' not found");
@@ -252,11 +252,6 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public String primaryPublicIpAddressId() {
-        return this.primaryIpConfiguration().publicIpAddressId();
-    }
-
-    @Override
     public PublicIpAddress primaryPublicIpAddress() throws CloudException, IOException {
         return this.primaryIpConfiguration().publicIpAddress();
     }
@@ -282,7 +277,7 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public List<NicIpConfigurationImpl> ipConfigurations() {
+    public List<NicIpConfiguration> ipConfigurations() {
         return Collections.unmodifiableList(this.nicIpConfigurations);
     }
 
@@ -292,8 +287,8 @@ class NetworkInterfaceImpl
 
     @Override
     protected void createResource() throws Exception {
-        for (NicIpConfigurationImpl ipConfig : this.nicIpConfigurations) {
-            ipConfig.ensureConfiguration();
+        for (NicIpConfiguration ipConfig : this.nicIpConfigurations) {
+            ((NicIpConfigurationImpl)ipConfig).ensureConfiguration();
         }
 
         ServiceResponse<NetworkInterfaceInner> response = this.client.createOrUpdate(this.resourceGroupName(),
@@ -323,7 +318,7 @@ class NetworkInterfaceImpl
             // when Azure support multiple Ip configurations then there will be a flag in
             // the IpConfiguration or a property in the network interface to identify the
             // primary so below logic will be changed.
-            this.nicPrimaryIpConfiguration = this.nicIpConfigurations.get(0);
+            this.nicPrimaryIpConfiguration = (NicIpConfigurationImpl) this.nicIpConfigurations.get(0);
         }
         return this.nicPrimaryIpConfiguration;
     }

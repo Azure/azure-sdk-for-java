@@ -64,15 +64,6 @@ public interface NetworkInterface extends
     List<String> dnsServers();
 
     /**
-     * Gets the resource id of the public IP address associated with this network interface.
-     * <p>
-     * returns null if there is no public IP associated
-     *
-     * @return public ip resource id
-     */
-    String primaryPublicIpAddressId();
-
-    /**
      * Gets the public IP address associated with this network interface.
      * <p>
      * note that this method makes a rest API call to fetch the public IP
@@ -85,6 +76,7 @@ public interface NetworkInterface extends
 
     /**
      * @return the resource id of the virtual network subnet associated with this network interface.
+     * TODO: This will be removed once our types starts supporting lazy loading
      */
     String primarySubnetId();
 
@@ -116,7 +108,7 @@ public interface NetworkInterface extends
     /**
      * @return the Ip configurations of this network interface
      */
-    List<? extends NicIpConfiguration> ipConfigurations();
+    List<NicIpConfiguration> ipConfigurations();
 
     /**
      * Container interface for all the definitions.
