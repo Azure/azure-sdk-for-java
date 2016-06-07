@@ -23,6 +23,10 @@ import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Implementation of the PublicIpAddresses interface.
+ * (Internal use only)
+ */
 class PublicIpAddressesImpl
         implements PublicIpAddresses {
     private final PublicIPAddressesInner client;
@@ -85,19 +89,18 @@ class PublicIpAddressesImpl
         };
     }
 
-    /** Fluent model create helpers **/
+    // Fluent model create helpers
 
     private PublicIpAddressImpl createFluentModel(String name) {
         PublicIPAddressInner inner = new PublicIPAddressInner();
 
-        if(null == inner.dnsSettings()) {
+        if (null == inner.dnsSettings()) {
             inner.setDnsSettings(new PublicIPAddressDnsSettings());
         }
-        
+
         return new PublicIpAddressImpl(name, inner, this.client, this.resourceGroups);
     }
 
-    
     private PublicIpAddressImpl createFluentModel(PublicIPAddressInner inner) {
         return new PublicIpAddressImpl(inner.id(), inner, this.client, this.resourceGroups);
     }
