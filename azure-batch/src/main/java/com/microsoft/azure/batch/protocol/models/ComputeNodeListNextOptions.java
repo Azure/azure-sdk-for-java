@@ -51,7 +51,7 @@ public class ComputeNodeListNextOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the ComputeNodeListNextOptions object itself.
      */
-    public ComputeNodeListNextOptions setClientRequestId(String clientRequestId) {
+    public ComputeNodeListNextOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -71,7 +71,7 @@ public class ComputeNodeListNextOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the ComputeNodeListNextOptions object itself.
      */
-    public ComputeNodeListNextOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public ComputeNodeListNextOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -94,7 +94,7 @@ public class ComputeNodeListNextOptions {
      * @param ocpDate the ocpDate value to set
      * @return the ComputeNodeListNextOptions object itself.
      */
-    public ComputeNodeListNextOptions setOcpDate(DateTime ocpDate) {
+    public ComputeNodeListNextOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }

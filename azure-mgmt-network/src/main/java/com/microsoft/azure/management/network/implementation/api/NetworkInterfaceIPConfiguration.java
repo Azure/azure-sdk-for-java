@@ -85,7 +85,7 @@ public class NetworkInterfaceIPConfiguration extends SubResource {
      * @param loadBalancerBackendAddressPools the loadBalancerBackendAddressPools value to set
      * @return the NetworkInterfaceIPConfiguration object itself.
      */
-    public NetworkInterfaceIPConfiguration setLoadBalancerBackendAddressPools(List<BackendAddressPool> loadBalancerBackendAddressPools) {
+    public NetworkInterfaceIPConfiguration withLoadBalancerBackendAddressPools(List<BackendAddressPool> loadBalancerBackendAddressPools) {
         this.loadBalancerBackendAddressPools = loadBalancerBackendAddressPools;
         return this;
     }
@@ -105,7 +105,7 @@ public class NetworkInterfaceIPConfiguration extends SubResource {
      * @param loadBalancerInboundNatRules the loadBalancerInboundNatRules value to set
      * @return the NetworkInterfaceIPConfiguration object itself.
      */
-    public NetworkInterfaceIPConfiguration setLoadBalancerInboundNatRules(List<InboundNatRule> loadBalancerInboundNatRules) {
+    public NetworkInterfaceIPConfiguration withLoadBalancerInboundNatRules(List<InboundNatRule> loadBalancerInboundNatRules) {
         this.loadBalancerInboundNatRules = loadBalancerInboundNatRules;
         return this;
     }
@@ -125,7 +125,7 @@ public class NetworkInterfaceIPConfiguration extends SubResource {
      * @param privateIPAddress the privateIPAddress value to set
      * @return the NetworkInterfaceIPConfiguration object itself.
      */
-    public NetworkInterfaceIPConfiguration setPrivateIPAddress(String privateIPAddress) {
+    public NetworkInterfaceIPConfiguration withPrivateIPAddress(String privateIPAddress) {
         this.privateIPAddress = privateIPAddress;
         return this;
     }
@@ -145,7 +145,7 @@ public class NetworkInterfaceIPConfiguration extends SubResource {
      * @param privateIPAllocationMethod the privateIPAllocationMethod value to set
      * @return the NetworkInterfaceIPConfiguration object itself.
      */
-    public NetworkInterfaceIPConfiguration setPrivateIPAllocationMethod(String privateIPAllocationMethod) {
+    public NetworkInterfaceIPConfiguration withPrivateIPAllocationMethod(String privateIPAllocationMethod) {
         this.privateIPAllocationMethod = privateIPAllocationMethod;
         return this;
     }
@@ -165,7 +165,7 @@ public class NetworkInterfaceIPConfiguration extends SubResource {
      * @param subnet the subnet value to set
      * @return the NetworkInterfaceIPConfiguration object itself.
      */
-    public NetworkInterfaceIPConfiguration setSubnet(SubnetInner subnet) {
+    public NetworkInterfaceIPConfiguration withSubnet(SubnetInner subnet) {
         this.subnet = subnet;
         return this;
     }
@@ -185,7 +185,7 @@ public class NetworkInterfaceIPConfiguration extends SubResource {
      * @param publicIPAddress the publicIPAddress value to set
      * @return the NetworkInterfaceIPConfiguration object itself.
      */
-    public NetworkInterfaceIPConfiguration setPublicIPAddress(SubResource publicIPAddress) {
+    public NetworkInterfaceIPConfiguration withPublicIPAddress(SubResource publicIPAddress) {
         this.publicIPAddress = publicIPAddress;
         return this;
     }
@@ -205,7 +205,7 @@ public class NetworkInterfaceIPConfiguration extends SubResource {
      * @param provisioningState the provisioningState value to set
      * @return the NetworkInterfaceIPConfiguration object itself.
      */
-    public NetworkInterfaceIPConfiguration setProvisioningState(String provisioningState) {
+    public NetworkInterfaceIPConfiguration withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -225,7 +225,7 @@ public class NetworkInterfaceIPConfiguration extends SubResource {
      * @param name the name value to set
      * @return the NetworkInterfaceIPConfiguration object itself.
      */
-    public NetworkInterfaceIPConfiguration setName(String name) {
+    public NetworkInterfaceIPConfiguration withName(String name) {
         this.name = name;
         return this;
     }
@@ -245,7 +245,7 @@ public class NetworkInterfaceIPConfiguration extends SubResource {
      * @param etag the etag value to set
      * @return the NetworkInterfaceIPConfiguration object itself.
      */
-    public NetworkInterfaceIPConfiguration setEtag(String etag) {
+    public NetworkInterfaceIPConfiguration withEtag(String etag) {
         this.etag = etag;
         return this;
     }

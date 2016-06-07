@@ -37,7 +37,7 @@ public class DiskInstanceView {
      * @param name the name value to set
      * @return the DiskInstanceView object itself.
      */
-    public DiskInstanceView setName(String name) {
+    public DiskInstanceView withName(String name) {
         this.name = name;
         return this;
     }
@@ -57,7 +57,7 @@ public class DiskInstanceView {
      * @param statuses the statuses value to set
      * @return the DiskInstanceView object itself.
      */
-    public DiskInstanceView setStatuses(List<InstanceViewStatus> statuses) {
+    public DiskInstanceView withStatuses(List<InstanceViewStatus> statuses) {
         this.statuses = statuses;
         return this;
     }

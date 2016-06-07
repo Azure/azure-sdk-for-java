@@ -119,7 +119,7 @@ public class BackupItemInner extends Resource {
      * @param backupItemId the backupItemId value to set
      * @return the BackupItemInner object itself.
      */
-    public BackupItemInner setBackupItemId(Integer backupItemId) {
+    public BackupItemInner withBackupItemId(Integer backupItemId) {
         this.backupItemId = backupItemId;
         return this;
     }
@@ -139,7 +139,7 @@ public class BackupItemInner extends Resource {
      * @param storageAccountUrl the storageAccountUrl value to set
      * @return the BackupItemInner object itself.
      */
-    public BackupItemInner setStorageAccountUrl(String storageAccountUrl) {
+    public BackupItemInner withStorageAccountUrl(String storageAccountUrl) {
         this.storageAccountUrl = storageAccountUrl;
         return this;
     }
@@ -159,7 +159,7 @@ public class BackupItemInner extends Resource {
      * @param blobName the blobName value to set
      * @return the BackupItemInner object itself.
      */
-    public BackupItemInner setBlobName(String blobName) {
+    public BackupItemInner withBlobName(String blobName) {
         this.blobName = blobName;
         return this;
     }
@@ -179,7 +179,7 @@ public class BackupItemInner extends Resource {
      * @param backupItemName the backupItemName value to set
      * @return the BackupItemInner object itself.
      */
-    public BackupItemInner setBackupItemName(String backupItemName) {
+    public BackupItemInner withBackupItemName(String backupItemName) {
         this.backupItemName = backupItemName;
         return this;
     }
@@ -199,7 +199,7 @@ public class BackupItemInner extends Resource {
      * @param status the status value to set
      * @return the BackupItemInner object itself.
      */
-    public BackupItemInner setStatus(BackupItemStatus status) {
+    public BackupItemInner withStatus(BackupItemStatus status) {
         this.status = status;
         return this;
     }
@@ -219,7 +219,7 @@ public class BackupItemInner extends Resource {
      * @param sizeInBytes the sizeInBytes value to set
      * @return the BackupItemInner object itself.
      */
-    public BackupItemInner setSizeInBytes(Long sizeInBytes) {
+    public BackupItemInner withSizeInBytes(Long sizeInBytes) {
         this.sizeInBytes = sizeInBytes;
         return this;
     }
@@ -239,7 +239,7 @@ public class BackupItemInner extends Resource {
      * @param created the created value to set
      * @return the BackupItemInner object itself.
      */
-    public BackupItemInner setCreated(DateTime created) {
+    public BackupItemInner withCreated(DateTime created) {
         this.created = created;
         return this;
     }
@@ -259,7 +259,7 @@ public class BackupItemInner extends Resource {
      * @param log the log value to set
      * @return the BackupItemInner object itself.
      */
-    public BackupItemInner setLog(String log) {
+    public BackupItemInner withLog(String log) {
         this.log = log;
         return this;
     }
@@ -279,7 +279,7 @@ public class BackupItemInner extends Resource {
      * @param databases the databases value to set
      * @return the BackupItemInner object itself.
      */
-    public BackupItemInner setDatabases(List<DatabaseBackupSetting> databases) {
+    public BackupItemInner withDatabases(List<DatabaseBackupSetting> databases) {
         this.databases = databases;
         return this;
     }
@@ -299,7 +299,7 @@ public class BackupItemInner extends Resource {
      * @param scheduled the scheduled value to set
      * @return the BackupItemInner object itself.
      */
-    public BackupItemInner setScheduled(Boolean scheduled) {
+    public BackupItemInner withScheduled(Boolean scheduled) {
         this.scheduled = scheduled;
         return this;
     }
@@ -319,7 +319,7 @@ public class BackupItemInner extends Resource {
      * @param lastRestoreTimeStamp the lastRestoreTimeStamp value to set
      * @return the BackupItemInner object itself.
      */
-    public BackupItemInner setLastRestoreTimeStamp(DateTime lastRestoreTimeStamp) {
+    public BackupItemInner withLastRestoreTimeStamp(DateTime lastRestoreTimeStamp) {
         this.lastRestoreTimeStamp = lastRestoreTimeStamp;
         return this;
     }
@@ -339,7 +339,7 @@ public class BackupItemInner extends Resource {
      * @param finishedTimeStamp the finishedTimeStamp value to set
      * @return the BackupItemInner object itself.
      */
-    public BackupItemInner setFinishedTimeStamp(DateTime finishedTimeStamp) {
+    public BackupItemInner withFinishedTimeStamp(DateTime finishedTimeStamp) {
         this.finishedTimeStamp = finishedTimeStamp;
         return this;
     }
@@ -359,7 +359,7 @@ public class BackupItemInner extends Resource {
      * @param correlationId the correlationId value to set
      * @return the BackupItemInner object itself.
      */
-    public BackupItemInner setCorrelationId(String correlationId) {
+    public BackupItemInner withCorrelationId(String correlationId) {
         this.correlationId = correlationId;
         return this;
     }
@@ -379,7 +379,7 @@ public class BackupItemInner extends Resource {
      * @param websiteSizeInBytes the websiteSizeInBytes value to set
      * @return the BackupItemInner object itself.
      */
-    public BackupItemInner setWebsiteSizeInBytes(Long websiteSizeInBytes) {
+    public BackupItemInner withWebsiteSizeInBytes(Long websiteSizeInBytes) {
         this.websiteSizeInBytes = websiteSizeInBytes;
         return this;
     }

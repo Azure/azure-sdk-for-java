@@ -108,7 +108,7 @@ public class InboundNatRule extends SubResource {
      * @param frontendIPConfiguration the frontendIPConfiguration value to set
      * @return the InboundNatRule object itself.
      */
-    public InboundNatRule setFrontendIPConfiguration(SubResource frontendIPConfiguration) {
+    public InboundNatRule withFrontendIPConfiguration(SubResource frontendIPConfiguration) {
         this.frontendIPConfiguration = frontendIPConfiguration;
         return this;
     }
@@ -128,7 +128,7 @@ public class InboundNatRule extends SubResource {
      * @param backendIPConfiguration the backendIPConfiguration value to set
      * @return the InboundNatRule object itself.
      */
-    public InboundNatRule setBackendIPConfiguration(NetworkInterfaceIPConfiguration backendIPConfiguration) {
+    public InboundNatRule withBackendIPConfiguration(NetworkInterfaceIPConfiguration backendIPConfiguration) {
         this.backendIPConfiguration = backendIPConfiguration;
         return this;
     }
@@ -148,7 +148,7 @@ public class InboundNatRule extends SubResource {
      * @param protocol the protocol value to set
      * @return the InboundNatRule object itself.
      */
-    public InboundNatRule setProtocol(String protocol) {
+    public InboundNatRule withProtocol(String protocol) {
         this.protocol = protocol;
         return this;
     }
@@ -168,7 +168,7 @@ public class InboundNatRule extends SubResource {
      * @param frontendPort the frontendPort value to set
      * @return the InboundNatRule object itself.
      */
-    public InboundNatRule setFrontendPort(Integer frontendPort) {
+    public InboundNatRule withFrontendPort(Integer frontendPort) {
         this.frontendPort = frontendPort;
         return this;
     }
@@ -188,7 +188,7 @@ public class InboundNatRule extends SubResource {
      * @param backendPort the backendPort value to set
      * @return the InboundNatRule object itself.
      */
-    public InboundNatRule setBackendPort(Integer backendPort) {
+    public InboundNatRule withBackendPort(Integer backendPort) {
         this.backendPort = backendPort;
         return this;
     }
@@ -208,7 +208,7 @@ public class InboundNatRule extends SubResource {
      * @param idleTimeoutInMinutes the idleTimeoutInMinutes value to set
      * @return the InboundNatRule object itself.
      */
-    public InboundNatRule setIdleTimeoutInMinutes(Integer idleTimeoutInMinutes) {
+    public InboundNatRule withIdleTimeoutInMinutes(Integer idleTimeoutInMinutes) {
         this.idleTimeoutInMinutes = idleTimeoutInMinutes;
         return this;
     }
@@ -228,7 +228,7 @@ public class InboundNatRule extends SubResource {
      * @param enableFloatingIP the enableFloatingIP value to set
      * @return the InboundNatRule object itself.
      */
-    public InboundNatRule setEnableFloatingIP(Boolean enableFloatingIP) {
+    public InboundNatRule withEnableFloatingIP(Boolean enableFloatingIP) {
         this.enableFloatingIP = enableFloatingIP;
         return this;
     }
@@ -248,7 +248,7 @@ public class InboundNatRule extends SubResource {
      * @param provisioningState the provisioningState value to set
      * @return the InboundNatRule object itself.
      */
-    public InboundNatRule setProvisioningState(String provisioningState) {
+    public InboundNatRule withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -268,7 +268,7 @@ public class InboundNatRule extends SubResource {
      * @param name the name value to set
      * @return the InboundNatRule object itself.
      */
-    public InboundNatRule setName(String name) {
+    public InboundNatRule withName(String name) {
         this.name = name;
         return this;
     }
@@ -288,7 +288,7 @@ public class InboundNatRule extends SubResource {
      * @param etag the etag value to set
      * @return the InboundNatRule object itself.
      */
-    public InboundNatRule setEtag(String etag) {
+    public InboundNatRule withEtag(String etag) {
         this.etag = etag;
         return this;
     }

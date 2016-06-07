@@ -79,7 +79,7 @@ public class JobPreparationTask {
      * @param id the id value to set
      * @return the JobPreparationTask object itself.
      */
-    public JobPreparationTask setId(String id) {
+    public JobPreparationTask withId(String id) {
         this.id = id;
         return this;
     }
@@ -99,7 +99,7 @@ public class JobPreparationTask {
      * @param commandLine the commandLine value to set
      * @return the JobPreparationTask object itself.
      */
-    public JobPreparationTask setCommandLine(String commandLine) {
+    public JobPreparationTask withCommandLine(String commandLine) {
         this.commandLine = commandLine;
         return this;
     }
@@ -119,7 +119,7 @@ public class JobPreparationTask {
      * @param resourceFiles the resourceFiles value to set
      * @return the JobPreparationTask object itself.
      */
-    public JobPreparationTask setResourceFiles(List<ResourceFile> resourceFiles) {
+    public JobPreparationTask withResourceFiles(List<ResourceFile> resourceFiles) {
         this.resourceFiles = resourceFiles;
         return this;
     }
@@ -139,7 +139,7 @@ public class JobPreparationTask {
      * @param environmentSettings the environmentSettings value to set
      * @return the JobPreparationTask object itself.
      */
-    public JobPreparationTask setEnvironmentSettings(List<EnvironmentSetting> environmentSettings) {
+    public JobPreparationTask withEnvironmentSettings(List<EnvironmentSetting> environmentSettings) {
         this.environmentSettings = environmentSettings;
         return this;
     }
@@ -159,7 +159,7 @@ public class JobPreparationTask {
      * @param constraints the constraints value to set
      * @return the JobPreparationTask object itself.
      */
-    public JobPreparationTask setConstraints(TaskConstraints constraints) {
+    public JobPreparationTask withConstraints(TaskConstraints constraints) {
         this.constraints = constraints;
         return this;
     }
@@ -179,7 +179,7 @@ public class JobPreparationTask {
      * @param waitForSuccess the waitForSuccess value to set
      * @return the JobPreparationTask object itself.
      */
-    public JobPreparationTask setWaitForSuccess(Boolean waitForSuccess) {
+    public JobPreparationTask withWaitForSuccess(Boolean waitForSuccess) {
         this.waitForSuccess = waitForSuccess;
         return this;
     }
@@ -199,7 +199,7 @@ public class JobPreparationTask {
      * @param runElevated the runElevated value to set
      * @return the JobPreparationTask object itself.
      */
-    public JobPreparationTask setRunElevated(Boolean runElevated) {
+    public JobPreparationTask withRunElevated(Boolean runElevated) {
         this.runElevated = runElevated;
         return this;
     }
@@ -219,7 +219,7 @@ public class JobPreparationTask {
      * @param rerunOnNodeRebootAfterSuccess the rerunOnNodeRebootAfterSuccess value to set
      * @return the JobPreparationTask object itself.
      */
-    public JobPreparationTask setRerunOnNodeRebootAfterSuccess(Boolean rerunOnNodeRebootAfterSuccess) {
+    public JobPreparationTask withRerunOnNodeRebootAfterSuccess(Boolean rerunOnNodeRebootAfterSuccess) {
         this.rerunOnNodeRebootAfterSuccess = rerunOnNodeRebootAfterSuccess;
         return this;
     }

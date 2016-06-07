@@ -31,7 +31,7 @@ public class DnsNameAvailabilityResultInner {
      * @param available the available value to set
      * @return the DnsNameAvailabilityResultInner object itself.
      */
-    public DnsNameAvailabilityResultInner setAvailable(Boolean available) {
+    public DnsNameAvailabilityResultInner withAvailable(Boolean available) {
         this.available = available;
         return this;
     }

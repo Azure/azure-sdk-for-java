@@ -149,9 +149,9 @@ public final class ResourceManager {
 
     private ResourceManager(RestClient restClient, String subscriptionId) {
         this.resourceManagementClient = new ResourceManagementClientImpl(restClient);
-        this.resourceManagementClient.setSubscriptionId(subscriptionId);
+        this.resourceManagementClient.withSubscriptionId(subscriptionId);
         this.featureClient = new FeatureClientImpl(restClient);
-        this.featureClient.setSubscriptionId(subscriptionId);
+        this.featureClient.withSubscriptionId(subscriptionId);
     }
 
     /**

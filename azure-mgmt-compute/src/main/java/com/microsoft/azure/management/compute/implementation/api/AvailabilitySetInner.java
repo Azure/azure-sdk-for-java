@@ -57,7 +57,7 @@ public class AvailabilitySetInner extends Resource {
      * @param platformUpdateDomainCount the platformUpdateDomainCount value to set
      * @return the AvailabilitySetInner object itself.
      */
-    public AvailabilitySetInner setPlatformUpdateDomainCount(Integer platformUpdateDomainCount) {
+    public AvailabilitySetInner withPlatformUpdateDomainCount(Integer platformUpdateDomainCount) {
         this.platformUpdateDomainCount = platformUpdateDomainCount;
         return this;
     }
@@ -77,7 +77,7 @@ public class AvailabilitySetInner extends Resource {
      * @param platformFaultDomainCount the platformFaultDomainCount value to set
      * @return the AvailabilitySetInner object itself.
      */
-    public AvailabilitySetInner setPlatformFaultDomainCount(Integer platformFaultDomainCount) {
+    public AvailabilitySetInner withPlatformFaultDomainCount(Integer platformFaultDomainCount) {
         this.platformFaultDomainCount = platformFaultDomainCount;
         return this;
     }
@@ -97,7 +97,7 @@ public class AvailabilitySetInner extends Resource {
      * @param virtualMachines the virtualMachines value to set
      * @return the AvailabilitySetInner object itself.
      */
-    public AvailabilitySetInner setVirtualMachines(List<SubResource> virtualMachines) {
+    public AvailabilitySetInner withVirtualMachines(List<SubResource> virtualMachines) {
         this.virtualMachines = virtualMachines;
         return this;
     }
@@ -117,7 +117,7 @@ public class AvailabilitySetInner extends Resource {
      * @param statuses the statuses value to set
      * @return the AvailabilitySetInner object itself.
      */
-    public AvailabilitySetInner setStatuses(List<InstanceViewStatus> statuses) {
+    public AvailabilitySetInner withStatuses(List<InstanceViewStatus> statuses) {
         this.statuses = statuses;
         return this;
     }

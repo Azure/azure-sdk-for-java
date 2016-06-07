@@ -50,6 +50,21 @@ class NicIpConfigurationImpl
         this.isInCreateMode = isInCreateModel;
     }
 
+    protected static NicIpConfigurationImpl prepareNicIpConfiguration(String name,
+                                                                      NetworkInterfaceImpl parent,
+                                                                      final Networks networks,
+                                                                      final PublicIpAddresses publicIpAddresses) {
+        NetworkInterfaceIPConfiguration ipConfigurationInner = new NetworkInterfaceIPConfiguration();
+        ipConfigurationInner.withName(name);
+        parent.inner().ipConfigurations().add(ipConfigurationInner);
+        return new NicIpConfigurationImpl(name,
+                ipConfigurationInner,
+                parent,
+                networks,
+                publicIpAddresses,
+                true);
+    }
+
     @Override
     public String name() {
         return inner().name();
@@ -140,15 +155,15 @@ class NicIpConfigurationImpl
 
     @Override
     public NicIpConfigurationImpl withPrivateIpAddressDynamic() {
-        this.inner().setPrivateIPAllocationMethod("Dynamic");
-        this.inner().setPrivateIPAddress(null);
+        this.inner().withPrivateIPAllocationMethod("Dynamic");
+        this.inner().withPrivateIPAddress(null);
         return this;
     }
 
     @Override
     public NicIpConfigurationImpl withPrivateIpAddressStatic(String staticPrivateIpAddress) {
-        this.inner().setPrivateIPAllocationMethod("Static");
-        this.inner().setPrivateIPAddress(staticPrivateIpAddress);
+        this.inner().withPrivateIPAllocationMethod("Static");
+        this.inner().withPrivateIPAddress(staticPrivateIpAddress);
         return this;
     }
 
@@ -191,8 +206,8 @@ class NicIpConfigurationImpl
     protected static void ensureConfigurations(List<NicIpConfiguration> nicIpConfigurations) {
         for (NicIpConfiguration nicIpConfiguration : nicIpConfigurations) {
             NicIpConfigurationImpl config = (NicIpConfigurationImpl)nicIpConfiguration;
-            config.inner().setSubnet(config.subnetToAssociate());
-            config.inner().setPublicIPAddress(config.publicIpToAssociate());
+            config.inner().withSubnet(config.subnetToAssociate());
+            config.inner().withPublicIPAddress(config.publicIpToAssociate());
         }
     }
 
@@ -232,13 +247,13 @@ class NicIpConfigurationImpl
         if (this.isInCreateMode) {
             if (this.creatableVirtualNetworkKey != null) {
                 Network network = (Network) parent().createdDependencyResource(this.creatableVirtualNetworkKey);
-                subnetInner.setId(network.inner().subnets().get(0).id());
+                subnetInner.withId(network.inner().subnets().get(0).id());
                 return subnetInner;
             }
 
             for (SubnetInner subnet : this.existingVirtualNetworkToAssociate.inner().subnets()) {
                 if (subnet.name().compareToIgnoreCase(this.subnetToAssociate) == 0) {
-                    subnetInner.setId(subnet.id());
+                    subnetInner.withId(subnet.id());
                     return subnetInner;
                 }
             }
@@ -248,9 +263,9 @@ class NicIpConfigurationImpl
         } else {
             if (subnetToAssociate != null) {
                 int idx = this.inner().subnet().id().lastIndexOf('/');
-                subnetInner.setId(this.inner().subnet().id().substring(0, idx) + subnetToAssociate);
+                subnetInner.withId(this.inner().subnet().id().substring(0, idx) + subnetToAssociate);
             } else {
-                subnetInner.setId(this.inner().subnet().id());
+                subnetInner.withId(this.inner().subnet().id());
             }
             return subnetInner;
         }
@@ -283,7 +298,7 @@ class NicIpConfigurationImpl
 
         if (publicIPAddressInner != null) {
             SubResource subResource = new SubResource();
-            subResource.setId(publicIPAddressInner.id());
+            subResource.withId(publicIPAddressInner.id());
             return subResource;
         }
 

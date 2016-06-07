@@ -56,7 +56,7 @@ public class AdditionalUnattendContent {
      * @param passName the passName value to set
      * @return the AdditionalUnattendContent object itself.
      */
-    public AdditionalUnattendContent setPassName(PassNames passName) {
+    public AdditionalUnattendContent withPassName(PassNames passName) {
         this.passName = passName;
         return this;
     }
@@ -76,7 +76,7 @@ public class AdditionalUnattendContent {
      * @param componentName the componentName value to set
      * @return the AdditionalUnattendContent object itself.
      */
-    public AdditionalUnattendContent setComponentName(ComponentNames componentName) {
+    public AdditionalUnattendContent withComponentName(ComponentNames componentName) {
         this.componentName = componentName;
         return this;
     }
@@ -96,7 +96,7 @@ public class AdditionalUnattendContent {
      * @param settingName the settingName value to set
      * @return the AdditionalUnattendContent object itself.
      */
-    public AdditionalUnattendContent setSettingName(SettingNames settingName) {
+    public AdditionalUnattendContent withSettingName(SettingNames settingName) {
         this.settingName = settingName;
         return this;
     }
@@ -116,7 +116,7 @@ public class AdditionalUnattendContent {
      * @param content the content value to set
      * @return the AdditionalUnattendContent object itself.
      */
-    public AdditionalUnattendContent setContent(String content) {
+    public AdditionalUnattendContent withContent(String content) {
         this.content = content;
         return this;
     }

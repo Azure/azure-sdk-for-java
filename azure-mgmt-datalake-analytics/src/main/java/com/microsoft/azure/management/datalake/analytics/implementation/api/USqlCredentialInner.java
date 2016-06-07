@@ -48,7 +48,7 @@ public class USqlCredentialInner extends CatalogItem {
      * @param databaseName the databaseName value to set
      * @return the USqlCredentialInner object itself.
      */
-    public USqlCredentialInner setDatabaseName(String databaseName) {
+    public USqlCredentialInner withDatabaseName(String databaseName) {
         this.databaseName = databaseName;
         return this;
     }
@@ -68,7 +68,7 @@ public class USqlCredentialInner extends CatalogItem {
      * @param identity the identity value to set
      * @return the USqlCredentialInner object itself.
      */
-    public USqlCredentialInner setIdentity(String identity) {
+    public USqlCredentialInner withIdentity(String identity) {
         this.identity = identity;
         return this;
     }
@@ -88,7 +88,7 @@ public class USqlCredentialInner extends CatalogItem {
      * @param name the name value to set
      * @return the USqlCredentialInner object itself.
      */
-    public USqlCredentialInner setName(String name) {
+    public USqlCredentialInner withName(String name) {
         this.name = name;
         return this;
     }
@@ -108,7 +108,7 @@ public class USqlCredentialInner extends CatalogItem {
      * @param userName the userName value to set
      * @return the USqlCredentialInner object itself.
      */
-    public USqlCredentialInner setUserName(String userName) {
+    public USqlCredentialInner withUserName(String userName) {
         this.userName = userName;
         return this;
     }

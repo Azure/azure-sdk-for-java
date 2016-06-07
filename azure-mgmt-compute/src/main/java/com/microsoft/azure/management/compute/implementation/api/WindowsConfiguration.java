@@ -55,7 +55,7 @@ public class WindowsConfiguration {
      * @param provisionVMAgent the provisionVMAgent value to set
      * @return the WindowsConfiguration object itself.
      */
-    public WindowsConfiguration setProvisionVMAgent(Boolean provisionVMAgent) {
+    public WindowsConfiguration withProvisionVMAgent(Boolean provisionVMAgent) {
         this.provisionVMAgent = provisionVMAgent;
         return this;
     }
@@ -75,7 +75,7 @@ public class WindowsConfiguration {
      * @param enableAutomaticUpdates the enableAutomaticUpdates value to set
      * @return the WindowsConfiguration object itself.
      */
-    public WindowsConfiguration setEnableAutomaticUpdates(Boolean enableAutomaticUpdates) {
+    public WindowsConfiguration withEnableAutomaticUpdates(Boolean enableAutomaticUpdates) {
         this.enableAutomaticUpdates = enableAutomaticUpdates;
         return this;
     }
@@ -95,7 +95,7 @@ public class WindowsConfiguration {
      * @param timeZone the timeZone value to set
      * @return the WindowsConfiguration object itself.
      */
-    public WindowsConfiguration setTimeZone(String timeZone) {
+    public WindowsConfiguration withTimeZone(String timeZone) {
         this.timeZone = timeZone;
         return this;
     }
@@ -115,7 +115,7 @@ public class WindowsConfiguration {
      * @param additionalUnattendContent the additionalUnattendContent value to set
      * @return the WindowsConfiguration object itself.
      */
-    public WindowsConfiguration setAdditionalUnattendContent(List<AdditionalUnattendContent> additionalUnattendContent) {
+    public WindowsConfiguration withAdditionalUnattendContent(List<AdditionalUnattendContent> additionalUnattendContent) {
         this.additionalUnattendContent = additionalUnattendContent;
         return this;
     }
@@ -135,7 +135,7 @@ public class WindowsConfiguration {
      * @param winRM the winRM value to set
      * @return the WindowsConfiguration object itself.
      */
-    public WindowsConfiguration setWinRM(WinRMConfiguration winRM) {
+    public WindowsConfiguration withWinRM(WinRMConfiguration winRM) {
         this.winRM = winRM;
         return this;
     }

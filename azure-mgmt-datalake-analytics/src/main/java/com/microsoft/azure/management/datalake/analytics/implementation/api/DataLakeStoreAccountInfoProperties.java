@@ -31,7 +31,7 @@ public class DataLakeStoreAccountInfoProperties {
      * @param suffix the suffix value to set
      * @return the DataLakeStoreAccountInfoProperties object itself.
      */
-    public DataLakeStoreAccountInfoProperties setSuffix(String suffix) {
+    public DataLakeStoreAccountInfoProperties withSuffix(String suffix) {
         this.suffix = suffix;
         return this;
     }

@@ -40,7 +40,7 @@ public class ComputeNodeDeleteUserHeaders {
      * @param clientRequestId the clientRequestId value to set
      * @return the ComputeNodeDeleteUserHeaders object itself.
      */
-    public ComputeNodeDeleteUserHeaders setClientRequestId(String clientRequestId) {
+    public ComputeNodeDeleteUserHeaders withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -60,7 +60,7 @@ public class ComputeNodeDeleteUserHeaders {
      * @param requestId the requestId value to set
      * @return the ComputeNodeDeleteUserHeaders object itself.
      */
-    public ComputeNodeDeleteUserHeaders setRequestId(String requestId) {
+    public ComputeNodeDeleteUserHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }

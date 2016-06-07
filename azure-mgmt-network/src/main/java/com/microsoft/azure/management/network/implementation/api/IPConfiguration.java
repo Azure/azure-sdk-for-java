@@ -73,7 +73,7 @@ public class IPConfiguration extends SubResource {
      * @param privateIPAddress the privateIPAddress value to set
      * @return the IPConfiguration object itself.
      */
-    public IPConfiguration setPrivateIPAddress(String privateIPAddress) {
+    public IPConfiguration withPrivateIPAddress(String privateIPAddress) {
         this.privateIPAddress = privateIPAddress;
         return this;
     }
@@ -93,7 +93,7 @@ public class IPConfiguration extends SubResource {
      * @param privateIPAllocationMethod the privateIPAllocationMethod value to set
      * @return the IPConfiguration object itself.
      */
-    public IPConfiguration setPrivateIPAllocationMethod(String privateIPAllocationMethod) {
+    public IPConfiguration withPrivateIPAllocationMethod(String privateIPAllocationMethod) {
         this.privateIPAllocationMethod = privateIPAllocationMethod;
         return this;
     }
@@ -113,7 +113,7 @@ public class IPConfiguration extends SubResource {
      * @param subnet the subnet value to set
      * @return the IPConfiguration object itself.
      */
-    public IPConfiguration setSubnet(SubnetInner subnet) {
+    public IPConfiguration withSubnet(SubnetInner subnet) {
         this.subnet = subnet;
         return this;
     }
@@ -133,7 +133,7 @@ public class IPConfiguration extends SubResource {
      * @param publicIPAddress the publicIPAddress value to set
      * @return the IPConfiguration object itself.
      */
-    public IPConfiguration setPublicIPAddress(PublicIPAddressInner publicIPAddress) {
+    public IPConfiguration withPublicIPAddress(PublicIPAddressInner publicIPAddress) {
         this.publicIPAddress = publicIPAddress;
         return this;
     }
@@ -153,7 +153,7 @@ public class IPConfiguration extends SubResource {
      * @param provisioningState the provisioningState value to set
      * @return the IPConfiguration object itself.
      */
-    public IPConfiguration setProvisioningState(String provisioningState) {
+    public IPConfiguration withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -173,7 +173,7 @@ public class IPConfiguration extends SubResource {
      * @param name the name value to set
      * @return the IPConfiguration object itself.
      */
-    public IPConfiguration setName(String name) {
+    public IPConfiguration withName(String name) {
         this.name = name;
         return this;
     }
@@ -193,7 +193,7 @@ public class IPConfiguration extends SubResource {
      * @param etag the etag value to set
      * @return the IPConfiguration object itself.
      */
-    public IPConfiguration setEtag(String etag) {
+    public IPConfiguration withEtag(String etag) {
         this.etag = etag;
         return this;
     }

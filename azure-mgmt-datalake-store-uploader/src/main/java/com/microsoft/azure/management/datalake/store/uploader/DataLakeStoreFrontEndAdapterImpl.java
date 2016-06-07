@@ -5,7 +5,8 @@
  */
 package com.microsoft.azure.management.datalake.store.uploader;
 
-import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.datalake.store.implementation.api.AdlsErrorException;
+import com.microsoft.rest.RestException;
 import com.microsoft.azure.management.datalake.store.implementation.api.DataLakeStoreFileSystemManagementClientImpl;
 import com.microsoft.azure.management.datalake.store.implementation.api.FileStatusResultInner;
 import org.apache.commons.lang3.StringUtils;
@@ -44,10 +45,10 @@ public class DataLakeStoreFrontEndAdapterImpl implements FrontEndAdapter {
      * @param overwrite  Whether to overwrite an existing stream.
      * @param data Optionally pass in data to add to the stream during creation. If null is passed in an empty stream is created
      * @param byteCount If data is passed in, indicates how many bytes of the data passed in should be pushed into the stream
-     * @throws CloudException
+     * @throws RestException
      * @throws IOException
      */
-    public void CreateStream(String streamPath, boolean overwrite, byte[] data, int byteCount) throws CloudException, IOException {
+    public void CreateStream(String streamPath, boolean overwrite, byte[] data, int byteCount) throws RestException, IOException {
         byte[] toCreate;
         if (data == null) {
             toCreate = new byte[0];
@@ -64,9 +65,9 @@ public class DataLakeStoreFrontEndAdapterImpl implements FrontEndAdapter {
      * @param streamPath The relative path to the stream.
      * @param recurse    if set to true recursively delete. This is used for folder streams only.
      * @throws IOException
-     * @throws CloudException
+     * @throws RestException
      */
-    public void DeleteStream(String streamPath, boolean recurse) throws IOException, CloudException {
+    public void DeleteStream(String streamPath, boolean recurse) throws IOException, RestException {
         _client.fileSystems().delete(_accountName, streamPath, recurse);
     }
 
@@ -78,9 +79,9 @@ public class DataLakeStoreFrontEndAdapterImpl implements FrontEndAdapter {
      * @param offset This parameter is unused by this implementation, and any value put here is ignored
      * @param byteCount The number of bytes from the data stream to append (starting at offset 0 of data).
      * @throws IOException
-     * @throws CloudException
+     * @throws RestException
      */
-    public void AppendToStream(String streamPath, byte[] data, long offset, int byteCount) throws IOException, CloudException {
+    public void AppendToStream(String streamPath, byte[] data, long offset, int byteCount) throws IOException, RestException {
         byte[] toAppend = new byte[byteCount];
         System.arraycopy(data, 0, toAppend, 0, byteCount);
         _client.fileSystems().append(_accountName, streamPath, toAppend);
@@ -92,12 +93,12 @@ public class DataLakeStoreFrontEndAdapterImpl implements FrontEndAdapter {
      * @param streamPath The relative path to the stream.
      * @return True if the stream exists, false otherwise.
      * @throws IOException
-     * @throws CloudException
+     * @throws RestException
      */
-    public boolean StreamExists(String streamPath) throws CloudException, IOException {
+    public boolean StreamExists(String streamPath) throws RestException, IOException {
         try {
             _client.fileSystems().getFileStatus(_accountName, streamPath);
-        } catch (CloudException cloudEx) {
+        } catch (AdlsErrorException cloudEx) {
             if (cloudEx.getResponse().code() == 404) {
                 return false;
             }
@@ -114,9 +115,9 @@ public class DataLakeStoreFrontEndAdapterImpl implements FrontEndAdapter {
      * @param streamPath The relative path to the stream.
      * @return The length of the stream, in bytes.
      * @throws IOException
-     * @throws CloudException
+     * @throws RestException
      */
-    public long GetStreamLength(String streamPath) throws IOException, CloudException {
+    public long GetStreamLength(String streamPath) throws IOException, RestException {
         FileStatusResultInner fileInfoResponse = _client.fileSystems().getFileStatus(_accountName, streamPath).getBody();
         return fileInfoResponse.fileStatus().length();
     }
@@ -128,9 +129,9 @@ public class DataLakeStoreFrontEndAdapterImpl implements FrontEndAdapter {
      * @param targetStreamPath The relative path to the target stream.
      * @param inputStreamPaths An ordered array of paths to the input streams to concatenate into the target stream.
      * @throws IOException
-     * @throws CloudException
+     * @throws RestException
      */
-    public void Concatenate(String targetStreamPath, String[] inputStreamPaths) throws IOException, CloudException {
+    public void Concatenate(String targetStreamPath, String[] inputStreamPaths) throws IOException, RestException {
         // this is required for the current version of the microsoft concatenate
         // TODO: Improve WebHDFS concatenate to take in the list of paths to concatenate
         // in the request body.

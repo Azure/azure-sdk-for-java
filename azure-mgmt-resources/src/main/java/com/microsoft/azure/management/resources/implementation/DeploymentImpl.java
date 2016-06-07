@@ -189,10 +189,10 @@ final class DeploymentImpl extends
     @Override
     public DeploymentImpl withTemplate(Object template) {
         if (this.inner().properties() == null) {
-            this.inner().setProperties(new DeploymentPropertiesExtended());
+            this.inner().withProperties(new DeploymentPropertiesExtended());
         }
-        this.inner().properties().setTemplate(template);
-        this.inner().properties().setTemplateLink(null);
+        this.inner().properties().withTemplate(template);
+        this.inner().properties().withTemplateLink(null);
         return this;
     }
 
@@ -204,29 +204,29 @@ final class DeploymentImpl extends
     @Override
     public DeploymentImpl withTemplateLink(String uri, String contentVersion) {
         if (this.inner().properties() == null) {
-            this.inner().setProperties(new DeploymentPropertiesExtended());
+            this.inner().withProperties(new DeploymentPropertiesExtended());
         }
-        this.inner().properties().setTemplateLink(new TemplateLink().setUri(uri).setContentVersion(contentVersion));
-        this.inner().properties().setTemplate(null);
+        this.inner().properties().withTemplateLink(new TemplateLink().withUri(uri).withContentVersion(contentVersion));
+        this.inner().properties().withTemplate(null);
         return this;
     }
 
     @Override
     public DeploymentImpl withMode(DeploymentMode mode) {
         if (this.inner().properties() == null) {
-            this.inner().setProperties(new DeploymentPropertiesExtended());
+            this.inner().withProperties(new DeploymentPropertiesExtended());
         }
-        this.inner().properties().setMode(mode);
+        this.inner().properties().withMode(mode);
         return this;
     }
 
     @Override
     public DeploymentImpl withParameters(Object parameters) {
         if (this.inner().properties() == null) {
-            this.inner().setProperties(new DeploymentPropertiesExtended());
+            this.inner().withProperties(new DeploymentPropertiesExtended());
         }
-        this.inner().properties().setParameters(parameters);
-        this.inner().properties().setParametersLink(null);
+        this.inner().properties().withParameters(parameters);
+        this.inner().properties().withParametersLink(null);
         return this;
     }
 
@@ -238,22 +238,22 @@ final class DeploymentImpl extends
     @Override
     public DeploymentImpl withParametersLink(String uri, String contentVersion) {
         if (this.inner().properties() == null) {
-            this.inner().setProperties(new DeploymentPropertiesExtended());
+            this.inner().withProperties(new DeploymentPropertiesExtended());
         }
-        this.inner().properties().setParametersLink(new ParametersLink().setUri(uri).setContentVersion(contentVersion));
-        this.inner().properties().setParameters(null);
+        this.inner().properties().withParametersLink(new ParametersLink().withUri(uri).withContentVersion(contentVersion));
+        this.inner().properties().withParameters(null);
         return this;
     }
 
     @Override
     public Deployment beginCreate() throws Exception {         //  FLUENT: implementation of ResourceGroup.DefinitionCreatable.Creatable<ResourceGroup>
         DeploymentInner inner = new DeploymentInner()
-                .setProperties(new DeploymentProperties());
-        inner.properties().setMode(mode());
-        inner.properties().setTemplate(template());
-        inner.properties().setTemplateLink(templateLink());
-        inner.properties().setParameters(parameters());
-        inner.properties().setParametersLink(parametersLink());
+                .withProperties(new DeploymentProperties());
+        inner.properties().withMode(mode());
+        inner.properties().withTemplate(template());
+        inner.properties().withTemplateLink(templateLink());
+        inner.properties().withParameters(parameters());
+        inner.properties().withParametersLink(parametersLink());
         client.beginCreateOrUpdate(resourceGroupName(), name(), inner);
         return this;
     }
@@ -275,12 +275,12 @@ final class DeploymentImpl extends
     @Override
     protected void createResource() throws Exception {
         DeploymentInner inner = new DeploymentInner()
-                .setProperties(new DeploymentProperties());
-        inner.properties().setMode(mode());
-        inner.properties().setTemplate(template());
-        inner.properties().setTemplateLink(templateLink());
-        inner.properties().setParameters(parameters());
-        inner.properties().setParametersLink(parametersLink());
+                .withProperties(new DeploymentProperties());
+        inner.properties().withMode(mode());
+        inner.properties().withTemplate(template());
+        inner.properties().withTemplateLink(templateLink());
+        inner.properties().withParameters(parameters());
+        inner.properties().withParametersLink(parametersLink());
         client.createOrUpdate(resourceGroupName(), name(), inner);
     }
 

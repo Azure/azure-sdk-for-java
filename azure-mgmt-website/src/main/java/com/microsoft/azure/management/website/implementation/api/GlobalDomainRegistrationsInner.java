@@ -283,7 +283,7 @@ public final class GlobalDomainRegistrationsInner {
         }
         final String name = null;
         NameIdentifier identifier = new NameIdentifier();
-        identifier = null;
+        identifier.withName(null);
         Call<ResponseBody> call = service.checkDomainAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), identifier, this.client.userAgent());
         return checkDomainAvailabilityDelegate(call.execute());
     }
@@ -309,7 +309,7 @@ public final class GlobalDomainRegistrationsInner {
         }
         final String name = null;
         NameIdentifier identifier = new NameIdentifier();
-        identifier = null;
+        identifier.withName(null);
         Call<ResponseBody> call = service.checkDomainAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), identifier, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<DomainAvailablilityCheckResultInner>(serviceCallback) {
@@ -342,7 +342,7 @@ public final class GlobalDomainRegistrationsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         NameIdentifier identifier = new NameIdentifier();
-        identifier.setName(name);
+        identifier.withName(name);
         Call<ResponseBody> call = service.checkDomainAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), identifier, this.client.userAgent());
         return checkDomainAvailabilityDelegate(call.execute());
     }
@@ -368,7 +368,7 @@ public final class GlobalDomainRegistrationsInner {
             return null;
         }
         NameIdentifier identifier = new NameIdentifier();
-        identifier.setName(name);
+        identifier.withName(name);
         Call<ResponseBody> call = service.checkDomainAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), identifier, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<DomainAvailablilityCheckResultInner>(serviceCallback) {

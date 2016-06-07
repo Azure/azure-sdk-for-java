@@ -54,7 +54,7 @@ public class JobListPreparationAndReleaseTaskStatusHeaders {
      * @param clientRequestId the clientRequestId value to set
      * @return the JobListPreparationAndReleaseTaskStatusHeaders object itself.
      */
-    public JobListPreparationAndReleaseTaskStatusHeaders setClientRequestId(String clientRequestId) {
+    public JobListPreparationAndReleaseTaskStatusHeaders withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -74,7 +74,7 @@ public class JobListPreparationAndReleaseTaskStatusHeaders {
      * @param requestId the requestId value to set
      * @return the JobListPreparationAndReleaseTaskStatusHeaders object itself.
      */
-    public JobListPreparationAndReleaseTaskStatusHeaders setRequestId(String requestId) {
+    public JobListPreparationAndReleaseTaskStatusHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -94,7 +94,7 @@ public class JobListPreparationAndReleaseTaskStatusHeaders {
      * @param eTag the eTag value to set
      * @return the JobListPreparationAndReleaseTaskStatusHeaders object itself.
      */
-    public JobListPreparationAndReleaseTaskStatusHeaders setETag(String eTag) {
+    public JobListPreparationAndReleaseTaskStatusHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -117,7 +117,7 @@ public class JobListPreparationAndReleaseTaskStatusHeaders {
      * @param lastModified the lastModified value to set
      * @return the JobListPreparationAndReleaseTaskStatusHeaders object itself.
      */
-    public JobListPreparationAndReleaseTaskStatusHeaders setLastModified(DateTime lastModified) {
+    public JobListPreparationAndReleaseTaskStatusHeaders withLastModified(DateTime lastModified) {
         this.lastModified = new DateTimeRfc1123(lastModified);
         return this;
     }

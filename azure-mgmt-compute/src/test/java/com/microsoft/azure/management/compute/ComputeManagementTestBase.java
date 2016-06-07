@@ -28,12 +28,12 @@ public abstract class ComputeManagementTestBase {
 
         RestClient restClient = restBuilder.build();
         resourceManagementClient = new ResourceManagementClientImpl(restClient);
-        resourceManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
+        resourceManagementClient.withSubscriptionId(System.getenv("arm.subscriptionid"));
         storageManagementClient = new StorageManagementClientImpl(restClient);
-        storageManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
+        storageManagementClient.withSubscriptionId(System.getenv("arm.subscriptionid"));
         networkManagementClient = new NetworkManagementClientImpl(restClient);
-        networkManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
+        networkManagementClient.withSubscriptionId(System.getenv("arm.subscriptionid"));
         computeManagementClient = new ComputeManagementClientImpl(restClient);
-        computeManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
+        computeManagementClient.withSubscriptionId(System.getenv("arm.subscriptionid"));
     }
 }

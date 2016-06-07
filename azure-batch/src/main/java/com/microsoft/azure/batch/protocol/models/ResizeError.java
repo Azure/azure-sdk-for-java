@@ -44,7 +44,7 @@ public class ResizeError {
      * @param code the code value to set
      * @return the ResizeError object itself.
      */
-    public ResizeError setCode(String code) {
+    public ResizeError withCode(String code) {
         this.code = code;
         return this;
     }
@@ -64,7 +64,7 @@ public class ResizeError {
      * @param message the message value to set
      * @return the ResizeError object itself.
      */
-    public ResizeError setMessage(String message) {
+    public ResizeError withMessage(String message) {
         this.message = message;
         return this;
     }
@@ -84,7 +84,7 @@ public class ResizeError {
      * @param values the values value to set
      * @return the ResizeError object itself.
      */
-    public ResizeError setValues(List<NameValuePair> values) {
+    public ResizeError withValues(List<NameValuePair> values) {
         this.values = values;
         return this;
     }

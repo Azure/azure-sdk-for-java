@@ -180,13 +180,13 @@ class NetworkInterfaceImpl
 
     @Override
     public NetworkInterfaceImpl withIpForwardingEnabled() {
-        this.inner().setEnableIPForwarding(true);
+        this.inner().withEnableIPForwarding(true);
         return this;
     }
 
     @Override
     public NetworkInterfaceImpl withIpForwardingDisabled() {
-        this.inner().setEnableIPForwarding(false);
+        this.inner().withEnableIPForwarding(false);
         return this;
     }
 
@@ -216,7 +216,7 @@ class NetworkInterfaceImpl
 
     @Override
     public NetworkInterfaceImpl withInternalDnsNameLabel(String dnsNameLabel) {
-        this.inner().dnsSettings().setInternalDnsNameLabel(dnsNameLabel);
+        this.inner().dnsSettings().withInternalDnsNameLabel(dnsNameLabel);
         return this;
     }
 
@@ -297,7 +297,6 @@ class NetworkInterfaceImpl
     @Override
     protected void createResource() throws Exception {
         NicIpConfigurationImpl.ensureConfigurations(this.nicIpConfigurations);
-
         ServiceResponse<NetworkInterfaceInner> response = this.client.createOrUpdate(this.resourceGroupName(),
                 this.nicName,
                 this.inner());
@@ -335,7 +334,7 @@ class NetworkInterfaceImpl
      */
     private List<String> dnsServerIps() {
         if (this.inner().dnsSettings().dnsServers() == null) {
-            this.inner().dnsSettings().setDnsServers(new ArrayList<String>());
+            this.inner().dnsSettings().withDnsServers(new ArrayList<String>());
         }
         return this.inner().dnsSettings().dnsServers();
     }
@@ -345,7 +344,7 @@ class NetworkInterfaceImpl
      */
     private void initializeNicIpConfigurations() {
         if (this.inner().ipConfigurations() == null) {
-            this.inner().setIpConfigurations(new ArrayList<NetworkInterfaceIPConfiguration>());
+            this.inner().withIpConfigurations(new ArrayList<NetworkInterfaceIPConfiguration>());
         }
 
         this.nicIpConfigurations = new ArrayList<>();
@@ -367,16 +366,12 @@ class NetworkInterfaceImpl
      * @return {@link NicIpConfiguration}
      */
     private NicIpConfigurationImpl prepareNewNicIpConfiguration(String name) {
-        NetworkInterfaceIPConfiguration ipConfigurationInner = new NetworkInterfaceIPConfiguration();
-        ipConfigurationInner.setName(name);
-        this.inner().ipConfigurations().add(ipConfigurationInner);
-        NicIpConfigurationImpl nicIpConfiguration = new NicIpConfigurationImpl(name,
-                ipConfigurationInner,
+        NicIpConfigurationImpl nicIpConfiguration = NicIpConfigurationImpl.prepareNicIpConfiguration(
+                name,
                 this,
                 this.networks,
-                this.publicIpAddresses,
-                true);
-
+                this.publicIpAddresses
+        );
         this.nicIpConfigurations.add(nicIpConfiguration);
         return nicIpConfiguration;
     }

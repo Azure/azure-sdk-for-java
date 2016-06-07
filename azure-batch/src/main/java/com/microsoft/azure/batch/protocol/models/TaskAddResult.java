@@ -61,7 +61,7 @@ public class TaskAddResult {
      * @param status the status value to set
      * @return the TaskAddResult object itself.
      */
-    public TaskAddResult setStatus(TaskAddStatus status) {
+    public TaskAddResult withStatus(TaskAddStatus status) {
         this.status = status;
         return this;
     }
@@ -81,7 +81,7 @@ public class TaskAddResult {
      * @param taskId the taskId value to set
      * @return the TaskAddResult object itself.
      */
-    public TaskAddResult setTaskId(String taskId) {
+    public TaskAddResult withTaskId(String taskId) {
         this.taskId = taskId;
         return this;
     }
@@ -101,7 +101,7 @@ public class TaskAddResult {
      * @param eTag the eTag value to set
      * @return the TaskAddResult object itself.
      */
-    public TaskAddResult setETag(String eTag) {
+    public TaskAddResult withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -121,7 +121,7 @@ public class TaskAddResult {
      * @param lastModified the lastModified value to set
      * @return the TaskAddResult object itself.
      */
-    public TaskAddResult setLastModified(DateTime lastModified) {
+    public TaskAddResult withLastModified(DateTime lastModified) {
         this.lastModified = lastModified;
         return this;
     }
@@ -141,7 +141,7 @@ public class TaskAddResult {
      * @param location the location value to set
      * @return the TaskAddResult object itself.
      */
-    public TaskAddResult setLocation(String location) {
+    public TaskAddResult withLocation(String location) {
         this.location = location;
         return this;
     }
@@ -161,7 +161,7 @@ public class TaskAddResult {
      * @param error the error value to set
      * @return the TaskAddResult object itself.
      */
-    public TaskAddResult setError(BatchError error) {
+    public TaskAddResult withError(BatchError error) {
         this.error = error;
         return this;
     }

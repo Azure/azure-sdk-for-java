@@ -34,7 +34,7 @@ public class TaskSchedulingPolicy {
      * @param nodeFillType the nodeFillType value to set
      * @return the TaskSchedulingPolicy object itself.
      */
-    public TaskSchedulingPolicy setNodeFillType(ComputeNodeFillType nodeFillType) {
+    public TaskSchedulingPolicy withNodeFillType(ComputeNodeFillType nodeFillType) {
         this.nodeFillType = nodeFillType;
         return this;
     }

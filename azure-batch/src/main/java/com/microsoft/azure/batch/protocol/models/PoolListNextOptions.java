@@ -51,7 +51,7 @@ public class PoolListNextOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the PoolListNextOptions object itself.
      */
-    public PoolListNextOptions setClientRequestId(String clientRequestId) {
+    public PoolListNextOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -71,7 +71,7 @@ public class PoolListNextOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the PoolListNextOptions object itself.
      */
-    public PoolListNextOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public PoolListNextOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -94,7 +94,7 @@ public class PoolListNextOptions {
      * @param ocpDate the ocpDate value to set
      * @return the PoolListNextOptions object itself.
      */
-    public PoolListNextOptions setOcpDate(DateTime ocpDate) {
+    public PoolListNextOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }

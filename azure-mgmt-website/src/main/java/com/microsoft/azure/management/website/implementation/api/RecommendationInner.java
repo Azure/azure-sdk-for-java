@@ -128,7 +128,7 @@ public class RecommendationInner {
      * @param creationTime the creationTime value to set
      * @return the RecommendationInner object itself.
      */
-    public RecommendationInner setCreationTime(DateTime creationTime) {
+    public RecommendationInner withCreationTime(DateTime creationTime) {
         this.creationTime = creationTime;
         return this;
     }
@@ -148,7 +148,7 @@ public class RecommendationInner {
      * @param recommendationId the recommendationId value to set
      * @return the RecommendationInner object itself.
      */
-    public RecommendationInner setRecommendationId(String recommendationId) {
+    public RecommendationInner withRecommendationId(String recommendationId) {
         this.recommendationId = recommendationId;
         return this;
     }
@@ -168,7 +168,7 @@ public class RecommendationInner {
      * @param resourceId the resourceId value to set
      * @return the RecommendationInner object itself.
      */
-    public RecommendationInner setResourceId(String resourceId) {
+    public RecommendationInner withResourceId(String resourceId) {
         this.resourceId = resourceId;
         return this;
     }
@@ -188,7 +188,7 @@ public class RecommendationInner {
      * @param resourceScope the resourceScope value to set
      * @return the RecommendationInner object itself.
      */
-    public RecommendationInner setResourceScope(String resourceScope) {
+    public RecommendationInner withResourceScope(String resourceScope) {
         this.resourceScope = resourceScope;
         return this;
     }
@@ -208,7 +208,7 @@ public class RecommendationInner {
      * @param ruleName the ruleName value to set
      * @return the RecommendationInner object itself.
      */
-    public RecommendationInner setRuleName(String ruleName) {
+    public RecommendationInner withRuleName(String ruleName) {
         this.ruleName = ruleName;
         return this;
     }
@@ -228,7 +228,7 @@ public class RecommendationInner {
      * @param displayName the displayName value to set
      * @return the RecommendationInner object itself.
      */
-    public RecommendationInner setDisplayName(String displayName) {
+    public RecommendationInner withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -248,7 +248,7 @@ public class RecommendationInner {
      * @param message the message value to set
      * @return the RecommendationInner object itself.
      */
-    public RecommendationInner setMessage(String message) {
+    public RecommendationInner withMessage(String message) {
         this.message = message;
         return this;
     }
@@ -268,7 +268,7 @@ public class RecommendationInner {
      * @param level the level value to set
      * @return the RecommendationInner object itself.
      */
-    public RecommendationInner setLevel(NotificationLevel level) {
+    public RecommendationInner withLevel(NotificationLevel level) {
         this.level = level;
         return this;
     }
@@ -288,7 +288,7 @@ public class RecommendationInner {
      * @param channels the channels value to set
      * @return the RecommendationInner object itself.
      */
-    public RecommendationInner setChannels(Channels channels) {
+    public RecommendationInner withChannels(Channels channels) {
         this.channels = channels;
         return this;
     }
@@ -308,7 +308,7 @@ public class RecommendationInner {
      * @param tags the tags value to set
      * @return the RecommendationInner object itself.
      */
-    public RecommendationInner setTags(List<String> tags) {
+    public RecommendationInner withTags(List<String> tags) {
         this.tags = tags;
         return this;
     }
@@ -328,7 +328,7 @@ public class RecommendationInner {
      * @param actionName the actionName value to set
      * @return the RecommendationInner object itself.
      */
-    public RecommendationInner setActionName(String actionName) {
+    public RecommendationInner withActionName(String actionName) {
         this.actionName = actionName;
         return this;
     }
@@ -348,7 +348,7 @@ public class RecommendationInner {
      * @param enabled the enabled value to set
      * @return the RecommendationInner object itself.
      */
-    public RecommendationInner setEnabled(Integer enabled) {
+    public RecommendationInner withEnabled(Integer enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -368,7 +368,7 @@ public class RecommendationInner {
      * @param startTime the startTime value to set
      * @return the RecommendationInner object itself.
      */
-    public RecommendationInner setStartTime(DateTime startTime) {
+    public RecommendationInner withStartTime(DateTime startTime) {
         this.startTime = startTime;
         return this;
     }
@@ -388,7 +388,7 @@ public class RecommendationInner {
      * @param endTime the endTime value to set
      * @return the RecommendationInner object itself.
      */
-    public RecommendationInner setEndTime(DateTime endTime) {
+    public RecommendationInner withEndTime(DateTime endTime) {
         this.endTime = endTime;
         return this;
     }
@@ -408,7 +408,7 @@ public class RecommendationInner {
      * @param nextNotificationTime the nextNotificationTime value to set
      * @return the RecommendationInner object itself.
      */
-    public RecommendationInner setNextNotificationTime(DateTime nextNotificationTime) {
+    public RecommendationInner withNextNotificationTime(DateTime nextNotificationTime) {
         this.nextNotificationTime = nextNotificationTime;
         return this;
     }
@@ -428,7 +428,7 @@ public class RecommendationInner {
      * @param notificationExpirationTime the notificationExpirationTime value to set
      * @return the RecommendationInner object itself.
      */
-    public RecommendationInner setNotificationExpirationTime(DateTime notificationExpirationTime) {
+    public RecommendationInner withNotificationExpirationTime(DateTime notificationExpirationTime) {
         this.notificationExpirationTime = notificationExpirationTime;
         return this;
     }
@@ -448,7 +448,7 @@ public class RecommendationInner {
      * @param notifiedTime the notifiedTime value to set
      * @return the RecommendationInner object itself.
      */
-    public RecommendationInner setNotifiedTime(DateTime notifiedTime) {
+    public RecommendationInner withNotifiedTime(DateTime notifiedTime) {
         this.notifiedTime = notifiedTime;
         return this;
     }
@@ -468,7 +468,7 @@ public class RecommendationInner {
      * @param score the score value to set
      * @return the RecommendationInner object itself.
      */
-    public RecommendationInner setScore(Double score) {
+    public RecommendationInner withScore(Double score) {
         this.score = score;
         return this;
     }

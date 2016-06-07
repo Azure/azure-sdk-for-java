@@ -32,7 +32,7 @@ public class WinRMConfiguration {
      * @param listeners the listeners value to set
      * @return the WinRMConfiguration object itself.
      */
-    public WinRMConfiguration setListeners(List<WinRMListener> listeners) {
+    public WinRMConfiguration withListeners(List<WinRMListener> listeners) {
         this.listeners = listeners;
         return this;
     }

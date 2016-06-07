@@ -53,7 +53,7 @@ public class FirewallRuleInner {
      * @param name the name value to set
      * @return the FirewallRuleInner object itself.
      */
-    public FirewallRuleInner setName(String name) {
+    public FirewallRuleInner withName(String name) {
         this.name = name;
         return this;
     }
@@ -82,7 +82,7 @@ public class FirewallRuleInner {
      * @param id the id value to set
      * @return the FirewallRuleInner object itself.
      */
-    public FirewallRuleInner setId(String id) {
+    public FirewallRuleInner withId(String id) {
         this.id = id;
         return this;
     }
@@ -102,7 +102,7 @@ public class FirewallRuleInner {
      * @param location the location value to set
      * @return the FirewallRuleInner object itself.
      */
-    public FirewallRuleInner setLocation(String location) {
+    public FirewallRuleInner withLocation(String location) {
         this.location = location;
         return this;
     }
@@ -122,7 +122,7 @@ public class FirewallRuleInner {
      * @param properties the properties value to set
      * @return the FirewallRuleInner object itself.
      */
-    public FirewallRuleInner setProperties(FirewallRuleProperties properties) {
+    public FirewallRuleInner withProperties(FirewallRuleProperties properties) {
         this.properties = properties;
         return this;
     }

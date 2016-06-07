@@ -60,7 +60,7 @@ public class JobTerminateHeaders {
      * @param clientRequestId the clientRequestId value to set
      * @return the JobTerminateHeaders object itself.
      */
-    public JobTerminateHeaders setClientRequestId(String clientRequestId) {
+    public JobTerminateHeaders withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -80,7 +80,7 @@ public class JobTerminateHeaders {
      * @param requestId the requestId value to set
      * @return the JobTerminateHeaders object itself.
      */
-    public JobTerminateHeaders setRequestId(String requestId) {
+    public JobTerminateHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -100,7 +100,7 @@ public class JobTerminateHeaders {
      * @param eTag the eTag value to set
      * @return the JobTerminateHeaders object itself.
      */
-    public JobTerminateHeaders setETag(String eTag) {
+    public JobTerminateHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -123,7 +123,7 @@ public class JobTerminateHeaders {
      * @param lastModified the lastModified value to set
      * @return the JobTerminateHeaders object itself.
      */
-    public JobTerminateHeaders setLastModified(DateTime lastModified) {
+    public JobTerminateHeaders withLastModified(DateTime lastModified) {
         this.lastModified = new DateTimeRfc1123(lastModified);
         return this;
     }
@@ -143,7 +143,7 @@ public class JobTerminateHeaders {
      * @param dataServiceId the dataServiceId value to set
      * @return the JobTerminateHeaders object itself.
      */
-    public JobTerminateHeaders setDataServiceId(String dataServiceId) {
+    public JobTerminateHeaders withDataServiceId(String dataServiceId) {
         this.dataServiceId = dataServiceId;
         return this;
     }

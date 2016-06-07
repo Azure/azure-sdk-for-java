@@ -37,7 +37,7 @@ public class DomainCollectionInner {
      * @param value the value value to set
      * @return the DomainCollectionInner object itself.
      */
-    public DomainCollectionInner setValue(List<DomainInner> value) {
+    public DomainCollectionInner withValue(List<DomainInner> value) {
         this.value = value;
         return this;
     }
@@ -57,7 +57,7 @@ public class DomainCollectionInner {
      * @param nextLink the nextLink value to set
      * @return the DomainCollectionInner object itself.
      */
-    public DomainCollectionInner setNextLink(String nextLink) {
+    public DomainCollectionInner withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }

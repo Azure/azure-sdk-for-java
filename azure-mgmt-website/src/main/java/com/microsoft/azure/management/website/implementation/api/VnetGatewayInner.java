@@ -43,7 +43,7 @@ public class VnetGatewayInner extends Resource {
      * @param vnetName the vnetName value to set
      * @return the VnetGatewayInner object itself.
      */
-    public VnetGatewayInner setVnetName(String vnetName) {
+    public VnetGatewayInner withVnetName(String vnetName) {
         this.vnetName = vnetName;
         return this;
     }
@@ -63,7 +63,7 @@ public class VnetGatewayInner extends Resource {
      * @param vpnPackageUri the vpnPackageUri value to set
      * @return the VnetGatewayInner object itself.
      */
-    public VnetGatewayInner setVpnPackageUri(String vpnPackageUri) {
+    public VnetGatewayInner withVpnPackageUri(String vpnPackageUri) {
         this.vpnPackageUri = vpnPackageUri;
         return this;
     }

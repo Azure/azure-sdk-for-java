@@ -36,7 +36,7 @@ public class HttpLogsConfig {
      * @param fileSystem the fileSystem value to set
      * @return the HttpLogsConfig object itself.
      */
-    public HttpLogsConfig setFileSystem(FileSystemHttpLogsConfig fileSystem) {
+    public HttpLogsConfig withFileSystem(FileSystemHttpLogsConfig fileSystem) {
         this.fileSystem = fileSystem;
         return this;
     }
@@ -56,7 +56,7 @@ public class HttpLogsConfig {
      * @param azureBlobStorage the azureBlobStorage value to set
      * @return the HttpLogsConfig object itself.
      */
-    public HttpLogsConfig setAzureBlobStorage(AzureBlobStorageHttpLogsConfig azureBlobStorage) {
+    public HttpLogsConfig withAzureBlobStorage(AzureBlobStorageHttpLogsConfig azureBlobStorage) {
         this.azureBlobStorage = azureBlobStorage;
         return this;
     }

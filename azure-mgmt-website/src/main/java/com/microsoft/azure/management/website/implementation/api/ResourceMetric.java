@@ -68,7 +68,7 @@ public class ResourceMetric {
      * @param name the name value to set
      * @return the ResourceMetric object itself.
      */
-    public ResourceMetric setName(ResourceMetricName name) {
+    public ResourceMetric withName(ResourceMetricName name) {
         this.name = name;
         return this;
     }
@@ -88,7 +88,7 @@ public class ResourceMetric {
      * @param unit the unit value to set
      * @return the ResourceMetric object itself.
      */
-    public ResourceMetric setUnit(String unit) {
+    public ResourceMetric withUnit(String unit) {
         this.unit = unit;
         return this;
     }
@@ -108,7 +108,7 @@ public class ResourceMetric {
      * @param timeGrain the timeGrain value to set
      * @return the ResourceMetric object itself.
      */
-    public ResourceMetric setTimeGrain(String timeGrain) {
+    public ResourceMetric withTimeGrain(String timeGrain) {
         this.timeGrain = timeGrain;
         return this;
     }
@@ -128,7 +128,7 @@ public class ResourceMetric {
      * @param startTime the startTime value to set
      * @return the ResourceMetric object itself.
      */
-    public ResourceMetric setStartTime(DateTime startTime) {
+    public ResourceMetric withStartTime(DateTime startTime) {
         this.startTime = startTime;
         return this;
     }
@@ -148,7 +148,7 @@ public class ResourceMetric {
      * @param endTime the endTime value to set
      * @return the ResourceMetric object itself.
      */
-    public ResourceMetric setEndTime(DateTime endTime) {
+    public ResourceMetric withEndTime(DateTime endTime) {
         this.endTime = endTime;
         return this;
     }
@@ -168,7 +168,7 @@ public class ResourceMetric {
      * @param resourceId the resourceId value to set
      * @return the ResourceMetric object itself.
      */
-    public ResourceMetric setResourceId(String resourceId) {
+    public ResourceMetric withResourceId(String resourceId) {
         this.resourceId = resourceId;
         return this;
     }
@@ -188,7 +188,7 @@ public class ResourceMetric {
      * @param metricValues the metricValues value to set
      * @return the ResourceMetric object itself.
      */
-    public ResourceMetric setMetricValues(List<ResourceMetricValue> metricValues) {
+    public ResourceMetric withMetricValues(List<ResourceMetricValue> metricValues) {
         this.metricValues = metricValues;
         return this;
     }
@@ -208,7 +208,7 @@ public class ResourceMetric {
      * @param properties the properties value to set
      * @return the ResourceMetric object itself.
      */
-    public ResourceMetric setProperties(List<KeyValuePairStringString> properties) {
+    public ResourceMetric withProperties(List<KeyValuePairStringString> properties) {
         this.properties = properties;
         return this;
     }

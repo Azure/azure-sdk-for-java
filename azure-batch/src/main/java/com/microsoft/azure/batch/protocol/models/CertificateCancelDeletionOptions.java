@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the CancelDeletion operation.
+ * Additional parameters for the Certificate_CancelDeletion operation.
  */
 public class CertificateCancelDeletionOptions {
     /**
@@ -58,7 +58,7 @@ public class CertificateCancelDeletionOptions {
      * @param timeout the timeout value to set
      * @return the CertificateCancelDeletionOptions object itself.
      */
-    public CertificateCancelDeletionOptions setTimeout(Integer timeout) {
+    public CertificateCancelDeletionOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -78,7 +78,7 @@ public class CertificateCancelDeletionOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the CertificateCancelDeletionOptions object itself.
      */
-    public CertificateCancelDeletionOptions setClientRequestId(String clientRequestId) {
+    public CertificateCancelDeletionOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -98,7 +98,7 @@ public class CertificateCancelDeletionOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the CertificateCancelDeletionOptions object itself.
      */
-    public CertificateCancelDeletionOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public CertificateCancelDeletionOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -121,7 +121,7 @@ public class CertificateCancelDeletionOptions {
      * @param ocpDate the ocpDate value to set
      * @return the CertificateCancelDeletionOptions object itself.
      */
-    public CertificateCancelDeletionOptions setOcpDate(DateTime ocpDate) {
+    public CertificateCancelDeletionOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }

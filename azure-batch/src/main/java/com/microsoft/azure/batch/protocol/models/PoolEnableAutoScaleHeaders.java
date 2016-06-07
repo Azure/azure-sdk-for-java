@@ -60,7 +60,7 @@ public class PoolEnableAutoScaleHeaders {
      * @param clientRequestId the clientRequestId value to set
      * @return the PoolEnableAutoScaleHeaders object itself.
      */
-    public PoolEnableAutoScaleHeaders setClientRequestId(String clientRequestId) {
+    public PoolEnableAutoScaleHeaders withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -80,7 +80,7 @@ public class PoolEnableAutoScaleHeaders {
      * @param requestId the requestId value to set
      * @return the PoolEnableAutoScaleHeaders object itself.
      */
-    public PoolEnableAutoScaleHeaders setRequestId(String requestId) {
+    public PoolEnableAutoScaleHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -100,7 +100,7 @@ public class PoolEnableAutoScaleHeaders {
      * @param eTag the eTag value to set
      * @return the PoolEnableAutoScaleHeaders object itself.
      */
-    public PoolEnableAutoScaleHeaders setETag(String eTag) {
+    public PoolEnableAutoScaleHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -123,7 +123,7 @@ public class PoolEnableAutoScaleHeaders {
      * @param lastModified the lastModified value to set
      * @return the PoolEnableAutoScaleHeaders object itself.
      */
-    public PoolEnableAutoScaleHeaders setLastModified(DateTime lastModified) {
+    public PoolEnableAutoScaleHeaders withLastModified(DateTime lastModified) {
         this.lastModified = new DateTimeRfc1123(lastModified);
         return this;
     }
@@ -143,7 +143,7 @@ public class PoolEnableAutoScaleHeaders {
      * @param dataServiceId the dataServiceId value to set
      * @return the PoolEnableAutoScaleHeaders object itself.
      */
-    public PoolEnableAutoScaleHeaders setDataServiceId(String dataServiceId) {
+    public PoolEnableAutoScaleHeaders withDataServiceId(String dataServiceId) {
         this.dataServiceId = dataServiceId;
         return this;
     }

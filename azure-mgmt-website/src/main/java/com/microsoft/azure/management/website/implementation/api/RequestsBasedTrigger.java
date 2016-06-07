@@ -36,7 +36,7 @@ public class RequestsBasedTrigger {
      * @param count the count value to set
      * @return the RequestsBasedTrigger object itself.
      */
-    public RequestsBasedTrigger setCount(Integer count) {
+    public RequestsBasedTrigger withCount(Integer count) {
         this.count = count;
         return this;
     }
@@ -56,7 +56,7 @@ public class RequestsBasedTrigger {
      * @param timeInterval the timeInterval value to set
      * @return the RequestsBasedTrigger object itself.
      */
-    public RequestsBasedTrigger setTimeInterval(String timeInterval) {
+    public RequestsBasedTrigger withTimeInterval(String timeInterval) {
         this.timeInterval = timeInterval;
         return this;
     }

@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the GetRemoteLoginSettings operation.
+ * Additional parameters for the ComputeNode_GetRemoteLoginSettings operation.
  */
 public class ComputeNodeGetRemoteLoginSettingsOptions {
     /**
@@ -58,7 +58,7 @@ public class ComputeNodeGetRemoteLoginSettingsOptions {
      * @param timeout the timeout value to set
      * @return the ComputeNodeGetRemoteLoginSettingsOptions object itself.
      */
-    public ComputeNodeGetRemoteLoginSettingsOptions setTimeout(Integer timeout) {
+    public ComputeNodeGetRemoteLoginSettingsOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -78,7 +78,7 @@ public class ComputeNodeGetRemoteLoginSettingsOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the ComputeNodeGetRemoteLoginSettingsOptions object itself.
      */
-    public ComputeNodeGetRemoteLoginSettingsOptions setClientRequestId(String clientRequestId) {
+    public ComputeNodeGetRemoteLoginSettingsOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -98,7 +98,7 @@ public class ComputeNodeGetRemoteLoginSettingsOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the ComputeNodeGetRemoteLoginSettingsOptions object itself.
      */
-    public ComputeNodeGetRemoteLoginSettingsOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public ComputeNodeGetRemoteLoginSettingsOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -121,7 +121,7 @@ public class ComputeNodeGetRemoteLoginSettingsOptions {
      * @param ocpDate the ocpDate value to set
      * @return the ComputeNodeGetRemoteLoginSettingsOptions object itself.
      */
-    public ComputeNodeGetRemoteLoginSettingsOptions setOcpDate(DateTime ocpDate) {
+    public ComputeNodeGetRemoteLoginSettingsOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }

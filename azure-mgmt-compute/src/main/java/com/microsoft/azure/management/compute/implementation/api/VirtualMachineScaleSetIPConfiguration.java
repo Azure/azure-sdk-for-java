@@ -55,7 +55,7 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
      * @param name the name value to set
      * @return the VirtualMachineScaleSetIPConfiguration object itself.
      */
-    public VirtualMachineScaleSetIPConfiguration setName(String name) {
+    public VirtualMachineScaleSetIPConfiguration withName(String name) {
         this.name = name;
         return this;
     }
@@ -75,7 +75,7 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
      * @param subnet the subnet value to set
      * @return the VirtualMachineScaleSetIPConfiguration object itself.
      */
-    public VirtualMachineScaleSetIPConfiguration setSubnet(ApiEntityReference subnet) {
+    public VirtualMachineScaleSetIPConfiguration withSubnet(ApiEntityReference subnet) {
         this.subnet = subnet;
         return this;
     }
@@ -95,7 +95,7 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
      * @param loadBalancerBackendAddressPools the loadBalancerBackendAddressPools value to set
      * @return the VirtualMachineScaleSetIPConfiguration object itself.
      */
-    public VirtualMachineScaleSetIPConfiguration setLoadBalancerBackendAddressPools(List<SubResource> loadBalancerBackendAddressPools) {
+    public VirtualMachineScaleSetIPConfiguration withLoadBalancerBackendAddressPools(List<SubResource> loadBalancerBackendAddressPools) {
         this.loadBalancerBackendAddressPools = loadBalancerBackendAddressPools;
         return this;
     }
@@ -115,7 +115,7 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
      * @param loadBalancerInboundNatPools the loadBalancerInboundNatPools value to set
      * @return the VirtualMachineScaleSetIPConfiguration object itself.
      */
-    public VirtualMachineScaleSetIPConfiguration setLoadBalancerInboundNatPools(List<SubResource> loadBalancerInboundNatPools) {
+    public VirtualMachineScaleSetIPConfiguration withLoadBalancerInboundNatPools(List<SubResource> loadBalancerInboundNatPools) {
         this.loadBalancerInboundNatPools = loadBalancerInboundNatPools;
         return this;
     }

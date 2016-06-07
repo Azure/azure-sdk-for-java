@@ -137,28 +137,28 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         createClients();
         location = environmentLocation;
         ResourceGroupInner group = new ResourceGroupInner();
-        group.setLocation(location);
+        group.withLocation(location);
         resourceManagementClient.resourceGroups().createOrUpdate(rgName, group);
         // create storage and ADLS accounts, setting the accessKey
         DataLakeStoreAccountInner adlsAccount = new DataLakeStoreAccountInner();
-        adlsAccount.setLocation(location);
-        adlsAccount.setName(adlsAcct);
+        adlsAccount.withLocation(location);
+        adlsAccount.withName(adlsAcct);
         dataLakeStoreAccountManagementClient.accounts().create(rgName, adlsAcct, adlsAccount);
 
         // Create the ADLA acct to use.
         DataLakeAnalyticsAccountProperties createProperties = new DataLakeAnalyticsAccountProperties();
         List<DataLakeStoreAccountInfoInner> adlsAccts = new ArrayList<DataLakeStoreAccountInfoInner>();
         DataLakeStoreAccountInfoInner adlsInfo = new DataLakeStoreAccountInfoInner();
-        adlsInfo.setName(adlsAcct);
+        adlsInfo.withName(adlsAcct);
         adlsAccts.add(adlsInfo);
 
-        createProperties.setDataLakeStoreAccounts(adlsAccts);
-        createProperties.setDefaultDataLakeStoreAccount(adlsAcct);
+        createProperties.withDataLakeStoreAccounts(adlsAccts);
+        createProperties.withDefaultDataLakeStoreAccount(adlsAcct);
 
         DataLakeAnalyticsAccountInner createParams = new DataLakeAnalyticsAccountInner();
-        createParams.setLocation(location);
-        createParams.setName(adlaAcct);
-        createParams.setProperties(createProperties);
+        createParams.withLocation(location);
+        createParams.withName(adlaAcct);
+        createParams.withProperties(createProperties);
         dataLakeAnalyticsAccountManagementClient.accounts().create(rgName, adlaAcct, createParams);
         // Sleep for two minutes to ensure the account is totally provisioned.
         Thread.sleep(120000);
@@ -312,8 +312,8 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
     public void  canCreateUpdateDeleteSecretsAndCredentials() throws Exception {
         // create the secret
         DataLakeAnalyticsCatalogSecretCreateOrUpdateParametersInner createParams = new DataLakeAnalyticsCatalogSecretCreateOrUpdateParametersInner();
-        createParams.setPassword(secretPwd);
-        createParams.setUri("https://adlasecrettest.contoso.com:443");
+        createParams.withPassword(secretPwd);
+        createParams.withUri("https://adlasecrettest.contoso.com:443");
         USqlSecretInner secretCreateResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().createSecret(
                 adlaAcct, dbName, secretName,
                 createParams).getBody();

@@ -46,7 +46,7 @@ public class VirtualMachineImageResourceInner extends SubResource {
      * @param name the name value to set
      * @return the VirtualMachineImageResourceInner object itself.
      */
-    public VirtualMachineImageResourceInner setName(String name) {
+    public VirtualMachineImageResourceInner withName(String name) {
         this.name = name;
         return this;
     }
@@ -66,7 +66,7 @@ public class VirtualMachineImageResourceInner extends SubResource {
      * @param location the location value to set
      * @return the VirtualMachineImageResourceInner object itself.
      */
-    public VirtualMachineImageResourceInner setLocation(String location) {
+    public VirtualMachineImageResourceInner withLocation(String location) {
         this.location = location;
         return this;
     }
@@ -86,7 +86,7 @@ public class VirtualMachineImageResourceInner extends SubResource {
      * @param tags the tags value to set
      * @return the VirtualMachineImageResourceInner object itself.
      */
-    public VirtualMachineImageResourceInner setTags(Map<String, String> tags) {
+    public VirtualMachineImageResourceInner withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }

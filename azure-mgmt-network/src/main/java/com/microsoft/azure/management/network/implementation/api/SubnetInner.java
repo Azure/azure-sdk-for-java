@@ -74,7 +74,7 @@ public class SubnetInner extends SubResource {
      * @param addressPrefix the addressPrefix value to set
      * @return the SubnetInner object itself.
      */
-    public SubnetInner setAddressPrefix(String addressPrefix) {
+    public SubnetInner withAddressPrefix(String addressPrefix) {
         this.addressPrefix = addressPrefix;
         return this;
     }
@@ -94,7 +94,7 @@ public class SubnetInner extends SubResource {
      * @param networkSecurityGroup the networkSecurityGroup value to set
      * @return the SubnetInner object itself.
      */
-    public SubnetInner setNetworkSecurityGroup(NetworkSecurityGroupInner networkSecurityGroup) {
+    public SubnetInner withNetworkSecurityGroup(NetworkSecurityGroupInner networkSecurityGroup) {
         this.networkSecurityGroup = networkSecurityGroup;
         return this;
     }
@@ -114,7 +114,7 @@ public class SubnetInner extends SubResource {
      * @param routeTable the routeTable value to set
      * @return the SubnetInner object itself.
      */
-    public SubnetInner setRouteTable(RouteTableInner routeTable) {
+    public SubnetInner withRouteTable(RouteTableInner routeTable) {
         this.routeTable = routeTable;
         return this;
     }
@@ -134,7 +134,7 @@ public class SubnetInner extends SubResource {
      * @param ipConfigurations the ipConfigurations value to set
      * @return the SubnetInner object itself.
      */
-    public SubnetInner setIpConfigurations(List<IPConfiguration> ipConfigurations) {
+    public SubnetInner withIpConfigurations(List<IPConfiguration> ipConfigurations) {
         this.ipConfigurations = ipConfigurations;
         return this;
     }
@@ -154,7 +154,7 @@ public class SubnetInner extends SubResource {
      * @param provisioningState the provisioningState value to set
      * @return the SubnetInner object itself.
      */
-    public SubnetInner setProvisioningState(String provisioningState) {
+    public SubnetInner withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -174,7 +174,7 @@ public class SubnetInner extends SubResource {
      * @param name the name value to set
      * @return the SubnetInner object itself.
      */
-    public SubnetInner setName(String name) {
+    public SubnetInner withName(String name) {
         this.name = name;
         return this;
     }
@@ -194,7 +194,7 @@ public class SubnetInner extends SubResource {
      * @param etag the etag value to set
      * @return the SubnetInner object itself.
      */
-    public SubnetInner setEtag(String etag) {
+    public SubnetInner withEtag(String etag) {
         this.etag = etag;
         return this;
     }

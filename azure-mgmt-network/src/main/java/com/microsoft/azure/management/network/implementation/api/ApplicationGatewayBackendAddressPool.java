@@ -61,7 +61,7 @@ public class ApplicationGatewayBackendAddressPool extends SubResource {
      * @param backendIPConfigurations the backendIPConfigurations value to set
      * @return the ApplicationGatewayBackendAddressPool object itself.
      */
-    public ApplicationGatewayBackendAddressPool setBackendIPConfigurations(List<SubResource> backendIPConfigurations) {
+    public ApplicationGatewayBackendAddressPool withBackendIPConfigurations(List<SubResource> backendIPConfigurations) {
         this.backendIPConfigurations = backendIPConfigurations;
         return this;
     }
@@ -81,7 +81,7 @@ public class ApplicationGatewayBackendAddressPool extends SubResource {
      * @param backendAddresses the backendAddresses value to set
      * @return the ApplicationGatewayBackendAddressPool object itself.
      */
-    public ApplicationGatewayBackendAddressPool setBackendAddresses(List<ApplicationGatewayBackendAddress> backendAddresses) {
+    public ApplicationGatewayBackendAddressPool withBackendAddresses(List<ApplicationGatewayBackendAddress> backendAddresses) {
         this.backendAddresses = backendAddresses;
         return this;
     }
@@ -101,7 +101,7 @@ public class ApplicationGatewayBackendAddressPool extends SubResource {
      * @param provisioningState the provisioningState value to set
      * @return the ApplicationGatewayBackendAddressPool object itself.
      */
-    public ApplicationGatewayBackendAddressPool setProvisioningState(String provisioningState) {
+    public ApplicationGatewayBackendAddressPool withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -121,7 +121,7 @@ public class ApplicationGatewayBackendAddressPool extends SubResource {
      * @param name the name value to set
      * @return the ApplicationGatewayBackendAddressPool object itself.
      */
-    public ApplicationGatewayBackendAddressPool setName(String name) {
+    public ApplicationGatewayBackendAddressPool withName(String name) {
         this.name = name;
         return this;
     }
@@ -141,7 +141,7 @@ public class ApplicationGatewayBackendAddressPool extends SubResource {
      * @param etag the etag value to set
      * @return the ApplicationGatewayBackendAddressPool object itself.
      */
-    public ApplicationGatewayBackendAddressPool setEtag(String etag) {
+    public ApplicationGatewayBackendAddressPool withEtag(String etag) {
         this.etag = etag;
         return this;
     }

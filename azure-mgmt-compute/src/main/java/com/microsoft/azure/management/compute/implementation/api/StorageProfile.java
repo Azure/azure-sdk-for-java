@@ -42,7 +42,7 @@ public class StorageProfile {
      * @param imageReference the imageReference value to set
      * @return the StorageProfile object itself.
      */
-    public StorageProfile setImageReference(ImageReference imageReference) {
+    public StorageProfile withImageReference(ImageReference imageReference) {
         this.imageReference = imageReference;
         return this;
     }
@@ -62,7 +62,7 @@ public class StorageProfile {
      * @param osDisk the osDisk value to set
      * @return the StorageProfile object itself.
      */
-    public StorageProfile setOsDisk(OSDisk osDisk) {
+    public StorageProfile withOsDisk(OSDisk osDisk) {
         this.osDisk = osDisk;
         return this;
     }
@@ -82,7 +82,7 @@ public class StorageProfile {
      * @param dataDisks the dataDisks value to set
      * @return the StorageProfile object itself.
      */
-    public StorageProfile setDataDisks(List<DataDisk> dataDisks) {
+    public StorageProfile withDataDisks(List<DataDisk> dataDisks) {
         this.dataDisks = dataDisks;
         return this;
     }

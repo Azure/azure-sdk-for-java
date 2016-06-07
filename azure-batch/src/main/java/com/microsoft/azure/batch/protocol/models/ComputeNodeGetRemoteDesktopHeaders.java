@@ -54,7 +54,7 @@ public class ComputeNodeGetRemoteDesktopHeaders {
      * @param clientRequestId the clientRequestId value to set
      * @return the ComputeNodeGetRemoteDesktopHeaders object itself.
      */
-    public ComputeNodeGetRemoteDesktopHeaders setClientRequestId(String clientRequestId) {
+    public ComputeNodeGetRemoteDesktopHeaders withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -74,7 +74,7 @@ public class ComputeNodeGetRemoteDesktopHeaders {
      * @param requestId the requestId value to set
      * @return the ComputeNodeGetRemoteDesktopHeaders object itself.
      */
-    public ComputeNodeGetRemoteDesktopHeaders setRequestId(String requestId) {
+    public ComputeNodeGetRemoteDesktopHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -94,7 +94,7 @@ public class ComputeNodeGetRemoteDesktopHeaders {
      * @param eTag the eTag value to set
      * @return the ComputeNodeGetRemoteDesktopHeaders object itself.
      */
-    public ComputeNodeGetRemoteDesktopHeaders setETag(String eTag) {
+    public ComputeNodeGetRemoteDesktopHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -117,7 +117,7 @@ public class ComputeNodeGetRemoteDesktopHeaders {
      * @param lastModified the lastModified value to set
      * @return the ComputeNodeGetRemoteDesktopHeaders object itself.
      */
-    public ComputeNodeGetRemoteDesktopHeaders setLastModified(DateTime lastModified) {
+    public ComputeNodeGetRemoteDesktopHeaders withLastModified(DateTime lastModified) {
         this.lastModified = new DateTimeRfc1123(lastModified);
         return this;
     }
