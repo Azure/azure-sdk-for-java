@@ -20,6 +20,10 @@ import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.rest.ServiceResponse;
 
+/**
+ * Internal virtual network implementation of the fluent interface.
+ * (Internal use only)
+ */
 class NetworkImpl
     extends GroupableResourceImpl<Network, VirtualNetworkInner, NetworkImpl>
     implements
@@ -37,22 +41,20 @@ class NetworkImpl
         super(name, innerModel, resourceGroups);
         this.client = client;
         initializeSubnetsFromInner();
-        }
+    }
 
     private void initializeSubnetsFromInner() {
         this.subnets = new ArrayList<>();
         for (SubnetInner subnetInner : this.inner().subnets()) {
             SubnetImpl subnet = new SubnetImpl(subnetInner.name(), subnetInner, this);
             this.subnets.add(subnet);
-        }    
+        }
     }
 
-    /**************************************************
-     * Verbs
-     **************************************************/
+    // Verbs
 
     @Override
-    public Network refresh() throws Exception {
+    public NetworkImpl refresh() throws Exception {
         ServiceResponse<VirtualNetworkInner> response =
             this.client.get(this.resourceGroupName(), this.name());
         this.setInner(response.getBody());
@@ -72,29 +74,23 @@ class NetworkImpl
     }
 
     @Override
-    public Network apply() throws Exception {
+    public NetworkImpl apply() throws Exception {
         return this.create();
     }
 
-    
-    /*****************************************
-     * Setters (fluent)
-     *****************************************/
+    // Setters (fluent)
 
     @Override
     public NetworkImpl withDnsServer(String ipAddress) {
         this.inner().dhcpOptions().dnsServers().add(ipAddress);
         return this;
     }
-    
+
     @Override
     public NetworkImpl withSubnet(String name, String cidr) {
-        SubnetInner azureSubnet = new SubnetInner();
-        azureSubnet.withName(name);
-        azureSubnet.withAddressPrefix(cidr);
-        this.inner().subnets().add(azureSubnet);
-        this.subnets.add(new SubnetImpl(name, azureSubnet, this));
-        return this;
+        return this.defineSubnet(name)
+            .withAddressPrefix(cidr)
+            .attach();
     }
 
     @Override
@@ -137,10 +133,14 @@ class NetworkImpl
         return this;
     }
 
+    @Override
+    public SubnetImpl defineSubnet(String name) {
+        SubnetInner inner = new SubnetInner();
+        inner.withName(name);
+        return new SubnetImpl(name, inner, this);
+    }
 
-    /**********************************************
-     * Getters
-     **********************************************/
+    // Getters
 
     @Override
     public List<String> addressSpaces() {
@@ -174,5 +174,6 @@ class NetworkImpl
         ServiceResponse<VirtualNetworkInner> response =
                 this.client.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
         this.setInner(response.getBody());
+        initializeSubnetsFromInner();
     }
 }

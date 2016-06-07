@@ -11,6 +11,9 @@ import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
+/**
+ * Tests public IPs.
+ */
 public class TestPublicIpAddress extends TestTemplate<PublicIpAddress, PublicIpAddresses> {
 
     @Override
@@ -39,7 +42,7 @@ public class TestPublicIpAddress extends TestTemplate<PublicIpAddress, PublicIpA
                 .withTag("tag2", "value2")
                 .apply();
         Assert.assertTrue(resource.leafDomainLabel().equalsIgnoreCase(updatedDnsName));
-        Assert.assertTrue(resource.idleTimeoutInMinutes()==updatedIdleTimeout);
+        Assert.assertTrue(resource.idleTimeoutInMinutes() == updatedIdleTimeout);
         return resource;
     }
 

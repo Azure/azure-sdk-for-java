@@ -63,11 +63,19 @@ public class AzureTests {
     }
 
     /**
+     * Tests the network security group implementation
+     * @throws Exception
+     */
+    @Test public void testNetworkSecurityGroups() throws Exception {
+        new TestNSG().runTest(azure2.networkSecurityGroups(), azure2.resourceGroups());
+    }
+
+    /**
      * Tests the public IP address implementation
      * @throws Exception
      */
     @Test public void testPublicIpAddresses() throws Exception {
-        new TestPublicIpAddress().runTest(azure2.publicIpAddresses(), azure2);
+        new TestPublicIpAddress().runTest(azure2.publicIpAddresses(), azure2.resourceGroups());
     }
 
     /**
@@ -75,7 +83,7 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testAvailabilitySets() throws Exception {
-        new TestAvailabilitySet().runTest(azure2.availabilitySets(), azure2);
+        new TestAvailabilitySet().runTest(azure2.availabilitySets(), azure2.resourceGroups());
     }
 
     /**
@@ -83,7 +91,7 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testNetworks() throws Exception {
-        new TestNetwork().runTest(azure2.networks(), azure2);
+        new TestNetwork().runTest(azure2.networks(), azure2.resourceGroups());
     }
 
     /**
@@ -91,11 +99,11 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testNetworkInterfaces() throws Exception {
-        new TestNetworkInterface().runTest(azure.networkInterfaces(), azure);
+        new TestNetworkInterface().runTest(azure.networkInterfaces(), azure.resourceGroups());
     }
 
     @Test public void testVirtualMachines() throws Exception {
-        new TestVirtualMachine().runTest(azure.virtualMachines(), azure);
+        new TestVirtualMachine().runTest(azure.virtualMachines(), azure2.resourceGroups());
     }
 
     @Test

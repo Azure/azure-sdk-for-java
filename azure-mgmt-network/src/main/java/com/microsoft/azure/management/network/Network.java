@@ -50,7 +50,7 @@ public interface Network extends
      **************************************************************/
 
 	/**
-	 * Container interface for all the definitions
+	 * The entirety of the virtual network definition.
 	 */
 	interface Definitions extends 
 	    DefinitionBlank,
@@ -60,21 +60,21 @@ public interface Network extends
 	    DefinitionCreatableWithSubnet {}
 
 	/**
-	 * The first stage of a virtual network definition
+	 * The first stage of a virtual network definition.
 	 */
 	interface DefinitionBlank 
 	    extends GroupableResource.DefinitionWithRegion<DefinitionWithGroup> {
 	}
 
     /**
-     * The stage of the virtual network definition allowing to specify the resource group
+     * The stage of the virtual network definition allowing to specify the resource group.
      */
     interface DefinitionWithGroup 
         extends GroupableResource.DefinitionWithGroup<DefinitionCreatable> {
     }
 
     /**
-     * The stage of the virtual network definition allowing to add subnets
+     * The stage of the virtual network definition allowing to add subnets.
      */
     interface DefinitionWithSubnet {
         /**
@@ -96,6 +96,8 @@ public interface Network extends
          * @return the next stage of the virtual network definition
          */
         DefinitionCreatableWithSubnet withSubnets(Map<String, String> nameCidrPairs);
+        
+        Subnet.DefinitionBlank<DefinitionCreatableWithSubnet> defineSubnet(String name);
     }
 
 
