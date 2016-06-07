@@ -8,15 +8,16 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class GenericResourcesTests extends ResourceManagerTestBase {
     private static ResourceGroups resourceGroups;
     private static ResourceGroup resourceGroup;
     private static GenericResources genericResources;
 
-    private static String resourceName = "rgweb1";
-    private static String rgName = "javacsmrg6";
-    private static String newRgName = "javacsmrg7";
+    private static String resourceName = "rgweb953";
+    private static String rgName = "javacsmrg720";
+    private static String newRgName = "javacsmrg189";
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -34,15 +35,15 @@ public class GenericResourcesTests extends ResourceManagerTestBase {
 
     @AfterClass
     public static void cleanup() throws Exception {
-        resourceGroups.delete(rgName);
         resourceGroups.delete(newRgName);
+        resourceGroups.delete(rgName);
     }
 
     @Test
     public void canCreateUpdateMoveResource() throws Exception {
         // Create
         GenericResource resource = genericResources.define(resourceName)
-                .withRegion(Region.US_WEST)
+                .withRegion(Region.US_SOUTH_CENTRAL)
                 .withExistingGroup(rgName)
                 .withResourceType("sites")
                 .withProviderNamespace("Microsoft.Web")
@@ -51,11 +52,27 @@ public class GenericResourcesTests extends ResourceManagerTestBase {
                 .withApiVersion("2015-08-01")
                 .withProperties(new ObjectMapper().readTree("{\"SiteMode\":\"Limited\",\"ComputeMode\":\"Shared\"}"))
                 .create();
-        Assert.assertNotNull(genericResources.get(rgName, resource.name()));
+        //List
+        List<GenericResource> resourceList = genericResources.list(rgName);
+        boolean found = false;
+        for (GenericResource gr: resourceList) {
+            if (gr.name().equals(resource.name())) {
+                found = true;
+                break;
+            }
+        }
+        Assert.assertTrue(found);
+        // Get
+        Assert.assertNotNull(genericResources.get(rgName, resource.resourceProviderNamespace(), resource.parentResourceId(), resource.resourceType(), resource.name(), resource.apiVersion()));
         // Move
         genericResources.moveResources(rgName, resourceGroups.get(newRgName), Arrays.asList(resource.id()));
-        Assert.assertNull(genericResources.get(rgName, resource.name()));
-        Assert.assertNotNull(genericResources.get(newRgName, resource.name()));
+        Assert.assertFalse(genericResources.checkExistence(rgName, resource.resourceProviderNamespace(), resource.parentResourceId(), resource.resourceType(), resource.name(), resource.apiVersion()));
+        resource = genericResources.get(newRgName, resource.resourceProviderNamespace(), resource.parentResourceId(), resource.resourceType(), resource.name(), resource.apiVersion());
+        Assert.assertNotNull(resource);
         // Update
+        resource.update()
+                .withApiVersion("2015-08-01")
+                .withProperties(new ObjectMapper().readTree("{\"SiteMode\":\"Limited\",\"ComputeMode\":\"Dynamic\"}"))
+                .apply();
     }
 }
