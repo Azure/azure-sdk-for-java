@@ -10,9 +10,12 @@ import com.microsoft.azure.management.network.NetworkSecurityRule;
 import com.microsoft.azure.management.network.implementation.api.SecurityRuleInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
-class NetworkSecurityRuleImpl 
+/**
+ * Implementation of the NetworkSecurityRule interface.
+ */
+class NetworkSecurityRuleImpl
     extends ChildResourceImpl<SecurityRuleInner, NetworkSecurityGroupImpl>
-    implements 
+    implements
         NetworkSecurityRule,
         NetworkSecurityRule.Definitions<NetworkSecurityGroup.DefinitionCreatable> {
 
@@ -20,9 +23,7 @@ class NetworkSecurityRuleImpl
         super(name, inner, parent);
     }
 
-    /********************************************
-     * Getters
-     ********************************************/
+    // Getters
 
     @Override
     public String name() {
@@ -69,10 +70,8 @@ class NetworkSecurityRuleImpl
         return this.inner().priority();
     }
 
+    // Fluent setters
 
-    /*********************************************
-     * Fluent setters
-     *********************************************/
     @Override
     public NetworkSecurityRuleImpl allowInbound() {
         return this
@@ -174,18 +173,16 @@ class NetworkSecurityRuleImpl
 
     @Override
     public NetworkSecurityRuleImpl  withPriority(int priority) {
-        if(priority < 100 || priority > 4096) {
+        if (priority < 100 || priority > 4096) {
             throw new IllegalArgumentException("The priority number of a network security rule must be between 100 and 4096.");
         }
-      
+
         this.inner().setPriority(priority);
         return this;
     }
 
 
-    /*********************************************************
-     * Helpers
-     *********************************************************/
+    // Helpers
 
     private NetworkSecurityRuleImpl withDirection(Direction direction) {
         this.inner().setDirection(direction.toString());
@@ -198,9 +195,7 @@ class NetworkSecurityRuleImpl
     }
 
 
-    /**********************************************
-     * Verbs
-     **********************************************/
+    // Verbs
 
     @Override
     public NetworkSecurityGroupImpl attach() {

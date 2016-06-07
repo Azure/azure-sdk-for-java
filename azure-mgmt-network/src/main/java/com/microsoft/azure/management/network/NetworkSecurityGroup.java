@@ -19,7 +19,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
 /**
- * Network security group
+ * Network security group.
  */
 public interface NetworkSecurityGroup extends
         GroupableResource,
@@ -34,40 +34,29 @@ public interface NetworkSecurityGroup extends
      * @return list of security rules associated with this network security group
      */
     List<NetworkSecurityRule> securityRules();
-    
+
     /**
      * @return list of default security rules associated with this network security group
      */
     List<NetworkSecurityRule> defaultSecurityRules();
-    
+
+    // Fluent interfaces for creating NSGs
+
     /**
-     * @return list of subnets this network security group is associated with
+     * The entirety of the network security group definition.
      */
-    //TODO: List<Subnet> subnets();
-    
+    interface Definitions extends
+        DefinitionBlank,
+        DefinitionWithGroup,
+        DefinitionCreatable {
+    }
+
     /**
-     * @return list of network interfaces this network security group is associated with
+     * The first stage of the definition.
      */
-    //TODO: List<NetworkInterface> networkInterfaces();
-
-    /**************************************************************
-     * Fluent interfaces for creating
-     **************************************************************/
-
-	/**
-	 * The entirety of the network security group definition.
-	 */
-	interface Definitions extends 
-	    DefinitionBlank,
-	    DefinitionWithGroup,
-	    DefinitionCreatable {}
-
-	/**
-	 * The first stage of the definition.
-	 */
-	interface DefinitionBlank 
-	    extends GroupableResource.DefinitionWithRegion<DefinitionWithGroup> {
-	}
+    interface DefinitionBlank
+        extends GroupableResource.DefinitionWithRegion<DefinitionWithGroup> {
+    }
 
     /**
      * The stage of the definition allowing to specify the resource group.
@@ -79,7 +68,7 @@ public interface NetworkSecurityGroup extends
     /**
      * The stage of the definition allowing to define a new security rule.
      * <p>
-     * When the security rule definition is complete enough, use {@link Attachable#attach()} to attach it to 
+     * When the security rule definition is complete enough, use {@link Attachable#attach()} to attach it to
      * this network security group.
      */
     interface DefinitionWithRule {
@@ -90,7 +79,7 @@ public interface NetworkSecurityGroup extends
          */
         NetworkSecurityRule.DefinitionBlank<DefinitionCreatable> defineRule(String name);
     }
-    
+
     /**
      * The stage of the resource definition allowing to add or remove security rules.
      */
@@ -98,25 +87,25 @@ public interface NetworkSecurityGroup extends
         Update withoutRule(String name);
         //TODO defineRule(String name)...
     }
-    
+
     /**
      * The stage of the definition which contains all the minimum required inputs for
-     * the resource to be created (via {@link DefinitionCreatable#create()}), but also allows 
+     * the resource to be created (via {@link DefinitionCreatable#create()}), but also allows
      * for any other optional settings to be specified.
      */
-    interface DefinitionCreatable extends 
+    interface DefinitionCreatable extends
         Creatable<NetworkSecurityGroup>,
         Resource.DefinitionWithTags<DefinitionCreatable>,
         DefinitionWithRule {
     }
-    
+
     /**
-     * The template for an update operation, containing all the settings that 
+     * The template for an update operation, containing all the settings that
      * can be modified.
      * <p>
      * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
-    interface Update extends 
+    interface Update extends
         Appliable<NetworkSecurityGroup>,
         Resource.UpdateWithTags<Update>,
         UpdateWithRule {

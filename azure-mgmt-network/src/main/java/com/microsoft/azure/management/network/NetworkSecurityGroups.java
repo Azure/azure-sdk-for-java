@@ -14,7 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 
 
 /**
- * Entry point to network security group management
+ * Entry point to network security group management.
  */
 public interface NetworkSecurityGroups extends
     SupportsCreating<NetworkSecurityGroup.DefinitionBlank>,

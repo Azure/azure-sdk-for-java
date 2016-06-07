@@ -13,6 +13,9 @@ import com.microsoft.azure.management.network.NetworkSecurityRule;
 import com.microsoft.azure.management.network.NetworkSecurityRule.Protocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
+/**
+ * Test for network security group CRUD.
+ */
 public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityGroups> {
 
     @Override
@@ -60,9 +63,9 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                 .append("\n\tResource group: ").append(resource.resourceGroupName())
                 .append("\n\tRegion: ").append(resource.region())
                 .append("\n\tTags: ").append(resource.tags());
-        
+
         // Output security rules
-        for(NetworkSecurityRule rule : resource.securityRules()) {
+        for (NetworkSecurityRule rule : resource.securityRules()) {
             info.append("\n\tRule: ").append(rule.name())
                 .append("\n\t\tAccess: ").append(rule.access())
                 .append("\n\t\tDirection: ").append(rule.direction())
@@ -71,10 +74,9 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                 .append("\n\t\tTo address: ").append(rule.destinationAddressPrefix())
                 .append("\n\t\tTo port: ").append(rule.destinationPortRange())
                 .append("\n\t\tProtocol: ").append(rule.protocol())
-                .append("\n\t\tPriority: ").append(rule.priority())
-                ;
+                .append("\n\t\tPriority: ").append(rule.priority());
         }
-        
+
         System.out.println(info.toString());
     }
 }

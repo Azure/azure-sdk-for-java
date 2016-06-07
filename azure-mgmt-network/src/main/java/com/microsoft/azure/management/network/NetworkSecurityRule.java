@@ -16,7 +16,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 /**
  * A network security rule in a network security group.
  */
-public interface NetworkSecurityRule extends 
+public interface NetworkSecurityRule extends
     Wrapper<SecurityRuleInner>,
     ChildResource {
 
@@ -28,7 +28,7 @@ public interface NetworkSecurityRule extends
         OUTBOUND(SecurityRuleDirection.OUTBOUND);
 
         private final String name;
-        private Direction(String name) {
+        Direction(String name) {
             this.name = name;
         }
 
@@ -43,8 +43,8 @@ public interface NetworkSecurityRule extends
          * @return the identified constant, or null if not supported
          */
         public static Direction fromString(String s) {
-            for(Direction e : Direction.values()) {
-                if(e.name.equalsIgnoreCase(s)) {
+            for (Direction e : Direction.values()) {
+                if (e.name.equalsIgnoreCase(s)) {
                     return e;
                 }
             }
@@ -61,7 +61,7 @@ public interface NetworkSecurityRule extends
         DENY(SecurityRuleAccess.DENY);
 
         private final String name;
-        private Access(String name) {
+        Access(String name) {
             this.name = name;
         }
 
@@ -76,8 +76,8 @@ public interface NetworkSecurityRule extends
          * @return the identified constant, or null if not supported
          */
         public static Access fromString(String s) {
-            for(Access e : Access.values()) {
-                if(e.name.equalsIgnoreCase(s)) {
+            for (Access e : Access.values()) {
+                if (e.name.equalsIgnoreCase(s)) {
                     return e;
                 }
             }
@@ -109,8 +109,8 @@ public interface NetworkSecurityRule extends
          * @return the identified constant, or null if not supported
          */
         public static Protocol fromString(String s) {
-            for(Protocol protocol : Protocol.values()) {
-                if(protocol.name.equalsIgnoreCase(s)) {
+            for (Protocol protocol : Protocol.values()) {
+                if (protocol.name.equalsIgnoreCase(s)) {
                     return protocol;
                 }
             }
@@ -134,7 +134,7 @@ public interface NetworkSecurityRule extends
     Access access();
 
     /**
-     * @return the source address prefix the rule applies to, expressed using the CIDR notation in the format: "###.###.###.###/##", 
+     * @return the source address prefix the rule applies to, expressed using the CIDR notation in the format: "###.###.###.###/##",
      * and "*" means "any"
      */
     String sourceAddressPrefix();
@@ -145,7 +145,7 @@ public interface NetworkSecurityRule extends
     String sourcePortRange();
 
     /**
-     * @return the destination address prefix the rule applies to, expressed using the CIDR notation in the format: "###.###.###.###/##", 
+     * @return the destination address prefix the rule applies to, expressed using the CIDR notation in the format: "###.###.###.###/##",
      * and "*" means "any"
      */
     String destinationAddressPrefix();
@@ -165,7 +165,7 @@ public interface NetworkSecurityRule extends
      * The entirety of a network security rule definition.
      * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
      */
-    interface Definitions<ParentT> extends 
+    interface Definitions<ParentT> extends
         DefinitionBlank<ParentT>,
         DefinitionAttachable<ParentT>,
         DefinitionWithDirectionAccess<ParentT>,
@@ -180,7 +180,8 @@ public interface NetworkSecurityRule extends
      * The first stage of the subnet definition.
      * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
      */
-    interface DefinitionBlank<ParentT> extends DefinitionWithDirectionAccess<ParentT> {}
+    interface DefinitionBlank<ParentT> extends DefinitionWithDirectionAccess<ParentT> {
+    }
 
     /**
      * The stage of the network rule definition allowing the direction and the access type to be specified.
@@ -300,12 +301,12 @@ public interface NetworkSecurityRule extends
          * @param from the starting port number
          * @param to the ending port number
          * @return the next stage of the security rule definition
-         */        
+         */
         DefinitionWithProtocol<ParentT> toPortRange(int from, int to);
     }
 
     /**
-     * The stage of the security rule definition allowing the protocol that the rule applies to to be specified
+     * The stage of the security rule definition allowing the protocol that the rule applies to to be specified.
      * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
      */
     interface DefinitionWithProtocol<ParentT> {
@@ -325,7 +326,7 @@ public interface NetworkSecurityRule extends
 
     /** The final stage of the security rule definition.
      * <p>
-     * At this stage, any remaining optional settings can be specified, or the security rule definition 
+     * At this stage, any remaining optional settings can be specified, or the security rule definition
      * can be attached to the parent network security group definition using {@link DefinitionAttachable#attach()}.
      * @param <ParentT> the return type of {@link DefinitionAttachable#attach()}
      */

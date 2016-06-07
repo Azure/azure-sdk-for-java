@@ -18,6 +18,10 @@ import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.rest.ServiceResponse;
 
+/**
+ * Implementation of the NetworkSecurityGroup interface.
+ * (Internal use only)
+ */
 class NetworkSecurityGroupImpl
     extends GroupableResourceImpl<NetworkSecurityGroup, NetworkSecurityGroupInner, NetworkSecurityGroupImpl>
     implements
@@ -40,23 +44,21 @@ class NetworkSecurityGroupImpl
 
     private void initializeRulesFromInner() {
         this.rules = new ArrayList<>();
-        if(this.inner().securityRules() != null) {
-            for(SecurityRuleInner ruleInner : this.inner().securityRules()) {
+        if (this.inner().securityRules() != null) {
+            for (SecurityRuleInner ruleInner : this.inner().securityRules()) {
                 this.rules.add(new NetworkSecurityRuleImpl(ruleInner.name(), ruleInner, this));
             }
         }
-        
+
         this.defaultRules = new ArrayList<>();
-        if(this.inner().defaultSecurityRules() != null) {
-            for(SecurityRuleInner ruleInner : this.inner().defaultSecurityRules()) {
+        if (this.inner().defaultSecurityRules() != null) {
+            for (SecurityRuleInner ruleInner : this.inner().defaultSecurityRules()) {
                 this.defaultRules.add(new NetworkSecurityRuleImpl(ruleInner.name(), ruleInner, this));
             }
         }
     }
 
-    /**************************************************
-     * Verbs
-     **************************************************/
+    // Verbs
 
     @Override
     public NetworkSecurityGroupImpl refresh() throws Exception {
@@ -92,9 +94,7 @@ class NetworkSecurityGroupImpl
     }
 
 
-    /*****************************************
-     * Setters (fluent)
-     *****************************************/
+    // Setters (fluent)
 
     @Override
     public NetworkSecurityRuleImpl defineRule(String name) {
@@ -108,8 +108,8 @@ class NetworkSecurityGroupImpl
     public Update withoutRule(String name) {
         // Remove from cache
         List<NetworkSecurityRule> r = this.rules;
-        for(int i=0; i<r.size(); i++) {
-            if(r.get(i).name().equalsIgnoreCase(name)) {
+        for (int i = 0; i < r.size(); i++) {
+            if (r.get(i).name().equalsIgnoreCase(name)) {
                 r.remove(i);
                 break;
             }
@@ -117,26 +117,24 @@ class NetworkSecurityGroupImpl
 
         // Remove from inner
         List<SecurityRuleInner> innerRules = this.inner().securityRules();
-        for(int i=0; i<innerRules.size(); i++) {
-            if(innerRules.get(i).name().equalsIgnoreCase(name)) {
+        for (int i = 0; i < innerRules.size(); i++) {
+            if (innerRules.get(i).name().equalsIgnoreCase(name)) {
                 innerRules.remove(i);
                 break;
             }
         }
 
-        return this;    
+        return this;
     }
 
 
-    /**********************************************
-     * Getters
-     **********************************************/
+    // Getters
 
     @Override
     public List<NetworkSecurityRule> securityRules() {
         return Collections.unmodifiableList(this.rules);
     }
-    
+
     @Override
     public List<NetworkSecurityRule> defaultSecurityRules() {
         return Collections.unmodifiableList(this.defaultRules);

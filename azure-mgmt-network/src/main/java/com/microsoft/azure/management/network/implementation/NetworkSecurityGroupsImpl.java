@@ -20,6 +20,10 @@ import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Implementation of the NetworkSecurityGroups interface.
+ * (Internal use only)
+ */
 class NetworkSecurityGroupsImpl implements NetworkSecurityGroups {
     private final NetworkSecurityGroupsInner client;
     private final ResourceGroups resourceGroups;
@@ -69,16 +73,16 @@ class NetworkSecurityGroupsImpl implements NetworkSecurityGroups {
         return createFluentModel(name);
     }
 
-    /** Fluent model create helpers **/    
+    // Fluent model create helpers
     private NetworkSecurityGroupImpl createFluentModel(String name) {
         NetworkSecurityGroupInner inner = new NetworkSecurityGroupInner();
 
         // Initialize rules
-        if(inner.securityRules() == null) {
+        if (inner.securityRules() == null) {
             inner.setSecurityRules(new ArrayList<SecurityRuleInner>());
         }
-        
-        if(inner.defaultSecurityRules() == null) {
+
+        if (inner.defaultSecurityRules() == null) {
             inner.setDefaultSecurityRules(new ArrayList<SecurityRuleInner>());
         }
 
