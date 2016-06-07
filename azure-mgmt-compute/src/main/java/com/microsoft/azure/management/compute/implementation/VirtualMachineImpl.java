@@ -3,6 +3,7 @@ package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.AvailabilitySets;
+import com.microsoft.azure.management.compute.DataDisk;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineInner;
 import com.microsoft.azure.management.compute.implementation.api.Plan;
@@ -22,7 +23,6 @@ import com.microsoft.azure.management.compute.implementation.api.VirtualHardDisk
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachinesInner;
 import com.microsoft.azure.management.compute.implementation.api.OSDisk;
 import com.microsoft.azure.management.compute.implementation.api.DiskCreateOptionTypes;
-import com.microsoft.azure.management.compute.implementation.api.DataDisk;
 import com.microsoft.azure.management.compute.implementation.api.LinuxConfiguration;
 import com.microsoft.azure.management.compute.implementation.api.WindowsConfiguration;
 import com.microsoft.azure.management.compute.implementation.api.WinRMConfiguration;
@@ -63,11 +63,7 @@ class VirtualMachineImpl
             VirtualMachine.DefinitionWithAdminUserName,
             VirtualMachine.DefinitionLinuxCreatable,
             VirtualMachine.DefinitionWindowsCreatable,
-            VirtualMachine.DefinitionCreatable,
-            VirtualMachine.ConfigureDataDisk,
-            VirtualMachine.ConfigureNewDataDiskWithStoreAt,
-            VirtualMachine.ConfigureNewDataDisk,
-            VirtualMachine.ConfigureExistingDataDisk {
+            VirtualMachine.DefinitionCreatable {
     // Clients
     private final VirtualMachinesInner client;
     private final AvailabilitySets availabilitySets;
@@ -91,6 +87,11 @@ class VirtualMachineImpl
     private AvailabilitySet existingAvailabilitySetToAssociate;
     // reference to an existing network interface that needs to be used as virtual machine's primary network interface
     private NetworkInterface existingNetworkInterfaceToAssociate;
+    // Cached related resources
+    private NetworkInterface primaryNetworkInterface;
+    private PublicIpAddress primaryPublicIpAddress;
+    // The data disks associated with the virtual machine
+    private List<DataDisk> dataDisks;
 
     VirtualMachineImpl(String name,
                        VirtualMachineInner innerModel,
@@ -106,6 +107,7 @@ class VirtualMachineImpl
         this.networkManager = networkManager;
         this.vmName = name;
         this.randomId = Utils.randomId(this.vmName);
+        initializeDataDisks();
     }
 
     /**************************************************.
@@ -117,6 +119,7 @@ class VirtualMachineImpl
         ServiceResponse<VirtualMachineInner> response =
                 this.client.get(this.resourceGroupName(), this.name());
         this.setInner(response.getBody());
+        initializeDataDisks();
         return this;
     }
 
@@ -354,80 +357,26 @@ class VirtualMachineImpl
     //
 
     @Override
-    public ConfigureDataDisk<DefinitionCreatable> withLun(Integer lun) {
-        DataDisk dataDisk = currentDataDisk();
-        dataDisk.setLun(lun);
-        return this;
+    public DataDiskImpl defineNewDataDisk(String name) {
+        return DataDiskImpl.prepareDataDisk(name, DiskCreateOptionTypes.EMPTY, this);
     }
 
     @Override
-    public ConfigureDataDisk<DefinitionCreatable> withCaching(CachingTypes cachingType) {
-        DataDisk dataDisk = currentDataDisk();
-        dataDisk.setCaching(cachingType);
-        return this;
-    }
-
-    @Override
-    public DefinitionCreatable attach() {
-        return this;
-    }
-
-    @Override
-    public ConfigureDataDisk<DefinitionCreatable> storeAt(String storageAccountName, String containerName, String vhdName) {
-        DataDisk dataDisk = currentDataDisk();
-        dataDisk.setVhd(new VirtualHardDisk());
-        // URL points to where the new data disk needs to be stored
-        dataDisk.vhd().setUri(blobUrl(storageAccountName, containerName, vhdName));
-        return this;
-    }
-
-    @Override
-    public ConfigureNewDataDiskWithStoreAt<DefinitionCreatable> withSizeInGB(Integer sizeInGB) {
-        DataDisk dataDisk = currentDataDisk();
-        dataDisk.setDiskSizeGB(sizeInGB);
-        return this;
-    }
-
-    @Override
-    public ConfigureDataDisk<DefinitionCreatable> from(String storageAccountName, String containerName, String vhdName) {
-        DataDisk dataDisk = currentDataDisk();
-        dataDisk.setVhd(new VirtualHardDisk());
-        //URL points to an existing data disk to be attached
-        dataDisk.vhd().setUri(blobUrl(storageAccountName, containerName, vhdName));
-        return this;
-    }
-
-    @Override
-    public ConfigureNewDataDisk<DefinitionCreatable> defineNewDataDisk(String name) {
-        DataDisk dataDisk = prepareNewDataDisk();
-        dataDisk.setName(name);
-        dataDisk.setCreateOption(DiskCreateOptionTypes.EMPTY);
-        return this;
-    }
-
-    @Override
-    public ConfigureExistingDataDisk<DefinitionCreatable> defineExistingDataDisk(String name) {
-        DataDisk dataDisk = prepareNewDataDisk();
-        dataDisk.setName(name);
-        dataDisk.setCreateOption(DiskCreateOptionTypes.ATTACH);
-        return this;
+    public DataDiskImpl defineExistingDataDisk(String name) {
+        return DataDiskImpl.prepareDataDisk(name, DiskCreateOptionTypes.ATTACH, this);
     }
 
     @Override
     public DefinitionCreatable withNewDataDisk(Integer sizeInGB) {
-        DataDisk dataDisk = prepareNewDataDisk();
-        dataDisk.setDiskSizeGB(sizeInGB);
-        dataDisk.setCreateOption(DiskCreateOptionTypes.EMPTY);
+        DataDiskImpl dataDisk = DataDiskImpl.createNewDataDisk(sizeInGB, this);
+        this.dataDisks().add(dataDisk);
         return this;
     }
 
     @Override
     public DefinitionCreatable withExistingDataDisk(String storageAccountName, String containerName, String vhdName) {
-        DataDisk dataDisk = prepareNewDataDisk();
-        VirtualHardDisk diskVhd = new VirtualHardDisk();
-        diskVhd.setUri(blobUrl(storageAccountName, containerName, vhdName));
-        dataDisk.setVhd(diskVhd);
-        dataDisk.setCreateOption(DiskCreateOptionTypes.ATTACH);
+        DataDiskImpl dataDisk = DataDiskImpl.createFromExistingDisk(storageAccountName, containerName, vhdName, this);
+        this.dataDisks().add(dataDisk);
         return this;
     }
 
@@ -528,19 +477,25 @@ class VirtualMachineImpl
 
     @Override
     public List<DataDisk> dataDisks() {
-        return inner().storageProfile().dataDisks();
+        return this.dataDisks;
     }
 
     @Override
     public NetworkInterface primaryNetworkInterface() throws CloudException, IOException {
-        String primaryNicId = primaryNetworkInterfaceId();
-        return this.networkManager.networkInterfaces()
-                .get(ResourceUtils.groupFromResourceId(primaryNicId), ResourceUtils.nameFromResourceId(primaryNicId));
+        if (this.primaryNetworkInterface == null) {
+            String primaryNicId = primaryNetworkInterfaceId();
+            this.primaryNetworkInterface = this.networkManager.networkInterfaces()
+                    .get(ResourceUtils.groupFromResourceId(primaryNicId), ResourceUtils.nameFromResourceId(primaryNicId));
+        }
+        return this.primaryNetworkInterface;
     }
 
     @Override
     public PublicIpAddress primaryPublicIpAddress()  throws CloudException, IOException {
-        return this.primaryNetworkInterface().publicIpAddress();
+        if (this.primaryPublicIpAddress == null) {
+            this.primaryPublicIpAddress = this.primaryNetworkInterface().publicIpAddress();
+        }
+        return this.primaryPublicIpAddress;
     }
 
     @Override
@@ -621,13 +576,15 @@ class VirtualMachineImpl
             setOSDiskAndOSProfileDefaults();
             setHardwareProfileDefaults();
         }
-        setDataDisksDefaults();
+        DataDiskImpl.setDataDisksDefaults(this.dataDisks, this.vmName);
+
         handleStorageSettings();
         handleNetworkSettings();
         handleAvailabilitySettings();
 
         ServiceResponse<VirtualMachineInner> serviceResponse = this.client.createOrUpdate(this.resourceGroupName(), this.vmName, this.inner());
         this.setInner(serviceResponse.getBody());
+        initializeDataDisks();
     }
 
     /**************************************************.
@@ -682,47 +639,6 @@ class VirtualMachineImpl
         }
     }
 
-    private void setDataDisksDefaults() {
-        List<DataDisk> dataDisks = this.inner().storageProfile().dataDisks();
-        if (dataDisks.size() == 0) {
-            this.inner().storageProfile().setDataDisks(null);
-            return;
-        }
-
-        List<Integer> usedLuns = new ArrayList<>();
-        for (DataDisk dataDisk : dataDisks) {
-            if (dataDisk.lun() != -1) {
-                usedLuns.add(dataDisk.lun());
-            }
-        }
-
-        for (DataDisk dataDisk : dataDisks) {
-            if (dataDisk.lun() == -1) {
-                Integer i = 0;
-                while (usedLuns.contains(i)) {
-                    i++;
-                }
-                dataDisk.setLun(i);
-                usedLuns.add(i);
-            }
-
-            if (dataDisk.vhd() == null) {
-                VirtualHardDisk diskVhd = new VirtualHardDisk();
-                diskVhd.setUri(temporaryBlobUrl("vhds",
-                        this.vmName + "-data-disk-" + dataDisk.lun() + "-" + UUID.randomUUID().toString() + ".vhd"));
-                dataDisk.setVhd(diskVhd);
-            }
-
-            if (dataDisk.name() == null) {
-                dataDisk.setName(this.vmName + "-data-disk-" + dataDisk.lun());
-            }
-
-            if (dataDisk.caching() == null) {
-                dataDisk.setCaching(CachingTypes.READ_WRITE);
-            }
-        }
-    }
-
     private void handleStorageSettings() throws Exception {
         StorageAccount storageAccount = null;
         if (this.creatableStorageAccountKey != null) {
@@ -738,7 +654,17 @@ class VirtualMachineImpl
         }
 
         if (storageAccount != null) {
-            replaceTemporaryBlobUrls(storageAccount);
+            // Ensure the Vhd uris for OS Disk and data disks
+            if (this.isInCreateMode()) {
+                if (isOSDiskFromImage(this.inner().storageProfile().osDisk())) {
+                    String uri = this.inner()
+                            .storageProfile()
+                            .osDisk().vhd().uri()
+                            .replaceFirst("\\{storage-base-url}", storageAccount.endPoints().primary().blob());
+                    this.inner().storageProfile().osDisk().vhd().setUri(uri);
+                }
+            }
+            DataDiskImpl.ensureDisksVhdUri(this.dataDisks, storageAccount, this.vmName);
         }
     }
 
@@ -784,9 +710,9 @@ class VirtualMachineImpl
                     return true;
                 }
             }
-            for (DataDisk dataDisk : this.inner().storageProfile().dataDisks()) {
-                if (dataDisk.createOption() != DiskCreateOptionTypes.ATTACH) {
-                    if (isTemporaryBlobUrl(dataDisk.vhd().uri())) {
+            for (DataDisk dataDisk : this.dataDisks) {
+                if (dataDisk.createOption() == DiskCreateOptionTypes.EMPTY) {
+                    if (dataDisk.vhdUri() == null) {
                         return true;
                     }
                 }
@@ -807,49 +733,8 @@ class VirtualMachineImpl
         return !isOSDiskAttached(osDisk);
     }
 
-    private String blobUrl(String storageAccountName, String containerName, String blobName) {
-        return  "https://" + storageAccountName + ".blob.core.windows.net" + "/" + containerName + "/" + blobName;
-    }
-
     private String temporaryBlobUrl(String containerName, String blobName) {
         return "{storage-base-url}" + "/" + containerName + "/" + blobName;
-    }
-
-    private boolean isTemporaryBlobUrl(String blobUrl) {
-        return blobUrl.startsWith("{storage-base-url}");
-    }
-
-    private void replaceTemporaryBlobUrls(StorageAccount storageAccount) {
-        if (this.isInCreateMode()) {
-            if (isOSDiskFromImage(this.inner().storageProfile().osDisk())) {
-                String uri = this.inner()
-                        .storageProfile()
-                        .osDisk().vhd().uri()
-                        .replaceFirst("\\{storage-base-url}", storageAccount.endPoints().primary().blob());
-                this.inner().storageProfile().osDisk().vhd().setUri(uri);
-            }
-        }
-        for (DataDisk dataDisk : this.inner().storageProfile().dataDisks()) {
-            if (dataDisk.createOption() != DiskCreateOptionTypes.ATTACH) {
-                if (isTemporaryBlobUrl(dataDisk.vhd().uri())) {
-                    String uri = dataDisk.vhd().uri()
-                            .replaceFirst("\\{storage-base-url}", storageAccount.endPoints().primary().blob());
-                    dataDisk.vhd().setUri(uri);
-                }
-            }
-        }
-    }
-
-    private DataDisk prepareNewDataDisk() {
-        DataDisk dataDisk = new DataDisk();
-        dataDisk.setLun(-1);
-        this.inner().storageProfile().dataDisks().add(dataDisk);
-        return dataDisk;
-    }
-
-    private DataDisk currentDataDisk() {
-        List<DataDisk> dataDisks = this.inner().storageProfile().dataDisks();
-        return dataDisks.get(dataDisks.size() - 1);
     }
 
     private NetworkInterface.DefinitionWithPublicIpAddress prepareNetworkInterface(String name) {
@@ -866,5 +751,17 @@ class VirtualMachineImpl
         return definitionWithNetwork
                 .withNewNetwork("vnet" + name)
                 .withPrivateIpAddressDynamic();
+    }
+
+    private void initializeDataDisks() {
+        if (this.inner().storageProfile().dataDisks() == null) {
+            this.inner()
+                    .storageProfile()
+                    .setDataDisks(new ArrayList<com.microsoft.azure.management.compute.implementation.api.DataDisk>());
+        }
+        this.dataDisks = new ArrayList<>();
+        for (com.microsoft.azure.management.compute.implementation.api.DataDisk dataDiskInner : this.storageProfile().dataDisks()) {
+            this.dataDisks().add(new DataDiskImpl(dataDiskInner.name(), dataDiskInner, this, false));
+        }
     }
 }

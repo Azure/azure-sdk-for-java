@@ -9,7 +9,7 @@ import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 
-public abstract class ChildResourceImpl<InnerT extends SubResource, ParentImplT> 
+public abstract class ChildResourceImpl<InnerT, ParentImplT>
     extends IndexableWrapperImpl<InnerT>
     implements ChildResource {
 

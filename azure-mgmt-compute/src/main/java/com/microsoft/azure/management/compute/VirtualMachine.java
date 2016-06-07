@@ -1,7 +1,6 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.compute.implementation.KnownVirtualMachineImage;
 import com.microsoft.azure.management.compute.implementation.api.*;
 import com.microsoft.azure.management.network.NetworkInterface;
@@ -69,7 +68,7 @@ public interface VirtualMachine extends
     NetworkInterface primaryNetworkInterface() throws CloudException, IOException;
 
     /**
-     * Gets the public IP address associated with this virtual machine's primary network interface
+     * Gets the public IP address associated with this virtual machine's primary network interface.
      * <p>
      * note that this method makes a rest API call to fetch the resource
      *
@@ -136,7 +135,7 @@ public interface VirtualMachine extends
     StorageProfile storageProfile();
 
     /**
-     * Gets the operating system profile of an Azure virtual machine
+     * Gets the operating system profile of an Azure virtual machine.
      *
      * @return the osProfile value
      */
@@ -169,7 +168,7 @@ public interface VirtualMachine extends
      */
     interface DefinitionWithPrimaryNetworkInterface {
         /**
-         * Create a new network interface to associate with the virtual machine as it's primary network interface
+         * Create a new network interface to associate with the virtual machine as it's primary network interface.
          *
          * @param name the name for the new network interface
          * @return The next stage of the virtual machine definition
@@ -439,85 +438,6 @@ public interface VirtualMachine extends
     }
 
     /**
-     * The stage of the virtual machine definition allowing to specify data disk configurations.
-     *
-     * @param <T> the virtual machine definition in creatable stage.
-     */
-    interface ConfigureDataDisk<T extends DefinitionCreatable> {
-        /**
-         * Specifies the logical unit number for the data disk.
-         *
-         * @param lun the logical unit number
-         * @return the stage representing optional additional configurations for the attachable data disk
-         */
-        ConfigureDataDisk<T> withLun(Integer lun);
-
-        /**
-         * Specifies the caching type for the data disk.
-         *
-         * @param cachingType the disk caching type. Possible values include: 'None', 'ReadOnly', 'ReadWrite'
-         * @return the stage representing optional additional configurations for the attachable data disk
-         */
-        ConfigureDataDisk<T> withCaching(CachingTypes cachingType);
-
-        /**
-         * Adds the data disk to the list of virtual machine's data disks.
-         *
-         * @return the stage representing creatable VM definition
-         */
-        T attach();
-    }
-
-    /**
-     * The stage of the virtual machine definition allowing to specify data disk target location.
-     *
-     * @param <T> the virtual machine definition in creatable stage.
-     */
-    interface ConfigureNewDataDiskWithStoreAt<T extends DefinitionCreatable> extends ConfigureDataDisk<T> {
-        /**
-         * Specifies where the VHD associated with the new blank data disk needs to be stored.
-         *
-         * @param storageAccountName the storage account name
-         * @param containerName the name of the container to hold the new VHD file
-         * @param vhdName the name for the new VHD file
-         * @return the stage representing optional additional configurations for the attachable data disk
-         */
-        ConfigureDataDisk<T> storeAt(String storageAccountName, String containerName, String vhdName);
-    }
-
-    /**
-     * The stage of the virtual machine definition allowing to specify new data disk configuration.
-     *
-     * @param <T> the virtual machine definition in creatable stage.
-     */
-    interface ConfigureNewDataDisk<T extends DefinitionCreatable> {
-        /**
-         * Specifies the initial disk size in GB for new blank data disk.
-         *
-         * @param size the disk size in GB
-         * @return the stage representing optional additional configurations for the attachable data disk
-         */
-        ConfigureNewDataDiskWithStoreAt<T> withSizeInGB(Integer size);
-    }
-
-    /**
-     * The stage of the virtual machine definition allowing to specify existing data disk configuration.
-     *
-     * @param <T> the virtual machine definition in creatable stage.
-     */
-    interface ConfigureExistingDataDisk<T extends DefinitionCreatable> {
-        /**
-         * Specifies an existing VHD that needs to be attached to the virtual machine as data disk.
-         *
-         * @param storageAccountName the storage account name
-         * @param containerName the name of the container holding the VHD file
-         * @param vhdName the name for the VHD file
-         * @return the stage representing optional additional configurations for the attachable data disk
-         */
-        ConfigureDataDisk<T> from(String storageAccountName, String containerName, String vhdName);
-    }
-
-    /**
      * The stage of the virtual machine definition allowing to specify data disk configuration.
      *
      * @param <T> the virtual machine definition in creatable stage.
@@ -547,7 +467,7 @@ public interface VirtualMachine extends
          * @param name the name for the data disk
          * @return the stage representing configuration for the data disk
          */
-        ConfigureNewDataDisk<T> defineNewDataDisk(String name);
+        DataDisk.DefinitionAttachNewDataDisk<DefinitionCreatable> defineNewDataDisk(String name);
 
         /**
          * Specifies an existing VHD that needs to be attached to the virtual machine as data disk along with
@@ -556,7 +476,7 @@ public interface VirtualMachine extends
          * @param name the name for the data disk
          * @return the stage representing configuration for the data disk
          */
-        ConfigureExistingDataDisk<T> defineExistingDataDisk(String name);
+        DataDisk.DefinitionAttachExistingDataDisk<DefinitionCreatable> defineExistingDataDisk(String name);
     }
 
     /**
