@@ -226,7 +226,7 @@ public interface Deployment extends
          * Specifies the template as a Java object.
          *
          * @param template the Java object
-         * @return the next stage of the deployment definition
+         * @return the next stage of the deployment update
          */
         Update withTemplate(Object template);
 
@@ -234,7 +234,7 @@ public interface Deployment extends
          * Specifies the template as a JSON string.
          *
          * @param templateJson the JSON string
-         * @return the next stage of the deployment definition
+         * @return the next stage of the deployment update
          */
         Update withTemplate(String templateJson) throws IOException;
 
@@ -243,7 +243,7 @@ public interface Deployment extends
          *
          * @param uri the location of the remote template file
          * @param contentVersion the version of the template file
-         * @return the next stage of the deployment definition
+         * @return the next stage of the deployment update
          */
         Update withTemplateLink(String uri, String contentVersion);
     }
@@ -256,7 +256,7 @@ public interface Deployment extends
          * Specifies the parameters as a Java object.
          *
          * @param parameters the Java object
-         * @return the next stage of the deployment definition
+         * @return the next stage of the deployment update
          */
         Update withParameters(Object parameters);
 
@@ -264,7 +264,7 @@ public interface Deployment extends
          * Specifies the parameters as a JSON string.
          *
          * @param parametersJson the JSON string
-         * @return the next stage of the deployment definition
+         * @return the next stage of the deployment update
          */
         Update withParameters(String parametersJson) throws IOException;
 
@@ -273,7 +273,7 @@ public interface Deployment extends
          *
          * @param uri the location of the remote parameters file
          * @param contentVersion the version of the parameters file
-         * @return the next stage of the deployment definition
+         * @return the next stage of the deployment update
          */
         Update withParametersLink(String uri, String contentVersion);
     }
