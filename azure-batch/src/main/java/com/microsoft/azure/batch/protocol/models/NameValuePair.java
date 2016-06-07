@@ -36,7 +36,7 @@ public class NameValuePair {
      * @param name the name value to set
      * @return the NameValuePair object itself.
      */
-    public NameValuePair setName(String name) {
+    public NameValuePair withName(String name) {
         this.name = name;
         return this;
     }
@@ -56,7 +56,7 @@ public class NameValuePair {
      * @param value the value value to set
      * @return the NameValuePair object itself.
      */
-    public NameValuePair setValue(String value) {
+    public NameValuePair withValue(String value) {
         this.value = value;
         return this;
     }

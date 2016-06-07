@@ -41,7 +41,7 @@ public class PoolInformation {
      * @param poolId the poolId value to set
      * @return the PoolInformation object itself.
      */
-    public PoolInformation setPoolId(String poolId) {
+    public PoolInformation withPoolId(String poolId) {
         this.poolId = poolId;
         return this;
     }
@@ -61,7 +61,7 @@ public class PoolInformation {
      * @param autoPoolSpecification the autoPoolSpecification value to set
      * @return the PoolInformation object itself.
      */
-    public PoolInformation setAutoPoolSpecification(AutoPoolSpecification autoPoolSpecification) {
+    public PoolInformation withAutoPoolSpecification(AutoPoolSpecification autoPoolSpecification) {
         this.autoPoolSpecification = autoPoolSpecification;
         return this;
     }

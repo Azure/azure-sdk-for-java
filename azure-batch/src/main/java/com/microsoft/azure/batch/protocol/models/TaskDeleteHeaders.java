@@ -40,7 +40,7 @@ public class TaskDeleteHeaders {
      * @param clientRequestId the clientRequestId value to set
      * @return the TaskDeleteHeaders object itself.
      */
-    public TaskDeleteHeaders setClientRequestId(String clientRequestId) {
+    public TaskDeleteHeaders withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -60,7 +60,7 @@ public class TaskDeleteHeaders {
      * @param requestId the requestId value to set
      * @return the TaskDeleteHeaders object itself.
      */
-    public TaskDeleteHeaders setRequestId(String requestId) {
+    public TaskDeleteHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }

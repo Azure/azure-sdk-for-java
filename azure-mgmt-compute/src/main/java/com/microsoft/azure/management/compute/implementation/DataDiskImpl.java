@@ -33,17 +33,17 @@ class DataDiskImpl
     protected static DataDiskImpl prepareDataDisk(String name, DiskCreateOptionTypes createOption, VirtualMachineImpl parent) {
         com.microsoft.azure.management.compute.implementation.api.DataDisk dataDiskInner
                 = new com.microsoft.azure.management.compute.implementation.api.DataDisk();
-        dataDiskInner.setLun(-1);
-        dataDiskInner.setName(name);
-        dataDiskInner.setCreateOption(createOption);
-        dataDiskInner.setVhd(null);
+        dataDiskInner.withLun(-1);
+        dataDiskInner.withName(name);
+        dataDiskInner.withCreateOption(createOption);
+        dataDiskInner.withVhd(null);
         parent.inner().storageProfile().dataDisks().add(dataDiskInner);
         return new DataDiskImpl(name, dataDiskInner, parent, true);
     }
 
     protected static DataDiskImpl createNewDataDisk(int sizeInGB, VirtualMachineImpl parent) {
         DataDiskImpl dataDiskImpl = prepareDataDisk(null, DiskCreateOptionTypes.EMPTY, parent);
-        dataDiskImpl.inner().setDiskSizeGB(sizeInGB);
+        dataDiskImpl.inner().withDiskSizeGB(sizeInGB);
         return dataDiskImpl;
     }
 
@@ -53,8 +53,8 @@ class DataDiskImpl
                                                          VirtualMachineImpl parent) {
         DataDiskImpl dataDiskImpl = prepareDataDisk(null, DiskCreateOptionTypes.ATTACH, parent);
         VirtualHardDisk diskVhd = new VirtualHardDisk();
-        diskVhd.setUri(blobUrl(storageAccountName, containerName, vhdName));
-        dataDiskImpl.inner().setVhd(diskVhd);
+        diskVhd.withUri(blobUrl(storageAccountName, containerName, vhdName));
+        dataDiskImpl.inner().withVhd(diskVhd);
         return dataDiskImpl;
     }
 
@@ -98,35 +98,35 @@ class DataDiskImpl
 
     @Override
     public DataDiskImpl from(String storageAccountName, String containerName, String vhdName) {
-        this.inner().setVhd(new VirtualHardDisk());
+        this.inner().withVhd(new VirtualHardDisk());
         //URL points to an existing data disk to be attached
-        this.inner().vhd().setUri(blobUrl(storageAccountName, containerName, vhdName));
+        this.inner().vhd().withUri(blobUrl(storageAccountName, containerName, vhdName));
         return this;
     }
 
     @Override
     public DataDiskImpl withSizeInGB(Integer sizeInGB) {
-        this.inner().setDiskSizeGB(sizeInGB);
+        this.inner().withDiskSizeGB(sizeInGB);
         return this;
     }
 
     @Override
     public DataDiskImpl storeAt(String storageAccountName, String containerName, String vhdName) {
-        this.inner().setVhd(new VirtualHardDisk());
+        this.inner().withVhd(new VirtualHardDisk());
         // URL points to where the new data disk needs to be stored
-        this.inner().vhd().setUri(blobUrl(storageAccountName, containerName, vhdName));
+        this.inner().vhd().withUri(blobUrl(storageAccountName, containerName, vhdName));
         return this;
     }
 
     @Override
     public DataDiskImpl withLun(Integer lun) {
-        this.inner().setLun(lun);
+        this.inner().withLun(lun);
         return this;
     }
 
     @Override
     public DataDiskImpl withCaching(CachingTypes cachingType) {
-        this.inner().setCaching(cachingType);
+        this.inner().withCaching(cachingType);
         return this;
     }
 
@@ -149,16 +149,16 @@ class DataDiskImpl
                 while (usedLuns.contains(i)) {
                     i++;
                 }
-                dataDisk.inner().setLun(i);
+                dataDisk.inner().withLun(i);
                 usedLuns.add(i);
             }
 
             if (dataDisk.name() == null) {
-                dataDisk.inner().setName(namePrefix + "-data-disk-" + dataDisk.lun());
+                dataDisk.inner().withName(namePrefix + "-data-disk-" + dataDisk.lun());
             }
 
             if (dataDisk.inner().caching() == null) {
-                dataDisk.inner().setCaching(CachingTypes.READ_WRITE);
+                dataDisk.inner().withCaching(CachingTypes.READ_WRITE);
             }
         }
     }
@@ -168,8 +168,8 @@ class DataDiskImpl
             if (dataDisk.createOption() == DiskCreateOptionTypes.EMPTY) {
                 //New data disk requires Vhd Uri to be set
                 if (dataDisk.inner().vhd() == null) {
-                    dataDisk.inner().setVhd(new VirtualHardDisk());
-                    dataDisk.inner().vhd().setUri(storageAccount.endPoints().primary().blob()
+                    dataDisk.inner().withVhd(new VirtualHardDisk());
+                    dataDisk.inner().vhd().withUri(storageAccount.endPoints().primary().blob()
                             + "/vhds/"
                             + namePrefix + "-data-disk-" + dataDisk.lun() + "-" + UUID.randomUUID().toString() + ".vhd");
                 }

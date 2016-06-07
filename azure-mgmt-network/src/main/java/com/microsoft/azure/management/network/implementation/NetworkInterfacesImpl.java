@@ -80,8 +80,8 @@ class NetworkInterfacesImpl implements NetworkInterfaces {
 
     private NetworkInterfaceImpl createFluentModel(String name) {
         NetworkInterfaceInner inner = new NetworkInterfaceInner();
-        inner.setIpConfigurations(new ArrayList<NetworkInterfaceIPConfiguration>());
-        inner.setDnsSettings(new NetworkInterfaceDnsSettings());
+        inner.withIpConfigurations(new ArrayList<NetworkInterfaceIPConfiguration>());
+        inner.withDnsSettings(new NetworkInterfaceDnsSettings());
         return new NetworkInterfaceImpl(name,
                 inner,
                 this.client,

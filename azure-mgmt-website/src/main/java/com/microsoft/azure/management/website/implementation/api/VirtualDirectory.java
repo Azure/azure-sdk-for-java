@@ -36,7 +36,7 @@ public class VirtualDirectory {
      * @param virtualPath the virtualPath value to set
      * @return the VirtualDirectory object itself.
      */
-    public VirtualDirectory setVirtualPath(String virtualPath) {
+    public VirtualDirectory withVirtualPath(String virtualPath) {
         this.virtualPath = virtualPath;
         return this;
     }
@@ -56,7 +56,7 @@ public class VirtualDirectory {
      * @param physicalPath the physicalPath value to set
      * @return the VirtualDirectory object itself.
      */
-    public VirtualDirectory setPhysicalPath(String physicalPath) {
+    public VirtualDirectory withPhysicalPath(String physicalPath) {
         this.physicalPath = physicalPath;
         return this;
     }

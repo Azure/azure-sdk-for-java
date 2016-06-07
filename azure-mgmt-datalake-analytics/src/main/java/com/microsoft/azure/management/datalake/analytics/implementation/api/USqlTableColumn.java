@@ -37,7 +37,7 @@ public class USqlTableColumn {
      * @param name the name value to set
      * @return the USqlTableColumn object itself.
      */
-    public USqlTableColumn setName(String name) {
+    public USqlTableColumn withName(String name) {
         this.name = name;
         return this;
     }
@@ -57,7 +57,7 @@ public class USqlTableColumn {
      * @param type the type value to set
      * @return the USqlTableColumn object itself.
      */
-    public USqlTableColumn setType(String type) {
+    public USqlTableColumn withType(String type) {
         this.type = type;
         return this;
     }

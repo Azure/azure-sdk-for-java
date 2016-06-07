@@ -228,7 +228,7 @@ public class SiteInner extends Resource {
      * @param siteName the siteName value to set
      * @return the SiteInner object itself.
      */
-    public SiteInner setSiteName(String siteName) {
+    public SiteInner withSiteName(String siteName) {
         this.siteName = siteName;
         return this;
     }
@@ -284,7 +284,7 @@ public class SiteInner extends Resource {
      * @param enabled the enabled value to set
      * @return the SiteInner object itself.
      */
-    public SiteInner setEnabled(Boolean enabled) {
+    public SiteInner withEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -322,7 +322,7 @@ public class SiteInner extends Resource {
      * @param hostNameSslStates the hostNameSslStates value to set
      * @return the SiteInner object itself.
      */
-    public SiteInner setHostNameSslStates(List<HostNameSslState> hostNameSslStates) {
+    public SiteInner withHostNameSslStates(List<HostNameSslState> hostNameSslStates) {
         this.hostNameSslStates = hostNameSslStates;
         return this;
     }
@@ -342,7 +342,7 @@ public class SiteInner extends Resource {
      * @param serverFarmId the serverFarmId value to set
      * @return the SiteInner object itself.
      */
-    public SiteInner setServerFarmId(String serverFarmId) {
+    public SiteInner withServerFarmId(String serverFarmId) {
         this.serverFarmId = serverFarmId;
         return this;
     }
@@ -371,7 +371,7 @@ public class SiteInner extends Resource {
      * @param siteConfig the siteConfig value to set
      * @return the SiteInner object itself.
      */
-    public SiteInner setSiteConfig(SiteConfigInner siteConfig) {
+    public SiteInner withSiteConfig(SiteConfigInner siteConfig) {
         this.siteConfig = siteConfig;
         return this;
     }
@@ -409,7 +409,7 @@ public class SiteInner extends Resource {
      * @param scmSiteAlsoStopped the scmSiteAlsoStopped value to set
      * @return the SiteInner object itself.
      */
-    public SiteInner setScmSiteAlsoStopped(Boolean scmSiteAlsoStopped) {
+    public SiteInner withScmSiteAlsoStopped(Boolean scmSiteAlsoStopped) {
         this.scmSiteAlsoStopped = scmSiteAlsoStopped;
         return this;
     }
@@ -438,7 +438,7 @@ public class SiteInner extends Resource {
      * @param hostingEnvironmentProfile the hostingEnvironmentProfile value to set
      * @return the SiteInner object itself.
      */
-    public SiteInner setHostingEnvironmentProfile(HostingEnvironmentProfile hostingEnvironmentProfile) {
+    public SiteInner withHostingEnvironmentProfile(HostingEnvironmentProfile hostingEnvironmentProfile) {
         this.hostingEnvironmentProfile = hostingEnvironmentProfile;
         return this;
     }
@@ -458,7 +458,7 @@ public class SiteInner extends Resource {
      * @param microService the microService value to set
      * @return the SiteInner object itself.
      */
-    public SiteInner setMicroService(String microService) {
+    public SiteInner withMicroService(String microService) {
         this.microService = microService;
         return this;
     }
@@ -478,7 +478,7 @@ public class SiteInner extends Resource {
      * @param gatewaySiteName the gatewaySiteName value to set
      * @return the SiteInner object itself.
      */
-    public SiteInner setGatewaySiteName(String gatewaySiteName) {
+    public SiteInner withGatewaySiteName(String gatewaySiteName) {
         this.gatewaySiteName = gatewaySiteName;
         return this;
     }
@@ -498,7 +498,7 @@ public class SiteInner extends Resource {
      * @param clientAffinityEnabled the clientAffinityEnabled value to set
      * @return the SiteInner object itself.
      */
-    public SiteInner setClientAffinityEnabled(Boolean clientAffinityEnabled) {
+    public SiteInner withClientAffinityEnabled(Boolean clientAffinityEnabled) {
         this.clientAffinityEnabled = clientAffinityEnabled;
         return this;
     }
@@ -518,7 +518,7 @@ public class SiteInner extends Resource {
      * @param clientCertEnabled the clientCertEnabled value to set
      * @return the SiteInner object itself.
      */
-    public SiteInner setClientCertEnabled(Boolean clientCertEnabled) {
+    public SiteInner withClientCertEnabled(Boolean clientCertEnabled) {
         this.clientCertEnabled = clientCertEnabled;
         return this;
     }
@@ -538,7 +538,7 @@ public class SiteInner extends Resource {
      * @param hostNamesDisabled the hostNamesDisabled value to set
      * @return the SiteInner object itself.
      */
-    public SiteInner setHostNamesDisabled(Boolean hostNamesDisabled) {
+    public SiteInner withHostNamesDisabled(Boolean hostNamesDisabled) {
         this.hostNamesDisabled = hostNamesDisabled;
         return this;
     }
@@ -567,7 +567,7 @@ public class SiteInner extends Resource {
      * @param containerSize the containerSize value to set
      * @return the SiteInner object itself.
      */
-    public SiteInner setContainerSize(Integer containerSize) {
+    public SiteInner withContainerSize(Integer containerSize) {
         this.containerSize = containerSize;
         return this;
     }
@@ -587,7 +587,7 @@ public class SiteInner extends Resource {
      * @param maxNumberOfWorkers the maxNumberOfWorkers value to set
      * @return the SiteInner object itself.
      */
-    public SiteInner setMaxNumberOfWorkers(Integer maxNumberOfWorkers) {
+    public SiteInner withMaxNumberOfWorkers(Integer maxNumberOfWorkers) {
         this.maxNumberOfWorkers = maxNumberOfWorkers;
         return this;
     }
@@ -607,7 +607,7 @@ public class SiteInner extends Resource {
      * @param cloningInfo the cloningInfo value to set
      * @return the SiteInner object itself.
      */
-    public SiteInner setCloningInfo(CloningInfo cloningInfo) {
+    public SiteInner withCloningInfo(CloningInfo cloningInfo) {
         this.cloningInfo = cloningInfo;
         return this;
     }

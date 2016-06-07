@@ -46,7 +46,7 @@ public class TldLegalAgreement {
      * @param agreementKey the agreementKey value to set
      * @return the TldLegalAgreement object itself.
      */
-    public TldLegalAgreement setAgreementKey(String agreementKey) {
+    public TldLegalAgreement withAgreementKey(String agreementKey) {
         this.agreementKey = agreementKey;
         return this;
     }
@@ -66,7 +66,7 @@ public class TldLegalAgreement {
      * @param title the title value to set
      * @return the TldLegalAgreement object itself.
      */
-    public TldLegalAgreement setTitle(String title) {
+    public TldLegalAgreement withTitle(String title) {
         this.title = title;
         return this;
     }
@@ -86,7 +86,7 @@ public class TldLegalAgreement {
      * @param content the content value to set
      * @return the TldLegalAgreement object itself.
      */
-    public TldLegalAgreement setContent(String content) {
+    public TldLegalAgreement withContent(String content) {
         this.content = content;
         return this;
     }
@@ -106,7 +106,7 @@ public class TldLegalAgreement {
      * @param url the url value to set
      * @return the TldLegalAgreement object itself.
      */
-    public TldLegalAgreement setUrl(String url) {
+    public TldLegalAgreement withUrl(String url) {
         this.url = url;
         return this;
     }

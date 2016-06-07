@@ -37,7 +37,7 @@ public class UsageCollectionInner {
      * @param value the value value to set
      * @return the UsageCollectionInner object itself.
      */
-    public UsageCollectionInner setValue(List<Usage> value) {
+    public UsageCollectionInner withValue(List<Usage> value) {
         this.value = value;
         return this;
     }
@@ -57,7 +57,7 @@ public class UsageCollectionInner {
      * @param nextLink the nextLink value to set
      * @return the UsageCollectionInner object itself.
      */
-    public UsageCollectionInner setNextLink(String nextLink) {
+    public UsageCollectionInner withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }

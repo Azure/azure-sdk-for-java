@@ -85,7 +85,7 @@ public class SubtaskInformation {
      * @param id the id value to set
      * @return the SubtaskInformation object itself.
      */
-    public SubtaskInformation setId(Integer id) {
+    public SubtaskInformation withId(Integer id) {
         this.id = id;
         return this;
     }
@@ -105,7 +105,7 @@ public class SubtaskInformation {
      * @param nodeInfo the nodeInfo value to set
      * @return the SubtaskInformation object itself.
      */
-    public SubtaskInformation setNodeInfo(ComputeNodeInformation nodeInfo) {
+    public SubtaskInformation withNodeInfo(ComputeNodeInformation nodeInfo) {
         this.nodeInfo = nodeInfo;
         return this;
     }
@@ -125,7 +125,7 @@ public class SubtaskInformation {
      * @param startTime the startTime value to set
      * @return the SubtaskInformation object itself.
      */
-    public SubtaskInformation setStartTime(DateTime startTime) {
+    public SubtaskInformation withStartTime(DateTime startTime) {
         this.startTime = startTime;
         return this;
     }
@@ -145,7 +145,7 @@ public class SubtaskInformation {
      * @param endTime the endTime value to set
      * @return the SubtaskInformation object itself.
      */
-    public SubtaskInformation setEndTime(DateTime endTime) {
+    public SubtaskInformation withEndTime(DateTime endTime) {
         this.endTime = endTime;
         return this;
     }
@@ -165,7 +165,7 @@ public class SubtaskInformation {
      * @param exitCode the exitCode value to set
      * @return the SubtaskInformation object itself.
      */
-    public SubtaskInformation setExitCode(Integer exitCode) {
+    public SubtaskInformation withExitCode(Integer exitCode) {
         this.exitCode = exitCode;
         return this;
     }
@@ -185,7 +185,7 @@ public class SubtaskInformation {
      * @param schedulingError the schedulingError value to set
      * @return the SubtaskInformation object itself.
      */
-    public SubtaskInformation setSchedulingError(TaskSchedulingError schedulingError) {
+    public SubtaskInformation withSchedulingError(TaskSchedulingError schedulingError) {
         this.schedulingError = schedulingError;
         return this;
     }
@@ -205,7 +205,7 @@ public class SubtaskInformation {
      * @param state the state value to set
      * @return the SubtaskInformation object itself.
      */
-    public SubtaskInformation setState(TaskState state) {
+    public SubtaskInformation withState(TaskState state) {
         this.state = state;
         return this;
     }
@@ -225,7 +225,7 @@ public class SubtaskInformation {
      * @param stateTransitionTime the stateTransitionTime value to set
      * @return the SubtaskInformation object itself.
      */
-    public SubtaskInformation setStateTransitionTime(DateTime stateTransitionTime) {
+    public SubtaskInformation withStateTransitionTime(DateTime stateTransitionTime) {
         this.stateTransitionTime = stateTransitionTime;
         return this;
     }
@@ -245,7 +245,7 @@ public class SubtaskInformation {
      * @param previousState the previousState value to set
      * @return the SubtaskInformation object itself.
      */
-    public SubtaskInformation setPreviousState(TaskState previousState) {
+    public SubtaskInformation withPreviousState(TaskState previousState) {
         this.previousState = previousState;
         return this;
     }
@@ -265,7 +265,7 @@ public class SubtaskInformation {
      * @param previousStateTransitionTime the previousStateTransitionTime value to set
      * @return the SubtaskInformation object itself.
      */
-    public SubtaskInformation setPreviousStateTransitionTime(DateTime previousStateTransitionTime) {
+    public SubtaskInformation withPreviousStateTransitionTime(DateTime previousStateTransitionTime) {
         this.previousStateTransitionTime = previousStateTransitionTime;
         return this;
     }

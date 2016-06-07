@@ -38,7 +38,7 @@ public class PolicyAssignmentInner {
      * @param properties the properties value to set
      * @return the PolicyAssignmentInner object itself.
      */
-    public PolicyAssignmentInner setProperties(PolicyAssignmentProperties properties) {
+    public PolicyAssignmentInner withProperties(PolicyAssignmentProperties properties) {
         this.properties = properties;
         return this;
     }

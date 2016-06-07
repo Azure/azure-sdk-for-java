@@ -40,7 +40,7 @@ public class KeyVaultSecretReference {
      * @param secretUrl the secretUrl value to set
      * @return the KeyVaultSecretReference object itself.
      */
-    public KeyVaultSecretReference setSecretUrl(String secretUrl) {
+    public KeyVaultSecretReference withSecretUrl(String secretUrl) {
         this.secretUrl = secretUrl;
         return this;
     }
@@ -60,7 +60,7 @@ public class KeyVaultSecretReference {
      * @param sourceVault the sourceVault value to set
      * @return the KeyVaultSecretReference object itself.
      */
-    public KeyVaultSecretReference setSourceVault(SubResource sourceVault) {
+    public KeyVaultSecretReference withSourceVault(SubResource sourceVault) {
         this.sourceVault = sourceVault;
         return this;
     }

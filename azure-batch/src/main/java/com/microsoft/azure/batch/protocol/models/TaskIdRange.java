@@ -41,7 +41,7 @@ public class TaskIdRange {
      * @param start the start value to set
      * @return the TaskIdRange object itself.
      */
-    public TaskIdRange setStart(int start) {
+    public TaskIdRange withStart(int start) {
         this.start = start;
         return this;
     }
@@ -61,7 +61,7 @@ public class TaskIdRange {
      * @param end the end value to set
      * @return the TaskIdRange object itself.
      */
-    public TaskIdRange setEnd(int end) {
+    public TaskIdRange withEnd(int end) {
         this.end = end;
         return this;
     }

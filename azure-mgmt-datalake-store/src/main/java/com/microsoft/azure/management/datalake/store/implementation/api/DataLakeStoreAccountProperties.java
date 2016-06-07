@@ -102,7 +102,7 @@ public class DataLakeStoreAccountProperties {
      * @param endpoint the endpoint value to set
      * @return the DataLakeStoreAccountProperties object itself.
      */
-    public DataLakeStoreAccountProperties setEndpoint(String endpoint) {
+    public DataLakeStoreAccountProperties withEndpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -122,7 +122,7 @@ public class DataLakeStoreAccountProperties {
      * @param defaultGroup the defaultGroup value to set
      * @return the DataLakeStoreAccountProperties object itself.
      */
-    public DataLakeStoreAccountProperties setDefaultGroup(String defaultGroup) {
+    public DataLakeStoreAccountProperties withDefaultGroup(String defaultGroup) {
         this.defaultGroup = defaultGroup;
         return this;
     }

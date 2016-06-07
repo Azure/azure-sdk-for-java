@@ -34,7 +34,7 @@ public class CsmPublishingProfileOptions {
      * @param format the format value to set
      * @return the CsmPublishingProfileOptions object itself.
      */
-    public CsmPublishingProfileOptions setFormat(String format) {
+    public CsmPublishingProfileOptions withFormat(String format) {
         this.format = format;
         return this;
     }

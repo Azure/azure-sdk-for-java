@@ -59,7 +59,7 @@ public class CertificateAddParameter {
      * @param thumbprint the thumbprint value to set
      * @return the CertificateAddParameter object itself.
      */
-    public CertificateAddParameter setThumbprint(String thumbprint) {
+    public CertificateAddParameter withThumbprint(String thumbprint) {
         this.thumbprint = thumbprint;
         return this;
     }
@@ -79,7 +79,7 @@ public class CertificateAddParameter {
      * @param thumbprintAlgorithm the thumbprintAlgorithm value to set
      * @return the CertificateAddParameter object itself.
      */
-    public CertificateAddParameter setThumbprintAlgorithm(String thumbprintAlgorithm) {
+    public CertificateAddParameter withThumbprintAlgorithm(String thumbprintAlgorithm) {
         this.thumbprintAlgorithm = thumbprintAlgorithm;
         return this;
     }
@@ -99,7 +99,7 @@ public class CertificateAddParameter {
      * @param data the data value to set
      * @return the CertificateAddParameter object itself.
      */
-    public CertificateAddParameter setData(String data) {
+    public CertificateAddParameter withData(String data) {
         this.data = data;
         return this;
     }
@@ -119,7 +119,7 @@ public class CertificateAddParameter {
      * @param certificateFormat the certificateFormat value to set
      * @return the CertificateAddParameter object itself.
      */
-    public CertificateAddParameter setCertificateFormat(CertificateFormat certificateFormat) {
+    public CertificateAddParameter withCertificateFormat(CertificateFormat certificateFormat) {
         this.certificateFormat = certificateFormat;
         return this;
     }
@@ -139,7 +139,7 @@ public class CertificateAddParameter {
      * @param password the password value to set
      * @return the CertificateAddParameter object itself.
      */
-    public CertificateAddParameter setPassword(String password) {
+    public CertificateAddParameter withPassword(String password) {
         this.password = password;
         return this;
     }

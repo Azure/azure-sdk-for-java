@@ -121,8 +121,8 @@ public final class StorageAccountsInner {
         }
         final String type = null;
         StorageAccountCheckNameAvailabilityParameters accountName = new StorageAccountCheckNameAvailabilityParameters();
-        accountName.setName(name);
-        accountName.setType(type);
+        accountName.withName(name);
+        accountName.withType(type);
         Call<ResponseBody> call = service.checkNameAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), accountName, this.client.userAgent());
         return checkNameAvailabilityDelegate(call.execute());
     }
@@ -153,8 +153,8 @@ public final class StorageAccountsInner {
         }
         final String type = null;
         StorageAccountCheckNameAvailabilityParameters accountName = new StorageAccountCheckNameAvailabilityParameters();
-        accountName.setName(name);
-        accountName.setType(type);
+        accountName.withName(name);
+        accountName.withType(type);
         Call<ResponseBody> call = service.checkNameAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), accountName, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CheckNameAvailabilityResultInner>(serviceCallback) {
@@ -191,8 +191,8 @@ public final class StorageAccountsInner {
             throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         StorageAccountCheckNameAvailabilityParameters accountName = new StorageAccountCheckNameAvailabilityParameters();
-        accountName.setName(name);
-        accountName.setType(type);
+        accountName.withName(name);
+        accountName.withType(type);
         Call<ResponseBody> call = service.checkNameAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), accountName, this.client.userAgent());
         return checkNameAvailabilityDelegate(call.execute());
     }
@@ -223,8 +223,8 @@ public final class StorageAccountsInner {
             return null;
         }
         StorageAccountCheckNameAvailabilityParameters accountName = new StorageAccountCheckNameAvailabilityParameters();
-        accountName.setName(name);
-        accountName.setType(type);
+        accountName.withName(name);
+        accountName.withType(type);
         Call<ResponseBody> call = service.checkNameAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), accountName, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CheckNameAvailabilityResultInner>(serviceCallback) {
@@ -901,7 +901,7 @@ public final class StorageAccountsInner {
             throw new IllegalArgumentException("Parameter keyName is required and cannot be null.");
         }
         StorageAccountRegenerateKeyParameters regenerateKey = new StorageAccountRegenerateKeyParameters();
-        regenerateKey.setKeyName(keyName);
+        regenerateKey.withKeyName(keyName);
         Call<ResponseBody> call = service.regenerateKey(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), regenerateKey, this.client.userAgent());
         return regenerateKeyDelegate(call.execute());
     }
@@ -941,7 +941,7 @@ public final class StorageAccountsInner {
             return null;
         }
         StorageAccountRegenerateKeyParameters regenerateKey = new StorageAccountRegenerateKeyParameters();
-        regenerateKey.setKeyName(keyName);
+        regenerateKey.withKeyName(keyName);
         Call<ResponseBody> call = service.regenerateKey(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), regenerateKey, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<StorageAccountKeysInner>(serviceCallback) {

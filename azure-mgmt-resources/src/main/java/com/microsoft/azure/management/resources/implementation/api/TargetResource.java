@@ -41,7 +41,7 @@ public class TargetResource {
      * @param id the id value to set
      * @return the TargetResource object itself.
      */
-    public TargetResource setId(String id) {
+    public TargetResource withId(String id) {
         this.id = id;
         return this;
     }
@@ -61,7 +61,7 @@ public class TargetResource {
      * @param resourceName the resourceName value to set
      * @return the TargetResource object itself.
      */
-    public TargetResource setResourceName(String resourceName) {
+    public TargetResource withResourceName(String resourceName) {
         this.resourceName = resourceName;
         return this;
     }
@@ -81,7 +81,7 @@ public class TargetResource {
      * @param resourceType the resourceType value to set
      * @return the TargetResource object itself.
      */
-    public TargetResource setResourceType(String resourceType) {
+    public TargetResource withResourceType(String resourceType) {
         this.resourceType = resourceType;
         return this;
     }

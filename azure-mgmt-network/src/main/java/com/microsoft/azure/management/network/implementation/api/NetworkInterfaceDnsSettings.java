@@ -49,7 +49,7 @@ public class NetworkInterfaceDnsSettings {
      * @param dnsServers the dnsServers value to set
      * @return the NetworkInterfaceDnsSettings object itself.
      */
-    public NetworkInterfaceDnsSettings setDnsServers(List<String> dnsServers) {
+    public NetworkInterfaceDnsSettings withDnsServers(List<String> dnsServers) {
         this.dnsServers = dnsServers;
         return this;
     }
@@ -69,7 +69,7 @@ public class NetworkInterfaceDnsSettings {
      * @param appliedDnsServers the appliedDnsServers value to set
      * @return the NetworkInterfaceDnsSettings object itself.
      */
-    public NetworkInterfaceDnsSettings setAppliedDnsServers(List<String> appliedDnsServers) {
+    public NetworkInterfaceDnsSettings withAppliedDnsServers(List<String> appliedDnsServers) {
         this.appliedDnsServers = appliedDnsServers;
         return this;
     }
@@ -89,7 +89,7 @@ public class NetworkInterfaceDnsSettings {
      * @param internalDnsNameLabel the internalDnsNameLabel value to set
      * @return the NetworkInterfaceDnsSettings object itself.
      */
-    public NetworkInterfaceDnsSettings setInternalDnsNameLabel(String internalDnsNameLabel) {
+    public NetworkInterfaceDnsSettings withInternalDnsNameLabel(String internalDnsNameLabel) {
         this.internalDnsNameLabel = internalDnsNameLabel;
         return this;
     }
@@ -109,7 +109,7 @@ public class NetworkInterfaceDnsSettings {
      * @param internalFqdn the internalFqdn value to set
      * @return the NetworkInterfaceDnsSettings object itself.
      */
-    public NetworkInterfaceDnsSettings setInternalFqdn(String internalFqdn) {
+    public NetworkInterfaceDnsSettings withInternalFqdn(String internalFqdn) {
         this.internalFqdn = internalFqdn;
         return this;
     }

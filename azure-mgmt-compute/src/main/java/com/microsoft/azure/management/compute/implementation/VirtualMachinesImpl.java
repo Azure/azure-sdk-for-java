@@ -99,13 +99,13 @@ class VirtualMachinesImpl
 
     private VirtualMachineImpl createFluentModel(String name) {
         VirtualMachineInner inner = new VirtualMachineInner();
-        inner.setStorageProfile(new StorageProfile());
-        inner.storageProfile().setOsDisk(new OSDisk());
-        inner.storageProfile().setDataDisks(new ArrayList<DataDisk>());
-        inner.setOsProfile(new OSProfile());
-        inner.setHardwareProfile(new HardwareProfile());
-        inner.setNetworkProfile(new NetworkProfile());
-        inner.osProfile().setComputerName(name);
+        inner.withStorageProfile(new StorageProfile());
+        inner.storageProfile().withOsDisk(new OSDisk());
+        inner.storageProfile().withDataDisks(new ArrayList<DataDisk>());
+        inner.withOsProfile(new OSProfile());
+        inner.withHardwareProfile(new HardwareProfile());
+        inner.withNetworkProfile(new NetworkProfile());
+        inner.osProfile().withComputerName(name);
 
         return new VirtualMachineImpl(name,
             inner,

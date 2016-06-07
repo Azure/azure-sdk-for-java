@@ -37,7 +37,7 @@ public class HostingEnvironmentCollectionInner {
      * @param value the value value to set
      * @return the HostingEnvironmentCollectionInner object itself.
      */
-    public HostingEnvironmentCollectionInner setValue(List<HostingEnvironmentInner> value) {
+    public HostingEnvironmentCollectionInner withValue(List<HostingEnvironmentInner> value) {
         this.value = value;
         return this;
     }
@@ -57,7 +57,7 @@ public class HostingEnvironmentCollectionInner {
      * @param nextLink the nextLink value to set
      * @return the HostingEnvironmentCollectionInner object itself.
      */
-    public HostingEnvironmentCollectionInner setNextLink(String nextLink) {
+    public HostingEnvironmentCollectionInner withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }

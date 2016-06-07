@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the DeleteFromTask operation.
+ * Additional parameters for the File_DeleteFromTask operation.
  */
 public class FileDeleteFromTaskOptions {
     /**
@@ -58,7 +58,7 @@ public class FileDeleteFromTaskOptions {
      * @param timeout the timeout value to set
      * @return the FileDeleteFromTaskOptions object itself.
      */
-    public FileDeleteFromTaskOptions setTimeout(Integer timeout) {
+    public FileDeleteFromTaskOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -78,7 +78,7 @@ public class FileDeleteFromTaskOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the FileDeleteFromTaskOptions object itself.
      */
-    public FileDeleteFromTaskOptions setClientRequestId(String clientRequestId) {
+    public FileDeleteFromTaskOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -98,7 +98,7 @@ public class FileDeleteFromTaskOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the FileDeleteFromTaskOptions object itself.
      */
-    public FileDeleteFromTaskOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public FileDeleteFromTaskOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -121,7 +121,7 @@ public class FileDeleteFromTaskOptions {
      * @param ocpDate the ocpDate value to set
      * @return the FileDeleteFromTaskOptions object itself.
      */
-    public FileDeleteFromTaskOptions setOcpDate(DateTime ocpDate) {
+    public FileDeleteFromTaskOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }

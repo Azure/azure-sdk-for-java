@@ -32,7 +32,7 @@ public class VirtualMachineScaleSetNetworkProfile {
      * @param networkInterfaceConfigurations the networkInterfaceConfigurations value to set
      * @return the VirtualMachineScaleSetNetworkProfile object itself.
      */
-    public VirtualMachineScaleSetNetworkProfile setNetworkInterfaceConfigurations(List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations) {
+    public VirtualMachineScaleSetNetworkProfile withNetworkInterfaceConfigurations(List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations) {
         this.networkInterfaceConfigurations = networkInterfaceConfigurations;
         return this;
     }

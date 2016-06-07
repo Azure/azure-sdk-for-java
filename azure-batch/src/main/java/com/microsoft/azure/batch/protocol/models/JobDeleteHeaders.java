@@ -40,7 +40,7 @@ public class JobDeleteHeaders {
      * @param clientRequestId the clientRequestId value to set
      * @return the JobDeleteHeaders object itself.
      */
-    public JobDeleteHeaders setClientRequestId(String clientRequestId) {
+    public JobDeleteHeaders withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -60,7 +60,7 @@ public class JobDeleteHeaders {
      * @param requestId the requestId value to set
      * @return the JobDeleteHeaders object itself.
      */
-    public JobDeleteHeaders setRequestId(String requestId) {
+    public JobDeleteHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }

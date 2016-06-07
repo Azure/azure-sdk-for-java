@@ -36,7 +36,7 @@ public class USqlDirectedColumn {
      * @param name the name value to set
      * @return the USqlDirectedColumn object itself.
      */
-    public USqlDirectedColumn setName(String name) {
+    public USqlDirectedColumn withName(String name) {
         this.name = name;
         return this;
     }
@@ -56,7 +56,7 @@ public class USqlDirectedColumn {
      * @param descending the descending value to set
      * @return the USqlDirectedColumn object itself.
      */
-    public USqlDirectedColumn setDescending(Boolean descending) {
+    public USqlDirectedColumn withDescending(Boolean descending) {
         this.descending = descending;
         return this;
     }

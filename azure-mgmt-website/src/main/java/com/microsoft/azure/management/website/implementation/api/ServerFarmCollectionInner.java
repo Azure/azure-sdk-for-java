@@ -37,7 +37,7 @@ public class ServerFarmCollectionInner {
      * @param value the value value to set
      * @return the ServerFarmCollectionInner object itself.
      */
-    public ServerFarmCollectionInner setValue(List<ServerFarmWithRichSkuInner> value) {
+    public ServerFarmCollectionInner withValue(List<ServerFarmWithRichSkuInner> value) {
         this.value = value;
         return this;
     }
@@ -57,7 +57,7 @@ public class ServerFarmCollectionInner {
      * @param nextLink the nextLink value to set
      * @return the ServerFarmCollectionInner object itself.
      */
-    public ServerFarmCollectionInner setNextLink(String nextLink) {
+    public ServerFarmCollectionInner withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }

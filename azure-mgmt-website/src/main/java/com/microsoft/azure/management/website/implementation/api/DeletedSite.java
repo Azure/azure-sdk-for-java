@@ -234,7 +234,7 @@ public class DeletedSite extends Resource {
      * @param deletedTimestamp the deletedTimestamp value to set
      * @return the DeletedSite object itself.
      */
-    public DeletedSite setDeletedTimestamp(DateTime deletedTimestamp) {
+    public DeletedSite withDeletedTimestamp(DateTime deletedTimestamp) {
         this.deletedTimestamp = deletedTimestamp;
         return this;
     }
@@ -254,7 +254,7 @@ public class DeletedSite extends Resource {
      * @param deletedSiteName the deletedSiteName value to set
      * @return the DeletedSite object itself.
      */
-    public DeletedSite setDeletedSiteName(String deletedSiteName) {
+    public DeletedSite withDeletedSiteName(String deletedSiteName) {
         this.deletedSiteName = deletedSiteName;
         return this;
     }
@@ -310,7 +310,7 @@ public class DeletedSite extends Resource {
      * @param enabled the enabled value to set
      * @return the DeletedSite object itself.
      */
-    public DeletedSite setEnabled(Boolean enabled) {
+    public DeletedSite withEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -348,7 +348,7 @@ public class DeletedSite extends Resource {
      * @param hostNameSslStates the hostNameSslStates value to set
      * @return the DeletedSite object itself.
      */
-    public DeletedSite setHostNameSslStates(List<HostNameSslState> hostNameSslStates) {
+    public DeletedSite withHostNameSslStates(List<HostNameSslState> hostNameSslStates) {
         this.hostNameSslStates = hostNameSslStates;
         return this;
     }
@@ -368,7 +368,7 @@ public class DeletedSite extends Resource {
      * @param serverFarmId the serverFarmId value to set
      * @return the DeletedSite object itself.
      */
-    public DeletedSite setServerFarmId(String serverFarmId) {
+    public DeletedSite withServerFarmId(String serverFarmId) {
         this.serverFarmId = serverFarmId;
         return this;
     }
@@ -397,7 +397,7 @@ public class DeletedSite extends Resource {
      * @param siteConfig the siteConfig value to set
      * @return the DeletedSite object itself.
      */
-    public DeletedSite setSiteConfig(SiteConfigInner siteConfig) {
+    public DeletedSite withSiteConfig(SiteConfigInner siteConfig) {
         this.siteConfig = siteConfig;
         return this;
     }
@@ -435,7 +435,7 @@ public class DeletedSite extends Resource {
      * @param scmSiteAlsoStopped the scmSiteAlsoStopped value to set
      * @return the DeletedSite object itself.
      */
-    public DeletedSite setScmSiteAlsoStopped(Boolean scmSiteAlsoStopped) {
+    public DeletedSite withScmSiteAlsoStopped(Boolean scmSiteAlsoStopped) {
         this.scmSiteAlsoStopped = scmSiteAlsoStopped;
         return this;
     }
@@ -464,7 +464,7 @@ public class DeletedSite extends Resource {
      * @param hostingEnvironmentProfile the hostingEnvironmentProfile value to set
      * @return the DeletedSite object itself.
      */
-    public DeletedSite setHostingEnvironmentProfile(HostingEnvironmentProfile hostingEnvironmentProfile) {
+    public DeletedSite withHostingEnvironmentProfile(HostingEnvironmentProfile hostingEnvironmentProfile) {
         this.hostingEnvironmentProfile = hostingEnvironmentProfile;
         return this;
     }
@@ -484,7 +484,7 @@ public class DeletedSite extends Resource {
      * @param microService the microService value to set
      * @return the DeletedSite object itself.
      */
-    public DeletedSite setMicroService(String microService) {
+    public DeletedSite withMicroService(String microService) {
         this.microService = microService;
         return this;
     }
@@ -504,7 +504,7 @@ public class DeletedSite extends Resource {
      * @param gatewaySiteName the gatewaySiteName value to set
      * @return the DeletedSite object itself.
      */
-    public DeletedSite setGatewaySiteName(String gatewaySiteName) {
+    public DeletedSite withGatewaySiteName(String gatewaySiteName) {
         this.gatewaySiteName = gatewaySiteName;
         return this;
     }
@@ -524,7 +524,7 @@ public class DeletedSite extends Resource {
      * @param clientAffinityEnabled the clientAffinityEnabled value to set
      * @return the DeletedSite object itself.
      */
-    public DeletedSite setClientAffinityEnabled(Boolean clientAffinityEnabled) {
+    public DeletedSite withClientAffinityEnabled(Boolean clientAffinityEnabled) {
         this.clientAffinityEnabled = clientAffinityEnabled;
         return this;
     }
@@ -544,7 +544,7 @@ public class DeletedSite extends Resource {
      * @param clientCertEnabled the clientCertEnabled value to set
      * @return the DeletedSite object itself.
      */
-    public DeletedSite setClientCertEnabled(Boolean clientCertEnabled) {
+    public DeletedSite withClientCertEnabled(Boolean clientCertEnabled) {
         this.clientCertEnabled = clientCertEnabled;
         return this;
     }
@@ -564,7 +564,7 @@ public class DeletedSite extends Resource {
      * @param hostNamesDisabled the hostNamesDisabled value to set
      * @return the DeletedSite object itself.
      */
-    public DeletedSite setHostNamesDisabled(Boolean hostNamesDisabled) {
+    public DeletedSite withHostNamesDisabled(Boolean hostNamesDisabled) {
         this.hostNamesDisabled = hostNamesDisabled;
         return this;
     }
@@ -593,7 +593,7 @@ public class DeletedSite extends Resource {
      * @param containerSize the containerSize value to set
      * @return the DeletedSite object itself.
      */
-    public DeletedSite setContainerSize(Integer containerSize) {
+    public DeletedSite withContainerSize(Integer containerSize) {
         this.containerSize = containerSize;
         return this;
     }
@@ -613,7 +613,7 @@ public class DeletedSite extends Resource {
      * @param maxNumberOfWorkers the maxNumberOfWorkers value to set
      * @return the DeletedSite object itself.
      */
-    public DeletedSite setMaxNumberOfWorkers(Integer maxNumberOfWorkers) {
+    public DeletedSite withMaxNumberOfWorkers(Integer maxNumberOfWorkers) {
         this.maxNumberOfWorkers = maxNumberOfWorkers;
         return this;
     }
@@ -633,7 +633,7 @@ public class DeletedSite extends Resource {
      * @param cloningInfo the cloningInfo value to set
      * @return the DeletedSite object itself.
      */
-    public DeletedSite setCloningInfo(CloningInfo cloningInfo) {
+    public DeletedSite withCloningInfo(CloningInfo cloningInfo) {
         this.cloningInfo = cloningInfo;
         return this;
     }

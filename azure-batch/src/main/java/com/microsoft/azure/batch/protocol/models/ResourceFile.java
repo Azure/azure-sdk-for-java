@@ -45,7 +45,7 @@ public class ResourceFile {
      * @param blobSource the blobSource value to set
      * @return the ResourceFile object itself.
      */
-    public ResourceFile setBlobSource(String blobSource) {
+    public ResourceFile withBlobSource(String blobSource) {
         this.blobSource = blobSource;
         return this;
     }
@@ -65,7 +65,7 @@ public class ResourceFile {
      * @param filePath the filePath value to set
      * @return the ResourceFile object itself.
      */
-    public ResourceFile setFilePath(String filePath) {
+    public ResourceFile withFilePath(String filePath) {
         this.filePath = filePath;
         return this;
     }
@@ -85,7 +85,7 @@ public class ResourceFile {
      * @param fileMode the fileMode value to set
      * @return the ResourceFile object itself.
      */
-    public ResourceFile setFileMode(String fileMode) {
+    public ResourceFile withFileMode(String fileMode) {
         this.fileMode = fileMode;
         return this;
     }

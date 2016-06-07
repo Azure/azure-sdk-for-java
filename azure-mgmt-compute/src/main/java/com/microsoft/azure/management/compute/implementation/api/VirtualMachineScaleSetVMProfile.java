@@ -46,7 +46,7 @@ public class VirtualMachineScaleSetVMProfile {
      * @param osProfile the osProfile value to set
      * @return the VirtualMachineScaleSetVMProfile object itself.
      */
-    public VirtualMachineScaleSetVMProfile setOsProfile(VirtualMachineScaleSetOSProfile osProfile) {
+    public VirtualMachineScaleSetVMProfile withOsProfile(VirtualMachineScaleSetOSProfile osProfile) {
         this.osProfile = osProfile;
         return this;
     }
@@ -66,7 +66,7 @@ public class VirtualMachineScaleSetVMProfile {
      * @param storageProfile the storageProfile value to set
      * @return the VirtualMachineScaleSetVMProfile object itself.
      */
-    public VirtualMachineScaleSetVMProfile setStorageProfile(VirtualMachineScaleSetStorageProfile storageProfile) {
+    public VirtualMachineScaleSetVMProfile withStorageProfile(VirtualMachineScaleSetStorageProfile storageProfile) {
         this.storageProfile = storageProfile;
         return this;
     }
@@ -86,7 +86,7 @@ public class VirtualMachineScaleSetVMProfile {
      * @param networkProfile the networkProfile value to set
      * @return the VirtualMachineScaleSetVMProfile object itself.
      */
-    public VirtualMachineScaleSetVMProfile setNetworkProfile(VirtualMachineScaleSetNetworkProfile networkProfile) {
+    public VirtualMachineScaleSetVMProfile withNetworkProfile(VirtualMachineScaleSetNetworkProfile networkProfile) {
         this.networkProfile = networkProfile;
         return this;
     }
@@ -106,7 +106,7 @@ public class VirtualMachineScaleSetVMProfile {
      * @param extensionProfile the extensionProfile value to set
      * @return the VirtualMachineScaleSetVMProfile object itself.
      */
-    public VirtualMachineScaleSetVMProfile setExtensionProfile(VirtualMachineScaleSetExtensionProfile extensionProfile) {
+    public VirtualMachineScaleSetVMProfile withExtensionProfile(VirtualMachineScaleSetExtensionProfile extensionProfile) {
         this.extensionProfile = extensionProfile;
         return this;
     }

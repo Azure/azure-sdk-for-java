@@ -56,7 +56,7 @@ public class ResourceMetricValue {
      * @param timeStamp the timeStamp value to set
      * @return the ResourceMetricValue object itself.
      */
-    public ResourceMetricValue setTimeStamp(String timeStamp) {
+    public ResourceMetricValue withTimeStamp(String timeStamp) {
         this.timeStamp = timeStamp;
         return this;
     }
@@ -76,7 +76,7 @@ public class ResourceMetricValue {
      * @param average the average value to set
      * @return the ResourceMetricValue object itself.
      */
-    public ResourceMetricValue setAverage(Double average) {
+    public ResourceMetricValue withAverage(Double average) {
         this.average = average;
         return this;
     }
@@ -96,7 +96,7 @@ public class ResourceMetricValue {
      * @param minimum the minimum value to set
      * @return the ResourceMetricValue object itself.
      */
-    public ResourceMetricValue setMinimum(Double minimum) {
+    public ResourceMetricValue withMinimum(Double minimum) {
         this.minimum = minimum;
         return this;
     }
@@ -116,7 +116,7 @@ public class ResourceMetricValue {
      * @param maximum the maximum value to set
      * @return the ResourceMetricValue object itself.
      */
-    public ResourceMetricValue setMaximum(Double maximum) {
+    public ResourceMetricValue withMaximum(Double maximum) {
         this.maximum = maximum;
         return this;
     }
@@ -136,7 +136,7 @@ public class ResourceMetricValue {
      * @param total the total value to set
      * @return the ResourceMetricValue object itself.
      */
-    public ResourceMetricValue setTotal(Double total) {
+    public ResourceMetricValue withTotal(Double total) {
         this.total = total;
         return this;
     }
@@ -156,7 +156,7 @@ public class ResourceMetricValue {
      * @param count the count value to set
      * @return the ResourceMetricValue object itself.
      */
-    public ResourceMetricValue setCount(Double count) {
+    public ResourceMetricValue withCount(Double count) {
         this.count = count;
         return this;
     }

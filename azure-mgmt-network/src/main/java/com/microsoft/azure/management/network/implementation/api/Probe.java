@@ -99,7 +99,7 @@ public class Probe extends SubResource {
      * @param loadBalancingRules the loadBalancingRules value to set
      * @return the Probe object itself.
      */
-    public Probe setLoadBalancingRules(List<SubResource> loadBalancingRules) {
+    public Probe withLoadBalancingRules(List<SubResource> loadBalancingRules) {
         this.loadBalancingRules = loadBalancingRules;
         return this;
     }
@@ -119,7 +119,7 @@ public class Probe extends SubResource {
      * @param protocol the protocol value to set
      * @return the Probe object itself.
      */
-    public Probe setProtocol(String protocol) {
+    public Probe withProtocol(String protocol) {
         this.protocol = protocol;
         return this;
     }
@@ -139,7 +139,7 @@ public class Probe extends SubResource {
      * @param port the port value to set
      * @return the Probe object itself.
      */
-    public Probe setPort(int port) {
+    public Probe withPort(int port) {
         this.port = port;
         return this;
     }
@@ -159,7 +159,7 @@ public class Probe extends SubResource {
      * @param intervalInSeconds the intervalInSeconds value to set
      * @return the Probe object itself.
      */
-    public Probe setIntervalInSeconds(Integer intervalInSeconds) {
+    public Probe withIntervalInSeconds(Integer intervalInSeconds) {
         this.intervalInSeconds = intervalInSeconds;
         return this;
     }
@@ -179,7 +179,7 @@ public class Probe extends SubResource {
      * @param numberOfProbes the numberOfProbes value to set
      * @return the Probe object itself.
      */
-    public Probe setNumberOfProbes(Integer numberOfProbes) {
+    public Probe withNumberOfProbes(Integer numberOfProbes) {
         this.numberOfProbes = numberOfProbes;
         return this;
     }
@@ -199,7 +199,7 @@ public class Probe extends SubResource {
      * @param requestPath the requestPath value to set
      * @return the Probe object itself.
      */
-    public Probe setRequestPath(String requestPath) {
+    public Probe withRequestPath(String requestPath) {
         this.requestPath = requestPath;
         return this;
     }
@@ -219,7 +219,7 @@ public class Probe extends SubResource {
      * @param provisioningState the provisioningState value to set
      * @return the Probe object itself.
      */
-    public Probe setProvisioningState(String provisioningState) {
+    public Probe withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -239,7 +239,7 @@ public class Probe extends SubResource {
      * @param name the name value to set
      * @return the Probe object itself.
      */
-    public Probe setName(String name) {
+    public Probe withName(String name) {
         this.name = name;
         return this;
     }
@@ -259,7 +259,7 @@ public class Probe extends SubResource {
      * @param etag the etag value to set
      * @return the Probe object itself.
      */
-    public Probe setEtag(String etag) {
+    public Probe withEtag(String etag) {
         this.etag = etag;
         return this;
     }

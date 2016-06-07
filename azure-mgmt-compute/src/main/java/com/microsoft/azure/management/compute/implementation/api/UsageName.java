@@ -36,7 +36,7 @@ public class UsageName {
      * @param value the value value to set
      * @return the UsageName object itself.
      */
-    public UsageName setValue(String value) {
+    public UsageName withValue(String value) {
         this.value = value;
         return this;
     }
@@ -56,7 +56,7 @@ public class UsageName {
      * @param localizedValue the localizedValue value to set
      * @return the UsageName object itself.
      */
-    public UsageName setLocalizedValue(String localizedValue) {
+    public UsageName withLocalizedValue(String localizedValue) {
         this.localizedValue = localizedValue;
         return this;
     }

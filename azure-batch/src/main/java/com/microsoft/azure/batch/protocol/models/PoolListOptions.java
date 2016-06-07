@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the List operation.
+ * Additional parameters for the Pool_List operation.
  */
 public class PoolListOptions {
     /**
@@ -82,7 +82,7 @@ public class PoolListOptions {
      * @param filter the filter value to set
      * @return the PoolListOptions object itself.
      */
-    public PoolListOptions setFilter(String filter) {
+    public PoolListOptions withFilter(String filter) {
         this.filter = filter;
         return this;
     }
@@ -102,7 +102,7 @@ public class PoolListOptions {
      * @param select the select value to set
      * @return the PoolListOptions object itself.
      */
-    public PoolListOptions setSelect(String select) {
+    public PoolListOptions withSelect(String select) {
         this.select = select;
         return this;
     }
@@ -122,7 +122,7 @@ public class PoolListOptions {
      * @param expand the expand value to set
      * @return the PoolListOptions object itself.
      */
-    public PoolListOptions setExpand(String expand) {
+    public PoolListOptions withExpand(String expand) {
         this.expand = expand;
         return this;
     }
@@ -142,7 +142,7 @@ public class PoolListOptions {
      * @param maxResults the maxResults value to set
      * @return the PoolListOptions object itself.
      */
-    public PoolListOptions setMaxResults(Integer maxResults) {
+    public PoolListOptions withMaxResults(Integer maxResults) {
         this.maxResults = maxResults;
         return this;
     }
@@ -162,7 +162,7 @@ public class PoolListOptions {
      * @param timeout the timeout value to set
      * @return the PoolListOptions object itself.
      */
-    public PoolListOptions setTimeout(Integer timeout) {
+    public PoolListOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -182,7 +182,7 @@ public class PoolListOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the PoolListOptions object itself.
      */
-    public PoolListOptions setClientRequestId(String clientRequestId) {
+    public PoolListOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -202,7 +202,7 @@ public class PoolListOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the PoolListOptions object itself.
      */
-    public PoolListOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public PoolListOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -225,7 +225,7 @@ public class PoolListOptions {
      * @param ocpDate the ocpDate value to set
      * @return the PoolListOptions object itself.
      */
-    public PoolListOptions setOcpDate(DateTime ocpDate) {
+    public PoolListOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }

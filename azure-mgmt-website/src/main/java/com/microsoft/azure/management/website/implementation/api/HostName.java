@@ -61,7 +61,7 @@ public class HostName {
      * @param name the name value to set
      * @return the HostName object itself.
      */
-    public HostName setName(String name) {
+    public HostName withName(String name) {
         this.name = name;
         return this;
     }
@@ -81,7 +81,7 @@ public class HostName {
      * @param siteNames the siteNames value to set
      * @return the HostName object itself.
      */
-    public HostName setSiteNames(List<String> siteNames) {
+    public HostName withSiteNames(List<String> siteNames) {
         this.siteNames = siteNames;
         return this;
     }
@@ -101,7 +101,7 @@ public class HostName {
      * @param azureResourceName the azureResourceName value to set
      * @return the HostName object itself.
      */
-    public HostName setAzureResourceName(String azureResourceName) {
+    public HostName withAzureResourceName(String azureResourceName) {
         this.azureResourceName = azureResourceName;
         return this;
     }
@@ -121,7 +121,7 @@ public class HostName {
      * @param azureResourceType the azureResourceType value to set
      * @return the HostName object itself.
      */
-    public HostName setAzureResourceType(AzureResourceType azureResourceType) {
+    public HostName withAzureResourceType(AzureResourceType azureResourceType) {
         this.azureResourceType = azureResourceType;
         return this;
     }
@@ -141,7 +141,7 @@ public class HostName {
      * @param customHostNameDnsRecordType the customHostNameDnsRecordType value to set
      * @return the HostName object itself.
      */
-    public HostName setCustomHostNameDnsRecordType(CustomHostNameDnsRecordType customHostNameDnsRecordType) {
+    public HostName withCustomHostNameDnsRecordType(CustomHostNameDnsRecordType customHostNameDnsRecordType) {
         this.customHostNameDnsRecordType = customHostNameDnsRecordType;
         return this;
     }
@@ -161,7 +161,7 @@ public class HostName {
      * @param hostNameType the hostNameType value to set
      * @return the HostName object itself.
      */
-    public HostName setHostNameType(HostNameType hostNameType) {
+    public HostName withHostNameType(HostNameType hostNameType) {
         this.hostNameType = hostNameType;
         return this;
     }

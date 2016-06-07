@@ -65,26 +65,26 @@ class PublicIpAddressImpl
 
 	@Override
 	public PublicIpAddressImpl withIdleTimeoutInMinutes(int minutes) {
-		this.inner().setIdleTimeoutInMinutes(minutes);
+		this.inner().withIdleTimeoutInMinutes(minutes);
 		return this;
 	}
 
 	@Override
 	public PublicIpAddressImpl withStaticIp() {
-		this.inner().setPublicIPAllocationMethod(IPAllocationMethod.STATIC);
+		this.inner().withPublicIPAllocationMethod(IPAllocationMethod.STATIC);
 		return this;
 	}
 
 
 	@Override
 	public PublicIpAddressImpl withDynamicIp() {
-		this.inner().setPublicIPAllocationMethod(IPAllocationMethod.DYNAMIC);
+		this.inner().withPublicIPAllocationMethod(IPAllocationMethod.DYNAMIC);
 		return this;
 	}
 	
 	@Override
 	public PublicIpAddressImpl withLeafDomainLabel(String dnsName) {
-		this.inner().dnsSettings().setDomainNameLabel(dnsName.toLowerCase());
+		this.inner().dnsSettings().withDomainNameLabel(dnsName.toLowerCase());
 		return this;
 	}
 	
@@ -95,7 +95,7 @@ class PublicIpAddressImpl
 
 	@Override
 	public PublicIpAddressImpl withReverseFqdn(String reverseFqdn) {
-		this.inner().dnsSettings().setReverseFqdn(reverseFqdn.toLowerCase());
+		this.inner().dnsSettings().withReverseFqdn(reverseFqdn.toLowerCase());
 		return this;
 	}
 

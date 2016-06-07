@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the UpdateUser operation.
+ * Additional parameters for the ComputeNode_UpdateUser operation.
  */
 public class ComputeNodeUpdateUserOptions {
     /**
@@ -58,7 +58,7 @@ public class ComputeNodeUpdateUserOptions {
      * @param timeout the timeout value to set
      * @return the ComputeNodeUpdateUserOptions object itself.
      */
-    public ComputeNodeUpdateUserOptions setTimeout(Integer timeout) {
+    public ComputeNodeUpdateUserOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -78,7 +78,7 @@ public class ComputeNodeUpdateUserOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the ComputeNodeUpdateUserOptions object itself.
      */
-    public ComputeNodeUpdateUserOptions setClientRequestId(String clientRequestId) {
+    public ComputeNodeUpdateUserOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -98,7 +98,7 @@ public class ComputeNodeUpdateUserOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the ComputeNodeUpdateUserOptions object itself.
      */
-    public ComputeNodeUpdateUserOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public ComputeNodeUpdateUserOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -121,7 +121,7 @@ public class ComputeNodeUpdateUserOptions {
      * @param ocpDate the ocpDate value to set
      * @return the ComputeNodeUpdateUserOptions object itself.
      */
-    public ComputeNodeUpdateUserOptions setOcpDate(DateTime ocpDate) {
+    public ComputeNodeUpdateUserOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }

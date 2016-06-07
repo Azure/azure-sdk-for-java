@@ -97,13 +97,13 @@ class AvailabilitySetImpl
 
     @Override
     public AvailabilitySetImpl withUpdateDomainCount(int updateDomainCount) {
-        this.inner().setPlatformUpdateDomainCount(updateDomainCount);
+        this.inner().withPlatformUpdateDomainCount(updateDomainCount);
         return this;
     }
 
     @Override
     public AvailabilitySetImpl withFaultDomainCount(int faultDomainCount) {
-        this.inner().setPlatformFaultDomainCount(faultDomainCount);
+        this.inner().withPlatformFaultDomainCount(faultDomainCount);
         return this;
     }
 

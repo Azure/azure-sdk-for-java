@@ -250,7 +250,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param hostingEnvironmentName the hostingEnvironmentName value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setHostingEnvironmentName(String hostingEnvironmentName) {
+    public HostingEnvironmentInner withHostingEnvironmentName(String hostingEnvironmentName) {
         this.hostingEnvironmentName = hostingEnvironmentName;
         return this;
     }
@@ -270,7 +270,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param hostingEnvironmentLocation the hostingEnvironmentLocation value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setHostingEnvironmentLocation(String hostingEnvironmentLocation) {
+    public HostingEnvironmentInner withHostingEnvironmentLocation(String hostingEnvironmentLocation) {
         this.hostingEnvironmentLocation = hostingEnvironmentLocation;
         return this;
     }
@@ -290,7 +290,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param provisioningState the provisioningState value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setProvisioningState(ProvisioningState provisioningState) {
+    public HostingEnvironmentInner withProvisioningState(ProvisioningState provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -310,7 +310,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param status the status value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setStatus(HostingEnvironmentStatus status) {
+    public HostingEnvironmentInner withStatus(HostingEnvironmentStatus status) {
         this.status = status;
         return this;
     }
@@ -330,7 +330,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param vnetName the vnetName value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setVnetName(String vnetName) {
+    public HostingEnvironmentInner withVnetName(String vnetName) {
         this.vnetName = vnetName;
         return this;
     }
@@ -350,7 +350,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param vnetResourceGroupName the vnetResourceGroupName value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setVnetResourceGroupName(String vnetResourceGroupName) {
+    public HostingEnvironmentInner withVnetResourceGroupName(String vnetResourceGroupName) {
         this.vnetResourceGroupName = vnetResourceGroupName;
         return this;
     }
@@ -370,7 +370,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param vnetSubnetName the vnetSubnetName value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setVnetSubnetName(String vnetSubnetName) {
+    public HostingEnvironmentInner withVnetSubnetName(String vnetSubnetName) {
         this.vnetSubnetName = vnetSubnetName;
         return this;
     }
@@ -390,7 +390,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param virtualNetwork the virtualNetwork value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setVirtualNetwork(VirtualNetworkProfile virtualNetwork) {
+    public HostingEnvironmentInner withVirtualNetwork(VirtualNetworkProfile virtualNetwork) {
         this.virtualNetwork = virtualNetwork;
         return this;
     }
@@ -410,7 +410,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param internalLoadBalancingMode the internalLoadBalancingMode value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setInternalLoadBalancingMode(InternalLoadBalancingMode internalLoadBalancingMode) {
+    public HostingEnvironmentInner withInternalLoadBalancingMode(InternalLoadBalancingMode internalLoadBalancingMode) {
         this.internalLoadBalancingMode = internalLoadBalancingMode;
         return this;
     }
@@ -430,7 +430,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param multiSize the multiSize value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setMultiSize(String multiSize) {
+    public HostingEnvironmentInner withMultiSize(String multiSize) {
         this.multiSize = multiSize;
         return this;
     }
@@ -450,7 +450,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param multiRoleCount the multiRoleCount value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setMultiRoleCount(Integer multiRoleCount) {
+    public HostingEnvironmentInner withMultiRoleCount(Integer multiRoleCount) {
         this.multiRoleCount = multiRoleCount;
         return this;
     }
@@ -470,7 +470,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param workerPools the workerPools value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setWorkerPools(List<WorkerPoolInner> workerPools) {
+    public HostingEnvironmentInner withWorkerPools(List<WorkerPoolInner> workerPools) {
         this.workerPools = workerPools;
         return this;
     }
@@ -490,7 +490,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param ipsslAddressCount the ipsslAddressCount value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setIpsslAddressCount(Integer ipsslAddressCount) {
+    public HostingEnvironmentInner withIpsslAddressCount(Integer ipsslAddressCount) {
         this.ipsslAddressCount = ipsslAddressCount;
         return this;
     }
@@ -510,7 +510,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param databaseEdition the databaseEdition value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setDatabaseEdition(String databaseEdition) {
+    public HostingEnvironmentInner withDatabaseEdition(String databaseEdition) {
         this.databaseEdition = databaseEdition;
         return this;
     }
@@ -530,7 +530,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param databaseServiceObjective the databaseServiceObjective value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setDatabaseServiceObjective(String databaseServiceObjective) {
+    public HostingEnvironmentInner withDatabaseServiceObjective(String databaseServiceObjective) {
         this.databaseServiceObjective = databaseServiceObjective;
         return this;
     }
@@ -550,7 +550,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param upgradeDomains the upgradeDomains value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setUpgradeDomains(Integer upgradeDomains) {
+    public HostingEnvironmentInner withUpgradeDomains(Integer upgradeDomains) {
         this.upgradeDomains = upgradeDomains;
         return this;
     }
@@ -570,7 +570,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param subscriptionId the subscriptionId value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setSubscriptionId(String subscriptionId) {
+    public HostingEnvironmentInner withSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -590,7 +590,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param dnsSuffix the dnsSuffix value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setDnsSuffix(String dnsSuffix) {
+    public HostingEnvironmentInner withDnsSuffix(String dnsSuffix) {
         this.dnsSuffix = dnsSuffix;
         return this;
     }
@@ -610,7 +610,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param lastAction the lastAction value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setLastAction(String lastAction) {
+    public HostingEnvironmentInner withLastAction(String lastAction) {
         this.lastAction = lastAction;
         return this;
     }
@@ -630,7 +630,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param lastActionResult the lastActionResult value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setLastActionResult(String lastActionResult) {
+    public HostingEnvironmentInner withLastActionResult(String lastActionResult) {
         this.lastActionResult = lastActionResult;
         return this;
     }
@@ -650,7 +650,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param allowedMultiSizes the allowedMultiSizes value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setAllowedMultiSizes(String allowedMultiSizes) {
+    public HostingEnvironmentInner withAllowedMultiSizes(String allowedMultiSizes) {
         this.allowedMultiSizes = allowedMultiSizes;
         return this;
     }
@@ -670,7 +670,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param allowedWorkerSizes the allowedWorkerSizes value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setAllowedWorkerSizes(String allowedWorkerSizes) {
+    public HostingEnvironmentInner withAllowedWorkerSizes(String allowedWorkerSizes) {
         this.allowedWorkerSizes = allowedWorkerSizes;
         return this;
     }
@@ -690,7 +690,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param maximumNumberOfMachines the maximumNumberOfMachines value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setMaximumNumberOfMachines(Integer maximumNumberOfMachines) {
+    public HostingEnvironmentInner withMaximumNumberOfMachines(Integer maximumNumberOfMachines) {
         this.maximumNumberOfMachines = maximumNumberOfMachines;
         return this;
     }
@@ -710,7 +710,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param vipMappings the vipMappings value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setVipMappings(List<VirtualIPMapping> vipMappings) {
+    public HostingEnvironmentInner withVipMappings(List<VirtualIPMapping> vipMappings) {
         this.vipMappings = vipMappings;
         return this;
     }
@@ -730,7 +730,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param environmentCapacities the environmentCapacities value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setEnvironmentCapacities(List<StampCapacity> environmentCapacities) {
+    public HostingEnvironmentInner withEnvironmentCapacities(List<StampCapacity> environmentCapacities) {
         this.environmentCapacities = environmentCapacities;
         return this;
     }
@@ -750,7 +750,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param networkAccessControlList the networkAccessControlList value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setNetworkAccessControlList(List<NetworkAccessControlEntry> networkAccessControlList) {
+    public HostingEnvironmentInner withNetworkAccessControlList(List<NetworkAccessControlEntry> networkAccessControlList) {
         this.networkAccessControlList = networkAccessControlList;
         return this;
     }
@@ -770,7 +770,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param environmentIsHealthy the environmentIsHealthy value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setEnvironmentIsHealthy(Boolean environmentIsHealthy) {
+    public HostingEnvironmentInner withEnvironmentIsHealthy(Boolean environmentIsHealthy) {
         this.environmentIsHealthy = environmentIsHealthy;
         return this;
     }
@@ -790,7 +790,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param environmentStatus the environmentStatus value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setEnvironmentStatus(String environmentStatus) {
+    public HostingEnvironmentInner withEnvironmentStatus(String environmentStatus) {
         this.environmentStatus = environmentStatus;
         return this;
     }
@@ -810,7 +810,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param resourceGroup the resourceGroup value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setResourceGroup(String resourceGroup) {
+    public HostingEnvironmentInner withResourceGroup(String resourceGroup) {
         this.resourceGroup = resourceGroup;
         return this;
     }
@@ -830,7 +830,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param apiManagementAccountId the apiManagementAccountId value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setApiManagementAccountId(String apiManagementAccountId) {
+    public HostingEnvironmentInner withApiManagementAccountId(String apiManagementAccountId) {
         this.apiManagementAccountId = apiManagementAccountId;
         return this;
     }
@@ -850,7 +850,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param suspended the suspended value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setSuspended(Boolean suspended) {
+    public HostingEnvironmentInner withSuspended(Boolean suspended) {
         this.suspended = suspended;
         return this;
     }
@@ -870,7 +870,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param clusterSettings the clusterSettings value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner setClusterSettings(List<NameValuePair> clusterSettings) {
+    public HostingEnvironmentInner withClusterSettings(List<NameValuePair> clusterSettings) {
         this.clusterSettings = clusterSettings;
         return this;
     }

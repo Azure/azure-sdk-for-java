@@ -43,7 +43,7 @@ public class CertificateEmailInner extends Resource {
      * @param emailId the emailId value to set
      * @return the CertificateEmailInner object itself.
      */
-    public CertificateEmailInner setEmailId(String emailId) {
+    public CertificateEmailInner withEmailId(String emailId) {
         this.emailId = emailId;
         return this;
     }
@@ -63,7 +63,7 @@ public class CertificateEmailInner extends Resource {
      * @param timeStamp the timeStamp value to set
      * @return the CertificateEmailInner object itself.
      */
-    public CertificateEmailInner setTimeStamp(DateTime timeStamp) {
+    public CertificateEmailInner withTimeStamp(DateTime timeStamp) {
         this.timeStamp = timeStamp;
         return this;
     }

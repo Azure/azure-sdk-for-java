@@ -53,7 +53,7 @@ public class CertificateOrderCertificateInner extends Resource {
      * @param keyVaultId the keyVaultId value to set
      * @return the CertificateOrderCertificateInner object itself.
      */
-    public CertificateOrderCertificateInner setKeyVaultId(String keyVaultId) {
+    public CertificateOrderCertificateInner withKeyVaultId(String keyVaultId) {
         this.keyVaultId = keyVaultId;
         return this;
     }
@@ -73,7 +73,7 @@ public class CertificateOrderCertificateInner extends Resource {
      * @param keyVaultSecretName the keyVaultSecretName value to set
      * @return the CertificateOrderCertificateInner object itself.
      */
-    public CertificateOrderCertificateInner setKeyVaultSecretName(String keyVaultSecretName) {
+    public CertificateOrderCertificateInner withKeyVaultSecretName(String keyVaultSecretName) {
         this.keyVaultSecretName = keyVaultSecretName;
         return this;
     }
@@ -93,7 +93,7 @@ public class CertificateOrderCertificateInner extends Resource {
      * @param provisioningState the provisioningState value to set
      * @return the CertificateOrderCertificateInner object itself.
      */
-    public CertificateOrderCertificateInner setProvisioningState(KeyVaultSecretStatus provisioningState) {
+    public CertificateOrderCertificateInner withProvisioningState(KeyVaultSecretStatus provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }

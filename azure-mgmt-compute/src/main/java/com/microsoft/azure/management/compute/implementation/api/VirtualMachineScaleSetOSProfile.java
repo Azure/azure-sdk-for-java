@@ -62,7 +62,7 @@ public class VirtualMachineScaleSetOSProfile {
      * @param computerNamePrefix the computerNamePrefix value to set
      * @return the VirtualMachineScaleSetOSProfile object itself.
      */
-    public VirtualMachineScaleSetOSProfile setComputerNamePrefix(String computerNamePrefix) {
+    public VirtualMachineScaleSetOSProfile withComputerNamePrefix(String computerNamePrefix) {
         this.computerNamePrefix = computerNamePrefix;
         return this;
     }
@@ -82,7 +82,7 @@ public class VirtualMachineScaleSetOSProfile {
      * @param adminUsername the adminUsername value to set
      * @return the VirtualMachineScaleSetOSProfile object itself.
      */
-    public VirtualMachineScaleSetOSProfile setAdminUsername(String adminUsername) {
+    public VirtualMachineScaleSetOSProfile withAdminUsername(String adminUsername) {
         this.adminUsername = adminUsername;
         return this;
     }
@@ -102,7 +102,7 @@ public class VirtualMachineScaleSetOSProfile {
      * @param adminPassword the adminPassword value to set
      * @return the VirtualMachineScaleSetOSProfile object itself.
      */
-    public VirtualMachineScaleSetOSProfile setAdminPassword(String adminPassword) {
+    public VirtualMachineScaleSetOSProfile withAdminPassword(String adminPassword) {
         this.adminPassword = adminPassword;
         return this;
     }
@@ -122,7 +122,7 @@ public class VirtualMachineScaleSetOSProfile {
      * @param customData the customData value to set
      * @return the VirtualMachineScaleSetOSProfile object itself.
      */
-    public VirtualMachineScaleSetOSProfile setCustomData(String customData) {
+    public VirtualMachineScaleSetOSProfile withCustomData(String customData) {
         this.customData = customData;
         return this;
     }
@@ -142,7 +142,7 @@ public class VirtualMachineScaleSetOSProfile {
      * @param windowsConfiguration the windowsConfiguration value to set
      * @return the VirtualMachineScaleSetOSProfile object itself.
      */
-    public VirtualMachineScaleSetOSProfile setWindowsConfiguration(WindowsConfiguration windowsConfiguration) {
+    public VirtualMachineScaleSetOSProfile withWindowsConfiguration(WindowsConfiguration windowsConfiguration) {
         this.windowsConfiguration = windowsConfiguration;
         return this;
     }
@@ -162,7 +162,7 @@ public class VirtualMachineScaleSetOSProfile {
      * @param linuxConfiguration the linuxConfiguration value to set
      * @return the VirtualMachineScaleSetOSProfile object itself.
      */
-    public VirtualMachineScaleSetOSProfile setLinuxConfiguration(LinuxConfiguration linuxConfiguration) {
+    public VirtualMachineScaleSetOSProfile withLinuxConfiguration(LinuxConfiguration linuxConfiguration) {
         this.linuxConfiguration = linuxConfiguration;
         return this;
     }
@@ -182,7 +182,7 @@ public class VirtualMachineScaleSetOSProfile {
      * @param secrets the secrets value to set
      * @return the VirtualMachineScaleSetOSProfile object itself.
      */
-    public VirtualMachineScaleSetOSProfile setSecrets(List<VaultSecretGroup> secrets) {
+    public VirtualMachineScaleSetOSProfile withSecrets(List<VaultSecretGroup> secrets) {
         this.secrets = secrets;
         return this;
     }

@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the AddCollection operation.
+ * Additional parameters for the Task_AddCollection operation.
  */
 public class TaskAddCollectionOptions {
     /**
@@ -58,7 +58,7 @@ public class TaskAddCollectionOptions {
      * @param timeout the timeout value to set
      * @return the TaskAddCollectionOptions object itself.
      */
-    public TaskAddCollectionOptions setTimeout(Integer timeout) {
+    public TaskAddCollectionOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -78,7 +78,7 @@ public class TaskAddCollectionOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the TaskAddCollectionOptions object itself.
      */
-    public TaskAddCollectionOptions setClientRequestId(String clientRequestId) {
+    public TaskAddCollectionOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -98,7 +98,7 @@ public class TaskAddCollectionOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the TaskAddCollectionOptions object itself.
      */
-    public TaskAddCollectionOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public TaskAddCollectionOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -121,7 +121,7 @@ public class TaskAddCollectionOptions {
      * @param ocpDate the ocpDate value to set
      * @return the TaskAddCollectionOptions object itself.
      */
-    public TaskAddCollectionOptions setOcpDate(DateTime ocpDate) {
+    public TaskAddCollectionOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }

@@ -70,7 +70,7 @@ public class VirtualNetworkInner extends Resource {
      * @param addressSpace the addressSpace value to set
      * @return the VirtualNetworkInner object itself.
      */
-    public VirtualNetworkInner setAddressSpace(AddressSpace addressSpace) {
+    public VirtualNetworkInner withAddressSpace(AddressSpace addressSpace) {
         this.addressSpace = addressSpace;
         return this;
     }
@@ -90,7 +90,7 @@ public class VirtualNetworkInner extends Resource {
      * @param dhcpOptions the dhcpOptions value to set
      * @return the VirtualNetworkInner object itself.
      */
-    public VirtualNetworkInner setDhcpOptions(DhcpOptions dhcpOptions) {
+    public VirtualNetworkInner withDhcpOptions(DhcpOptions dhcpOptions) {
         this.dhcpOptions = dhcpOptions;
         return this;
     }
@@ -110,7 +110,7 @@ public class VirtualNetworkInner extends Resource {
      * @param subnets the subnets value to set
      * @return the VirtualNetworkInner object itself.
      */
-    public VirtualNetworkInner setSubnets(List<SubnetInner> subnets) {
+    public VirtualNetworkInner withSubnets(List<SubnetInner> subnets) {
         this.subnets = subnets;
         return this;
     }
@@ -130,7 +130,7 @@ public class VirtualNetworkInner extends Resource {
      * @param resourceGuid the resourceGuid value to set
      * @return the VirtualNetworkInner object itself.
      */
-    public VirtualNetworkInner setResourceGuid(String resourceGuid) {
+    public VirtualNetworkInner withResourceGuid(String resourceGuid) {
         this.resourceGuid = resourceGuid;
         return this;
     }
@@ -150,7 +150,7 @@ public class VirtualNetworkInner extends Resource {
      * @param provisioningState the provisioningState value to set
      * @return the VirtualNetworkInner object itself.
      */
-    public VirtualNetworkInner setProvisioningState(String provisioningState) {
+    public VirtualNetworkInner withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -170,7 +170,7 @@ public class VirtualNetworkInner extends Resource {
      * @param etag the etag value to set
      * @return the VirtualNetworkInner object itself.
      */
-    public VirtualNetworkInner setEtag(String etag) {
+    public VirtualNetworkInner withEtag(String etag) {
         this.etag = etag;
         return this;
     }

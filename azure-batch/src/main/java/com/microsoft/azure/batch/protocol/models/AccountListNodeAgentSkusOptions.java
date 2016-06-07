@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the ListNodeAgentSkus operation.
+ * Additional parameters for the Account_ListNodeAgentSkus operation.
  */
 public class AccountListNodeAgentSkusOptions {
     /**
@@ -70,7 +70,7 @@ public class AccountListNodeAgentSkusOptions {
      * @param filter the filter value to set
      * @return the AccountListNodeAgentSkusOptions object itself.
      */
-    public AccountListNodeAgentSkusOptions setFilter(String filter) {
+    public AccountListNodeAgentSkusOptions withFilter(String filter) {
         this.filter = filter;
         return this;
     }
@@ -90,7 +90,7 @@ public class AccountListNodeAgentSkusOptions {
      * @param maxResults the maxResults value to set
      * @return the AccountListNodeAgentSkusOptions object itself.
      */
-    public AccountListNodeAgentSkusOptions setMaxResults(Integer maxResults) {
+    public AccountListNodeAgentSkusOptions withMaxResults(Integer maxResults) {
         this.maxResults = maxResults;
         return this;
     }
@@ -110,7 +110,7 @@ public class AccountListNodeAgentSkusOptions {
      * @param timeout the timeout value to set
      * @return the AccountListNodeAgentSkusOptions object itself.
      */
-    public AccountListNodeAgentSkusOptions setTimeout(Integer timeout) {
+    public AccountListNodeAgentSkusOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -130,7 +130,7 @@ public class AccountListNodeAgentSkusOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the AccountListNodeAgentSkusOptions object itself.
      */
-    public AccountListNodeAgentSkusOptions setClientRequestId(String clientRequestId) {
+    public AccountListNodeAgentSkusOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -150,7 +150,7 @@ public class AccountListNodeAgentSkusOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the AccountListNodeAgentSkusOptions object itself.
      */
-    public AccountListNodeAgentSkusOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public AccountListNodeAgentSkusOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -173,7 +173,7 @@ public class AccountListNodeAgentSkusOptions {
      * @param ocpDate the ocpDate value to set
      * @return the AccountListNodeAgentSkusOptions object itself.
      */
-    public AccountListNodeAgentSkusOptions setOcpDate(DateTime ocpDate) {
+    public AccountListNodeAgentSkusOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }

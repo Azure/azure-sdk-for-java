@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the DisableAutoScale operation.
+ * Additional parameters for the Pool_DisableAutoScale operation.
  */
 public class PoolDisableAutoScaleOptions {
     /**
@@ -58,7 +58,7 @@ public class PoolDisableAutoScaleOptions {
      * @param timeout the timeout value to set
      * @return the PoolDisableAutoScaleOptions object itself.
      */
-    public PoolDisableAutoScaleOptions setTimeout(Integer timeout) {
+    public PoolDisableAutoScaleOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -78,7 +78,7 @@ public class PoolDisableAutoScaleOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the PoolDisableAutoScaleOptions object itself.
      */
-    public PoolDisableAutoScaleOptions setClientRequestId(String clientRequestId) {
+    public PoolDisableAutoScaleOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -98,7 +98,7 @@ public class PoolDisableAutoScaleOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the PoolDisableAutoScaleOptions object itself.
      */
-    public PoolDisableAutoScaleOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public PoolDisableAutoScaleOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -121,7 +121,7 @@ public class PoolDisableAutoScaleOptions {
      * @param ocpDate the ocpDate value to set
      * @return the PoolDisableAutoScaleOptions object itself.
      */
-    public PoolDisableAutoScaleOptions setOcpDate(DateTime ocpDate) {
+    public PoolDisableAutoScaleOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }

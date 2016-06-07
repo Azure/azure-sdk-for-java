@@ -14671,7 +14671,7 @@ public final class SitesInner {
         }
         final String format = null;
         CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
-        options = null;
+        options.withFormat(null);
         Call<ResponseBody> call = service.listSitePublishingProfileXml(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options, this.client.userAgent());
         return listSitePublishingProfileXmlDelegate(call.execute());
     }
@@ -14707,7 +14707,7 @@ public final class SitesInner {
         }
         final String format = null;
         CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
-        options = null;
+        options.withFormat(null);
         Call<ResponseBody> call = service.listSitePublishingProfileXml(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
@@ -14751,7 +14751,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
-        options.setFormat(format);
+        options.withFormat(format);
         Call<ResponseBody> call = service.listSitePublishingProfileXml(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options, this.client.userAgent());
         return listSitePublishingProfileXmlDelegate(call.execute());
     }
@@ -14790,7 +14790,7 @@ public final class SitesInner {
             return null;
         }
         CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
-        options.setFormat(format);
+        options.withFormat(format);
         Call<ResponseBody> call = service.listSitePublishingProfileXml(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
@@ -14842,7 +14842,7 @@ public final class SitesInner {
         }
         final String format = null;
         CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
-        options = null;
+        options.withFormat(null);
         Call<ResponseBody> call = service.listSitePublishingProfileXmlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options, this.client.userAgent());
         return listSitePublishingProfileXmlSlotDelegate(call.execute());
     }
@@ -14883,7 +14883,7 @@ public final class SitesInner {
         }
         final String format = null;
         CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
-        options = null;
+        options.withFormat(null);
         Call<ResponseBody> call = service.listSitePublishingProfileXmlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
@@ -14931,7 +14931,7 @@ public final class SitesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
-        options.setFormat(format);
+        options.withFormat(format);
         Call<ResponseBody> call = service.listSitePublishingProfileXmlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options, this.client.userAgent());
         return listSitePublishingProfileXmlSlotDelegate(call.execute());
     }
@@ -14975,7 +14975,7 @@ public final class SitesInner {
             return null;
         }
         CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
-        options.setFormat(format);
+        options.withFormat(format);
         Call<ResponseBody> call = service.listSitePublishingProfileXmlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {

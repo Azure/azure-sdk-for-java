@@ -133,7 +133,7 @@ public class PoolAddParameter {
      * @param id the id value to set
      * @return the PoolAddParameter object itself.
      */
-    public PoolAddParameter setId(String id) {
+    public PoolAddParameter withId(String id) {
         this.id = id;
         return this;
     }
@@ -153,7 +153,7 @@ public class PoolAddParameter {
      * @param displayName the displayName value to set
      * @return the PoolAddParameter object itself.
      */
-    public PoolAddParameter setDisplayName(String displayName) {
+    public PoolAddParameter withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -173,7 +173,7 @@ public class PoolAddParameter {
      * @param vmSize the vmSize value to set
      * @return the PoolAddParameter object itself.
      */
-    public PoolAddParameter setVmSize(String vmSize) {
+    public PoolAddParameter withVmSize(String vmSize) {
         this.vmSize = vmSize;
         return this;
     }
@@ -193,7 +193,7 @@ public class PoolAddParameter {
      * @param cloudServiceConfiguration the cloudServiceConfiguration value to set
      * @return the PoolAddParameter object itself.
      */
-    public PoolAddParameter setCloudServiceConfiguration(CloudServiceConfiguration cloudServiceConfiguration) {
+    public PoolAddParameter withCloudServiceConfiguration(CloudServiceConfiguration cloudServiceConfiguration) {
         this.cloudServiceConfiguration = cloudServiceConfiguration;
         return this;
     }
@@ -213,7 +213,7 @@ public class PoolAddParameter {
      * @param virtualMachineConfiguration the virtualMachineConfiguration value to set
      * @return the PoolAddParameter object itself.
      */
-    public PoolAddParameter setVirtualMachineConfiguration(VirtualMachineConfiguration virtualMachineConfiguration) {
+    public PoolAddParameter withVirtualMachineConfiguration(VirtualMachineConfiguration virtualMachineConfiguration) {
         this.virtualMachineConfiguration = virtualMachineConfiguration;
         return this;
     }
@@ -233,7 +233,7 @@ public class PoolAddParameter {
      * @param resizeTimeout the resizeTimeout value to set
      * @return the PoolAddParameter object itself.
      */
-    public PoolAddParameter setResizeTimeout(Period resizeTimeout) {
+    public PoolAddParameter withResizeTimeout(Period resizeTimeout) {
         this.resizeTimeout = resizeTimeout;
         return this;
     }
@@ -253,7 +253,7 @@ public class PoolAddParameter {
      * @param targetDedicated the targetDedicated value to set
      * @return the PoolAddParameter object itself.
      */
-    public PoolAddParameter setTargetDedicated(Integer targetDedicated) {
+    public PoolAddParameter withTargetDedicated(Integer targetDedicated) {
         this.targetDedicated = targetDedicated;
         return this;
     }
@@ -273,7 +273,7 @@ public class PoolAddParameter {
      * @param enableAutoScale the enableAutoScale value to set
      * @return the PoolAddParameter object itself.
      */
-    public PoolAddParameter setEnableAutoScale(Boolean enableAutoScale) {
+    public PoolAddParameter withEnableAutoScale(Boolean enableAutoScale) {
         this.enableAutoScale = enableAutoScale;
         return this;
     }
@@ -293,7 +293,7 @@ public class PoolAddParameter {
      * @param autoScaleFormula the autoScaleFormula value to set
      * @return the PoolAddParameter object itself.
      */
-    public PoolAddParameter setAutoScaleFormula(String autoScaleFormula) {
+    public PoolAddParameter withAutoScaleFormula(String autoScaleFormula) {
         this.autoScaleFormula = autoScaleFormula;
         return this;
     }
@@ -313,7 +313,7 @@ public class PoolAddParameter {
      * @param autoScaleEvaluationInterval the autoScaleEvaluationInterval value to set
      * @return the PoolAddParameter object itself.
      */
-    public PoolAddParameter setAutoScaleEvaluationInterval(Period autoScaleEvaluationInterval) {
+    public PoolAddParameter withAutoScaleEvaluationInterval(Period autoScaleEvaluationInterval) {
         this.autoScaleEvaluationInterval = autoScaleEvaluationInterval;
         return this;
     }
@@ -333,7 +333,7 @@ public class PoolAddParameter {
      * @param enableInterNodeCommunication the enableInterNodeCommunication value to set
      * @return the PoolAddParameter object itself.
      */
-    public PoolAddParameter setEnableInterNodeCommunication(Boolean enableInterNodeCommunication) {
+    public PoolAddParameter withEnableInterNodeCommunication(Boolean enableInterNodeCommunication) {
         this.enableInterNodeCommunication = enableInterNodeCommunication;
         return this;
     }
@@ -353,7 +353,7 @@ public class PoolAddParameter {
      * @param startTask the startTask value to set
      * @return the PoolAddParameter object itself.
      */
-    public PoolAddParameter setStartTask(StartTask startTask) {
+    public PoolAddParameter withStartTask(StartTask startTask) {
         this.startTask = startTask;
         return this;
     }
@@ -373,7 +373,7 @@ public class PoolAddParameter {
      * @param certificateReferences the certificateReferences value to set
      * @return the PoolAddParameter object itself.
      */
-    public PoolAddParameter setCertificateReferences(List<CertificateReference> certificateReferences) {
+    public PoolAddParameter withCertificateReferences(List<CertificateReference> certificateReferences) {
         this.certificateReferences = certificateReferences;
         return this;
     }
@@ -393,7 +393,7 @@ public class PoolAddParameter {
      * @param applicationPackageReferences the applicationPackageReferences value to set
      * @return the PoolAddParameter object itself.
      */
-    public PoolAddParameter setApplicationPackageReferences(List<ApplicationPackageReference> applicationPackageReferences) {
+    public PoolAddParameter withApplicationPackageReferences(List<ApplicationPackageReference> applicationPackageReferences) {
         this.applicationPackageReferences = applicationPackageReferences;
         return this;
     }
@@ -413,7 +413,7 @@ public class PoolAddParameter {
      * @param maxTasksPerNode the maxTasksPerNode value to set
      * @return the PoolAddParameter object itself.
      */
-    public PoolAddParameter setMaxTasksPerNode(Integer maxTasksPerNode) {
+    public PoolAddParameter withMaxTasksPerNode(Integer maxTasksPerNode) {
         this.maxTasksPerNode = maxTasksPerNode;
         return this;
     }
@@ -433,7 +433,7 @@ public class PoolAddParameter {
      * @param taskSchedulingPolicy the taskSchedulingPolicy value to set
      * @return the PoolAddParameter object itself.
      */
-    public PoolAddParameter setTaskSchedulingPolicy(TaskSchedulingPolicy taskSchedulingPolicy) {
+    public PoolAddParameter withTaskSchedulingPolicy(TaskSchedulingPolicy taskSchedulingPolicy) {
         this.taskSchedulingPolicy = taskSchedulingPolicy;
         return this;
     }
@@ -453,7 +453,7 @@ public class PoolAddParameter {
      * @param metadata the metadata value to set
      * @return the PoolAddParameter object itself.
      */
-    public PoolAddParameter setMetadata(List<MetadataItem> metadata) {
+    public PoolAddParameter withMetadata(List<MetadataItem> metadata) {
         this.metadata = metadata;
         return this;
     }

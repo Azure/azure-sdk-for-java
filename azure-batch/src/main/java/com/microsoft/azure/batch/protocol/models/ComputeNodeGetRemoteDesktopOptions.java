@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the GetRemoteDesktop operation.
+ * Additional parameters for the ComputeNode_GetRemoteDesktop operation.
  */
 public class ComputeNodeGetRemoteDesktopOptions {
     /**
@@ -58,7 +58,7 @@ public class ComputeNodeGetRemoteDesktopOptions {
      * @param timeout the timeout value to set
      * @return the ComputeNodeGetRemoteDesktopOptions object itself.
      */
-    public ComputeNodeGetRemoteDesktopOptions setTimeout(Integer timeout) {
+    public ComputeNodeGetRemoteDesktopOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -78,7 +78,7 @@ public class ComputeNodeGetRemoteDesktopOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the ComputeNodeGetRemoteDesktopOptions object itself.
      */
-    public ComputeNodeGetRemoteDesktopOptions setClientRequestId(String clientRequestId) {
+    public ComputeNodeGetRemoteDesktopOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -98,7 +98,7 @@ public class ComputeNodeGetRemoteDesktopOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the ComputeNodeGetRemoteDesktopOptions object itself.
      */
-    public ComputeNodeGetRemoteDesktopOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public ComputeNodeGetRemoteDesktopOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -121,7 +121,7 @@ public class ComputeNodeGetRemoteDesktopOptions {
      * @param ocpDate the ocpDate value to set
      * @return the ComputeNodeGetRemoteDesktopOptions object itself.
      */
-    public ComputeNodeGetRemoteDesktopOptions setOcpDate(DateTime ocpDate) {
+    public ComputeNodeGetRemoteDesktopOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }

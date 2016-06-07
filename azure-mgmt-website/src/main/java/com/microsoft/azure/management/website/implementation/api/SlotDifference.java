@@ -74,7 +74,7 @@ public class SlotDifference extends Resource {
      * @param slotDifferenceType the slotDifferenceType value to set
      * @return the SlotDifference object itself.
      */
-    public SlotDifference setSlotDifferenceType(String slotDifferenceType) {
+    public SlotDifference withSlotDifferenceType(String slotDifferenceType) {
         this.slotDifferenceType = slotDifferenceType;
         return this;
     }
@@ -94,7 +94,7 @@ public class SlotDifference extends Resource {
      * @param settingType the settingType value to set
      * @return the SlotDifference object itself.
      */
-    public SlotDifference setSettingType(String settingType) {
+    public SlotDifference withSettingType(String settingType) {
         this.settingType = settingType;
         return this;
     }
@@ -114,7 +114,7 @@ public class SlotDifference extends Resource {
      * @param diffRule the diffRule value to set
      * @return the SlotDifference object itself.
      */
-    public SlotDifference setDiffRule(String diffRule) {
+    public SlotDifference withDiffRule(String diffRule) {
         this.diffRule = diffRule;
         return this;
     }
@@ -134,7 +134,7 @@ public class SlotDifference extends Resource {
      * @param settingName the settingName value to set
      * @return the SlotDifference object itself.
      */
-    public SlotDifference setSettingName(String settingName) {
+    public SlotDifference withSettingName(String settingName) {
         this.settingName = settingName;
         return this;
     }
@@ -154,7 +154,7 @@ public class SlotDifference extends Resource {
      * @param valueInCurrentSlot the valueInCurrentSlot value to set
      * @return the SlotDifference object itself.
      */
-    public SlotDifference setValueInCurrentSlot(String valueInCurrentSlot) {
+    public SlotDifference withValueInCurrentSlot(String valueInCurrentSlot) {
         this.valueInCurrentSlot = valueInCurrentSlot;
         return this;
     }
@@ -174,7 +174,7 @@ public class SlotDifference extends Resource {
      * @param valueInTargetSlot the valueInTargetSlot value to set
      * @return the SlotDifference object itself.
      */
-    public SlotDifference setValueInTargetSlot(String valueInTargetSlot) {
+    public SlotDifference withValueInTargetSlot(String valueInTargetSlot) {
         this.valueInTargetSlot = valueInTargetSlot;
         return this;
     }
@@ -194,7 +194,7 @@ public class SlotDifference extends Resource {
      * @param description the description value to set
      * @return the SlotDifference object itself.
      */
-    public SlotDifference setDescription(String description) {
+    public SlotDifference withDescription(String description) {
         this.description = description;
         return this;
     }

@@ -67,7 +67,7 @@ public class StartTaskInformation {
      * @param state the state value to set
      * @return the StartTaskInformation object itself.
      */
-    public StartTaskInformation setState(StartTaskState state) {
+    public StartTaskInformation withState(StartTaskState state) {
         this.state = state;
         return this;
     }
@@ -87,7 +87,7 @@ public class StartTaskInformation {
      * @param startTime the startTime value to set
      * @return the StartTaskInformation object itself.
      */
-    public StartTaskInformation setStartTime(DateTime startTime) {
+    public StartTaskInformation withStartTime(DateTime startTime) {
         this.startTime = startTime;
         return this;
     }
@@ -107,7 +107,7 @@ public class StartTaskInformation {
      * @param endTime the endTime value to set
      * @return the StartTaskInformation object itself.
      */
-    public StartTaskInformation setEndTime(DateTime endTime) {
+    public StartTaskInformation withEndTime(DateTime endTime) {
         this.endTime = endTime;
         return this;
     }
@@ -127,7 +127,7 @@ public class StartTaskInformation {
      * @param exitCode the exitCode value to set
      * @return the StartTaskInformation object itself.
      */
-    public StartTaskInformation setExitCode(Integer exitCode) {
+    public StartTaskInformation withExitCode(Integer exitCode) {
         this.exitCode = exitCode;
         return this;
     }
@@ -147,7 +147,7 @@ public class StartTaskInformation {
      * @param schedulingError the schedulingError value to set
      * @return the StartTaskInformation object itself.
      */
-    public StartTaskInformation setSchedulingError(TaskSchedulingError schedulingError) {
+    public StartTaskInformation withSchedulingError(TaskSchedulingError schedulingError) {
         this.schedulingError = schedulingError;
         return this;
     }
@@ -167,7 +167,7 @@ public class StartTaskInformation {
      * @param retryCount the retryCount value to set
      * @return the StartTaskInformation object itself.
      */
-    public StartTaskInformation setRetryCount(int retryCount) {
+    public StartTaskInformation withRetryCount(int retryCount) {
         this.retryCount = retryCount;
         return this;
     }
@@ -187,7 +187,7 @@ public class StartTaskInformation {
      * @param lastRetryTime the lastRetryTime value to set
      * @return the StartTaskInformation object itself.
      */
-    public StartTaskInformation setLastRetryTime(DateTime lastRetryTime) {
+    public StartTaskInformation withLastRetryTime(DateTime lastRetryTime) {
         this.lastRetryTime = lastRetryTime;
         return this;
     }

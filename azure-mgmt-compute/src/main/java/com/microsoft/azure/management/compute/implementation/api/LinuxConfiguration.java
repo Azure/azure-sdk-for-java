@@ -37,7 +37,7 @@ public class LinuxConfiguration {
      * @param disablePasswordAuthentication the disablePasswordAuthentication value to set
      * @return the LinuxConfiguration object itself.
      */
-    public LinuxConfiguration setDisablePasswordAuthentication(Boolean disablePasswordAuthentication) {
+    public LinuxConfiguration withDisablePasswordAuthentication(Boolean disablePasswordAuthentication) {
         this.disablePasswordAuthentication = disablePasswordAuthentication;
         return this;
     }
@@ -57,7 +57,7 @@ public class LinuxConfiguration {
      * @param ssh the ssh value to set
      * @return the LinuxConfiguration object itself.
      */
-    public LinuxConfiguration setSsh(SshConfiguration ssh) {
+    public LinuxConfiguration withSsh(SshConfiguration ssh) {
         this.ssh = ssh;
         return this;
     }

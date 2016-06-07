@@ -76,36 +76,36 @@ public abstract class DataLakeAnalyticsManagementTestBase {
                 .withLogLevel(HttpLoggingInterceptor.Level.BODY)
                 .build();
         dataLakeAnalyticsAccountManagementClient = new DataLakeAnalyticsAccountManagementClientImpl(restClient);
-        dataLakeAnalyticsAccountManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
+        dataLakeAnalyticsAccountManagementClient.withSubscriptionId(System.getenv("arm.subscriptionid"));
         RestClient restClientWithTimeout = new RestClient.Builder(armUri, new OkHttpClient.Builder().readTimeout(5, TimeUnit.MINUTES), new Retrofit.Builder())
                 .withCredentials(credentials)
                 .withLogLevel(HttpLoggingInterceptor.Level.BODY)
                 .build();
         dataLakeAnalyticsJobManagementClient = new DataLakeAnalyticsJobManagementClientImpl(restClientWithTimeout);
-        dataLakeAnalyticsJobManagementClient.setAdlaJobDnsSuffix(adlaSuffix);
+        dataLakeAnalyticsJobManagementClient.withAdlaJobDnsSuffix(adlaSuffix);
 
         dataLakeAnalyticsCatalogManagementClient = new DataLakeAnalyticsCatalogManagementClientImpl(restClient);
-        dataLakeAnalyticsCatalogManagementClient.setAdlaCatalogDnsSuffix(adlaSuffix);
+        dataLakeAnalyticsCatalogManagementClient.withAdlaCatalogDnsSuffix(adlaSuffix);
 
         resourceManagementClient = new ResourceManagementClientImpl(armUri, credentials);
-        resourceManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
+        resourceManagementClient.withSubscriptionId(System.getenv("arm.subscriptionid"));
 
         dataLakeStoreAccountManagementClient = new DataLakeStoreAccountManagementClientImpl(restClient);
-        dataLakeStoreAccountManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
+        dataLakeStoreAccountManagementClient.withSubscriptionId(System.getenv("arm.subscriptionid"));
 
         storageManagementClient = new StorageManagementClientImpl(restClient);
-        storageManagementClient.setSubscriptionId(System.getenv("arm.subscriptionid"));
+        storageManagementClient.withSubscriptionId(System.getenv("arm.subscriptionid"));
     }
 
     public static void runJobToCompletion(DataLakeAnalyticsJobManagementClientImpl jobClient, String adlaAcct, UUID jobId, String scriptToRun) throws Exception {
         // submit a job
         JobInformationInner jobToSubmit = new JobInformationInner();
         USqlJobProperties jobProperties = new USqlJobProperties();
-        jobProperties.setScript(scriptToRun);
-        jobToSubmit.setName("java azure sdk data lake analytics job");
-        jobToSubmit.setDegreeOfParallelism(2);
-        jobToSubmit.setType(JobType.USQL);
-        jobToSubmit.setProperties(jobProperties);
+        jobProperties.withScript(scriptToRun);
+        jobToSubmit.withName("java azure sdk data lake analytics job");
+        jobToSubmit.withDegreeOfParallelism(2);
+        jobToSubmit.withType(JobType.USQL);
+        jobToSubmit.withProperties(jobProperties);
 
         JobInformationInner jobCreateResponse = jobClient.jobs().create(adlaAcct, jobId, jobToSubmit).getBody();
         Assert.assertNotNull(jobCreateResponse);

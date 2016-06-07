@@ -46,7 +46,7 @@ public class VirtualIPMapping {
      * @param virtualIP the virtualIP value to set
      * @return the VirtualIPMapping object itself.
      */
-    public VirtualIPMapping setVirtualIP(String virtualIP) {
+    public VirtualIPMapping withVirtualIP(String virtualIP) {
         this.virtualIP = virtualIP;
         return this;
     }
@@ -66,7 +66,7 @@ public class VirtualIPMapping {
      * @param internalHttpPort the internalHttpPort value to set
      * @return the VirtualIPMapping object itself.
      */
-    public VirtualIPMapping setInternalHttpPort(Integer internalHttpPort) {
+    public VirtualIPMapping withInternalHttpPort(Integer internalHttpPort) {
         this.internalHttpPort = internalHttpPort;
         return this;
     }
@@ -86,7 +86,7 @@ public class VirtualIPMapping {
      * @param internalHttpsPort the internalHttpsPort value to set
      * @return the VirtualIPMapping object itself.
      */
-    public VirtualIPMapping setInternalHttpsPort(Integer internalHttpsPort) {
+    public VirtualIPMapping withInternalHttpsPort(Integer internalHttpsPort) {
         this.internalHttpsPort = internalHttpsPort;
         return this;
     }
@@ -106,7 +106,7 @@ public class VirtualIPMapping {
      * @param inUse the inUse value to set
      * @return the VirtualIPMapping object itself.
      */
-    public VirtualIPMapping setInUse(Boolean inUse) {
+    public VirtualIPMapping withInUse(Boolean inUse) {
         this.inUse = inUse;
         return this;
     }
