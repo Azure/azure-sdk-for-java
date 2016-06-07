@@ -150,7 +150,7 @@ class VirtualMachineImpl
 
     public DefinitionWithOS withNewPrimaryNetworkInterface(String name, String publicDnsNameLabel) {
         NetworkInterface.DefinitionCreatable definitionCreatable = prepareNetworkInterface(name)
-                .withNewPublicIpAddress(publicDnsNameLabel);
+                .withNewPrimaryPublicIpAddress(publicDnsNameLabel);
         return withNewPrimaryNetworkInterface(definitionCreatable);
     }
 
@@ -493,7 +493,7 @@ class VirtualMachineImpl
     @Override
     public PublicIpAddress primaryPublicIpAddress()  throws CloudException, IOException {
         if (this.primaryPublicIpAddress == null) {
-            this.primaryPublicIpAddress = this.primaryNetworkInterface().publicIpAddress();
+            this.primaryPublicIpAddress = this.primaryNetworkInterface().primaryPublicIpAddress();
         }
         return this.primaryPublicIpAddress;
     }
@@ -749,8 +749,8 @@ class VirtualMachineImpl
             definitionWithNetwork = definitionWithGroup.withExistingGroup(this.resourceGroupName());
         }
         return definitionWithNetwork
-                .withNewNetwork("vnet" + name)
-                .withPrivateIpAddressDynamic();
+                .withNewPrimaryNetwork("vnet" + name)
+                .withPrimaryPrivateIpAddressDynamic();
     }
 
     private void initializeDataDisks() {

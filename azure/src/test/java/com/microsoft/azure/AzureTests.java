@@ -58,8 +58,8 @@ public class AzureTests {
         azure = azureAuthed.withSubscription(subscriptionId);
 
         // Authenticate based on file
-        // this.azure2 = Azure.authenticate(new File("my.azureauth"))
-        //        .withDefaultSubscription();
+        this.azure2 = Azure.authenticate(new File("my.azureauth"))
+            .withDefaultSubscription();
     }
 
     /**
@@ -98,7 +98,7 @@ public class AzureTests {
      * Tests the network interface implementation
      * @throws Exception
      */
-    @Test public void testNetworkInterface() throws Exception {
+    @Test public void testNetworkInterfaces() throws Exception {
         new TestNetworkInterface().runTest(azure.networkInterfaces(), azure.resourceGroups());
     }
 

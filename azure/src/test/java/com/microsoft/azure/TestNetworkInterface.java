@@ -18,9 +18,9 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
         return networkInterfaces.define(newName)
                 .withRegion(Region.US_EAST)
                 .withNewGroup()
-                .withNewNetwork("10.0.0.0/28")
-                .withPrivateIpAddressDynamic()
-                .withNewPublicIpAddress("pipdns" + this.testId)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIpAddressDynamic()
+                .withNewPrimaryPublicIpAddress("pipdns" + this.testId)
                 .withIpForwardingEnabled()
                 .create();
     }
@@ -28,12 +28,15 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
     @Override
     public NetworkInterface updateResource(NetworkInterface resource) throws Exception {
         resource =  resource.update()
+                .withIpForwardingDisabled()
+                .updateIpConfiguration("primary-nic-config") // Updating the primary ip configuration
+                    .withPrivateIpAddressDynamic() // Equivalent to ..update().withPrimaryPrivateIpAddressDynamic()
+                    .withoutPublicIpAddress()      // Equivalent to ..update().withoutPrimaryPublicIpAddress()
+                    .apply()
                 .withTag("tag1", "value1")
                 .withTag("tag2", "value2")
-                .withIpForwardingDisabled()
                 .apply();
         Assert.assertTrue(resource.tags().containsKey("tag1"));
-
         return resource;
     }
 
@@ -56,10 +59,9 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
         info.append("\n\t IP forwarding enabled: ").append(resource.isIpForwardingEnabled())
                 .append("\n\tIs Primary:").append(resource.isPrimary())
                 .append("\n\tMAC Address:").append(resource.macAddress())
-                .append("\n\tPrivate IP:").append(resource.privateIp())
-                .append("\n\tPrivate allocation method:").append(resource.privateIpAllocationMethod())
-                .append("\n\tSubnet Id:").append(resource.subnetId())
-                .append("\n\tPublicIP Id:").append(resource.publicIpAddressId());
+                .append("\n\tPrivate IP:").append(resource.primaryPrivateIp())
+                .append("\n\tPrivate allocation method:").append(resource.primaryPrivateIpAllocationMethod())
+                .append("\n\tSubnet Id:").append(resource.primarySubnetId());
 
         System.out.println(info.toString());
     }

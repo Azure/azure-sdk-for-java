@@ -7,25 +7,21 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.SubResource;
-import com.microsoft.azure.management.network.NetworkInterface;
-import com.microsoft.azure.management.network.Networks;
-import com.microsoft.azure.management.network.PublicIpAddress;
-import com.microsoft.azure.management.network.PublicIpAddresses;
-import com.microsoft.azure.management.network.Network;
+import com.microsoft.azure.management.network.*;
 import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceInner;
 import com.microsoft.azure.management.network.implementation.api.NetworkInterfacesInner;
-import com.microsoft.azure.management.network.implementation.api.SubnetInner;
-import com.microsoft.azure.management.network.implementation.api.PublicIPAddressInner;
 import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceIPConfiguration;
+import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroups;
-import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -45,18 +41,13 @@ class NetworkInterfaceImpl
     private final String nicName;
     // used to generate unique name for any dependency resources
     private final String randomId;
-    // unique key of a creatable virtual network to be associated with a new network interface
-    private String creatableVirtualNetworkKey;
-    // unique key of a creatable public IP to be associated with the network interface
-    private String creatablePublicIpKey;
-    // reference to an existing virtual network to be associated with a new network interface
-    private Network existingVirtualNetworkToAssociate;
-    // reference to an existing public IP to be associated with a new network interface
-    private PublicIpAddress existingPublicIpAddressToAssociate;
-    // name of an existing subnet to be associated with a new or existing network interface
-    private String subnetToAssociate;
-    // flag indicating to remove public IP association during update
-    private Boolean removePublicIPAssociation;
+    // reference to the primary ip configuration
+    private NicIpConfigurationImpl nicPrimaryIpConfiguration;
+    // list of references to all ip configuration
+    private List<NicIpConfiguration> nicIpConfigurations;
+    // Cached related resources.
+    PublicIpAddress primaryPublicIp;
+    Network primaryNetwork;
 
     NetworkInterfaceImpl(String name,
                          NetworkInterfaceInner innerModel,
@@ -70,6 +61,7 @@ class NetworkInterfaceImpl
         this.publicIpAddresses = publicIpAddresses;
         this.nicName = name;
         this.randomId = Utils.randomId(this.nicName);
+        initializeNicIpConfigurations();
     }
 
     /**************************************************.
@@ -81,6 +73,7 @@ class NetworkInterfaceImpl
         ServiceResponse<NetworkInterfaceInner> response =
                 this.client.get(this.resourceGroupName(), this.name());
         this.setInner(response.getBody());
+        initializeNicIpConfigurations();
         return this;
     }
 
@@ -105,80 +98,84 @@ class NetworkInterfaceImpl
      **************************************************/
 
     @Override
-    public NetworkInterfaceImpl withNewNetwork(Network.DefinitionCreatable creatable) {
-        creatableVirtualNetworkKey = creatable.key();
-        this.addCreatableDependency(creatable);
+    public NetworkInterfaceImpl withNewPrimaryNetwork(Network.DefinitionCreatable creatable) {
+        this.primaryIpConfiguration().withNewNetwork(creatable);
         return this;
     }
 
     @Override
-    public NetworkInterfaceImpl withNewNetwork(String name, String addressSpaceCidr) {
-        Network.DefinitionWithGroup definitionWithGroup = this.networks
-            .define(name)
-            .withRegion(this.region());
+    public NetworkInterfaceImpl withNewPrimaryNetwork(String name, String addressSpaceCidr) {
+        this.primaryIpConfiguration().withNewNetwork(name, addressSpaceCidr);
+        return this;
+    }
 
-        Network.DefinitionCreatable definitionAfterGroup;
-        if (this.newGroup != null) {
-            definitionAfterGroup = definitionWithGroup.withNewGroup(this.newGroup);
-        } else {
-            definitionAfterGroup = definitionWithGroup.withExistingGroup(this.resourceGroupName());
+    @Override
+    public NetworkInterfaceImpl withNewPrimaryNetwork(String addressSpaceCidr) {
+        this.primaryIpConfiguration().withNewNetwork(addressSpaceCidr);
+        return this;
+    }
+
+    @Override
+    public NetworkInterfaceImpl withExistingPrimaryNetwork(Network network) {
+        this.primaryIpConfiguration().withExistingNetwork(network);
+        return this;
+    }
+
+    @Override
+    public NetworkInterfaceImpl withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionCreatable creatable) {
+        this.primaryIpConfiguration().withNewPublicIpAddress(creatable);
+        return this;
+    }
+
+    @Override
+    public NetworkInterfaceImpl withNewPrimaryPublicIpAddress() {
+        this.primaryIpConfiguration().withNewPublicIpAddress();
+        return this;
+    }
+
+    @Override
+    public NetworkInterfaceImpl withNewPrimaryPublicIpAddress(String leafDnsLabel) {
+        this.primaryIpConfiguration().withNewPublicIpAddress(leafDnsLabel);
+        return this;
+    }
+
+    @Override
+    public NetworkInterfaceImpl withoutPrimaryPublicIpAddress() {
+        this.primaryIpConfiguration().withoutPublicIpAddress();
+        return this;
+    }
+
+    @Override
+    public NetworkInterfaceImpl withExistingPrimaryPublicIpAddress(PublicIpAddress publicIpAddress) {
+        this.primaryIpConfiguration().withExistingPublicIpAddress(publicIpAddress);
+        return this;
+    }
+
+    @Override
+    public NetworkInterfaceImpl withPrimaryPrivateIpAddressDynamic() {
+        this.primaryIpConfiguration().withPrivateIpAddressDynamic();
+        return this;
+    }
+
+    @Override
+    public NetworkInterfaceImpl withPrimaryPrivateIpAddressStatic(String staticPrivateIpAddress) {
+        this.primaryIpConfiguration().withPrivateIpAddressStatic(staticPrivateIpAddress);
+        return this;
+    }
+
+    @Override
+    public NicIpConfigurationImpl defineSecondaryIpConfiguration(String name) {
+        return prepareNewNicIpConfiguration(name);
+    }
+
+    @Override
+    public NicIpConfigurationImpl updateIpConfiguration(String name) {
+        for (NicIpConfiguration nicIpConfiguration : this.nicIpConfigurations) {
+            if (name.compareToIgnoreCase(nicIpConfiguration.name()) == 0) {
+                return (NicIpConfigurationImpl)nicIpConfiguration;
+            }
         }
-        return withNewNetwork(definitionAfterGroup.withAddressSpace(addressSpaceCidr));
-    }
-
-    @Override
-    public NetworkInterfaceImpl withNewNetwork(String addressSpaceCidr) {
-        return withNewNetwork(nameWithPrefix("vnet"), addressSpaceCidr);
-    }
-
-    @Override
-    public NetworkInterfaceImpl withExistingNetwork(Network network) {
-        this.existingVirtualNetworkToAssociate = network;
-        return this;
-    }
-
-    @Override
-    public NetworkInterfaceImpl withNewPublicIpAddress(PublicIpAddress.DefinitionCreatable creatable) {
-        this.creatablePublicIpKey = creatable.key();
-        this.addCreatableDependency(creatable);
-        return this;
-    }
-
-    @Override
-    public NetworkInterfaceImpl withNewPublicIpAddress() {
-        String name = nameWithPrefix("pip");
-        return withNewPublicIpAddress(prepareCreatablePublicIp(name, name));
-    }
-
-    @Override
-    public NetworkInterfaceImpl withNewPublicIpAddress(String leafDnsLabel) {
-        return withNewPublicIpAddress(prepareCreatablePublicIp(nameWithPrefix("pip"), leafDnsLabel));
-    }
-
-    @Override
-    public NetworkInterfaceImpl withoutPublicIpAddress() {
-        this.removePublicIPAssociation = true;
-        return this;
-    }
-
-    @Override
-    public NetworkInterfaceImpl withExistingPublicIpAddress(PublicIpAddress publicIpAddress) {
-        this.existingPublicIpAddressToAssociate = publicIpAddress;
-        return this;
-    }
-
-    @Override
-    public NetworkInterfaceImpl withPrivateIpAddressDynamic() {
-        this.primaryIpConfiguration().withPrivateIPAllocationMethod("Dynamic");
-        this.primaryIpConfiguration().withPrivateIPAddress(null);
-        return this;
-    }
-
-    @Override
-    public NetworkInterfaceImpl withPrivateIpAddressStatic(String staticPrivateIpAddress) {
-        this.primaryIpConfiguration().withPrivateIPAllocationMethod("Static");
-        this.primaryIpConfiguration().withPrivateIPAddress(staticPrivateIpAddress);
-        return this;
+        throw new RuntimeException("An Ip configuration with name'" + name + "' not found");
     }
 
     @Override
@@ -213,7 +210,7 @@ class NetworkInterfaceImpl
 
     @Override
     public NetworkInterfaceImpl withSubnet(String name) {
-        this.subnetToAssociate = name;
+        this.primaryIpConfiguration().withSubnet(name);
         return this;
     }
 
@@ -258,44 +255,40 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public String publicIpAddressId() {
-        if (this.primaryIpConfiguration().publicIPAddress() == null) {
-            return null;
+    public PublicIpAddress primaryPublicIpAddress() throws CloudException, IOException {
+        if (this.primaryPublicIp == null) {
+            this.primaryPublicIp = this.primaryIpConfiguration().publicIpAddress();
         }
-        return this.primaryIpConfiguration().publicIPAddress().id();
+        return primaryPublicIp;
     }
 
     @Override
-    public PublicIpAddress publicIpAddress() throws CloudException, IOException {
-        String id = publicIpAddressId();
-        if (id == null) {
-            return null;
+    public String primarySubnetId() {
+        return this.primaryIpConfiguration().subnetId();
+    }
+
+    @Override
+    public Network primaryNetwork() throws CloudException, IOException {
+        if (this.primaryNetwork == null) {
+            this.primaryNetwork = this.primaryIpConfiguration().network();
         }
-
-        return this.publicIpAddresses.get(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+        return this.primaryNetwork;
     }
 
     @Override
-    public String subnetId() {
-        return this.primaryIpConfiguration().subnet().id();
+    public String primaryPrivateIp() {
+        return this.primaryIpConfiguration().privateIp();
     }
 
     @Override
-    public Network network() throws CloudException, IOException {
-        String id = subnetId();
-        return this.networks.get(ResourceUtils.groupFromResourceId(id), ResourceUtils.extractFromResourceId(id, "virtualNetworks"));
+    public String primaryPrivateIpAllocationMethod() {
+        return this.primaryIpConfiguration().privateIpAllocationMethod();
     }
 
     @Override
-    public String privateIp() {
-        return this.primaryIpConfiguration().privateIPAddress();
+    public List<NicIpConfiguration> ipConfigurations() {
+        return Collections.unmodifiableList(this.nicIpConfigurations);
     }
-
-    @Override
-    public String privateIpAllocationMethod() {
-        return this.primaryIpConfiguration().privateIPAllocationMethod();
-    }
-
 
     /**************************************************.
      * CreatableImpl::createResource
@@ -303,10 +296,12 @@ class NetworkInterfaceImpl
 
     @Override
     protected void createResource() throws Exception {
-        this.primaryIpConfiguration().withSubnet(subnetToAssociate());
-        this.primaryIpConfiguration().withPublicIPAddress(publicIpToAssociate());
-        ServiceResponse<NetworkInterfaceInner> response = this.client.createOrUpdate(this.resourceGroupName(), this.nicName, this.inner());
+        NicIpConfigurationImpl.ensureConfigurations(this.nicIpConfigurations);
+        ServiceResponse<NetworkInterfaceInner> response = this.client.createOrUpdate(this.resourceGroupName(),
+                this.nicName,
+                this.inner());
         this.setInner(response.getBody());
+        initializeNicIpConfigurations();
     }
 
     /**************************************************.
@@ -314,22 +309,24 @@ class NetworkInterfaceImpl
      **************************************************/
 
     /**
-     * @param prefix the prefix
-     * @return a random value (derived from the resource and resource group name) with the given prefix
-     */
-    private String nameWithPrefix(String prefix) {
-        return prefix + "-" + this.randomId + "-" + this.resourceGroupName();
-    }
-
-    /**
      * @return the primary IP configuration of the network interface
      */
-    private NetworkInterfaceIPConfiguration primaryIpConfiguration() {
-        if (this.inner().ipConfigurations().size() == 0) {
-            this.inner().ipConfigurations().add(new NetworkInterfaceIPConfiguration());
-            this.inner().ipConfigurations().get(0).withName("primary-nic-config");
+    private NicIpConfigurationImpl primaryIpConfiguration() {
+        if (this.nicPrimaryIpConfiguration != null) {
+            return this.nicPrimaryIpConfiguration;
         }
-        return this.inner().ipConfigurations().get(0);
+
+        if (isInCreateMode()) {
+            this.nicPrimaryIpConfiguration = prepareNewNicIpConfiguration("primary-nic-config");
+        } else {
+            // Currently Azure supports only one Ip configuration and that is the primary
+            // hence we pick the first one here.
+            // when Azure support multiple Ip configurations then there will be a flag in
+            // the IpConfiguration or a property in the network interface to identify the
+            // primary so below logic will be changed.
+            this.nicPrimaryIpConfiguration = (NicIpConfigurationImpl) this.nicIpConfigurations.get(0);
+        }
+        return this.nicPrimaryIpConfiguration;
     }
 
     /**
@@ -343,101 +340,59 @@ class NetworkInterfaceImpl
     }
 
     /**
-     * Creates a {@link PublicIpAddress.DefinitionCreatable} with the give name and DNS label.
-     *
-     * @param name the public IP name
-     * @param leafDnsLabel the domain name label
-     * @return {@link PublicIpAddress.DefinitionCreatable}
+     * Initializes the list of {@link NicIpConfiguration} that wraps {@link NetworkInterfaceInner#ipConfigurations()}
      */
-    private PublicIpAddress.DefinitionCreatable prepareCreatablePublicIp(String name, String leafDnsLabel) {
-        PublicIpAddress.DefinitionWithGroup definitionWithGroup = this.publicIpAddresses
-                .define(name)
-                .withRegion(this.region());
-
-        PublicIpAddress.DefinitionCreatable definitionAfterGroup;
-        if (this.newGroup != null) {
-            definitionAfterGroup = definitionWithGroup.withNewGroup(this.newGroup);
-        } else {
-            definitionAfterGroup = definitionWithGroup.withExistingGroup(this.resourceGroupName());
+    private void initializeNicIpConfigurations() {
+        if (this.inner().ipConfigurations() == null) {
+            this.inner().withIpConfigurations(new ArrayList<NetworkInterfaceIPConfiguration>());
         }
-        return definitionAfterGroup.withLeafDomainLabel(leafDnsLabel);
-    }
 
-    /**
-     * Gets the subnet to associate with the network interface.
-     * <p>
-     * this method will never return null as subnet is required for a network interface, in case of
-     * update mode if user didn't choose to change the subnet then existing subnet will be returned.
-     * Updating the nic subnet has a restriction, the new subnet must reside in the same virtual network
-     * as the current one.
-     *
-     * @return the subnet resource
-     */
-    private SubnetInner subnetToAssociate() {
-        SubnetInner subnetInner = new SubnetInner();
-        if (isInCreateMode()) {
-            // define..create mode
-            if (this.creatableVirtualNetworkKey != null) {
-                Network network = (Network) createdResource(this.creatableVirtualNetworkKey);
-                subnetInner.withId(network.inner().subnets().get(0).id());
-                return subnetInner;
-            }
-
-            for (SubnetInner subnet : this.existingVirtualNetworkToAssociate.inner().subnets()) {
-                if (subnet.name().compareToIgnoreCase(this.subnetToAssociate) == 0) {
-                    subnetInner.withId(subnet.id());
-                    return subnetInner;
-                }
-            }
-
-            throw new RuntimeException("A subnet with name '" + subnetToAssociate + "' not found under the network '" + this.existingVirtualNetworkToAssociate.name() + "'");
-
-        } else {
-            // update..apply mode
-            if (subnetToAssociate != null) {
-                int idx = this.primaryIpConfiguration().subnet().id().lastIndexOf('/');
-                subnetInner.withId(this.primaryIpConfiguration().subnet().id().substring(0, idx) + subnetToAssociate);
-            } else {
-                subnetInner.withId(this.primaryIpConfiguration().subnet().id());
-            }
-            return subnetInner;
+        this.nicIpConfigurations = new ArrayList<>();
+        for (NetworkInterfaceIPConfiguration ipConfig : this.inner().ipConfigurations()) {
+            NicIpConfigurationImpl  nicIpConfiguration = new NicIpConfigurationImpl(ipConfig.name(),
+                    ipConfig,
+                    this,
+                    this.networks,
+                    this.publicIpAddresses,
+                    false);
+            this.nicIpConfigurations.add(nicIpConfiguration);
         }
     }
 
     /**
-     * Get the SubResource instance representing a public IP that needs to be associated with the
-     * network interface.
-     * <p>
-     * null will be returned if withoutPublicIP() is specified in the update fluent chain or user did't
-     * opt for public IP in create fluent chain. In case of update chain, if withoutPublicIP(..) is
-     * not specified then existing associated (if any) public IP will be returned.
-     * @return public ip SubResource
+     * Gets a new Ip configuration child resource {@link NicIpConfiguration} wrapping {@link NetworkInterfaceIPConfiguration}.
+     *
+     * @param name the name for the new ip configuration
+     * @return {@link NicIpConfiguration}
      */
-    private SubResource publicIpToAssociate() {
-        if (this.removePublicIPAssociation) {
-            return null;
-        }
+    private NicIpConfigurationImpl prepareNewNicIpConfiguration(String name) {
+        NicIpConfigurationImpl nicIpConfiguration = NicIpConfigurationImpl.prepareNicIpConfiguration(
+                name,
+                this,
+                this.networks,
+                this.publicIpAddresses
+        );
+        this.nicIpConfigurations.add(nicIpConfiguration);
+        return nicIpConfiguration;
+    }
 
-        PublicIPAddressInner publicIPAddressInner = null;
-        if (this.creatablePublicIpKey != null) {
-            PublicIpAddress publicIpAddress = (PublicIpAddress) createdResource(this.creatablePublicIpKey);
-            publicIPAddressInner = publicIpAddress.inner();
-        }
+    /**
+     * @param prefix the prefix
+     * @return a random value (derived from the resource and resource group name) with the given prefix
+     */
+    String nameWithPrefix(String prefix) {
+        return prefix + "-" + this.randomId + "-" + this.resourceGroupName();
+    }
 
-        if (this.existingPublicIpAddressToAssociate != null) {
-            publicIPAddressInner = this.existingPublicIpAddressToAssociate.inner();
-        }
+    void addToCreatableDependencies(Creatable<?> creatableResource) {
+        super.addCreatableDependency(creatableResource);
+    }
 
-        if (publicIPAddressInner != null) {
-            SubResource subResource = new SubResource();
-            subResource.withId(publicIPAddressInner.id());
-            return subResource;
-        }
+    Resource createdDependencyResource(String key) {
+        return super.createdResource(key);
+    }
 
-        if (!isInCreateMode()) {
-            // update..apply mode
-            return this.primaryIpConfiguration().publicIPAddress();
-        }
-        return null;
+    ResourceGroup.DefinitionCreatable newGroup() {
+        return this.newGroup;
     }
 }
