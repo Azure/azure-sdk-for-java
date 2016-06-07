@@ -41,7 +41,7 @@ class NetworkImpl
 
     private void initializeSubnetsFromInner() {
         this.subnets = new ArrayList<>();
-        for(SubnetInner subnetInner : this.inner().subnets()) {
+        for (SubnetInner subnetInner : this.inner().subnets()) {
             SubnetImpl subnet = new SubnetImpl(subnetInner.name(), subnetInner, this);
             this.subnets.add(subnet);
         }    
@@ -102,7 +102,7 @@ class NetworkImpl
         List<SubnetInner> azureSubnets = new ArrayList<>();
         this.inner().withSubnets(azureSubnets);
         initializeSubnetsFromInner();
-        for(Entry<String, String> pair : nameCidrPairs.entrySet()) {
+        for (Entry<String, String> pair : nameCidrPairs.entrySet()) {
             this.withSubnet(pair.getKey(), pair.getValue());
         }
         return this;
@@ -112,8 +112,8 @@ class NetworkImpl
     public NetworkImpl withoutSubnet(String name) {
         // Remove from cache
         List<Subnet> s = this.subnets;
-        for(int i=0; i<s.size(); i++) {
-            if(s.get(i).name().equalsIgnoreCase(name)) {
+        for (int i = 0; i < s.size(); i++) {
+            if (s.get(i).name().equalsIgnoreCase(name)) {
                 s.remove(i);
                 break;
             }
@@ -121,8 +121,8 @@ class NetworkImpl
 
         // Remove from inner
         List<SubnetInner> innerSubnets = this.inner().subnets();
-        for(int i=0; i<innerSubnets.size(); i++) {
-            if(innerSubnets.get(i).name().equalsIgnoreCase(name)) {
+        for (int i = 0; i < innerSubnets.size(); i++) {
+            if (innerSubnets.get(i).name().equalsIgnoreCase(name)) {
                 innerSubnets.remove(i);
                 break;
             }
@@ -160,14 +160,15 @@ class NetworkImpl
     @Override
     protected void createResource() throws Exception {
         // Ensure address spaces
-        if(this.addressSpaces().size() == 0) {
+        if (this.addressSpaces().size() == 0) {
             this.withAddressSpace("10.0.0.0/16");
         }
 
-        // Create a subnet as needed, covering the entire first address space
-        // TODO: this shouldn't happen during Update -- may need to move to initializer or something...
-        if(this.inner().subnets().size() == 0) {
-            this.withSubnet("subnet1", this.addressSpaces().get(0));
+        if (isInCreateMode()) {
+            // Create a subnet as needed, covering the entire first address space
+            if (this.inner().subnets().size() == 0) {
+                this.withSubnet("subnet1", this.addressSpaces().get(0));
+            }
         }
 
         ServiceResponse<VirtualNetworkInner> response =

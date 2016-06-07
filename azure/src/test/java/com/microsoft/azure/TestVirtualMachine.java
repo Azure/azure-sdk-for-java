@@ -4,7 +4,6 @@ import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.compute.implementation.KnownVirtualMachineImage;
 import com.microsoft.azure.management.compute.implementation.api.DataDisk;
-import com.microsoft.azure.management.compute.implementation.api.NetworkInterfaceReference;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
 public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMachines> {
@@ -107,9 +106,8 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
         }
 
         StringBuilder networkProfile = new StringBuilder().append("\n\tNetworkProfile: ");
-        for (NetworkInterfaceReference nicReference : resource.networkProfile().networkInterfaces()) {
-            networkProfile.append("\n\t\tId:" ).append(nicReference.id());
-            networkProfile.append("\n\t\tPrimary:" ).append(nicReference.primary());
+        for (String networkInterfaceId : resource.networkInterfaceIds()) {
+            networkProfile.append("\n\t\tId:" ).append(networkInterfaceId);
         }
 
         System.out.println(new StringBuilder().append("Virtual Machine: ").append(resource.id())
@@ -118,7 +116,7 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
                 .append("\n\tRegion: ").append(resource.region())
                 .append("\n\tTags: ").append(resource.tags())
                 .append("\n\tHardwareProfile: ")
-                    .append("\n\t\tSize: ").append(resource.hardwareProfile().vmSize())
+                    .append("\n\t\tSize: ").append(resource.size())
                 .append(storageProfile)
                 .append(osProfile)
                 .append(networkProfile)
