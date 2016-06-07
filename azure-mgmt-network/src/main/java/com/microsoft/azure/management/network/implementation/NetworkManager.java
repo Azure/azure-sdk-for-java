@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PublicIpAddresses;
@@ -16,35 +17,72 @@ import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
+/**
+ * Entry point to Azure network management.
+ */
 public final class NetworkManager {
     private final NetworkManagementClientImpl networkManagementClient;
-    
+
     // Dependent managers
     private final ResourceManager resourceManager;
-    
+
     // Collections
     private PublicIpAddresses publicIpAddresses;
     private Networks networks;
+    private NetworkSecurityGroups networkSecurityGroups;
     private NetworkInterfaces networkInterfaces;
-    
+
+    /**
+     * Get a Configurable instance that can be used to create {@link NetworkManager}
+     * with optional configuration.
+     *
+     * @return the instance allowing configurations
+     */
     public static Configurable configure() {
         return new NetworkManager.ConfigurableImpl();
     }
 
+    /**
+     * Creates an instance of NetworkManager that exposes network resource management API entry points.
+     *
+     * @param credentials the credentials to use
+     * @param subscriptionId the subscription UUID
+     * @return the NetworkManager
+     */
     public static NetworkManager authenticate(ServiceClientCredentials credentials, String subscriptionId) {
         return new NetworkManager(AzureEnvironment.AZURE.newRestClientBuilder()
                 .withCredentials(credentials)
                 .build(), subscriptionId);
     }
 
+    /**
+     * Creates an instance of NetworkManager that exposes network resource management API entry points.
+     *
+     * @param restClient the RestClient to be used for API calls.
+     * @param subscriptionId the subscription UUID
+     * @return the NetworkManager
+     */
     public static NetworkManager authenticate(RestClient restClient, String subscriptionId) {
         return new NetworkManager(restClient, subscriptionId);
     }
 
+    /**
+     * The interface allowing configurations to be set.
+     */
     public interface Configurable extends AzureConfigurable<Configurable> {
+        /**
+         * Creates an instance of NetworkManager that exposes network management API entry points.
+         *
+         * @param credentials the credentials to use
+         * @param subscriptionId the subscription UUID
+         * @return the interface exposing network management API entry points that work across subscriptions
+         */
         NetworkManager authenticate(ServiceClientCredentials credentials, String subscriptionId);
     }
 
+    /**
+     * The implementation for Configurable interface.
+     */
     private static class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         public NetworkManager authenticate(ServiceClientCredentials credentials, String subscriptionId) {
             return NetworkManager.authenticate(buildRestClient(credentials), subscriptionId);
@@ -56,29 +94,41 @@ public final class NetworkManager {
         networkManagementClient.withSubscriptionId(subscriptionId);
         this.resourceManager = ResourceManager.authenticate(restClient).withSubscription(subscriptionId);
     }
-    
+
     /**
      * @return entry point to virtual network management
      */
     public Networks networks() {
-        if(this.networks == null) {
+        if (this.networks == null) {
             this.networks = new NetworksImpl(
                     this.networkManagementClient.virtualNetworks(),
                     this.resourceManager.resourceGroups());
         }
         return this.networks;
     }
-    
+
+    /**
+     * @return entry point to network security group management
+     */
+    public NetworkSecurityGroups networkSecurityGroups() {
+        if (this.networkSecurityGroups == null) {
+            this.networkSecurityGroups = new NetworkSecurityGroupsImpl(
+                    this.networkManagementClient.networkSecurityGroups(),
+                    this.resourceManager.resourceGroups());
+        }
+        return this.networkSecurityGroups;
+    }
+
     /**
      * @return entry point to public IP address management
      */
     public PublicIpAddresses publicIpAddresses() {
-    	if(this.publicIpAddresses == null) {
-    		this.publicIpAddresses = new PublicIpAddressesImpl(
-    			this.networkManagementClient.publicIPAddresses(), 
-    			this.resourceManager.resourceGroups());
-    	}
-    	return this.publicIpAddresses;
+        if (this.publicIpAddresses == null) {
+            this.publicIpAddresses = new PublicIpAddressesImpl(
+                    this.networkManagementClient.publicIPAddresses(),
+                    this.resourceManager.resourceGroups());
+        }
+        return this.publicIpAddresses;
     }
 
     /**

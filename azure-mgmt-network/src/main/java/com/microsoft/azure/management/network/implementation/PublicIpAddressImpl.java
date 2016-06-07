@@ -13,9 +13,13 @@ import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.rest.ServiceResponse;
 
+/**
+ * Implementation of the PublicIPAddress interface.
+ * (Internal use only)
+ */
 class PublicIpAddressImpl
-	extends GroupableResourceImpl<PublicIpAddress, PublicIPAddressInner, PublicIpAddressImpl>
-	implements
+    extends GroupableResourceImpl<PublicIpAddress, PublicIPAddressInner, PublicIpAddressImpl>
+    implements
         PublicIpAddress,
         PublicIpAddress.Definitions,
         PublicIpAddress.Update {
@@ -23,17 +27,15 @@ class PublicIpAddressImpl
     private final PublicIPAddressesInner client;
 
     PublicIpAddressImpl(String name,
-    		PublicIPAddressInner innerModel,
-    		final PublicIPAddressesInner client,
-    		final ResourceGroups resourceGroups) {
+            PublicIPAddressInner innerModel,
+            final PublicIPAddressesInner client,
+            final ResourceGroups resourceGroups) {
         super(name, innerModel, resourceGroups);
         this.client = client;
     }
 
-    /**************************************************
-     * Verbs
-     **************************************************/
-    
+    // Verbs
+
     @Override
     public PublicIpAddressImpl apply() throws Exception {
         return this.create();
@@ -55,97 +57,93 @@ class PublicIpAddressImpl
 
     @Override
     public PublicIpAddressImpl create() throws Exception {
-		super.creatablesCreate();
-		return this;
+        super.creatablesCreate();
+        return this;
     }
 
-    /*****************************************
-     * Setters (fluent)
-     *****************************************/
+    // Setters (fluent)
 
-	@Override
-	public PublicIpAddressImpl withIdleTimeoutInMinutes(int minutes) {
-		this.inner().withIdleTimeoutInMinutes(minutes);
-		return this;
-	}
+    @Override
+    public PublicIpAddressImpl withIdleTimeoutInMinutes(int minutes) {
+        this.inner().withIdleTimeoutInMinutes(minutes);
+        return this;
+    }
 
-	@Override
-	public PublicIpAddressImpl withStaticIp() {
-		this.inner().withPublicIPAllocationMethod(IPAllocationMethod.STATIC);
-		return this;
-	}
+    @Override
+    public PublicIpAddressImpl withStaticIp() {
+        this.inner().withPublicIPAllocationMethod(IPAllocationMethod.STATIC);
+        return this;
+    }
+
+    @Override
+    public PublicIpAddressImpl withDynamicIp() {
+        this.inner().withPublicIPAllocationMethod(IPAllocationMethod.DYNAMIC);
+        return this;
+    }
+
+    @Override
+    public PublicIpAddressImpl withLeafDomainLabel(String dnsName) {
+        this.inner().dnsSettings().withDomainNameLabel(dnsName.toLowerCase());
+        return this;
+    }
+
+    @Override
+    public PublicIpAddressImpl withoutLeafDomainLabel() {
+        return this.withLeafDomainLabel(null);
+    }
+
+    @Override
+    public PublicIpAddressImpl withReverseFqdn(String reverseFqdn) {
+        this.inner().dnsSettings().withReverseFqdn(reverseFqdn.toLowerCase());
+        return this;
+    }
+
+    @Override
+    public PublicIpAddressImpl withoutReverseFqdn() {
+        return this.withReverseFqdn(null);
+    }
 
 
-	@Override
-	public PublicIpAddressImpl withDynamicIp() {
-		this.inner().withPublicIPAllocationMethod(IPAllocationMethod.DYNAMIC);
-		return this;
-	}
-	
-	@Override
-	public PublicIpAddressImpl withLeafDomainLabel(String dnsName) {
-		this.inner().dnsSettings().withDomainNameLabel(dnsName.toLowerCase());
-		return this;
-	}
-	
-	@Override
-	public PublicIpAddressImpl withoutLeafDomainLabel() {
-		return this.withLeafDomainLabel(null);
-	}
+    // Getters
 
-	@Override
-	public PublicIpAddressImpl withReverseFqdn(String reverseFqdn) {
-		this.inner().dnsSettings().withReverseFqdn(reverseFqdn.toLowerCase());
-		return this;
-	}
+    @Override
+    public int idleTimeoutInMinutes() {
+        return this.inner().idleTimeoutInMinutes();
+    }
 
-	@Override
-	public PublicIpAddressImpl withoutReverseFqdn() {
-		return this.withReverseFqdn(null);
-	}
-	
-		
-	/**********************************************
-	 * Getters
-	 **********************************************/
-	@Override
-	public int idleTimeoutInMinutes() {
-		return this.inner().idleTimeoutInMinutes();
-	}
+    @Override
+    public String ipAllocationMethod() {
+        return this.inner().publicIPAllocationMethod();
+    }
 
-	@Override
-	public String ipAllocationMethod() { 	// TODO: This should really return an enum
-		return this.inner().publicIPAllocationMethod();
-	}
+    @Override
+    public String fqdn() {
+        return this.inner().dnsSettings().fqdn();
+    }
 
-	@Override
-	public String fqdn() {
-		return this.inner().dnsSettings().fqdn();
-	}
+    @Override
+    public String reverseFqdn() {
+        return this.inner().dnsSettings().reverseFqdn();
+    }
 
-	@Override
-	public String reverseFqdn() {
-		return this.inner().dnsSettings().reverseFqdn();
-	}
+    @Override
+    public String ipAddress() {
+        return this.inner().ipAddress();
+    }
 
-	@Override
-	public String ipAddress() {
-		return this.inner().ipAddress();
-	}
-	
-	@Override
-	public String leafDomainLabel() {
-		if(this.inner().dnsSettings() == null) {
-			return null;
-		} else {
-			return this.inner().dnsSettings().domainNameLabel();
-		}
-	}
+    @Override
+    public String leafDomainLabel() {
+        if (this.inner().dnsSettings() == null) {
+            return null;
+        } else {
+            return this.inner().dnsSettings().domainNameLabel();
+        }
+    }
 
-	@Override
-	protected void createResource() throws Exception {
-		ServiceResponse<PublicIPAddressInner> response =
-				this.client.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
-		this.setInner(response.getBody());
-	}
+    @Override
+    protected void createResource() throws Exception {
+        ServiceResponse<PublicIPAddressInner> response =
+                this.client.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
+        this.setInner(response.getBody());
+    }
 }

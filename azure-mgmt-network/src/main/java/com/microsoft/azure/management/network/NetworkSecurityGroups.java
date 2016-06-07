@@ -14,13 +14,13 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 
 
 /**
- * Entry point to public IP address management.
+ * Entry point to network security group management.
  */
-public interface PublicIpAddresses extends
-    SupportsListing<PublicIpAddress>,
-    SupportsCreating<PublicIpAddress.DefinitionBlank>,
+public interface NetworkSecurityGroups extends
+    SupportsCreating<NetworkSecurityGroup.DefinitionBlank>,
+    SupportsListing<NetworkSecurityGroup>,
+    SupportsListingByGroup<NetworkSecurityGroup>,
+    SupportsGettingByGroup<NetworkSecurityGroup>,
     SupportsDeleting,
-    SupportsListingByGroup<PublicIpAddress>,
-    SupportsGettingByGroup<PublicIpAddress>,
     SupportsDeletingByGroup {
 }

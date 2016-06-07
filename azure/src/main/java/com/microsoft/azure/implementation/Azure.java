@@ -13,18 +13,18 @@ import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
+import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.GenericResources;
+import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.Subscription;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.Tenants;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.microsoft.azure.management.resources.fluentcore.collection.*;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.storage.StorageAccounts;
@@ -37,7 +37,6 @@ import java.io.File;
 import java.io.IOException;
 
 public final class Azure {
-    private final ResourceGroups resourceGroups;
     private final ResourceManager resourceManager;
     private final StorageManager storageManager;
     private final ComputeManager computeManager;
@@ -188,34 +187,24 @@ public final class Azure {
             return new Azure(restClient, subscriptionId);
         }
 
-		@Override
-		public Azure withDefaultSubscription() throws CloudException, IOException {
-		    if(this.defaultSubscription != null) {
-		        return withSubscription(this.defaultSubscription);
-		    } else {
-		        PagedList<Subscription> subs = this.subscriptions().list();
-		        if(!subs.isEmpty()) {
-		            return withSubscription(subs.get(0).subscriptionId());
-		        } else {
-		            return withSubscription(null);
-		        }
-		    }
-		}
-    }
-
-    public interface ResourceGroups extends SupportsListing<Azure.ResourceGroup>,
-            SupportsGettingByName<Azure.ResourceGroup>,
-            SupportsCreating<Azure.ResourceGroup.DefinitionBlank>,
-            SupportsDeleting {
-    }
-
-    public interface ResourceGroup extends com.microsoft.azure.management.resources.ResourceGroup {
+        @Override
+        public Azure withDefaultSubscription() throws CloudException, IOException {
+            if (this.defaultSubscription != null) {
+                return withSubscription(this.defaultSubscription);
+            } else {
+                PagedList<Subscription> subs = this.subscriptions().list();
+                if (!subs.isEmpty()) {
+                    return withSubscription(subs.get(0).subscriptionId());
+                } else {
+                    return withSubscription(null);
+                }
+            }
+        }
     }
 
     private Azure(RestClient restClient, String subscriptionId) {
         ResourceManagementClientImpl resourceManagementClient = new ResourceManagementClientImpl(restClient);
         resourceManagementClient.withSubscriptionId(subscriptionId);
-        this.resourceGroups = new AzureResourceGroupsImpl(resourceManagementClient);
         this.resourceManager = ResourceManager.authenticate(restClient).withSubscription(subscriptionId);
         this.storageManager = StorageManager.authenticate(restClient, subscriptionId);
         this.computeManager = ComputeManager.authenticate(restClient, subscriptionId);
@@ -229,12 +218,12 @@ public final class Azure {
     public String subscriptionId() {
         return this.subscriptionId;
     }
-    
+
     /**
      * @return entry point to managing resource groups
      */
     public ResourceGroups resourceGroups() {
-        return resourceGroups;
+        return this.resourceManager.resourceGroups();
     }
 
     public GenericResources genericResources() {
@@ -266,13 +255,20 @@ public final class Azure {
         return networkManager.networks();
     }
 
+    /**
+     * @return entry point to managing network security groups
+     */
+    public NetworkSecurityGroups networkSecurityGroups() {
+        return networkManager.networkSecurityGroups();
+    }
+
     /** 
      * @return entry point to managing virtual machines
      */
     public VirtualMachines virtualMachines() {
         return computeManager.virtualMachines();
     }
-    
+
     /**
      * @return entry point to managing public IP addresses
      */

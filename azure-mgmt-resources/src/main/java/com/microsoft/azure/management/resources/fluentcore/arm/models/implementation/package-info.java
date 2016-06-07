@@ -3,7 +3,6 @@
 // license information.
 
 /**
- * This package contains the test classes for StorageManagementClient.
- * The Storage Management Client.
+ * This package contains the classes for ARM fluent core models implementation.
  */
-package com.microsoft.azure.management.storage;
+package com.microsoft.azure.management.resources.fluentcore.arm.models.implementation;

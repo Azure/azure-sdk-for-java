@@ -5,10 +5,15 @@
  */
 package com.microsoft.azure.management.resources.fluentcore.arm.models.implementation;
 
-import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 
+/**
+ * Child resource abstract implementation.
+ * (Internal use only)
+ * @param <InnerT> Azure inner child class type
+ * @param <ParentImplT> Parent implementation
+ */
 public abstract class ChildResourceImpl<InnerT, ParentImplT>
     extends IndexableWrapperImpl<InnerT>
     implements ChildResource {
