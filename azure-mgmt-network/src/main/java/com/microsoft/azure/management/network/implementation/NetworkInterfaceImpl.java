@@ -45,6 +45,9 @@ class NetworkInterfaceImpl
     private NicIpConfigurationImpl nicPrimaryIpConfiguration;
     // list of references to all ip configuration
     private List<NicIpConfiguration> nicIpConfigurations;
+    // Cached related resources.
+    PublicIpAddress primaryPublicIp;
+    Network primaryNetwork;
 
     NetworkInterfaceImpl(String name,
                          NetworkInterfaceInner innerModel,
@@ -253,7 +256,10 @@ class NetworkInterfaceImpl
 
     @Override
     public PublicIpAddress primaryPublicIpAddress() throws CloudException, IOException {
-        return this.primaryIpConfiguration().publicIpAddress();
+        if (this.primaryPublicIp == null) {
+            this.primaryPublicIp = this.primaryIpConfiguration().publicIpAddress();
+        }
+        return primaryPublicIp;
     }
 
     @Override
@@ -263,7 +269,10 @@ class NetworkInterfaceImpl
 
     @Override
     public Network primaryNetwork() throws CloudException, IOException {
-        return this.primaryIpConfiguration().network();
+        if (this.primaryNetwork == null) {
+            this.primaryNetwork = this.primaryIpConfiguration().network();
+        }
+        return this.primaryNetwork;
     }
 
     @Override
@@ -287,9 +296,7 @@ class NetworkInterfaceImpl
 
     @Override
     protected void createResource() throws Exception {
-        for (NicIpConfiguration ipConfig : this.nicIpConfigurations) {
-            ((NicIpConfigurationImpl)ipConfig).ensureConfiguration();
-        }
+        NicIpConfigurationImpl.ensureConfigurations(this.nicIpConfigurations);
 
         ServiceResponse<NetworkInterfaceInner> response = this.client.createOrUpdate(this.resourceGroupName(),
                 this.nicName,

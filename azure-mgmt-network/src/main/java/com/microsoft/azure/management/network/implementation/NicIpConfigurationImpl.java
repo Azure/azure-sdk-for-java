@@ -10,6 +10,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Represents an Ip configuration of a network interface.
@@ -187,9 +188,12 @@ class NicIpConfigurationImpl
         return this;
     }
 
-    void ensureConfiguration() {
-        this.inner().setSubnet(subnetToAssociate());
-        this.inner().setPublicIPAddress(publicIpToAssociate());
+    protected static void ensureConfigurations(List<NicIpConfiguration> nicIpConfigurations) {
+        for (NicIpConfiguration nicIpConfiguration : nicIpConfigurations) {
+            NicIpConfigurationImpl config = (NicIpConfigurationImpl)nicIpConfiguration;
+            config.inner().setSubnet(config.subnetToAssociate());
+            config.inner().setPublicIPAddress(config.publicIpToAssociate());
+        }
     }
 
     /**
