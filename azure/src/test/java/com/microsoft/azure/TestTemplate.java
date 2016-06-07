@@ -16,6 +16,11 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableR
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
+/**
+ * Base class for CRUD test cases for top level Azure resource models.
+ * @param <T> Top level resource type
+ * @param <C> Type representing the collection of the top level resources
+ */
 public abstract class TestTemplate<
     T extends GroupableResource,
     C extends SupportsListing<T> & SupportsGettingByGroup<T> & SupportsDeleting> {
@@ -26,41 +31,44 @@ public abstract class TestTemplate<
     private ResourceGroups resourceGroups;
 
     /**
-     * Resource creation logic
-     * @param azure authenticated Azure instance
+     * Resource creation logic.
+     * @param resources collection of resources
      * @return created resource
-     * @throws Exception 
+     * @throws Exception if anything goes wrong
      */
     public abstract T createResource(C resources) throws Exception;
 
-    /** 
-     * Resource update logic
+    /**
+     * Resource update logic.
      * @param resource the resource to update
-     * @throws Exception 
+     * @return the updated resource
+     * @throws Exception if anything goes wrong
      */
     public abstract T updateResource(T resource) throws Exception;
 
     /**
-     * Tests the listing logic
-     * @throws CloudException
-     * @throws IOException
+     * Tests the listing logic.
+     * @return number of resources in the list
+     * @throws CloudException if anything goes wrong
+     * @throws IOException if anything goes wrong
      */
     public int verifyListing() throws CloudException, IOException {
         return this.collection.list().size();
     }
 
     /**
-     * Tests the getting logic
-     * @throws CloudException
-     * @throws IOException
+     * Tests the getting logic.
+     * @return the gotten resource
+     * @throws CloudException if anything goes wrong
+     * @throws IOException if anything goes wrong
      */
     public T verifyGetting() throws CloudException, IOException {
         return this.collection.get(this.resource.resourceGroupName(), this.resource.name());
     }
 
     /**
-     * Tests the deletion logic
-     * @throws Exception
+     * Tests the deletion logic.
+     * @throws Exception if anything goes wrong
      */
     public void verifyDeleting() throws Exception {
         final String groupName = this.resource.resourceGroupName();
@@ -69,15 +77,17 @@ public abstract class TestTemplate<
     }
 
     /**
-     * Prints information about the resource
-     * @param resource
+     * Prints information about the resource.
+     *
+     * @param resource resource to print
      */
     public abstract void print(T resource);
 
     /**
-     * Runs the test
+     * Runs the test.
      * @param collection collection of resources to test
-     * @throws Exception
+     * @param resourceGroups the resource groups collection
+     * @throws Exception if anything goes wrong
      */
     @Test
     public void runTest(C collection, ResourceGroups resourceGroups) throws Exception {

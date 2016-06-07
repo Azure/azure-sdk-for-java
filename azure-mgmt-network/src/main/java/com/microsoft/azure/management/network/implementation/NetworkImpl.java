@@ -20,6 +20,10 @@ import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.rest.ServiceResponse;
 
+/**
+ * Internal virtual network implementation of the fluent interface.
+ * (Internal use only)
+ */
 class NetworkImpl
     extends GroupableResourceImpl<Network, VirtualNetworkInner, NetworkImpl>
     implements
@@ -41,15 +45,13 @@ class NetworkImpl
 
     private void initializeSubnetsFromInner() {
         this.subnets = new ArrayList<>();
-        for(SubnetInner subnetInner : this.inner().subnets()) {
+        for (SubnetInner subnetInner : this.inner().subnets()) {
             SubnetImpl subnet = new SubnetImpl(subnetInner.name(), subnetInner, this);
             this.subnets.add(subnet);
-        }    
+        }
     }
 
-    /**************************************************
-     * Verbs
-     **************************************************/
+    // Verbs
 
     @Override
     public NetworkImpl refresh() throws Exception {
@@ -76,17 +78,14 @@ class NetworkImpl
         return this.create();
     }
 
-    
-    /*****************************************
-     * Setters (fluent)
-     *****************************************/
+    // Setters (fluent)
 
     @Override
     public NetworkImpl withDnsServer(String ipAddress) {
         this.inner().dhcpOptions().dnsServers().add(ipAddress);
         return this;
     }
-    
+
     @Override
     public NetworkImpl withSubnet(String name, String cidr) {
         return this.defineSubnet(name)
@@ -99,7 +98,7 @@ class NetworkImpl
         List<SubnetInner> azureSubnets = new ArrayList<>();
         this.inner().setSubnets(azureSubnets);
         initializeSubnetsFromInner();
-        for(Entry<String, String> pair : nameCidrPairs.entrySet()) {
+        for (Entry<String, String> pair : nameCidrPairs.entrySet()) {
             this.withSubnet(pair.getKey(), pair.getValue());
         }
         return this;
@@ -109,8 +108,8 @@ class NetworkImpl
     public NetworkImpl withoutSubnet(String name) {
         // Remove from cache
         List<Subnet> s = this.subnets;
-        for(int i=0; i<s.size(); i++) {
-            if(s.get(i).name().equalsIgnoreCase(name)) {
+        for (int i = 0; i < s.size(); i++) {
+            if (s.get(i).name().equalsIgnoreCase(name)) {
                 s.remove(i);
                 break;
             }
@@ -118,8 +117,8 @@ class NetworkImpl
 
         // Remove from inner
         List<SubnetInner> innerSubnets = this.inner().subnets();
-        for(int i=0; i<innerSubnets.size(); i++) {
-            if(innerSubnets.get(i).name().equalsIgnoreCase(name)) {
+        for (int i = 0; i < innerSubnets.size(); i++) {
+            if (innerSubnets.get(i).name().equalsIgnoreCase(name)) {
                 innerSubnets.remove(i);
                 break;
             }
@@ -141,9 +140,7 @@ class NetworkImpl
         return new SubnetImpl(name, inner, this);
     }
 
-    /**********************************************
-     * Getters
-     **********************************************/
+    // Getters
 
     @Override
     public List<String> addressSpaces() {
@@ -163,13 +160,13 @@ class NetworkImpl
     @Override
     protected void createResource() throws Exception {
         // Ensure address spaces
-        if(this.addressSpaces().size() == 0) {
+        if (this.addressSpaces().size() == 0) {
             this.withAddressSpace("10.0.0.0/16");
         }
 
         // Create a subnet as needed, covering the entire first address space
-        // TODO: this shouldn't happen during Update -- may need to move to initializer or something...
-        if(this.inner().subnets().size() == 0) {
+        // Future: this shouldn't happen during Update -- may need to move to initializer or something...
+        if (this.inner().subnets().size() == 0) {
             this.withSubnet("subnet1", this.addressSpaces().get(0));
         }
 

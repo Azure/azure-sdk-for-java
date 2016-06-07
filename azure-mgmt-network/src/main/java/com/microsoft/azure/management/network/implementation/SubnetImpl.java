@@ -10,9 +10,13 @@ import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.network.implementation.api.SubnetInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
-class SubnetImpl 
+/**
+ * Implementation of the Subnet interface.
+ * (Internal use only)
+ */
+class SubnetImpl
     extends ChildResourceImpl<SubnetInner, NetworkImpl>
-    implements 
+    implements
         Subnet,
         Subnet.Definition<Network.DefinitionCreatableWithSubnet> {
 
@@ -20,10 +24,7 @@ class SubnetImpl
         super(name, inner, parent);
     }
 
-    /********************************************
-     * Getters
-     ********************************************/
-    
+    // Getters
     @Override
     public String addressPrefix() {
         return this.inner().addressPrefix();
@@ -34,21 +35,16 @@ class SubnetImpl
         return this.inner().name();
     }
 
-    /*********************************************
-     * Fluent setters
-     *********************************************/
-    
+    // Fluent setters
+
     @Override
     public SubnetImpl withAddressPrefix(String cidr) {
         this.inner().setAddressPrefix(cidr);
         return this;
     }
 
-    
-    /**********************************************
-     * Verbs
-     **********************************************/
-    
+    // Verbs
+
     @Override
     public NetworkImpl attach() {
         this.parent().inner().subnets().add(this.inner());

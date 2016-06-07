@@ -22,6 +22,10 @@ import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Implementation of the Networks interface.
+ * (Internal use only)
+ */
 class NetworksImpl implements Networks {
     private final VirtualNetworksInner client;
     private final ResourceGroups resourceGroups;
@@ -71,37 +75,38 @@ class NetworksImpl implements Networks {
         return createFluentModel(name);
     }
 
-    /** Fluent model create helpers **/    
+    // Fluent model create helpers
+
     private NetworkImpl createFluentModel(String name) {
         VirtualNetworkInner inner = new VirtualNetworkInner();
 
         // Initialize address space
         AddressSpace addressSpace = inner.addressSpace();
-        if(addressSpace == null) {
+        if (addressSpace == null) {
             addressSpace = new AddressSpace();
             inner.setAddressSpace(addressSpace);
         }
-        
-        if(addressSpace.addressPrefixes() == null) {
+
+        if (addressSpace.addressPrefixes() == null) {
             addressSpace.setAddressPrefixes(new ArrayList<String>());
         }
 
         // Initialize subnets
-        if(inner.subnets() == null) {
+        if (inner.subnets() == null) {
             inner.setSubnets(new ArrayList<SubnetInner>());
         }
 
         // Initialize DHCP options (DNS servers)
         DhcpOptions dhcp = inner.dhcpOptions();
-        if(dhcp == null) {
+        if (dhcp == null) {
             dhcp = new DhcpOptions();
             inner.setDhcpOptions(dhcp);
         }
-        
-        if(dhcp.dnsServers() == null) {
+
+        if (dhcp.dnsServers() == null) {
             dhcp.setDnsServers(new ArrayList<String>());
         }
-        
+
         return new NetworkImpl(name, inner, this.client, this.resourceGroups);
     }
 

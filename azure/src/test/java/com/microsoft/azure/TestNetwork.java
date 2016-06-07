@@ -12,6 +12,9 @@ import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
+/**
+ * Test of virtual network management.
+ */
 public class TestNetwork extends TestTemplate<Network, Networks> {
 
     @Override
@@ -38,7 +41,7 @@ public class TestNetwork extends TestTemplate<Network, Networks> {
                 .withoutSubnet("subnetA")
                 .apply();
         Assert.assertTrue(resource.tags().containsKey("tag1"));
-        
+
         return resource;
     }
 
@@ -52,14 +55,13 @@ public class TestNetwork extends TestTemplate<Network, Networks> {
                 .append("\n\tTags: ").append(resource.tags())
                 .append("\n\tAddress spaces: ").append(resource.addressSpaces())
                 .append("\n\tDNS server IPs: ").append(resource.dnsServerIPs());
-        
+
         // Output subnets
-        for(Subnet subnet : resource.subnets()) {
+        for (Subnet subnet : resource.subnets()) {
             info.append("\n\tSubnet: ").append(subnet.name())
-                .append("\n\t\tAddress prefix: ").append(subnet.addressPrefix())
-                ;
+                .append("\n\t\tAddress prefix: ").append(subnet.addressPrefix());
         }
-        
+
         System.out.println(info.toString());
     }
 }
