@@ -23,7 +23,7 @@ public enum CheckNameAvailabilityResult {
 
     CheckNameAvailabilityResult(boolean nameAvailable) {
         this.inner = new CheckNameAvailabilityResultInner();
-        this.inner.setNameAvailable(nameAvailable);
+        this.inner.withNameAvailable(nameAvailable);
     }
 
     /**
@@ -53,7 +53,7 @@ public enum CheckNameAvailabilityResult {
      * @return the result itself
      */
     CheckNameAvailabilityResult withReason(Reason reason) {
-        this.inner.setReason(reason);
+        this.inner.withReason(reason);
         return this;
     }
 
@@ -71,7 +71,7 @@ public enum CheckNameAvailabilityResult {
      * @return the result itself
      */
     CheckNameAvailabilityResult withMessage(String message) {
-        this.inner.setMessage(message);
+        this.inner.withMessage(message);
         return this;
     }
 }

@@ -46,7 +46,7 @@ public class VirtualMachineCaptureParametersInner {
      * @param vhdPrefix the vhdPrefix value to set
      * @return the VirtualMachineCaptureParametersInner object itself.
      */
-    public VirtualMachineCaptureParametersInner setVhdPrefix(String vhdPrefix) {
+    public VirtualMachineCaptureParametersInner withVhdPrefix(String vhdPrefix) {
         this.vhdPrefix = vhdPrefix;
         return this;
     }
@@ -66,7 +66,7 @@ public class VirtualMachineCaptureParametersInner {
      * @param destinationContainerName the destinationContainerName value to set
      * @return the VirtualMachineCaptureParametersInner object itself.
      */
-    public VirtualMachineCaptureParametersInner setDestinationContainerName(String destinationContainerName) {
+    public VirtualMachineCaptureParametersInner withDestinationContainerName(String destinationContainerName) {
         this.destinationContainerName = destinationContainerName;
         return this;
     }
@@ -86,7 +86,7 @@ public class VirtualMachineCaptureParametersInner {
      * @param overwriteVhds the overwriteVhds value to set
      * @return the VirtualMachineCaptureParametersInner object itself.
      */
-    public VirtualMachineCaptureParametersInner setOverwriteVhds(boolean overwriteVhds) {
+    public VirtualMachineCaptureParametersInner withOverwriteVhds(boolean overwriteVhds) {
         this.overwriteVhds = overwriteVhds;
         return this;
     }

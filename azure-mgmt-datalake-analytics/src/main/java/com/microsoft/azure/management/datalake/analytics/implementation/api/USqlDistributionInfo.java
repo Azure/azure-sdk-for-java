@@ -47,7 +47,7 @@ public class USqlDistributionInfo {
      * @param type the type value to set
      * @return the USqlDistributionInfo object itself.
      */
-    public USqlDistributionInfo setType(Integer type) {
+    public USqlDistributionInfo withType(Integer type) {
         this.type = type;
         return this;
     }
@@ -67,7 +67,7 @@ public class USqlDistributionInfo {
      * @param keys the keys value to set
      * @return the USqlDistributionInfo object itself.
      */
-    public USqlDistributionInfo setKeys(List<USqlDirectedColumn> keys) {
+    public USqlDistributionInfo withKeys(List<USqlDirectedColumn> keys) {
         this.keys = keys;
         return this;
     }
@@ -87,7 +87,7 @@ public class USqlDistributionInfo {
      * @param count the count value to set
      * @return the USqlDistributionInfo object itself.
      */
-    public USqlDistributionInfo setCount(Integer count) {
+    public USqlDistributionInfo withCount(Integer count) {
         this.count = count;
         return this;
     }
@@ -107,7 +107,7 @@ public class USqlDistributionInfo {
      * @param dynamicCount the dynamicCount value to set
      * @return the USqlDistributionInfo object itself.
      */
-    public USqlDistributionInfo setDynamicCount(Integer dynamicCount) {
+    public USqlDistributionInfo withDynamicCount(Integer dynamicCount) {
         this.dynamicCount = dynamicCount;
         return this;
     }

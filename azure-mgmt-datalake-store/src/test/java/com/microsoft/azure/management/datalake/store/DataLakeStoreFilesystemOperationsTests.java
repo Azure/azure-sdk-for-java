@@ -44,13 +44,13 @@ public class DataLakeStoreFilesystemOperationsTests extends DataLakeStoreManagem
         createClients();
         ResourceGroupInner group = new ResourceGroupInner();
         String location = "eastus2";
-        group.setLocation(location);
+        group.withLocation(location);
         resourceManagementClient.resourceGroups().createOrUpdate(rgName, group);
 
         // create storage and ADLS accounts, setting the accessKey
         DataLakeStoreAccountInner adlsAccount = new DataLakeStoreAccountInner();
-        adlsAccount.setLocation(location);
-        adlsAccount.setName(adlsAcct);
+        adlsAccount.withLocation(location);
+        adlsAccount.withName(adlsAcct);
         dataLakeStoreAccountManagementClient.accounts().create(rgName, adlsAcct, adlsAccount);
     }
 

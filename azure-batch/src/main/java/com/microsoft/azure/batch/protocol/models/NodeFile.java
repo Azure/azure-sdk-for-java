@@ -46,7 +46,7 @@ public class NodeFile {
      * @param name the name value to set
      * @return the NodeFile object itself.
      */
-    public NodeFile setName(String name) {
+    public NodeFile withName(String name) {
         this.name = name;
         return this;
     }
@@ -66,7 +66,7 @@ public class NodeFile {
      * @param url the url value to set
      * @return the NodeFile object itself.
      */
-    public NodeFile setUrl(String url) {
+    public NodeFile withUrl(String url) {
         this.url = url;
         return this;
     }
@@ -86,7 +86,7 @@ public class NodeFile {
      * @param isDirectory the isDirectory value to set
      * @return the NodeFile object itself.
      */
-    public NodeFile setIsDirectory(Boolean isDirectory) {
+    public NodeFile withIsDirectory(Boolean isDirectory) {
         this.isDirectory = isDirectory;
         return this;
     }
@@ -106,7 +106,7 @@ public class NodeFile {
      * @param properties the properties value to set
      * @return the NodeFile object itself.
      */
-    public NodeFile setProperties(FileProperties properties) {
+    public NodeFile withProperties(FileProperties properties) {
         this.properties = properties;
         return this;
     }

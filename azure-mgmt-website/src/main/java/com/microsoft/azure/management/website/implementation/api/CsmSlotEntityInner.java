@@ -37,7 +37,7 @@ public class CsmSlotEntityInner {
      * @param targetSlot the targetSlot value to set
      * @return the CsmSlotEntityInner object itself.
      */
-    public CsmSlotEntityInner setTargetSlot(String targetSlot) {
+    public CsmSlotEntityInner withTargetSlot(String targetSlot) {
         this.targetSlot = targetSlot;
         return this;
     }
@@ -57,7 +57,7 @@ public class CsmSlotEntityInner {
      * @param preserveVnet the preserveVnet value to set
      * @return the CsmSlotEntityInner object itself.
      */
-    public CsmSlotEntityInner setPreserveVnet(Boolean preserveVnet) {
+    public CsmSlotEntityInner withPreserveVnet(Boolean preserveVnet) {
         this.preserveVnet = preserveVnet;
         return this;
     }

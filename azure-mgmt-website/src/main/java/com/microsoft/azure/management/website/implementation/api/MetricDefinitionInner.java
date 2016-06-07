@@ -62,7 +62,7 @@ public class MetricDefinitionInner extends Resource {
      * @param metricDefinitionName the metricDefinitionName value to set
      * @return the MetricDefinitionInner object itself.
      */
-    public MetricDefinitionInner setMetricDefinitionName(String metricDefinitionName) {
+    public MetricDefinitionInner withMetricDefinitionName(String metricDefinitionName) {
         this.metricDefinitionName = metricDefinitionName;
         return this;
     }
@@ -82,7 +82,7 @@ public class MetricDefinitionInner extends Resource {
      * @param unit the unit value to set
      * @return the MetricDefinitionInner object itself.
      */
-    public MetricDefinitionInner setUnit(String unit) {
+    public MetricDefinitionInner withUnit(String unit) {
         this.unit = unit;
         return this;
     }
@@ -102,7 +102,7 @@ public class MetricDefinitionInner extends Resource {
      * @param primaryAggregationType the primaryAggregationType value to set
      * @return the MetricDefinitionInner object itself.
      */
-    public MetricDefinitionInner setPrimaryAggregationType(String primaryAggregationType) {
+    public MetricDefinitionInner withPrimaryAggregationType(String primaryAggregationType) {
         this.primaryAggregationType = primaryAggregationType;
         return this;
     }
@@ -122,7 +122,7 @@ public class MetricDefinitionInner extends Resource {
      * @param metricAvailabilities the metricAvailabilities value to set
      * @return the MetricDefinitionInner object itself.
      */
-    public MetricDefinitionInner setMetricAvailabilities(List<MetricAvailabilily> metricAvailabilities) {
+    public MetricDefinitionInner withMetricAvailabilities(List<MetricAvailabilily> metricAvailabilities) {
         this.metricAvailabilities = metricAvailabilities;
         return this;
     }
@@ -142,7 +142,7 @@ public class MetricDefinitionInner extends Resource {
      * @param displayName the displayName value to set
      * @return the MetricDefinitionInner object itself.
      */
-    public MetricDefinitionInner setDisplayName(String displayName) {
+    public MetricDefinitionInner withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }

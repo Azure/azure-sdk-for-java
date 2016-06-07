@@ -60,7 +60,7 @@ public class PoolStopResizeHeaders {
      * @param clientRequestId the clientRequestId value to set
      * @return the PoolStopResizeHeaders object itself.
      */
-    public PoolStopResizeHeaders setClientRequestId(String clientRequestId) {
+    public PoolStopResizeHeaders withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -80,7 +80,7 @@ public class PoolStopResizeHeaders {
      * @param requestId the requestId value to set
      * @return the PoolStopResizeHeaders object itself.
      */
-    public PoolStopResizeHeaders setRequestId(String requestId) {
+    public PoolStopResizeHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -100,7 +100,7 @@ public class PoolStopResizeHeaders {
      * @param eTag the eTag value to set
      * @return the PoolStopResizeHeaders object itself.
      */
-    public PoolStopResizeHeaders setETag(String eTag) {
+    public PoolStopResizeHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -123,7 +123,7 @@ public class PoolStopResizeHeaders {
      * @param lastModified the lastModified value to set
      * @return the PoolStopResizeHeaders object itself.
      */
-    public PoolStopResizeHeaders setLastModified(DateTime lastModified) {
+    public PoolStopResizeHeaders withLastModified(DateTime lastModified) {
         this.lastModified = new DateTimeRfc1123(lastModified);
         return this;
     }
@@ -143,7 +143,7 @@ public class PoolStopResizeHeaders {
      * @param dataServiceId the dataServiceId value to set
      * @return the PoolStopResizeHeaders object itself.
      */
-    public PoolStopResizeHeaders setDataServiceId(String dataServiceId) {
+    public PoolStopResizeHeaders withDataServiceId(String dataServiceId) {
         this.dataServiceId = dataServiceId;
         return this;
     }

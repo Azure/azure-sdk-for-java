@@ -43,7 +43,7 @@ public class USqlAssemblyClrInner extends CatalogItem {
      * @param databaseName the databaseName value to set
      * @return the USqlAssemblyClrInner object itself.
      */
-    public USqlAssemblyClrInner setDatabaseName(String databaseName) {
+    public USqlAssemblyClrInner withDatabaseName(String databaseName) {
         this.databaseName = databaseName;
         return this;
     }
@@ -63,7 +63,7 @@ public class USqlAssemblyClrInner extends CatalogItem {
      * @param name the name value to set
      * @return the USqlAssemblyClrInner object itself.
      */
-    public USqlAssemblyClrInner setName(String name) {
+    public USqlAssemblyClrInner withName(String name) {
         this.name = name;
         return this;
     }
@@ -83,7 +83,7 @@ public class USqlAssemblyClrInner extends CatalogItem {
      * @param clrName the clrName value to set
      * @return the USqlAssemblyClrInner object itself.
      */
-    public USqlAssemblyClrInner setClrName(String clrName) {
+    public USqlAssemblyClrInner withClrName(String clrName) {
         this.clrName = clrName;
         return this;
     }

@@ -55,7 +55,7 @@ public class ApplicationGatewayIPConfiguration extends SubResource {
      * @param subnet the subnet value to set
      * @return the ApplicationGatewayIPConfiguration object itself.
      */
-    public ApplicationGatewayIPConfiguration setSubnet(SubResource subnet) {
+    public ApplicationGatewayIPConfiguration withSubnet(SubResource subnet) {
         this.subnet = subnet;
         return this;
     }
@@ -75,7 +75,7 @@ public class ApplicationGatewayIPConfiguration extends SubResource {
      * @param provisioningState the provisioningState value to set
      * @return the ApplicationGatewayIPConfiguration object itself.
      */
-    public ApplicationGatewayIPConfiguration setProvisioningState(String provisioningState) {
+    public ApplicationGatewayIPConfiguration withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -95,7 +95,7 @@ public class ApplicationGatewayIPConfiguration extends SubResource {
      * @param name the name value to set
      * @return the ApplicationGatewayIPConfiguration object itself.
      */
-    public ApplicationGatewayIPConfiguration setName(String name) {
+    public ApplicationGatewayIPConfiguration withName(String name) {
         this.name = name;
         return this;
     }
@@ -115,7 +115,7 @@ public class ApplicationGatewayIPConfiguration extends SubResource {
      * @param etag the etag value to set
      * @return the ApplicationGatewayIPConfiguration object itself.
      */
-    public ApplicationGatewayIPConfiguration setEtag(String etag) {
+    public ApplicationGatewayIPConfiguration withEtag(String etag) {
         this.etag = etag;
         return this;
     }

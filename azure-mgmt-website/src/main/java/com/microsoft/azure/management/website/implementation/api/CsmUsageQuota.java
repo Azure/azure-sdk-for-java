@@ -52,7 +52,7 @@ public class CsmUsageQuota {
      * @param unit the unit value to set
      * @return the CsmUsageQuota object itself.
      */
-    public CsmUsageQuota setUnit(String unit) {
+    public CsmUsageQuota withUnit(String unit) {
         this.unit = unit;
         return this;
     }
@@ -72,7 +72,7 @@ public class CsmUsageQuota {
      * @param nextResetTime the nextResetTime value to set
      * @return the CsmUsageQuota object itself.
      */
-    public CsmUsageQuota setNextResetTime(DateTime nextResetTime) {
+    public CsmUsageQuota withNextResetTime(DateTime nextResetTime) {
         this.nextResetTime = nextResetTime;
         return this;
     }
@@ -92,7 +92,7 @@ public class CsmUsageQuota {
      * @param currentValue the currentValue value to set
      * @return the CsmUsageQuota object itself.
      */
-    public CsmUsageQuota setCurrentValue(Long currentValue) {
+    public CsmUsageQuota withCurrentValue(Long currentValue) {
         this.currentValue = currentValue;
         return this;
     }
@@ -112,7 +112,7 @@ public class CsmUsageQuota {
      * @param limit the limit value to set
      * @return the CsmUsageQuota object itself.
      */
-    public CsmUsageQuota setLimit(Long limit) {
+    public CsmUsageQuota withLimit(Long limit) {
         this.limit = limit;
         return this;
     }
@@ -132,7 +132,7 @@ public class CsmUsageQuota {
      * @param name the name value to set
      * @return the CsmUsageQuota object itself.
      */
-    public CsmUsageQuota setName(LocalizableString name) {
+    public CsmUsageQuota withName(LocalizableString name) {
         this.name = name;
         return this;
     }

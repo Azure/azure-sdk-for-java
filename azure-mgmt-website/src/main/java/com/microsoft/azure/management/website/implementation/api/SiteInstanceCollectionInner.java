@@ -37,7 +37,7 @@ public class SiteInstanceCollectionInner {
      * @param value the value value to set
      * @return the SiteInstanceCollectionInner object itself.
      */
-    public SiteInstanceCollectionInner setValue(List<SiteInstance> value) {
+    public SiteInstanceCollectionInner withValue(List<SiteInstance> value) {
         this.value = value;
         return this;
     }
@@ -57,7 +57,7 @@ public class SiteInstanceCollectionInner {
      * @param nextLink the nextLink value to set
      * @return the SiteInstanceCollectionInner object itself.
      */
-    public SiteInstanceCollectionInner setNextLink(String nextLink) {
+    public SiteInstanceCollectionInner withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }

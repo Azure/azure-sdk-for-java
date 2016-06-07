@@ -18,10 +18,10 @@ class VirtualMachineImageImpl
         super(null, null);
         this.location = location;
         this.imageReference = new ImageReference();
-        this.imageReference.setPublisher(publisher);
-        this.imageReference.setOffer(offer);
-        this.imageReference.setSku(sku);
-        this.imageReference.setVersion(version);
+        this.imageReference.withPublisher(publisher);
+        this.imageReference.withOffer(offer);
+        this.imageReference.withSku(sku);
+        this.imageReference.withVersion(version);
         this.client = client;
     }
 
@@ -29,10 +29,10 @@ class VirtualMachineImageImpl
         super(innerModel.id(), innerModel);
         this.location = location;
         this.imageReference = new ImageReference();
-        this.imageReference.setPublisher(publisher);
-        this.imageReference.setOffer(offer);
-        this.imageReference.setSku(sku);
-        this.imageReference.setVersion(version);
+        this.imageReference.withPublisher(publisher);
+        this.imageReference.withOffer(offer);
+        this.imageReference.withSku(sku);
+        this.imageReference.withVersion(version);
         this.client = client;
     }
 

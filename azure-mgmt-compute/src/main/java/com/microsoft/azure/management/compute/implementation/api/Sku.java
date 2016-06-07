@@ -41,7 +41,7 @@ public class Sku {
      * @param name the name value to set
      * @return the Sku object itself.
      */
-    public Sku setName(String name) {
+    public Sku withName(String name) {
         this.name = name;
         return this;
     }
@@ -61,7 +61,7 @@ public class Sku {
      * @param tier the tier value to set
      * @return the Sku object itself.
      */
-    public Sku setTier(String tier) {
+    public Sku withTier(String tier) {
         this.tier = tier;
         return this;
     }
@@ -81,7 +81,7 @@ public class Sku {
      * @param capacity the capacity value to set
      * @return the Sku object itself.
      */
-    public Sku setCapacity(Long capacity) {
+    public Sku withCapacity(Long capacity) {
         this.capacity = capacity;
         return this;
     }

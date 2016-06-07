@@ -51,7 +51,7 @@ public class SubscriptionInner {
      * @param id the id value to set
      * @return the SubscriptionInner object itself.
      */
-    public SubscriptionInner setId(String id) {
+    public SubscriptionInner withId(String id) {
         this.id = id;
         return this;
     }
@@ -71,7 +71,7 @@ public class SubscriptionInner {
      * @param subscriptionId the subscriptionId value to set
      * @return the SubscriptionInner object itself.
      */
-    public SubscriptionInner setSubscriptionId(String subscriptionId) {
+    public SubscriptionInner withSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -91,7 +91,7 @@ public class SubscriptionInner {
      * @param displayName the displayName value to set
      * @return the SubscriptionInner object itself.
      */
-    public SubscriptionInner setDisplayName(String displayName) {
+    public SubscriptionInner withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -111,7 +111,7 @@ public class SubscriptionInner {
      * @param state the state value to set
      * @return the SubscriptionInner object itself.
      */
-    public SubscriptionInner setState(String state) {
+    public SubscriptionInner withState(String state) {
         this.state = state;
         return this;
     }
@@ -131,7 +131,7 @@ public class SubscriptionInner {
      * @param subscriptionPolicies the subscriptionPolicies value to set
      * @return the SubscriptionInner object itself.
      */
-    public SubscriptionInner setSubscriptionPolicies(SubscriptionPolicies subscriptionPolicies) {
+    public SubscriptionInner withSubscriptionPolicies(SubscriptionPolicies subscriptionPolicies) {
         this.subscriptionPolicies = subscriptionPolicies;
         return this;
     }

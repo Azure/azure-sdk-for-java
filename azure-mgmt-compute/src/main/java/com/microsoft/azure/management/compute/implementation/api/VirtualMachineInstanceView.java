@@ -67,7 +67,7 @@ public class VirtualMachineInstanceView {
      * @param platformUpdateDomain the platformUpdateDomain value to set
      * @return the VirtualMachineInstanceView object itself.
      */
-    public VirtualMachineInstanceView setPlatformUpdateDomain(Integer platformUpdateDomain) {
+    public VirtualMachineInstanceView withPlatformUpdateDomain(Integer platformUpdateDomain) {
         this.platformUpdateDomain = platformUpdateDomain;
         return this;
     }
@@ -87,7 +87,7 @@ public class VirtualMachineInstanceView {
      * @param platformFaultDomain the platformFaultDomain value to set
      * @return the VirtualMachineInstanceView object itself.
      */
-    public VirtualMachineInstanceView setPlatformFaultDomain(Integer platformFaultDomain) {
+    public VirtualMachineInstanceView withPlatformFaultDomain(Integer platformFaultDomain) {
         this.platformFaultDomain = platformFaultDomain;
         return this;
     }
@@ -107,7 +107,7 @@ public class VirtualMachineInstanceView {
      * @param rdpThumbPrint the rdpThumbPrint value to set
      * @return the VirtualMachineInstanceView object itself.
      */
-    public VirtualMachineInstanceView setRdpThumbPrint(String rdpThumbPrint) {
+    public VirtualMachineInstanceView withRdpThumbPrint(String rdpThumbPrint) {
         this.rdpThumbPrint = rdpThumbPrint;
         return this;
     }
@@ -127,7 +127,7 @@ public class VirtualMachineInstanceView {
      * @param vmAgent the vmAgent value to set
      * @return the VirtualMachineInstanceView object itself.
      */
-    public VirtualMachineInstanceView setVmAgent(VirtualMachineAgentInstanceView vmAgent) {
+    public VirtualMachineInstanceView withVmAgent(VirtualMachineAgentInstanceView vmAgent) {
         this.vmAgent = vmAgent;
         return this;
     }
@@ -147,7 +147,7 @@ public class VirtualMachineInstanceView {
      * @param disks the disks value to set
      * @return the VirtualMachineInstanceView object itself.
      */
-    public VirtualMachineInstanceView setDisks(List<DiskInstanceView> disks) {
+    public VirtualMachineInstanceView withDisks(List<DiskInstanceView> disks) {
         this.disks = disks;
         return this;
     }
@@ -167,7 +167,7 @@ public class VirtualMachineInstanceView {
      * @param extensions the extensions value to set
      * @return the VirtualMachineInstanceView object itself.
      */
-    public VirtualMachineInstanceView setExtensions(List<VirtualMachineExtensionInstanceView> extensions) {
+    public VirtualMachineInstanceView withExtensions(List<VirtualMachineExtensionInstanceView> extensions) {
         this.extensions = extensions;
         return this;
     }
@@ -187,7 +187,7 @@ public class VirtualMachineInstanceView {
      * @param bootDiagnostics the bootDiagnostics value to set
      * @return the VirtualMachineInstanceView object itself.
      */
-    public VirtualMachineInstanceView setBootDiagnostics(BootDiagnosticsInstanceView bootDiagnostics) {
+    public VirtualMachineInstanceView withBootDiagnostics(BootDiagnosticsInstanceView bootDiagnostics) {
         this.bootDiagnostics = bootDiagnostics;
         return this;
     }
@@ -207,7 +207,7 @@ public class VirtualMachineInstanceView {
      * @param statuses the statuses value to set
      * @return the VirtualMachineInstanceView object itself.
      */
-    public VirtualMachineInstanceView setStatuses(List<InstanceViewStatus> statuses) {
+    public VirtualMachineInstanceView withStatuses(List<InstanceViewStatus> statuses) {
         this.statuses = statuses;
         return this;
     }

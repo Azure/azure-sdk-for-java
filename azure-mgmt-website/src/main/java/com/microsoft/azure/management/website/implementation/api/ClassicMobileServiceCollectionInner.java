@@ -37,7 +37,7 @@ public class ClassicMobileServiceCollectionInner {
      * @param value the value value to set
      * @return the ClassicMobileServiceCollectionInner object itself.
      */
-    public ClassicMobileServiceCollectionInner setValue(List<ClassicMobileServiceInner> value) {
+    public ClassicMobileServiceCollectionInner withValue(List<ClassicMobileServiceInner> value) {
         this.value = value;
         return this;
     }
@@ -57,7 +57,7 @@ public class ClassicMobileServiceCollectionInner {
      * @param nextLink the nextLink value to set
      * @return the ClassicMobileServiceCollectionInner object itself.
      */
-    public ClassicMobileServiceCollectionInner setNextLink(String nextLink) {
+    public ClassicMobileServiceCollectionInner withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }

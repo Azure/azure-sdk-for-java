@@ -52,7 +52,7 @@ public class PremierAddOnRequestInner {
      * @param location the location value to set
      * @return the PremierAddOnRequestInner object itself.
      */
-    public PremierAddOnRequestInner setLocation(String location) {
+    public PremierAddOnRequestInner withLocation(String location) {
         this.location = location;
         return this;
     }
@@ -72,7 +72,7 @@ public class PremierAddOnRequestInner {
      * @param tags the tags value to set
      * @return the PremierAddOnRequestInner object itself.
      */
-    public PremierAddOnRequestInner setTags(Map<String, String> tags) {
+    public PremierAddOnRequestInner withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -92,7 +92,7 @@ public class PremierAddOnRequestInner {
      * @param plan the plan value to set
      * @return the PremierAddOnRequestInner object itself.
      */
-    public PremierAddOnRequestInner setPlan(ArmPlan plan) {
+    public PremierAddOnRequestInner withPlan(ArmPlan plan) {
         this.plan = plan;
         return this;
     }
@@ -112,7 +112,7 @@ public class PremierAddOnRequestInner {
      * @param properties the properties value to set
      * @return the PremierAddOnRequestInner object itself.
      */
-    public PremierAddOnRequestInner setProperties(Object properties) {
+    public PremierAddOnRequestInner withProperties(Object properties) {
         this.properties = properties;
         return this;
     }
@@ -132,7 +132,7 @@ public class PremierAddOnRequestInner {
      * @param sku the sku value to set
      * @return the PremierAddOnRequestInner object itself.
      */
-    public PremierAddOnRequestInner setSku(SkuDescription sku) {
+    public PremierAddOnRequestInner withSku(SkuDescription sku) {
         this.sku = sku;
         return this;
     }

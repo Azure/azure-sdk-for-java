@@ -45,7 +45,7 @@ public class CheckNameAvailabilityResultInner {
      * @param nameAvailable the nameAvailable value to set
      * @return the CheckNameAvailabilityResultInner object itself.
      */
-    public CheckNameAvailabilityResultInner setNameAvailable(Boolean nameAvailable) {
+    public CheckNameAvailabilityResultInner withNameAvailable(Boolean nameAvailable) {
         this.nameAvailable = nameAvailable;
         return this;
     }
@@ -65,7 +65,7 @@ public class CheckNameAvailabilityResultInner {
      * @param reason the reason value to set
      * @return the CheckNameAvailabilityResultInner object itself.
      */
-    public CheckNameAvailabilityResultInner setReason(Reason reason) {
+    public CheckNameAvailabilityResultInner withReason(Reason reason) {
         this.reason = reason;
         return this;
     }
@@ -85,7 +85,7 @@ public class CheckNameAvailabilityResultInner {
      * @param message the message value to set
      * @return the CheckNameAvailabilityResultInner object itself.
      */
-    public CheckNameAvailabilityResultInner setMessage(String message) {
+    public CheckNameAvailabilityResultInner withMessage(String message) {
         this.message = message;
         return this;
     }

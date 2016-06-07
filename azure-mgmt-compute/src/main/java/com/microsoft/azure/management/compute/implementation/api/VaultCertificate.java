@@ -39,7 +39,7 @@ public class VaultCertificate {
      * @param certificateUrl the certificateUrl value to set
      * @return the VaultCertificate object itself.
      */
-    public VaultCertificate setCertificateUrl(String certificateUrl) {
+    public VaultCertificate withCertificateUrl(String certificateUrl) {
         this.certificateUrl = certificateUrl;
         return this;
     }
@@ -59,7 +59,7 @@ public class VaultCertificate {
      * @param certificateStore the certificateStore value to set
      * @return the VaultCertificate object itself.
      */
-    public VaultCertificate setCertificateStore(String certificateStore) {
+    public VaultCertificate withCertificateStore(String certificateStore) {
         this.certificateStore = certificateStore;
         return this;
     }

@@ -92,7 +92,7 @@ public class JobAddParameter {
      * @param id the id value to set
      * @return the JobAddParameter object itself.
      */
-    public JobAddParameter setId(String id) {
+    public JobAddParameter withId(String id) {
         this.id = id;
         return this;
     }
@@ -112,7 +112,7 @@ public class JobAddParameter {
      * @param displayName the displayName value to set
      * @return the JobAddParameter object itself.
      */
-    public JobAddParameter setDisplayName(String displayName) {
+    public JobAddParameter withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -132,7 +132,7 @@ public class JobAddParameter {
      * @param priority the priority value to set
      * @return the JobAddParameter object itself.
      */
-    public JobAddParameter setPriority(Integer priority) {
+    public JobAddParameter withPriority(Integer priority) {
         this.priority = priority;
         return this;
     }
@@ -152,7 +152,7 @@ public class JobAddParameter {
      * @param constraints the constraints value to set
      * @return the JobAddParameter object itself.
      */
-    public JobAddParameter setConstraints(JobConstraints constraints) {
+    public JobAddParameter withConstraints(JobConstraints constraints) {
         this.constraints = constraints;
         return this;
     }
@@ -172,7 +172,7 @@ public class JobAddParameter {
      * @param jobManagerTask the jobManagerTask value to set
      * @return the JobAddParameter object itself.
      */
-    public JobAddParameter setJobManagerTask(JobManagerTask jobManagerTask) {
+    public JobAddParameter withJobManagerTask(JobManagerTask jobManagerTask) {
         this.jobManagerTask = jobManagerTask;
         return this;
     }
@@ -192,7 +192,7 @@ public class JobAddParameter {
      * @param jobPreparationTask the jobPreparationTask value to set
      * @return the JobAddParameter object itself.
      */
-    public JobAddParameter setJobPreparationTask(JobPreparationTask jobPreparationTask) {
+    public JobAddParameter withJobPreparationTask(JobPreparationTask jobPreparationTask) {
         this.jobPreparationTask = jobPreparationTask;
         return this;
     }
@@ -212,7 +212,7 @@ public class JobAddParameter {
      * @param jobReleaseTask the jobReleaseTask value to set
      * @return the JobAddParameter object itself.
      */
-    public JobAddParameter setJobReleaseTask(JobReleaseTask jobReleaseTask) {
+    public JobAddParameter withJobReleaseTask(JobReleaseTask jobReleaseTask) {
         this.jobReleaseTask = jobReleaseTask;
         return this;
     }
@@ -232,7 +232,7 @@ public class JobAddParameter {
      * @param commonEnvironmentSettings the commonEnvironmentSettings value to set
      * @return the JobAddParameter object itself.
      */
-    public JobAddParameter setCommonEnvironmentSettings(List<EnvironmentSetting> commonEnvironmentSettings) {
+    public JobAddParameter withCommonEnvironmentSettings(List<EnvironmentSetting> commonEnvironmentSettings) {
         this.commonEnvironmentSettings = commonEnvironmentSettings;
         return this;
     }
@@ -252,7 +252,7 @@ public class JobAddParameter {
      * @param poolInfo the poolInfo value to set
      * @return the JobAddParameter object itself.
      */
-    public JobAddParameter setPoolInfo(PoolInformation poolInfo) {
+    public JobAddParameter withPoolInfo(PoolInformation poolInfo) {
         this.poolInfo = poolInfo;
         return this;
     }
@@ -272,7 +272,7 @@ public class JobAddParameter {
      * @param metadata the metadata value to set
      * @return the JobAddParameter object itself.
      */
-    public JobAddParameter setMetadata(List<MetadataItem> metadata) {
+    public JobAddParameter withMetadata(List<MetadataItem> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -292,7 +292,7 @@ public class JobAddParameter {
      * @param usesTaskDependencies the usesTaskDependencies value to set
      * @return the JobAddParameter object itself.
      */
-    public JobAddParameter setUsesTaskDependencies(Boolean usesTaskDependencies) {
+    public JobAddParameter withUsesTaskDependencies(Boolean usesTaskDependencies) {
         this.usesTaskDependencies = usesTaskDependencies;
         return this;
     }

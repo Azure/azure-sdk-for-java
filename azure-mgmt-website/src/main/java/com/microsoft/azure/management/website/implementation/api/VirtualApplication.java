@@ -47,7 +47,7 @@ public class VirtualApplication {
      * @param virtualPath the virtualPath value to set
      * @return the VirtualApplication object itself.
      */
-    public VirtualApplication setVirtualPath(String virtualPath) {
+    public VirtualApplication withVirtualPath(String virtualPath) {
         this.virtualPath = virtualPath;
         return this;
     }
@@ -67,7 +67,7 @@ public class VirtualApplication {
      * @param physicalPath the physicalPath value to set
      * @return the VirtualApplication object itself.
      */
-    public VirtualApplication setPhysicalPath(String physicalPath) {
+    public VirtualApplication withPhysicalPath(String physicalPath) {
         this.physicalPath = physicalPath;
         return this;
     }
@@ -87,7 +87,7 @@ public class VirtualApplication {
      * @param preloadEnabled the preloadEnabled value to set
      * @return the VirtualApplication object itself.
      */
-    public VirtualApplication setPreloadEnabled(Boolean preloadEnabled) {
+    public VirtualApplication withPreloadEnabled(Boolean preloadEnabled) {
         this.preloadEnabled = preloadEnabled;
         return this;
     }
@@ -107,7 +107,7 @@ public class VirtualApplication {
      * @param virtualDirectories the virtualDirectories value to set
      * @return the VirtualApplication object itself.
      */
-    public VirtualApplication setVirtualDirectories(List<VirtualDirectory> virtualDirectories) {
+    public VirtualApplication withVirtualDirectories(List<VirtualDirectory> virtualDirectories) {
         this.virtualDirectories = virtualDirectories;
         return this;
     }

@@ -34,7 +34,7 @@ public class TaskAddCollectionParameter {
      * @param value the value value to set
      * @return the TaskAddCollectionParameter object itself.
      */
-    public TaskAddCollectionParameter setValue(List<TaskAddParameter> value) {
+    public TaskAddCollectionParameter withValue(List<TaskAddParameter> value) {
         this.value = value;
         return this;
     }

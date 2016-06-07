@@ -38,7 +38,7 @@ public class StorageAccountCheckNameAvailabilityParameters {
      * @param name the name value to set
      * @return the StorageAccountCheckNameAvailabilityParameters object itself.
      */
-    public StorageAccountCheckNameAvailabilityParameters setName(String name) {
+    public StorageAccountCheckNameAvailabilityParameters withName(String name) {
         this.name = name;
         return this;
     }
@@ -58,7 +58,7 @@ public class StorageAccountCheckNameAvailabilityParameters {
      * @param type the type value to set
      * @return the StorageAccountCheckNameAvailabilityParameters object itself.
      */
-    public StorageAccountCheckNameAvailabilityParameters setType(String type) {
+    public StorageAccountCheckNameAvailabilityParameters withType(String type) {
         this.type = type;
         return this;
     }

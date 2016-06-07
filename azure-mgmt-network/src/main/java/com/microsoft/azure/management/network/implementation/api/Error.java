@@ -52,7 +52,7 @@ public class Error {
      * @param code the code value to set
      * @return the Error object itself.
      */
-    public Error setCode(String code) {
+    public Error withCode(String code) {
         this.code = code;
         return this;
     }
@@ -72,7 +72,7 @@ public class Error {
      * @param message the message value to set
      * @return the Error object itself.
      */
-    public Error setMessage(String message) {
+    public Error withMessage(String message) {
         this.message = message;
         return this;
     }
@@ -92,7 +92,7 @@ public class Error {
      * @param target the target value to set
      * @return the Error object itself.
      */
-    public Error setTarget(String target) {
+    public Error withTarget(String target) {
         this.target = target;
         return this;
     }
@@ -112,7 +112,7 @@ public class Error {
      * @param details the details value to set
      * @return the Error object itself.
      */
-    public Error setDetails(List<ErrorDetails> details) {
+    public Error withDetails(List<ErrorDetails> details) {
         this.details = details;
         return this;
     }
@@ -132,7 +132,7 @@ public class Error {
      * @param innerError the innerError value to set
      * @return the Error object itself.
      */
-    public Error setInnerError(String innerError) {
+    public Error withInnerError(String innerError) {
         this.innerError = innerError;
         return this;
     }

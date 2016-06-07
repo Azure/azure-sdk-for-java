@@ -31,7 +31,7 @@ public class DiagnosticsProfile {
      * @param bootDiagnostics the bootDiagnostics value to set
      * @return the DiagnosticsProfile object itself.
      */
-    public DiagnosticsProfile setBootDiagnostics(BootDiagnostics bootDiagnostics) {
+    public DiagnosticsProfile withBootDiagnostics(BootDiagnostics bootDiagnostics) {
         this.bootDiagnostics = bootDiagnostics;
         return this;
     }

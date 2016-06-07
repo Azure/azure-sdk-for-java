@@ -73,7 +73,7 @@ public class VirtualNetworkGatewayIPConfiguration extends SubResource {
      * @param privateIPAddress the privateIPAddress value to set
      * @return the VirtualNetworkGatewayIPConfiguration object itself.
      */
-    public VirtualNetworkGatewayIPConfiguration setPrivateIPAddress(String privateIPAddress) {
+    public VirtualNetworkGatewayIPConfiguration withPrivateIPAddress(String privateIPAddress) {
         this.privateIPAddress = privateIPAddress;
         return this;
     }
@@ -93,7 +93,7 @@ public class VirtualNetworkGatewayIPConfiguration extends SubResource {
      * @param privateIPAllocationMethod the privateIPAllocationMethod value to set
      * @return the VirtualNetworkGatewayIPConfiguration object itself.
      */
-    public VirtualNetworkGatewayIPConfiguration setPrivateIPAllocationMethod(String privateIPAllocationMethod) {
+    public VirtualNetworkGatewayIPConfiguration withPrivateIPAllocationMethod(String privateIPAllocationMethod) {
         this.privateIPAllocationMethod = privateIPAllocationMethod;
         return this;
     }
@@ -113,7 +113,7 @@ public class VirtualNetworkGatewayIPConfiguration extends SubResource {
      * @param subnet the subnet value to set
      * @return the VirtualNetworkGatewayIPConfiguration object itself.
      */
-    public VirtualNetworkGatewayIPConfiguration setSubnet(SubResource subnet) {
+    public VirtualNetworkGatewayIPConfiguration withSubnet(SubResource subnet) {
         this.subnet = subnet;
         return this;
     }
@@ -133,7 +133,7 @@ public class VirtualNetworkGatewayIPConfiguration extends SubResource {
      * @param publicIPAddress the publicIPAddress value to set
      * @return the VirtualNetworkGatewayIPConfiguration object itself.
      */
-    public VirtualNetworkGatewayIPConfiguration setPublicIPAddress(SubResource publicIPAddress) {
+    public VirtualNetworkGatewayIPConfiguration withPublicIPAddress(SubResource publicIPAddress) {
         this.publicIPAddress = publicIPAddress;
         return this;
     }
@@ -153,7 +153,7 @@ public class VirtualNetworkGatewayIPConfiguration extends SubResource {
      * @param provisioningState the provisioningState value to set
      * @return the VirtualNetworkGatewayIPConfiguration object itself.
      */
-    public VirtualNetworkGatewayIPConfiguration setProvisioningState(String provisioningState) {
+    public VirtualNetworkGatewayIPConfiguration withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -173,7 +173,7 @@ public class VirtualNetworkGatewayIPConfiguration extends SubResource {
      * @param name the name value to set
      * @return the VirtualNetworkGatewayIPConfiguration object itself.
      */
-    public VirtualNetworkGatewayIPConfiguration setName(String name) {
+    public VirtualNetworkGatewayIPConfiguration withName(String name) {
         this.name = name;
         return this;
     }
@@ -193,7 +193,7 @@ public class VirtualNetworkGatewayIPConfiguration extends SubResource {
      * @param etag the etag value to set
      * @return the VirtualNetworkGatewayIPConfiguration object itself.
      */
-    public VirtualNetworkGatewayIPConfiguration setEtag(String etag) {
+    public VirtualNetworkGatewayIPConfiguration withEtag(String etag) {
         this.etag = etag;
         return this;
     }

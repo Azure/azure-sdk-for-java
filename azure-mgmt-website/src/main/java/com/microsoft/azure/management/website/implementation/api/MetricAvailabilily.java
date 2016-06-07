@@ -37,7 +37,7 @@ public class MetricAvailabilily {
      * @param timeGrain the timeGrain value to set
      * @return the MetricAvailabilily object itself.
      */
-    public MetricAvailabilily setTimeGrain(String timeGrain) {
+    public MetricAvailabilily withTimeGrain(String timeGrain) {
         this.timeGrain = timeGrain;
         return this;
     }
@@ -57,7 +57,7 @@ public class MetricAvailabilily {
      * @param retention the retention value to set
      * @return the MetricAvailabilily object itself.
      */
-    public MetricAvailabilily setRetention(String retention) {
+    public MetricAvailabilily withRetention(String retention) {
         this.retention = retention;
         return this;
     }

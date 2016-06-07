@@ -36,7 +36,7 @@ public class FirewallRuleProperties {
      * @param startIpAddress the startIpAddress value to set
      * @return the FirewallRuleProperties object itself.
      */
-    public FirewallRuleProperties setStartIpAddress(String startIpAddress) {
+    public FirewallRuleProperties withStartIpAddress(String startIpAddress) {
         this.startIpAddress = startIpAddress;
         return this;
     }
@@ -56,7 +56,7 @@ public class FirewallRuleProperties {
      * @param endIpAddress the endIpAddress value to set
      * @return the FirewallRuleProperties object itself.
      */
-    public FirewallRuleProperties setEndIpAddress(String endIpAddress) {
+    public FirewallRuleProperties withEndIpAddress(String endIpAddress) {
         this.endIpAddress = endIpAddress;
         return this;
     }

@@ -37,7 +37,7 @@ public class SlotDifferenceCollectionInner {
      * @param value the value value to set
      * @return the SlotDifferenceCollectionInner object itself.
      */
-    public SlotDifferenceCollectionInner setValue(List<SlotDifference> value) {
+    public SlotDifferenceCollectionInner withValue(List<SlotDifference> value) {
         this.value = value;
         return this;
     }
@@ -57,7 +57,7 @@ public class SlotDifferenceCollectionInner {
      * @param nextLink the nextLink value to set
      * @return the SlotDifferenceCollectionInner object itself.
      */
-    public SlotDifferenceCollectionInner setNextLink(String nextLink) {
+    public SlotDifferenceCollectionInner withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }

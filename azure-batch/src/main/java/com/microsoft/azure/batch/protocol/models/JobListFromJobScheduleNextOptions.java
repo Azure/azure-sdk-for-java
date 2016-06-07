@@ -51,7 +51,7 @@ public class JobListFromJobScheduleNextOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the JobListFromJobScheduleNextOptions object itself.
      */
-    public JobListFromJobScheduleNextOptions setClientRequestId(String clientRequestId) {
+    public JobListFromJobScheduleNextOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -71,7 +71,7 @@ public class JobListFromJobScheduleNextOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the JobListFromJobScheduleNextOptions object itself.
      */
-    public JobListFromJobScheduleNextOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public JobListFromJobScheduleNextOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -94,7 +94,7 @@ public class JobListFromJobScheduleNextOptions {
      * @param ocpDate the ocpDate value to set
      * @return the JobListFromJobScheduleNextOptions object itself.
      */
-    public JobListFromJobScheduleNextOptions setOcpDate(DateTime ocpDate) {
+    public JobListFromJobScheduleNextOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }

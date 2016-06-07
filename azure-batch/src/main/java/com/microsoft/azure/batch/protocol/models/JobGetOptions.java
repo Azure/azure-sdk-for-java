@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the Get operation.
+ * Additional parameters for the Job_Get operation.
  */
 public class JobGetOptions {
     /**
@@ -70,7 +70,7 @@ public class JobGetOptions {
      * @param select the select value to set
      * @return the JobGetOptions object itself.
      */
-    public JobGetOptions setSelect(String select) {
+    public JobGetOptions withSelect(String select) {
         this.select = select;
         return this;
     }
@@ -90,7 +90,7 @@ public class JobGetOptions {
      * @param expand the expand value to set
      * @return the JobGetOptions object itself.
      */
-    public JobGetOptions setExpand(String expand) {
+    public JobGetOptions withExpand(String expand) {
         this.expand = expand;
         return this;
     }
@@ -110,7 +110,7 @@ public class JobGetOptions {
      * @param timeout the timeout value to set
      * @return the JobGetOptions object itself.
      */
-    public JobGetOptions setTimeout(Integer timeout) {
+    public JobGetOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -130,7 +130,7 @@ public class JobGetOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the JobGetOptions object itself.
      */
-    public JobGetOptions setClientRequestId(String clientRequestId) {
+    public JobGetOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -150,7 +150,7 @@ public class JobGetOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the JobGetOptions object itself.
      */
-    public JobGetOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public JobGetOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -173,7 +173,7 @@ public class JobGetOptions {
      * @param ocpDate the ocpDate value to set
      * @return the JobGetOptions object itself.
      */
-    public JobGetOptions setOcpDate(DateTime ocpDate) {
+    public JobGetOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }

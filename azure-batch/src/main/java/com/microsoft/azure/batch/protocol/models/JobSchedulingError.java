@@ -52,7 +52,7 @@ public class JobSchedulingError {
      * @param category the category value to set
      * @return the JobSchedulingError object itself.
      */
-    public JobSchedulingError setCategory(SchedulingErrorCategory category) {
+    public JobSchedulingError withCategory(SchedulingErrorCategory category) {
         this.category = category;
         return this;
     }
@@ -72,7 +72,7 @@ public class JobSchedulingError {
      * @param code the code value to set
      * @return the JobSchedulingError object itself.
      */
-    public JobSchedulingError setCode(String code) {
+    public JobSchedulingError withCode(String code) {
         this.code = code;
         return this;
     }
@@ -92,7 +92,7 @@ public class JobSchedulingError {
      * @param message the message value to set
      * @return the JobSchedulingError object itself.
      */
-    public JobSchedulingError setMessage(String message) {
+    public JobSchedulingError withMessage(String message) {
         this.message = message;
         return this;
     }
@@ -112,7 +112,7 @@ public class JobSchedulingError {
      * @param details the details value to set
      * @return the JobSchedulingError object itself.
      */
-    public JobSchedulingError setDetails(List<NameValuePair> details) {
+    public JobSchedulingError withDetails(List<NameValuePair> details) {
         this.details = details;
         return this;
     }

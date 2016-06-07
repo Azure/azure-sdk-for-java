@@ -170,36 +170,36 @@ class VirtualMachineImpl
     @Override
     public DefinitionWithOSType withStoredImage(String imageUrl) {
         VirtualHardDisk userImageVhd = new VirtualHardDisk();
-        userImageVhd.setUri(imageUrl);
-        this.inner().storageProfile().osDisk().setCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
-        this.inner().storageProfile().osDisk().setImage(userImageVhd);
+        userImageVhd.withUri(imageUrl);
+        this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
+        this.inner().storageProfile().osDisk().withImage(userImageVhd);
         return this;
     }
 
     @Override
     public DefinitionCreatable withOSDisk(String osDiskUrl, OperatingSystemTypes osType) {
         VirtualHardDisk osDisk = new VirtualHardDisk();
-        osDisk.setUri(osDiskUrl);
-        this.inner().storageProfile().osDisk().setCreateOption(DiskCreateOptionTypes.ATTACH);
-        this.inner().storageProfile().osDisk().setVhd(osDisk);
-        this.inner().storageProfile().osDisk().setOsType(osType);
+        osDisk.withUri(osDiskUrl);
+        this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.ATTACH);
+        this.inner().storageProfile().osDisk().withVhd(osDisk);
+        this.inner().storageProfile().osDisk().withOsType(osType);
         return this;
     }
 
     @Override
     public DefinitionWithOSType version(ImageReference imageReference) {
-        this.inner().storageProfile().osDisk().setCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
-        this.inner().storageProfile().setImageReference(imageReference);
+        this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
+        this.inner().storageProfile().withImageReference(imageReference);
         return this;
     }
 
     @Override
     public DefinitionWithOSType latest(String publisher, String offer, String sku) {
         ImageReference imageReference = new ImageReference();
-        imageReference.setPublisher(publisher);
-        imageReference.setOffer(offer);
-        imageReference.setSku(sku);
-        imageReference.setVersion("latest");
+        imageReference.withPublisher(publisher);
+        imageReference.withOffer(offer);
+        imageReference.withSku(sku);
+        imageReference.withVersion("latest");
         return version(imageReference);
     }
 
@@ -213,9 +213,9 @@ class VirtualMachineImpl
         OSDisk osDisk = this.inner().storageProfile().osDisk();
         if (isStoredImage(osDisk)) {
             // For platform image osType should be null, azure will pick it from the image metadata.
-            osDisk.setOsType(OperatingSystemTypes.LINUX);
+            osDisk.withOsType(OperatingSystemTypes.LINUX);
         }
-        this.inner().osProfile().setLinuxConfiguration(new LinuxConfiguration());
+        this.inner().osProfile().withLinuxConfiguration(new LinuxConfiguration());
         return this;
     }
 
@@ -224,24 +224,24 @@ class VirtualMachineImpl
         OSDisk osDisk = this.inner().storageProfile().osDisk();
         if (isStoredImage(osDisk)) {
             // For platform image osType should be null, azure will pick it from the image metadata.
-            osDisk.setOsType(OperatingSystemTypes.WINDOWS);
+            osDisk.withOsType(OperatingSystemTypes.WINDOWS);
         }
-        this.inner().osProfile().setWindowsConfiguration(new WindowsConfiguration());
+        this.inner().osProfile().withWindowsConfiguration(new WindowsConfiguration());
         // sets defaults for "Stored(User)Image" or "VM(Platform)Image"
-        this.inner().osProfile().windowsConfiguration().setProvisionVMAgent(true);
-        this.inner().osProfile().windowsConfiguration().setEnableAutomaticUpdates(true);
+        this.inner().osProfile().windowsConfiguration().withProvisionVMAgent(true);
+        this.inner().osProfile().windowsConfiguration().withEnableAutomaticUpdates(true);
         return this;
     }
 
     @Override
     public DefinitionLinuxCreatable withRootUserName(String rootUserName) {
-        this.inner().osProfile().setAdminUsername(rootUserName);
+        this.inner().osProfile().withAdminUsername(rootUserName);
         return this;
     }
 
     @Override
     public DefinitionWindowsCreatable withAdminUserName(String adminUserName) {
-        this.inner().osProfile().setAdminUsername(adminUserName);
+        this.inner().osProfile().withAdminUsername(adminUserName);
         return this;
     }
 
@@ -250,31 +250,31 @@ class VirtualMachineImpl
         OSProfile osProfile = this.inner().osProfile();
         if (osProfile.linuxConfiguration().ssh() == null) {
             SshConfiguration sshConfiguration = new SshConfiguration();
-            sshConfiguration.setPublicKeys(new ArrayList<SshPublicKey>());
-            osProfile.linuxConfiguration().setSsh(sshConfiguration);
+            sshConfiguration.withPublicKeys(new ArrayList<SshPublicKey>());
+            osProfile.linuxConfiguration().withSsh(sshConfiguration);
         }
         SshPublicKey sshPublicKey = new SshPublicKey();
-        sshPublicKey.setKeyData(publicKeyData);
-        sshPublicKey.setPath("/home/" + osProfile.adminUsername() + "/.ssh/authorized_keys");
+        sshPublicKey.withKeyData(publicKeyData);
+        sshPublicKey.withPath("/home/" + osProfile.adminUsername() + "/.ssh/authorized_keys");
         osProfile.linuxConfiguration().ssh().publicKeys().add(sshPublicKey);
         return this;
     }
 
     @Override
     public DefinitionWindowsCreatable disableVMAgent() {
-        this.inner().osProfile().windowsConfiguration().setProvisionVMAgent(false);
+        this.inner().osProfile().windowsConfiguration().withProvisionVMAgent(false);
         return this;
     }
 
     @Override
     public DefinitionWindowsCreatable disableAutoUpdate() {
-        this.inner().osProfile().windowsConfiguration().setEnableAutomaticUpdates(false);
+        this.inner().osProfile().windowsConfiguration().withEnableAutomaticUpdates(false);
         return this;
     }
 
     @Override
     public DefinitionWindowsCreatable withTimeZone(String timeZone) {
-        this.inner().osProfile().windowsConfiguration().setTimeZone(timeZone);
+        this.inner().osProfile().windowsConfiguration().withTimeZone(timeZone);
         return this;
     }
 
@@ -282,7 +282,7 @@ class VirtualMachineImpl
     public DefinitionWindowsCreatable withWinRM(WinRMListener listener) {
         if (this.inner().osProfile().windowsConfiguration().winRM() == null) {
             WinRMConfiguration winRMConfiguration = new WinRMConfiguration();
-            this.inner().osProfile().windowsConfiguration().setWinRM(winRMConfiguration);
+            this.inner().osProfile().windowsConfiguration().withWinRM(winRMConfiguration);
         }
 
         this.inner().osProfile()
@@ -295,51 +295,51 @@ class VirtualMachineImpl
 
     @Override
     public DefinitionCreatable withPassword(String password) {
-        this.inner().osProfile().setAdminPassword(password);
+        this.inner().osProfile().withAdminPassword(password);
         return this;
     }
 
     @Override
     public DefinitionCreatable withSize(String sizeName) {
-        this.inner().hardwareProfile().setVmSize(sizeName);
+        this.inner().hardwareProfile().withVmSize(sizeName);
         return this;
     }
 
     @Override
     public DefinitionCreatable withSize(VirtualMachineSizeTypes size) {
-        this.inner().hardwareProfile().setVmSize(size.toString());
+        this.inner().hardwareProfile().withVmSize(size.toString());
         return this;
     }
 
     @Override
     public DefinitionCreatable withOSDiskCaching(CachingTypes cachingType) {
-        this.inner().storageProfile().osDisk().setCaching(cachingType);
+        this.inner().storageProfile().osDisk().withCaching(cachingType);
         return this;
     }
 
     @Override
     public DefinitionCreatable withOSDiskVhdLocation(String containerName, String vhdName) {
         VirtualHardDisk osVhd = new VirtualHardDisk();
-        osVhd.setUri(blobUrl(this.storageAccountName, containerName, vhdName));
-        this.inner().storageProfile().osDisk().setVhd(osVhd);
+        osVhd.withUri(blobUrl(this.storageAccountName, containerName, vhdName));
+        this.inner().storageProfile().osDisk().withVhd(osVhd);
         return this;
     }
 
     @Override
     public DefinitionCreatable withOSDiskEncryptionSettings(DiskEncryptionSettings settings) {
-        this.inner().storageProfile().osDisk().setEncryptionSettings(settings);
+        this.inner().storageProfile().osDisk().withEncryptionSettings(settings);
         return this;
     }
 
     @Override
     public DefinitionCreatable withOSDiskSizeInGB(Integer size) {
-        this.inner().storageProfile().osDisk().setDiskSizeGB(size);
+        this.inner().storageProfile().osDisk().withDiskSizeGB(size);
         return this;
     }
 
     @Override
     public DefinitionCreatable withOSDiskName(String name) {
-        this.inner().storageProfile().osDisk().setName(name);
+        this.inner().storageProfile().osDisk().withName(name);
         return this;
     }
 
@@ -349,14 +349,14 @@ class VirtualMachineImpl
     @Override
     public ConfigureDataDisk<DefinitionCreatable> withLun(Integer lun) {
         DataDisk dataDisk = currentDataDisk();
-        dataDisk.setLun(lun);
+        dataDisk.withLun(lun);
         return this;
     }
 
     @Override
     public ConfigureDataDisk<DefinitionCreatable> withCaching(CachingTypes cachingType) {
         DataDisk dataDisk = currentDataDisk();
-        dataDisk.setCaching(cachingType);
+        dataDisk.withCaching(cachingType);
         return this;
     }
 
@@ -368,47 +368,47 @@ class VirtualMachineImpl
     @Override
     public ConfigureDataDisk<DefinitionCreatable> storeAt(String storageAccountName, String containerName, String vhdName) {
         DataDisk dataDisk = currentDataDisk();
-        dataDisk.setVhd(new VirtualHardDisk());
-        dataDisk.vhd().setUri(blobUrl(storageAccountName, containerName, vhdName)); // URL points to where the new data disk needs to be stored.
+        dataDisk.withVhd(new VirtualHardDisk());
+        dataDisk.vhd().withUri(blobUrl(storageAccountName, containerName, vhdName)); // URL points to where the new data disk needs to be stored.
         return this;
     }
 
     @Override
     public ConfigureNewDataDiskWithStoreAt<DefinitionCreatable> withSizeInGB(Integer sizeInGB) {
         DataDisk dataDisk = currentDataDisk();
-        dataDisk.setDiskSizeGB(sizeInGB);
+        dataDisk.withDiskSizeGB(sizeInGB);
         return this;
     }
 
     @Override
     public ConfigureDataDisk<DefinitionCreatable> from(String storageAccountName, String containerName, String vhdName) {
         DataDisk dataDisk = currentDataDisk();
-        dataDisk.setVhd(new VirtualHardDisk());
-        dataDisk.vhd().setUri(blobUrl(storageAccountName, containerName, vhdName)); // URL points to an existing data disk to be attached.
+        dataDisk.withVhd(new VirtualHardDisk());
+        dataDisk.vhd().withUri(blobUrl(storageAccountName, containerName, vhdName)); // URL points to an existing data disk to be attached.
         return this;
     }
 
     @Override
     public ConfigureNewDataDisk<DefinitionCreatable> defineNewDataDisk(String name) {
         DataDisk dataDisk = prepareNewDataDisk();
-        dataDisk.setName(name);
-        dataDisk.setCreateOption(DiskCreateOptionTypes.EMPTY);
+        dataDisk.withName(name);
+        dataDisk.withCreateOption(DiskCreateOptionTypes.EMPTY);
         return this;
     }
 
     @Override
     public ConfigureExistingDataDisk<DefinitionCreatable> defineExistingDataDisk(String name) {
         DataDisk dataDisk = prepareNewDataDisk();
-        dataDisk.setName(name);
-        dataDisk.setCreateOption(DiskCreateOptionTypes.ATTACH);
+        dataDisk.withName(name);
+        dataDisk.withCreateOption(DiskCreateOptionTypes.ATTACH);
         return this;
     }
 
     @Override
     public DefinitionCreatable withNewDataDisk(Integer sizeInGB) {
         DataDisk dataDisk = prepareNewDataDisk();
-        dataDisk.setDiskSizeGB(sizeInGB);
-        dataDisk.setCreateOption(DiskCreateOptionTypes.EMPTY);
+        dataDisk.withDiskSizeGB(sizeInGB);
+        dataDisk.withCreateOption(DiskCreateOptionTypes.EMPTY);
         return this;
     }
 
@@ -416,9 +416,9 @@ class VirtualMachineImpl
     public DefinitionCreatable withExistingDataDisk(String storageAccountName, String containerName, String vhdName) {
         DataDisk dataDisk = prepareNewDataDisk();
         VirtualHardDisk diskVhd = new VirtualHardDisk();
-        diskVhd.setUri(blobUrl(storageAccountName, containerName, vhdName));
-        dataDisk.setVhd(diskVhd);
-        dataDisk.setCreateOption(DiskCreateOptionTypes.ATTACH);
+        diskVhd.withUri(blobUrl(storageAccountName, containerName, vhdName));
+        dataDisk.withVhd(diskVhd);
+        dataDisk.withCreateOption(DiskCreateOptionTypes.ATTACH);
         return this;
     }
 
@@ -498,9 +498,9 @@ class VirtualMachineImpl
             OSProfile osProfile = this.inner().osProfile();
             if (osDisk.osType() == OperatingSystemTypes.LINUX) {
                 if (osProfile.linuxConfiguration() == null) {
-                    osProfile.setLinuxConfiguration(new LinuxConfiguration());
+                    osProfile.withLinuxConfiguration(new LinuxConfiguration());
                 }
-                this.inner().osProfile().linuxConfiguration().setDisablePasswordAuthentication(osProfile.adminPassword() == null);
+                this.inner().osProfile().linuxConfiguration().withDisablePasswordAuthentication(osProfile.adminPassword() == null);
             }
         }
 
@@ -516,14 +516,14 @@ class VirtualMachineImpl
     private void setHardwareProfileDefaults() {
         HardwareProfile hardwareProfile = this.inner().hardwareProfile();
         if (hardwareProfile.vmSize() == null) {
-            hardwareProfile.setVmSize(VirtualMachineSizeTypes.BASIC_A0);
+            hardwareProfile.withVmSize(VirtualMachineSizeTypes.BASIC_A0);
         }
     }
 
     private void setDataDisksDefaults() {
         List<DataDisk> dataDisks = this.inner().storageProfile().dataDisks();
         if (dataDisks.size() == 0) {
-            this.inner().storageProfile().setDataDisks(null);
+            this.inner().storageProfile().withDataDisks(null);
             return;
         }
 
@@ -540,23 +540,23 @@ class VirtualMachineImpl
                 while (usedLuns.contains(i)) {
                     i++;
                 }
-                dataDisk.setLun(i);
+                dataDisk.withLun(i);
                 usedLuns.add(i);
             }
 
             if (dataDisk.vhd() == null) {
                 VirtualHardDisk diskVhd = new VirtualHardDisk();
-                diskVhd.setUri(blobUrl(this.storageAccountName, "vhds",
+                diskVhd.withUri(blobUrl(this.storageAccountName, "vhds",
                         this.key() + "-data-disk-" + dataDisk.lun() + "-" + UUID.randomUUID().toString() + ".vhd"));
-                dataDisk.setVhd(diskVhd);
+                dataDisk.withVhd(diskVhd);
             }
 
             if (dataDisk.name() == null) {
-                dataDisk.setName(this.key() + "-data-disk-" + dataDisk.lun());
+                dataDisk.withName(this.key() + "-data-disk-" + dataDisk.lun());
             }
 
             if (dataDisk.caching() == null) {
-                dataDisk.setCaching(CachingTypes.READ_WRITE);
+                dataDisk.withCaching(CachingTypes.READ_WRITE);
             }
         }
     }
@@ -574,7 +574,7 @@ class VirtualMachineImpl
 
     private DataDisk prepareNewDataDisk() {
         DataDisk dataDisk = new DataDisk();
-        dataDisk.setLun(-1);
+        dataDisk.withLun(-1);
         this.inner().storageProfile().dataDisks().add(dataDisk);
         return dataDisk;
     }
@@ -629,24 +629,24 @@ class VirtualMachineImpl
         }
 
         SubnetInner subnetInner = new SubnetInner();
-        subnetInner.setId(virtualNetwork.inner().subnets().get(0).id());
+        subnetInner.withId(virtualNetwork.inner().subnets().get(0).id());
 
         NetworkInterfaceInner networkInterfaceInner = new NetworkInterfaceInner();
-        networkInterfaceInner.setLocation(this.region());
-        networkInterfaceInner.setPrimary(true);
+        networkInterfaceInner.withLocation(this.region());
+        networkInterfaceInner.withPrimary(true);
         NetworkInterfaceIPConfiguration nicIPConfig = new NetworkInterfaceIPConfiguration();
-        nicIPConfig.setName("Nic-IP-config");
-        nicIPConfig.setSubnet(subnetInner);
+        nicIPConfig.withName("Nic-IP-config");
+        nicIPConfig.withSubnet(subnetInner);
         ArrayList<NetworkInterfaceIPConfiguration> nicIPConfigs = new ArrayList<>();
         nicIPConfigs.add(nicIPConfig);
-        networkInterfaceInner.setIpConfigurations(nicIPConfigs);
+        networkInterfaceInner.withIpConfigurations(nicIPConfigs);
 
         try {
             ServiceResponse<NetworkInterfaceInner> newNic =
                     networkInterfaces.createOrUpdate(this.resourceGroupName(), this.primaryNetworkInterfaceName, networkInterfaceInner);
             NetworkInterfaceReference nicReference = new NetworkInterfaceReference();
-            nicReference.setPrimary(true);
-            nicReference.setId(newNic.getBody().id());
+            nicReference.withPrimary(true);
+            nicReference.withId(newNic.getBody().id());
             return nicReference;
         } catch (Exception ex) {
             throw new RuntimeException(ex);
@@ -657,7 +657,7 @@ class VirtualMachineImpl
     protected void createResource() throws Exception {
         // TODO This code to create NIC will be removed once we have the fluent model for NIC in place.
         NetworkInterfaceReference nicReference = createPrimaryNetworkInterface();
-        this.inner().networkProfile().setNetworkInterfaces(new ArrayList<NetworkInterfaceReference>());
+        this.inner().networkProfile().withNetworkInterfaces(new ArrayList<NetworkInterfaceReference>());
         this.inner().networkProfile().networkInterfaces().add(nicReference);
 
         setDefaults();
@@ -667,13 +667,13 @@ class VirtualMachineImpl
 
     private void initialize(String name) {
         if (this.inner().id() == null) {
-            this.inner().setStorageProfile(new StorageProfile());
-            this.inner().storageProfile().setOsDisk(new OSDisk());
-            this.inner().storageProfile().setDataDisks(new ArrayList<DataDisk>());
-            this.inner().setOsProfile(new OSProfile());
-            this.inner().setHardwareProfile(new HardwareProfile());
-            this.inner().setNetworkProfile(new NetworkProfile());
-            this.inner().osProfile().setComputerName(name);
+            this.inner().withStorageProfile(new StorageProfile());
+            this.inner().storageProfile().withOsDisk(new OSDisk());
+            this.inner().storageProfile().withDataDisks(new ArrayList<DataDisk>());
+            this.inner().withOsProfile(new OSProfile());
+            this.inner().withHardwareProfile(new HardwareProfile());
+            this.inner().withNetworkProfile(new NetworkProfile());
+            this.inner().osProfile().withComputerName(name);
         }
     }
 }

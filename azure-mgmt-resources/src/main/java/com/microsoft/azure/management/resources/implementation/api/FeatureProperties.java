@@ -31,7 +31,7 @@ public class FeatureProperties {
      * @param state the state value to set
      * @return the FeatureProperties object itself.
      */
-    public FeatureProperties setState(String state) {
+    public FeatureProperties withState(String state) {
         this.state = state;
         return this;
     }

@@ -67,7 +67,7 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
      * @param platformUpdateDomain the platformUpdateDomain value to set
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
      */
-    public VirtualMachineScaleSetVMInstanceViewInner setPlatformUpdateDomain(Integer platformUpdateDomain) {
+    public VirtualMachineScaleSetVMInstanceViewInner withPlatformUpdateDomain(Integer platformUpdateDomain) {
         this.platformUpdateDomain = platformUpdateDomain;
         return this;
     }
@@ -87,7 +87,7 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
      * @param platformFaultDomain the platformFaultDomain value to set
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
      */
-    public VirtualMachineScaleSetVMInstanceViewInner setPlatformFaultDomain(Integer platformFaultDomain) {
+    public VirtualMachineScaleSetVMInstanceViewInner withPlatformFaultDomain(Integer platformFaultDomain) {
         this.platformFaultDomain = platformFaultDomain;
         return this;
     }
@@ -107,7 +107,7 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
      * @param rdpThumbPrint the rdpThumbPrint value to set
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
      */
-    public VirtualMachineScaleSetVMInstanceViewInner setRdpThumbPrint(String rdpThumbPrint) {
+    public VirtualMachineScaleSetVMInstanceViewInner withRdpThumbPrint(String rdpThumbPrint) {
         this.rdpThumbPrint = rdpThumbPrint;
         return this;
     }
@@ -127,7 +127,7 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
      * @param vmAgent the vmAgent value to set
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
      */
-    public VirtualMachineScaleSetVMInstanceViewInner setVmAgent(VirtualMachineAgentInstanceView vmAgent) {
+    public VirtualMachineScaleSetVMInstanceViewInner withVmAgent(VirtualMachineAgentInstanceView vmAgent) {
         this.vmAgent = vmAgent;
         return this;
     }
@@ -147,7 +147,7 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
      * @param disks the disks value to set
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
      */
-    public VirtualMachineScaleSetVMInstanceViewInner setDisks(List<DiskInstanceView> disks) {
+    public VirtualMachineScaleSetVMInstanceViewInner withDisks(List<DiskInstanceView> disks) {
         this.disks = disks;
         return this;
     }
@@ -167,7 +167,7 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
      * @param extensions the extensions value to set
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
      */
-    public VirtualMachineScaleSetVMInstanceViewInner setExtensions(List<VirtualMachineExtensionInstanceView> extensions) {
+    public VirtualMachineScaleSetVMInstanceViewInner withExtensions(List<VirtualMachineExtensionInstanceView> extensions) {
         this.extensions = extensions;
         return this;
     }
@@ -187,7 +187,7 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
      * @param bootDiagnostics the bootDiagnostics value to set
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
      */
-    public VirtualMachineScaleSetVMInstanceViewInner setBootDiagnostics(BootDiagnosticsInstanceView bootDiagnostics) {
+    public VirtualMachineScaleSetVMInstanceViewInner withBootDiagnostics(BootDiagnosticsInstanceView bootDiagnostics) {
         this.bootDiagnostics = bootDiagnostics;
         return this;
     }
@@ -207,7 +207,7 @@ public class VirtualMachineScaleSetVMInstanceViewInner {
      * @param statuses the statuses value to set
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
      */
-    public VirtualMachineScaleSetVMInstanceViewInner setStatuses(List<InstanceViewStatus> statuses) {
+    public VirtualMachineScaleSetVMInstanceViewInner withStatuses(List<InstanceViewStatus> statuses) {
         this.statuses = statuses;
         return this;
     }

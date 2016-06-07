@@ -46,7 +46,7 @@ public class PurchasePlan {
      * @param publisher the publisher value to set
      * @return the PurchasePlan object itself.
      */
-    public PurchasePlan setPublisher(String publisher) {
+    public PurchasePlan withPublisher(String publisher) {
         this.publisher = publisher;
         return this;
     }
@@ -66,7 +66,7 @@ public class PurchasePlan {
      * @param name the name value to set
      * @return the PurchasePlan object itself.
      */
-    public PurchasePlan setName(String name) {
+    public PurchasePlan withName(String name) {
         this.name = name;
         return this;
     }
@@ -86,7 +86,7 @@ public class PurchasePlan {
      * @param product the product value to set
      * @return the PurchasePlan object itself.
      */
-    public PurchasePlan setProduct(String product) {
+    public PurchasePlan withProduct(String product) {
         this.product = product;
         return this;
     }

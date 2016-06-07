@@ -46,7 +46,7 @@ public class CertificateOrderActionInner extends Resource {
      * @param certificateOrderActionType the certificateOrderActionType value to set
      * @return the CertificateOrderActionInner object itself.
      */
-    public CertificateOrderActionInner setCertificateOrderActionType(CertificateOrderActionType certificateOrderActionType) {
+    public CertificateOrderActionInner withCertificateOrderActionType(CertificateOrderActionType certificateOrderActionType) {
         this.certificateOrderActionType = certificateOrderActionType;
         return this;
     }
@@ -66,7 +66,7 @@ public class CertificateOrderActionInner extends Resource {
      * @param createdAt the createdAt value to set
      * @return the CertificateOrderActionInner object itself.
      */
-    public CertificateOrderActionInner setCreatedAt(DateTime createdAt) {
+    public CertificateOrderActionInner withCreatedAt(DateTime createdAt) {
         this.createdAt = createdAt;
         return this;
     }

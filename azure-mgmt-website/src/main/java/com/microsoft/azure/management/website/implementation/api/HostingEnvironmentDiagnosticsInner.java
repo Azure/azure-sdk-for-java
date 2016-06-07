@@ -36,7 +36,7 @@ public class HostingEnvironmentDiagnosticsInner {
      * @param name the name value to set
      * @return the HostingEnvironmentDiagnosticsInner object itself.
      */
-    public HostingEnvironmentDiagnosticsInner setName(String name) {
+    public HostingEnvironmentDiagnosticsInner withName(String name) {
         this.name = name;
         return this;
     }
@@ -56,7 +56,7 @@ public class HostingEnvironmentDiagnosticsInner {
      * @param diagnosicsOutput the diagnosicsOutput value to set
      * @return the HostingEnvironmentDiagnosticsInner object itself.
      */
-    public HostingEnvironmentDiagnosticsInner setDiagnosicsOutput(String diagnosicsOutput) {
+    public HostingEnvironmentDiagnosticsInner withDiagnosicsOutput(String diagnosicsOutput) {
         this.diagnosicsOutput = diagnosicsOutput;
         return this;
     }

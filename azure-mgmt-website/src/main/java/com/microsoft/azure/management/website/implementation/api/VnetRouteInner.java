@@ -67,7 +67,7 @@ public class VnetRouteInner extends Resource {
      * @param vnetRouteName the vnetRouteName value to set
      * @return the VnetRouteInner object itself.
      */
-    public VnetRouteInner setVnetRouteName(String vnetRouteName) {
+    public VnetRouteInner withVnetRouteName(String vnetRouteName) {
         this.vnetRouteName = vnetRouteName;
         return this;
     }
@@ -87,7 +87,7 @@ public class VnetRouteInner extends Resource {
      * @param startAddress the startAddress value to set
      * @return the VnetRouteInner object itself.
      */
-    public VnetRouteInner setStartAddress(String startAddress) {
+    public VnetRouteInner withStartAddress(String startAddress) {
         this.startAddress = startAddress;
         return this;
     }
@@ -107,7 +107,7 @@ public class VnetRouteInner extends Resource {
      * @param endAddress the endAddress value to set
      * @return the VnetRouteInner object itself.
      */
-    public VnetRouteInner setEndAddress(String endAddress) {
+    public VnetRouteInner withEndAddress(String endAddress) {
         this.endAddress = endAddress;
         return this;
     }
@@ -127,7 +127,7 @@ public class VnetRouteInner extends Resource {
      * @param routeType the routeType value to set
      * @return the VnetRouteInner object itself.
      */
-    public VnetRouteInner setRouteType(String routeType) {
+    public VnetRouteInner withRouteType(String routeType) {
         this.routeType = routeType;
         return this;
     }

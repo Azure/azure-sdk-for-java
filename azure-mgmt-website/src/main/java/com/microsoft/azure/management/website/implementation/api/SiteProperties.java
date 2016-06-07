@@ -42,7 +42,7 @@ public class SiteProperties {
      * @param metadata the metadata value to set
      * @return the SiteProperties object itself.
      */
-    public SiteProperties setMetadata(List<NameValuePair> metadata) {
+    public SiteProperties withMetadata(List<NameValuePair> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -62,7 +62,7 @@ public class SiteProperties {
      * @param properties the properties value to set
      * @return the SiteProperties object itself.
      */
-    public SiteProperties setProperties(List<NameValuePair> properties) {
+    public SiteProperties withProperties(List<NameValuePair> properties) {
         this.properties = properties;
         return this;
     }
@@ -82,7 +82,7 @@ public class SiteProperties {
      * @param appSettings the appSettings value to set
      * @return the SiteProperties object itself.
      */
-    public SiteProperties setAppSettings(List<NameValuePair> appSettings) {
+    public SiteProperties withAppSettings(List<NameValuePair> appSettings) {
         this.appSettings = appSettings;
         return this;
     }

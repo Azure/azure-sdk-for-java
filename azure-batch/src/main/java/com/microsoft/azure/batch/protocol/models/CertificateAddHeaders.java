@@ -60,7 +60,7 @@ public class CertificateAddHeaders {
      * @param clientRequestId the clientRequestId value to set
      * @return the CertificateAddHeaders object itself.
      */
-    public CertificateAddHeaders setClientRequestId(String clientRequestId) {
+    public CertificateAddHeaders withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -80,7 +80,7 @@ public class CertificateAddHeaders {
      * @param requestId the requestId value to set
      * @return the CertificateAddHeaders object itself.
      */
-    public CertificateAddHeaders setRequestId(String requestId) {
+    public CertificateAddHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -100,7 +100,7 @@ public class CertificateAddHeaders {
      * @param eTag the eTag value to set
      * @return the CertificateAddHeaders object itself.
      */
-    public CertificateAddHeaders setETag(String eTag) {
+    public CertificateAddHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -123,7 +123,7 @@ public class CertificateAddHeaders {
      * @param lastModified the lastModified value to set
      * @return the CertificateAddHeaders object itself.
      */
-    public CertificateAddHeaders setLastModified(DateTime lastModified) {
+    public CertificateAddHeaders withLastModified(DateTime lastModified) {
         this.lastModified = new DateTimeRfc1123(lastModified);
         return this;
     }
@@ -143,7 +143,7 @@ public class CertificateAddHeaders {
      * @param dataServiceId the dataServiceId value to set
      * @return the CertificateAddHeaders object itself.
      */
-    public CertificateAddHeaders setDataServiceId(String dataServiceId) {
+    public CertificateAddHeaders withDataServiceId(String dataServiceId) {
         this.dataServiceId = dataServiceId;
         return this;
     }

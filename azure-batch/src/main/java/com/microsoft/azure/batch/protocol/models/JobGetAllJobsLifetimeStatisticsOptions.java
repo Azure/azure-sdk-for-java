@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the GetAllJobsLifetimeStatistics operation.
+ * Additional parameters for the Job_GetAllJobsLifetimeStatistics operation.
  */
 public class JobGetAllJobsLifetimeStatisticsOptions {
     /**
@@ -58,7 +58,7 @@ public class JobGetAllJobsLifetimeStatisticsOptions {
      * @param timeout the timeout value to set
      * @return the JobGetAllJobsLifetimeStatisticsOptions object itself.
      */
-    public JobGetAllJobsLifetimeStatisticsOptions setTimeout(Integer timeout) {
+    public JobGetAllJobsLifetimeStatisticsOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -78,7 +78,7 @@ public class JobGetAllJobsLifetimeStatisticsOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the JobGetAllJobsLifetimeStatisticsOptions object itself.
      */
-    public JobGetAllJobsLifetimeStatisticsOptions setClientRequestId(String clientRequestId) {
+    public JobGetAllJobsLifetimeStatisticsOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -98,7 +98,7 @@ public class JobGetAllJobsLifetimeStatisticsOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the JobGetAllJobsLifetimeStatisticsOptions object itself.
      */
-    public JobGetAllJobsLifetimeStatisticsOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public JobGetAllJobsLifetimeStatisticsOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -121,7 +121,7 @@ public class JobGetAllJobsLifetimeStatisticsOptions {
      * @param ocpDate the ocpDate value to set
      * @return the JobGetAllJobsLifetimeStatisticsOptions object itself.
      */
-    public JobGetAllJobsLifetimeStatisticsOptions setOcpDate(DateTime ocpDate) {
+    public JobGetAllJobsLifetimeStatisticsOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }

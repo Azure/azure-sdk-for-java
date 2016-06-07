@@ -53,7 +53,7 @@ public class AutoPoolSpecification {
      * @param autoPoolIdPrefix the autoPoolIdPrefix value to set
      * @return the AutoPoolSpecification object itself.
      */
-    public AutoPoolSpecification setAutoPoolIdPrefix(String autoPoolIdPrefix) {
+    public AutoPoolSpecification withAutoPoolIdPrefix(String autoPoolIdPrefix) {
         this.autoPoolIdPrefix = autoPoolIdPrefix;
         return this;
     }
@@ -73,7 +73,7 @@ public class AutoPoolSpecification {
      * @param poolLifetimeOption the poolLifetimeOption value to set
      * @return the AutoPoolSpecification object itself.
      */
-    public AutoPoolSpecification setPoolLifetimeOption(PoolLifetimeOption poolLifetimeOption) {
+    public AutoPoolSpecification withPoolLifetimeOption(PoolLifetimeOption poolLifetimeOption) {
         this.poolLifetimeOption = poolLifetimeOption;
         return this;
     }
@@ -93,7 +93,7 @@ public class AutoPoolSpecification {
      * @param keepAlive the keepAlive value to set
      * @return the AutoPoolSpecification object itself.
      */
-    public AutoPoolSpecification setKeepAlive(Boolean keepAlive) {
+    public AutoPoolSpecification withKeepAlive(Boolean keepAlive) {
         this.keepAlive = keepAlive;
         return this;
     }
@@ -113,7 +113,7 @@ public class AutoPoolSpecification {
      * @param pool the pool value to set
      * @return the AutoPoolSpecification object itself.
      */
-    public AutoPoolSpecification setPool(PoolSpecification pool) {
+    public AutoPoolSpecification withPool(PoolSpecification pool) {
         this.pool = pool;
         return this;
     }

@@ -87,7 +87,7 @@ public class VirtualMachineExtensionInner extends Resource {
      * @param forceUpdateTag the forceUpdateTag value to set
      * @return the VirtualMachineExtensionInner object itself.
      */
-    public VirtualMachineExtensionInner setForceUpdateTag(ForceUpdateTagTypes forceUpdateTag) {
+    public VirtualMachineExtensionInner withForceUpdateTag(ForceUpdateTagTypes forceUpdateTag) {
         this.forceUpdateTag = forceUpdateTag;
         return this;
     }
@@ -107,7 +107,7 @@ public class VirtualMachineExtensionInner extends Resource {
      * @param publisher the publisher value to set
      * @return the VirtualMachineExtensionInner object itself.
      */
-    public VirtualMachineExtensionInner setPublisher(String publisher) {
+    public VirtualMachineExtensionInner withPublisher(String publisher) {
         this.publisher = publisher;
         return this;
     }
@@ -127,7 +127,7 @@ public class VirtualMachineExtensionInner extends Resource {
      * @param virtualMachineExtensionType the virtualMachineExtensionType value to set
      * @return the VirtualMachineExtensionInner object itself.
      */
-    public VirtualMachineExtensionInner setVirtualMachineExtensionType(String virtualMachineExtensionType) {
+    public VirtualMachineExtensionInner withVirtualMachineExtensionType(String virtualMachineExtensionType) {
         this.virtualMachineExtensionType = virtualMachineExtensionType;
         return this;
     }
@@ -147,7 +147,7 @@ public class VirtualMachineExtensionInner extends Resource {
      * @param typeHandlerVersion the typeHandlerVersion value to set
      * @return the VirtualMachineExtensionInner object itself.
      */
-    public VirtualMachineExtensionInner setTypeHandlerVersion(String typeHandlerVersion) {
+    public VirtualMachineExtensionInner withTypeHandlerVersion(String typeHandlerVersion) {
         this.typeHandlerVersion = typeHandlerVersion;
         return this;
     }
@@ -167,7 +167,7 @@ public class VirtualMachineExtensionInner extends Resource {
      * @param autoUpgradeMinorVersion the autoUpgradeMinorVersion value to set
      * @return the VirtualMachineExtensionInner object itself.
      */
-    public VirtualMachineExtensionInner setAutoUpgradeMinorVersion(Boolean autoUpgradeMinorVersion) {
+    public VirtualMachineExtensionInner withAutoUpgradeMinorVersion(Boolean autoUpgradeMinorVersion) {
         this.autoUpgradeMinorVersion = autoUpgradeMinorVersion;
         return this;
     }
@@ -187,7 +187,7 @@ public class VirtualMachineExtensionInner extends Resource {
      * @param settings the settings value to set
      * @return the VirtualMachineExtensionInner object itself.
      */
-    public VirtualMachineExtensionInner setSettings(Object settings) {
+    public VirtualMachineExtensionInner withSettings(Object settings) {
         this.settings = settings;
         return this;
     }
@@ -207,7 +207,7 @@ public class VirtualMachineExtensionInner extends Resource {
      * @param protectedSettings the protectedSettings value to set
      * @return the VirtualMachineExtensionInner object itself.
      */
-    public VirtualMachineExtensionInner setProtectedSettings(Object protectedSettings) {
+    public VirtualMachineExtensionInner withProtectedSettings(Object protectedSettings) {
         this.protectedSettings = protectedSettings;
         return this;
     }
@@ -227,7 +227,7 @@ public class VirtualMachineExtensionInner extends Resource {
      * @param provisioningState the provisioningState value to set
      * @return the VirtualMachineExtensionInner object itself.
      */
-    public VirtualMachineExtensionInner setProvisioningState(String provisioningState) {
+    public VirtualMachineExtensionInner withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -247,7 +247,7 @@ public class VirtualMachineExtensionInner extends Resource {
      * @param instanceView the instanceView value to set
      * @return the VirtualMachineExtensionInner object itself.
      */
-    public VirtualMachineExtensionInner setInstanceView(VirtualMachineExtensionInstanceView instanceView) {
+    public VirtualMachineExtensionInner withInstanceView(VirtualMachineExtensionInstanceView instanceView) {
         this.instanceView = instanceView;
         return this;
     }

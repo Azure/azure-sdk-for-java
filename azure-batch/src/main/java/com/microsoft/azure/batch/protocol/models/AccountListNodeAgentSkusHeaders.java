@@ -54,7 +54,7 @@ public class AccountListNodeAgentSkusHeaders {
      * @param clientRequestId the clientRequestId value to set
      * @return the AccountListNodeAgentSkusHeaders object itself.
      */
-    public AccountListNodeAgentSkusHeaders setClientRequestId(String clientRequestId) {
+    public AccountListNodeAgentSkusHeaders withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -74,7 +74,7 @@ public class AccountListNodeAgentSkusHeaders {
      * @param requestId the requestId value to set
      * @return the AccountListNodeAgentSkusHeaders object itself.
      */
-    public AccountListNodeAgentSkusHeaders setRequestId(String requestId) {
+    public AccountListNodeAgentSkusHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -94,7 +94,7 @@ public class AccountListNodeAgentSkusHeaders {
      * @param eTag the eTag value to set
      * @return the AccountListNodeAgentSkusHeaders object itself.
      */
-    public AccountListNodeAgentSkusHeaders setETag(String eTag) {
+    public AccountListNodeAgentSkusHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -117,7 +117,7 @@ public class AccountListNodeAgentSkusHeaders {
      * @param lastModified the lastModified value to set
      * @return the AccountListNodeAgentSkusHeaders object itself.
      */
-    public AccountListNodeAgentSkusHeaders setLastModified(DateTime lastModified) {
+    public AccountListNodeAgentSkusHeaders withLastModified(DateTime lastModified) {
         this.lastModified = new DateTimeRfc1123(lastModified);
         return this;
     }

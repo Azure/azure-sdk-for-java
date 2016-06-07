@@ -141,7 +141,7 @@ public class DomainRegistrationInputInner extends Resource {
      * @param domainRegistrationInputName the domainRegistrationInputName value to set
      * @return the DomainRegistrationInputInner object itself.
      */
-    public DomainRegistrationInputInner setDomainRegistrationInputName(String domainRegistrationInputName) {
+    public DomainRegistrationInputInner withDomainRegistrationInputName(String domainRegistrationInputName) {
         this.domainRegistrationInputName = domainRegistrationInputName;
         return this;
     }
@@ -161,7 +161,7 @@ public class DomainRegistrationInputInner extends Resource {
      * @param contactAdmin the contactAdmin value to set
      * @return the DomainRegistrationInputInner object itself.
      */
-    public DomainRegistrationInputInner setContactAdmin(Contact contactAdmin) {
+    public DomainRegistrationInputInner withContactAdmin(Contact contactAdmin) {
         this.contactAdmin = contactAdmin;
         return this;
     }
@@ -181,7 +181,7 @@ public class DomainRegistrationInputInner extends Resource {
      * @param contactBilling the contactBilling value to set
      * @return the DomainRegistrationInputInner object itself.
      */
-    public DomainRegistrationInputInner setContactBilling(Contact contactBilling) {
+    public DomainRegistrationInputInner withContactBilling(Contact contactBilling) {
         this.contactBilling = contactBilling;
         return this;
     }
@@ -201,7 +201,7 @@ public class DomainRegistrationInputInner extends Resource {
      * @param contactRegistrant the contactRegistrant value to set
      * @return the DomainRegistrationInputInner object itself.
      */
-    public DomainRegistrationInputInner setContactRegistrant(Contact contactRegistrant) {
+    public DomainRegistrationInputInner withContactRegistrant(Contact contactRegistrant) {
         this.contactRegistrant = contactRegistrant;
         return this;
     }
@@ -221,7 +221,7 @@ public class DomainRegistrationInputInner extends Resource {
      * @param contactTech the contactTech value to set
      * @return the DomainRegistrationInputInner object itself.
      */
-    public DomainRegistrationInputInner setContactTech(Contact contactTech) {
+    public DomainRegistrationInputInner withContactTech(Contact contactTech) {
         this.contactTech = contactTech;
         return this;
     }
@@ -241,7 +241,7 @@ public class DomainRegistrationInputInner extends Resource {
      * @param registrationStatus the registrationStatus value to set
      * @return the DomainRegistrationInputInner object itself.
      */
-    public DomainRegistrationInputInner setRegistrationStatus(DomainStatus registrationStatus) {
+    public DomainRegistrationInputInner withRegistrationStatus(DomainStatus registrationStatus) {
         this.registrationStatus = registrationStatus;
         return this;
     }
@@ -261,7 +261,7 @@ public class DomainRegistrationInputInner extends Resource {
      * @param provisioningState the provisioningState value to set
      * @return the DomainRegistrationInputInner object itself.
      */
-    public DomainRegistrationInputInner setProvisioningState(ProvisioningState provisioningState) {
+    public DomainRegistrationInputInner withProvisioningState(ProvisioningState provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -281,7 +281,7 @@ public class DomainRegistrationInputInner extends Resource {
      * @param nameServers the nameServers value to set
      * @return the DomainRegistrationInputInner object itself.
      */
-    public DomainRegistrationInputInner setNameServers(List<String> nameServers) {
+    public DomainRegistrationInputInner withNameServers(List<String> nameServers) {
         this.nameServers = nameServers;
         return this;
     }
@@ -301,7 +301,7 @@ public class DomainRegistrationInputInner extends Resource {
      * @param privacy the privacy value to set
      * @return the DomainRegistrationInputInner object itself.
      */
-    public DomainRegistrationInputInner setPrivacy(Boolean privacy) {
+    public DomainRegistrationInputInner withPrivacy(Boolean privacy) {
         this.privacy = privacy;
         return this;
     }
@@ -321,7 +321,7 @@ public class DomainRegistrationInputInner extends Resource {
      * @param createdTime the createdTime value to set
      * @return the DomainRegistrationInputInner object itself.
      */
-    public DomainRegistrationInputInner setCreatedTime(DateTime createdTime) {
+    public DomainRegistrationInputInner withCreatedTime(DateTime createdTime) {
         this.createdTime = createdTime;
         return this;
     }
@@ -341,7 +341,7 @@ public class DomainRegistrationInputInner extends Resource {
      * @param expirationTime the expirationTime value to set
      * @return the DomainRegistrationInputInner object itself.
      */
-    public DomainRegistrationInputInner setExpirationTime(DateTime expirationTime) {
+    public DomainRegistrationInputInner withExpirationTime(DateTime expirationTime) {
         this.expirationTime = expirationTime;
         return this;
     }
@@ -361,7 +361,7 @@ public class DomainRegistrationInputInner extends Resource {
      * @param lastRenewedTime the lastRenewedTime value to set
      * @return the DomainRegistrationInputInner object itself.
      */
-    public DomainRegistrationInputInner setLastRenewedTime(DateTime lastRenewedTime) {
+    public DomainRegistrationInputInner withLastRenewedTime(DateTime lastRenewedTime) {
         this.lastRenewedTime = lastRenewedTime;
         return this;
     }
@@ -381,7 +381,7 @@ public class DomainRegistrationInputInner extends Resource {
      * @param autoRenew the autoRenew value to set
      * @return the DomainRegistrationInputInner object itself.
      */
-    public DomainRegistrationInputInner setAutoRenew(Boolean autoRenew) {
+    public DomainRegistrationInputInner withAutoRenew(Boolean autoRenew) {
         this.autoRenew = autoRenew;
         return this;
     }
@@ -401,7 +401,7 @@ public class DomainRegistrationInputInner extends Resource {
      * @param readyForDnsRecordManagement the readyForDnsRecordManagement value to set
      * @return the DomainRegistrationInputInner object itself.
      */
-    public DomainRegistrationInputInner setReadyForDnsRecordManagement(Boolean readyForDnsRecordManagement) {
+    public DomainRegistrationInputInner withReadyForDnsRecordManagement(Boolean readyForDnsRecordManagement) {
         this.readyForDnsRecordManagement = readyForDnsRecordManagement;
         return this;
     }
@@ -421,7 +421,7 @@ public class DomainRegistrationInputInner extends Resource {
      * @param managedHostNames the managedHostNames value to set
      * @return the DomainRegistrationInputInner object itself.
      */
-    public DomainRegistrationInputInner setManagedHostNames(List<HostName> managedHostNames) {
+    public DomainRegistrationInputInner withManagedHostNames(List<HostName> managedHostNames) {
         this.managedHostNames = managedHostNames;
         return this;
     }
@@ -441,7 +441,7 @@ public class DomainRegistrationInputInner extends Resource {
      * @param consent the consent value to set
      * @return the DomainRegistrationInputInner object itself.
      */
-    public DomainRegistrationInputInner setConsent(DomainPurchaseConsent consent) {
+    public DomainRegistrationInputInner withConsent(DomainPurchaseConsent consent) {
         this.consent = consent;
         return this;
     }
@@ -461,7 +461,7 @@ public class DomainRegistrationInputInner extends Resource {
      * @param domainNotRenewableReasons the domainNotRenewableReasons value to set
      * @return the DomainRegistrationInputInner object itself.
      */
-    public DomainRegistrationInputInner setDomainNotRenewableReasons(List<String> domainNotRenewableReasons) {
+    public DomainRegistrationInputInner withDomainNotRenewableReasons(List<String> domainNotRenewableReasons) {
         this.domainNotRenewableReasons = domainNotRenewableReasons;
         return this;
     }

@@ -31,7 +31,7 @@ public class ApiDefinitionInfo {
      * @param url the url value to set
      * @return the ApiDefinitionInfo object itself.
      */
-    public ApiDefinitionInfo setUrl(String url) {
+    public ApiDefinitionInfo withUrl(String url) {
         this.url = url;
         return this;
     }

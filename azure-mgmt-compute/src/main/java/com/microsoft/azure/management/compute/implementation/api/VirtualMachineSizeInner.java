@@ -56,7 +56,7 @@ public class VirtualMachineSizeInner {
      * @param name the name value to set
      * @return the VirtualMachineSizeInner object itself.
      */
-    public VirtualMachineSizeInner setName(String name) {
+    public VirtualMachineSizeInner withName(String name) {
         this.name = name;
         return this;
     }
@@ -76,7 +76,7 @@ public class VirtualMachineSizeInner {
      * @param numberOfCores the numberOfCores value to set
      * @return the VirtualMachineSizeInner object itself.
      */
-    public VirtualMachineSizeInner setNumberOfCores(Integer numberOfCores) {
+    public VirtualMachineSizeInner withNumberOfCores(Integer numberOfCores) {
         this.numberOfCores = numberOfCores;
         return this;
     }
@@ -96,7 +96,7 @@ public class VirtualMachineSizeInner {
      * @param osDiskSizeInMB the osDiskSizeInMB value to set
      * @return the VirtualMachineSizeInner object itself.
      */
-    public VirtualMachineSizeInner setOsDiskSizeInMB(Integer osDiskSizeInMB) {
+    public VirtualMachineSizeInner withOsDiskSizeInMB(Integer osDiskSizeInMB) {
         this.osDiskSizeInMB = osDiskSizeInMB;
         return this;
     }
@@ -116,7 +116,7 @@ public class VirtualMachineSizeInner {
      * @param resourceDiskSizeInMB the resourceDiskSizeInMB value to set
      * @return the VirtualMachineSizeInner object itself.
      */
-    public VirtualMachineSizeInner setResourceDiskSizeInMB(Integer resourceDiskSizeInMB) {
+    public VirtualMachineSizeInner withResourceDiskSizeInMB(Integer resourceDiskSizeInMB) {
         this.resourceDiskSizeInMB = resourceDiskSizeInMB;
         return this;
     }
@@ -136,7 +136,7 @@ public class VirtualMachineSizeInner {
      * @param memoryInMB the memoryInMB value to set
      * @return the VirtualMachineSizeInner object itself.
      */
-    public VirtualMachineSizeInner setMemoryInMB(Integer memoryInMB) {
+    public VirtualMachineSizeInner withMemoryInMB(Integer memoryInMB) {
         this.memoryInMB = memoryInMB;
         return this;
     }
@@ -156,7 +156,7 @@ public class VirtualMachineSizeInner {
      * @param maxDataDiskCount the maxDataDiskCount value to set
      * @return the VirtualMachineSizeInner object itself.
      */
-    public VirtualMachineSizeInner setMaxDataDiskCount(Integer maxDataDiskCount) {
+    public VirtualMachineSizeInner withMaxDataDiskCount(Integer maxDataDiskCount) {
         this.maxDataDiskCount = maxDataDiskCount;
         return this;
     }

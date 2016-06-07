@@ -35,11 +35,11 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
     public static void setup() throws Exception {
         createClients();
         ResourceGroupInner group = new ResourceGroupInner();
-        group.setLocation(location);
+        group.withLocation(location);
         resourceManagementClient.resourceGroups().createOrUpdate(rgName, group);
         StorageAccountCreateParametersInner parameters = new StorageAccountCreateParametersInner();
-        parameters.setLocation(location);
-        parameters.setAccountType(AccountType.STANDARD_LRS);
+        parameters.withLocation(location);
+        parameters.withAccountType(AccountType.STANDARD_LRS);
         storageManagementClient.storageAccounts().create(rgName, accountName, parameters).getBody();
     }
 
@@ -53,28 +53,28 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
         // Create
         String vmName = "javavm";
         VirtualMachineInner request = new VirtualMachineInner();
-        request.setLocation(location);
-        request.setOsProfile(new OSProfile());
-        request.osProfile().setComputerName("javatest");
-        request.osProfile().setAdminUsername("Foo12");
-        request.osProfile().setAdminPassword("BaR@123" + rgName);
-        request.setHardwareProfile(new HardwareProfile());
-        request.hardwareProfile().setVmSize("Basic_A0");
-        request.setStorageProfile(new StorageProfile());
-        request.storageProfile().setImageReference(getVMImage("MicrosoftWindowsServer", "WindowsServer", "2012-R2-Datacenter"));
-        request.storageProfile().setDataDisks(null);
-        request.storageProfile().setOsDisk(new OSDisk());
-        request.storageProfile().osDisk().setCaching(CachingTypes.NONE);
-        request.storageProfile().osDisk().setCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
-        request.storageProfile().osDisk().setName("javatest");
-        request.storageProfile().osDisk().setVhd(new VirtualHardDisk());
-        request.storageProfile().osDisk().vhd().setUri("https://" + accountName + ".blob.core.windows.net/javacontainer/osjavawindows.vhd");
-        request.setNetworkProfile(new NetworkProfile());
-        request.networkProfile().setNetworkInterfaces(new ArrayList<NetworkInterfaceReference>());
+        request.withLocation(location);
+        request.withOsProfile(new OSProfile());
+        request.osProfile().withComputerName("javatest");
+        request.osProfile().withAdminUsername("Foo12");
+        request.osProfile().withAdminPassword("BaR@123" + rgName);
+        request.withHardwareProfile(new HardwareProfile());
+        request.hardwareProfile().withVmSize("Basic_A0");
+        request.withStorageProfile(new StorageProfile());
+        request.storageProfile().withImageReference(getVMImage("MicrosoftWindowsServer", "WindowsServer", "2012-R2-Datacenter"));
+        request.storageProfile().withDataDisks(null);
+        request.storageProfile().withOsDisk(new OSDisk());
+        request.storageProfile().osDisk().withCaching(CachingTypes.NONE);
+        request.storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
+        request.storageProfile().osDisk().withName("javatest");
+        request.storageProfile().osDisk().withVhd(new VirtualHardDisk());
+        request.storageProfile().osDisk().vhd().withUri("https://" + accountName + ".blob.core.windows.net/javacontainer/osjavawindows.vhd");
+        request.withNetworkProfile(new NetworkProfile());
+        request.networkProfile().withNetworkInterfaces(new ArrayList<NetworkInterfaceReference>());
         NetworkInterfaceReference nir = new NetworkInterfaceReference();
-        nir.setPrimary(true);
+        nir.withPrimary(true);
         PublicIPAddressInner address = createPublicIP();
-        nir.setId(createNIC(createVNET(), address != null ? address.ipAddress() : null).id());
+        nir.withId(createNIC(createVNET(), address != null ? address.ipAddress() : null).id());
         request.networkProfile().networkInterfaces().add(nir);
         VirtualMachineInner result = computeManagementClient.virtualMachines().createOrUpdate(rgName, vmName, request).getBody();
         Assert.assertNotNull(result);
@@ -101,25 +101,25 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
     private ImageReference getVMImage(String publisher, String offer, String sku) throws CloudException, IOException {
         String name = computeManagementClient.virtualMachineImages().list(location, publisher, offer, sku, null, 1, null).getBody().get(0).name();
         ImageReference imageReference = new ImageReference();
-        imageReference.setOffer(offer);
-        imageReference.setPublisher(publisher);
-        imageReference.setSku(sku);
-        imageReference.setVersion(name);
+        imageReference.withOffer(offer);
+        imageReference.withPublisher(publisher);
+        imageReference.withSku(sku);
+        imageReference.withVersion(name);
         return imageReference;
     }
 
     private NetworkInterfaceInner createNIC(SubnetInner subnet, String publicIP) throws Exception {
         NetworkInterfaceInner nic = new NetworkInterfaceInner();
-        nic.setLocation(location);
-        nic.setIpConfigurations(new ArrayList<NetworkInterfaceIPConfiguration>());
+        nic.withLocation(location);
+        nic.withIpConfigurations(new ArrayList<NetworkInterfaceIPConfiguration>());
         NetworkInterfaceIPConfiguration configuration = new NetworkInterfaceIPConfiguration();
-        configuration.setName("javacrpip");
-        configuration.setPrivateIPAllocationMethod("Dynamic");
-        configuration.setSubnet(subnet);
+        configuration.withName("javacrpip");
+        configuration.withPrivateIPAllocationMethod("Dynamic");
+        configuration.withSubnet(subnet);
         if (publicIP != null) {
             SubResource subResource = new SubResource();
-            subResource.setId(networkManagementClient.publicIPAddresses().get(rgName, publicIP, null).getBody().id());
-            configuration.setPublicIPAddress(subResource);
+            subResource.withId(networkManagementClient.publicIPAddresses().get(rgName, publicIP, null).getBody().id());
+            configuration.withPublicIPAddress(subResource);
         }
         nic.ipConfigurations().add(configuration);
         networkManagementClient.networkInterfaces().createOrUpdate(rgName, "javanic", nic);
@@ -128,18 +128,18 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
 
     private SubnetInner createVNET() throws Exception {
         VirtualNetworkInner vnet = new VirtualNetworkInner();
-        vnet.setLocation(location);
-        vnet.setAddressSpace(new AddressSpace());
-        vnet.addressSpace().setAddressPrefixes(new ArrayList<String>());
+        vnet.withLocation(location);
+        vnet.withAddressSpace(new AddressSpace());
+        vnet.addressSpace().withAddressPrefixes(new ArrayList<String>());
         vnet.addressSpace().addressPrefixes().add("10.0.0.0/16");
-        vnet.setDhcpOptions(new DhcpOptions());
-        vnet.dhcpOptions().setDnsServers(new ArrayList<String>());
+        vnet.withDhcpOptions(new DhcpOptions());
+        vnet.dhcpOptions().withDnsServers(new ArrayList<String>());
         vnet.dhcpOptions().dnsServers().add("10.1.1.1");
         vnet.dhcpOptions().dnsServers().add("10.1.2.4");
-        vnet.setSubnets(new ArrayList<SubnetInner>());
+        vnet.withSubnets(new ArrayList<SubnetInner>());
         SubnetInner subnet = new SubnetInner();
-        subnet.setName("javasn");
-        subnet.setAddressPrefix("10.0.0.0/24");
+        subnet.withName("javasn");
+        subnet.withAddressPrefix("10.0.0.0/24");
         vnet.subnets().add(subnet);
         networkManagementClient.virtualNetworks().createOrUpdate(rgName, "javavn", vnet);
         return networkManagementClient.subnets().get(rgName, "javavn", "javasn", null).getBody();
@@ -147,10 +147,10 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
 
     private PublicIPAddressInner createPublicIP() throws Exception {
         PublicIPAddressInner publicIPAddress = new PublicIPAddressInner();
-        publicIPAddress.setLocation(location);
-        publicIPAddress.setPublicIPAllocationMethod("Dynamic");
-        publicIPAddress.setDnsSettings(new PublicIPAddressDnsSettings());
-        publicIPAddress.dnsSettings().setDomainNameLabel("javadn");
+        publicIPAddress.withLocation(location);
+        publicIPAddress.withPublicIPAllocationMethod("Dynamic");
+        publicIPAddress.withDnsSettings(new PublicIPAddressDnsSettings());
+        publicIPAddress.dnsSettings().withDomainNameLabel("javadn");
 
         networkManagementClient.publicIPAddresses().createOrUpdate(rgName, "javapip", publicIPAddress);
         return networkManagementClient.publicIPAddresses().get(rgName, "javapip", null).getBody();

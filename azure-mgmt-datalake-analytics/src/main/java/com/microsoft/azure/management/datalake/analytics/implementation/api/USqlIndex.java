@@ -79,7 +79,7 @@ public class USqlIndex {
      * @param name the name value to set
      * @return the USqlIndex object itself.
      */
-    public USqlIndex setName(String name) {
+    public USqlIndex withName(String name) {
         this.name = name;
         return this;
     }
@@ -99,7 +99,7 @@ public class USqlIndex {
      * @param indexKeys the indexKeys value to set
      * @return the USqlIndex object itself.
      */
-    public USqlIndex setIndexKeys(List<USqlDirectedColumn> indexKeys) {
+    public USqlIndex withIndexKeys(List<USqlDirectedColumn> indexKeys) {
         this.indexKeys = indexKeys;
         return this;
     }
@@ -119,7 +119,7 @@ public class USqlIndex {
      * @param columns the columns value to set
      * @return the USqlIndex object itself.
      */
-    public USqlIndex setColumns(List<String> columns) {
+    public USqlIndex withColumns(List<String> columns) {
         this.columns = columns;
         return this;
     }
@@ -139,7 +139,7 @@ public class USqlIndex {
      * @param distributionInfo the distributionInfo value to set
      * @return the USqlIndex object itself.
      */
-    public USqlIndex setDistributionInfo(USqlDistributionInfo distributionInfo) {
+    public USqlIndex withDistributionInfo(USqlDistributionInfo distributionInfo) {
         this.distributionInfo = distributionInfo;
         return this;
     }
@@ -159,7 +159,7 @@ public class USqlIndex {
      * @param partitionFunction the partitionFunction value to set
      * @return the USqlIndex object itself.
      */
-    public USqlIndex setPartitionFunction(UUID partitionFunction) {
+    public USqlIndex withPartitionFunction(UUID partitionFunction) {
         this.partitionFunction = partitionFunction;
         return this;
     }
@@ -179,7 +179,7 @@ public class USqlIndex {
      * @param partitionKeyList the partitionKeyList value to set
      * @return the USqlIndex object itself.
      */
-    public USqlIndex setPartitionKeyList(List<String> partitionKeyList) {
+    public USqlIndex withPartitionKeyList(List<String> partitionKeyList) {
         this.partitionKeyList = partitionKeyList;
         return this;
     }
@@ -199,7 +199,7 @@ public class USqlIndex {
      * @param streamNames the streamNames value to set
      * @return the USqlIndex object itself.
      */
-    public USqlIndex setStreamNames(List<String> streamNames) {
+    public USqlIndex withStreamNames(List<String> streamNames) {
         this.streamNames = streamNames;
         return this;
     }
@@ -219,7 +219,7 @@ public class USqlIndex {
      * @param isColumnstore the isColumnstore value to set
      * @return the USqlIndex object itself.
      */
-    public USqlIndex setIsColumnstore(Boolean isColumnstore) {
+    public USqlIndex withIsColumnstore(Boolean isColumnstore) {
         this.isColumnstore = isColumnstore;
         return this;
     }
@@ -239,7 +239,7 @@ public class USqlIndex {
      * @param indexId the indexId value to set
      * @return the USqlIndex object itself.
      */
-    public USqlIndex setIndexId(Integer indexId) {
+    public USqlIndex withIndexId(Integer indexId) {
         this.indexId = indexId;
         return this;
     }
@@ -259,7 +259,7 @@ public class USqlIndex {
      * @param isUnique the isUnique value to set
      * @return the USqlIndex object itself.
      */
-    public USqlIndex setIsUnique(Boolean isUnique) {
+    public USqlIndex withIsUnique(Boolean isUnique) {
         this.isUnique = isUnique;
         return this;
     }

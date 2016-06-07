@@ -54,7 +54,7 @@ public class StorageAccountUpdateParametersInner {
      * @param tags the tags value to set
      * @return the StorageAccountUpdateParametersInner object itself.
      */
-    public StorageAccountUpdateParametersInner setTags(Map<String, String> tags) {
+    public StorageAccountUpdateParametersInner withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -74,7 +74,7 @@ public class StorageAccountUpdateParametersInner {
      * @param accountType the accountType value to set
      * @return the StorageAccountUpdateParametersInner object itself.
      */
-    public StorageAccountUpdateParametersInner setAccountType(AccountType accountType) {
+    public StorageAccountUpdateParametersInner withAccountType(AccountType accountType) {
         this.accountType = accountType;
         return this;
     }
@@ -94,7 +94,7 @@ public class StorageAccountUpdateParametersInner {
      * @param customDomain the customDomain value to set
      * @return the StorageAccountUpdateParametersInner object itself.
      */
-    public StorageAccountUpdateParametersInner setCustomDomain(CustomDomain customDomain) {
+    public StorageAccountUpdateParametersInner withCustomDomain(CustomDomain customDomain) {
         this.customDomain = customDomain;
         return this;
     }

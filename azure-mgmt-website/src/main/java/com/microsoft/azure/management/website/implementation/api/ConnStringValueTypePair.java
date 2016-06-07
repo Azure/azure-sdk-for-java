@@ -39,7 +39,7 @@ public class ConnStringValueTypePair {
      * @param value the value value to set
      * @return the ConnStringValueTypePair object itself.
      */
-    public ConnStringValueTypePair setValue(String value) {
+    public ConnStringValueTypePair withValue(String value) {
         this.value = value;
         return this;
     }
@@ -59,7 +59,7 @@ public class ConnStringValueTypePair {
      * @param type the type value to set
      * @return the ConnStringValueTypePair object itself.
      */
-    public ConnStringValueTypePair setType(DatabaseServerType type) {
+    public ConnStringValueTypePair withType(DatabaseServerType type) {
         this.type = type;
         return this;
     }

@@ -32,7 +32,7 @@ public class FileSystemApplicationLogsConfig {
      * @param level the level value to set
      * @return the FileSystemApplicationLogsConfig object itself.
      */
-    public FileSystemApplicationLogsConfig setLevel(LogLevel level) {
+    public FileSystemApplicationLogsConfig withLevel(LogLevel level) {
         this.level = level;
         return this;
     }

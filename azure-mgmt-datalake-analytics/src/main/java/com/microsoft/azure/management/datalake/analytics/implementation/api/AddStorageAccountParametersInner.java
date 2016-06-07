@@ -33,7 +33,7 @@ public class AddStorageAccountParametersInner {
      * @param properties the properties value to set
      * @return the AddStorageAccountParametersInner object itself.
      */
-    public AddStorageAccountParametersInner setProperties(StorageAccountProperties properties) {
+    public AddStorageAccountParametersInner withProperties(StorageAccountProperties properties) {
         this.properties = properties;
         return this;
     }

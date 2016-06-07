@@ -56,7 +56,7 @@ public class FileProperties {
      * @param creationTime the creationTime value to set
      * @return the FileProperties object itself.
      */
-    public FileProperties setCreationTime(DateTime creationTime) {
+    public FileProperties withCreationTime(DateTime creationTime) {
         this.creationTime = creationTime;
         return this;
     }
@@ -76,7 +76,7 @@ public class FileProperties {
      * @param lastModified the lastModified value to set
      * @return the FileProperties object itself.
      */
-    public FileProperties setLastModified(DateTime lastModified) {
+    public FileProperties withLastModified(DateTime lastModified) {
         this.lastModified = lastModified;
         return this;
     }
@@ -96,7 +96,7 @@ public class FileProperties {
      * @param contentLength the contentLength value to set
      * @return the FileProperties object itself.
      */
-    public FileProperties setContentLength(long contentLength) {
+    public FileProperties withContentLength(long contentLength) {
         this.contentLength = contentLength;
         return this;
     }
@@ -116,7 +116,7 @@ public class FileProperties {
      * @param contentType the contentType value to set
      * @return the FileProperties object itself.
      */
-    public FileProperties setContentType(String contentType) {
+    public FileProperties withContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -136,7 +136,7 @@ public class FileProperties {
      * @param fileMode the fileMode value to set
      * @return the FileProperties object itself.
      */
-    public FileProperties setFileMode(String fileMode) {
+    public FileProperties withFileMode(String fileMode) {
         this.fileMode = fileMode;
         return this;
     }

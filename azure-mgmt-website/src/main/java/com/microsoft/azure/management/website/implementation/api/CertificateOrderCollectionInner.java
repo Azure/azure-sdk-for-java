@@ -37,7 +37,7 @@ public class CertificateOrderCollectionInner {
      * @param value the value value to set
      * @return the CertificateOrderCollectionInner object itself.
      */
-    public CertificateOrderCollectionInner setValue(List<CertificateOrderInner> value) {
+    public CertificateOrderCollectionInner withValue(List<CertificateOrderInner> value) {
         this.value = value;
         return this;
     }
@@ -57,7 +57,7 @@ public class CertificateOrderCollectionInner {
      * @param nextLink the nextLink value to set
      * @return the CertificateOrderCollectionInner object itself.
      */
-    public CertificateOrderCollectionInner setNextLink(String nextLink) {
+    public CertificateOrderCollectionInner withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }
