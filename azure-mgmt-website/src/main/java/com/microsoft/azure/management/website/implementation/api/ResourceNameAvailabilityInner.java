@@ -45,7 +45,7 @@ public class ResourceNameAvailabilityInner {
      * @param nameAvailable the nameAvailable value to set
      * @return the ResourceNameAvailabilityInner object itself.
      */
-    public ResourceNameAvailabilityInner setNameAvailable(Boolean nameAvailable) {
+    public ResourceNameAvailabilityInner withNameAvailable(Boolean nameAvailable) {
         this.nameAvailable = nameAvailable;
         return this;
     }
@@ -65,7 +65,7 @@ public class ResourceNameAvailabilityInner {
      * @param reason the reason value to set
      * @return the ResourceNameAvailabilityInner object itself.
      */
-    public ResourceNameAvailabilityInner setReason(String reason) {
+    public ResourceNameAvailabilityInner withReason(String reason) {
         this.reason = reason;
         return this;
     }
@@ -85,7 +85,7 @@ public class ResourceNameAvailabilityInner {
      * @param message the message value to set
      * @return the ResourceNameAvailabilityInner object itself.
      */
-    public ResourceNameAvailabilityInner setMessage(String message) {
+    public ResourceNameAvailabilityInner withMessage(String message) {
         this.message = message;
         return this;
     }

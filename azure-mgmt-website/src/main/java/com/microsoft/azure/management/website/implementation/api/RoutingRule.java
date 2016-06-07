@@ -32,7 +32,7 @@ public class RoutingRule {
      * @param name the name value to set
      * @return the RoutingRule object itself.
      */
-    public RoutingRule setName(String name) {
+    public RoutingRule withName(String name) {
         this.name = name;
         return this;
     }

@@ -56,9 +56,9 @@ public enum KnownVirtualMachineImage {
      */
     public ImageReference imageReference() {
         return new ImageReference()
-            .setPublisher(publisher())
-            .setOffer(offer())
-            .setSku(sku())
-            .setVersion("latest");
+            .withPublisher(publisher())
+            .withOffer(offer())
+            .withSku(sku())
+            .withVersion("latest");
     }
 }

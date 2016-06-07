@@ -56,7 +56,7 @@ public class USqlSecretInner extends CatalogItem {
      * @param databaseName the databaseName value to set
      * @return the USqlSecretInner object itself.
      */
-    public USqlSecretInner setDatabaseName(String databaseName) {
+    public USqlSecretInner withDatabaseName(String databaseName) {
         this.databaseName = databaseName;
         return this;
     }
@@ -76,7 +76,7 @@ public class USqlSecretInner extends CatalogItem {
      * @param name the name value to set
      * @return the USqlSecretInner object itself.
      */
-    public USqlSecretInner setName(String name) {
+    public USqlSecretInner withName(String name) {
         this.name = name;
         return this;
     }
@@ -96,7 +96,7 @@ public class USqlSecretInner extends CatalogItem {
      * @param creationTime the creationTime value to set
      * @return the USqlSecretInner object itself.
      */
-    public USqlSecretInner setCreationTime(DateTime creationTime) {
+    public USqlSecretInner withCreationTime(DateTime creationTime) {
         this.creationTime = creationTime;
         return this;
     }
@@ -116,7 +116,7 @@ public class USqlSecretInner extends CatalogItem {
      * @param uri the uri value to set
      * @return the USqlSecretInner object itself.
      */
-    public USqlSecretInner setUri(String uri) {
+    public USqlSecretInner withUri(String uri) {
         this.uri = uri;
         return this;
     }
@@ -136,7 +136,7 @@ public class USqlSecretInner extends CatalogItem {
      * @param password the password value to set
      * @return the USqlSecretInner object itself.
      */
-    public USqlSecretInner setPassword(String password) {
+    public USqlSecretInner withPassword(String password) {
         this.password = password;
         return this;
     }

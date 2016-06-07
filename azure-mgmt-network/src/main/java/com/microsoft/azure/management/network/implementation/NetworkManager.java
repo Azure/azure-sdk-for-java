@@ -91,7 +91,7 @@ public final class NetworkManager {
 
     private NetworkManager(RestClient restClient, String subscriptionId) {
         networkManagementClient = new NetworkManagementClientImpl(restClient);
-        networkManagementClient.setSubscriptionId(subscriptionId);
+        networkManagementClient.withSubscriptionId(subscriptionId);
         this.resourceManager = ResourceManager.authenticate(restClient).withSubscription(subscriptionId);
     }
 

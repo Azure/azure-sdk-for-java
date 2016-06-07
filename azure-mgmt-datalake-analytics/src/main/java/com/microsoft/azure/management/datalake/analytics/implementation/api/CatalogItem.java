@@ -37,7 +37,7 @@ public class CatalogItem {
      * @param computeAccountName the computeAccountName value to set
      * @return the CatalogItem object itself.
      */
-    public CatalogItem setComputeAccountName(String computeAccountName) {
+    public CatalogItem withComputeAccountName(String computeAccountName) {
         this.computeAccountName = computeAccountName;
         return this;
     }
@@ -57,7 +57,7 @@ public class CatalogItem {
      * @param version the version value to set
      * @return the CatalogItem object itself.
      */
-    public CatalogItem setVersion(UUID version) {
+    public CatalogItem withVersion(UUID version) {
         this.version = version;
         return this;
     }

@@ -47,7 +47,7 @@ public class AutoScaleRun {
      * @param timestamp the timestamp value to set
      * @return the AutoScaleRun object itself.
      */
-    public AutoScaleRun setTimestamp(DateTime timestamp) {
+    public AutoScaleRun withTimestamp(DateTime timestamp) {
         this.timestamp = timestamp;
         return this;
     }
@@ -67,7 +67,7 @@ public class AutoScaleRun {
      * @param results the results value to set
      * @return the AutoScaleRun object itself.
      */
-    public AutoScaleRun setResults(String results) {
+    public AutoScaleRun withResults(String results) {
         this.results = results;
         return this;
     }
@@ -87,7 +87,7 @@ public class AutoScaleRun {
      * @param error the error value to set
      * @return the AutoScaleRun object itself.
      */
-    public AutoScaleRun setError(AutoScaleRunError error) {
+    public AutoScaleRun withError(AutoScaleRunError error) {
         this.error = error;
         return this;
     }

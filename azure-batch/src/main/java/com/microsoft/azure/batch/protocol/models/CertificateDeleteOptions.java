@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the Delete operation.
+ * Additional parameters for the Certificate_Delete operation.
  */
 public class CertificateDeleteOptions {
     /**
@@ -58,7 +58,7 @@ public class CertificateDeleteOptions {
      * @param timeout the timeout value to set
      * @return the CertificateDeleteOptions object itself.
      */
-    public CertificateDeleteOptions setTimeout(Integer timeout) {
+    public CertificateDeleteOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -78,7 +78,7 @@ public class CertificateDeleteOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the CertificateDeleteOptions object itself.
      */
-    public CertificateDeleteOptions setClientRequestId(String clientRequestId) {
+    public CertificateDeleteOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -98,7 +98,7 @@ public class CertificateDeleteOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the CertificateDeleteOptions object itself.
      */
-    public CertificateDeleteOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public CertificateDeleteOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -121,7 +121,7 @@ public class CertificateDeleteOptions {
      * @param ocpDate the ocpDate value to set
      * @return the CertificateDeleteOptions object itself.
      */
-    public CertificateDeleteOptions setOcpDate(DateTime ocpDate) {
+    public CertificateDeleteOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }

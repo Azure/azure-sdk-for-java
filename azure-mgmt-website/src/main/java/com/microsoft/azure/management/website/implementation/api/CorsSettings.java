@@ -35,7 +35,7 @@ public class CorsSettings {
      * @param allowedOrigins the allowedOrigins value to set
      * @return the CorsSettings object itself.
      */
-    public CorsSettings setAllowedOrigins(List<String> allowedOrigins) {
+    public CorsSettings withAllowedOrigins(List<String> allowedOrigins) {
         this.allowedOrigins = allowedOrigins;
         return this;
     }

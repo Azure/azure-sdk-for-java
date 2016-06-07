@@ -44,7 +44,7 @@ public class ResourceManagementError {
      * @param code the code value to set
      * @return the ResourceManagementError object itself.
      */
-    public ResourceManagementError setCode(String code) {
+    public ResourceManagementError withCode(String code) {
         this.code = code;
         return this;
     }
@@ -64,7 +64,7 @@ public class ResourceManagementError {
      * @param message the message value to set
      * @return the ResourceManagementError object itself.
      */
-    public ResourceManagementError setMessage(String message) {
+    public ResourceManagementError withMessage(String message) {
         this.message = message;
         return this;
     }
@@ -84,7 +84,7 @@ public class ResourceManagementError {
      * @param target the target value to set
      * @return the ResourceManagementError object itself.
      */
-    public ResourceManagementError setTarget(String target) {
+    public ResourceManagementError withTarget(String target) {
         this.target = target;
         return this;
     }

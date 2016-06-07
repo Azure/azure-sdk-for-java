@@ -87,7 +87,7 @@ public final class StorageManager {
 
     private StorageManager(RestClient restClient, String subscriptionId) {
         storageManagementClient = new StorageManagementClientImpl(restClient);
-        storageManagementClient.setSubscriptionId(subscriptionId);
+        storageManagementClient.withSubscriptionId(subscriptionId);
         resourceManager = ResourceManager.authenticate(restClient).withSubscription(subscriptionId);
     }
 

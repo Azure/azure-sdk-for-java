@@ -32,7 +32,7 @@ public class ResourceManagementErrorWithDetails extends ResourceManagementError 
      * @param details the details value to set
      * @return the ResourceManagementErrorWithDetails object itself.
      */
-    public ResourceManagementErrorWithDetails setDetails(List<ResourceManagementError> details) {
+    public ResourceManagementErrorWithDetails withDetails(List<ResourceManagementError> details) {
         this.details = details;
         return this;
     }

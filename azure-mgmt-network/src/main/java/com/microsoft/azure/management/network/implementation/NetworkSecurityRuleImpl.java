@@ -102,7 +102,7 @@ class NetworkSecurityRuleImpl
 
     @Override
     public NetworkSecurityRuleImpl withProtocol(Protocol protocol) {
-        this.inner().setProtocol(protocol.toString());
+        this.inner().withProtocol(protocol.toString());
         return this;
     }
 
@@ -113,61 +113,61 @@ class NetworkSecurityRuleImpl
 
     @Override
     public NetworkSecurityRuleImpl fromAddress(String cidr) {
-        this.inner().setSourceAddressPrefix(cidr);
+        this.inner().withSourceAddressPrefix(cidr);
         return this;
     }
 
     @Override
     public NetworkSecurityRuleImpl fromAnyAddress() {
-        this.inner().setSourceAddressPrefix("*");
+        this.inner().withSourceAddressPrefix("*");
         return this;
     }
 
     @Override
     public NetworkSecurityRuleImpl fromPort(int port) {
-        this.inner().setSourcePortRange(String.valueOf(port));
+        this.inner().withSourcePortRange(String.valueOf(port));
         return this;
     }
 
     @Override
     public NetworkSecurityRuleImpl fromAnyPort() {
-        this.inner().setSourcePortRange("*");
+        this.inner().withSourcePortRange("*");
         return this;
     }
 
     @Override
     public NetworkSecurityRuleImpl fromPortRange(int from, int to) {
-        this.inner().setSourcePortRange(String.valueOf(from) + "-" + String.valueOf(to));
+        this.inner().withSourcePortRange(String.valueOf(from) + "-" + String.valueOf(to));
         return this;
     }
 
     @Override
     public NetworkSecurityRuleImpl toAddress(String cidr) {
-        this.inner().setDestinationAddressPrefix(cidr);
+        this.inner().withDestinationAddressPrefix(cidr);
         return this;
     }
 
     @Override
     public NetworkSecurityRuleImpl toAnyAddress() {
-        this.inner().setDestinationAddressPrefix("*");
+        this.inner().withDestinationAddressPrefix("*");
         return this;
     }
 
     @Override
     public NetworkSecurityRuleImpl toPort(int port) {
-        this.inner().setDestinationPortRange(String.valueOf(port));
+        this.inner().withDestinationPortRange(String.valueOf(port));
         return this;
     }
 
     @Override
     public NetworkSecurityRuleImpl toAnyPort() {
-        this.inner().setDestinationPortRange("*");
+        this.inner().withDestinationPortRange("*");
         return this;
     }
 
     @Override
     public NetworkSecurityRuleImpl toPortRange(int from, int to) {
-        this.inner().setDestinationPortRange(String.valueOf(from) + "-" + String.valueOf(to));
+        this.inner().withDestinationPortRange(String.valueOf(from) + "-" + String.valueOf(to));
         return this;
     }
 
@@ -177,7 +177,7 @@ class NetworkSecurityRuleImpl
             throw new IllegalArgumentException("The priority number of a network security rule must be between 100 and 4096.");
         }
 
-        this.inner().setPriority(priority);
+        this.inner().withPriority(priority);
         return this;
     }
 
@@ -185,12 +185,12 @@ class NetworkSecurityRuleImpl
     // Helpers
 
     private NetworkSecurityRuleImpl withDirection(Direction direction) {
-        this.inner().setDirection(direction.toString());
+        this.inner().withDirection(direction.toString());
         return this;
     }
 
     private NetworkSecurityRuleImpl withAccess(Access permission) {
-        this.inner().setAccess(permission.toString());
+        this.inner().withAccess(permission.toString());
         return this;
     }
 

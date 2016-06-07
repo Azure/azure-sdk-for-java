@@ -65,7 +65,7 @@ public class USqlAssemblyInner extends CatalogItem {
      * @param databaseName the databaseName value to set
      * @return the USqlAssemblyInner object itself.
      */
-    public USqlAssemblyInner setDatabaseName(String databaseName) {
+    public USqlAssemblyInner withDatabaseName(String databaseName) {
         this.databaseName = databaseName;
         return this;
     }
@@ -85,7 +85,7 @@ public class USqlAssemblyInner extends CatalogItem {
      * @param name the name value to set
      * @return the USqlAssemblyInner object itself.
      */
-    public USqlAssemblyInner setName(String name) {
+    public USqlAssemblyInner withName(String name) {
         this.name = name;
         return this;
     }
@@ -105,7 +105,7 @@ public class USqlAssemblyInner extends CatalogItem {
      * @param clrName the clrName value to set
      * @return the USqlAssemblyInner object itself.
      */
-    public USqlAssemblyInner setClrName(String clrName) {
+    public USqlAssemblyInner withClrName(String clrName) {
         this.clrName = clrName;
         return this;
     }
@@ -125,7 +125,7 @@ public class USqlAssemblyInner extends CatalogItem {
      * @param isVisible the isVisible value to set
      * @return the USqlAssemblyInner object itself.
      */
-    public USqlAssemblyInner setIsVisible(Boolean isVisible) {
+    public USqlAssemblyInner withIsVisible(Boolean isVisible) {
         this.isVisible = isVisible;
         return this;
     }
@@ -145,7 +145,7 @@ public class USqlAssemblyInner extends CatalogItem {
      * @param isUserDefined the isUserDefined value to set
      * @return the USqlAssemblyInner object itself.
      */
-    public USqlAssemblyInner setIsUserDefined(Boolean isUserDefined) {
+    public USqlAssemblyInner withIsUserDefined(Boolean isUserDefined) {
         this.isUserDefined = isUserDefined;
         return this;
     }
@@ -165,7 +165,7 @@ public class USqlAssemblyInner extends CatalogItem {
      * @param files the files value to set
      * @return the USqlAssemblyInner object itself.
      */
-    public USqlAssemblyInner setFiles(List<USqlAssemblyFileInfo> files) {
+    public USqlAssemblyInner withFiles(List<USqlAssemblyFileInfo> files) {
         this.files = files;
         return this;
     }
@@ -185,7 +185,7 @@ public class USqlAssemblyInner extends CatalogItem {
      * @param dependencies the dependencies value to set
      * @return the USqlAssemblyInner object itself.
      */
-    public USqlAssemblyInner setDependencies(List<USqlAssemblyDependencyInfo> dependencies) {
+    public USqlAssemblyInner withDependencies(List<USqlAssemblyDependencyInfo> dependencies) {
         this.dependencies = dependencies;
         return this;
     }

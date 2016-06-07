@@ -67,7 +67,7 @@ public class LocalNetworkGatewayInner extends Resource {
      * @param localNetworkAddressSpace the localNetworkAddressSpace value to set
      * @return the LocalNetworkGatewayInner object itself.
      */
-    public LocalNetworkGatewayInner setLocalNetworkAddressSpace(AddressSpace localNetworkAddressSpace) {
+    public LocalNetworkGatewayInner withLocalNetworkAddressSpace(AddressSpace localNetworkAddressSpace) {
         this.localNetworkAddressSpace = localNetworkAddressSpace;
         return this;
     }
@@ -87,7 +87,7 @@ public class LocalNetworkGatewayInner extends Resource {
      * @param gatewayIpAddress the gatewayIpAddress value to set
      * @return the LocalNetworkGatewayInner object itself.
      */
-    public LocalNetworkGatewayInner setGatewayIpAddress(String gatewayIpAddress) {
+    public LocalNetworkGatewayInner withGatewayIpAddress(String gatewayIpAddress) {
         this.gatewayIpAddress = gatewayIpAddress;
         return this;
     }
@@ -107,7 +107,7 @@ public class LocalNetworkGatewayInner extends Resource {
      * @param bgpSettings the bgpSettings value to set
      * @return the LocalNetworkGatewayInner object itself.
      */
-    public LocalNetworkGatewayInner setBgpSettings(BgpSettings bgpSettings) {
+    public LocalNetworkGatewayInner withBgpSettings(BgpSettings bgpSettings) {
         this.bgpSettings = bgpSettings;
         return this;
     }
@@ -127,7 +127,7 @@ public class LocalNetworkGatewayInner extends Resource {
      * @param resourceGuid the resourceGuid value to set
      * @return the LocalNetworkGatewayInner object itself.
      */
-    public LocalNetworkGatewayInner setResourceGuid(String resourceGuid) {
+    public LocalNetworkGatewayInner withResourceGuid(String resourceGuid) {
         this.resourceGuid = resourceGuid;
         return this;
     }
@@ -147,7 +147,7 @@ public class LocalNetworkGatewayInner extends Resource {
      * @param provisioningState the provisioningState value to set
      * @return the LocalNetworkGatewayInner object itself.
      */
-    public LocalNetworkGatewayInner setProvisioningState(String provisioningState) {
+    public LocalNetworkGatewayInner withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -167,7 +167,7 @@ public class LocalNetworkGatewayInner extends Resource {
      * @param etag the etag value to set
      * @return the LocalNetworkGatewayInner object itself.
      */
-    public LocalNetworkGatewayInner setEtag(String etag) {
+    public LocalNetworkGatewayInner withEtag(String etag) {
         this.etag = etag;
         return this;
     }

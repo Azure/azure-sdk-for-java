@@ -66,7 +66,7 @@ public class ApplicationGatewaySslCertificate extends SubResource {
      * @param data the data value to set
      * @return the ApplicationGatewaySslCertificate object itself.
      */
-    public ApplicationGatewaySslCertificate setData(String data) {
+    public ApplicationGatewaySslCertificate withData(String data) {
         this.data = data;
         return this;
     }
@@ -86,7 +86,7 @@ public class ApplicationGatewaySslCertificate extends SubResource {
      * @param password the password value to set
      * @return the ApplicationGatewaySslCertificate object itself.
      */
-    public ApplicationGatewaySslCertificate setPassword(String password) {
+    public ApplicationGatewaySslCertificate withPassword(String password) {
         this.password = password;
         return this;
     }
@@ -106,7 +106,7 @@ public class ApplicationGatewaySslCertificate extends SubResource {
      * @param publicCertData the publicCertData value to set
      * @return the ApplicationGatewaySslCertificate object itself.
      */
-    public ApplicationGatewaySslCertificate setPublicCertData(String publicCertData) {
+    public ApplicationGatewaySslCertificate withPublicCertData(String publicCertData) {
         this.publicCertData = publicCertData;
         return this;
     }
@@ -126,7 +126,7 @@ public class ApplicationGatewaySslCertificate extends SubResource {
      * @param provisioningState the provisioningState value to set
      * @return the ApplicationGatewaySslCertificate object itself.
      */
-    public ApplicationGatewaySslCertificate setProvisioningState(String provisioningState) {
+    public ApplicationGatewaySslCertificate withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -146,7 +146,7 @@ public class ApplicationGatewaySslCertificate extends SubResource {
      * @param name the name value to set
      * @return the ApplicationGatewaySslCertificate object itself.
      */
-    public ApplicationGatewaySslCertificate setName(String name) {
+    public ApplicationGatewaySslCertificate withName(String name) {
         this.name = name;
         return this;
     }
@@ -166,7 +166,7 @@ public class ApplicationGatewaySslCertificate extends SubResource {
      * @param etag the etag value to set
      * @return the ApplicationGatewaySslCertificate object itself.
      */
-    public ApplicationGatewaySslCertificate setEtag(String etag) {
+    public ApplicationGatewaySslCertificate withEtag(String etag) {
         this.etag = etag;
         return this;
     }

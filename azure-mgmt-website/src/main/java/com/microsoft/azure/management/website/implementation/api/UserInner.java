@@ -54,7 +54,7 @@ public class UserInner extends Resource {
      * @param userName the userName value to set
      * @return the UserInner object itself.
      */
-    public UserInner setUserName(String userName) {
+    public UserInner withUserName(String userName) {
         this.userName = userName;
         return this;
     }
@@ -74,7 +74,7 @@ public class UserInner extends Resource {
      * @param publishingUserName the publishingUserName value to set
      * @return the UserInner object itself.
      */
-    public UserInner setPublishingUserName(String publishingUserName) {
+    public UserInner withPublishingUserName(String publishingUserName) {
         this.publishingUserName = publishingUserName;
         return this;
     }
@@ -94,7 +94,7 @@ public class UserInner extends Resource {
      * @param publishingPassword the publishingPassword value to set
      * @return the UserInner object itself.
      */
-    public UserInner setPublishingPassword(String publishingPassword) {
+    public UserInner withPublishingPassword(String publishingPassword) {
         this.publishingPassword = publishingPassword;
         return this;
     }
@@ -114,7 +114,7 @@ public class UserInner extends Resource {
      * @param scmUri the scmUri value to set
      * @return the UserInner object itself.
      */
-    public UserInner setScmUri(String scmUri) {
+    public UserInner withScmUri(String scmUri) {
         this.scmUri = scmUri;
         return this;
     }

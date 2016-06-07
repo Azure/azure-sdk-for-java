@@ -37,7 +37,7 @@ public class DeploymentCollectionInner {
      * @param value the value value to set
      * @return the DeploymentCollectionInner object itself.
      */
-    public DeploymentCollectionInner setValue(List<DeploymentInner> value) {
+    public DeploymentCollectionInner withValue(List<DeploymentInner> value) {
         this.value = value;
         return this;
     }
@@ -57,7 +57,7 @@ public class DeploymentCollectionInner {
      * @param nextLink the nextLink value to set
      * @return the DeploymentCollectionInner object itself.
      */
-    public DeploymentCollectionInner setNextLink(String nextLink) {
+    public DeploymentCollectionInner withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }

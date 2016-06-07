@@ -132,7 +132,7 @@ public class ComputeNode {
      * @param id the id value to set
      * @return the ComputeNode object itself.
      */
-    public ComputeNode setId(String id) {
+    public ComputeNode withId(String id) {
         this.id = id;
         return this;
     }
@@ -152,7 +152,7 @@ public class ComputeNode {
      * @param url the url value to set
      * @return the ComputeNode object itself.
      */
-    public ComputeNode setUrl(String url) {
+    public ComputeNode withUrl(String url) {
         this.url = url;
         return this;
     }
@@ -172,7 +172,7 @@ public class ComputeNode {
      * @param state the state value to set
      * @return the ComputeNode object itself.
      */
-    public ComputeNode setState(ComputeNodeState state) {
+    public ComputeNode withState(ComputeNodeState state) {
         this.state = state;
         return this;
     }
@@ -192,7 +192,7 @@ public class ComputeNode {
      * @param schedulingState the schedulingState value to set
      * @return the ComputeNode object itself.
      */
-    public ComputeNode setSchedulingState(SchedulingState schedulingState) {
+    public ComputeNode withSchedulingState(SchedulingState schedulingState) {
         this.schedulingState = schedulingState;
         return this;
     }
@@ -212,7 +212,7 @@ public class ComputeNode {
      * @param stateTransitionTime the stateTransitionTime value to set
      * @return the ComputeNode object itself.
      */
-    public ComputeNode setStateTransitionTime(DateTime stateTransitionTime) {
+    public ComputeNode withStateTransitionTime(DateTime stateTransitionTime) {
         this.stateTransitionTime = stateTransitionTime;
         return this;
     }
@@ -232,7 +232,7 @@ public class ComputeNode {
      * @param lastBootTime the lastBootTime value to set
      * @return the ComputeNode object itself.
      */
-    public ComputeNode setLastBootTime(DateTime lastBootTime) {
+    public ComputeNode withLastBootTime(DateTime lastBootTime) {
         this.lastBootTime = lastBootTime;
         return this;
     }
@@ -252,7 +252,7 @@ public class ComputeNode {
      * @param allocationTime the allocationTime value to set
      * @return the ComputeNode object itself.
      */
-    public ComputeNode setAllocationTime(DateTime allocationTime) {
+    public ComputeNode withAllocationTime(DateTime allocationTime) {
         this.allocationTime = allocationTime;
         return this;
     }
@@ -272,7 +272,7 @@ public class ComputeNode {
      * @param ipAddress the ipAddress value to set
      * @return the ComputeNode object itself.
      */
-    public ComputeNode setIpAddress(String ipAddress) {
+    public ComputeNode withIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
         return this;
     }
@@ -292,7 +292,7 @@ public class ComputeNode {
      * @param affinityId the affinityId value to set
      * @return the ComputeNode object itself.
      */
-    public ComputeNode setAffinityId(String affinityId) {
+    public ComputeNode withAffinityId(String affinityId) {
         this.affinityId = affinityId;
         return this;
     }
@@ -312,7 +312,7 @@ public class ComputeNode {
      * @param vmSize the vmSize value to set
      * @return the ComputeNode object itself.
      */
-    public ComputeNode setVmSize(String vmSize) {
+    public ComputeNode withVmSize(String vmSize) {
         this.vmSize = vmSize;
         return this;
     }
@@ -332,7 +332,7 @@ public class ComputeNode {
      * @param totalTasksRun the totalTasksRun value to set
      * @return the ComputeNode object itself.
      */
-    public ComputeNode setTotalTasksRun(Integer totalTasksRun) {
+    public ComputeNode withTotalTasksRun(Integer totalTasksRun) {
         this.totalTasksRun = totalTasksRun;
         return this;
     }
@@ -352,7 +352,7 @@ public class ComputeNode {
      * @param runningTasksCount the runningTasksCount value to set
      * @return the ComputeNode object itself.
      */
-    public ComputeNode setRunningTasksCount(Integer runningTasksCount) {
+    public ComputeNode withRunningTasksCount(Integer runningTasksCount) {
         this.runningTasksCount = runningTasksCount;
         return this;
     }
@@ -372,7 +372,7 @@ public class ComputeNode {
      * @param totalTasksSucceeded the totalTasksSucceeded value to set
      * @return the ComputeNode object itself.
      */
-    public ComputeNode setTotalTasksSucceeded(Integer totalTasksSucceeded) {
+    public ComputeNode withTotalTasksSucceeded(Integer totalTasksSucceeded) {
         this.totalTasksSucceeded = totalTasksSucceeded;
         return this;
     }
@@ -392,7 +392,7 @@ public class ComputeNode {
      * @param recentTasks the recentTasks value to set
      * @return the ComputeNode object itself.
      */
-    public ComputeNode setRecentTasks(List<TaskInformation> recentTasks) {
+    public ComputeNode withRecentTasks(List<TaskInformation> recentTasks) {
         this.recentTasks = recentTasks;
         return this;
     }
@@ -412,7 +412,7 @@ public class ComputeNode {
      * @param startTask the startTask value to set
      * @return the ComputeNode object itself.
      */
-    public ComputeNode setStartTask(StartTask startTask) {
+    public ComputeNode withStartTask(StartTask startTask) {
         this.startTask = startTask;
         return this;
     }
@@ -432,7 +432,7 @@ public class ComputeNode {
      * @param startTaskInfo the startTaskInfo value to set
      * @return the ComputeNode object itself.
      */
-    public ComputeNode setStartTaskInfo(StartTaskInformation startTaskInfo) {
+    public ComputeNode withStartTaskInfo(StartTaskInformation startTaskInfo) {
         this.startTaskInfo = startTaskInfo;
         return this;
     }
@@ -452,7 +452,7 @@ public class ComputeNode {
      * @param certificateReferences the certificateReferences value to set
      * @return the ComputeNode object itself.
      */
-    public ComputeNode setCertificateReferences(List<CertificateReference> certificateReferences) {
+    public ComputeNode withCertificateReferences(List<CertificateReference> certificateReferences) {
         this.certificateReferences = certificateReferences;
         return this;
     }
@@ -472,7 +472,7 @@ public class ComputeNode {
      * @param errors the errors value to set
      * @return the ComputeNode object itself.
      */
-    public ComputeNode setErrors(List<ComputeNodeError> errors) {
+    public ComputeNode withErrors(List<ComputeNodeError> errors) {
         this.errors = errors;
         return this;
     }

@@ -58,8 +58,8 @@ public class AzureTests {
         azure = azureAuthed.withSubscription(subscriptionId);
 
         // Authenticate based on file
-        this.azure2 = Azure.authenticate(new File("my.azureauth"))
-                .withDefaultSubscription();
+        // this.azure2 = Azure.authenticate(new File("my.azureauth"))
+        //        .withDefaultSubscription();
     }
 
     /**

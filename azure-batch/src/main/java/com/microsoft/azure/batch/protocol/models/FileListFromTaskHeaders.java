@@ -54,7 +54,7 @@ public class FileListFromTaskHeaders {
      * @param clientRequestId the clientRequestId value to set
      * @return the FileListFromTaskHeaders object itself.
      */
-    public FileListFromTaskHeaders setClientRequestId(String clientRequestId) {
+    public FileListFromTaskHeaders withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -74,7 +74,7 @@ public class FileListFromTaskHeaders {
      * @param requestId the requestId value to set
      * @return the FileListFromTaskHeaders object itself.
      */
-    public FileListFromTaskHeaders setRequestId(String requestId) {
+    public FileListFromTaskHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -94,7 +94,7 @@ public class FileListFromTaskHeaders {
      * @param eTag the eTag value to set
      * @return the FileListFromTaskHeaders object itself.
      */
-    public FileListFromTaskHeaders setETag(String eTag) {
+    public FileListFromTaskHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -117,7 +117,7 @@ public class FileListFromTaskHeaders {
      * @param lastModified the lastModified value to set
      * @return the FileListFromTaskHeaders object itself.
      */
-    public FileListFromTaskHeaders setLastModified(DateTime lastModified) {
+    public FileListFromTaskHeaders withLastModified(DateTime lastModified) {
         this.lastModified = new DateTimeRfc1123(lastModified);
         return this;
     }

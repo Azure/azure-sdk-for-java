@@ -36,7 +36,7 @@ public class VirtualMachineCaptureResultInner extends SubResource {
      * @param output the output value to set
      * @return the VirtualMachineCaptureResultInner object itself.
      */
-    public VirtualMachineCaptureResultInner setOutput(Object output) {
+    public VirtualMachineCaptureResultInner withOutput(Object output) {
         this.output = output;
         return this;
     }

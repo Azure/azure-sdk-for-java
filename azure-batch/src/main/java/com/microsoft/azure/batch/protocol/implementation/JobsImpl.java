@@ -180,7 +180,11 @@ public final class JobsImpl implements Jobs {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.getAllJobsLifetimeStatistics(this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         return getAllJobsLifetimeStatisticsDelegate(call.execute());
     }
@@ -204,7 +208,11 @@ public final class JobsImpl implements Jobs {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.getAllJobsLifetimeStatistics(this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<JobStatistics>(serviceCallback) {
@@ -337,11 +345,23 @@ public final class JobsImpl implements Jobs {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         String ifMatch = null;
         String ifNoneMatch = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.delete(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         return deleteDelegate(call.execute());
     }
@@ -370,11 +390,23 @@ public final class JobsImpl implements Jobs {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         String ifMatch = null;
         String ifNoneMatch = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.delete(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -566,7 +598,11 @@ public final class JobsImpl implements Jobs {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.get(jobId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         return getDelegate(call.execute());
     }
@@ -597,7 +633,11 @@ public final class JobsImpl implements Jobs {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.get(jobId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CloudJob>(serviceCallback) {
@@ -760,11 +800,23 @@ public final class JobsImpl implements Jobs {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         String ifMatch = null;
         String ifNoneMatch = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.patch(jobId, jobPatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         return patchDelegate(call.execute());
     }
@@ -799,11 +851,23 @@ public final class JobsImpl implements Jobs {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         String ifMatch = null;
         String ifNoneMatch = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.patch(jobId, jobPatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1009,11 +1073,23 @@ public final class JobsImpl implements Jobs {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         String ifMatch = null;
         String ifNoneMatch = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.update(jobId, jobUpdateParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         return updateDelegate(call.execute());
     }
@@ -1048,11 +1124,23 @@ public final class JobsImpl implements Jobs {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         String ifMatch = null;
         String ifNoneMatch = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.update(jobId, jobUpdateParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1257,13 +1345,25 @@ public final class JobsImpl implements Jobs {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         String ifMatch = null;
         String ifNoneMatch = null;
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
         JobDisableParameter jobDisableParameter = new JobDisableParameter();
-        jobDisableParameter.setDisableTasks(disableTasks);
+        jobDisableParameter.withDisableTasks(disableTasks);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.disable(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobDisableParameter, this.client.userAgent());
         return disableDelegate(call.execute());
     }
@@ -1297,13 +1397,25 @@ public final class JobsImpl implements Jobs {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         String ifMatch = null;
         String ifNoneMatch = null;
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
         JobDisableParameter jobDisableParameter = new JobDisableParameter();
-        jobDisableParameter.setDisableTasks(disableTasks);
+        jobDisableParameter.withDisableTasks(disableTasks);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.disable(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobDisableParameter, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1374,7 +1486,7 @@ public final class JobsImpl implements Jobs {
             ifUnmodifiedSince = jobDisableOptions.ifUnmodifiedSince();
         }
         JobDisableParameter jobDisableParameter = new JobDisableParameter();
-        jobDisableParameter.setDisableTasks(disableTasks);
+        jobDisableParameter.withDisableTasks(disableTasks);
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -1451,7 +1563,7 @@ public final class JobsImpl implements Jobs {
             ifUnmodifiedSince = jobDisableOptions.ifUnmodifiedSince();
         }
         JobDisableParameter jobDisableParameter = new JobDisableParameter();
-        jobDisableParameter.setDisableTasks(disableTasks);
+        jobDisableParameter.withDisableTasks(disableTasks);
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -1506,11 +1618,23 @@ public final class JobsImpl implements Jobs {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         String ifMatch = null;
         String ifNoneMatch = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.enable(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         return enableDelegate(call.execute());
     }
@@ -1539,11 +1663,23 @@ public final class JobsImpl implements Jobs {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         String ifMatch = null;
         String ifNoneMatch = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.enable(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1734,13 +1870,25 @@ public final class JobsImpl implements Jobs {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         String ifMatch = null;
         String ifNoneMatch = null;
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
         JobTerminateParameter jobTerminateParameter = new JobTerminateParameter();
-        jobTerminateParameter = null;
+        jobTerminateParameter.withTerminateReason(null);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.terminate(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobTerminateParameter, this.client.userAgent());
         return terminateDelegate(call.execute());
     }
@@ -1770,13 +1918,25 @@ public final class JobsImpl implements Jobs {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
-        DateTimeRfc1123 ocpDateConverted = null;
+        DateTime ocpDate = null;
         String ifMatch = null;
         String ifNoneMatch = null;
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
         JobTerminateParameter jobTerminateParameter = new JobTerminateParameter();
-        jobTerminateParameter = null;
+        jobTerminateParameter.withTerminateReason(null);
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         Call<ResponseBody> call = service.terminate(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobTerminateParameter, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -1846,7 +2006,7 @@ public final class JobsImpl implements Jobs {
         JobTerminateParameter jobTerminateParameter = null;
         if (terminateReason != null) {
             jobTerminateParameter = new JobTerminateParameter();
-            jobTerminateParameter.setTerminateReason(terminateReason);
+            jobTerminateParameter.withTerminateReason(terminateReason);
         }
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
@@ -1922,7 +2082,7 @@ public final class JobsImpl implements Jobs {
         JobTerminateParameter jobTerminateParameter = null;
         if (terminateReason != null) {
             jobTerminateParameter = new JobTerminateParameter();
-            jobTerminateParameter.setTerminateReason(terminateReason);
+            jobTerminateParameter.withTerminateReason(terminateReason);
         }
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
@@ -1979,7 +2139,11 @@ public final class JobsImpl implements Jobs {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.add(job, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         return addDelegate(call.execute());
     }
@@ -2009,7 +2173,11 @@ public final class JobsImpl implements Jobs {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.add(job, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -2153,7 +2321,11 @@ public final class JobsImpl implements Jobs {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> response = listDelegate(call.execute());
         PagedList<CloudJob> result = new PagedList<CloudJob>(response.getBody()) {
@@ -2188,7 +2360,11 @@ public final class JobsImpl implements Jobs {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCallback) {
@@ -2269,9 +2445,9 @@ public final class JobsImpl implements Jobs {
                 JobListNextOptions jobListNextOptions = null;
                 if (jobListOptions != null) {
                     jobListNextOptions = new JobListNextOptions();
-                    jobListNextOptions.setClientRequestId(jobListOptions.clientRequestId());
-                    jobListNextOptions.setReturnClientRequestId(jobListOptions.returnClientRequestId());
-                    jobListNextOptions.setOcpDate(jobListOptions.ocpDate());
+                    jobListNextOptions.withClientRequestId(jobListOptions.clientRequestId());
+                    jobListNextOptions.withReturnClientRequestId(jobListOptions.returnClientRequestId());
+                    jobListNextOptions.withOcpDate(jobListOptions.ocpDate());
                 }
                 return listNext(nextPageLink, jobListNextOptions).getBody();
             }
@@ -2345,9 +2521,9 @@ public final class JobsImpl implements Jobs {
                         JobListNextOptions jobListNextOptions = null;
                         if (jobListOptions != null) {
                             jobListNextOptions = new JobListNextOptions();
-                            jobListNextOptions.setClientRequestId(jobListOptions.clientRequestId());
-                            jobListNextOptions.setReturnClientRequestId(jobListOptions.returnClientRequestId());
-                            jobListNextOptions.setOcpDate(jobListOptions.ocpDate());
+                            jobListNextOptions.withClientRequestId(jobListOptions.clientRequestId());
+                            jobListNextOptions.withReturnClientRequestId(jobListOptions.returnClientRequestId());
+                            jobListNextOptions.withOcpDate(jobListOptions.ocpDate());
                         }
                         listNextAsync(result.getBody().getNextPageLink(), jobListNextOptions, serviceCall, serviceCallback);
                     } else {
@@ -2392,7 +2568,11 @@ public final class JobsImpl implements Jobs {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listFromJobSchedule(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> response = listFromJobScheduleDelegate(call.execute());
         PagedList<CloudJob> result = new PagedList<CloudJob>(response.getBody()) {
@@ -2432,7 +2612,11 @@ public final class JobsImpl implements Jobs {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listFromJobSchedule(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCallback) {
@@ -2517,9 +2701,9 @@ public final class JobsImpl implements Jobs {
                 JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions = null;
                 if (jobListFromJobScheduleOptions != null) {
                     jobListFromJobScheduleNextOptions = new JobListFromJobScheduleNextOptions();
-                    jobListFromJobScheduleNextOptions.setClientRequestId(jobListFromJobScheduleOptions.clientRequestId());
-                    jobListFromJobScheduleNextOptions.setReturnClientRequestId(jobListFromJobScheduleOptions.returnClientRequestId());
-                    jobListFromJobScheduleNextOptions.setOcpDate(jobListFromJobScheduleOptions.ocpDate());
+                    jobListFromJobScheduleNextOptions.withClientRequestId(jobListFromJobScheduleOptions.clientRequestId());
+                    jobListFromJobScheduleNextOptions.withReturnClientRequestId(jobListFromJobScheduleOptions.returnClientRequestId());
+                    jobListFromJobScheduleNextOptions.withOcpDate(jobListFromJobScheduleOptions.ocpDate());
                 }
                 return listFromJobScheduleNext(nextPageLink, jobListFromJobScheduleNextOptions).getBody();
             }
@@ -2598,9 +2782,9 @@ public final class JobsImpl implements Jobs {
                         JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions = null;
                         if (jobListFromJobScheduleOptions != null) {
                             jobListFromJobScheduleNextOptions = new JobListFromJobScheduleNextOptions();
-                            jobListFromJobScheduleNextOptions.setClientRequestId(jobListFromJobScheduleOptions.clientRequestId());
-                            jobListFromJobScheduleNextOptions.setReturnClientRequestId(jobListFromJobScheduleOptions.returnClientRequestId());
-                            jobListFromJobScheduleNextOptions.setOcpDate(jobListFromJobScheduleOptions.ocpDate());
+                            jobListFromJobScheduleNextOptions.withClientRequestId(jobListFromJobScheduleOptions.clientRequestId());
+                            jobListFromJobScheduleNextOptions.withReturnClientRequestId(jobListFromJobScheduleOptions.returnClientRequestId());
+                            jobListFromJobScheduleNextOptions.withOcpDate(jobListFromJobScheduleOptions.ocpDate());
                         }
                         listFromJobScheduleNextAsync(result.getBody().getNextPageLink(), jobListFromJobScheduleNextOptions, serviceCall, serviceCallback);
                     } else {
@@ -2644,7 +2828,11 @@ public final class JobsImpl implements Jobs {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listPreparationAndReleaseTaskStatus(jobId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> response = listPreparationAndReleaseTaskStatusDelegate(call.execute());
         PagedList<JobPreparationAndReleaseTaskExecutionInformation> result = new PagedList<JobPreparationAndReleaseTaskExecutionInformation>(response.getBody()) {
@@ -2683,7 +2871,11 @@ public final class JobsImpl implements Jobs {
         Integer timeout = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listPreparationAndReleaseTaskStatus(jobId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<JobPreparationAndReleaseTaskExecutionInformation>>(serviceCallback) {
@@ -2764,9 +2956,9 @@ public final class JobsImpl implements Jobs {
                 JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions = null;
                 if (jobListPreparationAndReleaseTaskStatusOptions != null) {
                     jobListPreparationAndReleaseTaskStatusNextOptions = new JobListPreparationAndReleaseTaskStatusNextOptions();
-                    jobListPreparationAndReleaseTaskStatusNextOptions.setClientRequestId(jobListPreparationAndReleaseTaskStatusOptions.clientRequestId());
-                    jobListPreparationAndReleaseTaskStatusNextOptions.setReturnClientRequestId(jobListPreparationAndReleaseTaskStatusOptions.returnClientRequestId());
-                    jobListPreparationAndReleaseTaskStatusNextOptions.setOcpDate(jobListPreparationAndReleaseTaskStatusOptions.ocpDate());
+                    jobListPreparationAndReleaseTaskStatusNextOptions.withClientRequestId(jobListPreparationAndReleaseTaskStatusOptions.clientRequestId());
+                    jobListPreparationAndReleaseTaskStatusNextOptions.withReturnClientRequestId(jobListPreparationAndReleaseTaskStatusOptions.returnClientRequestId());
+                    jobListPreparationAndReleaseTaskStatusNextOptions.withOcpDate(jobListPreparationAndReleaseTaskStatusOptions.ocpDate());
                 }
                 return listPreparationAndReleaseTaskStatusNext(nextPageLink, jobListPreparationAndReleaseTaskStatusNextOptions).getBody();
             }
@@ -2841,9 +3033,9 @@ public final class JobsImpl implements Jobs {
                         JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions = null;
                         if (jobListPreparationAndReleaseTaskStatusOptions != null) {
                             jobListPreparationAndReleaseTaskStatusNextOptions = new JobListPreparationAndReleaseTaskStatusNextOptions();
-                            jobListPreparationAndReleaseTaskStatusNextOptions.setClientRequestId(jobListPreparationAndReleaseTaskStatusOptions.clientRequestId());
-                            jobListPreparationAndReleaseTaskStatusNextOptions.setReturnClientRequestId(jobListPreparationAndReleaseTaskStatusOptions.returnClientRequestId());
-                            jobListPreparationAndReleaseTaskStatusNextOptions.setOcpDate(jobListPreparationAndReleaseTaskStatusOptions.ocpDate());
+                            jobListPreparationAndReleaseTaskStatusNextOptions.withClientRequestId(jobListPreparationAndReleaseTaskStatusOptions.clientRequestId());
+                            jobListPreparationAndReleaseTaskStatusNextOptions.withReturnClientRequestId(jobListPreparationAndReleaseTaskStatusOptions.returnClientRequestId());
+                            jobListPreparationAndReleaseTaskStatusNextOptions.withOcpDate(jobListPreparationAndReleaseTaskStatusOptions.ocpDate());
                         }
                         listPreparationAndReleaseTaskStatusNextAsync(result.getBody().getNextPageLink(), jobListPreparationAndReleaseTaskStatusNextOptions, serviceCall, serviceCallback);
                     } else {
@@ -2880,7 +3072,11 @@ public final class JobsImpl implements Jobs {
         final JobListNextOptions jobListNextOptions = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         return listNextDelegate(call.execute());
     }
@@ -2905,7 +3101,11 @@ public final class JobsImpl implements Jobs {
         final JobListNextOptions jobListNextOptions = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCallback) {
@@ -3043,7 +3243,11 @@ public final class JobsImpl implements Jobs {
         final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listFromJobScheduleNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         return listFromJobScheduleNextDelegate(call.execute());
     }
@@ -3068,7 +3272,11 @@ public final class JobsImpl implements Jobs {
         final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listFromJobScheduleNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCallback) {
@@ -3206,7 +3414,11 @@ public final class JobsImpl implements Jobs {
         final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listPreparationAndReleaseTaskStatusNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         return listPreparationAndReleaseTaskStatusNextDelegate(call.execute());
     }
@@ -3231,7 +3443,11 @@ public final class JobsImpl implements Jobs {
         final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions = null;
         String clientRequestId = null;
         Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
         DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
         Call<ResponseBody> call = service.listPreparationAndReleaseTaskStatusNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<JobPreparationAndReleaseTaskExecutionInformation>>(serviceCallback) {

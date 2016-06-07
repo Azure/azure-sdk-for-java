@@ -34,7 +34,7 @@ public class OSDiskImage {
      * @param operatingSystem the operatingSystem value to set
      * @return the OSDiskImage object itself.
      */
-    public OSDiskImage setOperatingSystem(OperatingSystemTypes operatingSystem) {
+    public OSDiskImage withOperatingSystem(OperatingSystemTypes operatingSystem) {
         this.operatingSystem = operatingSystem;
         return this;
     }

@@ -53,7 +53,7 @@ public class VirtualMachineExtensionInstanceView {
      * @param name the name value to set
      * @return the VirtualMachineExtensionInstanceView object itself.
      */
-    public VirtualMachineExtensionInstanceView setName(String name) {
+    public VirtualMachineExtensionInstanceView withName(String name) {
         this.name = name;
         return this;
     }
@@ -73,7 +73,7 @@ public class VirtualMachineExtensionInstanceView {
      * @param type the type value to set
      * @return the VirtualMachineExtensionInstanceView object itself.
      */
-    public VirtualMachineExtensionInstanceView setType(String type) {
+    public VirtualMachineExtensionInstanceView withType(String type) {
         this.type = type;
         return this;
     }
@@ -93,7 +93,7 @@ public class VirtualMachineExtensionInstanceView {
      * @param typeHandlerVersion the typeHandlerVersion value to set
      * @return the VirtualMachineExtensionInstanceView object itself.
      */
-    public VirtualMachineExtensionInstanceView setTypeHandlerVersion(String typeHandlerVersion) {
+    public VirtualMachineExtensionInstanceView withTypeHandlerVersion(String typeHandlerVersion) {
         this.typeHandlerVersion = typeHandlerVersion;
         return this;
     }
@@ -113,7 +113,7 @@ public class VirtualMachineExtensionInstanceView {
      * @param substatuses the substatuses value to set
      * @return the VirtualMachineExtensionInstanceView object itself.
      */
-    public VirtualMachineExtensionInstanceView setSubstatuses(List<InstanceViewStatus> substatuses) {
+    public VirtualMachineExtensionInstanceView withSubstatuses(List<InstanceViewStatus> substatuses) {
         this.substatuses = substatuses;
         return this;
     }
@@ -133,7 +133,7 @@ public class VirtualMachineExtensionInstanceView {
      * @param statuses the statuses value to set
      * @return the VirtualMachineExtensionInstanceView object itself.
      */
-    public VirtualMachineExtensionInstanceView setStatuses(List<InstanceViewStatus> statuses) {
+    public VirtualMachineExtensionInstanceView withStatuses(List<InstanceViewStatus> statuses) {
         this.statuses = statuses;
         return this;
     }

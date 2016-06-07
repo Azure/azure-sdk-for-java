@@ -99,8 +99,8 @@ class NetworkSecurityGroupImpl
     @Override
     public NetworkSecurityRuleImpl defineRule(String name) {
         SecurityRuleInner inner = new SecurityRuleInner();
-        inner.setName(name);
-        inner.setPriority(100); // Must be at least 100
+        inner.withName(name);
+        inner.withPriority(100); // Must be at least 100
         return new NetworkSecurityRuleImpl(name, inner, this);
     }
 

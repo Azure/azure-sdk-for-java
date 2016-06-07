@@ -36,7 +36,7 @@ public class TenantIdDescriptionInner {
      * @param id the id value to set
      * @return the TenantIdDescriptionInner object itself.
      */
-    public TenantIdDescriptionInner setId(String id) {
+    public TenantIdDescriptionInner withId(String id) {
         this.id = id;
         return this;
     }
@@ -56,7 +56,7 @@ public class TenantIdDescriptionInner {
      * @param tenantId the tenantId value to set
      * @return the TenantIdDescriptionInner object itself.
      */
-    public TenantIdDescriptionInner setTenantId(String tenantId) {
+    public TenantIdDescriptionInner withTenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
     }

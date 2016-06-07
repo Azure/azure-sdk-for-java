@@ -36,7 +36,7 @@ public class ResourceProviderOperationDefinitionInner {
      * @param name the name value to set
      * @return the ResourceProviderOperationDefinitionInner object itself.
      */
-    public ResourceProviderOperationDefinitionInner setName(String name) {
+    public ResourceProviderOperationDefinitionInner withName(String name) {
         this.name = name;
         return this;
     }
@@ -56,7 +56,7 @@ public class ResourceProviderOperationDefinitionInner {
      * @param display the display value to set
      * @return the ResourceProviderOperationDefinitionInner object itself.
      */
-    public ResourceProviderOperationDefinitionInner setDisplay(ResourceProviderOperationDisplayProperties display) {
+    public ResourceProviderOperationDefinitionInner withDisplay(ResourceProviderOperationDisplayProperties display) {
         this.display = display;
         return this;
     }

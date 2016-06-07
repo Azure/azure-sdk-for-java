@@ -41,7 +41,7 @@ public class ResourceNameAvailabilityRequestInner {
      * @param name the name value to set
      * @return the ResourceNameAvailabilityRequestInner object itself.
      */
-    public ResourceNameAvailabilityRequestInner setName(String name) {
+    public ResourceNameAvailabilityRequestInner withName(String name) {
         this.name = name;
         return this;
     }
@@ -61,7 +61,7 @@ public class ResourceNameAvailabilityRequestInner {
      * @param type the type value to set
      * @return the ResourceNameAvailabilityRequestInner object itself.
      */
-    public ResourceNameAvailabilityRequestInner setType(String type) {
+    public ResourceNameAvailabilityRequestInner withType(String type) {
         this.type = type;
         return this;
     }
@@ -81,7 +81,7 @@ public class ResourceNameAvailabilityRequestInner {
      * @param isFqdn the isFqdn value to set
      * @return the ResourceNameAvailabilityRequestInner object itself.
      */
-    public ResourceNameAvailabilityRequestInner setIsFqdn(Boolean isFqdn) {
+    public ResourceNameAvailabilityRequestInner withIsFqdn(Boolean isFqdn) {
         this.isFqdn = isFqdn;
         return this;
     }

@@ -72,8 +72,8 @@ final class GenericResourcesImpl
     @Override
     public void moveResources(String sourceResourceGroupName, ResourceGroup targetResourceGroup, List<String> resources) throws CloudException, IOException, InterruptedException {
         ResourcesMoveInfoInner moveInfo = new ResourcesMoveInfoInner();
-        moveInfo.setTargetResourceGroup(targetResourceGroup.id());
-        moveInfo.setResources(resources);
+        moveInfo.withTargetResourceGroup(targetResourceGroup.id());
+        moveInfo.withResources(resources);
         client.moveResources(sourceResourceGroupName, moveInfo);
     }
 

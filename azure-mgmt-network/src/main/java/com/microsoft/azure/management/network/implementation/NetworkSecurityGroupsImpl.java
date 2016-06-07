@@ -79,11 +79,11 @@ class NetworkSecurityGroupsImpl implements NetworkSecurityGroups {
 
         // Initialize rules
         if (inner.securityRules() == null) {
-            inner.setSecurityRules(new ArrayList<SecurityRuleInner>());
+            inner.withSecurityRules(new ArrayList<SecurityRuleInner>());
         }
 
         if (inner.defaultSecurityRules() == null) {
-            inner.setDefaultSecurityRules(new ArrayList<SecurityRuleInner>());
+            inner.withDefaultSecurityRules(new ArrayList<SecurityRuleInner>());
         }
 
         return new NetworkSecurityGroupImpl(name, inner, this.client, this.resourceGroups);

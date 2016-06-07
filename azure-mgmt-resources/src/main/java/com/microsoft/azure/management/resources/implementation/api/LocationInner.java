@@ -56,7 +56,7 @@ public class LocationInner {
      * @param id the id value to set
      * @return the LocationInner object itself.
      */
-    public LocationInner setId(String id) {
+    public LocationInner withId(String id) {
         this.id = id;
         return this;
     }
@@ -76,7 +76,7 @@ public class LocationInner {
      * @param subscriptionId the subscriptionId value to set
      * @return the LocationInner object itself.
      */
-    public LocationInner setSubscriptionId(String subscriptionId) {
+    public LocationInner withSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -96,7 +96,7 @@ public class LocationInner {
      * @param name the name value to set
      * @return the LocationInner object itself.
      */
-    public LocationInner setName(String name) {
+    public LocationInner withName(String name) {
         this.name = name;
         return this;
     }
@@ -116,7 +116,7 @@ public class LocationInner {
      * @param displayName the displayName value to set
      * @return the LocationInner object itself.
      */
-    public LocationInner setDisplayName(String displayName) {
+    public LocationInner withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -136,7 +136,7 @@ public class LocationInner {
      * @param latitude the latitude value to set
      * @return the LocationInner object itself.
      */
-    public LocationInner setLatitude(String latitude) {
+    public LocationInner withLatitude(String latitude) {
         this.latitude = latitude;
         return this;
     }
@@ -156,7 +156,7 @@ public class LocationInner {
      * @param longitude the longitude value to set
      * @return the LocationInner object itself.
      */
-    public LocationInner setLongitude(String longitude) {
+    public LocationInner withLongitude(String longitude) {
         this.longitude = longitude;
         return this;
     }

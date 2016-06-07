@@ -36,7 +36,7 @@ public class StorageAccountKeysInner {
      * @param key1 the key1 value to set
      * @return the StorageAccountKeysInner object itself.
      */
-    public StorageAccountKeysInner setKey1(String key1) {
+    public StorageAccountKeysInner withKey1(String key1) {
         this.key1 = key1;
         return this;
     }
@@ -56,7 +56,7 @@ public class StorageAccountKeysInner {
      * @param key2 the key2 value to set
      * @return the StorageAccountKeysInner object itself.
      */
-    public StorageAccountKeysInner setKey2(String key2) {
+    public StorageAccountKeysInner withKey2(String key2) {
         this.key2 = key2;
         return this;
     }

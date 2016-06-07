@@ -39,7 +39,7 @@ public class ComputeNodeGetRemoteLoginSettingsResult {
      * @param remoteLoginIPAddress the remoteLoginIPAddress value to set
      * @return the ComputeNodeGetRemoteLoginSettingsResult object itself.
      */
-    public ComputeNodeGetRemoteLoginSettingsResult setRemoteLoginIPAddress(String remoteLoginIPAddress) {
+    public ComputeNodeGetRemoteLoginSettingsResult withRemoteLoginIPAddress(String remoteLoginIPAddress) {
         this.remoteLoginIPAddress = remoteLoginIPAddress;
         return this;
     }
@@ -59,7 +59,7 @@ public class ComputeNodeGetRemoteLoginSettingsResult {
      * @param remoteLoginPort the remoteLoginPort value to set
      * @return the ComputeNodeGetRemoteLoginSettingsResult object itself.
      */
-    public ComputeNodeGetRemoteLoginSettingsResult setRemoteLoginPort(int remoteLoginPort) {
+    public ComputeNodeGetRemoteLoginSettingsResult withRemoteLoginPort(int remoteLoginPort) {
         this.remoteLoginPort = remoteLoginPort;
         return this;
     }

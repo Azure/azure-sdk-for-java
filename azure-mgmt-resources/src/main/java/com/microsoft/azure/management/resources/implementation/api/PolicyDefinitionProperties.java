@@ -41,7 +41,7 @@ public class PolicyDefinitionProperties {
      * @param description the description value to set
      * @return the PolicyDefinitionProperties object itself.
      */
-    public PolicyDefinitionProperties setDescription(String description) {
+    public PolicyDefinitionProperties withDescription(String description) {
         this.description = description;
         return this;
     }
@@ -61,7 +61,7 @@ public class PolicyDefinitionProperties {
      * @param displayName the displayName value to set
      * @return the PolicyDefinitionProperties object itself.
      */
-    public PolicyDefinitionProperties setDisplayName(String displayName) {
+    public PolicyDefinitionProperties withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -81,7 +81,7 @@ public class PolicyDefinitionProperties {
      * @param policyRule the policyRule value to set
      * @return the PolicyDefinitionProperties object itself.
      */
-    public PolicyDefinitionProperties setPolicyRule(Object policyRule) {
+    public PolicyDefinitionProperties withPolicyRule(Object policyRule) {
         this.policyRule = policyRule;
         return this;
     }

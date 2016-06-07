@@ -54,7 +54,7 @@ public class CertificateDeleteHeaders {
      * @param clientRequestId the clientRequestId value to set
      * @return the CertificateDeleteHeaders object itself.
      */
-    public CertificateDeleteHeaders setClientRequestId(String clientRequestId) {
+    public CertificateDeleteHeaders withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -74,7 +74,7 @@ public class CertificateDeleteHeaders {
      * @param requestId the requestId value to set
      * @return the CertificateDeleteHeaders object itself.
      */
-    public CertificateDeleteHeaders setRequestId(String requestId) {
+    public CertificateDeleteHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -94,7 +94,7 @@ public class CertificateDeleteHeaders {
      * @param eTag the eTag value to set
      * @return the CertificateDeleteHeaders object itself.
      */
-    public CertificateDeleteHeaders setETag(String eTag) {
+    public CertificateDeleteHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -117,7 +117,7 @@ public class CertificateDeleteHeaders {
      * @param lastModified the lastModified value to set
      * @return the CertificateDeleteHeaders object itself.
      */
-    public CertificateDeleteHeaders setLastModified(DateTime lastModified) {
+    public CertificateDeleteHeaders withLastModified(DateTime lastModified) {
         this.lastModified = new DateTimeRfc1123(lastModified);
         return this;
     }

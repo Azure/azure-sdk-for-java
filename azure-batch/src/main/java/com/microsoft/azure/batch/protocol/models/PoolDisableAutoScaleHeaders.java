@@ -60,7 +60,7 @@ public class PoolDisableAutoScaleHeaders {
      * @param clientRequestId the clientRequestId value to set
      * @return the PoolDisableAutoScaleHeaders object itself.
      */
-    public PoolDisableAutoScaleHeaders setClientRequestId(String clientRequestId) {
+    public PoolDisableAutoScaleHeaders withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -80,7 +80,7 @@ public class PoolDisableAutoScaleHeaders {
      * @param requestId the requestId value to set
      * @return the PoolDisableAutoScaleHeaders object itself.
      */
-    public PoolDisableAutoScaleHeaders setRequestId(String requestId) {
+    public PoolDisableAutoScaleHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -100,7 +100,7 @@ public class PoolDisableAutoScaleHeaders {
      * @param eTag the eTag value to set
      * @return the PoolDisableAutoScaleHeaders object itself.
      */
-    public PoolDisableAutoScaleHeaders setETag(String eTag) {
+    public PoolDisableAutoScaleHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -123,7 +123,7 @@ public class PoolDisableAutoScaleHeaders {
      * @param lastModified the lastModified value to set
      * @return the PoolDisableAutoScaleHeaders object itself.
      */
-    public PoolDisableAutoScaleHeaders setLastModified(DateTime lastModified) {
+    public PoolDisableAutoScaleHeaders withLastModified(DateTime lastModified) {
         this.lastModified = new DateTimeRfc1123(lastModified);
         return this;
     }
@@ -143,7 +143,7 @@ public class PoolDisableAutoScaleHeaders {
      * @param dataServiceId the dataServiceId value to set
      * @return the PoolDisableAutoScaleHeaders object itself.
      */
-    public PoolDisableAutoScaleHeaders setDataServiceId(String dataServiceId) {
+    public PoolDisableAutoScaleHeaders withDataServiceId(String dataServiceId) {
         this.dataServiceId = dataServiceId;
         return this;
     }

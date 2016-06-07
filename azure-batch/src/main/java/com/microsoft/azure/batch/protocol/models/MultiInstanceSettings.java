@@ -50,7 +50,7 @@ public class MultiInstanceSettings {
      * @param numberOfInstances the numberOfInstances value to set
      * @return the MultiInstanceSettings object itself.
      */
-    public MultiInstanceSettings setNumberOfInstances(int numberOfInstances) {
+    public MultiInstanceSettings withNumberOfInstances(int numberOfInstances) {
         this.numberOfInstances = numberOfInstances;
         return this;
     }
@@ -70,7 +70,7 @@ public class MultiInstanceSettings {
      * @param coordinationCommandLine the coordinationCommandLine value to set
      * @return the MultiInstanceSettings object itself.
      */
-    public MultiInstanceSettings setCoordinationCommandLine(String coordinationCommandLine) {
+    public MultiInstanceSettings withCoordinationCommandLine(String coordinationCommandLine) {
         this.coordinationCommandLine = coordinationCommandLine;
         return this;
     }
@@ -90,7 +90,7 @@ public class MultiInstanceSettings {
      * @param commonResourceFiles the commonResourceFiles value to set
      * @return the MultiInstanceSettings object itself.
      */
-    public MultiInstanceSettings setCommonResourceFiles(List<ResourceFile> commonResourceFiles) {
+    public MultiInstanceSettings withCommonResourceFiles(List<ResourceFile> commonResourceFiles) {
         this.commonResourceFiles = commonResourceFiles;
         return this;
     }

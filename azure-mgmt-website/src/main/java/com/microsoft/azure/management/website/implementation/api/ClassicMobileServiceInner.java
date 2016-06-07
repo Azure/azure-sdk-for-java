@@ -36,7 +36,7 @@ public class ClassicMobileServiceInner extends Resource {
      * @param classicMobileServiceName the classicMobileServiceName value to set
      * @return the ClassicMobileServiceInner object itself.
      */
-    public ClassicMobileServiceInner setClassicMobileServiceName(String classicMobileServiceName) {
+    public ClassicMobileServiceInner withClassicMobileServiceName(String classicMobileServiceName) {
         this.classicMobileServiceName = classicMobileServiceName;
         return this;
     }

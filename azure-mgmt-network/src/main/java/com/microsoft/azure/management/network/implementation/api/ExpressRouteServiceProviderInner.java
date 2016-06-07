@@ -49,7 +49,7 @@ public class ExpressRouteServiceProviderInner extends Resource {
      * @param peeringLocations the peeringLocations value to set
      * @return the ExpressRouteServiceProviderInner object itself.
      */
-    public ExpressRouteServiceProviderInner setPeeringLocations(List<String> peeringLocations) {
+    public ExpressRouteServiceProviderInner withPeeringLocations(List<String> peeringLocations) {
         this.peeringLocations = peeringLocations;
         return this;
     }
@@ -69,7 +69,7 @@ public class ExpressRouteServiceProviderInner extends Resource {
      * @param bandwidthsOffered the bandwidthsOffered value to set
      * @return the ExpressRouteServiceProviderInner object itself.
      */
-    public ExpressRouteServiceProviderInner setBandwidthsOffered(List<ExpressRouteServiceProviderBandwidthsOffered> bandwidthsOffered) {
+    public ExpressRouteServiceProviderInner withBandwidthsOffered(List<ExpressRouteServiceProviderBandwidthsOffered> bandwidthsOffered) {
         this.bandwidthsOffered = bandwidthsOffered;
         return this;
     }
@@ -89,7 +89,7 @@ public class ExpressRouteServiceProviderInner extends Resource {
      * @param provisioningState the provisioningState value to set
      * @return the ExpressRouteServiceProviderInner object itself.
      */
-    public ExpressRouteServiceProviderInner setProvisioningState(String provisioningState) {
+    public ExpressRouteServiceProviderInner withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }

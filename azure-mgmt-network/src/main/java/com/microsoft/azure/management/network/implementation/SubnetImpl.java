@@ -39,7 +39,7 @@ class SubnetImpl
 
     @Override
     public SubnetImpl withAddressPrefix(String cidr) {
-        this.inner().setAddressPrefix(cidr);
+        this.inner().withAddressPrefix(cidr);
         return this;
     }
 

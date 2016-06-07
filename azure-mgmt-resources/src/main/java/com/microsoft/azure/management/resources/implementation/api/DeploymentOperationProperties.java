@@ -52,7 +52,7 @@ public class DeploymentOperationProperties {
      * @param provisioningState the provisioningState value to set
      * @return the DeploymentOperationProperties object itself.
      */
-    public DeploymentOperationProperties setProvisioningState(String provisioningState) {
+    public DeploymentOperationProperties withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -72,7 +72,7 @@ public class DeploymentOperationProperties {
      * @param timestamp the timestamp value to set
      * @return the DeploymentOperationProperties object itself.
      */
-    public DeploymentOperationProperties setTimestamp(DateTime timestamp) {
+    public DeploymentOperationProperties withTimestamp(DateTime timestamp) {
         this.timestamp = timestamp;
         return this;
     }
@@ -92,7 +92,7 @@ public class DeploymentOperationProperties {
      * @param statusCode the statusCode value to set
      * @return the DeploymentOperationProperties object itself.
      */
-    public DeploymentOperationProperties setStatusCode(String statusCode) {
+    public DeploymentOperationProperties withStatusCode(String statusCode) {
         this.statusCode = statusCode;
         return this;
     }
@@ -112,7 +112,7 @@ public class DeploymentOperationProperties {
      * @param statusMessage the statusMessage value to set
      * @return the DeploymentOperationProperties object itself.
      */
-    public DeploymentOperationProperties setStatusMessage(Object statusMessage) {
+    public DeploymentOperationProperties withStatusMessage(Object statusMessage) {
         this.statusMessage = statusMessage;
         return this;
     }
@@ -132,7 +132,7 @@ public class DeploymentOperationProperties {
      * @param targetResource the targetResource value to set
      * @return the DeploymentOperationProperties object itself.
      */
-    public DeploymentOperationProperties setTargetResource(TargetResource targetResource) {
+    public DeploymentOperationProperties withTargetResource(TargetResource targetResource) {
         this.targetResource = targetResource;
         return this;
     }

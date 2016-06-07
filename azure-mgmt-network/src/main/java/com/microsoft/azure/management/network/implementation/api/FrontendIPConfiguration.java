@@ -98,7 +98,7 @@ public class FrontendIPConfiguration extends SubResource {
      * @param inboundNatRules the inboundNatRules value to set
      * @return the FrontendIPConfiguration object itself.
      */
-    public FrontendIPConfiguration setInboundNatRules(List<SubResource> inboundNatRules) {
+    public FrontendIPConfiguration withInboundNatRules(List<SubResource> inboundNatRules) {
         this.inboundNatRules = inboundNatRules;
         return this;
     }
@@ -118,7 +118,7 @@ public class FrontendIPConfiguration extends SubResource {
      * @param inboundNatPools the inboundNatPools value to set
      * @return the FrontendIPConfiguration object itself.
      */
-    public FrontendIPConfiguration setInboundNatPools(List<SubResource> inboundNatPools) {
+    public FrontendIPConfiguration withInboundNatPools(List<SubResource> inboundNatPools) {
         this.inboundNatPools = inboundNatPools;
         return this;
     }
@@ -138,7 +138,7 @@ public class FrontendIPConfiguration extends SubResource {
      * @param outboundNatRules the outboundNatRules value to set
      * @return the FrontendIPConfiguration object itself.
      */
-    public FrontendIPConfiguration setOutboundNatRules(List<SubResource> outboundNatRules) {
+    public FrontendIPConfiguration withOutboundNatRules(List<SubResource> outboundNatRules) {
         this.outboundNatRules = outboundNatRules;
         return this;
     }
@@ -158,7 +158,7 @@ public class FrontendIPConfiguration extends SubResource {
      * @param loadBalancingRules the loadBalancingRules value to set
      * @return the FrontendIPConfiguration object itself.
      */
-    public FrontendIPConfiguration setLoadBalancingRules(List<SubResource> loadBalancingRules) {
+    public FrontendIPConfiguration withLoadBalancingRules(List<SubResource> loadBalancingRules) {
         this.loadBalancingRules = loadBalancingRules;
         return this;
     }
@@ -178,7 +178,7 @@ public class FrontendIPConfiguration extends SubResource {
      * @param privateIPAddress the privateIPAddress value to set
      * @return the FrontendIPConfiguration object itself.
      */
-    public FrontendIPConfiguration setPrivateIPAddress(String privateIPAddress) {
+    public FrontendIPConfiguration withPrivateIPAddress(String privateIPAddress) {
         this.privateIPAddress = privateIPAddress;
         return this;
     }
@@ -198,7 +198,7 @@ public class FrontendIPConfiguration extends SubResource {
      * @param privateIPAllocationMethod the privateIPAllocationMethod value to set
      * @return the FrontendIPConfiguration object itself.
      */
-    public FrontendIPConfiguration setPrivateIPAllocationMethod(String privateIPAllocationMethod) {
+    public FrontendIPConfiguration withPrivateIPAllocationMethod(String privateIPAllocationMethod) {
         this.privateIPAllocationMethod = privateIPAllocationMethod;
         return this;
     }
@@ -218,7 +218,7 @@ public class FrontendIPConfiguration extends SubResource {
      * @param subnet the subnet value to set
      * @return the FrontendIPConfiguration object itself.
      */
-    public FrontendIPConfiguration setSubnet(SubnetInner subnet) {
+    public FrontendIPConfiguration withSubnet(SubnetInner subnet) {
         this.subnet = subnet;
         return this;
     }
@@ -238,7 +238,7 @@ public class FrontendIPConfiguration extends SubResource {
      * @param publicIPAddress the publicIPAddress value to set
      * @return the FrontendIPConfiguration object itself.
      */
-    public FrontendIPConfiguration setPublicIPAddress(PublicIPAddressInner publicIPAddress) {
+    public FrontendIPConfiguration withPublicIPAddress(PublicIPAddressInner publicIPAddress) {
         this.publicIPAddress = publicIPAddress;
         return this;
     }
@@ -258,7 +258,7 @@ public class FrontendIPConfiguration extends SubResource {
      * @param provisioningState the provisioningState value to set
      * @return the FrontendIPConfiguration object itself.
      */
-    public FrontendIPConfiguration setProvisioningState(String provisioningState) {
+    public FrontendIPConfiguration withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -278,7 +278,7 @@ public class FrontendIPConfiguration extends SubResource {
      * @param name the name value to set
      * @return the FrontendIPConfiguration object itself.
      */
-    public FrontendIPConfiguration setName(String name) {
+    public FrontendIPConfiguration withName(String name) {
         this.name = name;
         return this;
     }
@@ -298,7 +298,7 @@ public class FrontendIPConfiguration extends SubResource {
      * @param etag the etag value to set
      * @return the FrontendIPConfiguration object itself.
      */
-    public FrontendIPConfiguration setEtag(String etag) {
+    public FrontendIPConfiguration withEtag(String etag) {
         this.etag = etag;
         return this;
     }

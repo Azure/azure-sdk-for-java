@@ -63,7 +63,7 @@ public class CertificateReference {
      * @param thumbprint the thumbprint value to set
      * @return the CertificateReference object itself.
      */
-    public CertificateReference setThumbprint(String thumbprint) {
+    public CertificateReference withThumbprint(String thumbprint) {
         this.thumbprint = thumbprint;
         return this;
     }
@@ -83,7 +83,7 @@ public class CertificateReference {
      * @param thumbprintAlgorithm the thumbprintAlgorithm value to set
      * @return the CertificateReference object itself.
      */
-    public CertificateReference setThumbprintAlgorithm(String thumbprintAlgorithm) {
+    public CertificateReference withThumbprintAlgorithm(String thumbprintAlgorithm) {
         this.thumbprintAlgorithm = thumbprintAlgorithm;
         return this;
     }
@@ -103,7 +103,7 @@ public class CertificateReference {
      * @param storeLocation the storeLocation value to set
      * @return the CertificateReference object itself.
      */
-    public CertificateReference setStoreLocation(CertificateStoreLocation storeLocation) {
+    public CertificateReference withStoreLocation(CertificateStoreLocation storeLocation) {
         this.storeLocation = storeLocation;
         return this;
     }
@@ -123,7 +123,7 @@ public class CertificateReference {
      * @param storeName the storeName value to set
      * @return the CertificateReference object itself.
      */
-    public CertificateReference setStoreName(String storeName) {
+    public CertificateReference withStoreName(String storeName) {
         this.storeName = storeName;
         return this;
     }
@@ -143,7 +143,7 @@ public class CertificateReference {
      * @param visibility the visibility value to set
      * @return the CertificateReference object itself.
      */
-    public CertificateReference setVisibility(List<CertificateVisibility> visibility) {
+    public CertificateReference withVisibility(List<CertificateVisibility> visibility) {
         this.visibility = visibility;
         return this;
     }

@@ -187,24 +187,24 @@ public final class Azure {
             return new Azure(restClient, subscriptionId);
         }
 
-		@Override
-		public Azure withDefaultSubscription() throws CloudException, IOException {
-		    if(this.defaultSubscription != null) {
-		        return withSubscription(this.defaultSubscription);
-		    } else {
-		        PagedList<Subscription> subs = this.subscriptions().list();
-		        if(!subs.isEmpty()) {
-		            return withSubscription(subs.get(0).subscriptionId());
-		        } else {
-		            return withSubscription(null);
-		        }
-		    }
-		}
+        @Override
+        public Azure withDefaultSubscription() throws CloudException, IOException {
+            if (this.defaultSubscription != null) {
+                return withSubscription(this.defaultSubscription);
+            } else {
+                PagedList<Subscription> subs = this.subscriptions().list();
+                if (!subs.isEmpty()) {
+                    return withSubscription(subs.get(0).subscriptionId());
+                } else {
+                    return withSubscription(null);
+                }
+            }
+        }
     }
 
     private Azure(RestClient restClient, String subscriptionId) {
         ResourceManagementClientImpl resourceManagementClient = new ResourceManagementClientImpl(restClient);
-        resourceManagementClient.setSubscriptionId(subscriptionId);
+        resourceManagementClient.withSubscriptionId(subscriptionId);
         this.resourceManager = ResourceManager.authenticate(restClient).withSubscription(subscriptionId);
         this.storageManager = StorageManager.authenticate(restClient, subscriptionId);
         this.computeManager = ComputeManager.authenticate(restClient, subscriptionId);
@@ -218,7 +218,7 @@ public final class Azure {
     public String subscriptionId() {
         return this.subscriptionId;
     }
-    
+
     /**
      * @return entry point to managing resource groups
      */

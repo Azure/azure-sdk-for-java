@@ -39,7 +39,7 @@ public class StorageAccountProperties {
      * @param accessKey the accessKey value to set
      * @return the StorageAccountProperties object itself.
      */
-    public StorageAccountProperties setAccessKey(String accessKey) {
+    public StorageAccountProperties withAccessKey(String accessKey) {
         this.accessKey = accessKey;
         return this;
     }
@@ -59,7 +59,7 @@ public class StorageAccountProperties {
      * @param suffix the suffix value to set
      * @return the StorageAccountProperties object itself.
      */
-    public StorageAccountProperties setSuffix(String suffix) {
+    public StorageAccountProperties withSuffix(String suffix) {
         this.suffix = suffix;
         return this;
     }

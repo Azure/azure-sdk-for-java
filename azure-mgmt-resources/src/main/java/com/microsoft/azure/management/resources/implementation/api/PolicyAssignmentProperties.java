@@ -41,7 +41,7 @@ public class PolicyAssignmentProperties {
      * @param scope the scope value to set
      * @return the PolicyAssignmentProperties object itself.
      */
-    public PolicyAssignmentProperties setScope(String scope) {
+    public PolicyAssignmentProperties withScope(String scope) {
         this.scope = scope;
         return this;
     }
@@ -61,7 +61,7 @@ public class PolicyAssignmentProperties {
      * @param displayName the displayName value to set
      * @return the PolicyAssignmentProperties object itself.
      */
-    public PolicyAssignmentProperties setDisplayName(String displayName) {
+    public PolicyAssignmentProperties withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -81,7 +81,7 @@ public class PolicyAssignmentProperties {
      * @param policyDefinitionId the policyDefinitionId value to set
      * @return the PolicyAssignmentProperties object itself.
      */
-    public PolicyAssignmentProperties setPolicyDefinitionId(String policyDefinitionId) {
+    public PolicyAssignmentProperties withPolicyDefinitionId(String policyDefinitionId) {
         this.policyDefinitionId = policyDefinitionId;
         return this;
     }

@@ -20,7 +20,7 @@ public class DataLakeStoreAccountOperationsTests extends DataLakeStoreManagement
     public static void setup() throws Exception {
         createClients();
         ResourceGroupInner group = new ResourceGroupInner();
-        group.setLocation(location);
+        group.withLocation(location);
         resourceManagementClient.resourceGroups().createOrUpdate(rgName, group);
     }
 
@@ -39,10 +39,10 @@ public class DataLakeStoreAccountOperationsTests extends DataLakeStoreManagement
         DataLakeStoreAccountProperties createProperties = new DataLakeStoreAccountProperties();
 
         DataLakeStoreAccountInner createParams = new DataLakeStoreAccountInner();
-        createParams.setLocation(location);
-        createParams.setName(adlsAcct);
-        createParams.setProperties(createProperties);
-        createParams.setTags(new HashMap<String, String>());
+        createParams.withLocation(location);
+        createParams.withName(adlsAcct);
+        createParams.withProperties(createProperties);
+        createParams.withTags(new HashMap<String, String>());
         createParams.tags().put("testkey", "testvalue");
 
         DataLakeStoreAccountInner createResponse = dataLakeStoreAccountManagementClient.accounts().create(rgName, adlsAcct, createParams).getBody();
@@ -54,7 +54,7 @@ public class DataLakeStoreAccountOperationsTests extends DataLakeStoreManagement
 
         // update the tags
         createParams.tags().put("testkey2", "testvalue2");
-        createParams.setProperties(null);
+        createParams.withProperties(null);
         DataLakeStoreAccountInner updateResponse = dataLakeStoreAccountManagementClient.accounts().update(rgName, adlsAcct, createParams).getBody();
         Assert.assertEquals(location, updateResponse.location());
         Assert.assertEquals("Microsoft.DataLakeStore/accounts", updateResponse.type());

@@ -111,7 +111,7 @@ final class DeploymentsImpl
 
     private DeploymentImpl createFluentModel(String name) {
         DeploymentExtendedInner deploymentExtendedInner = new DeploymentExtendedInner();
-        deploymentExtendedInner.setName(name);
+        deploymentExtendedInner.withName(name);
         return new DeploymentImpl(deploymentExtendedInner, client, deploymentOperationsClient, resourceGroups);
     }
 

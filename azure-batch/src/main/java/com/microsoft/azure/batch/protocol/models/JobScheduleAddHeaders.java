@@ -60,7 +60,7 @@ public class JobScheduleAddHeaders {
      * @param clientRequestId the clientRequestId value to set
      * @return the JobScheduleAddHeaders object itself.
      */
-    public JobScheduleAddHeaders setClientRequestId(String clientRequestId) {
+    public JobScheduleAddHeaders withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -80,7 +80,7 @@ public class JobScheduleAddHeaders {
      * @param requestId the requestId value to set
      * @return the JobScheduleAddHeaders object itself.
      */
-    public JobScheduleAddHeaders setRequestId(String requestId) {
+    public JobScheduleAddHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -100,7 +100,7 @@ public class JobScheduleAddHeaders {
      * @param eTag the eTag value to set
      * @return the JobScheduleAddHeaders object itself.
      */
-    public JobScheduleAddHeaders setETag(String eTag) {
+    public JobScheduleAddHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -123,7 +123,7 @@ public class JobScheduleAddHeaders {
      * @param lastModified the lastModified value to set
      * @return the JobScheduleAddHeaders object itself.
      */
-    public JobScheduleAddHeaders setLastModified(DateTime lastModified) {
+    public JobScheduleAddHeaders withLastModified(DateTime lastModified) {
         this.lastModified = new DateTimeRfc1123(lastModified);
         return this;
     }
@@ -143,7 +143,7 @@ public class JobScheduleAddHeaders {
      * @param dataServiceId the dataServiceId value to set
      * @return the JobScheduleAddHeaders object itself.
      */
-    public JobScheduleAddHeaders setDataServiceId(String dataServiceId) {
+    public JobScheduleAddHeaders withDataServiceId(String dataServiceId) {
         this.dataServiceId = dataServiceId;
         return this;
     }

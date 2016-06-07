@@ -95,7 +95,7 @@ class PublicIpAddressesImpl
         PublicIPAddressInner inner = new PublicIPAddressInner();
 
         if (null == inner.dnsSettings()) {
-            inner.setDnsSettings(new PublicIPAddressDnsSettings());
+            inner.withDnsSettings(new PublicIPAddressDnsSettings());
         }
 
         return new PublicIpAddressImpl(name, inner, this.client, this.resourceGroups);

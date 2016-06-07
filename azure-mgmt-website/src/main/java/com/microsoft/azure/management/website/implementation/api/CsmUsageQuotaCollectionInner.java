@@ -37,7 +37,7 @@ public class CsmUsageQuotaCollectionInner {
      * @param value the value value to set
      * @return the CsmUsageQuotaCollectionInner object itself.
      */
-    public CsmUsageQuotaCollectionInner setValue(List<CsmUsageQuota> value) {
+    public CsmUsageQuotaCollectionInner withValue(List<CsmUsageQuota> value) {
         this.value = value;
         return this;
     }
@@ -57,7 +57,7 @@ public class CsmUsageQuotaCollectionInner {
      * @param nextLink the nextLink value to set
      * @return the CsmUsageQuotaCollectionInner object itself.
      */
-    public CsmUsageQuotaCollectionInner setNextLink(String nextLink) {
+    public CsmUsageQuotaCollectionInner withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }

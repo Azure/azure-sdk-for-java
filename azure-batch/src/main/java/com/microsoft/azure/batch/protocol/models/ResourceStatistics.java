@@ -112,7 +112,7 @@ public class ResourceStatistics {
      * @param startTime the startTime value to set
      * @return the ResourceStatistics object itself.
      */
-    public ResourceStatistics setStartTime(DateTime startTime) {
+    public ResourceStatistics withStartTime(DateTime startTime) {
         this.startTime = startTime;
         return this;
     }
@@ -132,7 +132,7 @@ public class ResourceStatistics {
      * @param lastUpdateTime the lastUpdateTime value to set
      * @return the ResourceStatistics object itself.
      */
-    public ResourceStatistics setLastUpdateTime(DateTime lastUpdateTime) {
+    public ResourceStatistics withLastUpdateTime(DateTime lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
         return this;
     }
@@ -152,7 +152,7 @@ public class ResourceStatistics {
      * @param avgCPUPercentage the avgCPUPercentage value to set
      * @return the ResourceStatistics object itself.
      */
-    public ResourceStatistics setAvgCPUPercentage(double avgCPUPercentage) {
+    public ResourceStatistics withAvgCPUPercentage(double avgCPUPercentage) {
         this.avgCPUPercentage = avgCPUPercentage;
         return this;
     }
@@ -172,7 +172,7 @@ public class ResourceStatistics {
      * @param avgMemoryGiB the avgMemoryGiB value to set
      * @return the ResourceStatistics object itself.
      */
-    public ResourceStatistics setAvgMemoryGiB(double avgMemoryGiB) {
+    public ResourceStatistics withAvgMemoryGiB(double avgMemoryGiB) {
         this.avgMemoryGiB = avgMemoryGiB;
         return this;
     }
@@ -192,7 +192,7 @@ public class ResourceStatistics {
      * @param peakMemoryGiB the peakMemoryGiB value to set
      * @return the ResourceStatistics object itself.
      */
-    public ResourceStatistics setPeakMemoryGiB(double peakMemoryGiB) {
+    public ResourceStatistics withPeakMemoryGiB(double peakMemoryGiB) {
         this.peakMemoryGiB = peakMemoryGiB;
         return this;
     }
@@ -212,7 +212,7 @@ public class ResourceStatistics {
      * @param avgDiskGiB the avgDiskGiB value to set
      * @return the ResourceStatistics object itself.
      */
-    public ResourceStatistics setAvgDiskGiB(double avgDiskGiB) {
+    public ResourceStatistics withAvgDiskGiB(double avgDiskGiB) {
         this.avgDiskGiB = avgDiskGiB;
         return this;
     }
@@ -232,7 +232,7 @@ public class ResourceStatistics {
      * @param peakDiskGiB the peakDiskGiB value to set
      * @return the ResourceStatistics object itself.
      */
-    public ResourceStatistics setPeakDiskGiB(double peakDiskGiB) {
+    public ResourceStatistics withPeakDiskGiB(double peakDiskGiB) {
         this.peakDiskGiB = peakDiskGiB;
         return this;
     }
@@ -252,7 +252,7 @@ public class ResourceStatistics {
      * @param diskReadIOps the diskReadIOps value to set
      * @return the ResourceStatistics object itself.
      */
-    public ResourceStatistics setDiskReadIOps(long diskReadIOps) {
+    public ResourceStatistics withDiskReadIOps(long diskReadIOps) {
         this.diskReadIOps = diskReadIOps;
         return this;
     }
@@ -272,7 +272,7 @@ public class ResourceStatistics {
      * @param diskWriteIOps the diskWriteIOps value to set
      * @return the ResourceStatistics object itself.
      */
-    public ResourceStatistics setDiskWriteIOps(long diskWriteIOps) {
+    public ResourceStatistics withDiskWriteIOps(long diskWriteIOps) {
         this.diskWriteIOps = diskWriteIOps;
         return this;
     }
@@ -292,7 +292,7 @@ public class ResourceStatistics {
      * @param diskReadGiB the diskReadGiB value to set
      * @return the ResourceStatistics object itself.
      */
-    public ResourceStatistics setDiskReadGiB(double diskReadGiB) {
+    public ResourceStatistics withDiskReadGiB(double diskReadGiB) {
         this.diskReadGiB = diskReadGiB;
         return this;
     }
@@ -312,7 +312,7 @@ public class ResourceStatistics {
      * @param diskWriteGiB the diskWriteGiB value to set
      * @return the ResourceStatistics object itself.
      */
-    public ResourceStatistics setDiskWriteGiB(double diskWriteGiB) {
+    public ResourceStatistics withDiskWriteGiB(double diskWriteGiB) {
         this.diskWriteGiB = diskWriteGiB;
         return this;
     }
@@ -332,7 +332,7 @@ public class ResourceStatistics {
      * @param networkReadGiB the networkReadGiB value to set
      * @return the ResourceStatistics object itself.
      */
-    public ResourceStatistics setNetworkReadGiB(double networkReadGiB) {
+    public ResourceStatistics withNetworkReadGiB(double networkReadGiB) {
         this.networkReadGiB = networkReadGiB;
         return this;
     }
@@ -352,7 +352,7 @@ public class ResourceStatistics {
      * @param networkWriteGiB the networkWriteGiB value to set
      * @return the ResourceStatistics object itself.
      */
-    public ResourceStatistics setNetworkWriteGiB(double networkWriteGiB) {
+    public ResourceStatistics withNetworkWriteGiB(double networkWriteGiB) {
         this.networkWriteGiB = networkWriteGiB;
         return this;
     }

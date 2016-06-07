@@ -96,7 +96,7 @@ class NetworkImpl
     @Override
     public NetworkImpl withSubnets(Map<String, String> nameCidrPairs) {
         List<SubnetInner> azureSubnets = new ArrayList<>();
-        this.inner().setSubnets(azureSubnets);
+        this.inner().withSubnets(azureSubnets);
         initializeSubnetsFromInner();
         for (Entry<String, String> pair : nameCidrPairs.entrySet()) {
             this.withSubnet(pair.getKey(), pair.getValue());
@@ -136,7 +136,7 @@ class NetworkImpl
     @Override
     public SubnetImpl defineSubnet(String name) {
         SubnetInner inner = new SubnetInner();
-        inner.setName(name);
+        inner.withName(name);
         return new SubnetImpl(name, inner, this);
     }
 
@@ -164,10 +164,11 @@ class NetworkImpl
             this.withAddressSpace("10.0.0.0/16");
         }
 
-        // Create a subnet as needed, covering the entire first address space
-        // Future: this shouldn't happen during Update -- may need to move to initializer or something...
-        if (this.inner().subnets().size() == 0) {
-            this.withSubnet("subnet1", this.addressSpaces().get(0));
+        if (isInCreateMode()) {
+            // Create a subnet as needed, covering the entire first address space
+            if (this.inner().subnets().size() == 0) {
+                this.withSubnet("subnet1", this.addressSpaces().get(0));
+            }
         }
 
         ServiceResponse<VirtualNetworkInner> response =

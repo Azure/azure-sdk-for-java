@@ -95,10 +95,10 @@ public class JobScheduleOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        JobSchedulePatchParameter param = new JobSchedulePatchParameter();
-        param.setJobSpecification(jobSpecification);
-        param.setMetadata(metadata);
-        param.setSchedule(schedule);
+        JobSchedulePatchParameter param = new JobSchedulePatchParameter()
+                .withJobSpecification(jobSpecification)
+                .withMetadata(metadata)
+                .withSchedule(schedule);
         this._parentBatchClient.getProtocolLayer().jobSchedules().patch(jobScheduleId, param, options);
     }
 
@@ -115,10 +115,10 @@ public class JobScheduleOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        JobScheduleUpdateParameter param = new JobScheduleUpdateParameter();
-        param.setJobSpecification(jobSpecification);
-        param.setMetadata(metadata);
-        param.setSchedule(schedule);
+        JobScheduleUpdateParameter param = new JobScheduleUpdateParameter()
+                .withJobSpecification(jobSpecification)
+                .withMetadata(metadata)
+                .withSchedule(schedule);
         this._parentBatchClient.getProtocolLayer().jobSchedules().update(jobScheduleId, param, options);
     }
 
@@ -163,10 +163,10 @@ public class JobScheduleOperations implements IInheritedBehaviors {
     }
 
     public void createJobSchedule(String jobScheduleId, Schedule schedule, JobSpecification jobSpecification, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        JobScheduleAddParameter param = new JobScheduleAddParameter();
-        param.setJobSpecification(jobSpecification);
-        param.setSchedule(schedule);
-        param.setId(jobScheduleId);
+        JobScheduleAddParameter param = new JobScheduleAddParameter()
+                .withJobSpecification(jobSpecification)
+                .withSchedule(schedule)
+                .withId(jobScheduleId);
         createJobSchedule(param, additionalBehaviors);
     }
 

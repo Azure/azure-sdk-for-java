@@ -54,7 +54,7 @@ public class PoolListPoolUsageMetricsHeaders {
      * @param clientRequestId the clientRequestId value to set
      * @return the PoolListPoolUsageMetricsHeaders object itself.
      */
-    public PoolListPoolUsageMetricsHeaders setClientRequestId(String clientRequestId) {
+    public PoolListPoolUsageMetricsHeaders withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -74,7 +74,7 @@ public class PoolListPoolUsageMetricsHeaders {
      * @param requestId the requestId value to set
      * @return the PoolListPoolUsageMetricsHeaders object itself.
      */
-    public PoolListPoolUsageMetricsHeaders setRequestId(String requestId) {
+    public PoolListPoolUsageMetricsHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -94,7 +94,7 @@ public class PoolListPoolUsageMetricsHeaders {
      * @param eTag the eTag value to set
      * @return the PoolListPoolUsageMetricsHeaders object itself.
      */
-    public PoolListPoolUsageMetricsHeaders setETag(String eTag) {
+    public PoolListPoolUsageMetricsHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -117,7 +117,7 @@ public class PoolListPoolUsageMetricsHeaders {
      * @param lastModified the lastModified value to set
      * @return the PoolListPoolUsageMetricsHeaders object itself.
      */
-    public PoolListPoolUsageMetricsHeaders setLastModified(DateTime lastModified) {
+    public PoolListPoolUsageMetricsHeaders withLastModified(DateTime lastModified) {
         this.lastModified = new DateTimeRfc1123(lastModified);
         return this;
     }

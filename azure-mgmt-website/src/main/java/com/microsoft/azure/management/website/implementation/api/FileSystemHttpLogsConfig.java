@@ -46,7 +46,7 @@ public class FileSystemHttpLogsConfig {
      * @param retentionInMb the retentionInMb value to set
      * @return the FileSystemHttpLogsConfig object itself.
      */
-    public FileSystemHttpLogsConfig setRetentionInMb(Integer retentionInMb) {
+    public FileSystemHttpLogsConfig withRetentionInMb(Integer retentionInMb) {
         this.retentionInMb = retentionInMb;
         return this;
     }
@@ -66,7 +66,7 @@ public class FileSystemHttpLogsConfig {
      * @param retentionInDays the retentionInDays value to set
      * @return the FileSystemHttpLogsConfig object itself.
      */
-    public FileSystemHttpLogsConfig setRetentionInDays(Integer retentionInDays) {
+    public FileSystemHttpLogsConfig withRetentionInDays(Integer retentionInDays) {
         this.retentionInDays = retentionInDays;
         return this;
     }
@@ -86,7 +86,7 @@ public class FileSystemHttpLogsConfig {
      * @param enabled the enabled value to set
      * @return the FileSystemHttpLogsConfig object itself.
      */
-    public FileSystemHttpLogsConfig setEnabled(Boolean enabled) {
+    public FileSystemHttpLogsConfig withEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }

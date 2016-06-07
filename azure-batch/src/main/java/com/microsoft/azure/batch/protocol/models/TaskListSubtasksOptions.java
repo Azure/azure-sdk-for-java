@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the ListSubtasks operation.
+ * Additional parameters for the Task_ListSubtasks operation.
  */
 public class TaskListSubtasksOptions {
     /**
@@ -64,7 +64,7 @@ public class TaskListSubtasksOptions {
      * @param select the select value to set
      * @return the TaskListSubtasksOptions object itself.
      */
-    public TaskListSubtasksOptions setSelect(String select) {
+    public TaskListSubtasksOptions withSelect(String select) {
         this.select = select;
         return this;
     }
@@ -84,7 +84,7 @@ public class TaskListSubtasksOptions {
      * @param timeout the timeout value to set
      * @return the TaskListSubtasksOptions object itself.
      */
-    public TaskListSubtasksOptions setTimeout(Integer timeout) {
+    public TaskListSubtasksOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -104,7 +104,7 @@ public class TaskListSubtasksOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the TaskListSubtasksOptions object itself.
      */
-    public TaskListSubtasksOptions setClientRequestId(String clientRequestId) {
+    public TaskListSubtasksOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -124,7 +124,7 @@ public class TaskListSubtasksOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the TaskListSubtasksOptions object itself.
      */
-    public TaskListSubtasksOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public TaskListSubtasksOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -147,7 +147,7 @@ public class TaskListSubtasksOptions {
      * @param ocpDate the ocpDate value to set
      * @return the TaskListSubtasksOptions object itself.
      */
-    public TaskListSubtasksOptions setOcpDate(DateTime ocpDate) {
+    public TaskListSubtasksOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }

@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Additional parameters for the ListFromTask operation.
+ * Additional parameters for the File_ListFromTask operation.
  */
 public class FileListFromTaskOptions {
     /**
@@ -70,7 +70,7 @@ public class FileListFromTaskOptions {
      * @param filter the filter value to set
      * @return the FileListFromTaskOptions object itself.
      */
-    public FileListFromTaskOptions setFilter(String filter) {
+    public FileListFromTaskOptions withFilter(String filter) {
         this.filter = filter;
         return this;
     }
@@ -90,7 +90,7 @@ public class FileListFromTaskOptions {
      * @param maxResults the maxResults value to set
      * @return the FileListFromTaskOptions object itself.
      */
-    public FileListFromTaskOptions setMaxResults(Integer maxResults) {
+    public FileListFromTaskOptions withMaxResults(Integer maxResults) {
         this.maxResults = maxResults;
         return this;
     }
@@ -110,7 +110,7 @@ public class FileListFromTaskOptions {
      * @param timeout the timeout value to set
      * @return the FileListFromTaskOptions object itself.
      */
-    public FileListFromTaskOptions setTimeout(Integer timeout) {
+    public FileListFromTaskOptions withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -130,7 +130,7 @@ public class FileListFromTaskOptions {
      * @param clientRequestId the clientRequestId value to set
      * @return the FileListFromTaskOptions object itself.
      */
-    public FileListFromTaskOptions setClientRequestId(String clientRequestId) {
+    public FileListFromTaskOptions withClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -150,7 +150,7 @@ public class FileListFromTaskOptions {
      * @param returnClientRequestId the returnClientRequestId value to set
      * @return the FileListFromTaskOptions object itself.
      */
-    public FileListFromTaskOptions setReturnClientRequestId(Boolean returnClientRequestId) {
+    public FileListFromTaskOptions withReturnClientRequestId(Boolean returnClientRequestId) {
         this.returnClientRequestId = returnClientRequestId;
         return this;
     }
@@ -173,7 +173,7 @@ public class FileListFromTaskOptions {
      * @param ocpDate the ocpDate value to set
      * @return the FileListFromTaskOptions object itself.
      */
-    public FileListFromTaskOptions setOcpDate(DateTime ocpDate) {
+    public FileListFromTaskOptions withOcpDate(DateTime ocpDate) {
         this.ocpDate = new DateTimeRfc1123(ocpDate);
         return this;
     }

@@ -82,7 +82,7 @@ final class GenericResourceImpl
     }
 
     public GenericResourceImpl withProperties(Object properties) {
-        inner().setProperties(properties);
+            inner().withProperties(properties);
         return this;
     }
 
@@ -92,15 +92,14 @@ final class GenericResourceImpl
         return this;
     }
 
-    @Override
     public GenericResourceImpl withPlan(String name, String publisher, String product, String promotionCode) {
-        inner().setPlan(new Plan().setName(name).setPublisher(publisher).setProduct(product).setPromotionCode(promotionCode));
+            inner().withPlan(new Plan().withName(name).withPublisher(publisher).withProduct(product).withPromotionCode(promotionCode));
         return this;
     }
 
     @Override
     public GenericResourceImpl withoutPlan() {
-        inner().setPlan(null);
+            inner().withPlan(null);
         return this;
     }
 

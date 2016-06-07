@@ -56,7 +56,7 @@ public class ComputeNodeUser {
      * @param name the name value to set
      * @return the ComputeNodeUser object itself.
      */
-    public ComputeNodeUser setName(String name) {
+    public ComputeNodeUser withName(String name) {
         this.name = name;
         return this;
     }
@@ -76,7 +76,7 @@ public class ComputeNodeUser {
      * @param isAdmin the isAdmin value to set
      * @return the ComputeNodeUser object itself.
      */
-    public ComputeNodeUser setIsAdmin(Boolean isAdmin) {
+    public ComputeNodeUser withIsAdmin(Boolean isAdmin) {
         this.isAdmin = isAdmin;
         return this;
     }
@@ -96,7 +96,7 @@ public class ComputeNodeUser {
      * @param expiryTime the expiryTime value to set
      * @return the ComputeNodeUser object itself.
      */
-    public ComputeNodeUser setExpiryTime(DateTime expiryTime) {
+    public ComputeNodeUser withExpiryTime(DateTime expiryTime) {
         this.expiryTime = expiryTime;
         return this;
     }
@@ -116,7 +116,7 @@ public class ComputeNodeUser {
      * @param password the password value to set
      * @return the ComputeNodeUser object itself.
      */
-    public ComputeNodeUser setPassword(String password) {
+    public ComputeNodeUser withPassword(String password) {
         this.password = password;
         return this;
     }
@@ -136,7 +136,7 @@ public class ComputeNodeUser {
      * @param sshPublicKey the sshPublicKey value to set
      * @return the ComputeNodeUser object itself.
      */
-    public ComputeNodeUser setSshPublicKey(String sshPublicKey) {
+    public ComputeNodeUser withSshPublicKey(String sshPublicKey) {
         this.sshPublicKey = sshPublicKey;
         return this;
     }

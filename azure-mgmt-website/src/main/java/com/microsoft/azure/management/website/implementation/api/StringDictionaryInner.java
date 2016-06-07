@@ -33,7 +33,7 @@ public class StringDictionaryInner extends Resource {
      * @param properties the properties value to set
      * @return the StringDictionaryInner object itself.
      */
-    public StringDictionaryInner setProperties(Map<String, String> properties) {
+    public StringDictionaryInner withProperties(Map<String, String> properties) {
         this.properties = properties;
         return this;
     }

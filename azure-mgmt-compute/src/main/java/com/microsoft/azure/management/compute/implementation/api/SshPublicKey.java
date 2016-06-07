@@ -41,7 +41,7 @@ public class SshPublicKey {
      * @param path the path value to set
      * @return the SshPublicKey object itself.
      */
-    public SshPublicKey setPath(String path) {
+    public SshPublicKey withPath(String path) {
         this.path = path;
         return this;
     }
@@ -61,7 +61,7 @@ public class SshPublicKey {
      * @param keyData the keyData value to set
      * @return the SshPublicKey object itself.
      */
-    public SshPublicKey setKeyData(String keyData) {
+    public SshPublicKey withKeyData(String keyData) {
         this.keyData = keyData;
         return this;
     }

@@ -38,7 +38,7 @@ public class CsmMoveResourceEnvelopeInner {
      * @param targetResourceGroup the targetResourceGroup value to set
      * @return the CsmMoveResourceEnvelopeInner object itself.
      */
-    public CsmMoveResourceEnvelopeInner setTargetResourceGroup(String targetResourceGroup) {
+    public CsmMoveResourceEnvelopeInner withTargetResourceGroup(String targetResourceGroup) {
         this.targetResourceGroup = targetResourceGroup;
         return this;
     }
@@ -58,7 +58,7 @@ public class CsmMoveResourceEnvelopeInner {
      * @param resources the resources value to set
      * @return the CsmMoveResourceEnvelopeInner object itself.
      */
-    public CsmMoveResourceEnvelopeInner setResources(List<String> resources) {
+    public CsmMoveResourceEnvelopeInner withResources(List<String> resources) {
         this.resources = resources;
         return this;
     }

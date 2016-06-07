@@ -32,7 +32,7 @@ public class VirtualMachineScaleSetExtensionProfile {
      * @param extensions the extensions value to set
      * @return the VirtualMachineScaleSetExtensionProfile object itself.
      */
-    public VirtualMachineScaleSetExtensionProfile setExtensions(List<VirtualMachineScaleSetExtension> extensions) {
+    public VirtualMachineScaleSetExtensionProfile withExtensions(List<VirtualMachineScaleSetExtension> extensions) {
         this.extensions = extensions;
         return this;
     }

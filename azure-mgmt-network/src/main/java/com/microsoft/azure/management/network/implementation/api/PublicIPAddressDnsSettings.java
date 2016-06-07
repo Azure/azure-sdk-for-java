@@ -50,7 +50,7 @@ public class PublicIPAddressDnsSettings {
      * @param domainNameLabel the domainNameLabel value to set
      * @return the PublicIPAddressDnsSettings object itself.
      */
-    public PublicIPAddressDnsSettings setDomainNameLabel(String domainNameLabel) {
+    public PublicIPAddressDnsSettings withDomainNameLabel(String domainNameLabel) {
         this.domainNameLabel = domainNameLabel;
         return this;
     }
@@ -70,7 +70,7 @@ public class PublicIPAddressDnsSettings {
      * @param fqdn the fqdn value to set
      * @return the PublicIPAddressDnsSettings object itself.
      */
-    public PublicIPAddressDnsSettings setFqdn(String fqdn) {
+    public PublicIPAddressDnsSettings withFqdn(String fqdn) {
         this.fqdn = fqdn;
         return this;
     }
@@ -90,7 +90,7 @@ public class PublicIPAddressDnsSettings {
      * @param reverseFqdn the reverseFqdn value to set
      * @return the PublicIPAddressDnsSettings object itself.
      */
-    public PublicIPAddressDnsSettings setReverseFqdn(String reverseFqdn) {
+    public PublicIPAddressDnsSettings withReverseFqdn(String reverseFqdn) {
         this.reverseFqdn = reverseFqdn;
         return this;
     }

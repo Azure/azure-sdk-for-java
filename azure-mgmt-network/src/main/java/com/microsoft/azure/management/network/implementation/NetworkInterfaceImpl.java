@@ -41,6 +41,7 @@ class NetworkInterfaceImpl
     private final NetworkInterfacesInner client;
     private final Networks networks;
     private final PublicIpAddresses publicIpAddresses;
+    // the name of the network interface
     private final String nicName;
     // used to generate unique name for any dependency resources
     private final String randomId;
@@ -168,27 +169,27 @@ class NetworkInterfaceImpl
 
     @Override
     public NetworkInterfaceImpl withPrivateIpAddressDynamic() {
-        this.primaryIpConfiguration().setPrivateIPAllocationMethod("Dynamic");
-        this.primaryIpConfiguration().setPrivateIPAddress(null);
+        this.primaryIpConfiguration().withPrivateIPAllocationMethod("Dynamic");
+        this.primaryIpConfiguration().withPrivateIPAddress(null);
         return this;
     }
 
     @Override
     public NetworkInterfaceImpl withPrivateIpAddressStatic(String staticPrivateIpAddress) {
-        this.primaryIpConfiguration().setPrivateIPAllocationMethod("Static");
-        this.primaryIpConfiguration().setPrivateIPAddress(staticPrivateIpAddress);
+        this.primaryIpConfiguration().withPrivateIPAllocationMethod("Static");
+        this.primaryIpConfiguration().withPrivateIPAddress(staticPrivateIpAddress);
         return this;
     }
 
     @Override
     public NetworkInterfaceImpl withIpForwardingEnabled() {
-        this.inner().setEnableIPForwarding(true);
+        this.inner().withEnableIPForwarding(true);
         return this;
     }
 
     @Override
     public NetworkInterfaceImpl withIpForwardingDisabled() {
-        this.inner().setEnableIPForwarding(false);
+        this.inner().withEnableIPForwarding(false);
         return this;
     }
 
@@ -218,7 +219,7 @@ class NetworkInterfaceImpl
 
     @Override
     public NetworkInterfaceImpl withInternalDnsNameLabel(String dnsNameLabel) {
-        this.inner().dnsSettings().setInternalDnsNameLabel(dnsNameLabel);
+        this.inner().dnsSettings().withInternalDnsNameLabel(dnsNameLabel);
         return this;
     }
 
@@ -302,8 +303,8 @@ class NetworkInterfaceImpl
 
     @Override
     protected void createResource() throws Exception {
-        this.primaryIpConfiguration().setSubnet(subnetToAssociate());
-        this.primaryIpConfiguration().setPublicIPAddress(publicIpToAssociate());
+        this.primaryIpConfiguration().withSubnet(subnetToAssociate());
+        this.primaryIpConfiguration().withPublicIPAddress(publicIpToAssociate());
         ServiceResponse<NetworkInterfaceInner> response = this.client.createOrUpdate(this.resourceGroupName(), this.nicName, this.inner());
         this.setInner(response.getBody());
     }
@@ -326,7 +327,7 @@ class NetworkInterfaceImpl
     private NetworkInterfaceIPConfiguration primaryIpConfiguration() {
         if (this.inner().ipConfigurations().size() == 0) {
             this.inner().ipConfigurations().add(new NetworkInterfaceIPConfiguration());
-            this.inner().ipConfigurations().get(0).setName("primary-nic-config");
+            this.inner().ipConfigurations().get(0).withName("primary-nic-config");
         }
         return this.inner().ipConfigurations().get(0);
     }
@@ -336,7 +337,7 @@ class NetworkInterfaceImpl
      */
     private List<String> dnsServerIps() {
         if (this.inner().dnsSettings().dnsServers() == null) {
-            this.inner().dnsSettings().setDnsServers(new ArrayList<String>());
+            this.inner().dnsSettings().withDnsServers(new ArrayList<String>());
         }
         return this.inner().dnsSettings().dnsServers();
     }
@@ -378,13 +379,13 @@ class NetworkInterfaceImpl
             // define..create mode
             if (this.creatableVirtualNetworkKey != null) {
                 Network network = (Network) createdResource(this.creatableVirtualNetworkKey);
-                subnetInner.setId(network.inner().subnets().get(0).id());
+                subnetInner.withId(network.inner().subnets().get(0).id());
                 return subnetInner;
             }
 
             for (SubnetInner subnet : this.existingVirtualNetworkToAssociate.inner().subnets()) {
                 if (subnet.name().compareToIgnoreCase(this.subnetToAssociate) == 0) {
-                    subnetInner.setId(subnet.id());
+                    subnetInner.withId(subnet.id());
                     return subnetInner;
                 }
             }
@@ -395,9 +396,9 @@ class NetworkInterfaceImpl
             // update..apply mode
             if (subnetToAssociate != null) {
                 int idx = this.primaryIpConfiguration().subnet().id().lastIndexOf('/');
-                subnetInner.setId(this.primaryIpConfiguration().subnet().id().substring(0, idx) + subnetToAssociate);
+                subnetInner.withId(this.primaryIpConfiguration().subnet().id().substring(0, idx) + subnetToAssociate);
             } else {
-                subnetInner.setId(this.primaryIpConfiguration().subnet().id());
+                subnetInner.withId(this.primaryIpConfiguration().subnet().id());
             }
             return subnetInner;
         }
@@ -429,7 +430,7 @@ class NetworkInterfaceImpl
 
         if (publicIPAddressInner != null) {
             SubResource subResource = new SubResource();
-            subResource.setId(publicIPAddressInner.id());
+            subResource.withId(publicIPAddressInner.id());
             return subResource;
         }
 

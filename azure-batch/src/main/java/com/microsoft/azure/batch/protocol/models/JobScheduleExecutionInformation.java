@@ -43,7 +43,7 @@ public class JobScheduleExecutionInformation {
      * @param nextRunTime the nextRunTime value to set
      * @return the JobScheduleExecutionInformation object itself.
      */
-    public JobScheduleExecutionInformation setNextRunTime(DateTime nextRunTime) {
+    public JobScheduleExecutionInformation withNextRunTime(DateTime nextRunTime) {
         this.nextRunTime = nextRunTime;
         return this;
     }
@@ -63,7 +63,7 @@ public class JobScheduleExecutionInformation {
      * @param recentJob the recentJob value to set
      * @return the JobScheduleExecutionInformation object itself.
      */
-    public JobScheduleExecutionInformation setRecentJob(RecentJob recentJob) {
+    public JobScheduleExecutionInformation withRecentJob(RecentJob recentJob) {
         this.recentJob = recentJob;
         return this;
     }
@@ -83,7 +83,7 @@ public class JobScheduleExecutionInformation {
      * @param endTime the endTime value to set
      * @return the JobScheduleExecutionInformation object itself.
      */
-    public JobScheduleExecutionInformation setEndTime(DateTime endTime) {
+    public JobScheduleExecutionInformation withEndTime(DateTime endTime) {
         this.endTime = endTime;
         return this;
     }

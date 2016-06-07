@@ -19,7 +19,6 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import java.io.IOException;
-import java.util.UUID;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -63,7 +62,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      *
      * @param subscriptionId the subscriptionId value.
      */
-    public void setSubscriptionId(String subscriptionId) {
+    public void withSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
     }
 
@@ -96,7 +95,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      *
      * @param acceptLanguage the acceptLanguage value.
      */
-    public void setAcceptLanguage(String acceptLanguage) {
+    public void withAcceptLanguage(String acceptLanguage) {
         this.acceptLanguage = acceptLanguage;
     }
 
@@ -117,7 +116,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      *
      * @param longRunningOperationRetryTimeout the longRunningOperationRetryTimeout value.
      */
-    public void setLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout) {
+    public void withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout) {
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
     }
 
@@ -138,7 +137,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      *
      * @param generateClientRequestId the generateClientRequestId value.
      */
-    public void setGenerateClientRequestId(boolean generateClientRequestId) {
+    public void withGenerateClientRequestId(boolean generateClientRequestId) {
         this.generateClientRequestId = generateClientRequestId;
     }
 
@@ -440,6 +439,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      *
      * @return the user agent string.
      */
+    @Override
     public String userAgent() {
         return String.format("Azure-SDK-For-Java/%s (%s)",
                 getClass().getPackage().getImplementationVersion(),

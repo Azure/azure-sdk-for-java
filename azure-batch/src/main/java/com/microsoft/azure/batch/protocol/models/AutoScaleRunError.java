@@ -45,7 +45,7 @@ public class AutoScaleRunError {
      * @param code the code value to set
      * @return the AutoScaleRunError object itself.
      */
-    public AutoScaleRunError setCode(String code) {
+    public AutoScaleRunError withCode(String code) {
         this.code = code;
         return this;
     }
@@ -65,7 +65,7 @@ public class AutoScaleRunError {
      * @param message the message value to set
      * @return the AutoScaleRunError object itself.
      */
-    public AutoScaleRunError setMessage(String message) {
+    public AutoScaleRunError withMessage(String message) {
         this.message = message;
         return this;
     }
@@ -85,7 +85,7 @@ public class AutoScaleRunError {
      * @param values the values value to set
      * @return the AutoScaleRunError object itself.
      */
-    public AutoScaleRunError setValues(List<NameValuePair> values) {
+    public AutoScaleRunError withValues(List<NameValuePair> values) {
         this.values = values;
         return this;
     }

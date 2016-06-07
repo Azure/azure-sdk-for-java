@@ -47,7 +47,7 @@ public class AclStatus {
      * @param entries the entries value to set
      * @return the AclStatus object itself.
      */
-    public AclStatus setEntries(List<String> entries) {
+    public AclStatus withEntries(List<String> entries) {
         this.entries = entries;
         return this;
     }
@@ -67,7 +67,7 @@ public class AclStatus {
      * @param group the group value to set
      * @return the AclStatus object itself.
      */
-    public AclStatus setGroup(String group) {
+    public AclStatus withGroup(String group) {
         this.group = group;
         return this;
     }
@@ -87,7 +87,7 @@ public class AclStatus {
      * @param owner the owner value to set
      * @return the AclStatus object itself.
      */
-    public AclStatus setOwner(String owner) {
+    public AclStatus withOwner(String owner) {
         this.owner = owner;
         return this;
     }
@@ -107,7 +107,7 @@ public class AclStatus {
      * @param stickyBit the stickyBit value to set
      * @return the AclStatus object itself.
      */
-    public AclStatus setStickyBit(Boolean stickyBit) {
+    public AclStatus withStickyBit(Boolean stickyBit) {
         this.stickyBit = stickyBit;
         return this;
     }

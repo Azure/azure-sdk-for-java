@@ -42,7 +42,7 @@ public class DomainControlCenterSsoRequestInner {
      * @param url the url value to set
      * @return the DomainControlCenterSsoRequestInner object itself.
      */
-    public DomainControlCenterSsoRequestInner setUrl(String url) {
+    public DomainControlCenterSsoRequestInner withUrl(String url) {
         this.url = url;
         return this;
     }
@@ -62,7 +62,7 @@ public class DomainControlCenterSsoRequestInner {
      * @param postParameterKey the postParameterKey value to set
      * @return the DomainControlCenterSsoRequestInner object itself.
      */
-    public DomainControlCenterSsoRequestInner setPostParameterKey(String postParameterKey) {
+    public DomainControlCenterSsoRequestInner withPostParameterKey(String postParameterKey) {
         this.postParameterKey = postParameterKey;
         return this;
     }
@@ -82,7 +82,7 @@ public class DomainControlCenterSsoRequestInner {
      * @param postParameterValue the postParameterValue value to set
      * @return the DomainControlCenterSsoRequestInner object itself.
      */
-    public DomainControlCenterSsoRequestInner setPostParameterValue(String postParameterValue) {
+    public DomainControlCenterSsoRequestInner withPostParameterValue(String postParameterValue) {
         this.postParameterValue = postParameterValue;
         return this;
     }

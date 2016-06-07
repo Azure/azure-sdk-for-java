@@ -38,7 +38,7 @@ public class TemplateLink {
      * @param uri the uri value to set
      * @return the TemplateLink object itself.
      */
-    public TemplateLink setUri(String uri) {
+    public TemplateLink withUri(String uri) {
         this.uri = uri;
         return this;
     }
@@ -58,7 +58,7 @@ public class TemplateLink {
      * @param contentVersion the contentVersion value to set
      * @return the TemplateLink object itself.
      */
-    public TemplateLink setContentVersion(String contentVersion) {
+    public TemplateLink withContentVersion(String contentVersion) {
         this.contentVersion = contentVersion;
         return this;
     }
