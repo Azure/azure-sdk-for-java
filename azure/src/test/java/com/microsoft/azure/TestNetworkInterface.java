@@ -61,8 +61,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
                 .append("\n\tMAC Address:").append(resource.macAddress())
                 .append("\n\tPrivate IP:").append(resource.primaryPrivateIp())
                 .append("\n\tPrivate allocation method:").append(resource.primaryPrivateIpAllocationMethod())
-                .append("\n\tSubnet Id:").append(resource.primarySubnetId())
-                .append("\n\tPublicIP Id:").append(resource.primaryPublicIpAddressId());
+                .append("\n\tSubnet Id:").append(resource.primarySubnetId());
 
         System.out.println(info.toString());
     }
