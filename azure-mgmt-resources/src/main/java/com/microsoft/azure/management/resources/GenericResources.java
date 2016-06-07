@@ -7,11 +7,8 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
 import java.io.IOException;
@@ -23,10 +20,7 @@ import java.util.List;
 public interface GenericResources extends
         SupportsListing<GenericResource>,
         SupportsListingByGroup<GenericResource>,
-        SupportsGettingByGroup<GenericResource>,
-        SupportsCreating<GenericResource.DefinitionBlank>,
-        SupportsDeleting,
-        SupportsDeletingByGroup {
+        SupportsCreating<GenericResource.DefinitionBlank> {
     /**
      * Checks if a resource exists in a resource group.
      *
@@ -43,6 +37,20 @@ public interface GenericResources extends
     boolean checkExistence(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws IOException, CloudException;
 
     /**
+     * Returns a resource belonging to a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceProviderNamespace Resource identity.
+     * @param parentResourcePath Resource identity.
+     * @param resourceType Resource identity.
+     * @param resourceName Resource identity.
+     * @param apiVersion the String value
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     */
+    GenericResource get(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws CloudException, IOException;
+
+    /**
      * Move resources from one resource group to another.
      *
      * @param sourceResourceGroupName Source resource group name
@@ -53,4 +61,18 @@ public interface GenericResources extends
      * @throws InterruptedException exception thrown when long running operation is interrupted
      */
     void moveResources(String sourceResourceGroupName, ResourceGroup targetResourceGroup, List<String> resources) throws CloudException, IOException, InterruptedException;
+
+    /**
+     * Delete resource and all of its child resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceProviderNamespace Resource identity.
+     * @param parentResourcePath Resource identity.
+     * @param resourceType Resource identity.
+     * @param resourceName Resource identity.
+     * @param apiVersion the String value
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     */
+    void delete(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws CloudException, IOException;
 }

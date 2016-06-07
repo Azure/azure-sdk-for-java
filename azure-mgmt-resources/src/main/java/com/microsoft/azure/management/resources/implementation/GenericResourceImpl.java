@@ -28,6 +28,7 @@ final class GenericResourceImpl
         GenericResource.DefinitionWithPlan,
         GenericResource.DefinitionWithApiVersion,
         GenericResource.DefinitionCreatable,
+        GenericResource.UpdateWithApiVersion,
         GenericResource.Update {
     private final ResourcesInner client;
     private final ResourceManagementClientImpl serviceClient;
@@ -46,6 +47,26 @@ final class GenericResourceImpl
     }
 
     @Override
+    public String resourceProviderNamespace() {
+        return resourceProviderNamespace;
+    }
+
+    @Override
+    public String parentResourceId() {
+        return parentResourceId;
+    }
+
+    @Override
+    public String resourceType() {
+        return resourceType;
+    }
+
+    @Override
+    public String apiVersion() {
+        return apiVersion;
+    }
+
+    @Override
     public Plan plan() {
         return inner().plan();
     }
@@ -60,43 +81,42 @@ final class GenericResourceImpl
         return null;
     }
 
-    public DefinitionCreatable withProperties(Object properties) {
-        inner().withProperties(properties);
+    public GenericResourceImpl withProperties(Object properties) {
+            inner().withProperties(properties);
         return this;
     }
 
     @Override
-    public DefinitionWithPlan withParentResource(String parentResourceId) {
+    public GenericResourceImpl withParentResource(String parentResourceId) {
         this.parentResourceId = parentResourceId;
         return this;
     }
 
-    @Override
-    public DefinitionWithApiVersion withPlan(String name, String publisher, String product, String promotionCode) {
-        inner().withPlan(new Plan().withName(name).withPublisher(publisher).withProduct(product).withPromotionCode(promotionCode));
+    public GenericResourceImpl withPlan(String name, String publisher, String product, String promotionCode) {
+            inner().withPlan(new Plan().withName(name).withPublisher(publisher).withProduct(product).withPromotionCode(promotionCode));
         return this;
     }
 
     @Override
-    public DefinitionWithApiVersion withoutPlan() {
-        inner().withPlan(null);
+    public GenericResourceImpl withoutPlan() {
+            inner().withPlan(null);
         return this;
     }
 
     @Override
-    public DefinitionWithOrWithoutParentResource withProviderNamespace(String resourceProviderNamespace) {
+    public GenericResourceImpl withProviderNamespace(String resourceProviderNamespace) {
         this.resourceProviderNamespace = resourceProviderNamespace;
         return this;
     }
 
     @Override
-    public DefinitionWithProviderNamespace withResourceType(String resourceType) {
+    public GenericResourceImpl withResourceType(String resourceType) {
         this.resourceType = resourceType;
         return this;
     }
 
     @Override
-    public DefinitionCreatable withApiVersion(String apiVersion) {
+    public GenericResourceImpl withApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
         return this;
     }
@@ -119,13 +139,10 @@ final class GenericResourceImpl
                 inner()
         ).getBody();
         this.setInner(inner);
-        this.resourceType = null;
-        this.resourceProviderNamespace = null;
-        this.parentResourceId = null;
     }
 
     @Override
-    public Update update() throws Exception {
+    public UpdateWithApiVersion update() throws Exception {
         return this;
     }
 
