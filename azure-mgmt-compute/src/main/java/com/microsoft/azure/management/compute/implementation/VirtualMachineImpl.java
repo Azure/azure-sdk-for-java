@@ -1,11 +1,15 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.DataDisk;
 import com.microsoft.azure.management.compute.VirtualMachine;
+import com.microsoft.azure.management.compute.VirtualMachineSize;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineInner;
+import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeInner;
 import com.microsoft.azure.management.compute.implementation.api.Plan;
 import com.microsoft.azure.management.compute.implementation.api.HardwareProfile;
 import com.microsoft.azure.management.compute.implementation.api.StorageProfile;
@@ -34,11 +38,14 @@ import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
+import com.microsoft.azure.management.resources.implementation.api.PageImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import com.microsoft.azure.management.storage.implementation.api.AccountType;
+import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
@@ -82,12 +89,13 @@ class VirtualMachineImpl
     private NetworkInterface existingPrimaryNetworkInterfaceToAssociate;
     // reference to a list of existing network interfaces that needs to be used as virtual machine's secondary network interface
     private List<NetworkInterface> existingSecondaryNetworkInterfacesToAssociate;
-
     // Cached related resources
     private NetworkInterface primaryNetworkInterface;
     private PublicIpAddress primaryPublicIpAddress;
     // The data disks associated with the virtual machine
     private List<DataDisk> dataDisks;
+    // Virtual machine size converter
+    private final PagedListConverter<VirtualMachineSizeInner, VirtualMachineSize> virtualMachineSizeConverter;
 
     VirtualMachineImpl(String name,
                        VirtualMachineInner innerModel,
@@ -105,6 +113,12 @@ class VirtualMachineImpl
         this.randomId = Utils.randomId(this.vmName);
         this.creatableSeconadaryNetworkInterfaceKeys = new ArrayList<>();
         this.existingSecondaryNetworkInterfacesToAssociate = new ArrayList<>();
+        this.virtualMachineSizeConverter = new PagedListConverter<VirtualMachineSizeInner, VirtualMachineSize>() {
+            @Override
+            public VirtualMachineSize typeConvert(VirtualMachineSizeInner inner) {
+                return new VirtualMachineSizeImpl(inner);
+            }
+        };
         initializeDataDisks();
     }
 
@@ -165,6 +179,19 @@ class VirtualMachineImpl
     @Override
     public void redeploy() throws CloudException, IOException, InterruptedException {
         this.client.redeploy(this.resourceGroupName(), this.name());
+    }
+
+    @Override
+    public PagedList<VirtualMachineSize> availableSizes() throws CloudException, IOException {
+        PageImpl<VirtualMachineSizeInner> page = new PageImpl<>();
+        page.setItems(this.client.listAvailableSizes(this.resourceGroupName(), this.name()).getBody());
+        page.setNextPageLink(null);
+        return this.virtualMachineSizeConverter.convert(new PagedList<VirtualMachineSizeInner>(page) {
+            @Override
+            public Page<VirtualMachineSizeInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return null;
+            }
+        });
     }
 
     /**************************************************.

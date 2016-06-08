@@ -99,7 +99,6 @@ class VirtualMachinesImpl
         return createFluentModel(name);
     }
 
-
     @Override
     public PagedList<VirtualMachineSize> listSizes(String region) throws CloudException, IOException {
         PagedListConverter<VirtualMachineSizeInner, VirtualMachineSize> converter =

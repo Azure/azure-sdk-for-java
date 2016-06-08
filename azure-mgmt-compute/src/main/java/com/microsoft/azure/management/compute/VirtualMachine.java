@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.implementation.KnownVirtualMachineImage;
 import com.microsoft.azure.management.compute.implementation.api.*;
 import com.microsoft.azure.management.network.NetworkInterface;
@@ -80,6 +81,15 @@ public interface VirtualMachine extends
      * @throws InterruptedException exception thrown when the operation is interrupted
      */
     void redeploy() throws CloudException, IOException, InterruptedException;
+
+    /**
+     * list of all available virtual machine sizes this virtual machine can resized to.
+     *
+     * @return the virtual machine sizes
+     * @throws CloudException thrown for an invalid response from the service.
+     * @throws IOException exception thrown from serialization/deserialization
+     */
+    PagedList<VirtualMachineSize> availableSizes() throws CloudException, IOException;
 
     // Getters
     //
