@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.datalake.analytics.implementation.api;
 
 import retrofit2.Retrofit;
+import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
@@ -62,31 +63,31 @@ public final class JobsInner {
     interface JobsService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("Jobs/{jobIdentity}/GetStatistics")
-        Call<ResponseBody> getStatistics(@Path("jobIdentity") UUID jobIdentity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> getStatistics(@Path("jobIdentity") UUID jobIdentity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("Jobs/{jobIdentity}/GetDebugDataPath")
-        Call<ResponseBody> getDebugDataPath(@Path("jobIdentity") UUID jobIdentity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> getDebugDataPath(@Path("jobIdentity") UUID jobIdentity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("BuildJob")
-        Call<ResponseBody> build(@Body JobInformationInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> build(@Body JobInformationInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("Jobs/{jobIdentity}/CancelJob")
-        Call<ResponseBody> cancel(@Path("jobIdentity") UUID jobIdentity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> cancel(@Path("jobIdentity") UUID jobIdentity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("Jobs/{jobIdentity}")
-        Call<ResponseBody> get(@Path("jobIdentity") UUID jobIdentity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> get(@Path("jobIdentity") UUID jobIdentity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("Jobs/{jobIdentity}")
-        Call<ResponseBody> create(@Path("jobIdentity") UUID jobIdentity, @Body JobInformationInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> create(@Path("jobIdentity") UUID jobIdentity, @Body JobInformationInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("Jobs")
-        Call<ResponseBody> list(@Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("$search") String search, @Query("$format") String format, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> list(@Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("$search") String search, @Query("$format") String format, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
@@ -117,8 +118,8 @@ public final class JobsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
-        Call<ResponseBody> call = service.getStatistics(jobIdentity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
+        Call<ResponseBody> call = service.getStatistics(jobIdentity, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
         return getStatisticsDelegate(call.execute());
     }
 
@@ -151,8 +152,8 @@ public final class JobsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
-        Call<ResponseBody> call = service.getStatistics(jobIdentity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
+        Call<ResponseBody> call = service.getStatistics(jobIdentity, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<JobStatisticsInner>(serviceCallback) {
             @Override
@@ -197,8 +198,8 @@ public final class JobsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
-        Call<ResponseBody> call = service.getDebugDataPath(jobIdentity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
+        Call<ResponseBody> call = service.getDebugDataPath(jobIdentity, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
         return getDebugDataPathDelegate(call.execute());
     }
 
@@ -231,8 +232,8 @@ public final class JobsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
-        Call<ResponseBody> call = service.getDebugDataPath(jobIdentity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
+        Call<ResponseBody> call = service.getDebugDataPath(jobIdentity, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<JobDataPathInner>(serviceCallback) {
             @Override
@@ -278,8 +279,8 @@ public final class JobsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
-        Call<ResponseBody> call = service.build(parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
+        Call<ResponseBody> call = service.build(parameters, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
         return buildDelegate(call.execute());
     }
 
@@ -313,8 +314,8 @@ public final class JobsInner {
             return null;
         }
         Validator.validate(parameters, serviceCallback);
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
-        Call<ResponseBody> call = service.build(parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
+        Call<ResponseBody> call = service.build(parameters, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<JobInformationInner>(serviceCallback) {
             @Override
@@ -359,8 +360,8 @@ public final class JobsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
-        Call<ResponseBody> call = service.cancel(jobIdentity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
+        Call<ResponseBody> call = service.cancel(jobIdentity, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
         return cancelDelegate(call.execute());
     }
 
@@ -393,8 +394,8 @@ public final class JobsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
-        Call<ResponseBody> call = service.cancel(jobIdentity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
+        Call<ResponseBody> call = service.cancel(jobIdentity, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -438,8 +439,8 @@ public final class JobsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
-        Call<ResponseBody> call = service.get(jobIdentity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
+        Call<ResponseBody> call = service.get(jobIdentity, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
         return getDelegate(call.execute());
     }
 
@@ -472,8 +473,8 @@ public final class JobsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
-        Call<ResponseBody> call = service.get(jobIdentity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
+        Call<ResponseBody> call = service.get(jobIdentity, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<JobInformationInner>(serviceCallback) {
             @Override
@@ -523,8 +524,8 @@ public final class JobsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
-        Call<ResponseBody> call = service.create(jobIdentity, parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
+        Call<ResponseBody> call = service.create(jobIdentity, parameters, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
         return createDelegate(call.execute());
     }
 
@@ -563,8 +564,8 @@ public final class JobsInner {
             return null;
         }
         Validator.validate(parameters, serviceCallback);
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
-        Call<ResponseBody> call = service.create(jobIdentity, parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
+        Call<ResponseBody> call = service.create(jobIdentity, parameters, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<JobInformationInner>(serviceCallback) {
             @Override
@@ -614,8 +615,8 @@ public final class JobsInner {
         final Boolean count = null;
         final String search = null;
         final String format = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
-        Call<ResponseBody> call = service.list(filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
+        Call<ResponseBody> call = service.list(filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
         ServiceResponse<PageImpl<JobInformationInner>> response = listDelegate(call.execute());
         PagedList<JobInformationInner> result = new PagedList<JobInformationInner>(response.getBody()) {
             @Override
@@ -659,8 +660,8 @@ public final class JobsInner {
         final Boolean count = null;
         final String search = null;
         final String format = null;
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
-        Call<ResponseBody> call = service.list(filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
+        Call<ResponseBody> call = service.list(filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<JobInformationInner>>(serviceCallback) {
             @Override
@@ -710,8 +711,8 @@ public final class JobsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
-        Call<ResponseBody> call = service.list(filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
+        Call<ResponseBody> call = service.list(filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
         ServiceResponse<PageImpl<JobInformationInner>> response = listDelegate(call.execute());
         PagedList<JobInformationInner> result = new PagedList<JobInformationInner>(response.getBody()) {
             @Override
@@ -755,8 +756,8 @@ public final class JobsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
-        Call<ResponseBody> call = service.list(filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaJobDnsSuffix}", this.client.adlaJobDnsSuffix());
+        Call<ResponseBody> call = service.list(filter, top, skip, expand, select, orderby, count, search, format, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<JobInformationInner>>(serviceCallback) {
             @Override
@@ -798,7 +799,6 @@ public final class JobsInner {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        this.client.restClient().setBaseUrl();
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         return listNextDelegate(call.execute());
     }
@@ -820,7 +820,6 @@ public final class JobsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        this.client.restClient().setBaseUrl();
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<JobInformationInner>>(serviceCallback) {
