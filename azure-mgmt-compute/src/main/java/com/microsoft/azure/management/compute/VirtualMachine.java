@@ -6,9 +6,8 @@ import com.microsoft.azure.management.compute.implementation.api.*;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
+import com.microsoft.azure.management.resources.fluentcore.model.*;
 import com.microsoft.azure.management.storage.StorageAccount;
 
 import java.io.IOException;
@@ -20,7 +19,71 @@ import java.util.List;
 public interface VirtualMachine extends
         GroupableResource,
         Refreshable<VirtualMachine>,
-        Wrapper<VirtualMachineInner> {
+        Wrapper<VirtualMachineInner>,
+        Updatable<VirtualMachine.Update> {
+    // Actions
+    //
+
+    /**
+     * Shuts down the Virtual Machine and releases the compute resources.
+     * <p>
+     * You are not billed for the compute resources that this Virtual Machine uses
+     *
+     * @throws CloudException thrown for an invalid response from the service.
+     * @throws IOException thrown for IO exception.
+     * @throws InterruptedException exception thrown when the operation is interrupted
+     */
+    void deallocate() throws CloudException, IOException, InterruptedException;
+
+    /**
+     * Generalize the Virtual Machine.
+     *
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     */
+    void generalize() throws CloudException, IOException;
+
+    /**
+     * power off (stop) the virtual machine.
+     * <p>
+     * You will be billed for the compute resources that this Virtual Machine uses
+     *
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws InterruptedException exception thrown when the operation is interrupted
+     */
+    void powerOff() throws CloudException, IOException, InterruptedException;
+
+    /**
+     * Restart the virtual machine.
+     *
+     * @throws CloudException thrown for an invalid response from the service.
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws InterruptedException exception thrown when the operation is interrupted
+     */
+    void restart() throws CloudException, IOException, InterruptedException;
+
+    /**
+     * Start the virtual machine.
+     *
+     * @throws CloudException thrown for an invalid response from the service.
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws InterruptedException exception thrown when the operation is interrupted
+     */
+    void start() throws CloudException, IOException, InterruptedException;
+
+    /**
+     * Redeploy the virtual machine.
+     *
+     * @throws CloudException thrown for an invalid response from the service.
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws InterruptedException exception thrown when the operation is interrupted
+     */
+    void redeploy() throws CloudException, IOException, InterruptedException;
+
+    // Getters
+    //
+
     /**
      * @return name of this virtual machine
      */
@@ -150,6 +213,9 @@ public interface VirtualMachine extends
      * @return the diagnosticsProfile value
      */
     DiagnosticsProfile diagnosticsProfile();
+
+    // Setters
+    //
 
     /**
      * The first stage of a virtual machine definition.
@@ -467,7 +533,7 @@ public interface VirtualMachine extends
          * @param name the name for the data disk
          * @return the stage representing configuration for the data disk
          */
-        DataDisk.DefinitionAttachNewDataDisk<DefinitionCreatable> defineNewDataDisk(String name);
+        DataDisk.DefinitionAttachNewDataDisk<T> defineNewDataDisk(String name);
 
         /**
          * Specifies an existing VHD that needs to be attached to the virtual machine as data disk along with
@@ -476,13 +542,13 @@ public interface VirtualMachine extends
          * @param name the name for the data disk
          * @return the stage representing configuration for the data disk
          */
-        DataDisk.DefinitionAttachExistingDataDisk<DefinitionCreatable> defineExistingDataDisk(String name);
+        DataDisk.DefinitionAttachExistingDataDisk<T> defineExistingDataDisk(String name);
     }
 
     /**
      * The stage of the virtual machine definition allowing to specify availability set.
      *
-     * @param <T> the virtual machine definition in creatable stage.
+     * @param <T> the virtual machine definition in creatable stage
      */
     interface DefinitionWithAvailabilitySet<T extends DefinitionCreatable> {
         /**
@@ -523,7 +589,7 @@ public interface VirtualMachine extends
     /**
      * The stage of the virtual machine definition allowing to specify storage account.
      *
-     * @param <T> the virtual machine definition in creatable stage.
+     * @param <T> the virtual machine definition in creatable stage
      */
     interface DefinitionStorageAccount<T extends DefinitionCreatable> {
         /**
@@ -562,13 +628,35 @@ public interface VirtualMachine extends
     }
 
     /**
-    interface DefinitionWithNetworkInterface<T extends DefinitionCreatable> {
-        T withNewNetworkInterface(String name);
-        T withNewNetworkInterface(NetworkInterface.DefinitionCreatable creatable);
-        T withExistingNetworkInterface(String name);
-        T withExistingNetworkInterface(NetworkInterface networkInterface);
+     * The stage of virtual machine definition allowing to specify additional network interfaces.
+     *
+     * @param <T> the virtual machine definition in creatable stage
+     */
+    interface DefinitionWithSecondaryNetworkInterface<T extends DefinitionCreatable> {
+        /**
+         * Create a new network interface to associate with the virtual machine, based on the
+         * provided definition.
+         *
+         * <p>
+         * Note this method's effect is additive, i.e. each time it is used, the new secondary
+         * network interface added to the virtual machine.
+         *
+         * @param creatable a creatable definition for a new network interface
+         * @return the stage representing creatable VM definition
+         */
+        T withNewSecondaryNetworkInterface(NetworkInterface.DefinitionCreatable creatable);
+
+        /**
+         * Associate an existing network interface with the virtual machine.
+         *
+         * Note this method's effect is additive, i.e. each time it is used, the new secondary
+         * network interface added to the virtual machine.
+         *
+         * @param networkInterface an existing network interface
+         * @return the stage representing creatable VM definition
+         */
+        T withExistingSecondaryNetworkInterface(NetworkInterface networkInterface);
     }
-    **/
 
     /**
      * The stage of the virtual machine definition which contains all the minimum required inputs for
@@ -582,6 +670,133 @@ public interface VirtualMachine extends
             DefinitionStorageAccount<DefinitionCreatable>,
             DefinitionWithDataDisk<DefinitionCreatable>,
             DefinitionWithAvailabilitySet<DefinitionCreatable>,
+            DefinitionWithSecondaryNetworkInterface<DefinitionCreatable>,
             Creatable<VirtualMachine> {
+    }
+
+    /**
+     * Container interface for all the definitions.
+     */
+    interface Definitions extends
+            VirtualMachine.DefinitionBlank,
+            VirtualMachine.DefinitionWithGroup,
+            VirtualMachine.DefinitionWithPrimaryNetworkInterface,
+            VirtualMachine.DefinitionWithOS,
+            VirtualMachine.DefinitionWithMarketplaceImage,
+            VirtualMachine.DefinitionWithOSType,
+            VirtualMachine.DefinitionWithRootUserName,
+            VirtualMachine.DefinitionWithAdminUserName,
+            VirtualMachine.DefinitionLinuxCreatable,
+            VirtualMachine.DefinitionWindowsCreatable,
+            VirtualMachine.DefinitionCreatable {
+    }
+
+    /**
+     * The template for a virtual machine update operation, containing all the settings that
+     * can be modified.
+     * <p>
+     * Call {@link Update#apply()} to apply the changes to the resource in Azure.
+     */
+    interface Update extends
+            Appliable<VirtualMachine>,
+            Resource.UpdateWithTags<Update>  {
+        /**
+         * Specifies the new size for the virtual machine.
+         *
+         * @param sizeName the name of the size for the virtual machine as text
+         * @return the stage representing updatable VM definition
+         */
+        Update withSize(String sizeName);
+
+        /**
+         * Specifies the new size for the virtual machine.
+         *
+         * @param size a size from the list of available sizes for the virtual machine
+         * @return the stage representing updatable VM definition
+         */
+        Update withSize(VirtualMachineSizeTypes size);
+
+        /**
+         * Specifies that a new blank data disk needs to be attached to virtual machine.
+         *
+         * @param sizeInGB the disk size in GB
+         * @return the stage representing updatable VM definition
+         */
+        Update withNewDataDisk(Integer sizeInGB);
+
+        /**
+         * Specifies an existing VHD that needs to be attached to the virtual machine as data disk.
+         *
+         * @param storageAccountName the storage account name
+         * @param containerName the name of the container holding the VHD file
+         * @param vhdName the name for the VHD file
+         * @return the stage representing updatable VM definition
+         */
+        Update withExistingDataDisk(String storageAccountName, String containerName, String vhdName);
+
+        /**
+         * Specifies a new blank data disk to be attached to the virtual machine along with it's configuration.
+         *
+         * @param name the name for the data disk
+         * @return the stage representing configuration for the data disk
+         */
+        DataDisk.DefinitionAttachNewDataDisk<Update> defineNewDataDisk(String name);
+
+        /**
+         * Specifies an existing VHD that needs to be attached to the virtual machine as data disk along with
+         * it's configuration.
+         *
+         * @param name the name for the data disk
+         * @return the stage representing configuration for the data disk
+         */
+        DataDisk.DefinitionAttachExistingDataDisk<Update> defineExistingDataDisk(String name);
+
+        /**
+         * Detaches a data disk with the given name from the virtual machine.
+         *
+         * @param name the name of the data disk to remove
+         * @return the stage representing updatable VM definition
+         */
+        Update withoutDataDisk(String name);
+
+        /**
+         * Detaches a data disk with the given logical unit number from the virtual machine.
+         *
+         * @param lun the logical unit number of the data disk to remove
+         * @return the stage representing updatable VM definition
+         */
+        Update withoutDataDisk(int lun);
+
+        /**
+         * Create a new network interface to associate with the virtual machine, based on the
+         * provided definition.
+         *
+         * <p>
+         * Note this method's effect is additive, i.e. each time it is used, the new secondary
+         * network interface added to the virtual machine.
+         *
+         * @param creatable a creatable definition for a new network interface
+         * @return the stage representing updatable VM definition
+         */
+        Update withNewSecondaryNetworkInterface(NetworkInterface.DefinitionCreatable creatable);
+
+        /**
+         * Associate an existing network interface with the virtual machine.
+         *
+         * Note this method's effect is additive, i.e. each time it is used, the new secondary
+         * network interface added to the virtual machine.
+         *
+         * @param networkInterface an existing network interface
+         * @return the stage representing updatable VM definition
+         */
+        Update withExistingSecondaryNetworkInterface(NetworkInterface networkInterface);
+
+        /**
+         * Removes a network interface associated with virtual machine.
+         *
+         * @param name the name of the secondary network interface to remove
+         * @return the stage representing updatable VM definition
+         */
+        Update withoutSecondaryNetworkInterface(String name);
     }
 }

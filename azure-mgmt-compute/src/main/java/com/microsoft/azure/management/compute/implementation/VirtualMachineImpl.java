@@ -53,17 +53,8 @@ class VirtualMachineImpl
         extends GroupableResourceImpl<VirtualMachine, VirtualMachineInner, VirtualMachineImpl>
         implements
         VirtualMachine,
-        VirtualMachine.DefinitionBlank,
-        VirtualMachine.DefinitionWithGroup,
-        VirtualMachine.DefinitionWithPrimaryNetworkInterface,
-        VirtualMachine.DefinitionWithOS,
-        VirtualMachine.DefinitionWithMarketplaceImage,
-        VirtualMachine.DefinitionWithOSType,
-        VirtualMachine.DefinitionWithRootUserName,
-        VirtualMachine.DefinitionWithAdminUserName,
-        VirtualMachine.DefinitionLinuxCreatable,
-        VirtualMachine.DefinitionWindowsCreatable,
-        VirtualMachine.DefinitionCreatable {
+        VirtualMachine.Definitions,
+        VirtualMachine.Update {
     // Clients
     private final VirtualMachinesInner client;
     private final AvailabilitySets availabilitySets;
@@ -79,14 +70,19 @@ class VirtualMachineImpl
     // unique key of a creatable availability set that this virtual machine to put
     private String creatableAvailabilitySetKey;
     // unique key of a creatable network interface that needs to be used as virtual machine's primary network interface
-    private String creatableNetworkInterfaceKey;
+    private String creatablePrimaryNetworkInterfaceKey;
+    // unique key of a creatable network interfaces that needs to be used as virtual machine's secondary network interface
+    private List<String> creatableSeconadaryNetworkInterfaceKeys;
     // reference to an existing storage account to be used for virtual machine child resources that
     // requires storage [OS disk, data disk etc..]
     private StorageAccount existingStorageAccountToAssociate;
     // reference to an existing availability set that this virtual machine to put
     private AvailabilitySet existingAvailabilitySetToAssociate;
     // reference to an existing network interface that needs to be used as virtual machine's primary network interface
-    private NetworkInterface existingNetworkInterfaceToAssociate;
+    private NetworkInterface existingPrimaryNetworkInterfaceToAssociate;
+    // reference to a list of existing network interfaces that needs to be used as virtual machine's secondary network interface
+    private List<NetworkInterface> existingSecondaryNetworkInterfacesToAssociate;
+
     // Cached related resources
     private NetworkInterface primaryNetworkInterface;
     private PublicIpAddress primaryPublicIpAddress;
@@ -107,6 +103,8 @@ class VirtualMachineImpl
         this.networkManager = networkManager;
         this.vmName = name;
         this.randomId = Utils.randomId(this.vmName);
+        this.creatableSeconadaryNetworkInterfaceKeys = new ArrayList<>();
+        this.existingSecondaryNetworkInterfacesToAssociate = new ArrayList<>();
         initializeDataDisks();
     }
 
@@ -129,34 +127,73 @@ class VirtualMachineImpl
         return this;
     }
 
+    @Override
+    public VirtualMachineImpl update() throws Exception {
+        return this;
+    }
+
+    @Override
+    public VirtualMachine apply() throws Exception {
+        return this.create();
+    }
+
+    @Override
+    public void deallocate() throws CloudException, IOException, InterruptedException {
+        this.client.deallocate(this.resourceGroupName(), this.name());
+    }
+
+    @Override
+    public void generalize() throws CloudException, IOException {
+        this.client.generalize(this.resourceGroupName(), this.name());
+    }
+
+    @Override
+    public void powerOff() throws CloudException, IOException, InterruptedException {
+        this.client.powerOff(this.resourceGroupName(), this.name());
+    }
+
+    @Override
+    public void restart() throws CloudException, IOException, InterruptedException {
+        this.client.restart(this.resourceGroupName(), this.name());
+    }
+
+    @Override
+    public void start() throws CloudException, IOException, InterruptedException {
+        this.client.start(this.resourceGroupName(), this.name());
+    }
+
+    @Override
+    public void redeploy() throws CloudException, IOException, InterruptedException {
+        this.client.redeploy(this.resourceGroupName(), this.name());
+    }
+
     /**************************************************.
      * Setters
      **************************************************/
 
     // Virtual machine network interface specific fluent methods
     //
-
     @Override
-    public DefinitionWithOS withNewPrimaryNetworkInterface(NetworkInterface.DefinitionCreatable creatable) {
-        this.creatableNetworkInterfaceKey = creatable.key();
+    public VirtualMachineImpl withNewPrimaryNetworkInterface(NetworkInterface.DefinitionCreatable creatable) {
+        this.creatablePrimaryNetworkInterfaceKey = creatable.key();
         this.addCreatableDependency(creatable);
         return this;
     }
 
     @Override
-    public DefinitionWithOS withNewPrimaryNetworkInterface(String name) {
+    public VirtualMachineImpl withNewPrimaryNetworkInterface(String name) {
         return withNewPrimaryNetworkInterface(prepareNetworkInterface(name));
     }
 
-    public DefinitionWithOS withNewPrimaryNetworkInterface(String name, String publicDnsNameLabel) {
+    public VirtualMachineImpl withNewPrimaryNetworkInterface(String name, String publicDnsNameLabel) {
         NetworkInterface.DefinitionCreatable definitionCreatable = prepareNetworkInterface(name)
                 .withNewPrimaryPublicIpAddress(publicDnsNameLabel);
         return withNewPrimaryNetworkInterface(definitionCreatable);
     }
 
     @Override
-    public DefinitionWithOS withExistingPrimaryNetworkInterface(NetworkInterface networkInterface) {
-        this.existingNetworkInterfaceToAssociate = networkInterface;
+    public VirtualMachineImpl withExistingPrimaryNetworkInterface(NetworkInterface networkInterface) {
+        this.existingPrimaryNetworkInterfaceToAssociate = networkInterface;
         return this;
     }
 
@@ -164,12 +201,12 @@ class VirtualMachineImpl
     //
 
     @Override
-    public DefinitionWithMarketplaceImage withMarketplaceImage() {
+    public VirtualMachineImpl withMarketplaceImage() {
         return this;
     }
 
     @Override
-    public DefinitionWithOSType withStoredImage(String imageUrl) {
+    public VirtualMachineImpl withStoredImage(String imageUrl) {
         VirtualHardDisk userImageVhd = new VirtualHardDisk();
         userImageVhd.withUri(imageUrl);
         this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
@@ -178,7 +215,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public DefinitionCreatable withOSDisk(String osDiskUrl, OperatingSystemTypes osType) {
+    public VirtualMachineImpl withOSDisk(String osDiskUrl, OperatingSystemTypes osType) {
         VirtualHardDisk osDisk = new VirtualHardDisk();
         osDisk.withUri(osDiskUrl);
         this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.ATTACH);
@@ -188,14 +225,14 @@ class VirtualMachineImpl
     }
 
     @Override
-    public DefinitionWithOSType version(ImageReference imageReference) {
+    public VirtualMachineImpl version(ImageReference imageReference) {
         this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
         this.inner().storageProfile().withImageReference(imageReference);
         return this;
     }
 
     @Override
-    public DefinitionWithOSType latest(String publisher, String offer, String sku) {
+    public VirtualMachineImpl latest(String publisher, String offer, String sku) {
         ImageReference imageReference = new ImageReference();
         imageReference.withPublisher(publisher);
         imageReference.withOffer(offer);
@@ -205,7 +242,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public DefinitionWithOSType popular(KnownVirtualMachineImage knownImage) {
+    public VirtualMachineImpl popular(KnownVirtualMachineImage knownImage) {
         return version(knownImage.imageReference());
     }
 
@@ -213,7 +250,7 @@ class VirtualMachineImpl
     //
 
     @Override
-    public DefinitionWithRootUserName withLinuxOS() {
+    public VirtualMachineImpl withLinuxOS() {
         OSDisk osDisk = this.inner().storageProfile().osDisk();
         if (isStoredImage(osDisk)) {
             // For platform image osType should be null, azure will pick it from the image metadata.
@@ -224,7 +261,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public DefinitionWithAdminUserName withWindowsOS() {
+    public VirtualMachineImpl withWindowsOS() {
         OSDisk osDisk = this.inner().storageProfile().osDisk();
         if (isStoredImage(osDisk)) {
             // For platform image osType should be null, azure will pick it from the image metadata.
@@ -241,13 +278,13 @@ class VirtualMachineImpl
     //
 
     @Override
-    public DefinitionLinuxCreatable withRootUserName(String rootUserName) {
+    public VirtualMachineImpl withRootUserName(String rootUserName) {
         this.inner().osProfile().withAdminUsername(rootUserName);
         return this;
     }
 
     @Override
-    public DefinitionWindowsCreatable withAdminUserName(String adminUserName) {
+    public VirtualMachineImpl withAdminUserName(String adminUserName) {
         this.inner().osProfile().withAdminUsername(adminUserName);
         return this;
     }
@@ -256,7 +293,7 @@ class VirtualMachineImpl
     //
 
     @Override
-    public DefinitionLinuxCreatable withSsh(String publicKeyData) {
+    public VirtualMachineImpl withSsh(String publicKeyData) {
         OSProfile osProfile = this.inner().osProfile();
         if (osProfile.linuxConfiguration().ssh() == null) {
             SshConfiguration sshConfiguration = new SshConfiguration();
@@ -271,25 +308,25 @@ class VirtualMachineImpl
     }
 
     @Override
-    public DefinitionWindowsCreatable disableVMAgent() {
+    public VirtualMachineImpl disableVMAgent() {
         this.inner().osProfile().windowsConfiguration().withProvisionVMAgent(false);
         return this;
     }
 
     @Override
-    public DefinitionWindowsCreatable disableAutoUpdate() {
+    public VirtualMachineImpl disableAutoUpdate() {
         this.inner().osProfile().windowsConfiguration().withEnableAutomaticUpdates(false);
         return this;
     }
 
     @Override
-    public DefinitionWindowsCreatable withTimeZone(String timeZone) {
+    public VirtualMachineImpl withTimeZone(String timeZone) {
         this.inner().osProfile().windowsConfiguration().withTimeZone(timeZone);
         return this;
     }
 
     @Override
-    public DefinitionWindowsCreatable withWinRM(WinRMListener listener) {
+    public VirtualMachineImpl withWinRM(WinRMListener listener) {
         if (this.inner().osProfile().windowsConfiguration().winRM() == null) {
             WinRMConfiguration winRMConfiguration = new WinRMConfiguration();
             this.inner().osProfile().windowsConfiguration().withWinRM(winRMConfiguration);
@@ -304,31 +341,31 @@ class VirtualMachineImpl
     }
 
     @Override
-    public DefinitionCreatable withPassword(String password) {
+    public VirtualMachineImpl withPassword(String password) {
         this.inner().osProfile().withAdminPassword(password);
         return this;
     }
 
     @Override
-    public DefinitionCreatable withSize(String sizeName) {
+    public VirtualMachineImpl withSize(String sizeName) {
         this.inner().hardwareProfile().withVmSize(sizeName);
         return this;
     }
 
     @Override
-    public DefinitionCreatable withSize(VirtualMachineSizeTypes size) {
+    public VirtualMachineImpl withSize(VirtualMachineSizeTypes size) {
         this.inner().hardwareProfile().withVmSize(size.toString());
         return this;
     }
 
     @Override
-    public DefinitionCreatable withOSDiskCaching(CachingTypes cachingType) {
+    public VirtualMachineImpl withOSDiskCaching(CachingTypes cachingType) {
         this.inner().storageProfile().osDisk().withCaching(cachingType);
         return this;
     }
 
     @Override
-    public DefinitionCreatable withOSDiskVhdLocation(String containerName, String vhdName) {
+    public VirtualMachineImpl withOSDiskVhdLocation(String containerName, String vhdName) {
         VirtualHardDisk osVhd = new VirtualHardDisk();
         osVhd.withUri(temporaryBlobUrl(containerName, vhdName));
         this.inner().storageProfile().osDisk().withVhd(osVhd);
@@ -336,19 +373,19 @@ class VirtualMachineImpl
     }
 
     @Override
-    public DefinitionCreatable withOSDiskEncryptionSettings(DiskEncryptionSettings settings) {
+    public VirtualMachineImpl withOSDiskEncryptionSettings(DiskEncryptionSettings settings) {
         this.inner().storageProfile().osDisk().withEncryptionSettings(settings);
         return this;
     }
 
     @Override
-    public DefinitionCreatable withOSDiskSizeInGB(Integer size) {
+    public VirtualMachineImpl withOSDiskSizeInGB(Integer size) {
         this.inner().storageProfile().osDisk().withDiskSizeGB(size);
         return this;
     }
 
     @Override
-    public DefinitionCreatable withOSDiskName(String name) {
+    public VirtualMachineImpl withOSDiskName(String name) {
         this.inner().storageProfile().osDisk().withName(name);
         return this;
     }
@@ -367,14 +404,14 @@ class VirtualMachineImpl
     }
 
     @Override
-    public DefinitionCreatable withNewDataDisk(Integer sizeInGB) {
+    public VirtualMachineImpl withNewDataDisk(Integer sizeInGB) {
         DataDiskImpl dataDisk = DataDiskImpl.createNewDataDisk(sizeInGB, this);
         this.dataDisks().add(dataDisk);
         return this;
     }
 
     @Override
-    public DefinitionCreatable withExistingDataDisk(String storageAccountName, String containerName, String vhdName) {
+    public VirtualMachineImpl withExistingDataDisk(String storageAccountName, String containerName, String vhdName) {
         DataDiskImpl dataDisk = DataDiskImpl.createFromExistingDisk(storageAccountName, containerName, vhdName, this);
         this.dataDisks().add(dataDisk);
         return this;
@@ -384,7 +421,7 @@ class VirtualMachineImpl
     //
 
     @Override
-    public DefinitionCreatable withNewStorageAccount(StorageAccount.DefinitionCreatable creatable) {
+    public VirtualMachineImpl withNewStorageAccount(StorageAccount.DefinitionCreatable creatable) {
         // This method's effect is NOT additive.
         if (this.creatableStorageAccountKey == null) {
             this.creatableStorageAccountKey = creatable.key();
@@ -394,7 +431,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public DefinitionCreatable withNewStorageAccount(String name) {
+    public VirtualMachineImpl withNewStorageAccount(String name) {
         StorageAccount.DefinitionWithGroup definitionWithGroup = this.storageManager
                 .storageAccounts()
                 .define(name)
@@ -409,7 +446,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public DefinitionCreatable withExistingStorageAccount(StorageAccount storageAccount) {
+    public VirtualMachineImpl withExistingStorageAccount(StorageAccount storageAccount) {
         this.existingStorageAccountToAssociate = storageAccount;
         return this;
     }
@@ -418,7 +455,7 @@ class VirtualMachineImpl
     //
 
     @Override
-    public DefinitionCreatable withNewAvailabilitySet(AvailabilitySet.DefinitionCreatable creatable) {
+    public VirtualMachineImpl withNewAvailabilitySet(AvailabilitySet.DefinitionCreatable creatable) {
         // This method's effect is NOT additive.
         if (this.creatableAvailabilitySetKey == null) {
             this.creatableAvailabilitySetKey = creatable.key();
@@ -428,7 +465,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public DefinitionCreatable withNewAvailabilitySet(String name) {
+    public VirtualMachineImpl withNewAvailabilitySet(String name) {
         return withNewAvailabilitySet(availabilitySets.define(name)
                 .withRegion(region())
                 .withExistingGroup(this.resourceGroupName())
@@ -436,8 +473,68 @@ class VirtualMachineImpl
     }
 
     @Override
-    public DefinitionCreatable withExistingAvailabilitySet(AvailabilitySet availabilitySet) {
+    public VirtualMachineImpl withExistingAvailabilitySet(AvailabilitySet availabilitySet) {
         this.existingAvailabilitySetToAssociate = availabilitySet;
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withNewSecondaryNetworkInterface(NetworkInterface.DefinitionCreatable creatable) {
+        this.creatableSeconadaryNetworkInterfaceKeys.add(creatable.key());
+        this.addCreatableDependency(creatable);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withExistingSecondaryNetworkInterface(NetworkInterface networkInterface) {
+        this.existingSecondaryNetworkInterfacesToAssociate.add(networkInterface);
+        return this;
+    }
+
+    // Virtual machine update only settings
+
+    @Override
+    public VirtualMachineImpl withoutDataDisk(String name) {
+        int idx = -1;
+        for (DataDisk dataDisk : this.dataDisks) {
+            idx++;
+            if (dataDisk.name().equalsIgnoreCase(name)) {
+                this.dataDisks.remove(idx);
+                this.inner().storageProfile().dataDisks().remove(idx);
+                break;
+            }
+        }
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withoutDataDisk(int lun) {
+        int idx = -1;
+        for (DataDisk dataDisk : this.dataDisks) {
+            idx++;
+            if (dataDisk.lun() == lun) {
+                this.dataDisks.remove(idx);
+                this.inner().storageProfile().dataDisks().remove(idx);
+                break;
+            }
+        }
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withoutSecondaryNetworkInterface(String name) {
+        if (this.inner().networkProfile() != null
+                && this.inner().networkProfile().networkInterfaces() != null) {
+            int idx = -1;
+            for (NetworkInterfaceReference nicReference : this.inner().networkProfile().networkInterfaces()) {
+                idx++;
+                if (!nicReference.primary()
+                        && name.equalsIgnoreCase(ResourceUtils.nameFromResourceId(nicReference.id()))) {
+                    this.inner().networkProfile().networkInterfaces().remove(idx);
+                    break;
+                }
+            }
+        }
         return this;
     }
 
@@ -670,19 +767,36 @@ class VirtualMachineImpl
 
     private void handleNetworkSettings() {
         if (isInCreateMode()) {
-            NetworkInterface networkInterface = null;
-            if (this.creatableNetworkInterfaceKey != null) {
-                networkInterface = (NetworkInterface) this.createdResource(this.creatableNetworkInterfaceKey);
-            } else if (this.existingNetworkInterfaceToAssociate != null) {
-                networkInterface = this.existingNetworkInterfaceToAssociate;
+            NetworkInterface primaryNetworkInterface = null;
+            if (this.creatablePrimaryNetworkInterfaceKey != null) {
+                primaryNetworkInterface = (NetworkInterface) this.createdResource(this.creatablePrimaryNetworkInterfaceKey);
+            } else if (this.existingPrimaryNetworkInterfaceToAssociate != null) {
+                primaryNetworkInterface = this.existingPrimaryNetworkInterfaceToAssociate;
             }
 
-            if (networkInterface != null) {
+            if (primaryNetworkInterface != null) {
                 NetworkInterfaceReference nicReference = new NetworkInterfaceReference();
                 nicReference.withPrimary(true);
-                nicReference.withId(networkInterface.id());
+                nicReference.withId(primaryNetworkInterface.id());
                 this.inner().networkProfile().networkInterfaces().add(nicReference);
             }
+        }
+
+        // sets the virtual machine secondary network interfaces
+        //
+        for (String creatableSecondaryNetworkInterfaceKey : this.creatableSeconadaryNetworkInterfaceKeys) {
+            NetworkInterface secondaryNetworkInterface = (NetworkInterface) this.createdResource(creatableSecondaryNetworkInterfaceKey);
+            NetworkInterfaceReference nicReference = new NetworkInterfaceReference();
+            nicReference.withPrimary(false);
+            nicReference.withId(secondaryNetworkInterface.id());
+            this.inner().networkProfile().networkInterfaces().add(nicReference);
+        }
+
+        for (NetworkInterface secondaryNetworkInterface : this.existingSecondaryNetworkInterfacesToAssociate) {
+            NetworkInterfaceReference nicReference = new NetworkInterfaceReference();
+            nicReference.withPrimary(false);
+            nicReference.withId(secondaryNetworkInterface.id());
+            this.inner().networkProfile().networkInterfaces().add(nicReference);
         }
     }
 

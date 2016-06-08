@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents an Azure virtual machine image sku.
+ */
 class VirtualMachineImageSkuImpl
         implements VirtualMachineImage.Sku {
     private final VirtualMachineImagesInner client;
