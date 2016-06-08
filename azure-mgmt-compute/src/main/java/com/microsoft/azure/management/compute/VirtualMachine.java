@@ -106,7 +106,7 @@ public interface VirtualMachine extends
     /**
      * @return the instanceView value
      */
-    VirtualMachineInstanceView instanceView();
+    VMInstanceView instanceView();
 
     /**
      * @return the licenseType value
@@ -150,6 +150,11 @@ public interface VirtualMachine extends
      * @return the diagnosticsProfile value
      */
     DiagnosticsProfile diagnosticsProfile();
+
+    /**
+     * @return the power state of the virtual machine
+     */
+    PowerState powerState();
 
     /**
      * The first stage of a virtual machine definition.

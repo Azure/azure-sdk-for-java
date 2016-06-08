@@ -6,7 +6,7 @@
 
 package com.microsoft.azure.management.resources.fluentcore.model;
 
-// Reprepresents refreshable objecta
+// Represents refreshable objects
 public interface Refreshable<T> {
 	T refresh() throws Exception;
 }

@@ -242,4 +242,15 @@ public class Utils {
 		}
 		return value.booleanValue();
 	}
+
+	/**
+	 * @param value value the <tt>Integer</tt> value
+	 * @return zero if the given Integer value is null else the int value
+     */
+	public static int toPrimitiveInt(Integer value) {
+		if (value == null) {
+			return 0;
+		}
+		return value.intValue();
+	}
 }
