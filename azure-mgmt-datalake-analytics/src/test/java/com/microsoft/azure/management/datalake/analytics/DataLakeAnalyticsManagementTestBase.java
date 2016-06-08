@@ -2,15 +2,15 @@ package com.microsoft.azure.management.datalake.analytics;
 
 import com.microsoft.azure.credentials.AzureEnvironment;
 import com.microsoft.azure.credentials.UserTokenCredentials;
-import com.microsoft.azure.management.datalake.analytics.implementation.api.DataLakeAnalyticsAccountManagementClientImpl;
-import com.microsoft.azure.management.datalake.analytics.implementation.api.DataLakeAnalyticsCatalogManagementClientImpl;
-import com.microsoft.azure.management.datalake.analytics.implementation.api.DataLakeAnalyticsJobManagementClientImpl;
-import com.microsoft.azure.management.datalake.analytics.implementation.api.JobInformationInner;
-import com.microsoft.azure.management.datalake.analytics.implementation.api.JobResult;
-import com.microsoft.azure.management.datalake.analytics.implementation.api.JobState;
-import com.microsoft.azure.management.datalake.analytics.implementation.api.JobType;
-import com.microsoft.azure.management.datalake.analytics.implementation.api.USqlJobProperties;
-import com.microsoft.azure.management.datalake.store.implementation.api.DataLakeStoreAccountManagementClientImpl;
+import com.microsoft.azure.management.datalake.analytics.implementation.DataLakeAnalyticsAccountManagementClientImpl;
+import com.microsoft.azure.management.datalake.analytics.implementation.DataLakeAnalyticsCatalogManagementClientImpl;
+import com.microsoft.azure.management.datalake.analytics.implementation.DataLakeAnalyticsJobManagementClientImpl;
+import com.microsoft.azure.management.datalake.analytics.models.JobInformation;
+import com.microsoft.azure.management.datalake.analytics.models.JobResult;
+import com.microsoft.azure.management.datalake.analytics.models.JobState;
+import com.microsoft.azure.management.datalake.analytics.models.JobType;
+import com.microsoft.azure.management.datalake.analytics.models.USqlJobProperties;
+import com.microsoft.azure.management.datalake.store.implementation.DataLakeStoreAccountManagementClientImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
 
@@ -99,7 +99,7 @@ public abstract class DataLakeAnalyticsManagementTestBase {
 
     public static void runJobToCompletion(DataLakeAnalyticsJobManagementClientImpl jobClient, String adlaAcct, UUID jobId, String scriptToRun) throws Exception {
         // submit a job
-        JobInformationInner jobToSubmit = new JobInformationInner();
+        JobInformation jobToSubmit = new JobInformation();
         USqlJobProperties jobProperties = new USqlJobProperties();
         jobProperties.withScript(scriptToRun);
         jobToSubmit.withName("java azure sdk data lake analytics job");
@@ -107,10 +107,10 @@ public abstract class DataLakeAnalyticsManagementTestBase {
         jobToSubmit.withType(JobType.USQL);
         jobToSubmit.withProperties(jobProperties);
 
-        JobInformationInner jobCreateResponse = jobClient.jobs().create(adlaAcct, jobId, jobToSubmit).getBody();
+        JobInformation jobCreateResponse = jobClient.jobs().create(adlaAcct, jobId, jobToSubmit).getBody();
         Assert.assertNotNull(jobCreateResponse);
 
-        JobInformationInner getJobResponse = jobClient.jobs().get(adlaAcct, jobCreateResponse.jobId()).getBody();
+        JobInformation getJobResponse = jobClient.jobs().get(adlaAcct, jobCreateResponse.jobId()).getBody();
         Assert.assertNotNull(getJobResponse);
 
         int maxWaitInSeconds = 2700; // giving it 45 minutes for now.
