@@ -6,6 +6,15 @@
 
 package com.microsoft.azure.management.resources.fluentcore.model;
 
+/**
+ * The wrapper around an inner object providing extended functionalities.
+ *
+ * @param <T> the type of the inner object.
+ */
 public interface Wrapper<T> {
+	/**
+	 * @return wrapped inner object providing direct access to the underlying
+	 * auto-generated API implementation, based on Azure REST API
+	 */
 	T inner();
 }
