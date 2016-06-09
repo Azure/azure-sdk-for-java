@@ -11,7 +11,9 @@ import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.implementation.api.DataDisk;
 import com.microsoft.azure.management.network.*;
+import javafx.util.converter.LongStringConverter;
 
+import java.util.Calendar;
 import java.util.UUID;
 
 /**
@@ -242,6 +244,9 @@ public class Utils {
      * @return a random name
      * */
     public static String createRandomName (String namePrefix) {
-        return namePrefix + UUID.randomUUID().toString().replace("-", "");
+        String root = UUID.randomUUID().toString().replace("-", "");
+        long millis = Calendar.getInstance().getTimeInMillis();
+        long datePart = millis % 1000000000;
+        return namePrefix + root.toLowerCase().substring(0, 8) + datePart;
     }
 }

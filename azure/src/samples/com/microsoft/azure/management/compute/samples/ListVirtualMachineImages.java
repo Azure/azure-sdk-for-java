@@ -19,7 +19,7 @@ public class ListVirtualMachineImages {
         try {
 
         // List all virtual machine images by browsing through
-        // locations, publishers, offers, skus and images
+        // locations, publishers, offers, SKUs and images
 
         } catch (Exception e)
         {
