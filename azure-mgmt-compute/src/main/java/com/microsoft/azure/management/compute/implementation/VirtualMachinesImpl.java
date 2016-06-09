@@ -52,12 +52,12 @@ class VirtualMachinesImpl
     }
 
     @Override
-    public VirtualMachine get(String groupName, String name) throws CloudException, IOException {
+    public VirtualMachine getByGroup(String groupName, String name) throws CloudException, IOException {
         return null;
     }
 
     @Override
-    public PagedList<VirtualMachine> list(String groupName) throws CloudException, IOException {
+    public PagedList<VirtualMachine> listByGroup(String groupName) throws CloudException, IOException {
         return null;
     }
 

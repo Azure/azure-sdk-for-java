@@ -44,7 +44,7 @@ final class GenericResourcesImpl
     }
 
     @Override
-    public PagedList<GenericResource> list(String groupName) throws CloudException, IOException {
+    public PagedList<GenericResource> listByGroup(String groupName) throws CloudException, IOException {
         return listIntern(groupName);
     }
 

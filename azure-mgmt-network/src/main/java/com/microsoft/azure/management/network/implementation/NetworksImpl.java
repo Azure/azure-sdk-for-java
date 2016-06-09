@@ -49,13 +49,13 @@ class NetworksImpl implements Networks {
     }
 
     @Override
-    public PagedList<Network> list(String groupName) throws CloudException, IOException {
+    public PagedList<Network> listByGroup(String groupName) throws CloudException, IOException {
         ServiceResponse<PagedList<VirtualNetworkInner>> response = client.list(groupName);
         return converter.convert(response.getBody());
     }
 
     @Override
-    public NetworkImpl get(String groupName, String name) throws CloudException, IOException {
+    public NetworkImpl getByGroup(String groupName, String name) throws CloudException, IOException {
         ServiceResponse<VirtualNetworkInner> serviceResponse = this.client.get(groupName, name);
         return createFluentModel(serviceResponse.getBody());
     }

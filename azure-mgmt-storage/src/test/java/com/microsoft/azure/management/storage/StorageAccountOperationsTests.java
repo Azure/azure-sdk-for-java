@@ -48,7 +48,7 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
         Assert.assertEquals(RG_NAME, storageAccount.resourceGroupName());
         Assert.assertEquals(AccountType.STANDARD_LRS, storageAccount.accountType());
         // List
-        List<StorageAccount> accounts = storageManager.storageAccounts().list(RG_NAME);
+        List<StorageAccount> accounts = storageManager.storageAccounts().listByGroup(RG_NAME);
         boolean found = false;
         for (StorageAccount account : accounts) {
             if (account.name().equals(SA_NAME)) {
@@ -57,7 +57,7 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
         }
         Assert.assertTrue(found);
         // Get
-        storageAccount = storageManager.storageAccounts().get(RG_NAME, SA_NAME);
+        storageAccount = storageManager.storageAccounts().getByGroup(RG_NAME, SA_NAME);
         Assert.assertNotNull(storageAccount);
         // Update
         storageAccount = storageAccount.update()

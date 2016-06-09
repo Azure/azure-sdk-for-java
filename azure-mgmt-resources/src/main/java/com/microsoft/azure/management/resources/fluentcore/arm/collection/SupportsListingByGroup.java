@@ -22,10 +22,10 @@ public interface SupportsListingByGroup<T> {
     /**
      * Lists resources of the specified type in the specified resource group.
      *
-     * @param groupName the name of the resource group to list the resources from
+     * @param resourceGroupName the name of the resource group to list the resources from
      * @return the list of resources
      * @throws CloudException exception thrown from the cloud
      * @throws IOException exception thrown from serialization/deserialization
      */
-    PagedList<T> list(String groupName) throws CloudException, IOException;
+    PagedList<T> listByGroup(String resourceGroupName) throws CloudException, IOException;
 }
