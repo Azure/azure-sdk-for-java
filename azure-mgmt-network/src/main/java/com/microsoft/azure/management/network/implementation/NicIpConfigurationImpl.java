@@ -90,7 +90,7 @@ class NicIpConfigurationImpl
             return null;
         }
 
-        return this.publicIpAddresses.get(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+        return this.publicIpAddresses.getByGroup(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
@@ -101,7 +101,7 @@ class NicIpConfigurationImpl
     @Override
     public Network network() throws CloudException, IOException {
         String id = subnetId();
-        return this.networks.get(ResourceUtils.groupFromResourceId(id),
+        return this.networks.getByGroup(ResourceUtils.groupFromResourceId(id),
                 ResourceUtils.extractFromResourceId(id, "virtualNetworks"));
     }
 

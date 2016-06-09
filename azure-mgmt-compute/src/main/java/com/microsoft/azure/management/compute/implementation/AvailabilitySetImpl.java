@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * The implementation for AvailabilitySet and its create and update interfaces.
+ * The implementation for {@link AvailabilitySet} and its create and update interfaces.
  */
 class AvailabilitySetImpl
     extends
@@ -79,7 +79,7 @@ class AvailabilitySetImpl
             vmsInSet = new ResourceLazyList<>(virtualMachineIds(), new ResourceLazyList.Loader<VirtualMachine>() {
                 @Override
                 public VirtualMachine load(String resourceGroupName, String resourceName) throws Exception {
-                    return virtualMachines.get(resourceGroupName, resourceName);
+                    return virtualMachines.getByGroup(resourceGroupName, resourceName);
                 }
             });
         }

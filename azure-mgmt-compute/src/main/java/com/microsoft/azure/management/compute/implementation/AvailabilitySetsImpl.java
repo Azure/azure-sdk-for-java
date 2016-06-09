@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The implementation for AvailabilitySets.
+ * The implementation for {@link AvailabilitySets}.
  */
 class AvailabilitySetsImpl implements AvailabilitySets {
     private final AvailabilitySetsInner client;
@@ -66,7 +66,7 @@ class AvailabilitySetsImpl implements AvailabilitySets {
     }
 
     @Override
-    public PagedList<AvailabilitySet> list(String groupName) throws CloudException, IOException {
+    public PagedList<AvailabilitySet> listByGroup(String groupName) throws CloudException, IOException {
         PageImpl<AvailabilitySetInner> page = new PageImpl<>();
         page.setItems(client.list(groupName).getBody());
         page.setNextPageLink(null);
@@ -79,7 +79,7 @@ class AvailabilitySetsImpl implements AvailabilitySets {
     }
 
     @Override
-    public AvailabilitySetImpl get(String groupName, String name) throws CloudException, IOException {
+    public AvailabilitySetImpl getByGroup(String groupName, String name) throws CloudException, IOException {
         ServiceResponse<AvailabilitySetInner> response = this.client.get(groupName, name);
         return createFluentModel(response.getBody());
     }
@@ -98,6 +98,10 @@ class AvailabilitySetsImpl implements AvailabilitySets {
     public void delete(String groupName, String name) throws Exception {
         this.client.delete(groupName, name);
     }
+
+    /**************************************************************
+     * Fluent model helpers.
+     **************************************************************/
 
     private AvailabilitySetImpl createFluentModel(String name) {
         AvailabilitySetInner availabilitySetInner = new AvailabilitySetInner();

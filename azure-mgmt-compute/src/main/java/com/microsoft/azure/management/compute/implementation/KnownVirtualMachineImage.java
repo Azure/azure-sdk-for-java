@@ -22,9 +22,11 @@ public enum KnownVirtualMachineImage {
     OPENSUSE_LEAP_42_1("SUSE", "openSUSE-Leap", "42.1"),
     /** SLES 12-SP1. */
     SLES_12_SP1("SUSE", "SLES", "12-SP1"),
+
     /**************************************************************
      * Windows images
      **************************************************************/
+
     /** Windows Server 2008 R2 SP1. */
     WINDOWS_SERVER_2008_R2_SP1("MicrosoftWindowsServer", "WindowsServer", "2008-R2-SP1"),
     /** Windows Server 2012 Data center. */

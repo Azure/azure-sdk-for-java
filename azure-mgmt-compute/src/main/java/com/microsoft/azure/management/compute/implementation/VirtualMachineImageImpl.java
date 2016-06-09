@@ -13,7 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.implementation.
 import java.util.List;
 
 /**
- * The implementation for VirtualMachineImage.
+ * The implementation for {@link VirtualMachineImage}.
  */
 class VirtualMachineImageImpl
         extends IndexableWrapperImpl<VirtualMachineImageInner>

@@ -119,7 +119,6 @@ public final class ComputeManager {
         if (virtualMachines == null) {
             virtualMachines = new VirtualMachinesImpl(computeManagementClient.virtualMachines(),
                     computeManagementClient.virtualMachineSizes(),
-                    networkManagementClient.networkInterfaces(), // TODO this will be removed once we have NetworkInterfaces entry point available in NetworkManager
                     availabilitySets(),
                     resourceManager,
                     storageManager,

@@ -63,7 +63,7 @@ public abstract class TestTemplate<
      * @throws IOException if anything goes wrong
      */
     public T verifyGetting() throws CloudException, IOException {
-        return this.collection.get(this.resource.resourceGroupName(), this.resource.name());
+        return this.collection.getByGroup(this.resource.resourceGroupName(), this.resource.name());
     }
 
     /**
