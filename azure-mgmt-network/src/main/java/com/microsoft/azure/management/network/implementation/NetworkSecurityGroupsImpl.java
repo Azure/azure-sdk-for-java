@@ -47,13 +47,13 @@ class NetworkSecurityGroupsImpl implements NetworkSecurityGroups {
     }
 
     @Override
-    public PagedList<NetworkSecurityGroup> list(String groupName) throws CloudException, IOException {
+    public PagedList<NetworkSecurityGroup> listByGroup(String groupName) throws CloudException, IOException {
         ServiceResponse<PagedList<NetworkSecurityGroupInner>> response = client.list(groupName);
         return converter.convert(response.getBody());
     }
 
     @Override
-    public NetworkSecurityGroupImpl get(String groupName, String name) throws CloudException, IOException {
+    public NetworkSecurityGroupImpl getByGroup(String groupName, String name) throws CloudException, IOException {
         ServiceResponse<NetworkSecurityGroupInner> serviceResponse = this.client.get(groupName, name);
         return createFluentModel(serviceResponse.getBody());
     }

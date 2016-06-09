@@ -51,13 +51,13 @@ class PublicIpAddressesImpl
     }
 
     @Override
-    public PagedList<PublicIpAddress> list(String groupName) throws CloudException, IOException {
+    public PagedList<PublicIpAddress> listByGroup(String groupName) throws CloudException, IOException {
         ServiceResponse<PagedList<PublicIPAddressInner>> response = client.list(groupName);
         return converter.convert(toPagedList(response.getBody()));
     }
 
     @Override
-    public PublicIpAddressImpl get(String groupName, String name) throws CloudException, IOException {
+    public PublicIpAddressImpl getByGroup(String groupName, String name) throws CloudException, IOException {
         ServiceResponse<PublicIPAddressInner> serviceResponse = this.client.get(groupName, name);
         return createFluentModel(serviceResponse.getBody());
     }

@@ -59,7 +59,7 @@ final class DeploymentsImpl
     }
 
     @Override
-    public PagedList<Deployment> list(String groupName) throws CloudException, IOException {
+    public PagedList<Deployment> listByGroup(String groupName) throws CloudException, IOException {
         return converter.convert(client.list(groupName).getBody());
     }
 
@@ -79,7 +79,7 @@ final class DeploymentsImpl
     }
 
     @Override
-    public Deployment get(String groupName, String name) throws IOException, CloudException {
+    public Deployment getByGroup(String groupName, String name) throws IOException, CloudException {
         DeploymentExtendedInner inner = client.get(groupName, name).getBody();
         return createFluentModel(inner);
     }

@@ -64,13 +64,13 @@ class StorageAccountsImpl
     }
 
     @Override
-    public PagedList<StorageAccount> list(String groupName) throws CloudException, IOException {
+    public PagedList<StorageAccount> listByGroup(String groupName) throws CloudException, IOException {
         ServiceResponse<List<StorageAccountInner>> response = client.listByResourceGroup(groupName);
         return converter.convert(toPagedList(response.getBody()));
     }
 
     @Override
-    public StorageAccount get(String groupName, String name) throws CloudException, IOException {
+    public StorageAccount getByGroup(String groupName, String name) throws CloudException, IOException {
         ServiceResponse<StorageAccountInner> serviceResponse = this.client.getProperties(groupName, name);
         return createFluentModel(serviceResponse.getBody());
     }

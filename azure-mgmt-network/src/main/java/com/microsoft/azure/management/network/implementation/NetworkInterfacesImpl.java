@@ -52,13 +52,13 @@ class NetworkInterfacesImpl implements NetworkInterfaces {
     }
 
     @Override
-    public PagedList<NetworkInterface> list(String groupName) throws CloudException, IOException {
+    public PagedList<NetworkInterface> listByGroup(String groupName) throws CloudException, IOException {
         ServiceResponse<PagedList<NetworkInterfaceInner>> response = client.list(groupName);
         return converter.convert(response.getBody());
     }
 
     @Override
-    public NetworkInterface get(String groupName, String name) throws CloudException, IOException {
+    public NetworkInterface getByGroup(String groupName, String name) throws CloudException, IOException {
         ServiceResponse<NetworkInterfaceInner> serviceResponse = this.client.get(groupName, name);
         return createFluentModel(serviceResponse.getBody());
     }
