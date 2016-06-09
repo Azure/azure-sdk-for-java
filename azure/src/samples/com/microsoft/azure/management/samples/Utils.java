@@ -11,7 +11,6 @@ import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.implementation.api.DataDisk;
 import com.microsoft.azure.management.network.*;
-import javafx.util.converter.LongStringConverter;
 
 import java.util.Calendar;
 import java.util.UUID;
