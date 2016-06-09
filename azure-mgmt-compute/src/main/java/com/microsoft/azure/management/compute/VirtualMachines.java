@@ -29,7 +29,7 @@ public interface VirtualMachines extends
      * @throws CloudException thrown for an invalid response from the service.
      * @throws IOException thrown for IO exception.
      */
-    PagedList<VirtualMachineSize> availableSizes(String region) throws CloudException, IOException;
+    PagedList<VirtualMachineSize> availableSizesByRegion(String region) throws CloudException, IOException;
 
     /**
      * Shuts down the Virtual Machine and releases the compute resources.

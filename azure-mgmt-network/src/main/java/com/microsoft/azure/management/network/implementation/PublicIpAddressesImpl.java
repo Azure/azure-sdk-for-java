@@ -6,7 +6,6 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddresses;
@@ -16,12 +15,9 @@ import com.microsoft.azure.management.network.implementation.api.PublicIPAddress
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-import com.microsoft.azure.management.resources.implementation.api.PageImpl;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Implementation of the PublicIpAddresses interface.
@@ -47,17 +43,17 @@ class PublicIpAddressesImpl
     @Override
     public PagedList<PublicIpAddress> list() throws CloudException, IOException {
         ServiceResponse<PagedList<PublicIPAddressInner>> response = client.listAll();
-        return converter.convert(toPagedList(response.getBody()));
+        return converter.convert(response.getBody());
     }
 
     @Override
-    public PagedList<PublicIpAddress> list(String groupName) throws CloudException, IOException {
+    public PagedList<PublicIpAddress> listByGroup(String groupName) throws CloudException, IOException {
         ServiceResponse<PagedList<PublicIPAddressInner>> response = client.list(groupName);
-        return converter.convert(toPagedList(response.getBody()));
+        return converter.convert(response.getBody());
     }
 
     @Override
-    public PublicIpAddressImpl get(String groupName, String name) throws CloudException, IOException {
+    public PublicIpAddressImpl getByGroup(String groupName, String name) throws CloudException, IOException {
         ServiceResponse<PublicIPAddressInner> serviceResponse = this.client.get(groupName, name);
         return createFluentModel(serviceResponse.getBody());
     }
@@ -75,18 +71,6 @@ class PublicIpAddressesImpl
     @Override
     public PublicIpAddressImpl define(String name) {
         return createFluentModel(name);
-    }
-
-    private PagedList<PublicIPAddressInner> toPagedList(List<PublicIPAddressInner> list) {
-        PageImpl<PublicIPAddressInner> page = new PageImpl<>();
-        page.setItems(list);
-        page.setNextPageLink(null);
-        return new PagedList<PublicIPAddressInner>(page) {
-            @Override
-            public Page<PublicIPAddressInner> nextPage(String nextPageLink) throws RestException, IOException {
-                return null;
-            }
-        };
     }
 
     // Fluent model create helpers

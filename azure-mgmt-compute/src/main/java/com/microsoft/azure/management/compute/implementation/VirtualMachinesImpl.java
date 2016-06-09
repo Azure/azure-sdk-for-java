@@ -76,13 +76,13 @@ class VirtualMachinesImpl
     }
 
     @Override
-    public PagedList<VirtualMachine> list(String groupName) throws CloudException, IOException {
+    public PagedList<VirtualMachine> listByGroup(String groupName) throws CloudException, IOException {
         ServiceResponse<List<VirtualMachineInner>> response = client.list(groupName);
         return converter.convert(toPagedList(response.getBody()));
     }
 
     @Override
-    public VirtualMachine get(String groupName, String name) throws CloudException, IOException {
+    public VirtualMachine getByGroup(String groupName, String name) throws CloudException, IOException {
         ServiceResponse<VirtualMachineInner> response = this.client.get(groupName, name);
         return createFluentModel(response.getBody());
     }
@@ -103,7 +103,7 @@ class VirtualMachinesImpl
     }
 
     @Override
-    public PagedList<VirtualMachineSize> availableSizes(String region) throws CloudException, IOException {
+    public PagedList<VirtualMachineSize> availableSizesByRegion(String region) throws CloudException, IOException {
         PagedListConverter<VirtualMachineSizeInner, VirtualMachineSize> converter =
                 new PagedListConverter<VirtualMachineSizeInner, VirtualMachineSize>() {
             @Override

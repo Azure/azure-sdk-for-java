@@ -633,7 +633,7 @@ class VirtualMachineImpl
         if (this.primaryNetworkInterface == null) {
             String primaryNicId = primaryNetworkInterfaceId();
             this.primaryNetworkInterface = this.networkManager.networkInterfaces()
-                    .get(ResourceUtils.groupFromResourceId(primaryNicId), ResourceUtils.nameFromResourceId(primaryNicId));
+                    .getByGroup(ResourceUtils.groupFromResourceId(primaryNicId), ResourceUtils.nameFromResourceId(primaryNicId));
         }
         return this.primaryNetworkInterface;
     }

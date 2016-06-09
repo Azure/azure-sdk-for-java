@@ -51,7 +51,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
                 .withMode(DeploymentMode.COMPLETE)
                 .create();
         // List
-        PagedList<Deployment> deployments = resourceClient.deployments().list(rgName);
+        PagedList<Deployment> deployments = resourceClient.deployments().listByGroup(rgName);
         boolean found = false;
         for (Deployment deployment : deployments) {
             if (deployment.name().equals(dp1)) {
@@ -60,7 +60,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
         }
         Assert.assertTrue(found);
         // Get
-        Deployment deployment = resourceClient.deployments().get(rgName, dp1);
+        Deployment deployment = resourceClient.deployments().getByGroup(rgName, dp1);
         Assert.assertNotNull(deployment);
         Assert.assertEquals("Succeeded", deployment.provisioningState());
         GenericResource generic = resourceClient.genericResources().get(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", "2015-06-15");
@@ -83,11 +83,11 @@ public class DeploymentsTests extends ResourceManagerTestBase {
                 .withParametersLink(parametersUri, contentVersion)
                 .withMode(DeploymentMode.COMPLETE)
                 .beginCreate();
-        Deployment deployment = resourceClient.deployments().get(rgName, dp2);
+        Deployment deployment = resourceClient.deployments().getByGroup(rgName, dp2);
         Assert.assertEquals(dp2, deployment.name());
         // Cancel
         deployments.cancel(deployment.resourceGroupName(), deployment.name());
-        deployment = resourceClient.deployments().get(rgName, dp2);
+        deployment = resourceClient.deployments().getByGroup(rgName, dp2);
         Assert.assertEquals("Canceled", deployment.provisioningState());
         Assert.assertFalse(resourceClient.genericResources().checkExistence(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", "2015-06-15"));
     }
@@ -102,11 +102,11 @@ public class DeploymentsTests extends ResourceManagerTestBase {
                 .withParametersLink(parametersUri, contentVersion)
                 .withMode(DeploymentMode.COMPLETE)
                 .beginCreate();
-        Deployment deployment = resourceClient.deployments().get(rgName, dp3);
+        Deployment deployment = resourceClient.deployments().getByGroup(rgName, dp3);
         Assert.assertEquals(dp3, deployment.name());
         // Cancel
         deployments.cancel(deployment.resourceGroupName(), deployment.name());
-        deployment = resourceClient.deployments().get(rgName, dp3);
+        deployment = resourceClient.deployments().getByGroup(rgName, dp3);
         Assert.assertEquals("Canceled", deployment.provisioningState());
         // Update
         deployment.update()
@@ -114,7 +114,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
                 .withParameters(updateParameters)
                 .withMode(DeploymentMode.INCREMENTAL)
                 .apply();
-        deployment = resourceClient.deployments().get(rgName, dp3);
+        deployment = resourceClient.deployments().getByGroup(rgName, dp3);
         Assert.assertEquals(DeploymentMode.INCREMENTAL, deployment.mode());
         Assert.assertEquals("Succeeded", deployment.provisioningState());
         GenericResource genericVnet = resourceClient.genericResources().get(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet2", "2015-06-15");
