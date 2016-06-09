@@ -1,10 +1,7 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.compute.AvailabilitySet;
-import com.microsoft.azure.management.compute.AvailabilitySets;
-import com.microsoft.azure.management.compute.DataDisk;
-import com.microsoft.azure.management.compute.VirtualMachine;
+import com.microsoft.azure.management.compute.*;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineInner;
 import com.microsoft.azure.management.compute.implementation.api.Plan;
 import com.microsoft.azure.management.compute.implementation.api.HardwareProfile;
@@ -90,6 +87,7 @@ class VirtualMachineImpl
     // Cached related resources
     private NetworkInterface primaryNetworkInterface;
     private PublicIpAddress primaryPublicIpAddress;
+    private VMInstanceView vmInstanceView;
     // The data disks associated with the virtual machine
     private List<DataDisk> dataDisks;
 
@@ -531,8 +529,11 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineInstanceView instanceView() {
-        return inner().instanceView();
+    public VMInstanceView instanceView() {
+        if (this.vmInstanceView == null) {
+            this.vmInstanceView = new VMInstanceViewImpl(this.client, this);
+        }
+        return this.vmInstanceView;
     }
 
     @Override
@@ -565,6 +566,10 @@ class VirtualMachineImpl
         return inner().diagnosticsProfile();
     }
 
+    @Override
+    public PowerState powerState() {
+        return this.instanceView().powerState();
+    }
 
     /**************************************************.
      * CreatableImpl::createResource
@@ -572,18 +577,20 @@ class VirtualMachineImpl
 
     @Override
     protected void createResource() throws Exception {
+        // Sets defaults
         if (isInCreateMode()) {
             setOSDiskAndOSProfileDefaults();
             setHardwareProfileDefaults();
         }
         DataDiskImpl.setDataDisksDefaults(this.dataDisks, this.vmName);
-
+        // Ensure various profiles
         handleStorageSettings();
         handleNetworkSettings();
         handleAvailabilitySettings();
-
+        // PUT
         ServiceResponse<VirtualMachineInner> serviceResponse = this.client.createOrUpdate(this.resourceGroupName(), this.vmName, this.inner());
         this.setInner(serviceResponse.getBody());
+        // refresh the data disks
         initializeDataDisks();
     }
 
@@ -599,6 +606,10 @@ class VirtualMachineImpl
         return prefix + "-" + this.randomId + "-" + this.resourceGroupName();
     }
 
+    /**
+     * This method sets default values for operating system disk and operating system profile properties, which are
+     * required during creation time.
+     */
     private void setOSDiskAndOSProfileDefaults() {
         if (!isInCreateMode()) {
             return;
@@ -628,6 +639,10 @@ class VirtualMachineImpl
         }
     }
 
+    /**
+     * Hardware profile (vm size) needs to be set when creating the virtual machine, vm size is optional in the
+     * fluent model hence if its not selected by the user this method set it to default value.
+     */
     private void setHardwareProfileDefaults() {
         if (!isInCreateMode()) {
             return;
@@ -639,6 +654,15 @@ class VirtualMachineImpl
         }
     }
 
+    /**
+     * This method is used to ensures the storage profile in the virtual machine payload for create or update
+     * is valid.
+     * <p>
+     * The OS disk based on an image and new data disks requires storage uri where the backing vhd needs to be
+     * stored, this method ensures the uris are correct.
+     *
+     * @throws Exception
+     */
     private void handleStorageSettings() throws Exception {
         StorageAccount storageAccount = null;
         if (this.creatableStorageAccountKey != null) {
@@ -654,7 +678,7 @@ class VirtualMachineImpl
         }
 
         if (storageAccount != null) {
-            // Ensure the Vhd uris for OS Disk and data disks
+            // Ensure the Vhd uris for OS Disk (create time) and data disks (create or update time)
             if (this.isInCreateMode()) {
                 if (isOSDiskFromImage(this.inner().storageProfile().osDisk())) {
                     String uri = this.inner()
@@ -668,6 +692,12 @@ class VirtualMachineImpl
         }
     }
 
+    /**
+     * This method is used to ensure the network profile in the virtual machine payload for create or update is
+     * valid.
+     * <p>
+     * a virtual machine requires primary network interface, this method sets the nic
+     */
     private void handleNetworkSettings() {
         if (isInCreateMode()) {
             NetworkInterface networkInterface = null;
@@ -686,6 +716,10 @@ class VirtualMachineImpl
         }
     }
 
+    /**
+     * a virtual machine can be associated with an availability set during creation time, this method is used to
+     * ensure availability set reference is set if user asked for it.
+     */
     private void handleAvailabilitySettings() {
         if (!isInCreateMode()) {
             return;
@@ -703,6 +737,13 @@ class VirtualMachineImpl
         }
     }
 
+    /**
+     * The storage account is an optional parameter in the virtual machine create or update fluent flow, but
+     * sometime we need to create it implicitly even though user not opted for it, some scenarios are:
+     * creating a virtual machine from image, attaching empty data disks
+     *
+     * @return @return <tt>true</tt> if storage account needs to be created implicitly
+     */
     private boolean requiresImplicitStorageAccountCreation() {
         if (this.creatableStorageAccountKey == null && this.existingStorageAccountToAssociate == null) {
             if (this.isInCreateMode()) {
