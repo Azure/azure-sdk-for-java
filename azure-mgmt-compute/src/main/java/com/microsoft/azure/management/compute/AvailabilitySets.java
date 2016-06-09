@@ -10,7 +10,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 /**
  * Entry point to availability set management API.
  */
-public interface AvailabilitySets extends 
+public interface AvailabilitySets extends
         SupportsListingByGroup<AvailabilitySet>,
         SupportsGettingByGroup<AvailabilitySet>,
         SupportsListing<AvailabilitySet>,

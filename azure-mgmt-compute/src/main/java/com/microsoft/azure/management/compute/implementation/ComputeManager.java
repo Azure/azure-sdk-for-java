@@ -61,6 +61,9 @@ public final class ComputeManager {
         return new ComputeManager(restClient, subscriptionId);
     }
 
+    /**
+     * The interface allowing configurations to be set.
+     */
     public interface Configurable extends AzureConfigurable<Configurable> {
         /**
          * Creates an instance of ComputeManager that exposes Compute resource management API entry points.
@@ -72,6 +75,9 @@ public final class ComputeManager {
         ComputeManager authenticate(ServiceClientCredentials credentials, String subscriptionId);
     }
 
+    /**
+     * The implementation for Configurable interface.
+     */
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements  Configurable {
         @Override
         public ComputeManager authenticate(ServiceClientCredentials credentials, String subscriptionId) {

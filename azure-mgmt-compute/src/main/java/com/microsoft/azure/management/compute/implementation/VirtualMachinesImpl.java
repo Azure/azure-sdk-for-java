@@ -7,7 +7,16 @@ import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSize;
 import com.microsoft.azure.management.compute.VirtualMachines;
-import com.microsoft.azure.management.compute.implementation.api.*;
+import com.microsoft.azure.management.compute.implementation.api.DataDisk;
+import com.microsoft.azure.management.compute.implementation.api.HardwareProfile;
+import com.microsoft.azure.management.compute.implementation.api.NetworkProfile;
+import com.microsoft.azure.management.compute.implementation.api.OSDisk;
+import com.microsoft.azure.management.compute.implementation.api.OSProfile;
+import com.microsoft.azure.management.compute.implementation.api.StorageProfile;
+import com.microsoft.azure.management.compute.implementation.api.VirtualMachineInner;
+import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeInner;
+import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizesInner;
+import com.microsoft.azure.management.compute.implementation.api.VirtualMachinesInner;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.network.implementation.api.NetworkInterfacesInner;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
@@ -19,6 +28,9 @@ import com.microsoft.rest.RestException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * The implementation for {@link VirtualMachines}.
+ */
 class VirtualMachinesImpl
         implements VirtualMachines {
     private final VirtualMachinesInner client;

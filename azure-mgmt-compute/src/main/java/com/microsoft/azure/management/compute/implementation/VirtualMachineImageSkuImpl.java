@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The implementation for {@link VirtualMachineImage.Sku}.
+ */
 class VirtualMachineImageSkuImpl
         implements VirtualMachineImage.Sku {
     private final VirtualMachineImagesInner client;
@@ -44,8 +47,8 @@ class VirtualMachineImageSkuImpl
     @Override
     public List<VirtualMachineImage> listImages() throws CloudException, IOException {
         List<VirtualMachineImage> images = new ArrayList<>();
-        for (VirtualMachineImageResourceInner inner :
-                client.list(
+        for (VirtualMachineImageResourceInner inner
+                : client.list(
                         region().toString(),
                         publisher(),
                         offer(),
