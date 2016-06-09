@@ -18,7 +18,8 @@ import java.util.UUID;
 class DataDiskImpl
     extends ChildResourceImpl<com.microsoft.azure.management.compute.implementation.api.DataDisk, VirtualMachine>
     implements DataDisk,
-    DataDisk.Definitions {
+    DataDisk.Definitions,
+    DataDisk.Update {
     // flag indicating whether data disk in create or update mode
     private final boolean isInCreateMode; // Future: will be used when we support update
 
@@ -106,6 +107,9 @@ class DataDiskImpl
 
     @Override
     public DataDiskImpl withSizeInGB(Integer sizeInGB) {
+        // Note: Size can be specified only while attaching new blank disk.
+        // Size cannot be specified while attaching an existing disk.
+        // Once attached both type of data disk can be resized via VM update.
         this.inner().withDiskSizeGB(sizeInGB);
         return this;
     }
@@ -132,6 +136,11 @@ class DataDiskImpl
 
     @Override
     public VirtualMachine attach() {
+        return this.parent();
+    }
+
+    @Override
+    public VirtualMachine apply() {
         return this.parent();
     }
 

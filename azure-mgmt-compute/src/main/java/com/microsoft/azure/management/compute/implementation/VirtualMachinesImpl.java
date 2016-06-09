@@ -103,7 +103,7 @@ class VirtualMachinesImpl
     }
 
     @Override
-    public PagedList<VirtualMachineSize> listSizes(String region) throws CloudException, IOException {
+    public PagedList<VirtualMachineSize> availableSizes(String region) throws CloudException, IOException {
         PagedListConverter<VirtualMachineSizeInner, VirtualMachineSize> converter =
                 new PagedListConverter<VirtualMachineSizeInner, VirtualMachineSize>() {
             @Override

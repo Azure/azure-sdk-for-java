@@ -3,6 +3,7 @@ package com.microsoft.azure.management.compute;
 import com.microsoft.azure.management.compute.implementation.api.CachingTypes;
 import com.microsoft.azure.management.compute.implementation.api.DiskCreateOptionTypes;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
+import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
 /**
@@ -167,5 +168,38 @@ public interface DataDisk extends
          * @return the next stage of the virtual machine definition
          */
         parentT attach();
+    }
+
+    /**
+     * The template for a data disk update operation, containing all the settings that
+     * can be modified.
+     *
+     * @param <parentT> the return type of the final {@link Appliable#apply()}
+     */
+    interface Update<parentT> extends
+            Appliable<parentT> {
+        /**
+         * Specifies the new size in GB for data disk.
+         *
+         * @param sizeInGB the disk size in GB
+         * @return the next stage of data disk update
+         */
+        Update<parentT> withSizeInGB(Integer sizeInGB);
+
+        /**
+         * Specifies the new logical unit number for the data disk.
+         *
+         * @param lun the logical unit number
+         * @return the next stage of data disk update
+         */
+        Update<parentT> withLun(Integer lun);
+
+        /**
+         * Specifies the new caching type for the data disk.
+         *
+         * @param cachingType the disk caching type. Possible values include: 'None', 'ReadOnly', 'ReadWrite'
+         * @return the next stage of data disk update
+         */
+        Update<parentT> withCaching(CachingTypes cachingType);
     }
 }

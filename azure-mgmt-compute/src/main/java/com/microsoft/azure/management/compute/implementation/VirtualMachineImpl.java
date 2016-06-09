@@ -82,7 +82,7 @@ class VirtualMachineImpl
     // unique key of a creatable network interface that needs to be used as virtual machine's primary network interface
     private String creatablePrimaryNetworkInterfaceKey;
     // unique key of a creatable network interfaces that needs to be used as virtual machine's secondary network interface
-    private List<String> creatableSeconadaryNetworkInterfaceKeys;
+    private List<String> creatableSecondaryNetworkInterfaceKeys;
     // reference to an existing storage account to be used for virtual machine child resources that
     // requires storage [OS disk, data disk etc..]
     private StorageAccount existingStorageAccountToAssociate;
@@ -114,7 +114,7 @@ class VirtualMachineImpl
         this.networkManager = networkManager;
         this.vmName = name;
         this.randomId = Utils.randomId(this.vmName);
-        this.creatableSeconadaryNetworkInterfaceKeys = new ArrayList<>();
+        this.creatableSecondaryNetworkInterfaceKeys = new ArrayList<>();
         this.existingSecondaryNetworkInterfacesToAssociate = new ArrayList<>();
         this.virtualMachineSizeConverter = new PagedListConverter<VirtualMachineSizeInner, VirtualMachineSize>() {
             @Override
@@ -521,7 +521,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withNewSecondaryNetworkInterface(NetworkInterface.DefinitionCreatable creatable) {
-        this.creatableSeconadaryNetworkInterfaceKeys.add(creatable.key());
+        this.creatableSecondaryNetworkInterfaceKeys.add(creatable.key());
         this.addCreatableDependency(creatable);
         return this;
     }
@@ -560,6 +560,16 @@ class VirtualMachineImpl
             }
         }
         return this;
+    }
+
+    @Override
+    public DataDiskImpl updateDataDisk(String name) {
+        for (DataDisk dataDisk : this.dataDisks) {
+            if (dataDisk.name().equalsIgnoreCase(name)) {
+                return (DataDiskImpl) dataDisk;
+            }
+        }
+        throw new RuntimeException("A data disk with name  '" + name + "' not found");
     }
 
     @Override
@@ -825,7 +835,7 @@ class VirtualMachineImpl
 
         // sets the virtual machine secondary network interfaces
         //
-        for (String creatableSecondaryNetworkInterfaceKey : this.creatableSeconadaryNetworkInterfaceKeys) {
+        for (String creatableSecondaryNetworkInterfaceKey : this.creatableSecondaryNetworkInterfaceKeys) {
             NetworkInterface secondaryNetworkInterface = (NetworkInterface) this.createdResource(creatableSecondaryNetworkInterfaceKey);
             NetworkInterfaceReference nicReference = new NetworkInterfaceReference();
             nicReference.withPrimary(false);

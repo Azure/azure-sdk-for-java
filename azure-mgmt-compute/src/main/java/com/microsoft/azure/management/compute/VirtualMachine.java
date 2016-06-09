@@ -8,7 +8,11 @@ import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
-import com.microsoft.azure.management.resources.fluentcore.model.*;
+import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
+import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.storage.StorageAccount;
 
 import java.io.IOException;
@@ -405,7 +409,7 @@ public interface VirtualMachine extends
 
     /**
      * The stage of the Windows virtual machine definition which contains all the minimum required inputs for
-     * the resource to be created (via {@link DefinitionCreatable#create()}), but also allows
+     * the resource to be created (via {@link DefinitionCreatable#create()}, but also allows
      * for any other optional settings to be specified.
      */
     interface DefinitionWindowsCreatable extends DefinitionCreatable {
@@ -773,6 +777,14 @@ public interface VirtualMachine extends
          * @return the stage representing configuration for the data disk
          */
         DataDisk.DefinitionAttachExistingDataDisk<Update> defineExistingDataDisk(String name);
+
+        /**
+         * Starts a stage for updating data disk attached to the virtual machine.
+         *
+         * @param name the name of the data disk
+         * @return the stage representing configuration update for the data disk
+         */
+        DataDisk.Update<VirtualMachine.Update> updateDataDisk(String name);
 
         /**
          * Detaches a data disk with the given name from the virtual machine.
