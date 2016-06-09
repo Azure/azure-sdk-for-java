@@ -25,9 +25,9 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The type representing Azure Azure availability sets.
+ * The implementation for {@link AvailabilitySets}.
  */
-public class AvailabilitySetsImpl implements AvailabilitySets {
+class AvailabilitySetsImpl implements AvailabilitySets {
     private final AvailabilitySetsInner client;
     private final ResourceGroups resourceGroups;
     private final VirtualMachines virtualMachines;
@@ -99,7 +99,9 @@ public class AvailabilitySetsImpl implements AvailabilitySets {
         this.client.delete(groupName, name);
     }
 
-    /** Fluent model create helpers. **/
+    /**************************************************************
+     * Fluent model helpers.
+     **************************************************************/
 
     private AvailabilitySetImpl createFluentModel(String name) {
         AvailabilitySetInner availabilitySetInner = new AvailabilitySetInner();

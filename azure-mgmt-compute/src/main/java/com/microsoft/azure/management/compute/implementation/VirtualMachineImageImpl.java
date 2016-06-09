@@ -1,19 +1,19 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.management.compute.VirtualMachineImage;
+import com.microsoft.azure.management.compute.implementation.api.DataDiskImage;
+import com.microsoft.azure.management.compute.implementation.api.ImageReference;
+import com.microsoft.azure.management.compute.implementation.api.OSDiskImage;
+import com.microsoft.azure.management.compute.implementation.api.PurchasePlan;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImageInner;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImagesInner;
-import com.microsoft.azure.management.compute.implementation.api.ImageReference;
-import com.microsoft.azure.management.compute.implementation.api.PurchasePlan;
-import com.microsoft.azure.management.compute.implementation.api.OSDiskImage;
-import com.microsoft.azure.management.compute.implementation.api.DataDiskImage;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 
 import java.util.List;
 
 /**
- * Represents an Azure virtual machine image.
+ * The implementation for {@link VirtualMachineImage}.
  */
 class VirtualMachineImageImpl
         extends IndexableWrapperImpl<VirtualMachineImageInner>

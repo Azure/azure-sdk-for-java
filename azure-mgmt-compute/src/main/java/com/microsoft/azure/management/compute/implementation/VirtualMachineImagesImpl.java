@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The implementation for {@link VirtualMachineImages}.
+ */
 class VirtualMachineImagesImpl
         implements VirtualMachineImages {
     private final VirtualMachineImagesInner client;
@@ -22,8 +25,8 @@ class VirtualMachineImagesImpl
     @Override
     public List<VirtualMachineImage.Publisher> listPublishers(final Region region) throws CloudException, IOException {
         List<VirtualMachineImage.Publisher> publishers = new ArrayList<>();
-        for (VirtualMachineImageResourceInner inner :
-                client.listPublishers(region.toString()).getBody()) {
+        for (VirtualMachineImageResourceInner inner
+                : client.listPublishers(region.toString()).getBody()) {
             publishers.add(new VirtualMachineImagePublisherImpl(region, inner.name(), client));
         }
         return publishers;

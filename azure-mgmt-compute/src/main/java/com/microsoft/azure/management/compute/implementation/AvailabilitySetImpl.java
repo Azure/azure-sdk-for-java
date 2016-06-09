@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.compute.implementation;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.VirtualMachine;
@@ -17,15 +18,17 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceLazyList;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.rest.ServiceResponse;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 /**
- * The type representing Azure availability set.
+ * The implementation for {@link AvailabilitySet} and its create and update interfaces.
  */
 class AvailabilitySetImpl
-    extends GroupableResourceImpl<AvailabilitySet, AvailabilitySetInner, AvailabilitySetImpl>
+    extends
+        GroupableResourceImpl<AvailabilitySet, AvailabilitySetInner, AvailabilitySetImpl>
     implements
         AvailabilitySet,
         AvailabilitySet.Definitions,
@@ -71,7 +74,7 @@ class AvailabilitySetImpl
     }
 
     @Override
-    public List<VirtualMachine> virtualMachines() throws Exception {
+    public List<VirtualMachine> virtualMachines() throws CloudException, IOException {
         if (vmsInSet == null) {
             vmsInSet = new ResourceLazyList<>(virtualMachineIds(), new ResourceLazyList.Loader<VirtualMachine>() {
                 @Override

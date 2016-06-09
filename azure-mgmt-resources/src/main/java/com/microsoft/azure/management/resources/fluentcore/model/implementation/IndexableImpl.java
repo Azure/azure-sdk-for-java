@@ -8,7 +8,9 @@ package com.microsoft.azure.management.resources.fluentcore.model.implementation
 
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 
-// Base implementation for indexable entities
+/**
+ * The base implementation for {@link Indexable}.
+ */
 public abstract class IndexableImpl implements Indexable {
 	protected String key;
 	
