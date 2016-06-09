@@ -36,6 +36,7 @@ import com.microsoft.azure.management.compute.implementation.api.SshPublicKey;
 import com.microsoft.azure.management.compute.implementation.api.NetworkInterfaceReference;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineCaptureParametersInner;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineCaptureResultInner;
+import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
@@ -97,6 +98,15 @@ class VirtualMachineImpl
     private PublicIpAddress primaryPublicIpAddress;
     // The data disks associated with the virtual machine
     private List<DataDisk> dataDisks;
+    // Intermediate state of network interface definition to which private ip can be associated
+    private NetworkInterface
+            .DefinitionWithPrivateIp<NetworkInterface.DefinitionWithPublicIpAddress> nicDefinitionWithPrivateIp;
+    // Intermediate state of network interface definition to which subnet can be associated
+    private NetworkInterface
+            .DefinitionWithSubnet<NetworkInterface.DefinitionWithPrivateIp> nicDefinitionWithSubnet;
+    // Intermediate state of network interface definition to which public Ip can be associated
+    private NetworkInterface
+            .DefinitionWithPublicIpAddress nicDefinitionWithPublicIp;
     // Virtual machine size converter
     private final PagedListConverter<VirtualMachineSizeInner, VirtualMachineSize> virtualMachineSizeConverter;
 
@@ -212,18 +222,94 @@ class VirtualMachineImpl
      * Setters
      **************************************************/
 
-    // Virtual machine network interface specific fluent methods
+    // Fluent methods for defining virtual network association for the new primary network interface
+
+    @Override
+    public VirtualMachineImpl withNewPrimaryNetwork(Network.DefinitionCreatable creatable) {
+        this.nicDefinitionWithPrivateIp = this.preparePrimaryNetworkInterface(nameWithPrefix("nic"))
+                .withNewPrimaryNetwork(creatable);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withNewPrimaryNetwork(String addressSpace) {
+        this.nicDefinitionWithPrivateIp = this.preparePrimaryNetworkInterface(nameWithPrefix("nic"))
+                .withNewPrimaryNetwork(addressSpace);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withExistingPrimaryNetwork(Network network) {
+        this.nicDefinitionWithSubnet = this.preparePrimaryNetworkInterface(nameWithPrefix("nic"))
+                .withExistingPrimaryNetwork(network);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withSubnet(String name) {
+        this.nicDefinitionWithPrivateIp = this.nicDefinitionWithSubnet
+                .withSubnet(name);
+        return this;
+    }
+
+    // Fluent methods for defining private Ip association for the new primary network interface
+
+    @Override
+    public VirtualMachineImpl withPrimaryPrivateIpAddressDynamic() {
+        this.nicDefinitionWithPublicIp = this.nicDefinitionWithPrivateIp
+                .withPrimaryPrivateIpAddressDynamic();
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withPrimaryPrivateIpAddressStatic(String staticPrivateIpAddress) {
+        this.nicDefinitionWithPublicIp = this.nicDefinitionWithPrivateIp
+                .withPrimaryPrivateIpAddressStatic(staticPrivateIpAddress);
+        return this;
+    }
+
+    // Fluent methods for defining public Ip association for the new primary network interface
+
+    @Override
+    public VirtualMachineImpl withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionCreatable creatable) {
+        NetworkInterface.DefinitionCreatable nicCreatable = this.nicDefinitionWithPublicIp
+                .withNewPrimaryPublicIpAddress(creatable);
+        this.addCreatableDependency(nicCreatable);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withNewPrimaryPublicIpAddress(String leafDnsLabel) {
+        NetworkInterface.DefinitionCreatable nicCreatable = this.nicDefinitionWithPublicIp
+                .withNewPrimaryPublicIpAddress(leafDnsLabel);
+        this.creatablePrimaryNetworkInterfaceKey = nicCreatable.key();
+        this.addCreatableDependency(nicCreatable);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withExistingPrimaryPublicIpAddress(PublicIpAddress publicIpAddress) {
+        NetworkInterface.DefinitionCreatable nicCreatable = this.nicDefinitionWithPublicIp
+                .withExistingPrimaryPublicIpAddress(publicIpAddress);
+        this.creatablePrimaryNetworkInterfaceKey = nicCreatable.key();
+        this.addCreatableDependency(nicCreatable);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withoutPrimaryPublicIpAddress() {
+        this.creatablePrimaryNetworkInterfaceKey = this.nicDefinitionWithPublicIp.key();
+        this.addCreatableDependency(this.nicDefinitionWithPublicIp);
+        return this;
+    }
+
+    // Virtual machine primary network interface specific fluent methods
     //
     @Override
     public VirtualMachineImpl withNewPrimaryNetworkInterface(NetworkInterface.DefinitionCreatable creatable) {
         this.creatablePrimaryNetworkInterfaceKey = creatable.key();
         this.addCreatableDependency(creatable);
         return this;
-    }
-
-    @Override
-    public VirtualMachineImpl withNewPrimaryNetworkInterface(String name) {
-        return withNewPrimaryNetworkInterface(prepareNetworkInterface(name));
     }
 
     public VirtualMachineImpl withNewPrimaryNetworkInterface(String name, String publicDnsNameLabel) {
@@ -741,10 +827,10 @@ class VirtualMachineImpl
 
     /**
      * @param prefix the prefix
-     * @return a random value (derived from the resource and resource group name) with the given prefix
+     * @return a random value (derived from the resource name) with the given prefix
      */
     private String nameWithPrefix(String prefix) {
-        return prefix + "-" + this.randomId + "-" + this.resourceGroupName();
+        return prefix + "-" + this.randomId;
     }
 
     private void setOSDiskAndOSProfileDefaults() {
@@ -928,5 +1014,18 @@ class VirtualMachineImpl
         for (com.microsoft.azure.management.compute.implementation.api.DataDisk dataDiskInner : this.storageProfile().dataDisks()) {
             this.dataDisks().add(new DataDiskImpl(dataDiskInner.name(), dataDiskInner, this, false));
         }
+    }
+
+    private NetworkInterface.DefinitionWithNetwork preparePrimaryNetworkInterface(String name) {
+        NetworkInterface.DefinitionWithGroup definitionWithGroup = this.networkManager.networkInterfaces()
+                .define(name)
+                .withRegion(this.region());
+        NetworkInterface.DefinitionWithNetwork definitionAfterGroup;
+        if (this.newGroup != null) {
+            definitionAfterGroup = definitionWithGroup.withNewGroup(this.newGroup);
+        } else {
+            definitionAfterGroup = definitionWithGroup.withExistingGroup(this.resourceGroupName());
+        }
+        return definitionAfterGroup;
     }
 }

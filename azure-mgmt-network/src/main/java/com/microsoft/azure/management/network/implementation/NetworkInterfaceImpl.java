@@ -172,7 +172,7 @@ class NetworkInterfaceImpl
     public NicIpConfigurationImpl updateIpConfiguration(String name) {
         for (NicIpConfiguration nicIpConfiguration : this.nicIpConfigurations) {
             if (name.compareToIgnoreCase(nicIpConfiguration.name()) == 0) {
-                return (NicIpConfigurationImpl)nicIpConfiguration;
+                return (NicIpConfigurationImpl) nicIpConfiguration;
             }
         }
         throw new RuntimeException("An Ip configuration with name'" + name + "' not found");
@@ -378,10 +378,10 @@ class NetworkInterfaceImpl
 
     /**
      * @param prefix the prefix
-     * @return a random value (derived from the resource and resource group name) with the given prefix
+     * @return a random value (derived from the resource) with the given prefix
      */
     String nameWithPrefix(String prefix) {
-        return prefix + "-" + this.randomId + "-" + this.resourceGroupName();
+        return prefix + "-" + this.randomId;
     }
 
     void addToCreatableDependencies(Creatable<?> creatableResource) {

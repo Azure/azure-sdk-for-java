@@ -16,6 +16,7 @@ import com.microsoft.azure.management.compute.implementation.api.DiagnosticsProf
 import com.microsoft.azure.management.compute.implementation.api.WinRMListener;
 import com.microsoft.azure.management.compute.implementation.api.DiskEncryptionSettings;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeTypes;
+import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -265,21 +266,124 @@ public interface VirtualMachine extends
     /**
      * The stage of the virtual machine definition allowing to specify the resource group.
      */
-    interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionWithPrimaryNetworkInterface> {
+    interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionWithNetwork> {
+    }
+
+    /**
+     * The stage of the virtual machine definition allowing to specify virtual network for the new primary network
+     * interface or to use a creatable or existing network interface.
+     */
+    interface DefinitionWithNetwork extends DefinitionWithPrimaryNetworkInterface {
+        /**
+         * Create a new virtual network to associate with the virtual machine's primary network interface, based on
+         * the provided definition.
+         *
+         * @param creatable a creatable definition for a new virtual network
+         * @return the next stage of the virtual machine definition
+         */
+        DefinitionWithPrivateIp withNewPrimaryNetwork(Network.DefinitionCreatable creatable);
+
+        /**
+         * Creates a new virtual network to associate with the virtual machine's primary network interface.
+         * <p>
+         * the virtual network will be created in the same resource group and region as of virtual machine, it will be
+         * created with the specified address space and a default subnet covering the entirety of the network IP address space.
+         *
+         * @param addressSpace the address space for the virtual network
+         * @return the next stage of the virtual machine definition
+         */
+        DefinitionWithPrivateIp withNewPrimaryNetwork(String addressSpace);
+
+        /**
+         * Associate an existing virtual network with the the virtual machine's primary network interface.
+         *
+         * @param network an existing virtual network
+         * @return the next stage of the virtual machine definition
+         */
+        DefinitionWithSubnet withExistingPrimaryNetwork(Network network);
+    }
+
+    /**
+     * The stage of the virtual machine definition allowing to specify virtual network subnet for the new primary network interface.
+     *
+     */
+    interface DefinitionWithSubnet {
+        /**
+         * Associate a subnet with the virtual machine primary network interface.
+         *
+         * @param name the subnet name
+         * @return the next stage of the virtual machine definition
+         */
+        DefinitionWithPrivateIp withSubnet(String name);
+    }
+
+    /**
+     * The stage of the virtual machine definition allowing to specify private IP address within a virtual network subnet.
+     */
+    interface DefinitionWithPrivateIp {
+        /**
+         * Enables dynamic private IP address allocation within the specified existing virtual network subnet for
+         * virtual machine's primary network interface.
+         *
+         * @return the next stage of the virtual machine definition
+         */
+        DefinitionWithPublicIpAddress withPrimaryPrivateIpAddressDynamic();
+
+        /**
+         * Assigns the specified static private IP address within the specified existing virtual network subnet to the
+         * virtual machine's primary network interface.
+         *
+         * @param staticPrivateIpAddress the static IP address within the specified subnet to assign to
+         *                               the network interface
+         * @return the next stage of the virtual machine definition
+         */
+        DefinitionWithPublicIpAddress withPrimaryPrivateIpAddressStatic(String staticPrivateIpAddress);
+    }
+
+    /**
+     * The stage of the virtual machine definition allowing to associate public IP address with it's primary network interface.
+     */
+    interface DefinitionWithPublicIpAddress {
+        /**
+         * Create a new public IP address to associate with virtual machine primary network interface, based on the
+         * provided definition.
+         *
+         * @param creatable a creatable definition for a new public IP
+         * @return the next stage of the virtual machine definition
+         */
+         DefinitionWithOS withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionCreatable creatable);
+
+        /**
+         * Creates a new public IP address in the same region and group as the resource, with the specified DNS label
+         * and associate it with the virtual machine's primary network interface.
+         * <p>
+         * the internal name for the public IP address will be derived from the DNS label
+         *
+         * @param leafDnsLabel the leaf domain label
+         * @return the next stage of the virtual machine definition
+         */
+        DefinitionWithOS withNewPrimaryPublicIpAddress(String leafDnsLabel);
+
+        /**
+         * Associates an existing public IP address with the virtual machine's primary network interface.
+         *
+         * @param publicIpAddress an existing public IP address
+         * @return the next stage of the virtual machine definition
+         */
+        DefinitionWithOS withExistingPrimaryPublicIpAddress(PublicIpAddress publicIpAddress);
+
+        /**
+         * Specifies that no public Ip needs to be associated with virtual machine.
+         *
+         * @return the next stage of the virtual machine definition
+         */
+        DefinitionWithOS withoutPrimaryPublicIpAddress();
     }
 
     /**
      * The stage of the virtual machine definition allowing to specify the primary network interface.
      */
     interface DefinitionWithPrimaryNetworkInterface {
-        /**
-         * Create a new network interface to associate with the virtual machine as it's primary network interface.
-         *
-         * @param name the name for the new network interface
-         * @return The next stage of the virtual machine definition
-         */
-        DefinitionWithOS withNewPrimaryNetworkInterface(String name);
-
         /**
          * Create a new network interface to associate the virtual machine with as it's primary network interface,
          * based on the provided definition.
@@ -299,7 +403,7 @@ public interface VirtualMachine extends
     }
 
     /**
-     * The stage of the virtual machine definition allowing to specify the Operation System.
+     * The stage of the virtual machine definition allowing to specify the Operation System image.
      */
     interface DefinitionWithOS {
         /**
@@ -719,6 +823,10 @@ public interface VirtualMachine extends
     interface Definitions extends
             VirtualMachine.DefinitionBlank,
             VirtualMachine.DefinitionWithGroup,
+            VirtualMachine.DefinitionWithNetwork,
+            VirtualMachine.DefinitionWithSubnet,
+            VirtualMachine.DefinitionWithPrivateIp,
+            VirtualMachine.DefinitionWithPublicIpAddress,
             VirtualMachine.DefinitionWithPrimaryNetworkInterface,
             VirtualMachine.DefinitionWithOS,
             VirtualMachine.DefinitionWithMarketplaceImage,
