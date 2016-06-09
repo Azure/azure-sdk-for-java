@@ -21,9 +21,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * The type representing Azure availability set.
+ */
 class AvailabilitySetImpl
-    extends 
-        GroupableResourceImpl<AvailabilitySet, AvailabilitySetInner, AvailabilitySetImpl>
+    extends GroupableResourceImpl<AvailabilitySet, AvailabilitySetInner, AvailabilitySetImpl>
     implements
         AvailabilitySet,
         AvailabilitySet.Definitions,

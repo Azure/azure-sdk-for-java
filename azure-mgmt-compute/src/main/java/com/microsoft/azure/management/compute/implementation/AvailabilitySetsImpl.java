@@ -24,13 +24,16 @@ import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * The type representing Azure Azure availability sets.
+ */
 public class AvailabilitySetsImpl implements AvailabilitySets {
     private final AvailabilitySetsInner client;
     private final ResourceGroups resourceGroups;
     private final VirtualMachines virtualMachines;
     private final PagedListConverter<AvailabilitySetInner, AvailabilitySet> converter;
 
-    public AvailabilitySetsImpl(final AvailabilitySetsInner client,
+    AvailabilitySetsImpl(final AvailabilitySetsInner client,
                                 final ResourceGroups resourceGroups,
                                 final VirtualMachines virtualMachines) {
         this.client = client;
@@ -96,7 +99,7 @@ public class AvailabilitySetsImpl implements AvailabilitySets {
         this.client.delete(groupName, name);
     }
 
-    /** Fluent model create helpers **/
+    /** Fluent model create helpers. **/
 
     private AvailabilitySetImpl createFluentModel(String name) {
         AvailabilitySetInner availabilitySetInner = new AvailabilitySetInner();
