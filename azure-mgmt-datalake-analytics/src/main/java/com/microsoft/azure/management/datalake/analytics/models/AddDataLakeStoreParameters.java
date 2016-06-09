@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class AddDataLakeStoreParameters {
     /**
-     * Gets or sets the properties for the Data Lake Store account being added.
+     * the properties for the Data Lake Store account being added.
      */
     @JsonProperty(required = true)
     private DataLakeStoreAccountInfoProperties properties;

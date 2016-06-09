@@ -13,23 +13,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class USqlCredential extends CatalogItem {
     /**
-     * Gets or sets the name of the database the credential is in.
+     * the name of the database the credential is in.
      */
     private String databaseName;
 
     /**
-     * Gets or sets the name of the secret associated with the credential.
+     * the name of the secret associated with the credential.
      */
     private String identity;
 
     /**
-     * Gets or sets the name of the credential.
+     * the name of the credential.
      */
     @JsonProperty(value = "credentialName")
     private String name;
 
     /**
-     * Gets or sets the user name associated with the credential.
+     * the user name associated with the credential.
      */
     private String userName;
 

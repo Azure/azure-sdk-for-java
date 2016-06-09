@@ -14,53 +14,53 @@ import java.util.UUID;
  */
 public class USqlIndex {
     /**
-     * Gets or sets the name of the index in the table.
+     * the name of the index in the table.
      */
     private String name;
 
     /**
-     * Gets or sets the list of directed columns in the index.
+     * the list of directed columns in the index.
      */
     private List<USqlDirectedColumn> indexKeys;
 
     /**
-     * Gets or sets the list of columns in the index.
+     * the list of columns in the index.
      */
     private List<String> columns;
 
     /**
-     * Gets or sets the distributions info of the index.
+     * the distributions info of the index.
      */
     private USqlDistributionInfo distributionInfo;
 
     /**
-     * Gets or sets partition function ID for the index.
+     * partition function ID for the index.
      */
     private UUID partitionFunction;
 
     /**
-     * Gets or sets the list of partion keys in the index.
+     * the list of partion keys in the index.
      */
     private List<String> partitionKeyList;
 
     /**
-     * Gets or sets the list of full paths to the streams that contain this
-     * index in the DataLake account.
+     * the list of full paths to the streams that contain this index in the
+     * DataLake account.
      */
     private List<String> streamNames;
 
     /**
-     * Gets or sets the switch indicating if this index is a columnstore index.
+     * the switch indicating if this index is a columnstore index.
      */
     private Boolean isColumnstore;
 
     /**
-     * Gets or sets the ID of this index within the table.
+     * the ID of this index within the table.
      */
     private Integer indexId;
 
     /**
-     * Gets or sets the switch indicating if this index is a unique index.
+     * the switch indicating if this index is a unique index.
      */
     private Boolean isUnique;
 

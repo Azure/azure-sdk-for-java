@@ -12,12 +12,12 @@ package com.microsoft.azure.management.datalake.store.models;
  */
 public class FirewallRuleProperties {
     /**
-     * Gets or sets the start IP address for the firewall rule.
+     * the start IP address for the firewall rule.
      */
     private String startIpAddress;
 
     /**
-     * Gets or sets the end IP address for the firewall rule.
+     * the end IP address for the firewall rule.
      */
     private String endIpAddress;
 

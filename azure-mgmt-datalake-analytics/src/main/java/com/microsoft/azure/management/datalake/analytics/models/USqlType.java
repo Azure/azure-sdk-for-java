@@ -13,79 +13,78 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class USqlType extends CatalogItem {
     /**
-     * Gets or sets the name of the database.
+     * the name of the database.
      */
     private String databaseName;
 
     /**
-     * Gets or sets the name of the schema associated with this table and
-     * database.
+     * the name of the schema associated with this table and database.
      */
     private String schemaName;
 
     /**
-     * Gets or sets the name of type for this type.
+     * the name of type for this type.
      */
     @JsonProperty(value = "typeName")
     private String name;
 
     /**
-     * Gets or sets the type family for this type.
+     * the type family for this type.
      */
     private String typeFamily;
 
     /**
-     * Gets or sets the C# name for this type.
+     * the C# name for this type.
      */
     private String cSharpName;
 
     /**
-     * Gets or sets the fully qualified C# name for this type.
+     * the fully qualified C# name for this type.
      */
     private String fullCSharpName;
 
     /**
-     * Gets or sets the system type ID for this type.
+     * the system type ID for this type.
      */
     private Integer systemTypeId;
 
     /**
-     * Gets or sets the user type ID for this type.
+     * the user type ID for this type.
      */
     private Integer userTypeId;
 
     /**
-     * Gets or sets the schema ID for this type.
+     * the schema ID for this type.
      */
     private Integer schemaId;
 
     /**
-     * Gets or sets the principal ID for this type.
+     * the principal ID for this type.
      */
     private Integer principalId;
 
     /**
-     * Gets or sets the the switch indicating if this type is nullable.
+     * the the switch indicating if this type is nullable.
      */
     private Boolean isNullable;
 
     /**
-     * Gets or sets the the switch indicating if this type is user defined.
+     * the the switch indicating if this type is user defined.
      */
     private Boolean isUserDefined;
 
     /**
-     * Gets or sets the the switch indicating if this type is an assembly type.
+     * the the switch indicating if this type is an assembly type.
      */
     private Boolean isAssemblyType;
 
     /**
-     * Gets or sets the the switch indicating if this type is a table type.
+     * the the switch indicating if this type is a table type.
      */
     private Boolean isTableType;
 
     /**
-     * Gets or sets the the switch indicating if this type is a complex type.
+     * the the switch indicating if this type is a complex type.
      */
     private Boolean isComplexType;
 

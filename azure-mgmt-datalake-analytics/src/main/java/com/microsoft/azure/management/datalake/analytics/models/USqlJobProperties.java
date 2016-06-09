@@ -19,85 +19,83 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("USql")
 public class USqlJobProperties extends JobProperties {
     /**
-     * Gets or sets the list of resources that are required by the job.
+     * the list of resources that are required by the job.
      */
     private List<JobResource> resources;
 
     /**
-     * Gets or sets the job specific statistics.
+     * the job specific statistics.
      */
     private JobStatistics statistics;
 
     /**
-     * Gets or sets the job specific debug data locations.
+     * the job specific debug data locations.
      */
     private JobDataPath debugData;
 
     /**
-     * Gets or sets the diagnostics for the job.
+     * the diagnostics for the job.
      */
     private List<Diagnostics> diagnostics;
 
     /**
-     * Gets the algebra file path after the job has completed.
+     * the algebra file path after the job has completed.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String algebraFilePath;
 
     /**
-     * Gets the total time this job spent compiling. This value should not be
-     * set by the user and will be ignored if it is.
+     * the total time this job spent compiling. This value should not be set
+     * by the user and will be ignored if it is.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Period totalCompilationTime;
 
     /**
-     * Gets the total time this job spent paused. This value should not be set
-     * by the user and will be ignored if it is.
+     * the total time this job spent paused. This value should not be set by
+     * the user and will be ignored if it is.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Period totalPauseTime;
 
     /**
-     * Gets the total time this job spent queued. This value should not be set
-     * by the user and will be ignored if it is.
+     * the total time this job spent queued. This value should not be set by
+     * the user and will be ignored if it is.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Period totalQueuedTime;
 
     /**
-     * Gets the total time this job spent executing. This value should not be
-     * set by the user and will be ignored if it is.
+     * the total time this job spent executing. This value should not be set
+     * by the user and will be ignored if it is.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Period totalRunningTime;
 
     /**
-     * Gets the ID used to identify the job manager coordinating job
-     * execution. This value should not be set by the user and will be
-     * ignored if it is.
+     * the ID used to identify the job manager coordinating job execution.
+     * This value should not be set by the user and will be ignored if it is.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String rootProcessNodeId;
 
     /**
-     * Gets the ID used to identify the yarn application executing the job.
-     * This value should not be set by the user and will be ignored if it is.
+     * the ID used to identify the yarn application executing the job. This
+     * value should not be set by the user and will be ignored if it is.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String yarnApplicationId;
 
     /**
-     * Gets the timestamp (in ticks) for the yarn application executing the
-     * job. This value should not be set by the user and will be ignored if
-     * it is.
+     * the timestamp (in ticks) for the yarn application executing the job.
+     * This value should not be set by the user and will be ignored if it is.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long yarnApplicationTimeStamp;
 
     /**
-     * Gets or sets the compile mode for the job. Possible values include:
-     * 'Semantic', 'Full', 'SingleBox'.
+     * the compile mode for the job. Possible values include: 'Semantic',
+     * 'Full', 'SingleBox'.
      */
     private CompileMode compileMode;
 

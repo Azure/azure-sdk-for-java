@@ -13,25 +13,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ContentSummary {
     /**
-     * Gets the number of directories.
+     * the number of directories.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long directoryCount;
 
     /**
-     * Gets the number of files.
+     * the number of files.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long fileCount;
 
     /**
-     * Gets the number of bytes used by the contet.
+     * the number of bytes used by the contet.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long length;
 
     /**
-     * Gets the disk space consumed by the content.
+     * the disk space consumed by the content.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long spaceConsumed;

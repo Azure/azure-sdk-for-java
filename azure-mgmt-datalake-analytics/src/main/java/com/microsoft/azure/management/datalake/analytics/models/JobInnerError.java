@@ -13,45 +13,44 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class JobInnerError {
     /**
-     * Gets the diagnostic error code.
+     * the diagnostic error code.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer diagnosticCode;
 
     /**
-     * Gets the severity level of the failure. Possible values include:
-     * 'Warning', 'Error', 'Info'.
+     * the severity level of the failure. Possible values include: 'Warning',
+     * 'Error', 'Info'.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private SeverityTypes severity;
 
     /**
-     * Gets the details of the error message.
+     * the details of the error message.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String details;
 
     /**
-     * Gets the component that failed.
+     * the component that failed.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String component;
 
     /**
-     * Gets the specific identifier for the type of error encountered in the
-     * job.
+     * the specific identifier for the type of error encountered in the job.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String errorId;
 
     /**
-     * Gets the link to MSDN or Azure help for this type of error, if any.
+     * the link to MSDN or Azure help for this type of error, if any.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String helpLink;
 
     /**
-     * Gets the internal diagnostic stack trace if the user requesting the job
+     * the internal diagnostic stack trace if the user requesting the job
      * error details has sufficient permissions it will be retrieved,
      * otherwise it will be empty.
      */
@@ -59,25 +58,25 @@ public class JobInnerError {
     private String internalDiagnostics;
 
     /**
-     * Gets the user friendly error message for the failure.
+     * the user friendly error message for the failure.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /**
-     * Gets the recommended resolution for the failure, if any.
+     * the recommended resolution for the failure, if any.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String resolution;
 
     /**
-     * Gets the ultimate source of the failure (usually either SYSTEM or USER).
+     * the ultimate source of the failure (usually either SYSTEM or USER).
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String source;
 
     /**
-     * Gets the error message description.
+     * the error message description.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String description;

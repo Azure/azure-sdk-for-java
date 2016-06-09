@@ -13,38 +13,38 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Diagnostics {
     /**
-     * Gets the column where the error occured.
+     * the column where the error occured.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer columnNumber;
 
     /**
-     * Gets the ending index of the error.
+     * the ending index of the error.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer end;
 
     /**
-     * Gets the line number the error occured on.
+     * the line number the error occured on.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer lineNumber;
 
     /**
-     * Gets the error message.
+     * the error message.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /**
-     * Gets the severity of the error. Possible values include: 'Warning',
-     * 'Error', 'Info'.
+     * the severity of the error. Possible values include: 'Warning', 'Error',
+     * 'Info'.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private SeverityTypes severity;
 
     /**
-     * Gets the starting index of the error.
+     * the starting index of the error.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer start;

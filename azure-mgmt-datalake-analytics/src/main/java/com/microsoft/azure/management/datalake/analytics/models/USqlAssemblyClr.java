@@ -13,18 +13,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class USqlAssemblyClr extends CatalogItem {
     /**
-     * Gets or sets the name of the database.
+     * the name of the database.
      */
     private String databaseName;
 
     /**
-     * Gets or sets the name of the assembly.
+     * the name of the assembly.
      */
     @JsonProperty(value = "assemblyClrName")
     private String name;
 
     /**
-     * Gets or sets the name of the CLR.
+     * the name of the CLR.
      */
     private String clrName;
 

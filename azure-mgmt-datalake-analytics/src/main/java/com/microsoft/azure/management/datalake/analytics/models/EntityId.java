@@ -13,13 +13,13 @@ import java.util.UUID;
  */
 public class EntityId {
     /**
-     * Gets or sets the name of the external table associated with this
-     * database, schema and table.
+     * the name of the external table associated with this database, schema
+     * and table.
      */
     private DdlName name;
 
     /**
-     * Gets or sets the version of the external data source.
+     * the version of the external data source.
      */
     private UUID version;
 

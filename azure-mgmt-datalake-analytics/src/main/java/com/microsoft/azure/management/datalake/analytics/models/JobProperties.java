@@ -22,13 +22,13 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 })
 public class JobProperties {
     /**
-     * Gets or sets the runtime version of the Data Lake Analytics engine to
-     * use for the specific type of job being run.
+     * the runtime version of the Data Lake Analytics engine to use for the
+     * specific type of job being run.
      */
     private String runtimeVersion;
 
     /**
-     * Gets or sets the script to run.
+     * the script to run.
      */
     @JsonProperty(required = true)
     private String script;

@@ -13,24 +13,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class USqlView extends CatalogItem {
     /**
-     * Gets or sets the name of the database.
+     * the name of the database.
      */
     private String databaseName;
 
     /**
-     * Gets or sets the name of the schema associated with this view and
-     * database.
+     * the name of the schema associated with this view and database.
      */
     private String schemaName;
 
     /**
-     * Gets or sets the name of the view.
+     * the name of the view.
      */
     @JsonProperty(value = "viewName")
     private String name;
 
     /**
-     * Gets or sets the defined query of the view.
+     * the defined query of the view.
      */
     private String definition;
 

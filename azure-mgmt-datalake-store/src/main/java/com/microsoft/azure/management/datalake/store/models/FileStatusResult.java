@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class FileStatusResult {
     /**
-     * Gets the file status object associated with the specified path.
+     * the file status object associated with the specified path.
      */
     @JsonProperty(value = "FileStatus", access = JsonProperty.Access.WRITE_ONLY)
     private FileStatusProperties fileStatus;

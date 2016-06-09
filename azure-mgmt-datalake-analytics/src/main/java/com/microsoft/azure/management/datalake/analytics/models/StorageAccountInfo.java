@@ -13,13 +13,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class StorageAccountInfo {
     /**
-     * Gets or sets the account name associated with the Azure storage account.
+     * the account name associated with the Azure storage account.
      */
     @JsonProperty(required = true)
     private String name;
 
     /**
-     * Gets or sets the properties associated with this storage account.
+     * the properties associated with this storage account.
      */
     @JsonProperty(required = true)
     private StorageAccountProperties properties;

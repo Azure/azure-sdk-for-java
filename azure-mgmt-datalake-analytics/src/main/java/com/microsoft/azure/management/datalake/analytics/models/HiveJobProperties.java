@@ -17,29 +17,27 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Hive")
 public class HiveJobProperties extends JobProperties {
     /**
-     * Gets or sets the statement information for each statement in the script.
+     * the statement information for each statement in the script.
      */
     private List<HiveJobStatementInfo> statementInfo;
 
     /**
-     * Gets or sets the Hive logs location.
+     * the Hive logs location.
      */
     private String logsLocation;
 
     /**
-     * Gets or sets the location of the Hive warehouse.
+     * the location of the Hive warehouse.
      */
     private String warehouseLocation;
 
     /**
-     * Gets or sets the number of statements that will be run based on the
-     * script.
+     * the number of statements that will be run based on the script.
      */
     private Integer statementCount;
 
     /**
-     * Gets or sets the number of statements that have been run based on the
-     * script.
+     * the number of statements that have been run based on the script.
      */
     private Integer executedStatementCount;
 

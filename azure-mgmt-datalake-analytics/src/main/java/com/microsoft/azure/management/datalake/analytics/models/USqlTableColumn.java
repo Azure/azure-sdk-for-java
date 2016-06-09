@@ -12,13 +12,12 @@ package com.microsoft.azure.management.datalake.analytics.models;
  */
 public class USqlTableColumn {
     /**
-     * Gets or sets the name of the column in the table.
+     * the name of the column in the table.
      */
     private String name;
 
     /**
-     * Gets or sets the object type of the specified column (such as
-     * System.String).
+     * the object type of the specified column (such as System.String).
      */
     private String type;
 

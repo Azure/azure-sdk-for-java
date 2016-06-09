@@ -12,26 +12,22 @@ package com.microsoft.azure.management.datalake.analytics.models;
  */
 public class DdlName {
     /**
-     * Gets or sets the name of the table associated with this database and
-     * schema.
+     * the name of the table associated with this database and schema.
      */
     private String firstPart;
 
     /**
-     * Gets or sets the name of the table associated with this database and
-     * schema.
+     * the name of the table associated with this database and schema.
      */
     private String secondPart;
 
     /**
-     * Gets or sets the name of the table associated with this database and
-     * schema.
+     * the name of the table associated with this database and schema.
      */
     private String thirdPart;
 
     /**
-     * Gets or sets the name of the table associated with this database and
-     * schema.
+     * the name of the table associated with this database and schema.
      */
     private String server;
 

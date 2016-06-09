@@ -13,14 +13,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class DataLakeStoreAccountInfo {
     /**
-     * Gets or sets the account name of the Data Lake Store account.
+     * the account name of the Data Lake Store account.
      */
     @JsonProperty(required = true)
     private String name;
 
     /**
-     * Gets or sets the properties associated with this Data Lake Store
-     * account.
+     * the properties associated with this Data Lake Store account.
      */
     private DataLakeStoreAccountInfoProperties properties;
 

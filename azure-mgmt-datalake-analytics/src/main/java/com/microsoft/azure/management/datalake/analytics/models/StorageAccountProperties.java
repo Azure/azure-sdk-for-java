@@ -13,14 +13,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class StorageAccountProperties {
     /**
-     * Gets or sets the access key associated with this Azure Storage account
-     * that will be used to connect to it.
+     * the access key associated with this Azure Storage account that will be
+     * used to connect to it.
      */
     @JsonProperty(required = true)
     private String accessKey;
 
     /**
-     * Gets or sets the optional suffix for the Data Lake account.
+     * the optional suffix for the Data Lake account.
      */
     private String suffix;
 

@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class BlobContainerProperties {
     /**
-     * Gets or sets the last modified time of the blob container.
+     * the last modified time of the blob container.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private DateTime lastModifiedTime;

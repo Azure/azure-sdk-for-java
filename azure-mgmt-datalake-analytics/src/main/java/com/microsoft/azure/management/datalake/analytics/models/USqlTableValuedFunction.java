@@ -13,23 +13,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class USqlTableValuedFunction extends CatalogItem {
     /**
-     * Gets or sets the name of the database.
+     * the name of the database.
      */
     private String databaseName;
 
     /**
-     * Gets or sets the name of the schema associated with this database.
+     * the name of the schema associated with this database.
      */
     private String schemaName;
 
     /**
-     * Gets or sets the name of the table valued function.
+     * the name of the table valued function.
      */
     @JsonProperty(value = "tvfName")
     private String name;
 
     /**
-     * Gets or sets the definition of the table valued function.
+     * the definition of the table valued function.
      */
     private String definition;
 

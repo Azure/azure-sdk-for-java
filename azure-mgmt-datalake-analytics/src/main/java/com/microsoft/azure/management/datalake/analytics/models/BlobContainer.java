@@ -13,25 +13,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class BlobContainer {
     /**
-     * Gets or sets the name of the blob container.
+     * the name of the blob container.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
-     * Gets or sets the unique identifier of the blob container.
+     * the unique identifier of the blob container.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /**
-     * Gets or sets the type of the blob container.
+     * the type of the blob container.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
-     * Gets or sets the properties of the blob container.
+     * the properties of the blob container.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private BlobContainerProperties properties;

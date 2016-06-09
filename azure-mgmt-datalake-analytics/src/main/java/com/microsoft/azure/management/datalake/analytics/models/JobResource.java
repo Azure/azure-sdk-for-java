@@ -12,18 +12,18 @@ package com.microsoft.azure.management.datalake.analytics.models;
  */
 public class JobResource {
     /**
-     * Gets or set the name of the resource.
+     * the name of the resource.
      */
     private String name;
 
     /**
-     * Gets or sets the path to the resource.
+     * the path to the resource.
      */
     private String resourcePath;
 
     /**
-     * Gets or sets the job resource type. Possible values include:
-     * 'VertexResource', 'JobManagerResource', 'StatisticsResource',
+     * the job resource type. Possible values include: 'VertexResource',
+     * 'JobManagerResource', 'StatisticsResource',
      * 'VertexResourceInUserFolder', 'JobManagerResourceInUserFolder',
      * 'StatisticsResourceInUserFolder'.
      */
