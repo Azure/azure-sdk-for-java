@@ -6,8 +6,8 @@
 package com.microsoft.azure.management.datalake.store.uploader;
 
 import com.google.common.base.Stopwatch;
-import com.microsoft.azure.management.datalake.store.implementation.api.DataLakeStoreAccountInner;
-import com.microsoft.azure.management.datalake.store.implementation.api.DataLakeStoreFileSystemManagementClientImpl;
+import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccount;
+import com.microsoft.azure.management.datalake.store.implementation.DataLakeStoreFileSystemManagementClientImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -42,7 +42,7 @@ public class PerformanceUploadTests extends DataLakeUploaderTestBase {
         resourceManagementClient.resourceGroups().createOrUpdate(rgName, group);
 
         // create storage and ADLS accounts, setting the accessKey
-        DataLakeStoreAccountInner adlsAccount = new DataLakeStoreAccountInner();
+        DataLakeStoreAccount adlsAccount = new DataLakeStoreAccount();
         adlsAccount.withLocation(location);
         adlsAccount.withName(adlsAcct);
         dataLakeStoreAccountManagementClient.accounts().create(rgName, adlsAcct, adlsAccount);
