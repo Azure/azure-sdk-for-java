@@ -1,5 +1,6 @@
 package com.microsoft.azure.management.compute.implementation;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
@@ -17,6 +18,8 @@ import com.microsoft.azure.management.compute.implementation.api.DataDisk;
 import com.microsoft.azure.management.compute.implementation.api.OSProfile;
 import com.microsoft.azure.management.compute.implementation.api.HardwareProfile;
 import com.microsoft.azure.management.compute.implementation.api.NetworkProfile;
+import com.microsoft.azure.management.compute.implementation.api.VirtualMachineCaptureParametersInner;
+import com.microsoft.azure.management.compute.implementation.api.VirtualMachineCaptureResultInner;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
@@ -148,6 +151,19 @@ class VirtualMachinesImpl
     @Override
     public void redeploy(String groupName, String name) throws CloudException, IOException, InterruptedException {
         this.client.redeploy(groupName, name);
+    }
+
+    @Override
+    public String capture(String groupName, String name,
+                          String containerName,
+                          boolean overwriteVhd) throws CloudException, IOException, InterruptedException {
+        VirtualMachineCaptureParametersInner parameters = new VirtualMachineCaptureParametersInner();
+        parameters.withDestinationContainerName(containerName);
+        parameters.withOverwriteVhds(overwriteVhd);
+        ServiceResponse<VirtualMachineCaptureResultInner> captureResult = this.client.capture(groupName, name, parameters);
+        ObjectMapper mapper = new ObjectMapper();
+        //Object to JSON string
+        return mapper.writeValueAsString(captureResult.getBody().output());
     }
 
     // Helper methods

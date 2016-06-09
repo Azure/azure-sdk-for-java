@@ -1,5 +1,6 @@
 package com.microsoft.azure.management.compute.implementation;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
@@ -33,6 +34,8 @@ import com.microsoft.azure.management.compute.implementation.api.WinRMConfigurat
 import com.microsoft.azure.management.compute.implementation.api.SshConfiguration;
 import com.microsoft.azure.management.compute.implementation.api.SshPublicKey;
 import com.microsoft.azure.management.compute.implementation.api.NetworkInterfaceReference;
+import com.microsoft.azure.management.compute.implementation.api.VirtualMachineCaptureParametersInner;
+import com.microsoft.azure.management.compute.implementation.api.VirtualMachineCaptureResultInner;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
@@ -192,6 +195,17 @@ class VirtualMachineImpl
                 return null;
             }
         });
+    }
+
+    @Override
+    public String capture(String containerName, boolean overwriteVhd) throws CloudException, IOException, InterruptedException {
+        VirtualMachineCaptureParametersInner parameters = new VirtualMachineCaptureParametersInner();
+        parameters.withDestinationContainerName(containerName);
+        parameters.withOverwriteVhds(overwriteVhd);
+        ServiceResponse<VirtualMachineCaptureResultInner> captureResult = this.client.capture(this.resourceGroupName(), this.name(), parameters);
+        ObjectMapper mapper = new ObjectMapper();
+        //Object to JSON string
+        return mapper.writeValueAsString(captureResult.getBody().output());
     }
 
     /**************************************************.

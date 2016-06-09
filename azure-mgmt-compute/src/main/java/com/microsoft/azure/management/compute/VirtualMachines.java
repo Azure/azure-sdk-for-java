@@ -100,5 +100,18 @@ public interface VirtualMachines extends
      */
     void redeploy(String groupName, String name) throws CloudException, IOException, InterruptedException;
 
-    // Future implement capture
+    /**
+     * Captures the virtual machine by copying virtual hard disks of the VM and returns template as json
+     * string that can be used to create similar VMs.
+     *
+     * @param groupName the resource group name
+     * @param name the virtual machine name
+     * @param containerName destination container name to store the captured Vhd
+     * @param overwriteVhd whether to overwrites destination vhd if it exists
+     * @return the template as json string
+     * @throws CloudException thrown for an invalid response from the service
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws InterruptedException exception thrown when the operation is interrupted
+     */
+    String capture(String groupName, String name, String containerName, boolean overwriteVhd) throws CloudException, IOException, InterruptedException;
 }
