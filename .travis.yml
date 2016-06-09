@@ -5,4 +5,5 @@ jdk:
   - oraclejdk8
 
 script:
-  - mvn compile
+  - mvn install -DskipTests=true
+  - mvn --projects runtimes,azure-mgmt-storage,azure-mgmt-network,azure-mgmt-compute checkstyle:check
