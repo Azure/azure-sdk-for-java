@@ -6,4 +6,4 @@ jdk:
 
 script:
   - mvn install -DskipTests=true
-  - mvn --projects runtimes,azure-mgmt-storage,azure-mgmt-network,azure-mgmt-compute checkstyle:check
+  - mvn -pl !azure-batch,!azure-mgmt-website,!azure-mgmt-datalake-store-uploader checkstyle:check

@@ -3,6 +3,6 @@
 // license information.
 
 /**
- * This package contains the tests classes for the Azure rollup client.
+ * This package contains the Azure rollup client.
  */
 package com.microsoft.azure;
