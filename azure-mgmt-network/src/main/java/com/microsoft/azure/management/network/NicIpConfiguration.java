@@ -18,15 +18,15 @@ public interface NicIpConfiguration extends
     /**
      * Container interface for all the definitions.
      *
-     * @param <parentT> the return type of the final {@link DefinitionAttachable#attach()}
+     * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
      */
-    interface Definitions<parentT> extends
-            NicIpConfiguration.DefinitionBlank<parentT>,
-            NicIpConfiguration.DefinitionWithNetwork<parentT>,
-            NicIpConfiguration.DefinitionWithPrivateIp<parentT>,
-            NicIpConfiguration.DefinitionWithSubnet,
-            NicIpConfiguration.DefinitionWithPublicIpAddress<parentT>,
-            NicIpConfiguration.DefinitionAttachable<parentT> {
+    interface Definitions<ParentT> extends
+            NicIpConfiguration.DefinitionBlank<ParentT>,
+            NicIpConfiguration.DefinitionWithNetwork<ParentT>,
+            NicIpConfiguration.DefinitionWithPrivateIp<ParentT>,
+            NicIpConfiguration.DefinitionWithSubnet<ParentT>,
+            NicIpConfiguration.DefinitionWithPublicIpAddress<ParentT>,
+            NicIpConfiguration.DefinitionAttachable<ParentT> {
     }
 
     /**
@@ -82,24 +82,24 @@ public interface NicIpConfiguration extends
     /**
      * The first stage of Ip configuration definition.
      *
-     * @param <parentT> the return type of the final {@link DefinitionAttachable#attach()}
+     * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
      */
-    interface DefinitionBlank<parentT> extends DefinitionWithNetwork<parentT> {
+    interface DefinitionBlank<ParentT> extends DefinitionWithNetwork<ParentT> {
     }
 
     /**
      * The stage of the Ip configuration definition allowing to specify the virtual network.
      *
-     * @param <parentT> the return type of the final {@link DefinitionAttachable#attach()}
+     * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
      */
-    interface DefinitionWithNetwork<parentT> {
+    interface DefinitionWithNetwork<ParentT> {
         /**
          * Create a new virtual network to associate with the Ip configuration, based on the provided definition.
          *
          * @param creatable a creatable definition for a new virtual network
          * @return the next stage of the Ip configuration definition
          */
-        DefinitionWithPrivateIp<parentT> withNewNetwork(Network.DefinitionCreatable creatable);
+        DefinitionWithPrivateIp<ParentT> withNewNetwork(Network.DefinitionCreatable creatable);
 
         /**
          * Creates a new virtual network to associate with the Ip configuration.
@@ -112,7 +112,7 @@ public interface NicIpConfiguration extends
          * @param addressSpace the address space for rhe virtual network
          * @return the next stage of the Ip configuration definition
          */
-        DefinitionWithPrivateIp<parentT> withNewNetwork(String name, String addressSpace);
+        DefinitionWithPrivateIp<ParentT> withNewNetwork(String name, String addressSpace);
 
         /**
          * Creates a new virtual network to associate with the Ip configuration.
@@ -124,7 +124,7 @@ public interface NicIpConfiguration extends
          * @param addressSpace the address space for the virtual network
          * @return the next stage of the Ip configuration definition
          */
-        DefinitionWithPrivateIp<parentT> withNewNetwork(String addressSpace);
+        DefinitionWithPrivateIp<ParentT> withNewNetwork(String addressSpace);
 
         /**
          * Associate an existing virtual network with the Ip configuration.
@@ -132,23 +132,23 @@ public interface NicIpConfiguration extends
          * @param network an existing virtual network
          * @return the next stage of the Ip configuration definition
          */
-        DefinitionWithSubnet<DefinitionWithPrivateIp<parentT>> withExistingNetwork(Network network);
+        DefinitionWithSubnet<ParentT> withExistingNetwork(Network network);
     }
 
     /**
      * The stage of the Ip configuration definition allowing to specify private IP address within
      * a virtual network subnet.
      *
-     * @param <parentT> the return type of the final {@link DefinitionAttachable#attach()}
+     * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
      */
-    interface DefinitionWithPrivateIp<parentT> {
+    interface DefinitionWithPrivateIp<ParentT> {
         /**
          * Enables dynamic private IP address allocation within the specified existing virtual network
          * subnet for the Ip configuration.
          *
          * @return the next stage of Ip configuration definition
          */
-        DefinitionAttachable<parentT> withPrivateIpAddressDynamic();
+        DefinitionAttachable<ParentT> withPrivateIpAddressDynamic();
 
         /**
          * Assigns the specified static private IP address within the specified existing virtual network
@@ -158,37 +158,37 @@ public interface NicIpConfiguration extends
          *                               the network interface
          * @return the next stage of Ip configuration definition
          */
-        DefinitionAttachable<parentT> withPrivateIpAddressStatic(String staticPrivateIpAddress);
+        DefinitionAttachable<ParentT> withPrivateIpAddressStatic(String staticPrivateIpAddress);
     }
 
     /**
      * The stage of the Ip configuration definition allowing to specify subnet.
      *
-     * @param <T> the next stage after setting the subnet
+     * @param <ParentT> the next stage after setting the subnet
      */
-    interface DefinitionWithSubnet<T> {
+    interface DefinitionWithSubnet<ParentT> {
         /**
          * Associate a subnet with the Ip configuration.
          *
          * @param name the subnet name
          * @return the next stage of the Ip configuration definition
          */
-        T withSubnet(String name);
+        DefinitionWithPrivateIp<ParentT> withSubnet(String name);
     }
 
     /**
      * The stage of the Ip configuration definition allowing to associate it with a public IP address.
      *
-     * @param <parentT> the return type of the final {@link DefinitionAttachable#attach()}
+     * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
      */
-    interface DefinitionWithPublicIpAddress<parentT> {
+    interface DefinitionWithPublicIpAddress<ParentT> {
         /**
          * Create a new public IP address to associate with the Ip configuration, based on the provided definition.
          *
          * @param creatable a creatable definition for a new public IP
          * @return the next stage of the Ip configuration definition
          */
-        DefinitionAttachable<parentT> withNewPublicIpAddress(PublicIpAddress.DefinitionCreatable creatable);
+        DefinitionAttachable<ParentT> withNewPublicIpAddress(PublicIpAddress.DefinitionCreatable creatable);
 
         /**
          * Creates a new public IP address in the same region and group as the resource and associate it
@@ -198,7 +198,7 @@ public interface NicIpConfiguration extends
          *
          * @return the next stage of the Ip configuration definition
          */
-        DefinitionAttachable<parentT> withNewPublicIpAddress();
+        DefinitionAttachable<ParentT> withNewPublicIpAddress();
 
         /**
          * Creates a new public IP address in the same region and group as the resource, with the specified DNS label
@@ -209,7 +209,7 @@ public interface NicIpConfiguration extends
          * @param leafDnsLabel the leaf domain label
          * @return tthe next stage of the Ip configuration definition
          */
-        DefinitionAttachable<parentT> withNewPublicIpAddress(String leafDnsLabel);
+        DefinitionAttachable<ParentT> withNewPublicIpAddress(String leafDnsLabel);
 
         /**
          * Associates an existing public IP address with the Ip configuration.
@@ -217,38 +217,38 @@ public interface NicIpConfiguration extends
          * @param publicIpAddress an existing public IP address
          * @return the next stage of the Ip configuration definition
          */
-        DefinitionAttachable<parentT> withExistingPublicIpAddress(PublicIpAddress publicIpAddress);
+        DefinitionAttachable<ParentT> withExistingPublicIpAddress(PublicIpAddress publicIpAddress);
     }
 
     /**
      * Attaches the Ip configuration to the parent network interface.
      *
-     * @param <parentT> the return type of the final {@link DefinitionAttachable#attach()}
+     * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
      */
-    interface DefinitionAttachable<parentT> extends DefinitionWithPublicIpAddress<parentT> {
+    interface DefinitionAttachable<ParentT> extends DefinitionWithPublicIpAddress<ParentT> {
         /**
          * Apply the Ip configuration.
          *
          * @return the next stage of the network interface definition
          */
-        parentT attach();
+        ParentT attach();
     }
 
     /**
      * The template for a ip configuration update operation, containing all the settings that
      * can be modified.
      *
-     * @param <parentT> the return type of the final {@link Appliable#apply()}
+     * @param <ParentT> the return type of the final {@link Appliable#apply()}
      */
-    interface Update<parentT> extends
-            Appliable<parentT> {
+    interface Update<ParentT> extends
+            Appliable<ParentT> {
         /**
          * Associate a subnet with the Ip configuration.
          *
          * @param name the subnet name
          * @return the next stage of the Ip configuration update
          */
-        Update<parentT> withSubnet(String name);
+        Update<ParentT> withSubnet(String name);
 
         /**
          * Enables dynamic private IP address allocation within the specified existing virtual network
@@ -256,7 +256,7 @@ public interface NicIpConfiguration extends
          *
          * @return the next stage of the Ip configuration update
          */
-        Update<parentT> withPrivateIpAddressDynamic();
+        Update<ParentT> withPrivateIpAddressDynamic();
 
         /**
          * Assigns the specified static private IP address within the specified existing virtual network
@@ -266,7 +266,7 @@ public interface NicIpConfiguration extends
          *                               the  Ip configuration
          * @return the next stage of the Ip configuration update
          */
-        Update<parentT> withPrivateIpAddressStatic(String staticPrivateIpAddress);
+        Update<ParentT> withPrivateIpAddressStatic(String staticPrivateIpAddress);
 
         /**
          * Create a new public IP address to associate the Ip configuration with, based on the provided definition.
@@ -278,7 +278,7 @@ public interface NicIpConfiguration extends
          * @param creatable a creatable definition for a new public IP
          * @return the next stage of the Ip configuration update
          */
-        Update<parentT> withNewPublicIpAddress(PublicIpAddress.DefinitionCreatable creatable);
+        Update<ParentT> withNewPublicIpAddress(PublicIpAddress.DefinitionCreatable creatable);
 
         /**
          * Creates a new public IP address in the same region and group as the resource and associate it
@@ -289,7 +289,7 @@ public interface NicIpConfiguration extends
          *
          * @return the next stage of the Ip configuration update
          */
-        Update<parentT> withNewPublicIpAddress();
+        Update<ParentT> withNewPublicIpAddress();
 
         /**
          * Creates a new public IP address in the same region and group as the resource, with the specified DNS label
@@ -301,13 +301,13 @@ public interface NicIpConfiguration extends
          * @param leafDnsLabel the leaf domain label
          * @return the next stage of the Ip configuration update
          */
-        Update<parentT> withNewPublicIpAddress(String leafDnsLabel);
+        Update<ParentT> withNewPublicIpAddress(String leafDnsLabel);
 
         /**
          * Specifies that remove any public IP associated with the Ip configuration.
          *
          * @return the next stage of the Ip configuration update
          */
-        Update<parentT> withoutPublicIpAddress();
+        Update<ParentT> withoutPublicIpAddress();
     }
 }
