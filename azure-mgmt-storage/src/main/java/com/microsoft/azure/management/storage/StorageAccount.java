@@ -247,9 +247,9 @@ public interface StorageAccount extends
     }
 
     /**
-     * A deployment update allowing to change the parameters.
+     * A storage account update allowing to change the parameters.
      */
-    interface UpdateWithAccountType {
+    interface UpdateWithSku {
         /**
          * Specifies the sku of the storage account. This used to be called
          * account types. Possible values include: 'Standard_LRS',
@@ -262,7 +262,7 @@ public interface StorageAccount extends
     }
 
     /**
-     * A deployment update allowing to change the parameters.
+     * A storageaccount update allowing to change the parameters.
      */
     interface UpdateWithCustomDomain {
         /**
@@ -308,12 +308,45 @@ public interface StorageAccount extends
     }
 
     /**
+     * A storage account update allowing encryption to be specified.
+     */
+    interface UpdateWithEncryption {
+        /**
+         * Specifies the encryption settings on the account. The default
+         * setting is unencrypted.
+         *
+         * @param encryption the encryption setting
+         * @return the nest stage of storage account update
+         */
+        Update withEncryption(Encryption encryption);
+    }
+
+    /**
+     * A blob storage account update allowing access tier to be specified.
+     */
+    interface UpdateWithAccessTier {
+        /**
+         * Specifies the access tier used for billing.
+         * <p>
+         * Access tier cannot be changed more than once every 7 days (168 hours).
+         * Access tier cannot be set for StandardLRS, StandardGRS, StandardRAGRS,
+         * or PremiumLRS account types. Possible values include: 'Hot', 'Cool'.
+         *
+         * @param accessTier the access tier value
+         * @return the next stage of storage account update
+         */
+        Update withAccessTier(AccessTier accessTier);
+    }
+
+    /**
      * The template for a storage account update operation, containing all the settings that can be modified.
      */
     interface Update extends
             Appliable<StorageAccount>,
-            UpdateWithAccountType,
+            UpdateWithSku,
             UpdateWithCustomDomain,
+            UpdateWithEncryption,
+            UpdateWithAccessTier,
             Resource.UpdateWithTags<Update> {
     }
 }

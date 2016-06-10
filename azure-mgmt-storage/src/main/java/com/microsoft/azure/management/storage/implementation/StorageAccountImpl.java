@@ -242,6 +242,9 @@ class StorageAccountImpl
         if (isInCreateMode()) {
             createParameters.withAccessTier(accessTier);
         } else {
+            if (this.inner().kind() != Kind.BLOB_STORAGE) {
+                throw new UnsupportedOperationException("Access tier can not be changed for general purpose storage accounts.");
+            }
             updateParameters.withAccessTier(accessTier);
         }
         return this;
