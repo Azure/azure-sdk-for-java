@@ -17,11 +17,21 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+/**
+ * Defines a list of resources paginated across resource groups.
+ *
+ * @param <E> the item type
+ */
 public abstract class GroupPagedList<E> extends PagedList<E> {
     private PagedList<ResourceGroup> resourceGroupList;
     private Page<ResourceGroup> currentPage;
     private Queue<ResourceGroup> queue;
 
+    /**
+     * Creates an instance from a list of resource groups.
+     *
+     * @param resourceGroupList the list of resource groups
+     */
     public GroupPagedList(PagedList<ResourceGroup> resourceGroupList) {
         this.resourceGroupList = resourceGroupList;
         this.currentPage = resourceGroupList.currentPage();
@@ -46,5 +56,13 @@ public abstract class GroupPagedList<E> extends PagedList<E> {
         return page;
     }
 
+    /**
+     * Override this method to implement how to list resources in a resource group.
+     *
+     * @param resourceGroupName the name of the resource group
+     * @return the list of resources in this group.
+     * @throws RestException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     */
     public abstract List<E> listNextGroup(String resourceGroupName) throws RestException, IOException;
 }

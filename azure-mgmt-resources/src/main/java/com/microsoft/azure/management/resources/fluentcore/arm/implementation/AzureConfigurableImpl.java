@@ -13,9 +13,15 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 import okhttp3.Interceptor;
 import okhttp3.logging.HttpLoggingInterceptor;
 
+/**
+ * The implementation for {@link AzureConfigurable<T>} and the base class for
+ * configurable implementations.
+ *
+ * @param <T> the type of the configurable interface
+ */
 public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
         implements AzureConfigurable<T> {
-    protected RestClient.Builder restClientBuilder;
+    private RestClient.Builder restClientBuilder;
 
     protected AzureConfigurableImpl() {
         this.restClientBuilder = AzureEnvironment.AZURE.newRestClientBuilder();

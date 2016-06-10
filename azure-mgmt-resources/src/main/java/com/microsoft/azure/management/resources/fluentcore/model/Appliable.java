@@ -18,5 +18,5 @@ public interface Appliable<T> extends Indexable {
      * @return the updated resource
      * @throws Exception exceptions from Azure
      */
-	T apply() throws Exception;
+    T apply() throws Exception;
 }

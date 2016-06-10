@@ -13,5 +13,5 @@ public interface Indexable {
     /**
      * @return the index key.
      */
-	String key();
+    String key();
 }

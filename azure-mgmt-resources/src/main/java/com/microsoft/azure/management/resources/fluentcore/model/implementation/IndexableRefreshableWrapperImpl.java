@@ -6,20 +6,32 @@
 
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
 
-public abstract class IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT> 
-	extends IndexableRefreshableImpl<FluentModelT> {
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
+import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
+import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
-	private InnerModelT innerObject;
-	protected IndexableRefreshableWrapperImpl(String name, InnerModelT innerObject) {
-		super(name);
-		this.innerObject = innerObject;
-	}
-	
-	public InnerModelT inner() {
-		return this.innerObject;
-	}
-	
-	protected void setInner(InnerModelT inner) {
-		this.innerObject = inner;
-	}
+/**
+ * The implementation for {@link Indexable}, {@link Refreshable}, and {@link Wrapper}.
+ *
+ * @param <FluentModelT> The fluent model type
+ * @param <InnerModelT> Azure inner resource class type
+ */
+public abstract class IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
+    extends IndexableRefreshableImpl<FluentModelT>
+    implements Wrapper<InnerModelT> {
+
+    private InnerModelT innerObject;
+    protected IndexableRefreshableWrapperImpl(String name, InnerModelT innerObject) {
+        super(name);
+        this.innerObject = innerObject;
+    }
+
+    @Override
+    public InnerModelT inner() {
+        return this.innerObject;
+    }
+
+    protected void setInner(InnerModelT inner) {
+        this.innerObject = inner;
+    }
 }

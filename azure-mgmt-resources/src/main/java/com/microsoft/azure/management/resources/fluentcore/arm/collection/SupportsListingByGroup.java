@@ -12,7 +12,7 @@ import com.microsoft.azure.PagedList;
 import java.io.IOException;
 
 /**
- * Provides access to listing Azure resources of a specific type in a specific resource group
+ * Provides access to listing Azure resources of a specific type in a specific resource group.
  *
  * (Note: this interface is not intended to be implemented by user code)
  *
