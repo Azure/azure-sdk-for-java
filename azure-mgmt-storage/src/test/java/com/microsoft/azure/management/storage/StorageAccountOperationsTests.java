@@ -9,7 +9,7 @@ package com.microsoft.azure.management.storage;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.storage.implementation.CheckNameAvailabilityResult;
-import com.microsoft.azure.management.storage.implementation.api.AccountType;
+import com.microsoft.azure.management.storage.implementation.api.SkuName;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -37,16 +37,15 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
         // Name available
         CheckNameAvailabilityResult result = storageManager.storageAccounts()
                 .checkNameAvailability(SA_NAME);
-        Assert.assertEquals(CheckNameAvailabilityResult.AVAILABLE, result);
+        Assert.assertEquals(true, result.isAvailable());
         // Create
         StorageAccount storageAccount = storageManager.storageAccounts()
                 .define(SA_NAME)
                 .withRegion(Region.ASIA_EAST)
                 .withNewGroup(RG_NAME)
-                .withAccountType(AccountType.STANDARD_LRS)
                 .create();
         Assert.assertEquals(RG_NAME, storageAccount.resourceGroupName());
-        Assert.assertEquals(AccountType.STANDARD_LRS, storageAccount.accountType());
+        Assert.assertEquals(SkuName.STANDARD_GRS, storageAccount.sku().name());
         // List
         List<StorageAccount> accounts = storageManager.storageAccounts().listByGroup(RG_NAME);
         boolean found = false;
@@ -61,8 +60,8 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
         Assert.assertNotNull(storageAccount);
         // Update
         storageAccount = storageAccount.update()
-                .withAccountType(AccountType.STANDARD_GRS)
+                .withSku(SkuName.STANDARD_LRS)
                 .apply();
-        Assert.assertEquals(AccountType.STANDARD_GRS, storageAccount.accountType());
+        Assert.assertEquals(SkuName.STANDARD_LRS, storageAccount.sku().name());
     }
 }
