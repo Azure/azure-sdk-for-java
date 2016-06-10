@@ -179,8 +179,31 @@ class DataDiskImpl
                 if (dataDisk.inner().vhd() == null) {
                     dataDisk.inner().withVhd(new VirtualHardDisk());
                     dataDisk.inner().vhd().withUri(storageAccount.endPoints().primary().blob()
-                            + "/vhds/"
+                            + "vhds/"
                             + namePrefix + "-data-disk-" + dataDisk.lun() + "-" + UUID.randomUUID().toString() + ".vhd");
+                }
+            }
+        }
+    }
+
+    protected static void ensureDisksVhdUri(List<DataDisk> dataDisks, String namePrefix) {
+        String containerUrl = null;
+        for (DataDisk dataDisk : dataDisks) {
+            if (dataDisk.createOption() == DiskCreateOptionTypes.EMPTY && dataDisk.inner().vhd() != null) {
+                int idx = dataDisk.inner().vhd().uri().lastIndexOf('/');
+                containerUrl = dataDisk.inner().vhd().uri().substring(0, idx);
+                break;
+            }
+        }
+        if (containerUrl != null) {
+            for (DataDisk dataDisk : dataDisks) {
+                if (dataDisk.createOption() == DiskCreateOptionTypes.EMPTY) {
+                    //New data disk requires Vhd Uri to be set
+                    if (dataDisk.inner().vhd() == null) {
+                        dataDisk.inner().withVhd(new VirtualHardDisk());
+                        dataDisk.inner().vhd().withUri(containerUrl
+                                + namePrefix + "-data-disk-" + dataDisk.lun() + "-" + UUID.randomUUID().toString() + ".vhd");
+                    }
                 }
             }
         }

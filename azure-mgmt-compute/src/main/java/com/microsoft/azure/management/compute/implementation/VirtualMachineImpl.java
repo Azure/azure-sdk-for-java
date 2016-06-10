@@ -522,12 +522,16 @@ class VirtualMachineImpl
 
     @Override
     public DataDiskImpl defineNewDataDisk(String name) {
-        return DataDiskImpl.prepareDataDisk(name, DiskCreateOptionTypes.EMPTY, this);
+        DataDiskImpl dataDisk =  DataDiskImpl.prepareDataDisk(name, DiskCreateOptionTypes.EMPTY, this);
+        this.dataDisks().add(dataDisk);
+        return dataDisk;
     }
 
     @Override
     public DataDiskImpl defineExistingDataDisk(String name) {
-        return DataDiskImpl.prepareDataDisk(name, DiskCreateOptionTypes.ATTACH, this);
+        DataDiskImpl dataDisk =  DataDiskImpl.prepareDataDisk(name, DiskCreateOptionTypes.ATTACH, this);
+        this.dataDisks().add(dataDisk);
+        return dataDisk;
     }
 
     @Override
@@ -880,7 +884,8 @@ class VirtualMachineImpl
             storageAccount = (StorageAccount) this.createdResource(this.creatableStorageAccountKey);
         } else if (this.existingStorageAccountToAssociate != null) {
             storageAccount = this.existingStorageAccountToAssociate;
-        } else if (requiresImplicitStorageAccountCreation()) {
+        } else if (osDiskRequiresImplicitStorageAccountCreation()
+                   || dataDisksRequiresImplicitStorageAccountCreation()) {
             storageAccount = this.storageManager.storageAccounts()
                     .define(nameWithPrefix("stg", null))
                     .withRegion(this.region())
@@ -889,18 +894,21 @@ class VirtualMachineImpl
                     .create();
         }
 
-        if (storageAccount != null) {
-            // Ensure the Vhd uris for OS Disk and data disks
-            if (this.isInCreateMode()) {
-                if (isOSDiskFromImage(this.inner().storageProfile().osDisk())) {
-                    String uri = this.inner()
-                            .storageProfile()
-                            .osDisk().vhd().uri()
-                            .replaceFirst("\\{storage-base-url}", storageAccount.endPoints().primary().blob());
-                    this.inner().storageProfile().osDisk().vhd().withUri(uri);
-                }
+        if (isInCreateMode()) {
+            if (isOSDiskFromImage(this.inner().storageProfile().osDisk())) {
+                String uri = this.inner()
+                        .storageProfile()
+                        .osDisk().vhd().uri()
+                        .replaceFirst("\\{storage-base-url}", storageAccount.endPoints().primary().blob());
+                this.inner().storageProfile().osDisk().vhd().withUri(uri);
             }
             DataDiskImpl.ensureDisksVhdUri(this.dataDisks, storageAccount, this.vmName);
+        } else {
+            if (storageAccount != null) {
+                DataDiskImpl.ensureDisksVhdUri(this.dataDisks, storageAccount, this.vmName);
+            } else {
+                DataDiskImpl.ensureDisksVhdUri(this.dataDisks, this.vmName);
+            }
         }
     }
 
@@ -956,21 +964,48 @@ class VirtualMachineImpl
         }
     }
 
-    private boolean requiresImplicitStorageAccountCreation() {
-        if (this.creatableStorageAccountKey == null && this.existingStorageAccountToAssociate == null) {
-            if (this.isInCreateMode()) {
-                if (isOSDiskFromImage(this.inner().storageProfile().osDisk())) {
-                    return true;
-                }
-            }
-            for (DataDisk dataDisk : this.dataDisks) {
-                if (dataDisk.createOption() == DiskCreateOptionTypes.EMPTY) {
-                    if (dataDisk.vhdUri() == null) {
-                        return true;
-                    }
+    private boolean osDiskRequiresImplicitStorageAccountCreation() {
+        if (this.creatableStorageAccountKey != null
+                || this.existingStorageAccountToAssociate != null
+                || !isInCreateMode()) {
+            return false;
+        }
+
+        return isOSDiskFromImage(this.inner().storageProfile().osDisk());
+    }
+
+    private boolean dataDisksRequiresImplicitStorageAccountCreation() {
+        if (this.creatableStorageAccountKey != null
+                || this.existingStorageAccountToAssociate != null
+                || this.dataDisks.size() == 0) {
+            return false;
+        }
+
+        boolean hasEmptyVhd = false;
+        for (DataDisk dataDisk : this.dataDisks) {
+            if (dataDisk.createOption() == DiskCreateOptionTypes.EMPTY) {
+                if (dataDisk.inner().vhd() == null) {
+                    hasEmptyVhd = true;
+                    break;
                 }
             }
         }
+
+        if (isInCreateMode()) {
+            return hasEmptyVhd;
+        }
+
+        if (hasEmptyVhd) {
+            // In update mode, if any of the data disk has vhd uri set then use same container
+            // to store this disk, no need to create a storage account implicitly.
+            for (DataDisk dataDisk : this.dataDisks) {
+                if (dataDisk.createOption() == DiskCreateOptionTypes.ATTACH && dataDisk.inner().vhd() != null) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         return false;
     }
 

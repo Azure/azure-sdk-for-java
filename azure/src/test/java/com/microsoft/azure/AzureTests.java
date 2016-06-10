@@ -58,8 +58,8 @@ public class AzureTests {
         azure = azureAuthed.withSubscription(subscriptionId);
 
         // Authenticate based on file
-        this.azure2 = Azure.authenticate(new File("my.azureauth"))
-            .withDefaultSubscription();
+        //this.azure2 = Azure.authenticate(new File("my.azureauth"))
+        //    .withDefaultSubscription();
     }
 
     /**
@@ -103,7 +103,13 @@ public class AzureTests {
     }
 
     @Test public void testVirtualMachines() throws Exception {
+        // Future: This method needs to have a better specific name since we are going to include unit test for
+        // different vm scenarios.
         new TestVirtualMachine().runTest(azure.virtualMachines(), azure.resourceGroups());
+    }
+
+    @Test public void testVirtualMachineDataDisk() throws Exception {
+        new TestVirtualMachineDataDisk().runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 
     @Test
