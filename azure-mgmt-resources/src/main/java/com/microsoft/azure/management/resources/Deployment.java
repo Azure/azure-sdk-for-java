@@ -111,6 +111,15 @@ public interface Deployment extends
     void cancel() throws CloudException, IOException;
 
     /**
+     * Exports a deployment template.
+     *
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @return the export result
+     */
+    DeploymentExportResult exportTemplate() throws CloudException, IOException;
+
+    /**
      * A deployment definition allowing resource group to be specified.
      */
     interface DefinitionBlank {

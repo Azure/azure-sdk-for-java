@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.resources;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -16,6 +17,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,6 +49,17 @@ public interface ResourceGroup extends
      * @return the tags attached to the resource group
      */
     Map<String, String> tags();
+
+    /**
+     * Captures the specified resource group as a template.
+     *
+     * @param resourceIds resource IDs of the resources to export
+     * @param options the export options
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @return the exported template result
+     */
+    ResourceGroupExportResult exportTemplate(List<String> resourceIds, ResourceGroupExportTemplateOptions options) throws CloudException, IOException;
 
     /**
      * A resource group definition allowing location to be set.

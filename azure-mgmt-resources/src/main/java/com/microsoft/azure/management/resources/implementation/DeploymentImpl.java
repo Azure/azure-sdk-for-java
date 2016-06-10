@@ -9,6 +9,7 @@ package com.microsoft.azure.management.resources.implementation;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.Deployment;
+import com.microsoft.azure.management.resources.DeploymentExportResult;
 import com.microsoft.azure.management.resources.DeploymentOperations;
 import com.microsoft.azure.management.resources.Provider;
 import com.microsoft.azure.management.resources.ResourceGroup;
@@ -18,6 +19,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableImpl;
 import com.microsoft.azure.management.resources.implementation.api.Dependency;
+import com.microsoft.azure.management.resources.implementation.api.DeploymentExportResultInner;
 import com.microsoft.azure.management.resources.implementation.api.DeploymentExtendedInner;
 import com.microsoft.azure.management.resources.implementation.api.DeploymentInner;
 import com.microsoft.azure.management.resources.implementation.api.DeploymentMode;
@@ -177,6 +179,12 @@ final class DeploymentImpl extends
     @Override
     public void cancel() throws CloudException, IOException {
         client.cancel(resourceGroupName, name());
+    }
+
+    @Override
+    public DeploymentExportResult exportTemplate() throws CloudException, IOException {
+        DeploymentExportResultInner inner = client.exportTemplate(resourceGroupName(), name()).getBody();
+        return new DeploymentExportResultImpl(inner);
     }
 
     @Override
