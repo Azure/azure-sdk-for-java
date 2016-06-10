@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.resources.implementation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.DeploymentOperations;
 import com.microsoft.azure.management.resources.Provider;
@@ -171,6 +172,11 @@ final class DeploymentImpl extends
     @Override
     public DeploymentOperations deploymentOperations() {
         return new DeploymentOperationsImpl(deploymentOperationsClient, this, resourceGroups);
+    }
+
+    @Override
+    public void cancel() throws CloudException, IOException {
+        client.cancel(resourceGroupName, name());
     }
 
     @Override
