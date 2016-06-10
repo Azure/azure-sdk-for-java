@@ -184,13 +184,13 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public NetworkInterfaceImpl withIpForwardingEnabled() {
+    public NetworkInterfaceImpl withIpForwarding() {
         this.inner().withEnableIPForwarding(true);
         return this;
     }
 
     @Override
-    public NetworkInterfaceImpl withIpForwardingDisabled() {
+    public NetworkInterfaceImpl withoutIpForwarding() {
         this.inner().withEnableIPForwarding(false);
         return this;
     }

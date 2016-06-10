@@ -283,7 +283,7 @@ public interface NetworkInterface extends
          *
          * @return the next stage of the network interface definition
          */
-        DefinitionCreatable withIpForwardingEnabled();
+        DefinitionCreatable withIpForwarding();
 
         /**
          * Specifies the IP address of the custom DNS server to associate with the network interface.
@@ -352,14 +352,14 @@ public interface NetworkInterface extends
          *
          * @return the next stage of the network interface update
          */
-        Update withIpForwardingEnabled();
+        Update withIpForwarding();
 
         /**
          * Disable IP forwarding in the network interface.
          *
          * @return the next stage of the network interface update
          */
-        Update withIpForwardingDisabled();
+        Update withoutIpForwarding();
 
         /**
          * Specifies the IP address of the custom DNS server to associate with the network interface.
