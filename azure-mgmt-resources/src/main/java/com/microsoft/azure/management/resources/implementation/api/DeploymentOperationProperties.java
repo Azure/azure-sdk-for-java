@@ -23,6 +23,11 @@ public class DeploymentOperationProperties {
     private DateTime timestamp;
 
     /**
+     * Gets or sets deployment operation service request id.
+     */
+    private String serviceRequestId;
+
+    /**
      * Gets or sets operation status code.
      */
     private String statusCode;
@@ -36,6 +41,16 @@ public class DeploymentOperationProperties {
      * Gets or sets the target resource.
      */
     private TargetResource targetResource;
+
+    /**
+     * Gets or sets the HTTP request message.
+     */
+    private HttpMessage request;
+
+    /**
+     * Gets or sets the HTTP response message.
+     */
+    private HttpMessage response;
 
     /**
      * Get the provisioningState value.
@@ -74,6 +89,26 @@ public class DeploymentOperationProperties {
      */
     public DeploymentOperationProperties withTimestamp(DateTime timestamp) {
         this.timestamp = timestamp;
+        return this;
+    }
+
+    /**
+     * Get the serviceRequestId value.
+     *
+     * @return the serviceRequestId value
+     */
+    public String serviceRequestId() {
+        return this.serviceRequestId;
+    }
+
+    /**
+     * Set the serviceRequestId value.
+     *
+     * @param serviceRequestId the serviceRequestId value to set
+     * @return the DeploymentOperationProperties object itself.
+     */
+    public DeploymentOperationProperties withServiceRequestId(String serviceRequestId) {
+        this.serviceRequestId = serviceRequestId;
         return this;
     }
 
@@ -134,6 +169,46 @@ public class DeploymentOperationProperties {
      */
     public DeploymentOperationProperties withTargetResource(TargetResource targetResource) {
         this.targetResource = targetResource;
+        return this;
+    }
+
+    /**
+     * Get the request value.
+     *
+     * @return the request value
+     */
+    public HttpMessage request() {
+        return this.request;
+    }
+
+    /**
+     * Set the request value.
+     *
+     * @param request the request value to set
+     * @return the DeploymentOperationProperties object itself.
+     */
+    public DeploymentOperationProperties withRequest(HttpMessage request) {
+        this.request = request;
+        return this;
+    }
+
+    /**
+     * Get the response value.
+     *
+     * @return the response value
+     */
+    public HttpMessage response() {
+        return this.response;
+    }
+
+    /**
+     * Set the response value.
+     *
+     * @param response the response value to set
+     * @return the DeploymentOperationProperties object itself.
+     */
+    public DeploymentOperationProperties withResponse(HttpMessage response) {
+        this.response = response;
         return this;
     }
 
