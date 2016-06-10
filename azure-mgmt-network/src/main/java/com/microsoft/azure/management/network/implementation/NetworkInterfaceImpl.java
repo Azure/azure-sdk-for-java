@@ -383,10 +383,10 @@ class NetworkInterfaceImpl
 
     /**
      * @param prefix the prefix
-     * @return a random value (derived from the resource and resource group name) with the given prefix
+     * @return a random value (derived from the resource) with the given prefix
      */
     String nameWithPrefix(String prefix) {
-        return prefix + "-" + this.randomId + "-" + this.resourceGroupName();
+        return prefix + "-" + this.randomId;
     }
 
     void addToCreatableDependencies(Creatable<?> creatableResource) {

@@ -144,10 +144,11 @@ class StorageAccountImpl
         createParameters.withAccountType(this.inner().accountType());
         createParameters.withLocation(this.region());
         createParameters.withTags(this.inner().getTags());
-
-        ServiceResponse<StorageAccountInner> response =
-                this.client.create(this.resourceGroupName(), this.name(), createParameters);
-        StorageAccountInner storageAccountInner = response.getBody();
+        this.client.create(this.resourceGroupName(), this.name(), createParameters);
+        // create response does not seems including the endpoints so fetching it again.
+        StorageAccountInner storageAccountInner = this.client
+                .getProperties(this.resourceGroupName(), this.name())
+                .getBody();
         this.setInner(storageAccountInner);
         clearWrapperProperties();
     }
