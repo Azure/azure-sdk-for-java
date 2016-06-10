@@ -186,8 +186,6 @@ public interface NetworkInterface extends
 
     /**
      * The stage of the network interface definition allowing to specify subnet.
-     *
-     * @param <T> the next stage after setting the subnet
      */
     interface DefinitionWithSubnet {
         /**
@@ -202,8 +200,6 @@ public interface NetworkInterface extends
     /**
      * The stage of the network interface definition allowing to specify private IP address within
      * a virtual network subnet.
-     *
-     * @param <T> the next stage after specifying the private IP configuration
      */
     interface DefinitionWithPrivateIp {
         /**

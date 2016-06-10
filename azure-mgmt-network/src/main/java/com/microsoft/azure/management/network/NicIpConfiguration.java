@@ -164,7 +164,7 @@ public interface NicIpConfiguration extends
     /**
      * The stage of the Ip configuration definition allowing to specify subnet.
      *
-     * @param <T> the next stage after setting the subnet
+     * @param <ParentT> the next stage after setting the subnet
      */
     interface DefinitionWithSubnet<ParentT> {
         /**
