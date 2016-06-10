@@ -103,7 +103,7 @@ public class AzureTests {
     }
 
     @Test public void testVirtualMachines() throws Exception {
-        new TestVirtualMachine().runTest(azure.virtualMachines(), azure2.resourceGroups());
+        new TestVirtualMachine().runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 
     @Test

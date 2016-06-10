@@ -46,8 +46,8 @@ class NetworkInterfaceImpl
     // list of references to all ip configuration
     private List<NicIpConfiguration> nicIpConfigurations;
     // Cached related resources.
-    PublicIpAddress primaryPublicIp;
-    Network primaryNetwork;
+    private PublicIpAddress primaryPublicIp;
+    private Network primaryNetwork;
 
     NetworkInterfaceImpl(String name,
                          NetworkInterfaceInner innerModel,
@@ -340,7 +340,7 @@ class NetworkInterfaceImpl
     }
 
     /**
-     * Initializes the list of {@link NicIpConfiguration} that wraps {@link NetworkInterfaceInner#ipConfigurations()}
+     * Initializes the list of {@link NicIpConfiguration} that wraps {@link NetworkInterfaceInner#ipConfigurations()}.
      */
     private void initializeNicIpConfigurations() {
         if (this.inner().ipConfigurations() == null) {

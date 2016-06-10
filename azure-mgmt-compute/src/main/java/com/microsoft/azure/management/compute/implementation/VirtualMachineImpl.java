@@ -226,21 +226,21 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withNewPrimaryNetwork(Network.DefinitionCreatable creatable) {
-        this.nicDefinitionWithPrivateIp = this.preparePrimaryNetworkInterface(nameWithPrefix("nic"))
+        this.nicDefinitionWithPrivateIp = this.preparePrimaryNetworkInterface(nameWithPrefix("nic", "-"))
                 .withNewPrimaryNetwork(creatable);
         return this;
     }
 
     @Override
     public VirtualMachineImpl withNewPrimaryNetwork(String addressSpace) {
-        this.nicDefinitionWithPrivateIp = this.preparePrimaryNetworkInterface(nameWithPrefix("nic"))
+        this.nicDefinitionWithPrivateIp = this.preparePrimaryNetworkInterface(nameWithPrefix("nic", "-"))
                 .withNewPrimaryNetwork(addressSpace);
         return this;
     }
 
     @Override
     public VirtualMachineImpl withExistingPrimaryNetwork(Network network) {
-        this.nicDefinitionWithSubnet = this.preparePrimaryNetworkInterface(nameWithPrefix("nic"))
+        this.nicDefinitionWithSubnet = this.preparePrimaryNetworkInterface(nameWithPrefix("nic", "-"))
                 .withExistingPrimaryNetwork(network);
         return this;
     }
@@ -827,10 +827,11 @@ class VirtualMachineImpl
 
     /**
      * @param prefix the prefix
+     * @param separator the separator between prefix and random string
      * @return a random value (derived from the resource name) with the given prefix
      */
-    private String nameWithPrefix(String prefix) {
-        return prefix + "-" + this.randomId;
+    private String nameWithPrefix(String prefix, String separator) {
+        return prefix + separator + this.randomId;
     }
 
     private void setOSDiskAndOSProfileDefaults() {
@@ -881,9 +882,10 @@ class VirtualMachineImpl
             storageAccount = this.existingStorageAccountToAssociate;
         } else if (requiresImplicitStorageAccountCreation()) {
             storageAccount = this.storageManager.storageAccounts()
-                    .define(nameWithPrefix("stg"))
+                    .define(nameWithPrefix("stg", null))
                     .withRegion(this.region())
                     .withExistingGroup(this.resourceGroupName())
+                    .withAccountType(AccountType.STANDARD_GRS)
                     .create();
         }
 
@@ -985,7 +987,7 @@ class VirtualMachineImpl
     }
 
     private String temporaryBlobUrl(String containerName, String blobName) {
-        return "{storage-base-url}" + "/" + containerName + "/" + blobName;
+        return "{storage-base-url}" + containerName + "/" + blobName;
     }
 
     private NetworkInterface.DefinitionWithPublicIpAddress prepareNetworkInterface(String name) {
