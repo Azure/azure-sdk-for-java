@@ -148,7 +148,7 @@ public interface NetworkInterface extends
          * @param creatable a creatable definition for a new virtual network
          * @return the next stage of the network interface definition
          */
-        DefinitionWithPrivateIp<DefinitionWithPublicIpAddress> withNewPrimaryNetwork(Network.DefinitionCreatable creatable);
+        DefinitionWithPrivateIp withNewPrimaryNetwork(Network.DefinitionCreatable creatable);
 
         /**
          * Creates a new virtual network to associate with the network interface's primary Ip configuration.
@@ -161,7 +161,7 @@ public interface NetworkInterface extends
          * @param addressSpace the address space for rhe virtual network
          * @return the next stage of the network interface definition
          */
-        DefinitionWithPrivateIp<DefinitionWithPublicIpAddress> withNewPrimaryNetwork(String name, String addressSpace);
+        DefinitionWithPrivateIp withNewPrimaryNetwork(String name, String addressSpace);
 
         /**
          * Creates a new virtual network to associate with the network interface's primary Ip configuration.
@@ -173,7 +173,7 @@ public interface NetworkInterface extends
          * @param addressSpace the address space for the virtual network
          * @return the next stage of the network interface definition
          */
-        DefinitionWithPrivateIp<DefinitionWithPublicIpAddress> withNewPrimaryNetwork(String addressSpace);
+        DefinitionWithPrivateIp withNewPrimaryNetwork(String addressSpace);
 
         /**
          * Associate an existing virtual network with the network interface's primary Ip configuration.
@@ -181,7 +181,7 @@ public interface NetworkInterface extends
          * @param network an existing virtual network
          * @return the next stage of the network interface definition
          */
-        DefinitionWithSubnet<DefinitionWithPrivateIp> withExistingPrimaryNetwork(Network network);
+        DefinitionWithSubnet withExistingPrimaryNetwork(Network network);
     }
 
     /**
@@ -189,14 +189,14 @@ public interface NetworkInterface extends
      *
      * @param <T> the next stage after setting the subnet
      */
-    interface DefinitionWithSubnet<T> {
+    interface DefinitionWithSubnet {
         /**
          * Associate a subnet with the network interface's primary Ip configuration.
          *
          * @param name the subnet name
          * @return the next stage of the network interface definition
          */
-        T withSubnet(String name);
+        DefinitionWithPrivateIp withSubnet(String name);
     }
 
     /**
@@ -205,14 +205,14 @@ public interface NetworkInterface extends
      *
      * @param <T> the next stage after specifying the private IP configuration
      */
-    interface DefinitionWithPrivateIp<T> {
+    interface DefinitionWithPrivateIp {
         /**
          * Enables dynamic private IP address allocation within the specified existing virtual network
          * subnet for the network interface's primary Ip configuration.
          *
          * @return the next stage of network interface definition
          */
-        T withPrimaryPrivateIpAddressDynamic();
+        DefinitionWithPublicIpAddress withPrimaryPrivateIpAddressDynamic();
 
         /**
          * Assigns the specified static private IP address within the specified existing virtual network
@@ -222,7 +222,7 @@ public interface NetworkInterface extends
          *                               the network interface
          * @return the next stage of network interface definition
          */
-        T withPrimaryPrivateIpAddressStatic(String staticPrivateIpAddress);
+        DefinitionWithPublicIpAddress withPrimaryPrivateIpAddressStatic(String staticPrivateIpAddress);
     }
 
     /**

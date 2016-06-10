@@ -24,7 +24,7 @@ public interface NicIpConfiguration extends
             NicIpConfiguration.DefinitionBlank<ParentT>,
             NicIpConfiguration.DefinitionWithNetwork<ParentT>,
             NicIpConfiguration.DefinitionWithPrivateIp<ParentT>,
-            NicIpConfiguration.DefinitionWithSubnet,
+            NicIpConfiguration.DefinitionWithSubnet<ParentT>,
             NicIpConfiguration.DefinitionWithPublicIpAddress<ParentT>,
             NicIpConfiguration.DefinitionAttachable<ParentT> {
     }
@@ -132,7 +132,7 @@ public interface NicIpConfiguration extends
          * @param network an existing virtual network
          * @return the next stage of the Ip configuration definition
          */
-        DefinitionWithSubnet<DefinitionWithPrivateIp<ParentT>> withExistingNetwork(Network network);
+        DefinitionWithSubnet<ParentT> withExistingNetwork(Network network);
     }
 
     /**
@@ -166,14 +166,14 @@ public interface NicIpConfiguration extends
      *
      * @param <T> the next stage after setting the subnet
      */
-    interface DefinitionWithSubnet<T> {
+    interface DefinitionWithSubnet<ParentT> {
         /**
          * Associate a subnet with the Ip configuration.
          *
          * @param name the subnet name
          * @return the next stage of the Ip configuration definition
          */
-        T withSubnet(String name);
+        DefinitionWithPrivateIp<ParentT> withSubnet(String name);
     }
 
     /**
