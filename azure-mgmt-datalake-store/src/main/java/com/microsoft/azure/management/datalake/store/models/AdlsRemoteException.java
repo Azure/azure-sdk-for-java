@@ -28,14 +28,14 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 })
 public class AdlsRemoteException {
     /**
-     * Gets the full class package name for the exception thrown, such as
+     * the full class package name for the exception thrown, such as
      * 'java.lang.IllegalArgumentException'.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String javaClassName;
 
     /**
-     * Gets the message associated with the exception that was thrown, such as
+     * the message associated with the exception that was thrown, such as
      * 'Invalid value for webhdfs parameter "permission":...'.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

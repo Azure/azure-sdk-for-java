@@ -13,22 +13,22 @@ import java.util.List;
  */
 public class USqlDistributionInfo {
     /**
-     * Gets or sets the type of this distribution.
+     * the type of this distribution.
      */
     private Integer type;
 
     /**
-     * Gets or sets the list of directed columns in the distribution.
+     * the list of directed columns in the distribution.
      */
     private List<USqlDirectedColumn> keys;
 
     /**
-     * Gets or sets the count of indices using this distribution.
+     * the count of indices using this distribution.
      */
     private Integer count;
 
     /**
-     * Gets or sets the dynamic count of indices using this distribution.
+     * the dynamic count of indices using this distribution.
      */
     private Integer dynamicCount;
 

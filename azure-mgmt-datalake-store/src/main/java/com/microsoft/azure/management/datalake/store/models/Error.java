@@ -14,31 +14,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Error {
     /**
-     * Gets the HTTP status code or error code associated with this error.
+     * the HTTP status code or error code associated with this error.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String code;
 
     /**
-     * Gets the error message to display.
+     * the error message to display.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /**
-     * Gets the target of the error.
+     * the target of the error.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String target;
 
     /**
-     * Gets the list of error details.
+     * the list of error details.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<ErrorDetails> details;
 
     /**
-     * Gets the inner exceptions or errors, if any.
+     * the inner exceptions or errors, if any.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private InnerError innerError;

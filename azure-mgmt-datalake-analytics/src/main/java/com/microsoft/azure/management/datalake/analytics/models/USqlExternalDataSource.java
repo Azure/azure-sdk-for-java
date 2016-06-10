@@ -14,30 +14,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class USqlExternalDataSource extends CatalogItem {
     /**
-     * Gets or sets the name of the database.
+     * the name of the database.
      */
     private String databaseName;
 
     /**
-     * Gets or sets the name of the external data source.
+     * the name of the external data source.
      */
     @JsonProperty(value = "externalDataSourceName")
     private String name;
 
     /**
-     * Gets or sets the name of the provider for the external data source.
+     * the name of the provider for the external data source.
      */
     private String provider;
 
     /**
-     * Gets or sets the name of the provider string for the external data
-     * source.
+     * the name of the provider string for the external data source.
      */
     private String providerString;
 
     /**
-     * Gets or sets the list of types to push down from the external data
-     * source.
+     * the list of types to push down from the external data source.
      */
     private List<String> pushdownTypes;
 

@@ -16,68 +16,68 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class JobInformation {
     /**
-     * Gets or sets the job's unique identifier (a GUID).
+     * the job's unique identifier (a GUID).
      */
     private UUID jobId;
 
     /**
-     * Gets or sets the friendly name of the job.
+     * the friendly name of the job.
      */
     @JsonProperty(required = true)
     private String name;
 
     /**
-     * Gets or sets the job type of the current job (Hive or USql). Possible
-     * values include: 'USql', 'Hive'.
+     * the job type of the current job (Hive or USql). Possible values
+     * include: 'USql', 'Hive'.
      */
     @JsonProperty(required = true)
     private JobType type;
 
     /**
-     * Gets or sets the user or account that submitted the job.
+     * the user or account that submitted the job.
      */
     private String submitter;
 
     /**
-     * Gets the error message details for the job, if the job failed.
+     * the error message details for the job, if the job failed.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<JobErrorDetails> errorMessage;
 
     /**
-     * Gets or sets the degree of parallelism used for this job. This must be
-     * greater than 0.
+     * the degree of parallelism used for this job. This must be greater than
+     * 0.
      */
     private Integer degreeOfParallelism;
 
     /**
-     * Gets or sets the priority value for the current job. Lower numbers have
-     * a higher priority. By default, a job has a priority of 1000. This must
-     * be greater than 0.
+     * the priority value for the current job. Lower numbers have a higher
+     * priority. By default, a job has a priority of 1000. This must be
+     * greater than 0.
      */
     private Integer priority;
 
     /**
-     * Gets the time the job was submitted to the service.
+     * the time the job was submitted to the service.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private DateTime submitTime;
 
     /**
-     * Gets the start time of the job.
+     * the start time of the job.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private DateTime startTime;
 
     /**
-     * Gets the completion time of the job.
+     * the completion time of the job.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private DateTime endTime;
 
     /**
-     * Gets the job state. When the job is in the Ended state, refer to Result
-     * and ErrorMessage for details. Possible values include: 'Accepted',
+     * the job state. When the job is in the Ended state, refer to Result and
+     * ErrorMessage for details. Possible values include: 'Accepted',
      * 'Compiling', 'Ended', 'New', 'Queued', 'Running', 'Scheduling',
      * 'Starting', 'Paused', 'WaitingForCapacity'.
      */
@@ -85,36 +85,35 @@ public class JobInformation {
     private JobState state;
 
     /**
-     * Gets the result of job execution or the current result of the running
-     * job. Possible values include: 'None', 'Succeeded', 'Cancelled',
-     * 'Failed'.
+     * the result of job execution or the current result of the running job.
+     * Possible values include: 'None', 'Succeeded', 'Cancelled', 'Failed'.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private JobResult result;
 
     /**
-     * Gets or sets the log folder path to use in the following format:
+     * the log folder path to use in the following format:
      * adl://&lt;accountName&gt;.azuredatalakestore.net/system/jobservice/jobs/Usql/2016/03/13/17/18/5fe51957-93bc-4de0-8ddc-c5a4753b068b/logs/.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String logFolder;
 
     /**
-     * Gets or sets the list of log file name patterns to find in the
-     * logFolder. '*' is the only matching character allowed. Example format:
-     * jobExecution*.log or *mylog*.txt.
+     * the list of log file name patterns to find in the logFolder. '*' is the
+     * only matching character allowed. Example format: jobExecution*.log or
+     * *mylog*.txt.
      */
     private List<String> logFilePatterns;
 
     /**
-     * Gets the job state audit records, indicating when various operations
-     * have been performed on this job.
+     * the job state audit records, indicating when various operations have
+     * been performed on this job.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<JobStateAuditRecord> stateAuditRecords;
 
     /**
-     * Gets or sets the job specific properties.
+     * the job specific properties.
      */
     @JsonProperty(required = true)
     private JobProperties properties;

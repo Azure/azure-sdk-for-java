@@ -13,22 +13,22 @@ import java.util.List;
  */
 public class AclStatus {
     /**
-     * Gets or sets the list of ACLSpec entries on a file or directory.
+     * the list of ACLSpec entries on a file or directory.
      */
     private List<String> entries;
 
     /**
-     * Gets or sets the group owner, an AAD Object ID.
+     * the group owner, an AAD Object ID.
      */
     private String group;
 
     /**
-     * Gets or sets the user owner, an AAD Object ID.
+     * the user owner, an AAD Object ID.
      */
     private String owner;
 
     /**
-     * Gets or sets the indicator of whether the sticky bit is on or off.
+     * the indicator of whether the sticky bit is on or off.
      */
     private Boolean stickyBit;
 

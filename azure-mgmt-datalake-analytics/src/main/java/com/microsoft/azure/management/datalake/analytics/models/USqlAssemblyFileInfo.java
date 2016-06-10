@@ -12,18 +12,17 @@ package com.microsoft.azure.management.datalake.analytics.models;
  */
 public class USqlAssemblyFileInfo {
     /**
-     * Gets or sets the assembly file type. Possible values include:
-     * 'Assembly', 'Resource'.
+     * the assembly file type. Possible values include: 'Assembly', 'Resource'.
      */
     private FileType type;
 
     /**
-     * Gets or sets the the original path to the assembly file.
+     * the the original path to the assembly file.
      */
     private String originalPath;
 
     /**
-     * Gets or sets the the content path to the assembly file.
+     * the the content path to the assembly file.
      */
     private String contentPath;
 

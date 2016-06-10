@@ -68,7 +68,7 @@ public final class JobsImpl implements Jobs {
      */
     interface JobsService {
         @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("Jobs/{jobIdentity}/GetStatistics")
+        @GET("Jobs/{jobIdentity}/GetStatistics")
         Call<ResponseBody> getStatistics(@Path("jobIdentity") UUID jobIdentity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")

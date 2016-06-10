@@ -14,30 +14,30 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class USqlSecret extends CatalogItem {
     /**
-     * Gets or sets the name of the database.
+     * the name of the database.
      */
     private String databaseName;
 
     /**
-     * Gets or sets the name of the secret.
+     * the name of the secret.
      */
     @JsonProperty(value = "secretName")
     private String name;
 
     /**
-     * Gets or sets the creation time of the credential object. This is the
-     * only information returned about a secret from a GET.
+     * the creation time of the credential object. This is the only
+     * information returned about a secret from a GET.
      */
     private DateTime creationTime;
 
     /**
-     * Gets or sets the URI identifier for the secret in the format
+     * the URI identifier for the secret in the format
      * &lt;hostname&gt;:&lt;port&gt;.
      */
     private String uri;
 
     /**
-     * Gets or sets the password for the secret to pass in.
+     * the password for the secret to pass in.
      */
     private String password;
 

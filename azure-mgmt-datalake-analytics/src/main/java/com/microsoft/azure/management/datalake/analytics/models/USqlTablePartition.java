@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.datalake.analytics.models;
 
 import java.util.List;
+import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -14,31 +15,41 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class USqlTablePartition extends CatalogItem {
     /**
-     * Gets or sets the name of the database.
+     * the name of the database.
      */
     private String databaseName;
 
     /**
-     * Gets or sets the name of the schema associated with this table
-     * partition and database.
+     * the name of the schema associated with this table partition and
+     * database.
      */
     private String schemaName;
 
     /**
-     * Gets or sets the name of the table partition.
+     * the name of the table partition.
      */
     @JsonProperty(value = "partitionName")
     private String name;
 
     /**
-     * Gets or sets the index ID for this partition.
+     * the Ddl object of the partition's parent.
+     */
+    private DdlName parentName;
+
+    /**
+     * the index ID for this partition.
      */
     private Integer indexId;
 
     /**
-     * Gets or sets the list of labels associated with this partition.
+     * the list of labels associated with this partition.
      */
     private List<String> label;
+
+    /**
+     * the creation time of the partition.
+     */
+    private DateTime createDate;
 
     /**
      * Get the databaseName value.
@@ -101,6 +112,26 @@ public class USqlTablePartition extends CatalogItem {
     }
 
     /**
+     * Get the parentName value.
+     *
+     * @return the parentName value
+     */
+    public DdlName parentName() {
+        return this.parentName;
+    }
+
+    /**
+     * Set the parentName value.
+     *
+     * @param parentName the parentName value to set
+     * @return the USqlTablePartition object itself.
+     */
+    public USqlTablePartition withParentName(DdlName parentName) {
+        this.parentName = parentName;
+        return this;
+    }
+
+    /**
      * Get the indexId value.
      *
      * @return the indexId value
@@ -137,6 +168,26 @@ public class USqlTablePartition extends CatalogItem {
      */
     public USqlTablePartition withLabel(List<String> label) {
         this.label = label;
+        return this;
+    }
+
+    /**
+     * Get the createDate value.
+     *
+     * @return the createDate value
+     */
+    public DateTime createDate() {
+        return this.createDate;
+    }
+
+    /**
+     * Set the createDate value.
+     *
+     * @param createDate the createDate value to set
+     * @return the USqlTablePartition object itself.
+     */
+    public USqlTablePartition withCreateDate(DateTime createDate) {
+        this.createDate = createDate;
         return this;
     }
 

@@ -14,39 +14,38 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class USqlAssembly extends CatalogItem {
     /**
-     * Gets or sets the name of the database.
+     * the name of the database.
      */
     private String databaseName;
 
     /**
-     * Gets or sets the name of the assembly.
+     * the name of the assembly.
      */
     @JsonProperty(value = "assemblyName")
     private String name;
 
     /**
-     * Gets or sets the name of the CLR.
+     * the name of the CLR.
      */
     private String clrName;
 
     /**
-     * Gets or sets the switch indicating if this assembly is visible or not.
+     * the switch indicating if this assembly is visible or not.
      */
     private Boolean isVisible;
 
     /**
-     * Gets or sets the switch indicating if this assembly is user defined or
-     * not.
+     * the switch indicating if this assembly is user defined or not.
      */
     private Boolean isUserDefined;
 
     /**
-     * Gets or sets the list of files associated with the assembly.
+     * the list of files associated with the assembly.
      */
     private List<USqlAssemblyFileInfo> files;
 
     /**
-     * Gets or sets the list of dependencies associated with the assembly.
+     * the list of dependencies associated with the assembly.
      */
     private List<USqlAssemblyDependencyInfo> dependencies;
 

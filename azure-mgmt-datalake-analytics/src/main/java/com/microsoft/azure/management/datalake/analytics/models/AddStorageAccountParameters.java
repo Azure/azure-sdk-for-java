@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class AddStorageAccountParameters {
     /**
-     * Gets or sets the properties for the Azure Storage account being added.
+     * the properties for the Azure Storage account being added.
      */
     @JsonProperty(required = true)
     private StorageAccountProperties properties;

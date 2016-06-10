@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class DataLakeStoreAccountProperties {
     /**
-     * Gets the status of the Data Lake Store account while being provisioned.
+     * the status of the Data Lake Store account while being provisioned.
      * Possible values include: 'Failed', 'Creating', 'Running', 'Succeeded',
      * 'Patching', 'Suspending', 'Resuming', 'Deleting', 'Deleted'.
      */
@@ -22,32 +22,32 @@ public class DataLakeStoreAccountProperties {
     private DataLakeStoreAccountStatus provisioningState;
 
     /**
-     * Gets the status of the Data Lake Store account after provisioning has
+     * the status of the Data Lake Store account after provisioning has
      * completed. Possible values include: 'active', 'suspended'.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private DataLakeStoreAccountState state;
 
     /**
-     * Gets the account creation time.
+     * the account creation time.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private DateTime creationTime;
 
     /**
-     * Gets the account last modified time.
+     * the account last modified time.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private DateTime lastModifiedTime;
 
     /**
-     * Gets or sets the gateway host.
+     * the gateway host.
      */
     private String endpoint;
 
     /**
-     * Gets or sets the default owner group for all new folders and files
-     * created in the Data Lake Store account.
+     * the default owner group for all new folders and files created in the
+     * Data Lake Store account.
      */
     private String defaultGroup;
 

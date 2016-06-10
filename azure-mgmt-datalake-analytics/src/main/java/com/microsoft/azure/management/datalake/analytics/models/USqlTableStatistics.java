@@ -15,70 +15,68 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class USqlTableStatistics extends CatalogItem {
     /**
-     * Gets or sets the name of the database.
+     * the name of the database.
      */
     private String databaseName;
 
     /**
-     * Gets or sets the name of the schema associated with this table and
-     * database.
+     * the name of the schema associated with this table and database.
      */
     private String schemaName;
 
     /**
-     * Gets or sets the name of the table.
+     * the name of the table.
      */
     private String tableName;
 
     /**
-     * Gets or sets the name of the table statistics.
+     * the name of the table statistics.
      */
     @JsonProperty(value = "statisticsName")
     private String name;
 
     /**
-     * Gets or sets the name of the user statistics.
+     * the name of the user statistics.
      */
     private String userStatName;
 
     /**
-     * Gets or sets the path to the statistics data.
+     * the path to the statistics data.
      */
     private String statDataPath;
 
     /**
-     * Gets or sets the creation time of the statistics.
+     * the creation time of the statistics.
      */
     private DateTime createTime;
 
     /**
-     * Gets or sets the last time the statistics were updated.
+     * the last time the statistics were updated.
      */
     private DateTime updateTime;
 
     /**
-     * Gets or sets the switch indicating if these statistics are user created.
+     * the switch indicating if these statistics are user created.
      */
     private Boolean isUserCreated;
 
     /**
-     * Gets or sets the switch indicating if these statistics are
-     * automatically created.
+     * the switch indicating if these statistics are automatically created.
      */
     private Boolean isAutoCreated;
 
     /**
-     * Gets or sets the switch indicating if these statistics have a filter.
+     * the switch indicating if these statistics have a filter.
      */
     private Boolean hasFilter;
 
     /**
-     * Gets or sets the filter definition for the statistics.
+     * the filter definition for the statistics.
      */
     private String filterDefinition;
 
     /**
-     * Gets or sets the list of column names associated with these statistics.
+     * the list of column names associated with these statistics.
      */
     private List<String> colNames;
 

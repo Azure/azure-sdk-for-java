@@ -13,12 +13,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class USqlSchema extends CatalogItem {
     /**
-     * Gets or sets the name of the database.
+     * the name of the database.
      */
     private String databaseName;
 
     /**
-     * Gets or sets the name of the schema.
+     * the name of the schema.
      */
     @JsonProperty(value = "schemaName")
     private String name;

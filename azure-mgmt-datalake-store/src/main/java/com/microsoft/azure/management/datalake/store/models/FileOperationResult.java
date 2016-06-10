@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class FileOperationResult {
     /**
-     * Gets the result of the operation or request.
+     * the result of the operation or request.
      */
     @JsonProperty(value = "boolean", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean operationResult;

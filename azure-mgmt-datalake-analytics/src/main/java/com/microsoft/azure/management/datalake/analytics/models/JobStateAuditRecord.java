@@ -15,25 +15,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class JobStateAuditRecord {
     /**
-     * Gets the new state the job is in.
+     * the new state the job is in.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String newState;
 
     /**
-     * Gets the time stamp that the state change took place.
+     * the time stamp that the state change took place.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private DateTime timeStamp;
 
     /**
-     * Gets the user who requests the change.
+     * the user who requests the change.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String requestedByUser;
 
     /**
-     * Gets  the details of the audit log.
+     * the details of the audit log.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String details;

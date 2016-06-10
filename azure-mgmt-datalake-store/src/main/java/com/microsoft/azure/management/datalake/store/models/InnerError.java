@@ -13,13 +13,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class InnerError {
     /**
-     * Gets the stack trace for the error.
+     * the stack trace for the error.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String trace;
 
     /**
-     * Gets the context for the error message.
+     * the context for the error message.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String context;

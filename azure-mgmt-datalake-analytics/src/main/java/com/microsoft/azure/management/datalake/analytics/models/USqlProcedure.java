@@ -13,24 +13,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class USqlProcedure extends CatalogItem {
     /**
-     * Gets or sets the name of the database.
+     * the name of the database.
      */
     private String databaseName;
 
     /**
-     * Gets or sets the name of the schema associated with this procedure and
-     * database.
+     * the name of the schema associated with this procedure and database.
      */
     private String schemaName;
 
     /**
-     * Gets or sets the name of the procedure.
+     * the name of the procedure.
      */
     @JsonProperty(value = "procName")
     private String name;
 
     /**
-     * Gets or sets the defined query of the procedure.
+     * the defined query of the procedure.
      */
     private String definition;
 

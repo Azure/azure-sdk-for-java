@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class FileStatuses {
     /**
-     * Gets the object containing the list of properties of the files.
+     * the object containing the list of properties of the files.
      */
     @JsonProperty(value = "FileStatus", access = JsonProperty.Access.WRITE_ONLY)
     private List<FileStatusProperties> fileStatus;

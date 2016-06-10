@@ -14,34 +14,34 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class DataLakeStoreAccount {
     /**
-     * Gets or sets the account regional location.
+     * the account regional location.
      */
     private String location;
 
     /**
-     * Gets or sets the account name.
+     * the account name.
      */
     private String name;
 
     /**
-     * Gets the namespace and type of the account.
+     * the namespace and type of the account.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
-     * Gets the account subscription ID.
+     * the account subscription ID.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /**
-     * Gets or sets the value of custom properties.
+     * the value of custom properties.
      */
     private Map<String, String> tags;
 
     /**
-     * Gets or sets the Data Lake Store account properties.
+     * the Data Lake Store account properties.
      */
     private DataLakeStoreAccountProperties properties;
 

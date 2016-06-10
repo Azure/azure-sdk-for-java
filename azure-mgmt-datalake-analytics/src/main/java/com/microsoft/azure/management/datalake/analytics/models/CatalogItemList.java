@@ -12,12 +12,12 @@ package com.microsoft.azure.management.datalake.analytics.models;
  */
 public class CatalogItemList {
     /**
-     * Gets or sets the count of items in the list.
+     * the count of items in the list.
      */
     private Integer count;
 
     /**
-     * Gets or sets the link to the next page of results.
+     * the link to the next page of results.
      */
     private String nextLink;
 
