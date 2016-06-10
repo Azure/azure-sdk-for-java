@@ -147,7 +147,7 @@ public class GroupPagedListTests {
             }
 
             @Override
-            public ResourceGroupExportResult exportTemplate(List<String> resourceIds, ResourceGroupExportTemplateOptions options) throws CloudException, IOException {
+            public ResourceGroupExportResult exportTemplate(ResourceGroupExportTemplateOptions options) throws CloudException, IOException {
                 return null;
             }
 

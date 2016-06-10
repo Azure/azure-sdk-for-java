@@ -65,6 +65,10 @@ public class DeploymentsTests extends ResourceManagerTestBase {
         Assert.assertEquals("Succeeded", deployment.provisioningState());
         GenericResource generic = resourceClient.genericResources().get(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", "2015-06-15");
         Assert.assertNotNull(generic);
+        // Export
+        Assert.assertNotNull(deployment.exportTemplate().templateJson());
+        // Export from resource group
+        Assert.assertNotNull(resourceGroup.exportTemplate(ResourceGroupExportTemplateOptions.INCLUDE_BOTH));
         // Deployment operations
         List<DeploymentOperation> operations = deployment.deploymentOperations().list();
         Assert.assertEquals(2, operations.size());

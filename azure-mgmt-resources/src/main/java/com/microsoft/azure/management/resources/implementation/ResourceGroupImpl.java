@@ -20,9 +20,9 @@ import com.microsoft.azure.management.resources.implementation.api.ResourceGroup
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -76,9 +76,9 @@ public class ResourceGroupImpl extends
     }
 
     @Override
-    public ResourceGroupExportResult exportTemplate(List<String> resourceIds, ResourceGroupExportTemplateOptions options) throws CloudException, IOException {
+    public ResourceGroupExportResult exportTemplate(ResourceGroupExportTemplateOptions options) throws CloudException, IOException {
         ExportTemplateRequestInner inner = new ExportTemplateRequestInner()
-                .withResources(resourceIds)
+                .withResources(Arrays.asList("*"))
                 .withOptions(options.toString());
         ResourceGroupExportResultInner resultInner =
                 client.exportTemplate(name(), inner).getBody();

@@ -18,7 +18,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -53,13 +52,12 @@ public interface ResourceGroup extends
     /**
      * Captures the specified resource group as a template.
      *
-     * @param resourceIds resource IDs of the resources to export
      * @param options the export options
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @return the exported template result
      */
-    ResourceGroupExportResult exportTemplate(List<String> resourceIds, ResourceGroupExportTemplateOptions options) throws CloudException, IOException;
+    ResourceGroupExportResult exportTemplate(ResourceGroupExportTemplateOptions options) throws CloudException, IOException;
 
     /**
      * A resource group definition allowing location to be set.
