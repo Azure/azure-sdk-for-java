@@ -14,121 +14,121 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class JobStatisticsVertexStage {
     /**
-     * Gets the amount of data read, in bytes.
+     * the amount of data read, in bytes.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long dataRead;
 
     /**
-     * Gets the amount of data read across multiple pods, in bytes.
+     * the amount of data read across multiple pods, in bytes.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long dataReadCrossPod;
 
     /**
-     * Gets the amount of data read in one pod, in bytes.
+     * the amount of data read in one pod, in bytes.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long dataReadIntraPod;
 
     /**
-     * Gets the amount of data remaining to be read, in bytes.
+     * the amount of data remaining to be read, in bytes.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long dataToRead;
 
     /**
-     * Gets the amount of data written, in bytes.
+     * the amount of data written, in bytes.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long dataWritten;
 
     /**
-     * Gets the number of duplicates that were discarded.
+     * the number of duplicates that were discarded.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer duplicateDiscardCount;
 
     /**
-     * Gets the number of failures that occured in this stage.
+     * the number of failures that occured in this stage.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer failedCount;
 
     /**
-     * Gets the maximum amount of data read in a single vertex, in bytes.
+     * the maximum amount of data read in a single vertex, in bytes.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long maxVertexDataRead;
 
     /**
-     * Gets the minimum amount of data read in a single vertex, in bytes.
+     * the minimum amount of data read in a single vertex, in bytes.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long minVertexDataRead;
 
     /**
-     * Gets the number of read failures in this stage.
+     * the number of read failures in this stage.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer readFailureCount;
 
     /**
-     * Gets the number of vertices that were revoked during this stage.
+     * the number of vertices that were revoked during this stage.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer revocationCount;
 
     /**
-     * Gets the number of currently running vertices in this stage.
+     * the number of currently running vertices in this stage.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer runningCount;
 
     /**
-     * Gets the number of currently scheduled vertices in this stage.
+     * the number of currently scheduled vertices in this stage.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer scheduledCount;
 
     /**
-     * Gets the name of this stage in job execution.
+     * the name of this stage in job execution.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String stageName;
 
     /**
-     * Gets the number of vertices that succeeded in this stage.
+     * the number of vertices that succeeded in this stage.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer succeededCount;
 
     /**
-     * Gets the amount of temporary data written, in bytes.
+     * the amount of temporary data written, in bytes.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long tempDataWritten;
 
     /**
-     * Gets the total vertex count for this stage.
+     * the total vertex count for this stage.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer totalCount;
 
     /**
-     * Gets the amount of time that failed vertices took up in this stage.
+     * the amount of time that failed vertices took up in this stage.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Period totalFailedTime;
 
     /**
-     * Gets the current progress of this stage, as a percentage.
+     * the current progress of this stage, as a percentage.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer totalProgress;
 
     /**
-     * Gets the amount of time all successful vertices took in this stage.
+     * the amount of time all successful vertices took in this stage.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Period totalSucceededTime;

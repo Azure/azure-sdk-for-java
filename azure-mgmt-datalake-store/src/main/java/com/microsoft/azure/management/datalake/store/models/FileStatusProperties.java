@@ -13,61 +13,61 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class FileStatusProperties {
     /**
-     * Gets the last access time as ticks since the epoch.
+     * the last access time as ticks since the epoch.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long accessTime;
 
     /**
-     * Gets the block size for the file.
+     * the block size for the file.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long blockSize;
 
     /**
-     * Gets the number of children in the directory.
+     * the number of children in the directory.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long childrenNum;
 
     /**
-     * Gets the group owner.
+     * the group owner.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String group;
 
     /**
-     * Gets the number of bytes in a file.
+     * the number of bytes in a file.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long length;
 
     /**
-     * Gets the modification time as ticks since the epoch.
+     * the modification time as ticks since the epoch.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long modificationTime;
 
     /**
-     * Gets the user who is the owner.
+     * the user who is the owner.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String owner;
 
     /**
-     * Gets the path suffix.
+     * the path suffix.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String pathSuffix;
 
     /**
-     * Gets the permission represented as an string.
+     * the permission represented as an string.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String permission;
 
     /**
-     * Gets the type of the path object. Possible values include: 'FILE',
+     * the type of the path object. Possible values include: 'FILE',
      * 'DIRECTORY'.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

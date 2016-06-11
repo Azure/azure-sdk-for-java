@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class FileStatusesResult {
     /**
-     * Gets the object representing the list of file statuses.
+     * the object representing the list of file statuses.
      */
     @JsonProperty(value = "FileStatuses", access = JsonProperty.Access.WRITE_ONLY)
     private FileStatuses fileStatuses;

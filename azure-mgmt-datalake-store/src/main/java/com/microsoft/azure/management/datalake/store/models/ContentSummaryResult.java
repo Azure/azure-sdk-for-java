@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ContentSummaryResult {
     /**
-     * Gets the content summary for the specified path.
+     * the content summary for the specified path.
      */
     @JsonProperty(value = "ContentSummary", access = JsonProperty.Access.WRITE_ONLY)
     private ContentSummary contentSummary;

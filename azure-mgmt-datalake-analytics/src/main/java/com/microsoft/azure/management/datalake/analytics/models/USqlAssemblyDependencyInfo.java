@@ -12,7 +12,7 @@ package com.microsoft.azure.management.datalake.analytics.models;
  */
 public class USqlAssemblyDependencyInfo {
     /**
-     * Gets or sets the EntityId of the dependency.
+     * the EntityId of the dependency.
      */
     private EntityId entityId;
 

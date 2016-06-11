@@ -15,19 +15,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class JobDataPath {
     /**
-     * Gets the id of the job this data is for.
+     * the id of the job this data is for.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private UUID jobId;
 
     /**
-     * Gets the command that this job data relates to.
+     * the command that this job data relates to.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String command;
 
     /**
-     * Gets the list of paths to all of the job data.
+     * the list of paths to all of the job data.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<String> paths;

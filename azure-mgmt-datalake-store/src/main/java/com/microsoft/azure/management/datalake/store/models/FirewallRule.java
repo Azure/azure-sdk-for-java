@@ -13,28 +13,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class FirewallRule {
     /**
-     * Gets or sets the firewall rule's name.
+     * the firewall rule's name.
      */
     private String name;
 
     /**
-     * Gets the namespace and type of the firewall Rule.
+     * the namespace and type of the firewall Rule.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
-     * Gets or sets the firewall rule's subscription ID.
+     * the firewall rule's subscription ID.
      */
     private String id;
 
     /**
-     * Gets or sets the firewall rule's regional location.
+     * the firewall rule's regional location.
      */
     private String location;
 
     /**
-     * Gets or sets the properties of the firewall rule.
+     * the properties of the firewall rule.
      */
     private FirewallRuleProperties properties;
 

@@ -14,39 +14,38 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class USqlTable extends CatalogItem {
     /**
-     * Gets or sets the name of the database.
+     * the name of the database.
      */
     private String databaseName;
 
     /**
-     * Gets or sets the name of the schema associated with this table and
-     * database.
+     * the name of the schema associated with this table and database.
      */
     private String schemaName;
 
     /**
-     * Gets or sets the name of the table.
+     * the name of the table.
      */
     @JsonProperty(value = "tableName")
     private String name;
 
     /**
-     * Gets or sets the list of columns in this table.
+     * the list of columns in this table.
      */
     private List<USqlTableColumn> columnList;
 
     /**
-     * Gets or sets the list of indices in this table.
+     * the list of indices in this table.
      */
     private List<USqlIndex> indexList;
 
     /**
-     * Gets or sets the list of partition keys in the table.
+     * the list of partition keys in the table.
      */
     private List<String> partitionKeyList;
 
     /**
-     * Gets or sets the external table associated with the table.
+     * the external table associated with the table.
      */
     private ExternalTable externalTable;
 

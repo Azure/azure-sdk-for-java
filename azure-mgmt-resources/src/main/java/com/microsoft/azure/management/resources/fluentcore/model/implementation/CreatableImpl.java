@@ -23,7 +23,7 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT>
      */
     private CreatableTaskGroup creatableTaskGroup;
 
-	protected CreatableImpl(String name, InnerModelT innerObject) {
+    protected CreatableImpl(String name, InnerModelT innerObject) {
         super(name, innerObject);
         creatableTaskGroup = new CreatableTaskGroup(name, (Creatable<?>) this, this);
     }

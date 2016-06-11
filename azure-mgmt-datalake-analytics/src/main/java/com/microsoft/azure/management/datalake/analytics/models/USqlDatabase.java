@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class USqlDatabase extends CatalogItem {
     /**
-     * Gets or sets the name of the database.
+     * the name of the database.
      */
     @JsonProperty(value = "databaseName")
     private String name;

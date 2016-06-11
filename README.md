@@ -4,6 +4,11 @@
 This project provides a client library in Java that makes it easy to consume Microsoft Azure services. For documentation please see the [JavaDocs](http://azure.github.io/azure-sdk-for-java). For a list of libraries and how they are organized, please see the [Azure SDK for Java Features Wiki page] (https://github.com/Azure/azure-sdk-for-java/wiki/Azure-SDK-for-Java-Features).
 
 #Download
+**Notes:** If you are using snapshots builds from beta1 we recommend going to http://adxsnapshots.azurewebsites.net/ and find the exact version number. The latest beta1 snapshot versions are
+- client-runtime: 1.0.0-20160513.000825-29
+- azure-client-runtime: 1.0.0-20160513.000812-28
+- azure-client-authentication: 1.0.0-20160513.000802-24
+
 To compile either this repo, you need snapshot builds in sonatype snapshots repository.  Add the following to your pom:
 ```xml
   <repositories>

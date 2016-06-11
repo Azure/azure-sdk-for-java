@@ -12,22 +12,22 @@ package com.microsoft.azure.management.datalake.analytics.models;
  */
 public class HiveJobStatementInfo {
     /**
-     * Gets or sets the log location for this statement.
+     * the log location for this statement.
      */
     private String logLocation;
 
     /**
-     * Gets or sets the result preview location for this statement.
+     * the result preview location for this statement.
      */
     private String resultPreviewLocation;
 
     /**
-     * Gets or sets the result location for this statement.
+     * the result location for this statement.
      */
     private String resultLocation;
 
     /**
-     * Gets or sets the error message for this statement.
+     * the error message for this statement.
      */
     private String errorMessage;
 

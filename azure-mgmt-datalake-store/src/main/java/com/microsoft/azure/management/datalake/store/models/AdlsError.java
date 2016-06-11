@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class AdlsError {
     /**
-     * Gets the object representing the actual WebHDFS exception being
-     * returned.
+     * the object representing the actual WebHDFS exception being returned.
      */
     @JsonProperty(value = "RemoteException", access = JsonProperty.Access.WRITE_ONLY)
     private AdlsRemoteException remoteException;

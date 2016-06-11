@@ -12,7 +12,7 @@ package com.microsoft.azure.management.datalake.analytics.models;
  */
 public class DataLakeStoreAccountInfoProperties {
     /**
-     * Gets or sets the optional suffix for the Data Lake Store account.
+     * the optional suffix for the Data Lake Store account.
      */
     private String suffix;
 

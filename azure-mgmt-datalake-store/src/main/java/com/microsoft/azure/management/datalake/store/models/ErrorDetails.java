@@ -13,19 +13,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ErrorDetails {
     /**
-     * Gets the HTTP status code or error code associated with this error.
+     * the HTTP status code or error code associated with this error.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String code;
 
     /**
-     * Gets the error message localized based on Accept-Language.
+     * the error message localized based on Accept-Language.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /**
-     * Gets the target of the particular error (for example, the name of the
+     * the target of the particular error (for example, the name of the
      * property in error).
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

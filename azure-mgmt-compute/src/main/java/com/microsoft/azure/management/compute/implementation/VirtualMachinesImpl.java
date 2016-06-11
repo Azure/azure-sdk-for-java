@@ -8,6 +8,7 @@ import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSize;
 import com.microsoft.azure.management.compute.VirtualMachines;
+import com.microsoft.azure.management.compute.implementation.api.NetworkInterfaceReference;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachinesInner;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizesInner;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineInner;
@@ -175,14 +176,13 @@ class VirtualMachinesImpl
 
     private VirtualMachineImpl createFluentModel(String name) {
         VirtualMachineInner inner = new VirtualMachineInner();
-        inner.withStorageProfile(new StorageProfile());
-        inner.storageProfile().withOsDisk(new OSDisk());
-        inner.storageProfile().withDataDisks(new ArrayList<DataDisk>());
-        inner.withOsProfile(new OSProfile());
+        inner.withStorageProfile(new StorageProfile()
+            .withOsDisk(new OSDisk())
+            .withDataDisks(new ArrayList<DataDisk>()));
+        inner.withOsProfile(new OSProfile().withComputerName(name));
         inner.withHardwareProfile(new HardwareProfile());
-        inner.withNetworkProfile(new NetworkProfile());
-        inner.osProfile().withComputerName(name);
-
+        inner.withNetworkProfile(new NetworkProfile()
+                .withNetworkInterfaces(new ArrayList<NetworkInterfaceReference>()));
         return new VirtualMachineImpl(name,
             inner,
             this.client,

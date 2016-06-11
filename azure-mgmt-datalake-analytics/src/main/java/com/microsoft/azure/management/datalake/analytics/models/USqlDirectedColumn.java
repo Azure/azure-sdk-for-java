@@ -12,12 +12,12 @@ package com.microsoft.azure.management.datalake.analytics.models;
  */
 public class USqlDirectedColumn {
     /**
-     * Gets or sets the name of the index in the table.
+     * the name of the index in the table.
      */
     private String name;
 
     /**
-     * Gets or sets the switch indicating if the index is descending or not.
+     * the switch indicating if the index is descending or not.
      */
     private Boolean descending;
 

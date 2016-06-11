@@ -13,13 +13,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters {
     /**
-     * Gets or sets the password for the secret to pass in.
+     * the password for the secret to pass in.
      */
     @JsonProperty(required = true)
     private String password;
 
     /**
-     * Gets or sets the URI identifier for the secret in the format
+     * the URI identifier for the secret in the format
      * &lt;hostname&gt;:&lt;port&gt;.
      */
     private String uri;

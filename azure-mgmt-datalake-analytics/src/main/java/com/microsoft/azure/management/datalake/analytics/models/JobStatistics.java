@@ -15,13 +15,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class JobStatistics {
     /**
-     * Gets the last update time for the statistics.
+     * the last update time for the statistics.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private DateTime lastUpdateTimeUtc;
 
     /**
-     * Gets the list of stages for the job.
+     * the list of stages for the job.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<JobStatisticsVertexStage> stages;

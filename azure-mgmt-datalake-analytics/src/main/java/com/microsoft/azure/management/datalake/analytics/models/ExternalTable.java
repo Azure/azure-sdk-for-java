@@ -12,13 +12,12 @@ package com.microsoft.azure.management.datalake.analytics.models;
  */
 public class ExternalTable {
     /**
-     * Gets or sets the name of the table associated with this database and
-     * schema.
+     * the name of the table associated with this database and schema.
      */
     private String tableName;
 
     /**
-     * Gets or sets the data source associated with this external table.
+     * the data source associated with this external table.
      */
     private EntityId dataSource;
 

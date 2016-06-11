@@ -25,7 +25,7 @@ public abstract class TestTemplate<
     T extends GroupableResource,
     C extends SupportsListing<T> & SupportsGettingByGroup<T> & SupportsDeleting> {
 
-    protected String testId = String.valueOf(System.currentTimeMillis());
+    protected String testId = String.valueOf(System.currentTimeMillis() % 100000L);
     private T resource;
     private C collection;
     private ResourceGroups resourceGroups;

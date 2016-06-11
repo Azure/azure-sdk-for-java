@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class AclStatusResult {
     /**
-     * Gets or sets the AclStatus object for a given file or directory.
+     * the AclStatus object for a given file or directory.
      */
     @JsonProperty(value = "AclStatus")
     private AclStatus aclStatus;

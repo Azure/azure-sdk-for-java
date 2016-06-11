@@ -13,12 +13,12 @@ import java.util.UUID;
  */
 public class CatalogItem {
     /**
-     * Gets or sets the name of the Data Lake Analytics account.
+     * the name of the Data Lake Analytics account.
      */
     private String computeAccountName;
 
     /**
-     * Gets or sets the version of the catalog item.
+     * the version of the catalog item.
      */
     private UUID version;
 
