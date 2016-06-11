@@ -205,7 +205,7 @@ class NicIpConfigurationImpl
 
     protected static void ensureConfigurations(List<NicIpConfiguration> nicIpConfigurations) {
         for (NicIpConfiguration nicIpConfiguration : nicIpConfigurations) {
-            NicIpConfigurationImpl config = (NicIpConfigurationImpl)nicIpConfiguration;
+            NicIpConfigurationImpl config = (NicIpConfigurationImpl) nicIpConfiguration;
             config.inner().withSubnet(config.subnetToAssociate());
             config.inner().withPublicIPAddress(config.publicIpToAssociate());
         }
