@@ -1,5 +1,6 @@
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.compute.implementation.api.AvailabilitySetInner;
 import com.microsoft.azure.management.compute.implementation.api.InstanceViewStatus;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -10,10 +11,11 @@ import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
- * An immutable client-side representation of an Azure availability set. 
+ * An immutable client-side representation of an Azure availability set.
  */
 public interface AvailabilitySet extends
         GroupableResource,
@@ -52,8 +54,11 @@ public interface AvailabilitySet extends
      * Lists the virtual machines in the availability set.
      *
      * @return list of virtual machines
+     * @throws CloudException exceptions thrown from the cloud
+     * @throws IOException exceptions thrown from serialization/deserialization
+
      */
-    List<VirtualMachine> virtualMachines() throws Exception;
+    List<VirtualMachine> virtualMachines() throws CloudException, IOException;
 
     /**
      * Lists the statuses of the existing virtual machines in the availability set.
@@ -68,32 +73,32 @@ public interface AvailabilitySet extends
      **************************************************************/
 
     /**
-     * Container interface for all the definitions
+     * Container interface for all the definitions.
      */
     interface Definitions extends
         DefinitionBlank,
         DefinitionWithGroup,
         DefinitionCreatable {
     }
-    
+
     /**
-     * The first stage of an availability set definition
+     * The first stage of an availability set definition.
      */
     interface DefinitionBlank extends GroupableResource.DefinitionWithRegion<DefinitionWithGroup> {
     }
 
     /**
-     * The stage of the availability set definition allowing to specify the resource group
+     * The stage of the availability set definition allowing to specify the resource group.
      */
     interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionCreatable> {
     }
-    
+
     /**
      * The stage of an availability set definition which contains all the minimum required inputs for
-     * the resource to be created (via {@link DefinitionCreatable#create()}), but also allows 
+     * the resource to be created (via {@link DefinitionCreatable#create()}), but also allows
      * for any other optional settings to be specified.
-     */     
-    interface DefinitionCreatable extends 
+     */
+    interface DefinitionCreatable extends
         Creatable<AvailabilitySet>,
         Resource.DefinitionWithTags<DefinitionCreatable> {
         /**
@@ -102,7 +107,7 @@ public interface AvailabilitySet extends
          * @return the next stage of the resource definition
          */
         DefinitionCreatable withUpdateDomainCount(int updateDomainCount);
-        
+
         /**
          * Specifies the fault domain count for the availability set.
          * @param faultDomainCount fault domain count
@@ -110,14 +115,14 @@ public interface AvailabilitySet extends
          */
         DefinitionCreatable withFaultDomainCount(int faultDomainCount);
     }
-    
+
     /**
-     * The template for an availability set update operation, containing all the settings that 
+     * The template for an availability set update operation, containing all the settings that
      * can be modified.
      * <p>
      * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
-    interface Update extends 
+    interface Update extends
         Appliable<AvailabilitySet>,
         Resource.UpdateWithTags<Update> {
     }

@@ -35,7 +35,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+<<<<<<< HEAD
+ * The implementation for {@link VirtualMachines}.
+=======
  * The type representing Azure virtual machines.
+>>>>>>> eca873299bef401bbca4c7084dc790063446e986
  */
 class VirtualMachinesImpl
         implements VirtualMachines {

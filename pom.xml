@@ -118,6 +118,7 @@
           <configLocation>checkstyle.xml</configLocation>
           <propertyExpansion>samedir=runtimes/build-tools/src/main/resources</propertyExpansion>
           <suppressionsLocation>suppressions.xml</suppressionsLocation>
+          <consoleOutput>true</consoleOutput>
         </configuration>
       </plugin>
 

@@ -21,14 +21,14 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIpAddressDynamic()
                 .withNewPrimaryPublicIpAddress("pipdns" + this.testId)
-                .withIpForwardingEnabled()
+                .withIpForwarding()
                 .create();
     }
 
     @Override
     public NetworkInterface updateResource(NetworkInterface resource) throws Exception {
         resource =  resource.update()
-                .withIpForwardingDisabled()
+                .withoutIpForwarding()
                 .updateIpConfiguration("primary-nic-config") // Updating the primary ip configuration
                     .withPrivateIpAddressDynamic() // Equivalent to ..update().withPrimaryPrivateIpAddressDynamic()
                     .withoutPublicIpAddress()      // Equivalent to ..update().withoutPrimaryPublicIpAddress()

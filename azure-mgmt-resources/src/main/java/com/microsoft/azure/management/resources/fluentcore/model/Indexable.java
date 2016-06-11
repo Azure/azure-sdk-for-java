@@ -6,7 +6,12 @@
 
 package com.microsoft.azure.management.resources.fluentcore.model;
 
-// Encapsulates the name accessor
+/**
+ * Base interface for all models that can be indexed by a key.
+ */
 public interface Indexable {
-	String key();
+    /**
+     * @return the index key.
+     */
+    String key();
 }

@@ -6,13 +6,29 @@
 
 package com.microsoft.azure.management.resources.fluentcore.utils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
+/**
+ * This class wraps one type of list to another.
+ *
+ * @param <SourceT> the source item type
+ * @param <WrappedT> the wrapped list's item type
+ */
 public class WrappedList<SourceT, WrappedT> implements List<WrappedT> {
     private List<SourceT> sourceList;
     private List<WrappedT> wrappedList;
     private Transformer<SourceT, WrappedT> transformer;
 
+    /**
+     * Creates an instance of wrapped list.
+     *
+     * @param sourceList the source list
+     * @param transformer the transformer definition
+     */
     public WrappedList(List<SourceT> sourceList, Transformer<SourceT, WrappedT> transformer) {
         this.sourceList = sourceList;
         this.wrappedList = new ArrayList<>();
@@ -41,7 +57,7 @@ public class WrappedList<SourceT, WrappedT> implements List<WrappedT> {
 
     @Override
     public Object[] toArray() {
-        Object [] array = new Object[size()];
+        Object[] array = new Object[size()];
         int i = 0;
         for (WrappedT item: this) {
             array[i] = item;
@@ -59,7 +75,7 @@ public class WrappedList<SourceT, WrappedT> implements List<WrappedT> {
 
         int i = 0;
         for (WrappedT item: this) {
-            a[i] = (T)item;
+            a[i] = (T) item;
             i++;
         }
 
@@ -82,7 +98,7 @@ public class WrappedList<SourceT, WrappedT> implements List<WrappedT> {
     @Override
     @SuppressWarnings("unchecked")
     public int indexOf(Object o) {
-        WrappedT o1 = (WrappedT)o;
+        WrappedT o1 = (WrappedT) o;
         int index = 0;
         for (WrappedT item : this) {
             if (item == o1) {
@@ -96,7 +112,7 @@ public class WrappedList<SourceT, WrappedT> implements List<WrappedT> {
     @Override
     @SuppressWarnings("unchecked")
     public int lastIndexOf(Object o) {
-        WrappedT o1 = (WrappedT)o;
+        WrappedT o1 = (WrappedT) o;
         int index = size() - 1;
         while (index >= 0) {
             if (get(index) == o1) {
@@ -174,16 +190,24 @@ public class WrappedList<SourceT, WrappedT> implements List<WrappedT> {
     @Override
     public List<WrappedT> subList(int fromIndex, int toIndex) {
         List<WrappedT> list = new ArrayList<>();
-        for(int index = fromIndex; index <= toIndex; index++) {
+        for (int index = fromIndex; index <= toIndex; index++) {
             list.add(get(index));
         }
         return list;
     }
 
+    /**
+     * The list iterator definition of wrapped list.
+     */
     class WrappedListIterator implements ListIterator<WrappedT> {
         private ListIterator<SourceT> sourceListIterator;
 
-        public WrappedListIterator(int index) {
+        /**
+         * Create a list iterator for wrapped list.
+         *
+         * @param index index of the first element the returned iterator points to
+         */
+        WrappedListIterator(int index) {
             sourceListIterator = sourceList.listIterator(index);
         }
 
@@ -237,7 +261,20 @@ public class WrappedList<SourceT, WrappedT> implements List<WrappedT> {
         }
     }
 
+    /**
+     * Implement this interface to define a rule of transforming a source type
+     * into a target type.
+     *
+     * @param <SourceT> the source type
+     * @param <WrappedT> the target type
+     */
     public interface Transformer<SourceT, WrappedT> {
+        /**
+         * Transforms a source typed object into a target typed object.
+         *
+         * @param source the source object
+         * @return the target object
+         */
         WrappedT transform(SourceT source);
     }
 }

@@ -171,7 +171,7 @@ public interface PublicIpAddress extends
         Update withLeafDomainLabel(String dnsName);
 
         /**
-         * Ensures that no leaf domain label will be used. 
+         * Ensures that no leaf domain label will be used.
          * <p>
          * This means that this public IP address will not be associated with a domain name.
          * @return the next stage of the resource update
@@ -179,16 +179,17 @@ public interface PublicIpAddress extends
         Update withoutLeafDomainLabel();
     }
 
-
     /**
-     * A public IP address definition allowing the reverse FQDN to be specified
+     * A public IP address definition allowing the reverse FQDN to be specified.
+     *
+     * @param <T> the type of the inherited definition interface
      */
     interface DefinitionWithReverseFQDN<T> {
         /**
          * Specifies the reverse FQDN to assign to this public IP address.
          * <p>
-         * 
-         * @param reverseFQDN the reverse FQDN to assign 
+         *
+         * @param reverseFQDN the reverse FQDN to assign
          * @return the next stage of the resource definition
          */
         T withReverseFqdn(String reverseFQDN);
@@ -201,18 +202,20 @@ public interface PublicIpAddress extends
     }
 
     /**
-     * A public IP address update allowing the reverse FQDN to be specified
+     * A public IP address update allowing the reverse FQDN to be specified.
      */
     interface UpdateWithReverseFQDN {
         /**
-         * Specifies the reverse FQDN to assign to this public IP address
-         * @param reverseFQDN the reverse FQDN to assign 
+         * Specifies the reverse FQDN to assign to this public IP address.
+         *
+         * @param reverseFQDN the reverse FQDN to assign
          * @return the next stage of the resource update
          */
         Update withReverseFqdn(String reverseFQDN);
 
         /**
          * Ensures that no reverse FQDN will be used.
+         *
          * @return The next stage of the resource update
          */
         Update withoutReverseFqdn();
@@ -220,18 +223,19 @@ public interface PublicIpAddress extends
 
     /**
      * The stage of the public IP definition which contains all the minimum required inputs for
-     * the resource to be created (via {@link DefinitionCreatable#create()}), but also allows 
+     * the resource to be created (via {@link DefinitionCreatable#create()}), but also allows
      * for any other optional settings to be specified.
      */
-    interface DefinitionCreatable extends 
+    interface DefinitionCreatable extends
         Creatable<PublicIpAddress>,
         DefinitionWithLeafDomainLabel,
         DefinitionWithIpAddress,
         DefinitionWithReverseFQDN<DefinitionCreatable>,
         Resource.DefinitionWithTags<DefinitionCreatable> {
-        
+
         /**
-         * Specifies the timeout (in minutes) for an idle connection 
+         * Specifies the timeout (in minutes) for an idle connection.
+         *
          * @param minutes the length of the time out in minutes
          * @return the next stage of the resource definition
          */
@@ -239,19 +243,20 @@ public interface PublicIpAddress extends
     }
 
     /**
-     * The template for a public IP address update operation, containing all the settings that 
+     * The template for a public IP address update operation, containing all the settings that
      * can be modified.
      * <p>
      * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
-    interface Update extends 
+    interface Update extends
         Appliable<PublicIpAddress>,
         UpdateWithIpAddress,
         UpdateWithLeafDomainLabel,
         UpdateWithReverseFQDN,
         Resource.UpdateWithTags<Update> {
             /**
-             * Specifies the timeout (in minutes) for an idle connection 
+             * Specifies the timeout (in minutes) for an idle connection.
+             *
              * @param minutes the length of the time out in minutes
              * @return the next stage of the resource update
              */

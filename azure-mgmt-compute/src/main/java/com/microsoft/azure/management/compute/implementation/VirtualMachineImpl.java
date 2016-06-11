@@ -100,10 +100,10 @@ class VirtualMachineImpl
     private List<DataDisk> dataDisks;
     // Intermediate state of network interface definition to which private ip can be associated
     private NetworkInterface
-            .DefinitionWithPrivateIp<NetworkInterface.DefinitionWithPublicIpAddress> nicDefinitionWithPrivateIp;
+            .DefinitionWithPrivateIp nicDefinitionWithPrivateIp;
     // Intermediate state of network interface definition to which subnet can be associated
     private NetworkInterface
-            .DefinitionWithSubnet<NetworkInterface.DefinitionWithPrivateIp> nicDefinitionWithSubnet;
+            .DefinitionWithSubnet nicDefinitionWithSubnet;
     // Intermediate state of network interface definition to which public Ip can be associated
     private NetworkInterface
             .DefinitionWithPublicIpAddress nicDefinitionWithPublicIp;

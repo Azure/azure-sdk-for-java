@@ -14,14 +14,14 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
  * @param <InnerT> wrapped type
  */
 public abstract class WrapperImpl<InnerT> implements Wrapper<InnerT> {
-	private InnerT innerObject;
+    private InnerT innerObject;
 
-	protected WrapperImpl(InnerT innerObject) {
-		this.innerObject = innerObject;
-	}
+    protected WrapperImpl(InnerT innerObject) {
+        this.innerObject = innerObject;
+    }
 
-	@Override
-	public InnerT inner() {
-		return this.innerObject;
-	}
+    @Override
+    public InnerT inner() {
+        return this.innerObject;
+    }
 }

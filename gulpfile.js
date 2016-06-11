@@ -47,27 +47,32 @@ var mappings = {
     'datalake.store.filesystem': {
         'dir': 'azure-mgmt-datalake-store',
         'source': 'arm-datalake-store/filesystem/2015-10-01-preview/swagger/filesystem.json',
-        'package': 'com.microsoft.azure.management.datalake.store'
+        'package': 'com.microsoft.azure.management.datalake.store',
+        'fluent': false
     },
     'datalake.store.account': {
         'dir': 'azure-mgmt-datalake-store',
         'source': 'arm-datalake-store/account/2015-10-01-preview/swagger/account.json',
-        'package': 'com.microsoft.azure.management.datalake.store'
+        'package': 'com.microsoft.azure.management.datalake.store',
+        'fluent': false
     },
     'datalake.analytics.account': {
         'dir': 'azure-mgmt-datalake-analytics',
         'source': 'arm-datalake-analytics/account/2015-10-01-preview/swagger/account.json',
-        'package': 'com.microsoft.azure.management.datalake.analytics'
+        'package': 'com.microsoft.azure.management.datalake.analytics',
+        'fluent': false
     },
     'datalake.analytics.job': {
         'dir': 'azure-mgmt-datalake-analytics',
         'source': 'arm-datalake-analytics/job/2016-03-20-preview/swagger/job.json',
-        'package': 'com.microsoft.azure.management.datalake.analytics'
+        'package': 'com.microsoft.azure.management.datalake.analytics',
+        'fluent': false
     },
     'datalake.analytics.catalog': {
         'dir': 'azure-mgmt-datalake-analytics',
         'source': 'arm-datalake-analytics/catalog/2015-10-01-preview/swagger/catalog.json',
-        'package': 'com.microsoft.azure.management.datalake.analytics'
+        'package': 'com.microsoft.azure.management.datalake.analytics',
+        'fluent': false
     },
     'batchService': {
         'dir': 'azure-batch',

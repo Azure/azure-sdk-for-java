@@ -7,15 +7,20 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.network.*;
+import com.microsoft.azure.management.network.Network;
+import com.microsoft.azure.management.network.NetworkInterface;
+import com.microsoft.azure.management.network.Networks;
+import com.microsoft.azure.management.network.NicIpConfiguration;
+import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.PublicIpAddresses;
+import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceIPConfiguration;
 import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceInner;
 import com.microsoft.azure.management.network.implementation.api.NetworkInterfacesInner;
-import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceIPConfiguration;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroups;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceResponse;
 
@@ -179,13 +184,13 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public NetworkInterfaceImpl withIpForwardingEnabled() {
+    public NetworkInterfaceImpl withIpForwarding() {
         this.inner().withEnableIPForwarding(true);
         return this;
     }
 
     @Override
-    public NetworkInterfaceImpl withIpForwardingDisabled() {
+    public NetworkInterfaceImpl withoutIpForwarding() {
         this.inner().withEnableIPForwarding(false);
         return this;
     }

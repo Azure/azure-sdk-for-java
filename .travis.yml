@@ -5,4 +5,5 @@ jdk:
   - oraclejdk8
 
 script:
-  - mvn compile
+  - mvn install -DskipTests=true
+  - mvn -pl !azure-batch,!azure-mgmt-website,!azure-mgmt-datalake-store-uploader checkstyle:check

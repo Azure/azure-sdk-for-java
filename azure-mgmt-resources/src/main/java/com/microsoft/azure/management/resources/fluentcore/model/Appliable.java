@@ -6,6 +6,17 @@
 
 package com.microsoft.azure.management.resources.fluentcore.model;
 
+/**
+ * The base interface for all template interfaces that support update operations.
+ *
+ * @param <T> the type of the resource returned from the update.
+ */
 public interface Appliable<T> extends Indexable {
-	T apply() throws Exception;
+    /**
+     * Execute the update request.
+     *
+     * @return the updated resource
+     * @throws Exception exceptions from Azure
+     */
+    T apply() throws Exception;
 }

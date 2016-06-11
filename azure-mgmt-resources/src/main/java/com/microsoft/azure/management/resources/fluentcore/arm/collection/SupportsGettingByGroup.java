@@ -11,7 +11,7 @@ import com.microsoft.azure.CloudException;
 import java.io.IOException;
 
 /**
- * Provides access to getting a specific Azure resource based on its name and resource group
+ * Provides access to getting a specific Azure resource based on its name and resource group.
  *
  * (Note: this interface is not intended to be implemented by user code)
  *

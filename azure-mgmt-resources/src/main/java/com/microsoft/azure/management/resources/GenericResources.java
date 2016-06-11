@@ -45,6 +45,7 @@ public interface GenericResources extends
      * @param resourceType Resource identity.
      * @param resourceName Resource identity.
      * @param apiVersion the String value
+     * @return the generic resource
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      */
