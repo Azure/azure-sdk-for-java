@@ -11,6 +11,7 @@ import java.util.List;
 
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
+import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceInner;
 import com.microsoft.azure.management.network.implementation.api.NetworkSecurityGroupInner;
 import com.microsoft.azure.management.network.implementation.api.NetworkSecurityGroupsInner;
 import com.microsoft.azure.management.network.implementation.api.SecurityRuleInner;
@@ -139,4 +140,15 @@ class NetworkSecurityGroupImpl
     public List<NetworkSecurityRule> defaultSecurityRules() {
         return Collections.unmodifiableList(this.defaultRules);
     }
-}
+
+    @Override
+    public List<String> networkInterfaceIds() {
+        List<String> ids = new ArrayList<>();
+        if (this.inner().networkInterfaces() != null) {
+            for (NetworkInterfaceInner inner : this.inner().networkInterfaces()) {
+                ids.add(inner.id());
+            }
+        }
+        return Collections.unmodifiableList(ids);
+    }
+ }

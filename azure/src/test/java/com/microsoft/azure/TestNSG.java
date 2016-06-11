@@ -75,7 +75,10 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                 .append("\n\t\tTo port: ").append(rule.destinationPortRange())
                 .append("\n\t\tProtocol: ").append(rule.protocol())
                 .append("\n\t\tPriority: ").append(rule.priority());
+            
         }
+
+        info.append("\n\tNICs: ").append(resource.networkInterfaceIds());
 
         System.out.println(info.toString());
     }
