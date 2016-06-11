@@ -3,6 +3,6 @@
 // license information.
 
 /**
- * This package contains the tests classes for the Azure rollup client.
+ * This package contains the implementations for ARM base classes.
  */
-package com.microsoft.azure;
+package com.microsoft.azure.management.resources.fluentcore.arm.implementation;

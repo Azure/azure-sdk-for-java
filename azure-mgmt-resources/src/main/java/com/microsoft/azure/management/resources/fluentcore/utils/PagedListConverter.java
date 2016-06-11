@@ -14,9 +14,31 @@ import com.microsoft.rest.RestException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * The base class for converting {@link PagedList} of one type of resource to
+ * another, without polling down all the items in a list.
+ * This converter is useful in converting inner top level resources into fluent
+ * top level resources.
+ *
+ * @param <U> the type of Resource to convert from
+ * @param <V> the type of Resource to convert to
+ */
 public abstract class PagedListConverter<U, V> {
+    /**
+     * Override this method to define how to convert each Resource item
+     * individually.
+     *
+     * @param u the resource to convert from
+     * @return the converted resource
+     */
     public abstract V typeConvert(U u);
 
+    /**
+     * Converts the paged list.
+     *
+     * @param uList the resource list to convert from
+     * @return the converted list
+     */
     public PagedList<V> convert(final PagedList<U> uList) {
         Page<U> uPage = uList.currentPage();
         PageImpl<V> vPage = new PageImpl<>();

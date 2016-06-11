@@ -6,6 +6,21 @@
 
 package com.microsoft.azure.management.resources.fluentcore.model;
 
+/**
+ * Base class for resource that can be updated.
+ *
+ * @param <T> the fluent type of the resource
+ */
 public interface Updatable<T> {
-	T update() throws Exception;
+    /**
+     * Begins an update for a new resource.
+     * <p>
+     * This is the beginning of the builder pattern used to update top level resources
+     * in Azure. The final method completing the definition and starting the actual resource creation
+     * process in Azure is {@link Appliable#apply()}.
+     *
+     * @return the stage of new resource update
+     * @throws Exception exceptions thrown from Azure
+     */
+    T update() throws Exception;
 }

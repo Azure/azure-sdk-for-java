@@ -12,7 +12,7 @@ public class CreatableTaskItem implements TaskItem<Resource> {
     private Resource created;
 
     /**
-     * Creates CreatableTaskItem
+     * Creates CreatableTaskItem.
      *
      * @param creatable the creatable
      */

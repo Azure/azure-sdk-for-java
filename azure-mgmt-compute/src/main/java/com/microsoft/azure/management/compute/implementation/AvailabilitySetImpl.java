@@ -78,7 +78,7 @@ class AvailabilitySetImpl
         if (vmsInSet == null) {
             vmsInSet = new ResourceLazyList<>(virtualMachineIds(), new ResourceLazyList.Loader<VirtualMachine>() {
                 @Override
-                public VirtualMachine load(String resourceGroupName, String resourceName) throws Exception {
+                public VirtualMachine load(String resourceGroupName, String resourceName) throws CloudException, IOException {
                     return virtualMachines.getByGroup(resourceGroupName, resourceName);
                 }
             });

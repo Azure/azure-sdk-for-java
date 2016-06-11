@@ -15,27 +15,36 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+/**
+ * The implementation for {@link Resource} and base class for all resource
+ * model implementations.
+ * (Internal use only)
+ *
+ * @param <FluentModelT> The fluent model type
+ * @param <InnerModelT> Azure inner resource class type
+ * @param <FluentModelImplT> the implementation type of the fluent model type
+ */
 public abstract class ResourceImpl<
         FluentModelT,
         InnerModelT extends com.microsoft.azure.Resource,
         FluentModelImplT extends ResourceImpl<FluentModelT, InnerModelT, FluentModelImplT>>
-	extends
+    extends
         CreatableImpl<FluentModelT, InnerModelT>
-	implements
+    implements
         Resource {
 
 
     protected ResourceImpl(String key, InnerModelT innerObject) {
         super(key, innerObject);
-        
+
         // Initialize tags
-        if(innerObject.getTags() == null) {
+        if (innerObject.getTags() == null) {
             innerObject.withTags(new TreeMap<String, String>());
         }
     }
 
     /*******************************************
-     * Getters
+     * Getters.
      *******************************************/
 
     @Override
@@ -46,7 +55,7 @@ public abstract class ResourceImpl<
     @Override
     public Map<String, String> tags() {
         Map<String, String> tags = this.inner().getTags();
-        if(tags == null) {
+        if (tags == null) {
             tags = new TreeMap<String, String>();
         }
         return Collections.unmodifiableMap(tags);
@@ -64,7 +73,7 @@ public abstract class ResourceImpl<
 
     @Override
     public String name() {
-        if(this.inner().name() == null) {
+        if (this.inner().name() == null) {
             return this.key(); // Not yet created, so use the key
         } else {
             return this.inner().name();
@@ -72,24 +81,40 @@ public abstract class ResourceImpl<
     }
 
     /**************************************************
-     * Tag setters
+     * Tag setters.
      **************************************************/
 
+    /**
+     * Specifies tags for the resource as a {@link Map}.
+     * @param tags a {@link Map} of tags
+     * @return the next stage of the resource definition/update
+     */
     @SuppressWarnings("unchecked")
     public final FluentModelImplT withTags(Map<String, String> tags) {
         this.inner().withTags(new HashMap<>(tags));
         return (FluentModelImplT) this;
     }
 
+    /**
+     * Adds a tag to the resource.
+     * @param key the key for the tag
+     * @param value the value for the tag
+     * @return the next stage of the resource definition/update
+     */
     @SuppressWarnings("unchecked")
-    public final FluentModelImplT withTag(String name, String value) {
-        this.inner().getTags().put(name, value);
+    public final FluentModelImplT withTag(String key, String value) {
+        this.inner().getTags().put(key, value);
         return (FluentModelImplT) this;
     }
 
+    /**
+     * Removes a tag from the resource.
+     * @param key the key of the tag to remove
+     * @return the next stage of the resource definition/update
+     */
     @SuppressWarnings("unchecked")
-    public final FluentModelImplT withoutTag(String name) {
-        this.inner().getTags().remove(name);
+    public final FluentModelImplT withoutTag(String key) {
+        this.inner().getTags().remove(key);
         return (FluentModelImplT) this;
     }
 
@@ -97,12 +122,22 @@ public abstract class ResourceImpl<
      * Region setters
      **********************************************/
 
+    /**
+     * Specifies the region for the resource by name.
+     * @param regionName The name of the region for the resource
+     * @return the next stage of the resource definition/update
+     */
     @SuppressWarnings("unchecked")
     public final FluentModelImplT withRegion(String regionName) {
         this.inner().withLocation(regionName);
         return (FluentModelImplT) this;
     }
 
+    /**
+     * Specifies the region for the resource.
+     * @param region The location for the resource
+     * @return the next stage of the resource definition
+     */
     public final FluentModelImplT withRegion(Region region) {
         return this.withRegion(region.toString());
     }
