@@ -44,7 +44,6 @@ public class ManageVirtualMachine {
             System.out.println("Selected subscription: " + azure.subscriptionId());
 
             final String vmName = Utils.createRandomName("vm");
-            final String nicName = Utils.createRandomName("nic");
             final String userName = "tirekicker";
             final String password = "12NewPA$$w0rd!";
 
