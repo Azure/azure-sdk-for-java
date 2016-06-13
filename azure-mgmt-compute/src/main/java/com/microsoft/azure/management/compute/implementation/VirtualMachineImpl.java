@@ -48,7 +48,6 @@ import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.resources.implementation.api.PageImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
-import com.microsoft.azure.management.storage.implementation.api.AccountType;
 import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceResponse;
 
@@ -567,7 +566,7 @@ class VirtualMachineImpl
         } else {
             definitionAfterGroup = definitionWithGroup.withExistingGroup(this.resourceGroupName());
         }
-        return withNewStorageAccount(definitionAfterGroup.withAccountType(AccountType.STANDARD_GRS));
+        return withNewStorageAccount(definitionAfterGroup);
     }
 
     @Override

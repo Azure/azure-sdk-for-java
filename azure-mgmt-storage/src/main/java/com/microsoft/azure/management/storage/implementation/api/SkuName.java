@@ -10,14 +10,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for AccountType.
+ * Defines values for SkuName.
  */
-public enum AccountType {
+public enum SkuName {
     /** Enum value Standard_LRS. */
     STANDARD_LRS("Standard_LRS"),
-
-    /** Enum value Standard_ZRS. */
-    STANDARD_ZRS("Standard_ZRS"),
 
     /** Enum value Standard_GRS. */
     STANDARD_GRS("Standard_GRS"),
@@ -25,18 +22,21 @@ public enum AccountType {
     /** Enum value Standard_RAGRS. */
     STANDARD_RAGRS("Standard_RAGRS"),
 
+    /** Enum value Standard_ZRS. */
+    STANDARD_ZRS("Standard_ZRS"),
+
     /** Enum value Premium_LRS. */
     PREMIUM_LRS("Premium_LRS");
 
-    /** The actual serialized value for a AccountType instance. */
+    /** The actual serialized value for a SkuName instance. */
     private String value;
 
-    AccountType(String value) {
+    SkuName(String value) {
         this.value = value;
     }
 
     /**
-     * Gets the serialized value for a AccountType instance.
+     * Gets the serialized value for a SkuName instance.
      *
      * @return the serialized value.
      */
@@ -46,15 +46,15 @@ public enum AccountType {
     }
 
     /**
-     * Parses a serialized value to a AccountType instance.
+     * Parses a serialized value to a SkuName instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed AccountType object, or null if unable to parse.
+     * @return the parsed SkuName object, or null if unable to parse.
      */
     @JsonCreator
-    public static AccountType fromValue(String value) {
-        AccountType[] items = AccountType.values();
-        for (AccountType item : items) {
+    public static SkuName fromValue(String value) {
+        SkuName[] items = SkuName.values();
+        for (SkuName item : items) {
             if (item.toValue().equals(value)) {
                 return item;
             }

@@ -16,14 +16,19 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.storage.implementation.AccountStatuses;
 import com.microsoft.azure.management.storage.implementation.PublicEndpoints;
-import com.microsoft.azure.management.storage.implementation.StorageAccountKeys;
-import com.microsoft.azure.management.storage.implementation.api.AccountType;
+import com.microsoft.azure.management.storage.implementation.api.AccessTier;
 import com.microsoft.azure.management.storage.implementation.api.CustomDomain;
+import com.microsoft.azure.management.storage.implementation.api.Encryption;
+import com.microsoft.azure.management.storage.implementation.api.Kind;
 import com.microsoft.azure.management.storage.implementation.api.ProvisioningState;
+import com.microsoft.azure.management.storage.implementation.api.Sku;
+import com.microsoft.azure.management.storage.implementation.api.SkuName;
 import com.microsoft.azure.management.storage.implementation.api.StorageAccountInner;
+import com.microsoft.azure.management.storage.implementation.api.StorageAccountKey;
 import org.joda.time.DateTime;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * An immutable client-side representation of an Azure storage account.
@@ -46,11 +51,17 @@ public interface StorageAccount extends
     AccountStatuses accountStatuses();
 
     /**
-     * @return the type of this storage account. Possible values include:
+     * @return the sku of this storage account. Possible names include:
      * 'Standard_LRS', 'Standard_ZRS', 'Standard_GRS', 'Standard_RAGRS',
-     * 'Premium_LRS'
+     * 'Premium_LRS'. Possible tiers include: 'Standard', 'Premium'.
      */
-    AccountType accountType();
+    Sku sku();
+
+    /**
+     * @return the kind of the storage account. Possible values are 'Storage',
+     * 'BlobStorage'.
+     */
+    Kind kind();
 
     /**
      * @return the creation date and time of the storage account in UTC
@@ -85,12 +96,26 @@ public interface StorageAccount extends
     PublicEndpoints endPoints();
 
     /**
+     * @return the encryption settings on the account. If unspecified the account
+     * is unencrypted.
+     */
+    Encryption encryption();
+
+    /**
+     * @return access tier used for billing. Access tier cannot be changed more
+     * than once every 7 days (168 hours). Access tier cannot be set for
+     * StandardLRS, StandardGRS, StandardRAGRS, or PremiumLRS account types.
+     * Possible values include: 'Hot', 'Cool'.
+     */
+    AccessTier accessTier();
+
+    /**
      * @return the access keys for this storage account
      *
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      */
-    StorageAccountKeys getKeys() throws CloudException, IOException;
+    List<StorageAccountKey> keys() throws CloudException, IOException;
 
     /**
      * Regenerates the access keys for this storage account.
@@ -100,7 +125,7 @@ public interface StorageAccount extends
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      */
-    StorageAccountKeys regenerateKey(KeyType keyType) throws CloudException, IOException;
+    List<StorageAccountKey> regenerateKey(KeyType keyType) throws CloudException, IOException;
 
     /**************************************************************
      * Fluent interfaces to provision a StorageAccount
@@ -112,7 +137,8 @@ public interface StorageAccount extends
     interface Definitions extends
         DefinitionBlank,
         DefinitionWithGroup,
-        DefinitionCreatable {
+        DefinitionCreatable,
+        DefinitionCreatableWithAccessTier {
     }
 
     /**
@@ -134,33 +160,109 @@ public interface StorageAccount extends
      */
     interface DefinitionCreatable extends Creatable<StorageAccount> {
         /**
-         * Specifies the type of the storage account. Possible values include:
-         * 'Standard_LRS', 'Standard_ZRS', 'Standard_GRS', 'Standard_RAGRS',
-         * 'Premium_LRS'.
+         * Specifies the sku of the storage account. This used to be called
+         * account types. Possible values include: 'Standard_LRS',
+         * 'Standard_ZRS', 'Standard_GRS', 'Standard_RAGRS', 'Premium_LRS'.
          *
-         * @param accountType the account type
+         * @param skuName the sku
          * @return the next stage of storage account definition
          */
-        DefinitionCreatable withAccountType(AccountType accountType);
-    }
+        DefinitionCreatable withSku(SkuName skuName);
 
-    /**
-     * A deployment update allowing to change the parameters.
-     */
-    interface UpdateWithAccountType {
         /**
-         * Specifies the type of the storage account. Possible values include:
-         * 'Standard_LRS', 'Standard_ZRS', 'Standard_GRS', 'Standard_RAGRS',
-         * 'Premium_LRS'.
+         * Specifies the storage account kind to be "BlobStorage". The access
+         * tier is defaulted to be "Hot".
          *
-         * @param accountType the account type
+         * @return the next stage of storage account definition
+         */
+        DefinitionCreatableWithAccessTier withBlobStorageAccountKind();
+
+        /**
+         * Specifies the storage account kind to be "Storage", the kind for
+         * general purposes.
+         *
+         * @return the next stage of storage account definition
+         */
+        DefinitionCreatable withGeneralPurposeAccountKind();
+
+        /**
+         * Specifies the encryption settings on the account. The default
+         * setting is unencrypted.
+         *
+         * @param encryption the encryption setting
+         * @return the nest stage of storage account definition
+         */
+        DefinitionCreatable withEncryption(Encryption encryption);
+
+        /**
+         * Specifies the user domain assigned to the storage account. Name is the CNAME source.
+         * Only one custom domain is supported per storage account at this time.
+         * To clear the existing custom domain, use an empty string for the
+         * custom domain name property.
+         *
+         * @param customDomain the user domain assigned to the storage account
          * @return the next stage of storage account update
          */
-        Update withAccountType(AccountType accountType);
+        DefinitionCreatable withCustomDomain(CustomDomain customDomain);
+
+        /**
+         * Specifies the user domain assigned to the storage account. Name is the CNAME source.
+         * Only one custom domain is supported per storage account at this time.
+         * To clear the existing custom domain, use an empty string for the
+         * custom domain name property.
+         *
+         * @param name the custom domain name, which is the CNAME source
+         * @return the next stage of storage account update
+         */
+        DefinitionCreatable withCustomDomain(String name);
+
+        /**
+         * Specifies the user domain assigned to the storage account. Name is the CNAME source.
+         * Only one custom domain is supported per storage account at this time.
+         * To clear the existing custom domain, use an empty string for the
+         * custom domain name property.
+         *
+         * @param name the custom domain name, which is the CNAME source
+         * @param useSubDomain whether indirect CName validation is enabled
+         * @return the next stage of storage account update
+         */
+        DefinitionCreatable withCustomDomain(String name, boolean useSubDomain);
     }
 
     /**
-     * A deployment update allowing to change the parameters.
+     * A storage account definition allowing access tier to be set.
+     */
+    interface DefinitionCreatableWithAccessTier extends DefinitionCreatable {
+        /**
+         * Specifies the access tier used for billing.
+         * <p>
+         * Access tier cannot be changed more than once every 7 days (168 hours).
+         * Access tier cannot be set for StandardLRS, StandardGRS, StandardRAGRS,
+         * or PremiumLRS account types. Possible values include: 'Hot', 'Cool'.
+         *
+         * @param accessTier the access tier value
+         * @return the next stage of storage account definition
+         */
+        DefinitionCreatable withAccessTier(AccessTier accessTier);
+    }
+
+    /**
+     * A storage account update allowing to change the parameters.
+     */
+    interface UpdateWithSku {
+        /**
+         * Specifies the sku of the storage account. This used to be called
+         * account types. Possible values include: 'Standard_LRS',
+         * 'Standard_ZRS', 'Standard_GRS', 'Standard_RAGRS', 'Premium_LRS'.
+         *
+         * @param skuName the sku
+         * @return the next stage of storage account update
+         */
+        Update withSku(SkuName skuName);
+    }
+
+    /**
+     * A storageaccount update allowing to change the parameters.
      */
     interface UpdateWithCustomDomain {
         /**
@@ -196,6 +298,44 @@ public interface StorageAccount extends
          * @return the next stage of storage account update
          */
         Update withCustomDomain(String name, boolean useSubDomain);
+
+        /**
+         * Clears the existing user domain assigned to the storage account.
+         *
+         * @return the next stage of storage account update
+         */
+        Update withoutCustomDomain();
+    }
+
+    /**
+     * A storage account update allowing encryption to be specified.
+     */
+    interface UpdateWithEncryption {
+        /**
+         * Specifies the encryption settings on the account. The default
+         * setting is unencrypted.
+         *
+         * @param encryption the encryption setting
+         * @return the nest stage of storage account update
+         */
+        Update withEncryption(Encryption encryption);
+    }
+
+    /**
+     * A blob storage account update allowing access tier to be specified.
+     */
+    interface UpdateWithAccessTier {
+        /**
+         * Specifies the access tier used for billing.
+         * <p>
+         * Access tier cannot be changed more than once every 7 days (168 hours).
+         * Access tier cannot be set for StandardLRS, StandardGRS, StandardRAGRS,
+         * or PremiumLRS account types. Possible values include: 'Hot', 'Cool'.
+         *
+         * @param accessTier the access tier value
+         * @return the next stage of storage account update
+         */
+        Update withAccessTier(AccessTier accessTier);
     }
 
     /**
@@ -203,8 +343,10 @@ public interface StorageAccount extends
      */
     interface Update extends
             Appliable<StorageAccount>,
-            UpdateWithAccountType,
+            UpdateWithSku,
             UpdateWithCustomDomain,
+            UpdateWithEncryption,
+            UpdateWithAccessTier,
             Resource.UpdateWithTags<Update> {
     }
 }
