@@ -27,18 +27,21 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
         this.restClientBuilder = AzureEnvironment.AZURE.newRestClientBuilder();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public T withLogLevel(HttpLoggingInterceptor.Level level) {
         this.restClientBuilder = this.restClientBuilder.withLogLevel(level);
         return (T) this;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public T withInterceptor(Interceptor interceptor) {
         this.restClientBuilder = this.restClientBuilder.withInterceptor(interceptor);
         return (T) this;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public T withUserAgent(String userAgent) {
         this.restClientBuilder = this.restClientBuilder.withUserAgent(userAgent);
