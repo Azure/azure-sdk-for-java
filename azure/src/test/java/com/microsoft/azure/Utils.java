@@ -9,9 +9,10 @@ import com.microsoft.azure.management.compute.implementation.api.DataDisk;
 public final class Utils {
     private Utils() {
 
-    };
+    }
+
     /**
-     * Shows a virtual machine.
+     * Shows the virtual machine.
      * @param resource virtual machine to show
      */
     public static void print(VirtualMachine resource) {
