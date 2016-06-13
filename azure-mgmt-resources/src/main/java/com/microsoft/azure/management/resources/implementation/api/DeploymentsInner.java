@@ -96,6 +96,10 @@ public final class DeploymentsInner {
         Call<ResponseBody> validate(@Path("resourceGroupName") String resourceGroupName, @Path("deploymentName") String deploymentName, @Path("subscriptionId") String subscriptionId, @Body DeploymentInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}/exportTemplate")
+        Call<ResponseBody> exportTemplate(@Path("resourceGroupName") String resourceGroupName, @Path("deploymentName") String deploymentName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/")
         Call<ResponseBody> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
@@ -106,7 +110,7 @@ public final class DeploymentsInner {
     }
 
     /**
-     * Begin deleting deployment.To determine whether the operation has finished processing the request, call GetLongRunningOperationStatus.
+     * Delete deployment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment to be deleted.
@@ -134,7 +138,7 @@ public final class DeploymentsInner {
     }
 
     /**
-     * Begin deleting deployment.To determine whether the operation has finished processing the request, call GetLongRunningOperationStatus.
+     * Delete deployment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment to be deleted.
@@ -174,7 +178,7 @@ public final class DeploymentsInner {
     }
 
     /**
-     * Begin deleting deployment.To determine whether the operation has finished processing the request, call GetLongRunningOperationStatus.
+     * Delete deployment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment to be deleted.
@@ -201,7 +205,7 @@ public final class DeploymentsInner {
     }
 
     /**
-     * Begin deleting deployment.To determine whether the operation has finished processing the request, call GetLongRunningOperationStatus.
+     * Delete deployment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment to be deleted.
@@ -739,6 +743,84 @@ public final class DeploymentsInner {
         return new AzureServiceResponseBuilder<DeploymentValidateResultInner, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<DeploymentValidateResultInner>() { }.getType())
                 .register(400, new TypeToken<DeploymentValidateResultInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Exports a deployment template.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of the deployment.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the DeploymentExportResultInner object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<DeploymentExportResultInner> exportTemplate(String resourceGroupName, String deploymentName) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (deploymentName == null) {
+            throw new IllegalArgumentException("Parameter deploymentName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.exportTemplate(resourceGroupName, deploymentName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return exportTemplateDelegate(call.execute());
+    }
+
+    /**
+     * Exports a deployment template.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of the deployment.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall exportTemplateAsync(String resourceGroupName, String deploymentName, final ServiceCallback<DeploymentExportResultInner> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (deploymentName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        Call<ResponseBody> call = service.exportTemplate(resourceGroupName, deploymentName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<DeploymentExportResultInner>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(exportTemplateDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<DeploymentExportResultInner> exportTemplateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<DeploymentExportResultInner, CloudException>(this.client.restClient().mapperAdapter())
+                .register(200, new TypeToken<DeploymentExportResultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

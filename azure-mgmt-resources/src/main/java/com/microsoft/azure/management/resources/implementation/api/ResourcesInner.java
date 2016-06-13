@@ -98,7 +98,7 @@ public final class ResourcesInner {
     }
 
     /**
-     * Begin moving resources.To determine whether the operation has finished processing the request, call GetLongRunningOperationStatus.
+     * Move resources from one resource group to another. The resources being moved should all be in the same resource group.
      *
      * @param sourceResourceGroupName Source resource group name.
      * @param parameters move resources' parameters.
@@ -127,7 +127,7 @@ public final class ResourcesInner {
     }
 
     /**
-     * Begin moving resources.To determine whether the operation has finished processing the request, call GetLongRunningOperationStatus.
+     * Move resources from one resource group to another. The resources being moved should all be in the same resource group.
      *
      * @param sourceResourceGroupName Source resource group name.
      * @param parameters move resources' parameters.
@@ -168,7 +168,7 @@ public final class ResourcesInner {
     }
 
     /**
-     * Begin moving resources.To determine whether the operation has finished processing the request, call GetLongRunningOperationStatus.
+     * Move resources from one resource group to another. The resources being moved should all be in the same resource group.
      *
      * @param sourceResourceGroupName Source resource group name.
      * @param parameters move resources' parameters.
@@ -196,7 +196,7 @@ public final class ResourcesInner {
     }
 
     /**
-     * Begin moving resources.To determine whether the operation has finished processing the request, call GetLongRunningOperationStatus.
+     * Move resources from one resource group to another. The resources being moved should all be in the same resource group.
      *
      * @param sourceResourceGroupName Source resource group name.
      * @param parameters move resources' parameters.
@@ -834,7 +834,6 @@ public final class ResourcesInner {
     private ServiceResponse<GenericResourceInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<GenericResourceInner, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<GenericResourceInner>() { }.getType())
-                .register(204, new TypeToken<GenericResourceInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

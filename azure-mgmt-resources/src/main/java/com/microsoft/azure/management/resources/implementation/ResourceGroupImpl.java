@@ -6,14 +6,21 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.ResourceConnector;
 import com.microsoft.azure.management.resources.ResourceGroup;
+import com.microsoft.azure.management.resources.ResourceGroupExportResult;
+import com.microsoft.azure.management.resources.ResourceGroupExportTemplateOptions;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableImpl;
+import com.microsoft.azure.management.resources.implementation.api.ExportTemplateRequestInner;
+import com.microsoft.azure.management.resources.implementation.api.ResourceGroupExportResultInner;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupsInner;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,6 +73,16 @@ public class ResourceGroupImpl extends
     @Override
     public Map<String, String> tags() {
         return Collections.unmodifiableMap(this.inner().tags());
+    }
+
+    @Override
+    public ResourceGroupExportResult exportTemplate(ResourceGroupExportTemplateOptions options) throws CloudException, IOException {
+        ExportTemplateRequestInner inner = new ExportTemplateRequestInner()
+                .withResources(Arrays.asList("*"))
+                .withOptions(options.toString());
+        ResourceGroupExportResultInner resultInner =
+                client.exportTemplate(name(), inner).getBody();
+        return new ResourceGroupExportResultImpl(resultInner);
     }
 
     @Override

@@ -19,7 +19,7 @@ var mappings = {
     },
     'resources': {
         'dir': 'azure-mgmt-resources',
-        'source': 'arm-resources/resources/2015-11-01/swagger/resources.json',
+        'source': 'arm-resources/resources/2016-02-01/swagger/resources.json',
         'package': 'com.microsoft.azure.management.resources'
     },
     'subscriptions': {

@@ -41,6 +41,11 @@ public class DeploymentProperties {
     private DeploymentMode mode;
 
     /**
+     * Gets or sets the debug setting of the deployment.
+     */
+    private DebugSetting debugSetting;
+
+    /**
      * Get the template value.
      *
      * @return the template value
@@ -137,6 +142,26 @@ public class DeploymentProperties {
      */
     public DeploymentProperties withMode(DeploymentMode mode) {
         this.mode = mode;
+        return this;
+    }
+
+    /**
+     * Get the debugSetting value.
+     *
+     * @return the debugSetting value
+     */
+    public DebugSetting debugSetting() {
+        return this.debugSetting;
+    }
+
+    /**
+     * Set the debugSetting value.
+     *
+     * @param debugSetting the debugSetting value to set
+     * @return the DeploymentProperties object itself.
+     */
+    public DeploymentProperties withDebugSetting(DebugSetting debugSetting) {
+        this.debugSetting = debugSetting;
         return this;
     }
 

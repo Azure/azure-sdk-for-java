@@ -1,5 +1,6 @@
 package com.microsoft.azure.management.resources;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
@@ -142,6 +143,11 @@ public class GroupPagedListTests {
 
             @Override
             public Map<String, String> tags() {
+                return null;
+            }
+
+            @Override
+            public ResourceGroupExportResult exportTemplate(ResourceGroupExportTemplateOptions options) throws CloudException, IOException {
                 return null;
             }
 
