@@ -73,6 +73,11 @@ public class DeploymentPropertiesExtended {
     private DeploymentMode mode;
 
     /**
+     * Gets or sets the debug setting of the deployment.
+     */
+    private DebugSetting debugSetting;
+
+    /**
      * Get the provisioningState value.
      *
      * @return the provisioningState value
@@ -289,6 +294,26 @@ public class DeploymentPropertiesExtended {
      */
     public DeploymentPropertiesExtended withMode(DeploymentMode mode) {
         this.mode = mode;
+        return this;
+    }
+
+    /**
+     * Get the debugSetting value.
+     *
+     * @return the debugSetting value
+     */
+    public DebugSetting debugSetting() {
+        return this.debugSetting;
+    }
+
+    /**
+     * Set the debugSetting value.
+     *
+     * @param debugSetting the debugSetting value to set
+     * @return the DeploymentPropertiesExtended object itself.
+     */
+    public DeploymentPropertiesExtended withDebugSetting(DebugSetting debugSetting) {
+        this.debugSetting = debugSetting;
         return this;
     }
 
