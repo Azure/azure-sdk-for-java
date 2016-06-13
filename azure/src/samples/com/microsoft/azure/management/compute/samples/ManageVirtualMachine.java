@@ -7,11 +7,10 @@
 
 package com.microsoft.azure.management.compute.samples;
 
-import com.microsoft.azure.implementation.Azure;
+import com.microsoft.azure.Azure;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.implementation.KnownVirtualMachineImage;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import okhttp3.logging.HttpLoggingInterceptor.Level;
 import com.microsoft.azure.management.samples.Utils;
 
 import java.io.File;
@@ -41,14 +40,10 @@ public class ManageVirtualMachine {
 
             Azure azure = Azure.authenticate(credFile).withDefaultSubscription();
 
-            System.out.println(String.valueOf(azure.resourceGroups().list().size()));
-
-            Azure.configure().withLogLevel(Level.BASIC).authenticate(credFile);
+            // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());
-            System.out.println(String.valueOf(azure.resourceGroups().list().size()));
 
             final String vmName = Utils.createRandomName("vm");
-            final String nicName = Utils.createRandomName("nic");
             final String userName = "tirekicker";
             final String password = "12NewPA$$w0rd!";
 
@@ -56,7 +51,9 @@ public class ManageVirtualMachine {
             VirtualMachine vm = azure.virtualMachines().define(vmName)
                     .withRegion(Region.US_EAST)
                     .withNewGroup()
-                    .withNewPrimaryNetworkInterface(nicName)
+                    .withNewPrimaryNetwork("10.0.0.0/28")
+                    .withPrimaryPrivateIpAddressDynamic()
+                    .withoutPrimaryPublicIpAddress()
                     .withMarketplaceImage()
                     .popular(KnownVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                     .withWindowsOS()
