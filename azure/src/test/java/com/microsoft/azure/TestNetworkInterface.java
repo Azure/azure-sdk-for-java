@@ -5,9 +5,10 @@
  */
 package com.microsoft.azure;
 
-import com.microsoft.azure.management.network.*;
 import org.junit.Assert;
 
+import com.microsoft.azure.management.network.NetworkInterface;
+import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
 public class TestNetworkInterface extends TestTemplate<NetworkInterface, NetworkInterfaces> {
@@ -53,7 +54,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
                 .append("\n\tDNS server IPs: ");
 
         // Output dns servers
-        for(String dnsServerIp : resource.dnsServers()) {
+        for (String dnsServerIp : resource.dnsServers()) {
             info.append("\n\t\t").append(dnsServerIp);
         }
         info.append("\n\t IP forwarding enabled: ").append(resource.isIpForwardingEnabled())
