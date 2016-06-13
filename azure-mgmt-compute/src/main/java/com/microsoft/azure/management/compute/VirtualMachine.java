@@ -848,6 +848,22 @@ public interface VirtualMachine extends
             Appliable<VirtualMachine>,
             Resource.UpdateWithTags<Update>  {
         /**
+         * Specifies the caching type for the Operating System disk.
+         *
+         * @param cachingType the caching type.
+         * @return the stage representing updatable VM definition
+         */
+        Update withOSDiskCaching(CachingTypes cachingType);
+
+        /**
+         * Specifies the size of the OSDisk in GB.
+         *
+         * @param size the VHD size.
+         * @return the stage representing updatable VM definition
+         */
+        Update withOSDiskSizeInGB(Integer size);
+
+        /**
          * Specifies the new size for the virtual machine.
          *
          * @param sizeName the name of the size for the virtual machine as text
