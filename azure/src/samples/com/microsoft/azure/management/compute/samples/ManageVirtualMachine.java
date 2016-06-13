@@ -7,7 +7,7 @@
 
 package com.microsoft.azure.management.compute.samples;
 
-import com.microsoft.azure.implementation.Azure;
+import com.microsoft.azure.Azure;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.implementation.KnownVirtualMachineImage;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -52,7 +52,9 @@ public class ManageVirtualMachine {
             VirtualMachine vm = azure.virtualMachines().define(vmName)
                     .withRegion(Region.US_EAST)
                     .withNewGroup()
-                    .withNewPrimaryNetworkInterface(nicName)
+                    .withNewPrimaryNetwork("10.0.0.0/28")
+                    .withPrimaryPrivateIpAddressDynamic()
+                    .withoutPrimaryPublicIpAddress()
                     .withMarketplaceImage()
                     .popular(KnownVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                     .withWindowsOS()
