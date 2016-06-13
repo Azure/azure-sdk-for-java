@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.resources;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -100,6 +101,23 @@ public interface Deployment extends
      * @return the operations related to this deployment
      */
     DeploymentOperations deploymentOperations();
+
+    /**
+     * Cancel a currently running template deployment.
+     *
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     */
+    void cancel() throws CloudException, IOException;
+
+    /**
+     * Exports a deployment template.
+     *
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @return the export result
+     */
+    DeploymentExportResult exportTemplate() throws CloudException, IOException;
 
     /**
      * A deployment definition allowing resource group to be specified.

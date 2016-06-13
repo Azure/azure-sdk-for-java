@@ -38,15 +38,4 @@ public interface Deployments extends
      * @throws CloudException failures thrown from Azure
      */
     boolean checkExistence(String resourceGroupName, String deploymentName) throws IOException, CloudException;
-
-    /**
-     * Cancel a currently running template deployment.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     */
-    void cancel(String resourceGroupName, String deploymentName) throws IOException, CloudException;
 }

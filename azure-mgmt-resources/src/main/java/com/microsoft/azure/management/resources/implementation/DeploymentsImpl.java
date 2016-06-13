@@ -104,11 +104,6 @@ final class DeploymentsImpl
         return client.checkExistence(resourceGroupName, deploymentName).getBody();
     }
 
-    @Override
-    public void cancel(String resourceGroupName, String deploymentName) throws IOException, CloudException {
-        client.cancel(resourceGroupName, deploymentName);
-    }
-
     private DeploymentImpl createFluentModel(String name) {
         DeploymentExtendedInner deploymentExtendedInner = new DeploymentExtendedInner();
         deploymentExtendedInner.withName(name);
