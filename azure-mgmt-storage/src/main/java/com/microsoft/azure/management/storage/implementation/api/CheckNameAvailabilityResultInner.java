@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.storage.implementation.api;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The CheckNameAvailability operation response.
@@ -16,6 +17,7 @@ public class CheckNameAvailabilityResultInner {
      * you to use. If true, the name is available. If false, the name has
      * already been taken or invalid and cannot be used.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Boolean nameAvailable;
 
     /**
@@ -23,11 +25,13 @@ public class CheckNameAvailabilityResultInner {
      * Reason element is only returned if NameAvailable is false. Possible
      * values include: 'AccountNameInvalid', 'AlreadyExists'.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Reason reason;
 
     /**
      * Gets an error message explaining the Reason value in more detail.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /**
@@ -40,17 +44,6 @@ public class CheckNameAvailabilityResultInner {
     }
 
     /**
-     * Set the nameAvailable value.
-     *
-     * @param nameAvailable the nameAvailable value to set
-     * @return the CheckNameAvailabilityResultInner object itself.
-     */
-    public CheckNameAvailabilityResultInner withNameAvailable(Boolean nameAvailable) {
-        this.nameAvailable = nameAvailable;
-        return this;
-    }
-
-    /**
      * Get the reason value.
      *
      * @return the reason value
@@ -60,34 +53,12 @@ public class CheckNameAvailabilityResultInner {
     }
 
     /**
-     * Set the reason value.
-     *
-     * @param reason the reason value to set
-     * @return the CheckNameAvailabilityResultInner object itself.
-     */
-    public CheckNameAvailabilityResultInner withReason(Reason reason) {
-        this.reason = reason;
-        return this;
-    }
-
-    /**
      * Get the message value.
      *
      * @return the message value
      */
     public String message() {
         return this.message;
-    }
-
-    /**
-     * Set the message value.
-     *
-     * @param message the message value to set
-     * @return the CheckNameAvailabilityResultInner object itself.
-     */
-    public CheckNameAvailabilityResultInner withMessage(String message) {
-        this.message = message;
-        return this;
     }
 
 }

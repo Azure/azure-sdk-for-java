@@ -32,6 +32,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.HTTP;
 import retrofit2.http.PATCH;
 import retrofit2.http.Path;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
@@ -90,6 +91,10 @@ public final class ResourceGroupsInner {
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
         Call<ResponseBody> patch(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Body ResourceGroupInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/exportTemplate")
+        Call<ResponseBody> exportTemplate(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Body ExportTemplateRequestInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourcegroups")
@@ -424,7 +429,7 @@ public final class ResourceGroupsInner {
     }
 
     /**
-     * Begin deleting resource group.To determine whether the operation has finished processing the request, call GetLongRunningOperationStatus.
+     * Delete resource group.
      *
      * @param resourceGroupName The name of the resource group to be deleted. The name is case insensitive.
      * @throws CloudException exception thrown from REST call
@@ -448,7 +453,7 @@ public final class ResourceGroupsInner {
     }
 
     /**
-     * Begin deleting resource group.To determine whether the operation has finished processing the request, call GetLongRunningOperationStatus.
+     * Delete resource group.
      *
      * @param resourceGroupName The name of the resource group to be deleted. The name is case insensitive.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -484,7 +489,7 @@ public final class ResourceGroupsInner {
     }
 
     /**
-     * Begin deleting resource group.To determine whether the operation has finished processing the request, call GetLongRunningOperationStatus.
+     * Delete resource group.
      *
      * @param resourceGroupName The name of the resource group to be deleted. The name is case insensitive.
      * @throws CloudException exception thrown from REST call
@@ -507,7 +512,7 @@ public final class ResourceGroupsInner {
     }
 
     /**
-     * Begin deleting resource group.To determine whether the operation has finished processing the request, call GetLongRunningOperationStatus.
+     * Delete resource group.
      *
      * @param resourceGroupName The name of the resource group to be deleted. The name is case insensitive.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -697,6 +702,86 @@ public final class ResourceGroupsInner {
     private ServiceResponse<ResourceGroupInner> patchDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ResourceGroupInner, CloudException>(this.client.restClient().mapperAdapter())
                 .register(200, new TypeToken<ResourceGroupInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Captures the specified resource group as a template.
+     *
+     * @param resourceGroupName The name of the resource group to be created or updated.
+     * @param parameters Parameters supplied to the export template resource group operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ResourceGroupExportResultInner object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<ResourceGroupExportResultInner> exportTemplate(String resourceGroupName, ExportTemplateRequestInner parameters) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        Call<ResponseBody> call = service.exportTemplate(resourceGroupName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return exportTemplateDelegate(call.execute());
+    }
+
+    /**
+     * Captures the specified resource group as a template.
+     *
+     * @param resourceGroupName The name of the resource group to be created or updated.
+     * @param parameters Parameters supplied to the export template resource group operation.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall exportTemplateAsync(String resourceGroupName, ExportTemplateRequestInner parameters, final ServiceCallback<ResourceGroupExportResultInner> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (parameters == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(parameters, serviceCallback);
+        Call<ResponseBody> call = service.exportTemplate(resourceGroupName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<ResourceGroupExportResultInner>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(exportTemplateDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<ResourceGroupExportResultInner> exportTemplateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<ResourceGroupExportResultInner, CloudException>(this.client.restClient().mapperAdapter())
+                .register(200, new TypeToken<ResourceGroupExportResultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

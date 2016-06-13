@@ -11,31 +11,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Describes Storage Resource Usage.
  */
-public class UsageInner {
+public class Usage {
     /**
      * Gets the unit of measurement. Possible values include: 'Count',
      * 'Bytes', 'Seconds', 'Percent', 'CountsPerSecond', 'BytesPerSecond'.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private UsageUnit unit;
 
     /**
      * Gets the current count of the allocated resources in the subscription.
      */
-    @JsonProperty(required = true)
-    private int currentValue;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Integer currentValue;
 
     /**
      * Gets the maximum count of the resources that can be allocated in the
      * subscription.
      */
-    @JsonProperty(required = true)
-    private int limit;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Integer limit;
 
     /**
      * Gets the name of the type of usage.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private UsageName name;
 
     /**
@@ -48,34 +48,12 @@ public class UsageInner {
     }
 
     /**
-     * Set the unit value.
-     *
-     * @param unit the unit value to set
-     * @return the UsageInner object itself.
-     */
-    public UsageInner withUnit(UsageUnit unit) {
-        this.unit = unit;
-        return this;
-    }
-
-    /**
      * Get the currentValue value.
      *
      * @return the currentValue value
      */
-    public int currentValue() {
+    public Integer currentValue() {
         return this.currentValue;
-    }
-
-    /**
-     * Set the currentValue value.
-     *
-     * @param currentValue the currentValue value to set
-     * @return the UsageInner object itself.
-     */
-    public UsageInner withCurrentValue(int currentValue) {
-        this.currentValue = currentValue;
-        return this;
     }
 
     /**
@@ -83,19 +61,8 @@ public class UsageInner {
      *
      * @return the limit value
      */
-    public int limit() {
+    public Integer limit() {
         return this.limit;
-    }
-
-    /**
-     * Set the limit value.
-     *
-     * @param limit the limit value to set
-     * @return the UsageInner object itself.
-     */
-    public UsageInner withLimit(int limit) {
-        this.limit = limit;
-        return this;
     }
 
     /**
@@ -105,17 +72,6 @@ public class UsageInner {
      */
     public UsageName name() {
         return this.name;
-    }
-
-    /**
-     * Set the name value.
-     *
-     * @param name the name value to set
-     * @return the UsageInner object itself.
-     */
-    public UsageInner withName(UsageName name) {
-        this.name = name;
-        return this;
     }
 
 }

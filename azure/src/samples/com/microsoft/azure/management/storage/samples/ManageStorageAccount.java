@@ -7,12 +7,11 @@
 
 package com.microsoft.azure.management.storage.samples;
 
-import com.microsoft.azure.implementation.Azure;
+import com.microsoft.azure.Azure;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.api.AccountType;
-import okhttp3.logging.HttpLoggingInterceptor.Level;
 
 import java.io.File;
 
@@ -36,11 +35,8 @@ public class ManageStorageAccount {
 
             Azure azure = Azure.authenticate(credFile).withDefaultSubscription();
 
-            System.out.println(String.valueOf(azure.resourceGroups().list().size()));
-
-            Azure.configure().withLogLevel(Level.BASIC).authenticate(credFile);
+            // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());
-            System.out.println(String.valueOf(azure.resourceGroups().list().size()));
 
             final String storageAccountName = Utils.createRandomName("sa");
 

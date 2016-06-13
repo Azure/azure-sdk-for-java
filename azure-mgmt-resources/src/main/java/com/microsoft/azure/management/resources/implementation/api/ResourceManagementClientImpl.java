@@ -43,9 +43,11 @@ public final class ResourceManagementClientImpl extends AzureServiceClient {
      * Sets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
      *
      * @param subscriptionId the subscriptionId value.
+     * @return the service client itself
      */
-    public void withSubscriptionId(String subscriptionId) {
+    public ResourceManagementClientImpl withSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
+        return this;
     }
 
     /** Client Api Version. */
@@ -76,9 +78,11 @@ public final class ResourceManagementClientImpl extends AzureServiceClient {
      * Sets Gets or sets the preferred language for the response.
      *
      * @param acceptLanguage the acceptLanguage value.
+     * @return the service client itself
      */
-    public void withAcceptLanguage(String acceptLanguage) {
+    public ResourceManagementClientImpl withAcceptLanguage(String acceptLanguage) {
         this.acceptLanguage = acceptLanguage;
+        return this;
     }
 
     /** Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30. */
@@ -97,9 +101,11 @@ public final class ResourceManagementClientImpl extends AzureServiceClient {
      * Sets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30.
      *
      * @param longRunningOperationRetryTimeout the longRunningOperationRetryTimeout value.
+     * @return the service client itself
      */
-    public void withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout) {
+    public ResourceManagementClientImpl withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout) {
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
+        return this;
     }
 
     /** When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true. */
@@ -118,9 +124,11 @@ public final class ResourceManagementClientImpl extends AzureServiceClient {
      * Sets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
      *
      * @param generateClientRequestId the generateClientRequestId value.
+     * @return the service client itself
      */
-    public void withGenerateClientRequestId(boolean generateClientRequestId) {
+    public ResourceManagementClientImpl withGenerateClientRequestId(boolean generateClientRequestId) {
         this.generateClientRequestId = generateClientRequestId;
+        return this;
     }
 
     /**
@@ -215,32 +223,6 @@ public final class ResourceManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The PolicyDefinitionsInner object to access its operations.
-     */
-    private PolicyDefinitionsInner policyDefinitions;
-
-    /**
-     * Gets the PolicyDefinitionsInner object to access its operations.
-     * @return the PolicyDefinitionsInner object.
-     */
-    public PolicyDefinitionsInner policyDefinitions() {
-        return this.policyDefinitions;
-    }
-
-    /**
-     * The PolicyAssignmentsInner object to access its operations.
-     */
-    private PolicyAssignmentsInner policyAssignments;
-
-    /**
-     * Gets the PolicyAssignmentsInner object to access its operations.
-     * @return the PolicyAssignmentsInner object.
-     */
-    public PolicyAssignmentsInner policyAssignments() {
-        return this.policyAssignments;
-    }
-
-    /**
      * Initializes an instance of ResourceManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -273,7 +255,7 @@ public final class ResourceManagementClientImpl extends AzureServiceClient {
     }
 
     protected void initialize() {
-        this.apiVersion = "2015-11-01";
+        this.apiVersion = "2016-02-01";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
@@ -284,8 +266,6 @@ public final class ResourceManagementClientImpl extends AzureServiceClient {
         this.tags = new TagsInner(restClient().retrofit(), this);
         this.deploymentOperations = new DeploymentOperationsInner(restClient().retrofit(), this);
         this.resourceProviderOperationDetails = new ResourceProviderOperationDetailsInner(restClient().retrofit(), this);
-        this.policyDefinitions = new PolicyDefinitionsInner(restClient().retrofit(), this);
-        this.policyAssignments = new PolicyAssignmentsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
@@ -298,6 +278,6 @@ public final class ResourceManagementClientImpl extends AzureServiceClient {
     public String userAgent() {
         return String.format("Azure-SDK-For-Java/%s (%s)",
                 getClass().getPackage().getImplementationVersion(),
-                "ResourceManagementClient, 2015-11-01");
+                "ResourceManagementClient, 2016-02-01");
     }
 }

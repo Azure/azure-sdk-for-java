@@ -16,6 +16,7 @@ import com.microsoft.azure.management.resources.implementation.api.PageImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.implementation.api.CheckNameAvailabilityResultInner;
+import com.microsoft.azure.management.storage.implementation.api.SkuName;
 import com.microsoft.azure.management.storage.implementation.api.StorageAccountInner;
 import com.microsoft.azure.management.storage.implementation.api.StorageAccountsInner;
 import com.microsoft.rest.RestException;
@@ -46,15 +47,8 @@ class StorageAccountsImpl
 
     @Override
     public CheckNameAvailabilityResult checkNameAvailability(String name) throws CloudException, IOException {
-        CheckNameAvailabilityResultInner inner = client.checkNameAvailability(name, "Microsoft.Storage/storageAccounts").getBody();
-        CheckNameAvailabilityResult result;
-        if (inner.nameAvailable()) {
-            result = CheckNameAvailabilityResult.AVAILABLE;
-        } else {
-            result = CheckNameAvailabilityResult.UNAVAILABLE;
-            result = result.withReason(inner.reason()).withMessage(inner.message());
-        }
-        return result;
+        CheckNameAvailabilityResultInner inner = client.checkNameAvailability(name).getBody();
+        return new CheckNameAvailabilityResult(inner);
     }
 
     @Override
@@ -87,7 +81,9 @@ class StorageAccountsImpl
 
     @Override
     public StorageAccountImpl define(String name) {
-        return createFluentModel(name);
+        return createFluentModel(name)
+                .withSku(SkuName.STANDARD_GRS)
+                .withGeneralPurposeAccountKind();
     }
 
     private PagedList<StorageAccountInner> toPagedList(List<StorageAccountInner> list) {

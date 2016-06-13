@@ -10,7 +10,8 @@ import com.microsoft.azure.management.datalake.analytics.models.StorageAccountIn
 import com.microsoft.azure.management.datalake.analytics.models.StorageAccountProperties;
 import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccount;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
-import com.microsoft.azure.management.storage.implementation.api.AccountType;
+import com.microsoft.azure.management.storage.implementation.api.Sku;
+import com.microsoft.azure.management.storage.implementation.api.SkuName;
 import com.microsoft.azure.management.storage.implementation.api.StorageAccountCreateParametersInner;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -33,7 +34,7 @@ public class DataLakeAnalyticsAccountOperationsTests extends DataLakeAnalyticsMa
     @BeforeClass
     public static void setup() throws Exception {
         createClients();
-        location =environmentLocation;
+        location = environmentLocation;
         ResourceGroupInner group = new ResourceGroupInner();
         group.withLocation(location);
         resourceManagementClient.resourceGroups().createOrUpdate(rgName, group);
@@ -47,9 +48,9 @@ public class DataLakeAnalyticsAccountOperationsTests extends DataLakeAnalyticsMa
 
         StorageAccountCreateParametersInner createParams = new StorageAccountCreateParametersInner();
         createParams.withLocation(location);
-        createParams.withAccountType(AccountType.STANDARD_LRS);
+        createParams.withSku(new Sku().withName(SkuName.STANDARD_LRS));
         storageManagementClient.storageAccounts().create(rgName, storageAcct, createParams);
-        storageAccessKey = storageManagementClient.storageAccounts().listKeys(rgName, storageAcct).getBody().key1();
+        storageAccessKey = storageManagementClient.storageAccounts().listKeys(rgName, storageAcct).getBody().keys().get(0).value();
     }
 
     @AfterClass

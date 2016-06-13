@@ -43,9 +43,11 @@ public final class StorageManagementClientImpl extends AzureServiceClient {
      * Sets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
      *
      * @param subscriptionId the subscriptionId value.
+     * @return the service client itself
      */
-    public void withSubscriptionId(String subscriptionId) {
+    public StorageManagementClientImpl withSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
+        return this;
     }
 
     /** Client Api Version. */
@@ -76,9 +78,11 @@ public final class StorageManagementClientImpl extends AzureServiceClient {
      * Sets Gets or sets the preferred language for the response.
      *
      * @param acceptLanguage the acceptLanguage value.
+     * @return the service client itself
      */
-    public void withAcceptLanguage(String acceptLanguage) {
+    public StorageManagementClientImpl withAcceptLanguage(String acceptLanguage) {
         this.acceptLanguage = acceptLanguage;
+        return this;
     }
 
     /** Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30. */
@@ -97,9 +101,11 @@ public final class StorageManagementClientImpl extends AzureServiceClient {
      * Sets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30.
      *
      * @param longRunningOperationRetryTimeout the longRunningOperationRetryTimeout value.
+     * @return the service client itself
      */
-    public void withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout) {
+    public StorageManagementClientImpl withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout) {
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
+        return this;
     }
 
     /** When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true. */
@@ -118,9 +124,11 @@ public final class StorageManagementClientImpl extends AzureServiceClient {
      * Sets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
      *
      * @param generateClientRequestId the generateClientRequestId value.
+     * @return the service client itself
      */
-    public void withGenerateClientRequestId(boolean generateClientRequestId) {
+    public StorageManagementClientImpl withGenerateClientRequestId(boolean generateClientRequestId) {
         this.generateClientRequestId = generateClientRequestId;
+        return this;
     }
 
     /**
@@ -182,7 +190,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient {
     }
 
     protected void initialize() {
-        this.apiVersion = "2015-06-15";
+        this.apiVersion = "2016-01-01";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
@@ -200,6 +208,6 @@ public final class StorageManagementClientImpl extends AzureServiceClient {
     public String userAgent() {
         return String.format("Azure-SDK-For-Java/%s (%s)",
                 getClass().getPackage().getImplementationVersion(),
-                "StorageManagementClient, 2015-06-15");
+                "StorageManagementClient, 2016-01-01");
     }
 }
