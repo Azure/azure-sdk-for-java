@@ -40,6 +40,12 @@ public interface NetworkSecurityGroup extends
      */
     List<NetworkSecurityRule> defaultSecurityRules();
 
+    /**
+     * @return list of the ids of the network interfaces associated with this network security group
+     */
+    List<String> networkInterfaceIds();
+
+
     // Fluent interfaces for creating NSGs
 
     /**

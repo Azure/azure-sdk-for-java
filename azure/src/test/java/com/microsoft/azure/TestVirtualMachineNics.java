@@ -9,7 +9,6 @@ import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PublicIpAddress;
-import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;

@@ -737,7 +737,7 @@ class VirtualMachineImpl
 
     @Override
     public List<String> networkInterfaceIds() {
-        List nicIds = new ArrayList();
+        List<String> nicIds = new ArrayList<>();
         for (NetworkInterfaceReference nicRef : inner().networkProfile().networkInterfaces()) {
             nicIds.add(nicRef.id());
         }
@@ -889,7 +889,6 @@ class VirtualMachineImpl
                     .define(nameWithPrefix("stg", null))
                     .withRegion(this.region())
                     .withExistingGroup(this.resourceGroupName())
-                    .withAccountType(AccountType.STANDARD_GRS)
                     .create();
         }
 

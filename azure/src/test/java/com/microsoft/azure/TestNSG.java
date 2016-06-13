@@ -77,6 +77,8 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                 .append("\n\t\tPriority: ").append(rule.priority());
         }
 
+        info.append("\n\tNICs: ").append(resource.networkInterfaceIds());
+
         System.out.println(info.toString());
     }
 }
