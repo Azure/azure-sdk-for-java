@@ -121,6 +121,17 @@ public interface VirtualMachine extends
      */
     String capture(String containerName, boolean overwriteVhd) throws CloudException, IOException, InterruptedException;
 
+    /**
+     * Refreshes the virtual machine instance view to sync with Azure.
+     * <p>
+     * this will caches the instance view which can be later retrieved using {@link VirtualMachine#instanceView()}
+     *
+     * @return the refreshed instance view
+     * @throws CloudException thrown for an invalid response from the service
+     * @throws IOException exception thrown from serialization/deserialization
+     */
+    VirtualMachineInstanceView refreshInstanceView() throws CloudException, IOException;
+
     // Getters
     //
 
@@ -207,11 +218,6 @@ public interface VirtualMachine extends
     String provisioningState();
 
     /**
-     * @return the instanceView value
-     */
-    VirtualMachineInstanceView instanceView();
-
-    /**
      * @return the licenseType value
      */
     String licenseType();
@@ -253,6 +259,22 @@ public interface VirtualMachine extends
      * @return the diagnosticsProfile value
      */
     DiagnosticsProfile diagnosticsProfile();
+
+   /**
+    * @return the power state of the virtual machine
+    */
+    PowerState powerState();
+
+    /**
+     * Get the virtual machine instance view.
+     * <p>
+     * this method returns the cached instance view, to refresh the cache call {@link VirtualMachine#refreshInstanceView()}
+     *
+     * @return the virtual machine instance view
+     * @throws CloudException exceptions thrown from the cloud.
+     * @throws IOException exceptions thrown from serialization/deserialization.
+     */
+    VirtualMachineInstanceView instanceView() throws CloudException, IOException;
 
     // Setters
     //

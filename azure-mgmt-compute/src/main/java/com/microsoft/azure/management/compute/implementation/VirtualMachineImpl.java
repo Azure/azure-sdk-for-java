@@ -7,8 +7,11 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.DataDisk;
+import com.microsoft.azure.management.compute.PowerState;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSize;
+import com.microsoft.azure.management.compute.implementation.api.InstanceViewStatus;
+import com.microsoft.azure.management.compute.implementation.api.InstanceViewTypes;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineInner;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeInner;
 import com.microsoft.azure.management.compute.implementation.api.Plan;
@@ -95,6 +98,7 @@ class VirtualMachineImpl
     // Cached related resources
     private NetworkInterface primaryNetworkInterface;
     private PublicIpAddress primaryPublicIpAddress;
+    private VirtualMachineInstanceView virtualMachineInstanceView;
     // The data disks associated with the virtual machine
     private List<DataDisk> dataDisks;
     // Intermediate state of network interface definition to which private ip can be associated
@@ -134,7 +138,8 @@ class VirtualMachineImpl
         initializeDataDisks();
     }
 
-    /**************************************************.
+    /**************************************************
+     * .
      * Verbs
      **************************************************/
 
@@ -143,6 +148,7 @@ class VirtualMachineImpl
         ServiceResponse<VirtualMachineInner> response =
                 this.client.get(this.resourceGroupName(), this.name());
         this.setInner(response.getBody());
+        this.virtualMachineInstanceView = null;
         initializeDataDisks();
         return this;
     }
@@ -217,12 +223,20 @@ class VirtualMachineImpl
         return mapper.writeValueAsString(captureResult.getBody().output());
     }
 
-    /**************************************************.
+    @Override
+    public VirtualMachineInstanceView refreshInstanceView() throws CloudException, IOException {
+        this.virtualMachineInstanceView = this.client.get(this.resourceGroupName(),
+                this.name(),
+                InstanceViewTypes.INSTANCE_VIEW).getBody().instanceView();
+        return this.virtualMachineInstanceView;
+    }
+
+    /**************************************************
+     * .
      * Setters
      **************************************************/
 
     // Fluent methods for defining virtual network association for the new primary network interface
-
     @Override
     public VirtualMachineImpl withNewPrimaryNetwork(Network.DefinitionCreatable creatable) {
         this.nicDefinitionWithPrivateIp = this.preparePrimaryNetworkInterface(nameWithPrefix("nic", "-"))
@@ -521,14 +535,14 @@ class VirtualMachineImpl
 
     @Override
     public DataDiskImpl defineNewDataDisk(String name) {
-        DataDiskImpl dataDisk =  DataDiskImpl.prepareDataDisk(name, DiskCreateOptionTypes.EMPTY, this);
+        DataDiskImpl dataDisk = DataDiskImpl.prepareDataDisk(name, DiskCreateOptionTypes.EMPTY, this);
         this.dataDisks().add(dataDisk);
         return dataDisk;
     }
 
     @Override
     public DataDiskImpl defineExistingDataDisk(String name) {
-        DataDiskImpl dataDisk =  DataDiskImpl.prepareDataDisk(name, DiskCreateOptionTypes.ATTACH, this);
+        DataDiskImpl dataDisk = DataDiskImpl.prepareDataDisk(name, DiskCreateOptionTypes.ATTACH, this);
         this.dataDisks().add(dataDisk);
         return dataDisk;
     }
@@ -678,7 +692,8 @@ class VirtualMachineImpl
         return this;
     }
 
-    /**************************************************.
+    /**************************************************
+     * .
      * Getters
      **************************************************/
 
@@ -728,7 +743,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public PublicIpAddress primaryPublicIpAddress()  throws CloudException, IOException {
+    public PublicIpAddress primaryPublicIpAddress() throws CloudException, IOException {
         if (this.primaryPublicIpAddress == null) {
             this.primaryPublicIpAddress = this.primaryNetworkInterface().primaryPublicIpAddress();
         }
@@ -768,11 +783,6 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineInstanceView instanceView() {
-        return inner().instanceView();
-    }
-
-    @Override
     public String licenseType() {
         return inner().licenseType();
     }
@@ -802,8 +812,25 @@ class VirtualMachineImpl
         return inner().diagnosticsProfile();
     }
 
+    @Override
+    public VirtualMachineInstanceView instanceView() throws CloudException, IOException {
+        if (this.virtualMachineInstanceView == null) {
+            this.refreshInstanceView();
+        }
+        return this.virtualMachineInstanceView;
+    }
 
-    /**************************************************.
+    @Override
+    public PowerState powerState() {
+        String powerStateCode = this.getStatusCodeFromInstanceView("PowerState");
+        if (powerStateCode != null) {
+            return PowerState.fromValue(powerStateCode);
+        }
+        return null;
+    }
+
+    /**************************************************
+     * .
      * CreatableImpl::createResource
      **************************************************/
 
@@ -829,7 +856,7 @@ class VirtualMachineImpl
      **************************************************/
 
     /**
-     * @param prefix the prefix
+     * @param prefix    the prefix
      * @param separator the separator between prefix and random string
      * @return a random value (derived from the resource name) with the given prefix
      */
@@ -884,7 +911,7 @@ class VirtualMachineImpl
         } else if (this.existingStorageAccountToAssociate != null) {
             storageAccount = this.existingStorageAccountToAssociate;
         } else if (osDiskRequiresImplicitStorageAccountCreation()
-                   || dataDisksRequiresImplicitStorageAccountCreation()) {
+                || dataDisksRequiresImplicitStorageAccountCreation()) {
             storageAccount = this.storageManager.storageAccounts()
                     .define(nameWithPrefix("stg", null))
                     .withRegion(this.region())
@@ -1063,5 +1090,18 @@ class VirtualMachineImpl
             definitionAfterGroup = definitionWithGroup.withExistingGroup(this.resourceGroupName());
         }
         return definitionAfterGroup;
+    }
+
+    private String getStatusCodeFromInstanceView(String codePrefix) {
+        try {
+            for (InstanceViewStatus status : this.instanceView().statuses()) {
+                if (status.code() != null && status.code().startsWith(codePrefix)) {
+                    return status.code();
+                }
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return null;
     }
 }
