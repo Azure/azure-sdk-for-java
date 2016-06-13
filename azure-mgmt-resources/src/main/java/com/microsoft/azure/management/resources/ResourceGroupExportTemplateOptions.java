@@ -10,10 +10,19 @@ package com.microsoft.azure.management.resources;
  * The export template options.
  */
 public enum ResourceGroupExportTemplateOptions {
+    /**
+     * Includes default parameter values.
+     */
     INCLUDE_PARAMETER_DEFAULT_VALUE("IncludeParameterDefaultValue"),
 
+    /**
+     * Includes comments.
+     */
     INCLUDE_COMMENTS("IncludeComments"),
 
+    /**
+     * Includes default parameter values and comments.
+     */
     INCLUDE_BOTH("IncludeParameterDefaultValue, IncludeComments");
 
     private String value;
