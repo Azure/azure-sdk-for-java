@@ -11,7 +11,6 @@ import com.microsoft.azure.Azure;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.azure.management.storage.StorageAccount;
-import com.microsoft.azure.management.storage.implementation.api.AccountType;
 
 import java.io.File;
 
@@ -44,9 +43,7 @@ public class ManageStorageAccount {
             StorageAccount storageAccount = azure.storageAccounts().define(storageAccountName)
                     .withRegion(Region.US_EAST)
                     .withNewGroup()
-                    .withAccountType(AccountType.PREMIUM_LRS)
                     .create();
-
 
             // Set a default storage account
 

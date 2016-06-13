@@ -31,6 +31,6 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
 
     @Override
     public void print(VirtualMachine virtualMachine) {
-        Utils.print(virtualMachine);
+        TestUtils.print(virtualMachine);
     }
 }

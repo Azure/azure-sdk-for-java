@@ -6,8 +6,8 @@ import com.microsoft.azure.management.compute.implementation.api.DataDisk;
 /**
  * Test utilities.
  */
-public final class Utils {
-    private Utils() {
+public final class TestUtils {
+    private TestUtils() {
 
     }
 
