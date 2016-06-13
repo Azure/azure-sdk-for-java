@@ -13,7 +13,7 @@ var mappings = {
     },
     'storage': {
         'dir': 'azure-mgmt-storage',
-        'source': 'arm-storage/2015-06-15/swagger/storage.json',
+        'source': 'arm-storage/2016-01-01/swagger/storage.json',
         'package': 'com.microsoft.azure.management.storage',
         'args': '-FT 2'
     },

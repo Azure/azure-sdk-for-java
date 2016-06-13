@@ -17,33 +17,37 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class StorageAccountInner extends Resource {
     /**
+     * Gets the SKU.
+     */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Sku sku;
+
+    /**
+     * Gets the Kind. Possible values include: 'Storage', 'BlobStorage'.
+     */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Kind kind;
+
+    /**
      * Gets the status of the storage account at the time the operation was
      * called. Possible values include: 'Creating', 'ResolvingDNS',
      * 'Succeeded'.
      */
-    @JsonProperty(value = "properties.provisioningState")
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
-
-    /**
-     * Gets the type of the storage account. Possible values include:
-     * 'Standard_LRS', 'Standard_ZRS', 'Standard_GRS', 'Standard_RAGRS',
-     * 'Premium_LRS'.
-     */
-    @JsonProperty(value = "properties.accountType")
-    private AccountType accountType;
 
     /**
      * Gets the URLs that are used to perform a retrieval of a public blob,
      * queue or table object.Note that StandardZRS and PremiumLRS accounts
      * only return the blob endpoint.
      */
-    @JsonProperty(value = "properties.primaryEndpoints")
+    @JsonProperty(value = "properties.primaryEndpoints", access = JsonProperty.Access.WRITE_ONLY)
     private Endpoints primaryEndpoints;
 
     /**
      * Gets the location of the primary for the storage account.
      */
-    @JsonProperty(value = "properties.primaryLocation")
+    @JsonProperty(value = "properties.primaryLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String primaryLocation;
 
     /**
@@ -51,7 +55,7 @@ public class StorageAccountInner extends Resource {
      * account is available or unavailable. Possible values include:
      * 'Available', 'Unavailable'.
      */
-    @JsonProperty(value = "properties.statusOfPrimary")
+    @JsonProperty(value = "properties.statusOfPrimary", access = JsonProperty.Access.WRITE_ONLY)
     private AccountStatus statusOfPrimary;
 
     /**
@@ -60,7 +64,7 @@ public class StorageAccountInner extends Resource {
      * element is not returned if there has never been a failover instance.
      * Only available if the accountType is StandardGRS or StandardRAGRS.
      */
-    @JsonProperty(value = "properties.lastGeoFailoverTime")
+    @JsonProperty(value = "properties.lastGeoFailoverTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime lastGeoFailoverTime;
 
     /**
@@ -68,7 +72,7 @@ public class StorageAccountInner extends Resource {
      * account. Only available if the accountType is StandardGRS or
      * StandardRAGRS.
      */
-    @JsonProperty(value = "properties.secondaryLocation")
+    @JsonProperty(value = "properties.secondaryLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryLocation;
 
     /**
@@ -77,19 +81,19 @@ public class StorageAccountInner extends Resource {
      * accountType is StandardGRS or StandardRAGRS. Possible values include:
      * 'Available', 'Unavailable'.
      */
-    @JsonProperty(value = "properties.statusOfSecondary")
+    @JsonProperty(value = "properties.statusOfSecondary", access = JsonProperty.Access.WRITE_ONLY)
     private AccountStatus statusOfSecondary;
 
     /**
      * Gets the creation date and time of the storage account in UTC.
      */
-    @JsonProperty(value = "properties.creationTime")
+    @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime creationTime;
 
     /**
      * Gets the user assigned custom domain assigned to this storage account.
      */
-    @JsonProperty(value = "properties.customDomain")
+    @JsonProperty(value = "properties.customDomain", access = JsonProperty.Access.WRITE_ONLY)
     private CustomDomain customDomain;
 
     /**
@@ -97,8 +101,42 @@ public class StorageAccountInner extends Resource {
      * queue or table object from the secondary location of the storage
      * account. Only available if the accountType is StandardRAGRS.
      */
-    @JsonProperty(value = "properties.secondaryEndpoints")
+    @JsonProperty(value = "properties.secondaryEndpoints", access = JsonProperty.Access.WRITE_ONLY)
     private Endpoints secondaryEndpoints;
+
+    /**
+     * Gets the encryption settings on the account. If unspecified the account
+     * is unencrypted.
+     */
+    @JsonProperty(value = "properties.encryption", access = JsonProperty.Access.WRITE_ONLY)
+    private Encryption encryption;
+
+    /**
+     * The access tier used for billing. Access tier cannot be changed more
+     * than once every 7 days (168 hours). Access tier cannot be set for
+     * StandardLRS, StandardGRS, StandardRAGRS, or PremiumLRS account types.
+     * Possible values include: 'Hot', 'Cool'.
+     */
+    @JsonProperty(value = "properties.accessTier", access = JsonProperty.Access.WRITE_ONLY)
+    private AccessTier accessTier;
+
+    /**
+     * Get the sku value.
+     *
+     * @return the sku value
+     */
+    public Sku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Get the kind value.
+     *
+     * @return the kind value
+     */
+    public Kind kind() {
+        return this.kind;
+    }
 
     /**
      * Get the provisioningState value.
@@ -107,37 +145,6 @@ public class StorageAccountInner extends Resource {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState value.
-     *
-     * @param provisioningState the provisioningState value to set
-     * @return the StorageAccountInner object itself.
-     */
-    public StorageAccountInner withProvisioningState(ProvisioningState provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
-    }
-
-    /**
-     * Get the accountType value.
-     *
-     * @return the accountType value
-     */
-    public AccountType accountType() {
-        return this.accountType;
-    }
-
-    /**
-     * Set the accountType value.
-     *
-     * @param accountType the accountType value to set
-     * @return the StorageAccountInner object itself.
-     */
-    public StorageAccountInner withAccountType(AccountType accountType) {
-        this.accountType = accountType;
-        return this;
     }
 
     /**
@@ -150,34 +157,12 @@ public class StorageAccountInner extends Resource {
     }
 
     /**
-     * Set the primaryEndpoints value.
-     *
-     * @param primaryEndpoints the primaryEndpoints value to set
-     * @return the StorageAccountInner object itself.
-     */
-    public StorageAccountInner withPrimaryEndpoints(Endpoints primaryEndpoints) {
-        this.primaryEndpoints = primaryEndpoints;
-        return this;
-    }
-
-    /**
      * Get the primaryLocation value.
      *
      * @return the primaryLocation value
      */
     public String primaryLocation() {
         return this.primaryLocation;
-    }
-
-    /**
-     * Set the primaryLocation value.
-     *
-     * @param primaryLocation the primaryLocation value to set
-     * @return the StorageAccountInner object itself.
-     */
-    public StorageAccountInner withPrimaryLocation(String primaryLocation) {
-        this.primaryLocation = primaryLocation;
-        return this;
     }
 
     /**
@@ -190,34 +175,12 @@ public class StorageAccountInner extends Resource {
     }
 
     /**
-     * Set the statusOfPrimary value.
-     *
-     * @param statusOfPrimary the statusOfPrimary value to set
-     * @return the StorageAccountInner object itself.
-     */
-    public StorageAccountInner withStatusOfPrimary(AccountStatus statusOfPrimary) {
-        this.statusOfPrimary = statusOfPrimary;
-        return this;
-    }
-
-    /**
      * Get the lastGeoFailoverTime value.
      *
      * @return the lastGeoFailoverTime value
      */
     public DateTime lastGeoFailoverTime() {
         return this.lastGeoFailoverTime;
-    }
-
-    /**
-     * Set the lastGeoFailoverTime value.
-     *
-     * @param lastGeoFailoverTime the lastGeoFailoverTime value to set
-     * @return the StorageAccountInner object itself.
-     */
-    public StorageAccountInner withLastGeoFailoverTime(DateTime lastGeoFailoverTime) {
-        this.lastGeoFailoverTime = lastGeoFailoverTime;
-        return this;
     }
 
     /**
@@ -230,34 +193,12 @@ public class StorageAccountInner extends Resource {
     }
 
     /**
-     * Set the secondaryLocation value.
-     *
-     * @param secondaryLocation the secondaryLocation value to set
-     * @return the StorageAccountInner object itself.
-     */
-    public StorageAccountInner withSecondaryLocation(String secondaryLocation) {
-        this.secondaryLocation = secondaryLocation;
-        return this;
-    }
-
-    /**
      * Get the statusOfSecondary value.
      *
      * @return the statusOfSecondary value
      */
     public AccountStatus statusOfSecondary() {
         return this.statusOfSecondary;
-    }
-
-    /**
-     * Set the statusOfSecondary value.
-     *
-     * @param statusOfSecondary the statusOfSecondary value to set
-     * @return the StorageAccountInner object itself.
-     */
-    public StorageAccountInner withStatusOfSecondary(AccountStatus statusOfSecondary) {
-        this.statusOfSecondary = statusOfSecondary;
-        return this;
     }
 
     /**
@@ -270,34 +211,12 @@ public class StorageAccountInner extends Resource {
     }
 
     /**
-     * Set the creationTime value.
-     *
-     * @param creationTime the creationTime value to set
-     * @return the StorageAccountInner object itself.
-     */
-    public StorageAccountInner withCreationTime(DateTime creationTime) {
-        this.creationTime = creationTime;
-        return this;
-    }
-
-    /**
      * Get the customDomain value.
      *
      * @return the customDomain value
      */
     public CustomDomain customDomain() {
         return this.customDomain;
-    }
-
-    /**
-     * Set the customDomain value.
-     *
-     * @param customDomain the customDomain value to set
-     * @return the StorageAccountInner object itself.
-     */
-    public StorageAccountInner withCustomDomain(CustomDomain customDomain) {
-        this.customDomain = customDomain;
-        return this;
     }
 
     /**
@@ -310,14 +229,21 @@ public class StorageAccountInner extends Resource {
     }
 
     /**
-     * Set the secondaryEndpoints value.
+     * Get the encryption value.
      *
-     * @param secondaryEndpoints the secondaryEndpoints value to set
-     * @return the StorageAccountInner object itself.
+     * @return the encryption value
      */
-    public StorageAccountInner withSecondaryEndpoints(Endpoints secondaryEndpoints) {
-        this.secondaryEndpoints = secondaryEndpoints;
-        return this;
+    public Encryption encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Get the accessTier value.
+     *
+     * @return the accessTier value
+     */
+    public AccessTier accessTier() {
+        return this.accessTier;
     }
 
 }

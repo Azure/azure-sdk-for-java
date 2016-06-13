@@ -21,7 +21,15 @@ public class StorageAccountCheckNameAvailabilityParameters {
     /**
      * The type property.
      */
+    @JsonProperty(required = true)
     private String type;
+
+    /**
+     * Creates an instance of StorageAccountCheckNameAvailabilityParameters class.
+     */
+    public StorageAccountCheckNameAvailabilityParameters() {
+        type = "Microsoft.Storage/storageAccounts";
+    }
 
     /**
      * Get the name value.

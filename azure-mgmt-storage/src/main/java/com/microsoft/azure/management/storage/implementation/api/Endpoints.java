@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.storage.implementation.api;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The URIs that are used to perform a retrieval of a public blob, queue or
@@ -15,21 +16,25 @@ public class Endpoints {
     /**
      * Gets the blob endpoint.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String blob;
 
     /**
      * Gets the queue endpoint.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String queue;
 
     /**
      * Gets the table endpoint.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String table;
 
     /**
      * Gets the file endpoint.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String file;
 
     /**
@@ -42,34 +47,12 @@ public class Endpoints {
     }
 
     /**
-     * Set the blob value.
-     *
-     * @param blob the blob value to set
-     * @return the Endpoints object itself.
-     */
-    public Endpoints withBlob(String blob) {
-        this.blob = blob;
-        return this;
-    }
-
-    /**
      * Get the queue value.
      *
      * @return the queue value
      */
     public String queue() {
         return this.queue;
-    }
-
-    /**
-     * Set the queue value.
-     *
-     * @param queue the queue value to set
-     * @return the Endpoints object itself.
-     */
-    public Endpoints withQueue(String queue) {
-        this.queue = queue;
-        return this;
     }
 
     /**
@@ -82,34 +65,12 @@ public class Endpoints {
     }
 
     /**
-     * Set the table value.
-     *
-     * @param table the table value to set
-     * @return the Endpoints object itself.
-     */
-    public Endpoints withTable(String table) {
-        this.table = table;
-        return this;
-    }
-
-    /**
      * Get the file value.
      *
      * @return the file value
      */
     public String file() {
         return this.file;
-    }
-
-    /**
-     * Set the file value.
-     *
-     * @param file the file value to set
-     * @return the Endpoints object itself.
-     */
-    public Endpoints withFile(String file) {
-        this.file = file;
-        return this;
     }
 
 }
