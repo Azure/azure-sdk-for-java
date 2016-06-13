@@ -94,6 +94,6 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
 
     @Override
     public void print(VirtualMachine virtualMachine) {
-        Utils.print(virtualMachine);
+        TestUtils.print(virtualMachine);
     }
 }

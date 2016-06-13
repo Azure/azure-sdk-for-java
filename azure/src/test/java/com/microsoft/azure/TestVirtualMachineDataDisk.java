@@ -71,6 +71,6 @@ public class TestVirtualMachineDataDisk extends TestTemplate<VirtualMachine, Vir
 
     @Override
     public void print(VirtualMachine virtualMachine) {
-        Utils.print(virtualMachine);
+        TestUtils.print(virtualMachine);
     }
 }
