@@ -71,18 +71,12 @@ class NetworkSecurityGroupImpl
     }
 
     @Override
-    public NetworkSecurityGroupImpl create() throws Exception {
-        super.creatablesCreate();
-        return this;
-    }
-
-    @Override
     public NetworkSecurityGroupImpl update() throws Exception {
         return this;
     }
 
     @Override
-    public NetworkSecurityGroupImpl apply() throws Exception {
+    public NetworkSecurityGroup apply() throws Exception {
         return this.create();
     }
 

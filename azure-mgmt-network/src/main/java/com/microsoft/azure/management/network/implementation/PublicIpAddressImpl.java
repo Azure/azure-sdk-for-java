@@ -38,7 +38,7 @@ class PublicIpAddressImpl
     // Verbs
 
     @Override
-    public PublicIpAddressImpl apply() throws Exception {
+    public PublicIpAddress apply() throws Exception {
         return this.create();
     }
 
@@ -53,12 +53,6 @@ class PublicIpAddressImpl
             this.client.get(this.resourceGroupName(), this.name());
         PublicIPAddressInner inner = response.getBody();
         this.setInner(inner);
-        return this;
-    }
-
-    @Override
-    public PublicIpAddressImpl create() throws Exception {
-        super.creatablesCreate();
         return this;
     }
 

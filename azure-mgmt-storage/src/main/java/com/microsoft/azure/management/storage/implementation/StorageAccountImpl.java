@@ -122,12 +122,6 @@ class StorageAccountImpl
     }
 
     @Override
-    public StorageAccountImpl create() throws Exception {
-        super.creatablesCreate();
-        return this;
-    }
-
-    @Override
     public StorageAccountImpl withAccountType(AccountType accountType) {
         this.inner().withAccountType(accountType);
         return this;

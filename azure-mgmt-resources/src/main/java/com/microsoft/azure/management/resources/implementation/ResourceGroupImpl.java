@@ -101,14 +101,8 @@ public class ResourceGroupImpl extends
     }
 
     @Override
-    public ResourceGroupImpl apply() throws Exception {
+    public ResourceGroup apply() throws Exception {
         return this.create();
-    }
-
-    @Override
-    public ResourceGroupImpl create() throws Exception {          //  FLUENT: implementation of ResourceGroup.DefinitionCreatable.Creatable<ResourceGroup>
-        super.creatablesCreate();
-        return this;
     }
 
     @Override

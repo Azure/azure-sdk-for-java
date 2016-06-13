@@ -29,22 +29,6 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT>
     }
 
     /**
-     * create this resource and creatable resources it depends on.
-     * <p>
-     * dependency resources will be created only if this is the root group otherwise
-     * it creates the main resource.
-     *
-     * @throws Exception the exception
-     */
-    protected void creatablesCreate() throws Exception {
-        if (creatableTaskGroup.isRoot()) {
-            creatableTaskGroup.execute();
-        } else {
-            createResource();
-        }
-    }
-
-    /**
      * add a creatable resource dependency for this resource.
      *
      * @param creatableResource the creatable dependency.
@@ -61,6 +45,21 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT>
 
     protected Resource createdResource(String key) {
         return this.creatableTaskGroup.taskResult(key);
+    }
+
+    /**
+     * Default implementation of create().
+     * @return the created resource
+     * @throws Exception when anything goes wrong
+     */
+    @SuppressWarnings("unchecked")
+    public FluentModelT create() throws Exception {
+        if (creatableTaskGroup.isRoot()) {
+            creatableTaskGroup.execute();
+        } else {
+            createResource();
+        }
+        return (FluentModelT) this;
     }
 
     /**
