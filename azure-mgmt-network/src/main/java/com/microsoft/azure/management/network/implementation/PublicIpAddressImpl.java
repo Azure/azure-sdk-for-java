@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.implementation.api.IPAllocationMethod;
+import com.microsoft.azure.management.network.implementation.api.PublicIPAddressDnsSettings;
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressInner;
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressesInner;
 import com.microsoft.azure.management.resources.ResourceGroups;
@@ -142,6 +143,16 @@ class PublicIpAddressImpl
 
     @Override
     protected void createResource() throws Exception {
+        // Clean up empty DNS settings
+        final PublicIPAddressDnsSettings dnsSettings = this.inner().dnsSettings();
+        if (dnsSettings != null) {
+            if ((dnsSettings.domainNameLabel() == null || dnsSettings.domainNameLabel().isEmpty())
+                    && (dnsSettings.fqdn() == null || dnsSettings.fqdn().isEmpty())
+                    && (dnsSettings.reverseFqdn() == null || dnsSettings.reverseFqdn().isEmpty())) {
+                this.inner().withDnsSettings(null);
+            }
+        }
+
         ServiceResponse<PublicIPAddressInner> response =
                 this.client.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
         this.setInner(response.getBody());

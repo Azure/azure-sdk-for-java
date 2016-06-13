@@ -3,11 +3,22 @@ package com.microsoft.azure;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.implementation.api.DataDisk;
 
-public class Utils {
+/**
+ * Test utilities.
+ */
+public final class Utils {
+    private Utils() {
+
+    }
+
+    /**
+     * Shows the virtual machine.
+     * @param resource virtual machine to show
+     */
     public static void print(VirtualMachine resource) {
         StringBuilder storageProfile = new StringBuilder().append("\n\tStorageProfile: ");
         if (resource.storageProfile().imageReference() != null) {
-            storageProfile.append("\n\t\tImageReference:" );
+            storageProfile.append("\n\t\tImageReference:");
             storageProfile.append("\n\t\t\tPublisher: ").append(resource.storageProfile().imageReference().publisher());
             storageProfile.append("\n\t\t\tOffer: ").append(resource.storageProfile().imageReference().offer());
             storageProfile.append("\n\t\t\tSKU: ").append(resource.storageProfile().imageReference().sku());
@@ -15,7 +26,7 @@ public class Utils {
         }
 
         if (resource.storageProfile().osDisk() != null) {
-            storageProfile.append("\n\t\tOSDisk:" );
+            storageProfile.append("\n\t\tOSDisk:");
             storageProfile.append("\n\t\t\tOSType: ").append(resource.storageProfile().osDisk().osType());
             storageProfile.append("\n\t\t\tName: ").append(resource.storageProfile().osDisk().name());
             storageProfile.append("\n\t\t\tCaching: ").append(resource.storageProfile().osDisk().caching());
@@ -46,7 +57,7 @@ public class Utils {
         if (resource.storageProfile().dataDisks() != null) {
             int i = 0;
             for (DataDisk disk : resource.storageProfile().dataDisks()) {
-                storageProfile.append("\n\t\tDataDisk: #" ).append(i++);
+                storageProfile.append("\n\t\tDataDisk: #").append(i++);
                 storageProfile.append("\n\t\t\tName: ").append(disk.name());
                 storageProfile.append("\n\t\t\tCaching: ").append(disk.caching());
                 storageProfile.append("\n\t\t\tCreateOption: ").append(disk.createOption());
@@ -62,7 +73,7 @@ public class Utils {
         }
 
         StringBuilder osProfile = new StringBuilder().append("\n\tOSProfile: ");
-        osProfile.append("\n\t\tComputerName:" ).append(resource.osProfile().computerName());
+        osProfile.append("\n\t\tComputerName:").append(resource.osProfile().computerName());
         if (resource.osProfile().windowsConfiguration() != null) {
             osProfile.append("\n\t\t\tWindowsConfiguration: ");
             osProfile.append("\n\t\t\t\tProvisionVMAgent: ")
@@ -81,7 +92,7 @@ public class Utils {
 
         StringBuilder networkProfile = new StringBuilder().append("\n\tNetworkProfile: ");
         for (String networkInterfaceId : resource.networkInterfaceIds()) {
-            networkProfile.append("\n\t\tId:" ).append(networkInterfaceId);
+            networkProfile.append("\n\t\tId:").append(networkInterfaceId);
         }
 
         System.out.println(new StringBuilder().append("Virtual Machine: ").append(resource.id())
