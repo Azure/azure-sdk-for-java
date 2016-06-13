@@ -2,8 +2,8 @@ package com.microsoft.azure.management.datalake.store;
 
 import com.microsoft.azure.credentials.AzureEnvironment;
 import com.microsoft.azure.credentials.UserTokenCredentials;
-import com.microsoft.azure.management.datalake.store.implementation.api.DataLakeStoreAccountManagementClientImpl;
-import com.microsoft.azure.management.datalake.store.implementation.api.DataLakeStoreFileSystemManagementClientImpl;
+import com.microsoft.azure.management.datalake.store.implementation.DataLakeStoreAccountManagementClientImpl;
+import com.microsoft.azure.management.datalake.store.implementation.DataLakeStoreFileSystemManagementClientImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.rest.RestClient;
 import okhttp3.logging.HttpLoggingInterceptor;

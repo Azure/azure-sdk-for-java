@@ -6,7 +6,17 @@
 
 package com.microsoft.azure.management.resources.fluentcore.model;
 
-// Encapsulates the create() method
+/**
+ * The final stage of the resource definition, at which it can be create, using {@link #create()}.
+ *
+ * @param <T> the fluent type of the resource to be created
+ */
 public interface Creatable<T> extends Indexable {
-	T create() throws Exception;
+    /**
+     * Execute the create request.
+     *
+     * @return the create resource
+     * @throws Exception exceptions from Azure
+     */
+    T create() throws Exception;
 }

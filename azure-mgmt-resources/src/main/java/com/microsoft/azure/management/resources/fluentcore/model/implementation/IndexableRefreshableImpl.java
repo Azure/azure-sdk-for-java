@@ -6,16 +6,22 @@
 
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableImpl;
 
-public abstract class IndexableRefreshableImpl<T> 
-	extends IndexableImpl
-	implements Refreshable<T> {
+/**
+ * The implementation for {@link Indexable} and {@link Refreshable}.
+ *
+ * @param <T> the fluent type of the resource
+ */
+public abstract class IndexableRefreshableImpl<T>
+    extends IndexableImpl
+    implements Refreshable<T> {
 
-	protected IndexableRefreshableImpl(String name) {
-		super(name);
-	}
+    protected IndexableRefreshableImpl(String name) {
+        super(name);
+    }
 
-	public abstract T refresh() throws Exception;
+    @Override
+    public abstract T refresh() throws Exception;
 }

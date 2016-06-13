@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents an Azure virtual machine image sku.
+ * The implementation for {@link VirtualMachineImage.Sku}.
  */
 class VirtualMachineImageSkuImpl
         implements VirtualMachineImage.Sku {
@@ -47,8 +47,8 @@ class VirtualMachineImageSkuImpl
     @Override
     public List<VirtualMachineImage> listImages() throws CloudException, IOException {
         List<VirtualMachineImage> images = new ArrayList<>();
-        for (VirtualMachineImageResourceInner inner :
-                client.list(
+        for (VirtualMachineImageResourceInner inner
+                : client.list(
                         region().toString(),
                         publisher(),
                         offer(),

@@ -2,7 +2,12 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.SubResource;
-import com.microsoft.azure.management.network.*;
+import com.microsoft.azure.management.network.Network;
+import com.microsoft.azure.management.network.NetworkInterface;
+import com.microsoft.azure.management.network.Networks;
+import com.microsoft.azure.management.network.NicIpConfiguration;
+import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceIPConfiguration;
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressInner;
 import com.microsoft.azure.management.network.implementation.api.SubnetInner;
@@ -205,7 +210,7 @@ class NicIpConfigurationImpl
 
     protected static void ensureConfigurations(List<NicIpConfiguration> nicIpConfigurations) {
         for (NicIpConfiguration nicIpConfiguration : nicIpConfigurations) {
-            NicIpConfigurationImpl config = (NicIpConfigurationImpl)nicIpConfiguration;
+            NicIpConfigurationImpl config = (NicIpConfigurationImpl) nicIpConfiguration;
             config.inner().withSubnet(config.subnetToAssociate());
             config.inner().withPublicIPAddress(config.publicIpToAssociate());
         }

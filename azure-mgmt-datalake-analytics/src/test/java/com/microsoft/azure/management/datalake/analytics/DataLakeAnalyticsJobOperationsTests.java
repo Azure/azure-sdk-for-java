@@ -1,14 +1,14 @@
 package com.microsoft.azure.management.datalake.analytics;
 
-import com.microsoft.azure.management.datalake.analytics.implementation.api.DataLakeAnalyticsAccountInner;
-import com.microsoft.azure.management.datalake.analytics.implementation.api.DataLakeAnalyticsAccountProperties;
-import com.microsoft.azure.management.datalake.analytics.implementation.api.DataLakeStoreAccountInfoInner;
-import com.microsoft.azure.management.datalake.analytics.implementation.api.JobInformationInner;
-import com.microsoft.azure.management.datalake.analytics.implementation.api.JobResult;
-import com.microsoft.azure.management.datalake.analytics.implementation.api.JobState;
-import com.microsoft.azure.management.datalake.analytics.implementation.api.JobType;
-import com.microsoft.azure.management.datalake.analytics.implementation.api.USqlJobProperties;
-import com.microsoft.azure.management.datalake.store.implementation.api.DataLakeStoreAccountInner;
+import com.microsoft.azure.management.datalake.analytics.models.DataLakeAnalyticsAccount;
+import com.microsoft.azure.management.datalake.analytics.models.DataLakeAnalyticsAccountProperties;
+import com.microsoft.azure.management.datalake.analytics.models.DataLakeStoreAccountInfo;
+import com.microsoft.azure.management.datalake.analytics.models.JobInformation;
+import com.microsoft.azure.management.datalake.analytics.models.JobResult;
+import com.microsoft.azure.management.datalake.analytics.models.JobState;
+import com.microsoft.azure.management.datalake.analytics.models.JobType;
+import com.microsoft.azure.management.datalake.analytics.models.USqlJobProperties;
+import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccount;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -34,22 +34,22 @@ public class DataLakeAnalyticsJobOperationsTests extends DataLakeAnalyticsManage
         group.withLocation(location);
         resourceManagementClient.resourceGroups().createOrUpdate(rgName, group);
         // create storage and ADLS accounts, setting the accessKey
-        DataLakeStoreAccountInner adlsAccount = new DataLakeStoreAccountInner();
+        DataLakeStoreAccount adlsAccount = new DataLakeStoreAccount();
         adlsAccount.withLocation(location);
         adlsAccount.withName(adlsAcct);
         dataLakeStoreAccountManagementClient.accounts().create(rgName, adlsAcct, adlsAccount);
 
         // Create the ADLA acct to use.
         DataLakeAnalyticsAccountProperties createProperties = new DataLakeAnalyticsAccountProperties();
-        List<DataLakeStoreAccountInfoInner> adlsAccts = new ArrayList<DataLakeStoreAccountInfoInner>();
-        DataLakeStoreAccountInfoInner adlsInfo = new DataLakeStoreAccountInfoInner();
+        List<DataLakeStoreAccountInfo> adlsAccts = new ArrayList<DataLakeStoreAccountInfo>();
+        DataLakeStoreAccountInfo adlsInfo = new DataLakeStoreAccountInfo();
         adlsInfo.withName(adlsAcct);
         adlsAccts.add(adlsInfo);
 
         createProperties.withDataLakeStoreAccounts(adlsAccts);
         createProperties.withDefaultDataLakeStoreAccount(adlsAcct);
 
-        DataLakeAnalyticsAccountInner createParams = new DataLakeAnalyticsAccountInner();
+        DataLakeAnalyticsAccount createParams = new DataLakeAnalyticsAccount();
         createParams.withLocation(location);
         createParams.withName(adlaAcct);
         createParams.withProperties(createProperties);
@@ -71,7 +71,7 @@ public class DataLakeAnalyticsJobOperationsTests extends DataLakeAnalyticsManage
     @Test
     public void canSubmitGetListAndCancelJobs() throws Exception {
         // submit a job
-        JobInformationInner jobToSubmit = new JobInformationInner();
+        JobInformation jobToSubmit = new JobInformation();
         USqlJobProperties jobProperties = new USqlJobProperties();
         jobProperties.withScript(jobScript);
         jobToSubmit.withName("java azure sdk data lake analytics job");
@@ -81,14 +81,14 @@ public class DataLakeAnalyticsJobOperationsTests extends DataLakeAnalyticsManage
         UUID jobId = UUID.randomUUID();
         UUID secondJobId = UUID.randomUUID();
 
-        JobInformationInner jobCreateResponse = dataLakeAnalyticsJobManagementClient.jobs().create(adlaAcct, jobId, jobToSubmit).getBody();
+        JobInformation jobCreateResponse = dataLakeAnalyticsJobManagementClient.jobs().create(adlaAcct, jobId, jobToSubmit).getBody();
         Assert.assertNotNull(jobCreateResponse);
 
         // cancel the job
         dataLakeAnalyticsJobManagementClient.jobs().cancel(adlaAcct, jobId);
 
         // Get the job and ensure it was cancelled
-        JobInformationInner cancelledJobResponse = dataLakeAnalyticsJobManagementClient.jobs().get(adlaAcct, jobId).getBody();
+        JobInformation cancelledJobResponse = dataLakeAnalyticsJobManagementClient.jobs().get(adlaAcct, jobId).getBody();
         Assert.assertEquals(JobResult.CANCELLED, cancelledJobResponse.result());
         Assert.assertNotNull(cancelledJobResponse.errorMessage());
         Assert.assertTrue(cancelledJobResponse.errorMessage().size() >= 1);
@@ -97,7 +97,7 @@ public class DataLakeAnalyticsJobOperationsTests extends DataLakeAnalyticsManage
         jobCreateResponse = dataLakeAnalyticsJobManagementClient.jobs().create(adlaAcct, secondJobId, jobToSubmit).getBody();
         Assert.assertNotNull(jobCreateResponse);
 
-        JobInformationInner getJobResponse = dataLakeAnalyticsJobManagementClient.jobs().get(adlaAcct, jobCreateResponse.jobId()).getBody();
+        JobInformation getJobResponse = dataLakeAnalyticsJobManagementClient.jobs().get(adlaAcct, jobCreateResponse.jobId()).getBody();
         Assert.assertNotNull(getJobResponse);
 
         int maxWaitInSeconds = 180; // 3 minutes should be long enough
@@ -120,10 +120,10 @@ public class DataLakeAnalyticsJobOperationsTests extends DataLakeAnalyticsManage
                 getJobResponse.jobId(), getJobResponse.state(), getJobResponse.result(), getJobResponse.errorMessage()),
                 getJobResponse.state() == JobState.ENDED && getJobResponse.result() == JobResult.SUCCEEDED);
 
-        List<JobInformationInner> listJobResponse = dataLakeAnalyticsJobManagementClient.jobs().list(adlaAcct, null, null, null, null, null, null, null, null, null).getBody();
+        List<JobInformation> listJobResponse = dataLakeAnalyticsJobManagementClient.jobs().list(adlaAcct, null, null, null, null, null, null, null, null, null).getBody();
         Assert.assertNotNull(listJobResponse);
         boolean foundJob = false;
-        for(JobInformationInner eachJob : listJobResponse) {
+        for(JobInformation eachJob : listJobResponse) {
             if (eachJob.jobId().equals(secondJobId)) {
                 foundJob = true;
                 break;
@@ -134,7 +134,7 @@ public class DataLakeAnalyticsJobOperationsTests extends DataLakeAnalyticsManage
 
         // Just compile the job, which requires a jobId in the job object.
         jobToSubmit.withJobId(getJobResponse.jobId());
-        JobInformationInner compileResponse = dataLakeAnalyticsJobManagementClient.jobs().build(adlaAcct, jobToSubmit).getBody();
+        JobInformation compileResponse = dataLakeAnalyticsJobManagementClient.jobs().build(adlaAcct, jobToSubmit).getBody();
         Assert.assertNotNull(compileResponse);
 
         // list the jobs both with a hand crafted query string and using the parameters
@@ -142,7 +142,7 @@ public class DataLakeAnalyticsJobOperationsTests extends DataLakeAnalyticsManage
         Assert.assertNotNull(listJobResponse);
 
         foundJob = false;
-        for(JobInformationInner eachJob : listJobResponse) {
+        for(JobInformation eachJob : listJobResponse) {
             if (eachJob.jobId().equals(secondJobId)) {
                 foundJob = true;
                 break;

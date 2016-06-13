@@ -1,7 +1,7 @@
 package com.microsoft.azure.management.datalake.store;
 
-import com.microsoft.azure.management.datalake.store.implementation.api.DataLakeStoreAccountInner;
-import com.microsoft.azure.management.datalake.store.implementation.api.DataLakeStoreAccountProperties;
+import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccount;
+import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccountProperties;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -38,14 +38,14 @@ public class DataLakeStoreAccountOperationsTests extends DataLakeStoreManagement
         // Create
         DataLakeStoreAccountProperties createProperties = new DataLakeStoreAccountProperties();
 
-        DataLakeStoreAccountInner createParams = new DataLakeStoreAccountInner();
+        DataLakeStoreAccount createParams = new DataLakeStoreAccount();
         createParams.withLocation(location);
         createParams.withName(adlsAcct);
         createParams.withProperties(createProperties);
         createParams.withTags(new HashMap<String, String>());
         createParams.tags().put("testkey", "testvalue");
 
-        DataLakeStoreAccountInner createResponse = dataLakeStoreAccountManagementClient.accounts().create(rgName, adlsAcct, createParams).getBody();
+        DataLakeStoreAccount createResponse = dataLakeStoreAccountManagementClient.accounts().create(rgName, adlsAcct, createParams).getBody();
         Assert.assertEquals(location, createResponse.location());
         Assert.assertEquals("Microsoft.DataLakeStore/accounts", createResponse.type());
         Assert.assertNotNull(createResponse.id());
@@ -55,7 +55,7 @@ public class DataLakeStoreAccountOperationsTests extends DataLakeStoreManagement
         // update the tags
         createParams.tags().put("testkey2", "testvalue2");
         createParams.withProperties(null);
-        DataLakeStoreAccountInner updateResponse = dataLakeStoreAccountManagementClient.accounts().update(rgName, adlsAcct, createParams).getBody();
+        DataLakeStoreAccount updateResponse = dataLakeStoreAccountManagementClient.accounts().update(rgName, adlsAcct, createParams).getBody();
         Assert.assertEquals(location, updateResponse.location());
         Assert.assertEquals("Microsoft.DataLakeStore/accounts", updateResponse.type());
         Assert.assertNotNull(updateResponse.id());
@@ -63,7 +63,7 @@ public class DataLakeStoreAccountOperationsTests extends DataLakeStoreManagement
         Assert.assertEquals(2, updateResponse.tags().size());
 
         // get the account
-        DataLakeStoreAccountInner getResponse = dataLakeStoreAccountManagementClient.accounts().get(rgName, adlsAcct).getBody();
+        DataLakeStoreAccount getResponse = dataLakeStoreAccountManagementClient.accounts().get(rgName, adlsAcct).getBody();
         Assert.assertEquals(location, getResponse.location());
         Assert.assertEquals("Microsoft.DataLakeStore/accounts", getResponse.type());
         Assert.assertNotNull(getResponse.id());
@@ -71,9 +71,9 @@ public class DataLakeStoreAccountOperationsTests extends DataLakeStoreManagement
         Assert.assertEquals(2, getResponse.tags().size());
 
         // list all accounts and make sure there is one.
-        List<DataLakeStoreAccountInner> listResult = dataLakeStoreAccountManagementClient.accounts().list().getBody();
-        DataLakeStoreAccountInner discoveredAcct = null;
-        for (DataLakeStoreAccountInner acct : listResult) {
+        List<DataLakeStoreAccount> listResult = dataLakeStoreAccountManagementClient.accounts().list().getBody();
+        DataLakeStoreAccount discoveredAcct = null;
+        for (DataLakeStoreAccount acct : listResult) {
             if (acct.name().equals(adlsAcct)) {
                 discoveredAcct = acct;
                 break;
@@ -93,7 +93,7 @@ public class DataLakeStoreAccountOperationsTests extends DataLakeStoreManagement
         // list within a resource group
         listResult = dataLakeStoreAccountManagementClient.accounts().listByResourceGroup(rgName).getBody();
         discoveredAcct = null;
-        for (DataLakeStoreAccountInner acct : listResult) {
+        for (DataLakeStoreAccount acct : listResult) {
             if (acct.name().equals(adlsAcct)) {
                 discoveredAcct = acct;
                 break;

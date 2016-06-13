@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents an Azure virtual machine image publisher.
+ * The implementation for {@link VirtualMachineImage.Publisher}.
  */
 class VirtualMachineImagePublisherImpl
         implements VirtualMachineImage.Publisher {

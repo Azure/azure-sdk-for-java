@@ -6,7 +6,6 @@
 package com.microsoft.azure;
 
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
-import com.microsoft.azure.implementation.Azure;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.storage.StorageAccount;
@@ -21,25 +20,25 @@ import java.io.File;
 import java.io.IOException;
 
 public class AzureTests {
-    private static final ServiceClientCredentials credentials = new ApplicationTokenCredentials(
+    private static final ServiceClientCredentials CREDENTIALS = new ApplicationTokenCredentials(
             System.getenv("client-id"),
             System.getenv("domain"),
             System.getenv("secret"),
             AzureEnvironment.AZURE);
-    private static final String subscriptionId = System.getenv("arm.subscriptionid");
+    private static final String SUBSCRIPTION_ID = System.getenv("arm.subscriptionid");
     private Subscriptions subscriptions;
     private Azure azure, azure2;
 
     public static void main(String[] args) throws IOException, CloudException {
         final File credFile = new File("my.azureauth");
         Azure azure = Azure.authenticate(credFile).withDefaultSubscription();
-        
+
         System.out.println(String.valueOf(azure.resourceGroups().list().size()));
 
         Azure.configure().withLogLevel(Level.BASIC).authenticate(credFile);
         System.out.println("Selected subscription: " + azure.subscriptionId());
         System.out.println(String.valueOf(azure.resourceGroups().list().size()));
-        
+
         final File authFileNoSubscription = new File("nosub.azureauth");
         azure = Azure.authenticate(authFileNoSubscription).withDefaultSubscription();
         System.out.println("Selected subscription: " + azure.subscriptionId());
@@ -52,14 +51,14 @@ public class AzureTests {
         Azure.Authenticated azureAuthed = Azure.configure()
                 .withLogLevel(Level.BODY)
                 .withUserAgent("AzureTests")
-                .authenticate(credentials);
+                .authenticate(CREDENTIALS);
 
         subscriptions = azureAuthed.subscriptions();
-        azure = azureAuthed.withSubscription(subscriptionId);
+        azure = azureAuthed.withSubscription(SUBSCRIPTION_ID);
 
         // Authenticate based on file
-        this.azure2 = Azure.authenticate(new File("my.azureauth"))
-            .withDefaultSubscription();
+        //this.azure2 = Azure.authenticate(new File("my.azureauth"))
+        //    .withDefaultSubscription();
     }
 
     /**
@@ -103,7 +102,13 @@ public class AzureTests {
     }
 
     @Test public void testVirtualMachines() throws Exception {
-        new TestVirtualMachine().runTest(azure.virtualMachines(), azure2.resourceGroups());
+        // Future: This method needs to have a better specific name since we are going to include unit test for
+        // different vm scenarios.
+        new TestVirtualMachine().runTest(azure.virtualMachines(), azure.resourceGroups());
+    }
+
+    @Test public void testVirtualMachineDataDisk() throws Exception {
+        new TestVirtualMachineDataDisk().runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 
     @Test
@@ -120,7 +125,7 @@ public class AzureTests {
     public void listStorageAccounts() throws Exception {
         Assert.assertTrue(0 < azure.storageAccounts().list().size());
     }
-    
+
     @Test
     public void createStorageAccount() throws Exception {
         StorageAccount storageAccount = azure.storageAccounts().define("my-stg1")

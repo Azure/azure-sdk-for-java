@@ -4,7 +4,7 @@ import com.microsoft.azure.management.compute.VirtualMachineSize;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeInner;
 
 /**
- * Represents an Azure virtual machine size.
+ * The implementation for {@link VirtualMachineSize}.
  */
 class VirtualMachineSizeImpl implements VirtualMachineSize {
     private VirtualMachineSizeInner innerModel;

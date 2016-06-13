@@ -5,10 +5,10 @@
  */
 package com.microsoft.azure.management.datalake.store.uploader;
 
-import com.microsoft.azure.management.datalake.store.implementation.api.AdlsErrorException;
+import com.microsoft.azure.management.datalake.store.models.AdlsErrorException;
 import com.microsoft.rest.RestException;
-import com.microsoft.azure.management.datalake.store.implementation.api.DataLakeStoreFileSystemManagementClientImpl;
-import com.microsoft.azure.management.datalake.store.implementation.api.FileStatusResultInner;
+import com.microsoft.azure.management.datalake.store.implementation.DataLakeStoreFileSystemManagementClientImpl;
+import com.microsoft.azure.management.datalake.store.models.FileStatusResult;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
@@ -118,7 +118,7 @@ public class DataLakeStoreFrontEndAdapterImpl implements FrontEndAdapter {
      * @throws RestException
      */
     public long GetStreamLength(String streamPath) throws IOException, RestException {
-        FileStatusResultInner fileInfoResponse = _client.fileSystems().getFileStatus(_accountName, streamPath).getBody();
+        FileStatusResult fileInfoResponse = _client.fileSystems().getFileStatus(_accountName, streamPath).getBody();
         return fileInfoResponse.fileStatus().length();
     }
 
