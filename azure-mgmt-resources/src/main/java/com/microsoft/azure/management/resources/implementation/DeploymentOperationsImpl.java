@@ -26,7 +26,6 @@ final class DeploymentOperationsImpl
         implements DeploymentOperations {
     private final DeploymentOperationsInner client;
     private final Deployment deployment;
-    private final ResourceGroups resourceGroups;
     private final PagedListConverter<DeploymentOperationInner, DeploymentOperation> converter;
 
     DeploymentOperationsImpl(final DeploymentOperationsInner client,
@@ -34,7 +33,6 @@ final class DeploymentOperationsImpl
                                     final ResourceGroups resourceGroups) {
         this.client = client;
         this.deployment = deployment;
-        this.resourceGroups = resourceGroups;
         converter = new PagedListConverter<DeploymentOperationInner, DeploymentOperation>() {
             @Override
             public DeploymentOperation typeConvert(DeploymentOperationInner deploymentInner) {

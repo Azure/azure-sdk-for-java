@@ -21,11 +21,9 @@ import java.io.IOException;
 class DeploymentOperationsInGroupImpl
         implements DeploymentOperations.InGroup {
     private final DeploymentOperations deploymentOperations;
-    private final ResourceGroup resourceGroup;
 
     DeploymentOperationsInGroupImpl(final DeploymentOperations deploymentOperations, final ResourceGroup resourceGroup) {
         this.deploymentOperations  = deploymentOperations;
-        this.resourceGroup = resourceGroup;
     }
 
     @Override

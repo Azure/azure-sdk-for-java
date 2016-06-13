@@ -18,7 +18,6 @@ import java.util.List;
 class VirtualMachineImageImpl
         extends IndexableWrapperImpl<VirtualMachineImageInner>
         implements VirtualMachineImage {
-    private final VirtualMachineImagesInner client;
     private final Region location;
     private ImageReference imageReference;
 
@@ -30,7 +29,6 @@ class VirtualMachineImageImpl
         this.imageReference.withOffer(offer);
         this.imageReference.withSku(sku);
         this.imageReference.withVersion(version);
-        this.client = client;
     }
 
     VirtualMachineImageImpl(Region location, String publisher, String offer, String sku, String version, VirtualMachineImageInner innerModel, VirtualMachineImagesInner client) {
@@ -41,7 +39,6 @@ class VirtualMachineImageImpl
         this.imageReference.withOffer(offer);
         this.imageReference.withSku(sku);
         this.imageReference.withVersion(version);
-        this.client = client;
     }
 
     @Override
