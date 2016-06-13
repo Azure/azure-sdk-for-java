@@ -9,7 +9,7 @@ import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.storage.StorageAccount;
-import com.microsoft.azure.management.storage.implementation.api.AccountType;
+import com.microsoft.azure.management.storage.implementation.api.SkuName;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import okhttp3.logging.HttpLoggingInterceptor.Level;
 import org.junit.Assert;
@@ -146,7 +146,7 @@ public class AzureTests {
         StorageAccount storageAccount = azure.storageAccounts().define("my-stg1")
                 .withRegion(Region.ASIA_EAST)
                 .withNewGroup()
-                .withAccountType(AccountType.PREMIUM_LRS)
+                .withSku(SkuName.PREMIUM_LRS)
                 .create();
 
         Assert.assertSame(storageAccount.name(), "my-stg1");

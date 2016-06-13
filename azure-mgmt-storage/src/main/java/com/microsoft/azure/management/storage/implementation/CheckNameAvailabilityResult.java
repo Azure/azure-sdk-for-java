@@ -13,17 +13,11 @@ import com.microsoft.azure.management.storage.implementation.api.Reason;
 /**
  * The CheckNameAvailability operation response.
  */
-public enum CheckNameAvailabilityResult {
-    /** The name is available. */
-    AVAILABLE(true),
-    /** THe name is not available. */
-    UNAVAILABLE(false);
-
+public class CheckNameAvailabilityResult {
     private CheckNameAvailabilityResultInner inner;
 
-    CheckNameAvailabilityResult(boolean nameAvailable) {
-        this.inner = new CheckNameAvailabilityResultInner();
-        this.inner.withNameAvailable(nameAvailable);
+    CheckNameAvailabilityResult(CheckNameAvailabilityResultInner inner) {
+        this.inner = inner;
     }
 
     /**
@@ -45,33 +39,9 @@ public enum CheckNameAvailabilityResult {
     }
 
     /**
-     * Set the reason of the unavailable name.
-     *
-     * @param reason the reason that a storage account name could not be used. The
-     * Reason element is only returned if NameAvailable is false. Possible
-     * values include: 'AccountNameInvalid', 'AlreadyExists'.
-     * @return the result itself
-     */
-    CheckNameAvailabilityResult withReason(Reason reason) {
-        this.inner.withReason(reason);
-        return this;
-    }
-
-    /**
      * @return an error message explaining the Reason value in more detail
      */
     public String message() {
         return inner.message();
-    }
-
-    /**
-     * Set the message from Azure explaining why the name is unavailable.
-     *
-     * @param message the message from Azure storage
-     * @return the result itself
-     */
-    CheckNameAvailabilityResult withMessage(String message) {
-        this.inner.withMessage(message);
-        return this;
     }
 }

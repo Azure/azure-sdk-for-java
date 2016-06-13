@@ -16,22 +16,102 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class StorageAccountCreateParametersInner {
     /**
-     * Resource location.
+     * Required. Gets or sets the sku type.
+     */
+    @JsonProperty(required = true)
+    private Sku sku;
+
+    /**
+     * Required. Indicates the type of storage account. Possible values
+     * include: 'Storage', 'BlobStorage'.
+     */
+    @JsonProperty(required = true)
+    private Kind kind;
+
+    /**
+     * Required. Gets or sets the location of the resource. This will be one
+     * of the supported and registered Azure Geo Regions (e.g. West US, East
+     * US, Southeast Asia, etc.). The geo region of a resource cannot be
+     * changed once it is created, but if an identical geo region is
+     * specified on update the request will succeed.
      */
     @JsonProperty(required = true)
     private String location;
 
     /**
-     * Resource tags.
+     * Gets or sets a list of key value pairs that describe the resource.
+     * These tags can be used in viewing and grouping this resource (across
+     * resource groups). A maximum of 15 tags can be provided for a resource.
+     * Each tag must have a key no greater than 128 characters and value no
+     * greater than 256 characters.
      */
     private Map<String, String> tags;
 
     /**
-     * Gets or sets the account type. Possible values include: 'Standard_LRS',
-     * 'Standard_ZRS', 'Standard_GRS', 'Standard_RAGRS', 'Premium_LRS'.
+     * User domain assigned to the storage account. Name is the CNAME source.
+     * Only one custom domain is supported per storage account at this time.
+     * To clear the existing custom domain, use an empty string for the
+     * custom domain name property.
      */
-    @JsonProperty(value = "properties.accountType", required = true)
-    private AccountType accountType;
+    @JsonProperty(value = "properties.customDomain")
+    private CustomDomain customDomain;
+
+    /**
+     * Provides the encryption settings on the account. If left unspecified
+     * the account encryption settings will remain. The default setting is
+     * unencrypted.
+     */
+    @JsonProperty(value = "properties.encryption")
+    private Encryption encryption;
+
+    /**
+     * Required for StandardBlob accounts. The access tier used for billing.
+     * Access tier cannot be changed more than once every 7 days (168 hours).
+     * Access tier cannot be set for StandardLRS, StandardGRS, StandardRAGRS,
+     * or PremiumLRS account types. Possible values include: 'Hot', 'Cool'.
+     */
+    @JsonProperty(value = "properties.accessTier")
+    private AccessTier accessTier;
+
+    /**
+     * Get the sku value.
+     *
+     * @return the sku value
+     */
+    public Sku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku value.
+     *
+     * @param sku the sku value to set
+     * @return the StorageAccountCreateParametersInner object itself.
+     */
+    public StorageAccountCreateParametersInner withSku(Sku sku) {
+        this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the kind value.
+     *
+     * @return the kind value
+     */
+    public Kind kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind value.
+     *
+     * @param kind the kind value to set
+     * @return the StorageAccountCreateParametersInner object itself.
+     */
+    public StorageAccountCreateParametersInner withKind(Kind kind) {
+        this.kind = kind;
+        return this;
+    }
 
     /**
      * Get the location value.
@@ -74,22 +154,62 @@ public class StorageAccountCreateParametersInner {
     }
 
     /**
-     * Get the accountType value.
+     * Get the customDomain value.
      *
-     * @return the accountType value
+     * @return the customDomain value
      */
-    public AccountType accountType() {
-        return this.accountType;
+    public CustomDomain customDomain() {
+        return this.customDomain;
     }
 
     /**
-     * Set the accountType value.
+     * Set the customDomain value.
      *
-     * @param accountType the accountType value to set
+     * @param customDomain the customDomain value to set
      * @return the StorageAccountCreateParametersInner object itself.
      */
-    public StorageAccountCreateParametersInner withAccountType(AccountType accountType) {
-        this.accountType = accountType;
+    public StorageAccountCreateParametersInner withCustomDomain(CustomDomain customDomain) {
+        this.customDomain = customDomain;
+        return this;
+    }
+
+    /**
+     * Get the encryption value.
+     *
+     * @return the encryption value
+     */
+    public Encryption encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Set the encryption value.
+     *
+     * @param encryption the encryption value to set
+     * @return the StorageAccountCreateParametersInner object itself.
+     */
+    public StorageAccountCreateParametersInner withEncryption(Encryption encryption) {
+        this.encryption = encryption;
+        return this;
+    }
+
+    /**
+     * Get the accessTier value.
+     *
+     * @return the accessTier value
+     */
+    public AccessTier accessTier() {
+        return this.accessTier;
+    }
+
+    /**
+     * Set the accessTier value.
+     *
+     * @param accessTier the accessTier value to set
+     * @return the StorageAccountCreateParametersInner object itself.
+     */
+    public StorageAccountCreateParametersInner withAccessTier(AccessTier accessTier) {
+        this.accessTier = accessTier;
         return this;
     }
 

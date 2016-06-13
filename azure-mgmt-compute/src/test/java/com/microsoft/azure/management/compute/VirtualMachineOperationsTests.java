@@ -22,7 +22,8 @@ import com.microsoft.azure.management.network.implementation.api.PublicIPAddress
 import com.microsoft.azure.management.network.implementation.api.SubnetInner;
 import com.microsoft.azure.management.network.implementation.api.VirtualNetworkInner;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
-import com.microsoft.azure.management.storage.implementation.api.AccountType;
+import com.microsoft.azure.management.storage.implementation.api.Sku;
+import com.microsoft.azure.management.storage.implementation.api.SkuName;
 import com.microsoft.azure.management.storage.implementation.api.StorageAccountCreateParametersInner;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -46,7 +47,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
         resourceManagementClient.resourceGroups().createOrUpdate(rgName, group);
         StorageAccountCreateParametersInner parameters = new StorageAccountCreateParametersInner();
         parameters.withLocation(location);
-        parameters.withAccountType(AccountType.STANDARD_LRS);
+        parameters.withSku(new Sku().withName(SkuName.STANDARD_LRS));
         storageManagementClient.storageAccounts().create(rgName, accountName, parameters).getBody();
     }
 
