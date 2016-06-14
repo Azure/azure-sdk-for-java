@@ -71,7 +71,7 @@ class NetworkSecurityGroupImpl
     }
 
     @Override
-    public NetworkSecurityGroup apply() throws Exception {
+    public NetworkSecurityGroupImpl apply() throws Exception {
         return this.create();
     }
 

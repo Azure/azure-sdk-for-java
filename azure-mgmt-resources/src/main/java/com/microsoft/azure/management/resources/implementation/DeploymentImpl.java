@@ -299,7 +299,7 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public Deployment apply() throws Exception {
+    public DeploymentImpl apply() throws Exception {
         if (this.templateLink() != null && this.template() != null) {
             this.withTemplate(null);
         }

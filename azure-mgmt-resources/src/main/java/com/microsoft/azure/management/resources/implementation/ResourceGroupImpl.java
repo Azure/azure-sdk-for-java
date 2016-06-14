@@ -118,7 +118,7 @@ class ResourceGroupImpl extends
     }
 
     @Override
-    public ResourceGroup apply() throws Exception {
+    public ResourceGroupImpl apply() throws Exception {
         return this.create();
     }
 

@@ -63,7 +63,7 @@ class NetworkImpl
     }
 
     @Override
-    public Network apply() throws Exception {
+    public NetworkImpl apply() throws Exception {
         return this.create();
     }
 

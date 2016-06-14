@@ -113,7 +113,7 @@ class AvailabilitySetImpl
     }
 
     @Override
-    public AvailabilitySet apply() throws Exception {
+    public AvailabilitySetImpl apply() throws Exception {
         return this.create();
     }
 

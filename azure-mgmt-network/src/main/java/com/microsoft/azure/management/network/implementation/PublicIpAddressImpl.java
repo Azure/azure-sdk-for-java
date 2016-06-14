@@ -38,7 +38,7 @@ class PublicIpAddressImpl
     // Verbs
 
     @Override
-    public PublicIpAddress apply() throws Exception {
+    public PublicIpAddressImpl apply() throws Exception {
         return this.create();
     }
 

@@ -156,7 +156,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachine apply() throws Exception {
+    public VirtualMachineImpl apply() throws Exception {
         return this.create();
     }
 

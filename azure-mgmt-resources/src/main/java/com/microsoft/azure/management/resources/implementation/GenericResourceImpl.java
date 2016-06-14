@@ -140,7 +140,7 @@ final class GenericResourceImpl
     }
 
     @Override
-    public GenericResource apply() throws Exception {
+    public GenericResourceImpl apply() throws Exception {
         return create();
     }
 }
