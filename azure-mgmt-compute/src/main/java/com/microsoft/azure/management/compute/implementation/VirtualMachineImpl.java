@@ -148,11 +148,6 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl update() throws Exception {
-        return this;
-    }
-
-    @Override
     public VirtualMachine apply() throws Exception {
         return this.create();
     }

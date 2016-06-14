@@ -140,11 +140,6 @@ final class GenericResourceImpl
     }
 
     @Override
-    public UpdateWithApiVersion update() throws Exception {
-        return this;
-    }
-
-    @Override
     public GenericResource apply() throws Exception {
         return create();
     }

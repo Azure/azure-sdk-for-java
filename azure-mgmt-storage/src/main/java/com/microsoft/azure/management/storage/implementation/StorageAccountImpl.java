@@ -196,9 +196,9 @@ class StorageAccountImpl
     }
 
     @Override
-    public StorageAccountImpl update() throws Exception {
+    public StorageAccountImpl update() {
         updateParameters = new StorageAccountUpdateParametersInner();
-        return this;
+        return super.update();
     }
 
     @Override

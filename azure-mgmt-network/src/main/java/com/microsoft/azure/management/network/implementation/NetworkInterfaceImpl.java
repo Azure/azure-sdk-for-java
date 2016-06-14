@@ -83,11 +83,6 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public NetworkInterfaceImpl update() throws Exception {
-        return this;
-    }
-
-    @Override
     public NetworkInterface apply() throws Exception {
         return this.create();
     }
