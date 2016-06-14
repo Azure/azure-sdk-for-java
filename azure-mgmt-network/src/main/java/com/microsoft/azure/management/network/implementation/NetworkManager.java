@@ -80,7 +80,10 @@ public final class NetworkManager extends Manager {
     /**
      * The implementation for Configurable interface.
      */
-    private static class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
+    private static class ConfigurableImpl
+        extends AzureConfigurableImpl<Configurable>
+        implements Configurable {
+
         public NetworkManager authenticate(ServiceClientCredentials credentials, String subscriptionId) {
             return NetworkManager.authenticate(buildRestClient(credentials), subscriptionId);
         }
