@@ -4,6 +4,7 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceIPConfiguration;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
+import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
 import java.io.IOException;
@@ -223,15 +224,9 @@ public interface NicIpConfiguration extends
     /**
      * Attaches the Ip configuration to the parent network interface.
      *
-     * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
+     * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
-    interface DefinitionAttachable<ParentT> extends DefinitionWithPublicIpAddress<ParentT> {
-        /**
-         * Apply the Ip configuration.
-         *
-         * @return the next stage of the network interface definition
-         */
-        ParentT attach();
+    interface DefinitionAttachable<ParentT> extends Attachable<ParentT>, DefinitionWithPublicIpAddress<ParentT> {
     }
 
     /**

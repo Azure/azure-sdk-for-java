@@ -4,6 +4,7 @@ import com.microsoft.azure.management.compute.implementation.api.CachingTypes;
 import com.microsoft.azure.management.compute.implementation.api.DiskCreateOptionTypes;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
+import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
 /**
@@ -71,37 +72,37 @@ public interface DataDisk extends
     /**
      * Container interface for all the definitions.
      *
-     * @param <parentT> the return type of the final {@link DefinitionAttachable#attach()}
+     * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
      */
-    interface Definitions<parentT> extends
-            DataDisk.DefinitionAttachNewDataDisk<parentT>,
-            DataDisk.DefinitionAttachExistingDataDisk<parentT>,
-            DataDisk.DefinitionWithStoreAt<parentT>,
-            DataDisk.DefinitionWithOptionalConfiguration<parentT>,
-            DataDisk.DefinitionAttachable<parentT> {
+    interface Definitions<ParentT> extends
+            DataDisk.DefinitionAttachNewDataDisk<ParentT>,
+            DataDisk.DefinitionAttachExistingDataDisk<ParentT>,
+            DataDisk.DefinitionWithStoreAt<ParentT>,
+            DataDisk.DefinitionWithOptionalConfiguration<ParentT>,
+            DataDisk.DefinitionAttachable<ParentT> {
     }
 
     /**
      * The first stage of new data disk configuration.
      *
-     * @param <parentT> the return type of the final {@link DefinitionAttachable#attach()}
+     * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
      */
-    interface DefinitionAttachNewDataDisk<parentT> {
+    interface DefinitionAttachNewDataDisk<ParentT> {
         /**
          * Specifies the initial disk size in GB for new blank data disk.
          *
          * @param sizeInGB the disk size in GB
          * @return the stage representing optional additional settings for the attachable data disk
          */
-        DefinitionWithStoreAt<parentT> withSizeInGB(Integer sizeInGB);
+        DefinitionWithStoreAt<ParentT> withSizeInGB(Integer sizeInGB);
     }
 
     /**
      * The first stage of attaching an existing disk as data disk and configuring it.
      *
-     * @param <parentT> the return type of the final {@link DefinitionAttachable#attach()}
+     * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
      */
-    interface DefinitionAttachExistingDataDisk<parentT> {
+    interface DefinitionAttachExistingDataDisk<ParentT> {
         /**
          * Specifies an existing VHD that needs to be attached to the virtual machine as data disk.
          *
@@ -110,15 +111,15 @@ public interface DataDisk extends
          * @param vhdName the name for the VHD file
          * @return the stage representing optional additional settings for the attachable data disk
          */
-        DefinitionAttachable<parentT> from(String storageAccountName, String containerName, String vhdName);
+        DefinitionAttachable<ParentT> from(String storageAccountName, String containerName, String vhdName);
     }
 
     /**
      * The stage of the data disk configuration allowing to specify location to store the VHD.
      *
-     * @param <parentT> the return type of the final {@link DefinitionAttachable#attach()}
+     * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
      */
-    interface DefinitionWithStoreAt<parentT> extends DefinitionAttachable<parentT>  {
+    interface DefinitionWithStoreAt<ParentT> extends DefinitionAttachable<ParentT>  {
         /**
          * Specifies where the VHD associated with the new blank data disk needs to be stored.
          *
@@ -127,23 +128,23 @@ public interface DataDisk extends
          * @param vhdName the name for the new VHD file
          * @return the stage representing optional additional configurations for the data disk
          */
-        DefinitionAttachable<parentT> storeAt(String storageAccountName, String containerName, String vhdName);
+        DefinitionAttachable<ParentT> storeAt(String storageAccountName, String containerName, String vhdName);
     }
 
     /**
      * The stage of the data disk configuration allowing to specify optionals common for new and
      * attachable existing data disks.
      *
-     * @param <parentT> the return type of the final {@link DefinitionAttachable#attach()}
+     * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
      */
-    interface DefinitionWithOptionalConfiguration<parentT> {
+    interface DefinitionWithOptionalConfiguration<ParentT> {
         /**
          * Specifies the logical unit number for the data disk.
          *
          * @param lun the logical unit number
          * @return the next stage of data disk configuration
          */
-        DefinitionAttachable<parentT> withLun(Integer lun);
+        DefinitionAttachable<ParentT> withLun(Integer lun);
 
         /**
          * Specifies the caching type for the data disk.
@@ -151,40 +152,36 @@ public interface DataDisk extends
          * @param cachingType the disk caching type. Possible values include: 'None', 'ReadOnly', 'ReadWrite'
          * @return the next stage of data disk configuration
          */
-        DefinitionAttachable<parentT> withCaching(CachingTypes cachingType);
+        DefinitionAttachable<ParentT> withCaching(CachingTypes cachingType);
     }
 
     /**
      * The stage of the data disk definition which contains all the minimum required inputs for the resource to be
-     * attached (via {@link DefinitionAttachable#attach()}), but also allows for any other optional settings to be
+     * attached (via {@link Attachable#attach()}), but also allows for any other optional settings to be
      * specified.
      *
-     * @param <parentT> the return type of the final {@link DefinitionAttachable#attach()}
+     * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
      */
-    interface DefinitionAttachable<parentT>  extends DefinitionWithOptionalConfiguration<parentT> {
-        /**
-         * Attaches the data disk to the list of virtual machine's data disks.
-         *
-         * @return the next stage of the virtual machine definition
-         */
-        parentT attach();
+    interface DefinitionAttachable<ParentT>  extends
+            Attachable<ParentT>, DefinitionWithOptionalConfiguration<ParentT> {
+
     }
 
     /**
      * The template for a data disk update operation, containing all the settings that
      * can be modified.
      *
-     * @param <parentT> the return type of the final {@link Appliable#apply()}
+     * @param <ParentT> the return type of the final {@link Appliable#apply()}
      */
-    interface Update<parentT> extends
-            Appliable<parentT> {
+    interface Update<ParentT> extends
+            Appliable<ParentT> {
         /**
          * Specifies the new size in GB for data disk.
          *
          * @param sizeInGB the disk size in GB
          * @return the next stage of data disk update
          */
-        Update<parentT> withSizeInGB(Integer sizeInGB);
+        Update<ParentT> withSizeInGB(Integer sizeInGB);
 
         /**
          * Specifies the new logical unit number for the data disk.
@@ -192,7 +189,7 @@ public interface DataDisk extends
          * @param lun the logical unit number
          * @return the next stage of data disk update
          */
-        Update<parentT> withLun(Integer lun);
+        Update<ParentT> withLun(Integer lun);
 
         /**
          * Specifies the new caching type for the data disk.
@@ -200,6 +197,6 @@ public interface DataDisk extends
          * @param cachingType the disk caching type. Possible values include: 'None', 'ReadOnly', 'ReadWrite'
          * @return the next stage of data disk update
          */
-        Update<parentT> withCaching(CachingTypes cachingType);
+        Update<ParentT> withCaching(CachingTypes cachingType);
     }
 }
