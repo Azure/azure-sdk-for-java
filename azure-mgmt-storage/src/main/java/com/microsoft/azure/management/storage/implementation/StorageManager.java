@@ -10,7 +10,6 @@ import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
-import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
@@ -84,7 +83,7 @@ public final class StorageManager extends Manager {
     }
 
     private StorageManager(RestClient restClient, String subscriptionId) {
-        super(ResourceManager.authenticate(restClient).withSubscription(subscriptionId));
+        super(restClient, subscriptionId);
         storageManagementClient = new StorageManagementClientImpl(restClient);
         storageManagementClient.withSubscriptionId(subscriptionId);
     }

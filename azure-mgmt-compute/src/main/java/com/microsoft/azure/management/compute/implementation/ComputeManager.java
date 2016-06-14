@@ -8,7 +8,6 @@ import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
-import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
@@ -84,7 +83,7 @@ public final class ComputeManager extends Manager {
     }
 
     private ComputeManager(RestClient restClient, String subscriptionId) {
-        super(ResourceManager.authenticate(restClient).withSubscription(subscriptionId));
+        super(restClient, subscriptionId);
         computeManagementClient = new ComputeManagementClientImpl(restClient);
         computeManagementClient.withSubscriptionId(subscriptionId);
         storageManager = StorageManager.authenticate(restClient, subscriptionId);

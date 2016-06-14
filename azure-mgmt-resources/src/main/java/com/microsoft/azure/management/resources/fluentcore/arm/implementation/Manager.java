@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.implementation;
 
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
+import com.microsoft.rest.RestClient;
 
 /**
  * Base class for Azure resource managers.
@@ -15,8 +16,8 @@ public abstract class Manager {
 
     private final ResourceManager resourceManager;
 
-    protected Manager(ResourceManager resourceManager) {
-        this.resourceManager = resourceManager;
+    protected Manager(RestClient restClient, String subscriptionId) {
+        this.resourceManager = ResourceManager.authenticate(restClient).withSubscription(subscriptionId);
     }
 
     protected ResourceManager resourceManager() {
