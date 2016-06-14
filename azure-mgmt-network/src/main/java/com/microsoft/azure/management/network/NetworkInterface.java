@@ -76,7 +76,6 @@ public interface NetworkInterface extends
 
     /**
      * @return the resource id of the virtual network subnet associated with this network interface.
-     * TODO: This will be removed once our types starts supporting lazy loading
      */
     String primarySubnetId();
 
@@ -120,6 +119,7 @@ public interface NetworkInterface extends
             NetworkInterface.DefinitionWithSubnet,
             NetworkInterface.DefinitionWithPrivateIp,
             NetworkInterface.DefinitionWithPublicIpAddress,
+            NetworkInterface.DefinitionWithNetworkSecurityGroup,
             NetworkInterface.DefinitionCreatable {
     }
 
@@ -264,6 +264,27 @@ public interface NetworkInterface extends
          * @return the next stage of the network interface definition
          */
         DefinitionCreatable withExistingPrimaryPublicIpAddress(PublicIpAddress publicIpAddress);
+    }
+
+    /**
+     * The stage of the network interface definition allowing to associate a network security group.
+     */
+    interface DefinitionWithNetworkSecurityGroup {
+        /**
+         * Create a new network security group to associate with network interface, based on the provided definition.
+         *
+         * @param creatable a creatable definition for a new network security group
+         * @return the next stage of the network interface definition
+         */
+        DefinitionCreatable withNewNetworkSecurityGroup(NetworkSecurityGroup.DefinitionCreatable creatable);
+
+        /**
+         * Associates an existing network security group with the network interface.
+         *
+         * @param networkSecurityGroup an existing network security group
+         * @return the next stage of the network interface definition
+         */
+        DefinitionCreatable withExistingNetworkSecurityGroup(NetworkSecurityGroup networkSecurityGroup);
     }
 
     /**
@@ -435,6 +456,29 @@ public interface NetworkInterface extends
          * @return the next stage of the network interface update
          */
         Update withExistingPrimaryPublicIpAddress(PublicIpAddress publicIpAddress);
+
+        /**
+         * Create a new network security group to associate with network interface, based on the provided definition.
+         *
+         * @param creatable a creatable definition for a new network security group
+         * @return the next stage of the network interface update
+         */
+        Update withNewNetworkSecurityGroup(NetworkSecurityGroup.DefinitionCreatable creatable);
+
+        /**
+         * Associates an existing network security group with the network interface.
+         *
+         * @param networkSecurityGroup an existing network security group
+         * @return the next stage of the network interface update
+         */
+        Update withExistingNetworkSecurityGroup(NetworkSecurityGroup networkSecurityGroup);
+
+        /**
+         * Specifies that remove any network security group associated with the network interface.
+         *
+         * @return the next stage of the network interface update
+         */
+        Update withoutNetworkSecurityGroup();
 
         /**
          * Starts definition of a secondary Ip configuration.

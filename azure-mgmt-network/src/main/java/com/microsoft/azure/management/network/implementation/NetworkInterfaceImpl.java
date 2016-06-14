@@ -7,8 +7,10 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
+import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.NicIpConfiguration;
 import com.microsoft.azure.management.network.PublicIpAddress;
@@ -50,6 +52,10 @@ class NetworkInterfaceImpl
     private NicIpConfigurationImpl nicPrimaryIpConfiguration;
     // list of references to all ip configuration
     private List<NicIpConfiguration> nicIpConfigurations;
+    // unique key of a creatable network security group to be associated with the network interface
+    private String creatableNetworkSecurityGroupKey;
+    // reference to an network security group to be associated with the network interface
+    private NetworkSecurityGroup existingNetworkSecurityGroupToAssociate;
     // Cached related resources.
     private PublicIpAddress primaryPublicIp;
     private Network primaryNetwork;
@@ -154,6 +160,25 @@ class NetworkInterfaceImpl
     @Override
     public NetworkInterfaceImpl withPrimaryPrivateIpAddressStatic(String staticPrivateIpAddress) {
         this.primaryIpConfiguration().withPrivateIpAddressStatic(staticPrivateIpAddress);
+        return this;
+    }
+
+    @Override
+    public NetworkInterfaceImpl withNewNetworkSecurityGroup(NetworkSecurityGroup.DefinitionCreatable creatable) {
+        this.creatableNetworkSecurityGroupKey = creatable.key();
+        this.addCreatableDependency(creatable);
+        return this;
+    }
+
+    @Override
+    public NetworkInterfaceImpl withExistingNetworkSecurityGroup(NetworkSecurityGroup networkSecurityGroup) {
+        this.existingNetworkSecurityGroupToAssociate = networkSecurityGroup;
+        return this;
+    }
+
+    @Override
+    public NetworkInterfaceImpl withoutNetworkSecurityGroup() {
+        this.inner().withNetworkSecurityGroup(null);
         return this;
     }
 
@@ -290,6 +315,17 @@ class NetworkInterfaceImpl
 
     @Override
     protected void createResource() throws Exception {
+        NetworkSecurityGroup networkSecurityGroup = null;
+        if (creatableNetworkSecurityGroupKey != null) {
+            networkSecurityGroup = (NetworkSecurityGroup) this.createdResource(creatableNetworkSecurityGroupKey);
+        } else if (existingNetworkSecurityGroupToAssociate != null) {
+            networkSecurityGroup = existingNetworkSecurityGroupToAssociate;
+        }
+
+        if (networkSecurityGroup != null) {
+            this.inner().withNetworkSecurityGroup(new SubResource().withId(networkSecurityGroup.id()));
+        }
+
         NicIpConfigurationImpl.ensureConfigurations(this.nicIpConfigurations);
         ServiceResponse<NetworkInterfaceInner> response = this.client.createOrUpdate(this.resourceGroupName(),
                 this.nicName,
