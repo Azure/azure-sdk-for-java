@@ -138,8 +138,7 @@ public final class NetworkManager {
         if (networkInterfaces == null) {
             this.networkInterfaces = new NetworkInterfacesImpl(
                 this.networkManagementClient.networkInterfaces(),
-                this.networks(),
-                this.publicIpAddresses(),
+                this,
                 this.resourceManager
             );
         }

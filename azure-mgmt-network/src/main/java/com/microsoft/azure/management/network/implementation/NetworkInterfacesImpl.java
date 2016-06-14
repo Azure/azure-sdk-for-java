@@ -4,8 +4,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkInterfaces;
-import com.microsoft.azure.management.network.Networks;
-import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceInner;
 import com.microsoft.azure.management.network.implementation.api.NetworkInterfacesInner;
 import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceIPConfiguration;
@@ -23,19 +21,17 @@ import java.util.ArrayList;
  */
 class NetworkInterfacesImpl implements NetworkInterfaces {
     private final NetworkInterfacesInner client;
-    private final Networks networks;
-    private final PublicIpAddresses publicIpAddresses;
     private final ResourceManager resourceManager;
+    private final NetworkManager networkManager;
 
     private final PagedListConverter<NetworkInterfaceInner, NetworkInterface> converter;
 
-    NetworkInterfacesImpl(final NetworkInterfacesInner client,
-                          final Networks networks,
-                          final PublicIpAddresses publicIpAddresses,
-                          final ResourceManager resourceManager) {
+    NetworkInterfacesImpl(
+            final NetworkInterfacesInner client,
+            final NetworkManager networkManager,
+            final ResourceManager resourceManager) {
         this.client = client;
-        this.networks = networks;
-        this.publicIpAddresses = publicIpAddresses;
+        this.networkManager = networkManager;
         this.resourceManager = resourceManager;
         this.converter = new PagedListConverter<NetworkInterfaceInner, NetworkInterface>() {
             @Override
@@ -85,8 +81,7 @@ class NetworkInterfacesImpl implements NetworkInterfaces {
         return new NetworkInterfaceImpl(name,
                 inner,
                 this.client,
-                this.networks,
-                this.publicIpAddresses,
+                this.networkManager,
                 this.resourceManager);
     }
 
@@ -94,8 +89,7 @@ class NetworkInterfacesImpl implements NetworkInterfaces {
         return new NetworkInterfaceImpl(inner.name(),
                 inner,
                 this.client,
-                this.networks,
-                this.publicIpAddresses,
+                this.networkManager,
                 this.resourceManager);
     }
 }
