@@ -51,16 +51,6 @@ public interface AvailabilitySet extends
     List<String> virtualMachineIds();
 
     /**
-     * Lists the virtual machines in the availability set.
-     *
-     * @return list of virtual machines
-     * @throws CloudException exceptions thrown from the cloud
-     * @throws IOException exceptions thrown from serialization/deserialization
-
-     */
-    List<VirtualMachine> virtualMachines() throws CloudException, IOException;
-
-    /**
      * Lists the statuses of the existing virtual machines in the availability set.
      *
      * @return list of virtual machine statuses
