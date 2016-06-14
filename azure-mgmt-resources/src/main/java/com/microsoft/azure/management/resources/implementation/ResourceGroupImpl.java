@@ -28,7 +28,7 @@ import java.util.Map;
 /**
  * An instance of this class provides access to a resource group in Azure.
  */
-public class ResourceGroupImpl extends
+class ResourceGroupImpl extends
         CreatableUpdatableImpl<ResourceGroup, ResourceGroupInner, ResourceGroupImpl>
         implements
         ResourceGroup,
