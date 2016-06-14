@@ -182,7 +182,7 @@ public final class ResourceManager {
             deployments = new DeploymentsImpl(
                     resourceManagementClient.deployments(),
                     resourceManagementClient.deploymentOperations(),
-                    resourceGroups());
+                    this);
         }
         return deployments;
     }
