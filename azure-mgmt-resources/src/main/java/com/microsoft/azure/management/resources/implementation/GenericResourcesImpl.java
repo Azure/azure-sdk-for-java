@@ -30,13 +30,13 @@ final class GenericResourcesImpl
 
     private final ResourceManagementClientImpl serviceClient;
     private final ResourcesInner client;
-    private final ResourceGroupsInner resourceGroups;
+    private final ResourceGroupsInner resourceGroupsInner;
     private final ResourceManager resourceManager;
 
     GenericResourcesImpl(ResourceManagementClientImpl serviceClient, ResourceManager resourceManager) {
         this.serviceClient = serviceClient;
         this.client = serviceClient.resources();
-        this.resourceGroups = serviceClient.resourceGroups();
+        this.resourceGroupsInner = serviceClient.resourceGroups();
         this.resourceManager = resourceManager;
     }
 
@@ -117,6 +117,6 @@ final class GenericResourcesImpl
                         .withParentResource(ResourceUtils.parentResourcePathFromResourceId(genericResourceInner.id()));
             }
         };
-        return converter.convert(resourceGroups.listResources(groupName).getBody());
+        return converter.convert(resourceGroupsInner.listResources(groupName).getBody());
     }
 }

@@ -13,6 +13,7 @@ import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.network.implementation.api.NetworkManagementClientImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
@@ -20,11 +21,8 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 /**
  * Entry point to Azure network management.
  */
-public final class NetworkManager {
+public final class NetworkManager extends Manager {
     private final NetworkManagementClientImpl networkManagementClient;
-
-    // Dependent managers
-    private final ResourceManager resourceManager;
 
     // Collections
     private PublicIpAddresses publicIpAddresses;
@@ -90,9 +88,9 @@ public final class NetworkManager {
     }
 
     private NetworkManager(RestClient restClient, String subscriptionId) {
+        super(ResourceManager.authenticate(restClient).withSubscription(subscriptionId));
         networkManagementClient = new NetworkManagementClientImpl(restClient);
         networkManagementClient.withSubscriptionId(subscriptionId);
-        this.resourceManager = ResourceManager.authenticate(restClient).withSubscription(subscriptionId);
     }
 
     /**
@@ -102,7 +100,7 @@ public final class NetworkManager {
         if (this.networks == null) {
             this.networks = new NetworksImpl(
                     this.networkManagementClient.virtualNetworks(),
-                    this.resourceManager);
+                    super.resourceManager());
         }
         return this.networks;
     }
@@ -114,7 +112,7 @@ public final class NetworkManager {
         if (this.networkSecurityGroups == null) {
             this.networkSecurityGroups = new NetworkSecurityGroupsImpl(
                     this.networkManagementClient.networkSecurityGroups(),
-                    this.resourceManager);
+                    super.resourceManager());
         }
         return this.networkSecurityGroups;
     }
@@ -126,7 +124,7 @@ public final class NetworkManager {
         if (this.publicIpAddresses == null) {
             this.publicIpAddresses = new PublicIpAddressesImpl(
                     this.networkManagementClient.publicIPAddresses(),
-                    this.resourceManager);
+                    super.resourceManager());
         }
         return this.publicIpAddresses;
     }
@@ -139,7 +137,7 @@ public final class NetworkManager {
             this.networkInterfaces = new NetworkInterfacesImpl(
                 this.networkManagementClient.networkInterfaces(),
                 this,
-                this.resourceManager
+                super.resourceManager()
             );
         }
         return this.networkInterfaces;
