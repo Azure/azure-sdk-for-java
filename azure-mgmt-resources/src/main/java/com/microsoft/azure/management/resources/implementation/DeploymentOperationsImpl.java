@@ -11,7 +11,6 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.DeploymentOperation;
 import com.microsoft.azure.management.resources.DeploymentOperations;
-import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.api.DeploymentOperationInner;
@@ -39,11 +38,6 @@ final class DeploymentOperationsImpl
                 return createFluentModel(deploymentInner);
             }
         };
-    }
-
-    @Override
-    public InGroup resourceGroup(ResourceGroup resourceGroup) {
-        return new DeploymentOperationsInGroupImpl(this, resourceGroup);
     }
 
     @Override
