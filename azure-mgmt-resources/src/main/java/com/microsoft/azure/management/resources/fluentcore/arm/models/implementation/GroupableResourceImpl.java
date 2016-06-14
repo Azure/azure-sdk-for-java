@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 
 /**
- * The implemenation for {@link GroupableResource}.
+ * The implementation for {@link GroupableResource}.
  * (Internal use only)
  *
  * @param <FluentModelT> The fluent model type

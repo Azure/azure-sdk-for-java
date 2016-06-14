@@ -63,17 +63,6 @@ class NetworkImpl
     }
 
     @Override
-    public NetworkImpl create() throws Exception {
-        super.creatablesCreate();
-        return this;
-    }
-
-    @Override
-    public NetworkImpl update() throws Exception {
-        return this;
-    }
-
-    @Override
     public NetworkImpl apply() throws Exception {
         return this.create();
     }

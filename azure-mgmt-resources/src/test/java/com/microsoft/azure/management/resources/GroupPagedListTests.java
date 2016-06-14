@@ -103,10 +103,6 @@ public class GroupPagedListTests {
                 return groupItems;
             }
         };
-
-        for (String item : groupedResourceList) {
-        }
-
     }
 
     private static ResourceGroup resourceGroup(final String name) {

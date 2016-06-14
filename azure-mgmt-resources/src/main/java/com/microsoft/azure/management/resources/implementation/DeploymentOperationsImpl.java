@@ -11,7 +11,6 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.DeploymentOperation;
 import com.microsoft.azure.management.resources.DeploymentOperations;
-import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.api.DeploymentOperationInner;
@@ -26,7 +25,6 @@ final class DeploymentOperationsImpl
         implements DeploymentOperations {
     private final DeploymentOperationsInner client;
     private final Deployment deployment;
-    private final ResourceGroups resourceGroups;
     private final PagedListConverter<DeploymentOperationInner, DeploymentOperation> converter;
 
     DeploymentOperationsImpl(final DeploymentOperationsInner client,
@@ -34,18 +32,12 @@ final class DeploymentOperationsImpl
                                     final ResourceGroups resourceGroups) {
         this.client = client;
         this.deployment = deployment;
-        this.resourceGroups = resourceGroups;
         converter = new PagedListConverter<DeploymentOperationInner, DeploymentOperation>() {
             @Override
             public DeploymentOperation typeConvert(DeploymentOperationInner deploymentInner) {
                 return createFluentModel(deploymentInner);
             }
         };
-    }
-
-    @Override
-    public InGroup resourceGroup(ResourceGroup resourceGroup) {
-        return new DeploymentOperationsInGroupImpl(this, resourceGroup);
     }
 
     @Override

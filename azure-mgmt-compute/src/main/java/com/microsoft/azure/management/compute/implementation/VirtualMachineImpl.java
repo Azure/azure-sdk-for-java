@@ -7,6 +7,8 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.DataDisk;
+import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
+import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.PowerState;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSize;
@@ -154,18 +156,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachine create() throws Exception {
-        super.creatablesCreate();
-        return this;
-    }
-
-    @Override
-    public VirtualMachineImpl update() throws Exception {
-        return this;
-    }
-
-    @Override
-    public VirtualMachine apply() throws Exception {
+    public VirtualMachineImpl apply() throws Exception {
         return this.create();
     }
 
@@ -1045,10 +1036,6 @@ class VirtualMachineImpl
         }
 
         return false;
-    }
-
-    private boolean isStoredImage(OSDisk osDisk) {
-        return osDisk.image() != null;
     }
 
     private boolean isOSDiskAttached(OSDisk osDisk) {

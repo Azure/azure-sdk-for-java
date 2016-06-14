@@ -43,22 +43,11 @@ class PublicIpAddressImpl
     }
 
     @Override
-    public PublicIpAddressImpl update() throws Exception {
-        return this;
-    }
-
-    @Override
     public PublicIpAddress refresh() throws Exception {
         ServiceResponse<PublicIPAddressInner> response =
             this.client.get(this.resourceGroupName(), this.name());
         PublicIPAddressInner inner = response.getBody();
         this.setInner(inner);
-        return this;
-    }
-
-    @Override
-    public PublicIpAddressImpl create() throws Exception {
-        super.creatablesCreate();
         return this;
     }
 

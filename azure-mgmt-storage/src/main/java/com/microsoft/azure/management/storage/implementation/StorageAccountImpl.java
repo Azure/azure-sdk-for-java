@@ -157,12 +157,6 @@ class StorageAccountImpl
     }
 
     @Override
-    public StorageAccountImpl create() throws Exception {
-        super.creatablesCreate();
-        return this;
-    }
-
-    @Override
     public StorageAccountImpl withSku(SkuName skuName) {
         if (isInCreateMode()) {
             createParameters.withSku(new Sku().withName(skuName));
@@ -213,9 +207,9 @@ class StorageAccountImpl
     }
 
     @Override
-    public StorageAccountImpl update() throws Exception {
+    public StorageAccountImpl update() {
         updateParameters = new StorageAccountUpdateParametersInner();
-        return this;
+        return super.update();
     }
 
     @Override

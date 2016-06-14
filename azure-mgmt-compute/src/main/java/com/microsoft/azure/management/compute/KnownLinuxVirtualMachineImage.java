@@ -1,4 +1,4 @@
-package com.microsoft.azure.management.compute.implementation;
+package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.compute.implementation.api.ImageReference;
 

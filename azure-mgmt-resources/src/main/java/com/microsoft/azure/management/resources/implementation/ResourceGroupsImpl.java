@@ -20,7 +20,7 @@ import java.io.IOException;
 /**
  * The implementation for ResourceGroups and its parent interfaces.
  */
-public final class ResourceGroupsImpl
+final class ResourceGroupsImpl
         implements ResourceGroups {
     private final ResourceGroupsInner client;
     private final ResourceManagementClientImpl serviceClient;
@@ -30,7 +30,7 @@ public final class ResourceGroupsImpl
      *
      * @param serviceClient the inner resource management client
      */
-    public ResourceGroupsImpl(final ResourceManagementClientImpl serviceClient) {
+    ResourceGroupsImpl(final ResourceManagementClientImpl serviceClient) {
         this.serviceClient = serviceClient;
         this.client = serviceClient.resourceGroups();
     }
