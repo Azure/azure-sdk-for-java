@@ -2,7 +2,8 @@ package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.compute.implementation.KnownVirtualMachineImage;
+import com.microsoft.azure.management.compute.implementation.KnownLinuxVirtualMachineImage;
+import com.microsoft.azure.management.compute.implementation.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineInner;
 import com.microsoft.azure.management.compute.implementation.api.OperatingSystemTypes;
 import com.microsoft.azure.management.compute.implementation.api.CachingTypes;
@@ -121,6 +122,17 @@ public interface VirtualMachine extends
      */
     String capture(String containerName, boolean overwriteVhd) throws CloudException, IOException, InterruptedException;
 
+    /**
+     * Refreshes the virtual machine instance view to sync with Azure.
+     * <p>
+     * this will caches the instance view which can be later retrieved using {@link VirtualMachine#instanceView()}
+     *
+     * @return the refreshed instance view
+     * @throws CloudException thrown for an invalid response from the service
+     * @throws IOException exception thrown from serialization/deserialization
+     */
+    VirtualMachineInstanceView refreshInstanceView() throws CloudException, IOException;
+
     // Getters
     //
 
@@ -207,11 +219,6 @@ public interface VirtualMachine extends
     String provisioningState();
 
     /**
-     * @return the instanceView value
-     */
-    VirtualMachineInstanceView instanceView();
-
-    /**
      * @return the licenseType value
      */
     String licenseType();
@@ -253,6 +260,22 @@ public interface VirtualMachine extends
      * @return the diagnosticsProfile value
      */
     DiagnosticsProfile diagnosticsProfile();
+
+   /**
+    * @return the power state of the virtual machine
+    */
+    PowerState powerState();
+
+    /**
+     * Get the virtual machine instance view.
+     * <p>
+     * this method returns the cached instance view, to refresh the cache call {@link VirtualMachine#refreshInstanceView()}
+     *
+     * @return the virtual machine instance view
+     * @throws CloudException exceptions thrown from the cloud.
+     * @throws IOException exceptions thrown from serialization/deserialization.
+     */
+    VirtualMachineInstanceView instanceView() throws CloudException, IOException;
 
     // Setters
     //
@@ -407,19 +430,72 @@ public interface VirtualMachine extends
      */
     interface DefinitionWithOS {
         /**
-         * Specifies the market-place image used for the virtual machine's OS.
+         * Specifies the known marketplace Windows image used for the virtual machine's OS.
          *
+         * @param knownImage enum value indicating known market-place image
          * @return the next stage of the virtual machine definition
          */
-        DefinitionWithMarketplaceImage withMarketplaceImage();
+        DefinitionWithAdminUserName  withPopularWindowsImage(KnownWindowsVirtualMachineImage knownImage);
 
         /**
-         * Specifies the user (generalized) image used for the virtual machine's OS.
+         * Specifies that the latest version of a marketplace Windows image needs to be used.
+         *
+         * @param publisher specifies the publisher of the image
+         * @param offer specifies the offer of the image
+         * @param sku specifies the SKU of the image
+         * @return the next stage of the virtual machine definition
+         */
+        DefinitionWithAdminUserName  withLatestWindowsImage(String publisher, String offer, String sku);
+
+        /**
+         * Specifies the version of a marketplace Windows image needs to be used.
+         *
+         * @param imageReference describes publisher, offer, sku and version of the market-place image
+         * @return the next stage of the virtual machine definition
+         */
+        DefinitionWithAdminUserName  withSpecificWindowsImageVersion(ImageReference imageReference);
+
+        /**
+         * Specifies the user (generalized) Windows image used for the virtual machine's OS.
          *
          * @param imageUrl the url the the VHD
          * @return the next stage of the virtual machine definition
          */
-        DefinitionWithOSType withStoredImage(String imageUrl);
+        DefinitionWithAdminUserName  withStoredWindowsImage(String imageUrl);
+
+        /**
+         * Specifies the known marketplace Linux image used for the virtual machine's OS.
+         *
+         * @param knownImage enum value indicating known market-place image
+         * @return the next stage of the virtual machine definition
+         */
+        DefinitionWithRootUserName  withPopularLinuxImage(KnownLinuxVirtualMachineImage knownImage);
+
+        /**
+         * Specifies that the latest version of a marketplace Linux image needs to be used.
+         *
+         * @param publisher specifies the publisher of the image
+         * @param offer specifies the offer of the image
+         * @param sku specifies the SKU of the image
+         * @return the next stage of the virtual machine definition
+         */
+        DefinitionWithRootUserName  withLatestLinuxImage(String publisher, String offer, String sku);
+
+        /**
+         * Specifies the version of a market-place Linux image needs to be used.
+         *
+         * @param imageReference describes publisher, offer, sku and version of the market-place image
+         * @return the next stage of the virtual machine definition
+         */
+        DefinitionWithRootUserName  withSpecificLinuxImageVersion(ImageReference imageReference);
+
+        /**
+         * Specifies the user (generalized) Linux image used for the virtual machine's OS.
+         *
+         * @param imageUrl the url the the VHD
+         * @return the next stage of the virtual machine definition
+         */
+        DefinitionWithRootUserName  withStoredLinuxImage(String imageUrl);
 
         /**
          * Specifies the specialized operating system disk to be attached to the virtual machine.
@@ -427,57 +503,7 @@ public interface VirtualMachine extends
          * @param osDiskUrl the url to the OS disk in the Azure Storage account
          * @return the next stage of the Windows virtual machine definition
          */
-        DefinitionCreatable withOSDisk(String osDiskUrl, OperatingSystemTypes osType);
-    }
-
-    /**
-     * The stage of the virtual machine definition allowing to specify marketplace (platform) image.
-     */
-    interface DefinitionWithMarketplaceImage {
-        /**
-         * Specifies the version of image.
-         *
-         * @param imageReference describes publisher, offer, sku and version of the market-place image
-         * @return the next stage of the virtual machine definition
-         */
-        DefinitionWithOSType version(ImageReference imageReference);
-
-        /**
-         * Specifies that the latest version of the image needs to be used.
-         *
-         * @param publisher specifies the publisher of the image
-         * @param offer specifies the offer of the image
-         * @param sku specifies the SKU of the image
-         * @return the next stage of the virtual machine definition
-         */
-        DefinitionWithOSType latest(String publisher, String offer, String sku);
-
-        /**
-         * Specifies the known image to be used.
-         *
-         * @param knownImage enum value indicating known market-place image
-         * @return the next stage of the virtual machine definition
-         */
-        DefinitionWithOSType popular(KnownVirtualMachineImage knownImage);
-    }
-
-    /**
-     * The stage of the virtual machine definition allowing to specify Operating system type.
-     */
-    interface DefinitionWithOSType {
-        /**
-         * Specifies the OS type of the virtual machine as Linux.
-         *
-         * @return the next stage of the Linux virtual machine definition
-         */
-        DefinitionWithRootUserName withLinuxOS();
-
-        /**
-         * Specifies the OS type as Windows.
-         *
-         * @return the next stage of the Windows virtual machine definition
-         */
-        DefinitionWithAdminUserName withWindowsOS();
+        DefinitionCreatable withOsDisk(String osDiskUrl, OperatingSystemTypes osType);
     }
 
     /**
@@ -534,7 +560,7 @@ public interface VirtualMachine extends
          *
          * @return the stage representing creatable Windows VM definition
          */
-        DefinitionWindowsCreatable disableVMAgent();
+        DefinitionWindowsCreatable disableVmAgent();
 
         /**
          * Specifies that automatic updates should be disabled.
@@ -557,7 +583,7 @@ public interface VirtualMachine extends
          *
          * @return the stage representing creatable Windows VM definition
          */
-        DefinitionWindowsCreatable withWinRM(WinRMListener listener);
+        DefinitionWindowsCreatable withWinRm(WinRMListener listener);
     }
 
     /**
@@ -587,7 +613,7 @@ public interface VirtualMachine extends
          * @param cachingType the caching type.
          * @return the stage representing creatable VM definition
          */
-        T withOSDiskCaching(CachingTypes cachingType);
+        T withOsDiskCaching(CachingTypes cachingType);
 
         /**
          * Specifies the name of the OS Disk Vhd file and it's parent container.
@@ -596,7 +622,7 @@ public interface VirtualMachine extends
          * @param vhdName the name for the OS Disk vhd.
          * @return the stage representing creatable VM definition
          */
-        T withOSDiskVhdLocation(String containerName, String vhdName);
+        T withOsDiskVhdLocation(String containerName, String vhdName);
 
         /**
          * Specifies the encryption settings for the OS Disk.
@@ -604,7 +630,7 @@ public interface VirtualMachine extends
          * @param settings the encryption settings.
          * @return the stage representing creatable VM definition
          */
-        T withOSDiskEncryptionSettings(DiskEncryptionSettings settings);
+        T withOsDiskEncryptionSettings(DiskEncryptionSettings settings);
 
         /**
          * Specifies the size of the OSDisk in GB.
@@ -612,7 +638,7 @@ public interface VirtualMachine extends
          * @param size the VHD size.
          * @return the stage representing creatable VM definition
          */
-        T withOSDiskSizeInGB(Integer size);
+        T withOsDiskSizeInGb(Integer size);
 
         /**
          * Specifies the name for the OS Disk.
@@ -620,7 +646,7 @@ public interface VirtualMachine extends
          * @param name the OS Disk name.
          * @return the stage representing creatable VM definition
          */
-        T withOSDiskName(String name);
+        T withOsDiskName(String name);
     }
 
     /**
@@ -829,8 +855,6 @@ public interface VirtualMachine extends
             VirtualMachine.DefinitionWithPublicIpAddress,
             VirtualMachine.DefinitionWithPrimaryNetworkInterface,
             VirtualMachine.DefinitionWithOS,
-            VirtualMachine.DefinitionWithMarketplaceImage,
-            VirtualMachine.DefinitionWithOSType,
             VirtualMachine.DefinitionWithRootUserName,
             VirtualMachine.DefinitionWithAdminUserName,
             VirtualMachine.DefinitionLinuxCreatable,
@@ -847,6 +871,22 @@ public interface VirtualMachine extends
     interface Update extends
             Appliable<VirtualMachine>,
             Resource.UpdateWithTags<Update>  {
+        /**
+         * Specifies the caching type for the Operating System disk.
+         *
+         * @param cachingType the caching type.
+         * @return the stage representing updatable VM definition
+         */
+        Update withOsDiskCaching(CachingTypes cachingType);
+
+        /**
+         * Specifies the size of the OSDisk in GB.
+         *
+         * @param size the VHD size.
+         * @return the stage representing updatable VM definition
+         */
+        Update withOsDiskSizeInGb(Integer size);
+
         /**
          * Specifies the new size for the virtual machine.
          *
