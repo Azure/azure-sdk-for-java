@@ -140,6 +140,7 @@ public final class NetworkManager {
                 this.networkManagementClient.networkInterfaces(),
                 this.networks(),
                 this.publicIpAddresses(),
+                this.networkSecurityGroups(),
                 this.resourceManager.resourceGroups()
             );
         }

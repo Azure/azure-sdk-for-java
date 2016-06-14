@@ -4,6 +4,7 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkInterfaces;
+import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceInner;
@@ -26,16 +27,18 @@ class NetworkInterfacesImpl implements NetworkInterfaces {
     private final Networks networks;
     private final PublicIpAddresses publicIpAddresses;
     private final ResourceGroups resourceGroups;
-
+    private final NetworkSecurityGroups networkSecurityGroups;
     private final PagedListConverter<NetworkInterfaceInner, NetworkInterface> converter;
 
     NetworkInterfacesImpl(final NetworkInterfacesInner client,
                           final Networks networks,
                           final PublicIpAddresses publicIpAddresses,
+                          final NetworkSecurityGroups networkSecurityGroups,
                           final ResourceGroups resourceGroups) {
         this.client = client;
         this.networks = networks;
         this.publicIpAddresses = publicIpAddresses;
+        this.networkSecurityGroups = networkSecurityGroups;
         this.resourceGroups = resourceGroups;
         this.converter = new PagedListConverter<NetworkInterfaceInner, NetworkInterface>() {
             @Override
@@ -87,6 +90,7 @@ class NetworkInterfacesImpl implements NetworkInterfaces {
                 this.client,
                 this.networks,
                 this.publicIpAddresses,
+                this.networkSecurityGroups,
                 this.resourceGroups);
     }
 
@@ -96,6 +100,7 @@ class NetworkInterfacesImpl implements NetworkInterfaces {
                 this.client,
                 this.networks,
                 this.publicIpAddresses,
+                this.networkSecurityGroups,
                 this.resourceGroups);
     }
 }

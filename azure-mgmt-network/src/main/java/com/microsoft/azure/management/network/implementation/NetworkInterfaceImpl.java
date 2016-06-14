@@ -11,6 +11,7 @@ import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
+import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.NicIpConfiguration;
 import com.microsoft.azure.management.network.PublicIpAddress;
@@ -20,6 +21,7 @@ import com.microsoft.azure.management.network.implementation.api.NetworkInterfac
 import com.microsoft.azure.management.network.implementation.api.NetworkInterfacesInner;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroups;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -44,6 +46,7 @@ class NetworkInterfaceImpl
     private final NetworkInterfacesInner client;
     private final Networks networks;
     private final PublicIpAddresses publicIpAddresses;
+    private final NetworkSecurityGroups networkSecurityGroups;
     // the name of the network interface
     private final String nicName;
     // used to generate unique name for any dependency resources
@@ -59,17 +62,20 @@ class NetworkInterfaceImpl
     // Cached related resources.
     private PublicIpAddress primaryPublicIp;
     private Network primaryNetwork;
+    private NetworkSecurityGroup networkSecurityGroup;
 
     NetworkInterfaceImpl(String name,
                          NetworkInterfaceInner innerModel,
                          final NetworkInterfacesInner client,
                          final Networks networks,
                          final PublicIpAddresses publicIpAddresses,
+                         final NetworkSecurityGroups networkSecurityGroups,
                          final ResourceGroups resourceGroups) {
         super(name, innerModel, resourceGroups);
         this.client = client;
         this.networks = networks;
         this.publicIpAddresses = publicIpAddresses;
+        this.networkSecurityGroups = networkSecurityGroups;
         this.nicName = name;
         this.randomId = Utils.randomId(this.nicName);
         initializeNicIpConfigurations();
@@ -307,6 +313,24 @@ class NetworkInterfaceImpl
     @Override
     public List<NicIpConfiguration> ipConfigurations() {
         return Collections.unmodifiableList(this.nicIpConfigurations);
+    }
+
+    @Override
+    public String networkSecurityGroupId() {
+        if (this.inner().networkSecurityGroup() != null) {
+            return this.inner().networkSecurityGroup().id();
+        }
+        return null;
+    }
+
+    @Override
+    public NetworkSecurityGroup networkSecurityGroup() throws CloudException, IOException {
+        if (this.networkSecurityGroup == null && this.networkSecurityGroupId() != null) {
+            String id = this.networkSecurityGroupId();
+            this.networkSecurityGroup = this.networkSecurityGroups.getByGroup(ResourceUtils.groupFromResourceId(id),
+                    ResourceUtils.nameFromResourceId(id));
+        }
+        return this.networkSecurityGroup;
     }
 
     /**************************************************.

@@ -110,6 +110,22 @@ public interface NetworkInterface extends
     List<NicIpConfiguration> ipConfigurations();
 
     /**
+     * @return the resource id of the network security group associated with this network interface.
+     */
+    String networkSecurityGroupId();
+
+    /**
+     * Gets the network security group associated this network interface.
+     * <p>
+     * note that this method makes a rest API call to fetch the Network Security Group resource
+     *
+     * @return the network security group associated with this network interface.
+     * @throws CloudException exceptions thrown from the cloud.
+     * @throws IOException exceptions thrown from serialization/deserialization.
+     */
+    NetworkSecurityGroup networkSecurityGroup() throws CloudException, IOException;
+
+    /**
      * Container interface for all the definitions.
      */
     interface Definitions extends
