@@ -33,7 +33,7 @@ final class DeploymentExportResultImpl extends
     }
 
     @Override
-    public String templateJson() {
+    public String templateAsJson() {
         try {
             return mapper.writeValueAsString(template());
         } catch (JsonProcessingException e) {
