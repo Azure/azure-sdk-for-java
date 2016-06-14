@@ -1,6 +1,5 @@
 package com.microsoft.azure.management.compute;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.compute.implementation.api.AvailabilitySetInner;
 import com.microsoft.azure.management.compute.implementation.api.InstanceViewStatus;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -10,8 +9,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
-
-import java.io.IOException;
 import java.util.List;
 
 /**
