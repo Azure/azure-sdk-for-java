@@ -2,7 +2,8 @@ package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.compute.implementation.KnownVirtualMachineImage;
+import com.microsoft.azure.management.compute.implementation.KnownLinuxVirtualMachineImage;
+import com.microsoft.azure.management.compute.implementation.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineInner;
 import com.microsoft.azure.management.compute.implementation.api.OperatingSystemTypes;
 import com.microsoft.azure.management.compute.implementation.api.CachingTypes;
@@ -429,19 +430,72 @@ public interface VirtualMachine extends
      */
     interface DefinitionWithOS {
         /**
-         * Specifies the market-place image used for the virtual machine's OS.
+         * Specifies the known marketplace Windows image used for the virtual machine's OS.
          *
+         * @param knownImage enum value indicating known market-place image
          * @return the next stage of the virtual machine definition
          */
-        DefinitionWithMarketplaceImage withMarketplaceImage();
+        DefinitionWithAdminUserName  withPopularWindowsImage(KnownWindowsVirtualMachineImage knownImage);
 
         /**
-         * Specifies the user (generalized) image used for the virtual machine's OS.
+         * Specifies that the latest version of a marketplace Windows image needs to be used.
+         *
+         * @param publisher specifies the publisher of the image
+         * @param offer specifies the offer of the image
+         * @param sku specifies the SKU of the image
+         * @return the next stage of the virtual machine definition
+         */
+        DefinitionWithAdminUserName  withLatestWindowsImage(String publisher, String offer, String sku);
+
+        /**
+         * Specifies the version of a marketplace Windows image needs to be used.
+         *
+         * @param imageReference describes publisher, offer, sku and version of the market-place image
+         * @return the next stage of the virtual machine definition
+         */
+        DefinitionWithAdminUserName  withSpecificWindowsImageVersion(ImageReference imageReference);
+
+        /**
+         * Specifies the user (generalized) Windows image used for the virtual machine's OS.
          *
          * @param imageUrl the url the the VHD
          * @return the next stage of the virtual machine definition
          */
-        DefinitionWithOSType withStoredImage(String imageUrl);
+        DefinitionWithAdminUserName  withStoredWindowsImage(String imageUrl);
+
+        /**
+         * Specifies the known marketplace Linux image used for the virtual machine's OS.
+         *
+         * @param knownImage enum value indicating known market-place image
+         * @return the next stage of the virtual machine definition
+         */
+        DefinitionWithRootUserName  withPopularLinuxImage(KnownLinuxVirtualMachineImage knownImage);
+
+        /**
+         * Specifies that the latest version of a marketplace Linux image needs to be used.
+         *
+         * @param publisher specifies the publisher of the image
+         * @param offer specifies the offer of the image
+         * @param sku specifies the SKU of the image
+         * @return the next stage of the virtual machine definition
+         */
+        DefinitionWithRootUserName  withLatestLinuxImage(String publisher, String offer, String sku);
+
+        /**
+         * Specifies the version of a market-place Linux image needs to be used.
+         *
+         * @param imageReference describes publisher, offer, sku and version of the market-place image
+         * @return the next stage of the virtual machine definition
+         */
+        DefinitionWithRootUserName  withSpecificLinuxImageVersion(ImageReference imageReference);
+
+        /**
+         * Specifies the user (generalized) Linux image used for the virtual machine's OS.
+         *
+         * @param imageUrl the url the the VHD
+         * @return the next stage of the virtual machine definition
+         */
+        DefinitionWithRootUserName  withStoredLinuxImage(String imageUrl);
 
         /**
          * Specifies the specialized operating system disk to be attached to the virtual machine.
@@ -450,56 +504,6 @@ public interface VirtualMachine extends
          * @return the next stage of the Windows virtual machine definition
          */
         DefinitionCreatable withOsDisk(String osDiskUrl, OperatingSystemTypes osType);
-    }
-
-    /**
-     * The stage of the virtual machine definition allowing to specify marketplace (platform) image.
-     */
-    interface DefinitionWithMarketplaceImage {
-        /**
-         * Specifies the version of image.
-         *
-         * @param imageReference describes publisher, offer, sku and version of the market-place image
-         * @return the next stage of the virtual machine definition
-         */
-        DefinitionWithOSType version(ImageReference imageReference);
-
-        /**
-         * Specifies that the latest version of the image needs to be used.
-         *
-         * @param publisher specifies the publisher of the image
-         * @param offer specifies the offer of the image
-         * @param sku specifies the SKU of the image
-         * @return the next stage of the virtual machine definition
-         */
-        DefinitionWithOSType latest(String publisher, String offer, String sku);
-
-        /**
-         * Specifies the known image to be used.
-         *
-         * @param knownImage enum value indicating known market-place image
-         * @return the next stage of the virtual machine definition
-         */
-        DefinitionWithOSType popular(KnownVirtualMachineImage knownImage);
-    }
-
-    /**
-     * The stage of the virtual machine definition allowing to specify Operating system type.
-     */
-    interface DefinitionWithOSType {
-        /**
-         * Specifies the OS type of the virtual machine as Linux.
-         *
-         * @return the next stage of the Linux virtual machine definition
-         */
-        DefinitionWithRootUserName withLinuxOs();
-
-        /**
-         * Specifies the OS type as Windows.
-         *
-         * @return the next stage of the Windows virtual machine definition
-         */
-        DefinitionWithAdminUserName withWindowsOs();
     }
 
     /**
@@ -851,8 +855,6 @@ public interface VirtualMachine extends
             VirtualMachine.DefinitionWithPublicIpAddress,
             VirtualMachine.DefinitionWithPrimaryNetworkInterface,
             VirtualMachine.DefinitionWithOS,
-            VirtualMachine.DefinitionWithMarketplaceImage,
-            VirtualMachine.DefinitionWithOSType,
             VirtualMachine.DefinitionWithRootUserName,
             VirtualMachine.DefinitionWithAdminUserName,
             VirtualMachine.DefinitionLinuxCreatable,

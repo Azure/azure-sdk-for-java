@@ -341,17 +341,79 @@ class VirtualMachineImpl
     //
 
     @Override
-    public VirtualMachineImpl withMarketplaceImage() {
-        return this;
-    }
-
-    @Override
-    public VirtualMachineImpl withStoredImage(String imageUrl) {
+    public VirtualMachineImpl withStoredWindowsImage(String imageUrl) {
         VirtualHardDisk userImageVhd = new VirtualHardDisk();
         userImageVhd.withUri(imageUrl);
         this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
         this.inner().storageProfile().osDisk().withImage(userImageVhd);
+        // For platform image osType will be null, azure will pick it from the image metadata.
+        this.inner().storageProfile().osDisk().withOsType(OperatingSystemTypes.WINDOWS);
+        this.inner().osProfile().withWindowsConfiguration(new WindowsConfiguration());
+        // sets defaults for "Stored(User)Image" or "VM(Platform)Image"
+        this.inner().osProfile().windowsConfiguration().withProvisionVMAgent(true);
+        this.inner().osProfile().windowsConfiguration().withEnableAutomaticUpdates(true);
         return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withStoredLinuxImage(String imageUrl) {
+        VirtualHardDisk userImageVhd = new VirtualHardDisk();
+        userImageVhd.withUri(imageUrl);
+        this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
+        this.inner().storageProfile().osDisk().withImage(userImageVhd);
+        // For platform image osType will be null, azure will pick it from the image metadata.
+        this.inner().storageProfile().osDisk().withOsType(OperatingSystemTypes.LINUX);
+        this.inner().osProfile().withLinuxConfiguration(new LinuxConfiguration());
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withPopularWindowsImage(KnownWindowsVirtualMachineImage knownImage) {
+        return withSpecificWindowsImageVersion(knownImage.imageReference());
+    }
+
+    @Override
+    public VirtualMachineImpl withPopularLinuxImage(KnownLinuxVirtualMachineImage knownImage) {
+        return withSpecificLinuxImageVersion(knownImage.imageReference());
+    }
+
+    @Override
+    public VirtualMachineImpl withSpecificWindowsImageVersion(ImageReference imageReference) {
+        this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
+        this.inner().storageProfile().withImageReference(imageReference);
+        this.inner().osProfile().withWindowsConfiguration(new WindowsConfiguration());
+        // sets defaults for "Stored(User)Image" or "VM(Platform)Image"
+        this.inner().osProfile().windowsConfiguration().withProvisionVMAgent(true);
+        this.inner().osProfile().windowsConfiguration().withEnableAutomaticUpdates(true);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withSpecificLinuxImageVersion(ImageReference imageReference) {
+        this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
+        this.inner().storageProfile().withImageReference(imageReference);
+        this.inner().osProfile().withLinuxConfiguration(new LinuxConfiguration());
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withLatestWindowsImage(String publisher, String offer, String sku) {
+        ImageReference imageReference = new ImageReference();
+        imageReference.withPublisher(publisher);
+        imageReference.withOffer(offer);
+        imageReference.withSku(sku);
+        imageReference.withVersion("latest");
+        return withSpecificWindowsImageVersion(imageReference);
+    }
+
+    @Override
+    public VirtualMachineImpl withLatestLinuxImage(String publisher, String offer, String sku) {
+        ImageReference imageReference = new ImageReference();
+        imageReference.withPublisher(publisher);
+        imageReference.withOffer(offer);
+        imageReference.withSku(sku);
+        imageReference.withVersion("latest");
+        return withSpecificLinuxImageVersion(imageReference);
     }
 
     @Override
@@ -361,56 +423,6 @@ class VirtualMachineImpl
         this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.ATTACH);
         this.inner().storageProfile().osDisk().withVhd(osDisk);
         this.inner().storageProfile().osDisk().withOsType(osType);
-        return this;
-    }
-
-    @Override
-    public VirtualMachineImpl version(ImageReference imageReference) {
-        this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
-        this.inner().storageProfile().withImageReference(imageReference);
-        return this;
-    }
-
-    @Override
-    public VirtualMachineImpl latest(String publisher, String offer, String sku) {
-        ImageReference imageReference = new ImageReference();
-        imageReference.withPublisher(publisher);
-        imageReference.withOffer(offer);
-        imageReference.withSku(sku);
-        imageReference.withVersion("latest");
-        return version(imageReference);
-    }
-
-    @Override
-    public VirtualMachineImpl popular(KnownVirtualMachineImage knownImage) {
-        return version(knownImage.imageReference());
-    }
-
-    // Virtual machine operating system type fluent methods
-    //
-
-    @Override
-    public VirtualMachineImpl withLinuxOs() {
-        OSDisk osDisk = this.inner().storageProfile().osDisk();
-        if (isStoredImage(osDisk)) {
-            // For platform image osType should be null, azure will pick it from the image metadata.
-            osDisk.withOsType(OperatingSystemTypes.LINUX);
-        }
-        this.inner().osProfile().withLinuxConfiguration(new LinuxConfiguration());
-        return this;
-    }
-
-    @Override
-    public VirtualMachineImpl withWindowsOs() {
-        OSDisk osDisk = this.inner().storageProfile().osDisk();
-        if (isStoredImage(osDisk)) {
-            // For platform image osType should be null, azure will pick it from the image metadata.
-            osDisk.withOsType(OperatingSystemTypes.WINDOWS);
-        }
-        this.inner().osProfile().withWindowsConfiguration(new WindowsConfiguration());
-        // sets defaults for "Stored(User)Image" or "VM(Platform)Image"
-        this.inner().osProfile().windowsConfiguration().withProvisionVMAgent(true);
-        this.inner().osProfile().windowsConfiguration().withEnableAutomaticUpdates(true);
         return this;
     }
 
