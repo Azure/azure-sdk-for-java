@@ -27,12 +27,16 @@ import java.io.File;
  *    - Attach data disks
  *    - Detach data disks
  *  - List virtual machines
- *  - Delete a virtual machine
+ *  - Delete a virtual machine.
  */
 
-public class ManageVirtualMachine {
+public final class ManageVirtualMachine {
 
-    public static void main (String [] args) {
+    /**
+     * Main entry point.
+     * @param args the parameters
+     */
+    public static void main(String[] args) {
 
         try {
 
@@ -91,10 +95,13 @@ public class ManageVirtualMachine {
 
             // Delete a virtual machine
 
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             System.err.println(e.getMessage());
         }
+
+    }
+
+    private ManageVirtualMachine() {
 
     }
 
