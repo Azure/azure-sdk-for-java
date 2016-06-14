@@ -5,7 +5,6 @@ import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.compute.implementation.api.ComputeManagementClientImpl;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
-import com.microsoft.azure.management.network.implementation.api.NetworkManagementClientImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
@@ -23,7 +22,6 @@ public final class ComputeManager {
     private NetworkManager networkManager;
     // The sdk clients
     private ComputeManagementClientImpl computeManagementClient;
-    private NetworkManagementClientImpl networkManagementClient; // TODO this will be removed once we have NetworkInterfaces entry point available in NetworkManager
     // The collections
     private AvailabilitySets availabilitySets;
     private VirtualMachines virtualMachines;
@@ -88,16 +86,9 @@ public final class ComputeManager {
     private ComputeManager(RestClient restClient, String subscriptionId) {
         computeManagementClient = new ComputeManagementClientImpl(restClient);
         computeManagementClient.withSubscriptionId(subscriptionId);
-        // TODO this will be removed once we have NetworkInterfaces entry point available in NetworkManager
-        networkManagementClient = new NetworkManagementClientImpl(restClient);
-        networkManagementClient.withSubscriptionId(subscriptionId);
-
         resourceManager = ResourceManager.authenticate(restClient).withSubscription(subscriptionId);
         storageManager = StorageManager.authenticate(restClient, subscriptionId);
         networkManager = NetworkManager.authenticate(restClient, subscriptionId);
-    }
-
-    private ComputeManager() {
     }
 
     /**
@@ -106,8 +97,7 @@ public final class ComputeManager {
     public AvailabilitySets availabilitySets() {
         if (availabilitySets == null) {
             availabilitySets = new AvailabilitySetsImpl(computeManagementClient.availabilitySets(),
-                    resourceManager.resourceGroups(),
-                    null /**TODO Find a way to avoid circular dependency or provide some utility methods**/);
+                    resourceManager);
         }
         return availabilitySets;
     }
