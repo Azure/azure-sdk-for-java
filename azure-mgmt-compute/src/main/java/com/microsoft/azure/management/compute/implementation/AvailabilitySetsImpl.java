@@ -31,7 +31,7 @@ class AvailabilitySetsImpl implements AvailabilitySets {
     private final ResourceManager resourceManager;
     private final PagedListConverter<AvailabilitySetInner, AvailabilitySet> converter;
     AvailabilitySetsImpl(
-            final AvailabilitySetsInner client, 
+            final AvailabilitySetsInner client,
             final ResourceManager resourceManager) {
         this.client = client;
         this.resourceManager = resourceManager;
