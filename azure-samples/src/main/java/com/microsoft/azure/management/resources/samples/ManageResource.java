@@ -13,12 +13,16 @@ package com.microsoft.azure.management.resources.samples;
  *  - Update a resource
  *  - Create another resource
  *  - List resources
- *  - Delete a resource
+ *  - Delete a resource.
  */
 
-public class ManageResource {
+public final class ManageResource {
 
-    public static void main (String [] args) {
+    /**
+     * Main entry point.
+     * @param args the parameters
+     */
+    public static void main(String[] args) {
 
         try {
 
@@ -35,6 +39,10 @@ public class ManageResource {
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
+    }
+
+    private ManageResource() {
+
     }
 
 }

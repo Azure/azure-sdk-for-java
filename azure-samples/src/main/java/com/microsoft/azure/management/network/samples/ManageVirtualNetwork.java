@@ -14,12 +14,16 @@ package com.microsoft.azure.management.network.samples;
  *  - Update a virtual network
  *  - Create another virtual network
  *  - List virtual networks
- *  - Delete a virtual network
+ *  - Delete a virtual network.
  */
 
-public class ManageVirtualNetwork {
+public final class ManageVirtualNetwork {
 
-    public static void main (String [] args) {
+    /**
+     * Main entry point.
+     * @param args the parameters
+     */
+    public static void main(String[] args) {
 
         try {
 
@@ -35,9 +39,13 @@ public class ManageVirtualNetwork {
 
             // Delete a virtual network
 
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             System.err.println(e.getMessage());
         }
     }
+
+    private ManageVirtualNetwork() {
+
+    }
 }
+

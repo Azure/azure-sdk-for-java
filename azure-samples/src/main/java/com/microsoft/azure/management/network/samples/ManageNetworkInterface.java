@@ -12,12 +12,16 @@ package com.microsoft.azure.management.network.samples;
  *  - Create a virtual machine with multiple network interfaces
  *  - Configure multiple network interfaces
  *  - List network interfaces
- *  - Delete a network interface
+ *  - Delete a network interface.
  */
 
-public class ManageNetworkInterface {
+public final class ManageNetworkInterface {
 
-    public static void main (String [] args) {
+    /**
+     * Main entry point.
+     * @param args the parameters
+     */
+    public static void main(String[] args) {
 
         try {
 
@@ -29,10 +33,12 @@ public class ManageNetworkInterface {
 
             // Delete a network interface
 
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             System.err.println(e.getMessage());
         }
     }
 
+    private ManageNetworkInterface() {
+
+    }
 }

@@ -8,12 +8,17 @@
 package com.microsoft.azure.management.resources.samples;
 
 /**
- * Azure Resource sample for deploying resources using an ARM template
+ * Azure Resource sample for deploying resources using an ARM template and
+ * showing progress.
  */
 
-public class DeployUsingARMTemplate {
+public final class DeployUsingARMTemplateWithProgress {
 
-    public static void main (String [] args) {
+    /**
+     * Main entry point.
+     * @param args the parameters
+     */
+    public static void main(String[] args) {
 
         try {
 
@@ -24,4 +29,7 @@ public class DeployUsingARMTemplate {
         }
     }
 
+    private DeployUsingARMTemplateWithProgress() {
+
+    }
 }

@@ -21,11 +21,15 @@ import java.io.File;
  *  - Create storage account access keys
  *  - Create another storage account
  *  - List storage accounts
- *  - Delete a storage account
+ *  - Delete a storage account.
  */
 
-public class ManageStorageAccount {
+public final class ManageStorageAccount {
 
+    /**
+     * Main entry point.
+     * @param args the parameters
+     */
     public static void main(String[] args) {
 
         try {
@@ -59,10 +63,14 @@ public class ManageStorageAccount {
 
             // Delete a storage account
 
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             System.err.println(e.getMessage());
         }
     }
+
+    private ManageStorageAccount() {
+
+    }
+
 
 }
