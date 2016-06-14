@@ -5,7 +5,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.AvailabilitySet;
-import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.DataDisk;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
@@ -72,7 +71,7 @@ class VirtualMachineImpl
         VirtualMachine.Update {
     // Clients
     private final VirtualMachinesInner client;
-    private final AvailabilitySets availabilitySets;
+    private final ComputeManager computeManager;
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
     // the name of the virtual machine
@@ -118,13 +117,13 @@ class VirtualMachineImpl
     VirtualMachineImpl(String name,
                        VirtualMachineInner innerModel,
                        VirtualMachinesInner client,
-                       AvailabilitySets availabilitySets,
+                       final ComputeManager computeManager,
                        final ResourceManager resourceManager,
                        final StorageManager storageManager,
                        final NetworkManager networkManager) {
         super(name, innerModel, resourceManager.resourceGroups());
         this.client = client;
-        this.availabilitySets = availabilitySets;
+        this.computeManager = computeManager;
         this.storageManager = storageManager;
         this.networkManager = networkManager;
         this.vmName = name;
@@ -613,7 +612,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withNewAvailabilitySet(String name) {
-        return withNewAvailabilitySet(availabilitySets.define(name)
+        return withNewAvailabilitySet(this.computeManager.availabilitySets().define(name)
                 .withRegion(region())
                 .withExistingGroup(this.resourceGroupName())
         );

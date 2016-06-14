@@ -119,7 +119,7 @@ public final class ComputeManager {
         if (virtualMachines == null) {
             virtualMachines = new VirtualMachinesImpl(computeManagementClient.virtualMachines(),
                     computeManagementClient.virtualMachineSizes(),
-                    availabilitySets(),
+                    this,
                     resourceManager,
                     storageManager,
                     networkManager);
