@@ -1,8 +1,8 @@
 package com.microsoft.azure;
 
+import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachines;
-import com.microsoft.azure.management.compute.implementation.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
 public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMachines> {

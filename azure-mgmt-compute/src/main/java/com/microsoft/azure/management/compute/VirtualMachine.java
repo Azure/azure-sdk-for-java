@@ -4,8 +4,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineInner;
 import com.microsoft.azure.management.compute.implementation.api.OperatingSystemTypes;
-import com.microsoft.azure.management.compute.implementation.KnownLinuxVirtualMachineImage;
-import com.microsoft.azure.management.compute.implementation.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.implementation.api.CachingTypes;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineInstanceView;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineExtensionInner;
