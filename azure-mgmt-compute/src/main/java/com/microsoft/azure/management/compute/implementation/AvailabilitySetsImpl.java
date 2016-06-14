@@ -10,7 +10,6 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.AvailabilitySets;
-import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.compute.implementation.api.AvailabilitySetInner;
 import com.microsoft.azure.management.compute.implementation.api.AvailabilitySetsInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
@@ -30,14 +29,11 @@ import java.util.List;
 class AvailabilitySetsImpl implements AvailabilitySets {
     private final AvailabilitySetsInner client;
     private final ResourceManager resourceManager;
-    private final VirtualMachines virtualMachines;
     private final PagedListConverter<AvailabilitySetInner, AvailabilitySet> converter;
-
-    AvailabilitySetsImpl(final AvailabilitySetsInner client,
-                                final ResourceManager resourceManager,
-                                final VirtualMachines virtualMachines) {
+    AvailabilitySetsImpl(
+            final AvailabilitySetsInner client, 
+            final ResourceManager resourceManager) {
         this.client = client;
-        this.virtualMachines = virtualMachines;
         this.resourceManager = resourceManager;
         this.converter = new PagedListConverter<AvailabilitySetInner, AvailabilitySet>() {
             @Override
@@ -108,15 +104,13 @@ class AvailabilitySetsImpl implements AvailabilitySets {
         return new AvailabilitySetImpl(name,
                 availabilitySetInner,
                 this.client,
-                this.resourceManager,
-                this.virtualMachines);
+                this.resourceManager);
     }
 
     private AvailabilitySetImpl createFluentModel(AvailabilitySetInner availabilitySetInner) {
         return new AvailabilitySetImpl(availabilitySetInner.name(),
                 availabilitySetInner,
                 this.client,
-                this.resourceManager,
-                this.virtualMachines);
+                this.resourceManager);
     }
 }
