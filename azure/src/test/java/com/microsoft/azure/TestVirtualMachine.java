@@ -1,8 +1,8 @@
 package com.microsoft.azure;
 
-import com.microsoft.azure.management.compute.KnownVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachines;
+import com.microsoft.azure.management.compute.implementation.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
 public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMachines> {
@@ -15,9 +15,7 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIpAddressDynamic()
                 .withoutPrimaryPublicIpAddress()
-                .withMarketplaceImage()
-                .popular(KnownVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                .withWindowsOS()
+                .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                 .withAdminUserName("testuser")
                 .withPassword("12NewPA$$w0rd!")
                 .create();

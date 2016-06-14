@@ -7,9 +7,11 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.DataDisk;
-import com.microsoft.azure.management.compute.KnownVirtualMachineImage;
+import com.microsoft.azure.management.compute.PowerState;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSize;
+import com.microsoft.azure.management.compute.implementation.api.InstanceViewStatus;
+import com.microsoft.azure.management.compute.implementation.api.InstanceViewTypes;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineInner;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeInner;
 import com.microsoft.azure.management.compute.implementation.api.Plan;
@@ -96,6 +98,7 @@ class VirtualMachineImpl
     // Cached related resources
     private NetworkInterface primaryNetworkInterface;
     private PublicIpAddress primaryPublicIpAddress;
+    private VirtualMachineInstanceView virtualMachineInstanceView;
     // The data disks associated with the virtual machine
     private List<DataDisk> dataDisks;
     // Intermediate state of network interface definition to which private ip can be associated
@@ -135,7 +138,8 @@ class VirtualMachineImpl
         initializeDataDisks();
     }
 
-    /**************************************************.
+    /**************************************************
+     * .
      * Verbs
      **************************************************/
 
@@ -144,6 +148,7 @@ class VirtualMachineImpl
         ServiceResponse<VirtualMachineInner> response =
                 this.client.get(this.resourceGroupName(), this.name());
         this.setInner(response.getBody());
+        this.virtualMachineInstanceView = null;
         initializeDataDisks();
         return this;
     }
@@ -207,12 +212,20 @@ class VirtualMachineImpl
         return mapper.writeValueAsString(captureResult.getBody().output());
     }
 
-    /**************************************************.
+    @Override
+    public VirtualMachineInstanceView refreshInstanceView() throws CloudException, IOException {
+        this.virtualMachineInstanceView = this.client.get(this.resourceGroupName(),
+                this.name(),
+                InstanceViewTypes.INSTANCE_VIEW).getBody().instanceView();
+        return this.virtualMachineInstanceView;
+    }
+
+    /**************************************************
+     * .
      * Setters
      **************************************************/
 
     // Fluent methods for defining virtual network association for the new primary network interface
-
     @Override
     public VirtualMachineImpl withNewPrimaryNetwork(Network.DefinitionCreatable creatable) {
         this.nicDefinitionWithPrivateIp = this.preparePrimaryNetworkInterface(nameWithPrefix("nic", "-"))
@@ -317,76 +330,88 @@ class VirtualMachineImpl
     //
 
     @Override
-    public VirtualMachineImpl withMarketplaceImage() {
-        return this;
-    }
-
-    @Override
-    public VirtualMachineImpl withStoredImage(String imageUrl) {
+    public VirtualMachineImpl withStoredWindowsImage(String imageUrl) {
         VirtualHardDisk userImageVhd = new VirtualHardDisk();
         userImageVhd.withUri(imageUrl);
         this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
         this.inner().storageProfile().osDisk().withImage(userImageVhd);
+        // For platform image osType will be null, azure will pick it from the image metadata.
+        this.inner().storageProfile().osDisk().withOsType(OperatingSystemTypes.WINDOWS);
+        this.inner().osProfile().withWindowsConfiguration(new WindowsConfiguration());
+        // sets defaults for "Stored(User)Image" or "VM(Platform)Image"
+        this.inner().osProfile().windowsConfiguration().withProvisionVMAgent(true);
+        this.inner().osProfile().windowsConfiguration().withEnableAutomaticUpdates(true);
         return this;
     }
 
     @Override
-    public VirtualMachineImpl withOSDisk(String osDiskUrl, OperatingSystemTypes osType) {
-        VirtualHardDisk osDisk = new VirtualHardDisk();
-        osDisk.withUri(osDiskUrl);
-        this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.ATTACH);
-        this.inner().storageProfile().osDisk().withVhd(osDisk);
-        this.inner().storageProfile().osDisk().withOsType(osType);
-        return this;
-    }
-
-    @Override
-    public VirtualMachineImpl version(ImageReference imageReference) {
+    public VirtualMachineImpl withStoredLinuxImage(String imageUrl) {
+        VirtualHardDisk userImageVhd = new VirtualHardDisk();
+        userImageVhd.withUri(imageUrl);
         this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
-        this.inner().storageProfile().withImageReference(imageReference);
-        return this;
-    }
-
-    @Override
-    public VirtualMachineImpl latest(String publisher, String offer, String sku) {
-        ImageReference imageReference = new ImageReference();
-        imageReference.withPublisher(publisher);
-        imageReference.withOffer(offer);
-        imageReference.withSku(sku);
-        imageReference.withVersion("latest");
-        return version(imageReference);
-    }
-
-    @Override
-    public VirtualMachineImpl popular(KnownVirtualMachineImage knownImage) {
-        return version(knownImage.imageReference());
-    }
-
-    // Virtual machine operating system type fluent methods
-    //
-
-    @Override
-    public VirtualMachineImpl withLinuxOS() {
-        OSDisk osDisk = this.inner().storageProfile().osDisk();
-        if (isStoredImage(osDisk)) {
-            // For platform image osType should be null, azure will pick it from the image metadata.
-            osDisk.withOsType(OperatingSystemTypes.LINUX);
-        }
+        this.inner().storageProfile().osDisk().withImage(userImageVhd);
+        // For platform image osType will be null, azure will pick it from the image metadata.
+        this.inner().storageProfile().osDisk().withOsType(OperatingSystemTypes.LINUX);
         this.inner().osProfile().withLinuxConfiguration(new LinuxConfiguration());
         return this;
     }
 
     @Override
-    public VirtualMachineImpl withWindowsOS() {
-        OSDisk osDisk = this.inner().storageProfile().osDisk();
-        if (isStoredImage(osDisk)) {
-            // For platform image osType should be null, azure will pick it from the image metadata.
-            osDisk.withOsType(OperatingSystemTypes.WINDOWS);
-        }
+    public VirtualMachineImpl withPopularWindowsImage(KnownWindowsVirtualMachineImage knownImage) {
+        return withSpecificWindowsImageVersion(knownImage.imageReference());
+    }
+
+    @Override
+    public VirtualMachineImpl withPopularLinuxImage(KnownLinuxVirtualMachineImage knownImage) {
+        return withSpecificLinuxImageVersion(knownImage.imageReference());
+    }
+
+    @Override
+    public VirtualMachineImpl withSpecificWindowsImageVersion(ImageReference imageReference) {
+        this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
+        this.inner().storageProfile().withImageReference(imageReference);
         this.inner().osProfile().withWindowsConfiguration(new WindowsConfiguration());
         // sets defaults for "Stored(User)Image" or "VM(Platform)Image"
         this.inner().osProfile().windowsConfiguration().withProvisionVMAgent(true);
         this.inner().osProfile().windowsConfiguration().withEnableAutomaticUpdates(true);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withSpecificLinuxImageVersion(ImageReference imageReference) {
+        this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
+        this.inner().storageProfile().withImageReference(imageReference);
+        this.inner().osProfile().withLinuxConfiguration(new LinuxConfiguration());
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withLatestWindowsImage(String publisher, String offer, String sku) {
+        ImageReference imageReference = new ImageReference();
+        imageReference.withPublisher(publisher);
+        imageReference.withOffer(offer);
+        imageReference.withSku(sku);
+        imageReference.withVersion("latest");
+        return withSpecificWindowsImageVersion(imageReference);
+    }
+
+    @Override
+    public VirtualMachineImpl withLatestLinuxImage(String publisher, String offer, String sku) {
+        ImageReference imageReference = new ImageReference();
+        imageReference.withPublisher(publisher);
+        imageReference.withOffer(offer);
+        imageReference.withSku(sku);
+        imageReference.withVersion("latest");
+        return withSpecificLinuxImageVersion(imageReference);
+    }
+
+    @Override
+    public VirtualMachineImpl withOsDisk(String osDiskUrl, OperatingSystemTypes osType) {
+        VirtualHardDisk osDisk = new VirtualHardDisk();
+        osDisk.withUri(osDiskUrl);
+        this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.ATTACH);
+        this.inner().storageProfile().osDisk().withVhd(osDisk);
+        this.inner().storageProfile().osDisk().withOsType(osType);
         return this;
     }
 
@@ -424,7 +449,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl disableVMAgent() {
+    public VirtualMachineImpl disableVmAgent() {
         this.inner().osProfile().windowsConfiguration().withProvisionVMAgent(false);
         return this;
     }
@@ -442,7 +467,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withWinRM(WinRMListener listener) {
+    public VirtualMachineImpl withWinRm(WinRMListener listener) {
         if (this.inner().osProfile().windowsConfiguration().winRM() == null) {
             WinRMConfiguration winRMConfiguration = new WinRMConfiguration();
             this.inner().osProfile().windowsConfiguration().withWinRM(winRMConfiguration);
@@ -475,13 +500,13 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withOSDiskCaching(CachingTypes cachingType) {
+    public VirtualMachineImpl withOsDiskCaching(CachingTypes cachingType) {
         this.inner().storageProfile().osDisk().withCaching(cachingType);
         return this;
     }
 
     @Override
-    public VirtualMachineImpl withOSDiskVhdLocation(String containerName, String vhdName) {
+    public VirtualMachineImpl withOsDiskVhdLocation(String containerName, String vhdName) {
         VirtualHardDisk osVhd = new VirtualHardDisk();
         osVhd.withUri(temporaryBlobUrl(containerName, vhdName));
         this.inner().storageProfile().osDisk().withVhd(osVhd);
@@ -489,19 +514,19 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withOSDiskEncryptionSettings(DiskEncryptionSettings settings) {
+    public VirtualMachineImpl withOsDiskEncryptionSettings(DiskEncryptionSettings settings) {
         this.inner().storageProfile().osDisk().withEncryptionSettings(settings);
         return this;
     }
 
     @Override
-    public VirtualMachineImpl withOSDiskSizeInGB(Integer size) {
+    public VirtualMachineImpl withOsDiskSizeInGb(Integer size) {
         this.inner().storageProfile().osDisk().withDiskSizeGB(size);
         return this;
     }
 
     @Override
-    public VirtualMachineImpl withOSDiskName(String name) {
+    public VirtualMachineImpl withOsDiskName(String name) {
         this.inner().storageProfile().osDisk().withName(name);
         return this;
     }
@@ -511,14 +536,14 @@ class VirtualMachineImpl
 
     @Override
     public DataDiskImpl defineNewDataDisk(String name) {
-        DataDiskImpl dataDisk =  DataDiskImpl.prepareDataDisk(name, DiskCreateOptionTypes.EMPTY, this);
+        DataDiskImpl dataDisk = DataDiskImpl.prepareDataDisk(name, DiskCreateOptionTypes.EMPTY, this);
         this.dataDisks().add(dataDisk);
         return dataDisk;
     }
 
     @Override
     public DataDiskImpl defineExistingDataDisk(String name) {
-        DataDiskImpl dataDisk =  DataDiskImpl.prepareDataDisk(name, DiskCreateOptionTypes.ATTACH, this);
+        DataDiskImpl dataDisk = DataDiskImpl.prepareDataDisk(name, DiskCreateOptionTypes.ATTACH, this);
         this.dataDisks().add(dataDisk);
         return dataDisk;
     }
@@ -668,7 +693,8 @@ class VirtualMachineImpl
         return this;
     }
 
-    /**************************************************.
+    /**************************************************
+     * .
      * Getters
      **************************************************/
 
@@ -718,7 +744,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public PublicIpAddress primaryPublicIpAddress()  throws CloudException, IOException {
+    public PublicIpAddress primaryPublicIpAddress() throws CloudException, IOException {
         if (this.primaryPublicIpAddress == null) {
             this.primaryPublicIpAddress = this.primaryNetworkInterface().primaryPublicIpAddress();
         }
@@ -758,11 +784,6 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineInstanceView instanceView() {
-        return inner().instanceView();
-    }
-
-    @Override
     public String licenseType() {
         return inner().licenseType();
     }
@@ -792,8 +813,25 @@ class VirtualMachineImpl
         return inner().diagnosticsProfile();
     }
 
+    @Override
+    public VirtualMachineInstanceView instanceView() throws CloudException, IOException {
+        if (this.virtualMachineInstanceView == null) {
+            this.refreshInstanceView();
+        }
+        return this.virtualMachineInstanceView;
+    }
 
-    /**************************************************.
+    @Override
+    public PowerState powerState() {
+        String powerStateCode = this.getStatusCodeFromInstanceView("PowerState");
+        if (powerStateCode != null) {
+            return PowerState.fromValue(powerStateCode);
+        }
+        return null;
+    }
+
+    /**************************************************
+     * .
      * CreatableImpl::createResource
      **************************************************/
 
@@ -819,7 +857,7 @@ class VirtualMachineImpl
      **************************************************/
 
     /**
-     * @param prefix the prefix
+     * @param prefix    the prefix
      * @param separator the separator between prefix and random string
      * @return a random value (derived from the resource name) with the given prefix
      */
@@ -836,7 +874,7 @@ class VirtualMachineImpl
         if (isOSDiskFromImage(osDisk)) {
             if (osDisk.vhd() == null) {
                 // Sets the OS disk VHD for "UserImage" and "VM(Platform)Image"
-                withOSDiskVhdLocation("vhds", this.vmName + "-os-disk-" + UUID.randomUUID().toString() + ".vhd");
+                withOsDiskVhdLocation("vhds", this.vmName + "-os-disk-" + UUID.randomUUID().toString() + ".vhd");
             }
             OSProfile osProfile = this.inner().osProfile();
             if (osDisk.osType() == OperatingSystemTypes.LINUX) {
@@ -848,11 +886,11 @@ class VirtualMachineImpl
         }
 
         if (osDisk.caching() == null) {
-            withOSDiskCaching(CachingTypes.READ_WRITE);
+            withOsDiskCaching(CachingTypes.READ_WRITE);
         }
 
         if (osDisk.name() == null) {
-            withOSDiskName(this.vmName + "-os-disk");
+            withOsDiskName(this.vmName + "-os-disk");
         }
     }
 
@@ -874,11 +912,12 @@ class VirtualMachineImpl
         } else if (this.existingStorageAccountToAssociate != null) {
             storageAccount = this.existingStorageAccountToAssociate;
         } else if (osDiskRequiresImplicitStorageAccountCreation()
-                   || dataDisksRequiresImplicitStorageAccountCreation()) {
+                || dataDisksRequiresImplicitStorageAccountCreation()) {
             storageAccount = this.storageManager.storageAccounts()
                     .define(nameWithPrefix("stg", null))
                     .withRegion(this.region())
                     .withExistingGroup(this.resourceGroupName())
+                    .withBlobStorageAccountKind()
                     .create();
         }
 
@@ -997,10 +1036,6 @@ class VirtualMachineImpl
         return false;
     }
 
-    private boolean isStoredImage(OSDisk osDisk) {
-        return osDisk.image() != null;
-    }
-
     private boolean isOSDiskAttached(OSDisk osDisk) {
         return osDisk.createOption() == DiskCreateOptionTypes.ATTACH;
     }
@@ -1052,5 +1087,18 @@ class VirtualMachineImpl
             definitionAfterGroup = definitionWithGroup.withExistingGroup(this.resourceGroupName());
         }
         return definitionAfterGroup;
+    }
+
+    private String getStatusCodeFromInstanceView(String codePrefix) {
+        try {
+            for (InstanceViewStatus status : this.instanceView().statuses()) {
+                if (status.code() != null && status.code().startsWith(codePrefix)) {
+                    return status.code();
+                }
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return null;
     }
 }
