@@ -14,8 +14,9 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
  *
  * @param <FluentModelT> the fluent model type representing the creatable resource
  * @param <InnerModelT> the model inner type that the fluent model type wraps
+ * @param <FluentModelImplT> the fluent model implementation type
  */
-public abstract class CreatableImpl<FluentModelT, InnerModelT>
+public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
         extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
         implements CreatableTaskGroup.RootResourceCreator {
     /**
@@ -53,13 +54,13 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT>
      * @throws Exception when anything goes wrong
      */
     @SuppressWarnings("unchecked")
-    public FluentModelT create() throws Exception {
+    public FluentModelImplT create() throws Exception {
         if (creatableTaskGroup.isRoot()) {
             creatableTaskGroup.execute();
         } else {
             createResource();
         }
-        return (FluentModelT) this;
+        return (FluentModelImplT) this;
     }
 
     /**

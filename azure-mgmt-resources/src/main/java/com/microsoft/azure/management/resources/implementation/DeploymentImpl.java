@@ -273,7 +273,7 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public Deployment create() throws Exception {         //  FLUENT: implementation of ResourceGroup.DefinitionCreatable.Creatable<ResourceGroup>
+    public DeploymentImpl create() throws Exception {         //  FLUENT: implementation of ResourceGroup.DefinitionCreatable.Creatable<ResourceGroup>
         if (this.creatableResourceGroup != null) {
             this.creatableResourceGroup.create();
         }
