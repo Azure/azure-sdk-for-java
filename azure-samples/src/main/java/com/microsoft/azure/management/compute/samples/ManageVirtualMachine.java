@@ -9,7 +9,7 @@ package com.microsoft.azure.management.compute.samples;
 
 import com.microsoft.azure.Azure;
 import com.microsoft.azure.management.compute.VirtualMachine;
-import com.microsoft.azure.management.compute.implementation.KnownVirtualMachineImage;
+import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.samples.Utils;
 
@@ -54,9 +54,7 @@ public class ManageVirtualMachine {
                     .withNewPrimaryNetwork("10.0.0.0/28")
                     .withPrimaryPrivateIpAddressDynamic()
                     .withoutPrimaryPublicIpAddress()
-                    .withMarketplaceImage()
-                    .popular(KnownVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                    .withWindowsOS()
+                    .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                     .withAdminUserName(userName)
                     .withPassword(password)
                     .create();
