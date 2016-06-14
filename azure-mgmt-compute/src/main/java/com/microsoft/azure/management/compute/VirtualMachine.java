@@ -449,7 +449,7 @@ public interface VirtualMachine extends
          * @param osDiskUrl the url to the OS disk in the Azure Storage account
          * @return the next stage of the Windows virtual machine definition
          */
-        DefinitionCreatable withOSDisk(String osDiskUrl, OperatingSystemTypes osType);
+        DefinitionCreatable withOsDisk(String osDiskUrl, OperatingSystemTypes osType);
     }
 
     /**
@@ -492,14 +492,14 @@ public interface VirtualMachine extends
          *
          * @return the next stage of the Linux virtual machine definition
          */
-        DefinitionWithRootUserName withLinuxOS();
+        DefinitionWithRootUserName withLinuxOs();
 
         /**
          * Specifies the OS type as Windows.
          *
          * @return the next stage of the Windows virtual machine definition
          */
-        DefinitionWithAdminUserName withWindowsOS();
+        DefinitionWithAdminUserName withWindowsOs();
     }
 
     /**
@@ -556,7 +556,7 @@ public interface VirtualMachine extends
          *
          * @return the stage representing creatable Windows VM definition
          */
-        DefinitionWindowsCreatable disableVMAgent();
+        DefinitionWindowsCreatable disableVmAgent();
 
         /**
          * Specifies that automatic updates should be disabled.
@@ -579,7 +579,7 @@ public interface VirtualMachine extends
          *
          * @return the stage representing creatable Windows VM definition
          */
-        DefinitionWindowsCreatable withWinRM(WinRMListener listener);
+        DefinitionWindowsCreatable withWinRm(WinRMListener listener);
     }
 
     /**
@@ -609,7 +609,7 @@ public interface VirtualMachine extends
          * @param cachingType the caching type.
          * @return the stage representing creatable VM definition
          */
-        T withOSDiskCaching(CachingTypes cachingType);
+        T withOsDiskCaching(CachingTypes cachingType);
 
         /**
          * Specifies the name of the OS Disk Vhd file and it's parent container.
@@ -618,7 +618,7 @@ public interface VirtualMachine extends
          * @param vhdName the name for the OS Disk vhd.
          * @return the stage representing creatable VM definition
          */
-        T withOSDiskVhdLocation(String containerName, String vhdName);
+        T withOsDiskVhdLocation(String containerName, String vhdName);
 
         /**
          * Specifies the encryption settings for the OS Disk.
@@ -626,7 +626,7 @@ public interface VirtualMachine extends
          * @param settings the encryption settings.
          * @return the stage representing creatable VM definition
          */
-        T withOSDiskEncryptionSettings(DiskEncryptionSettings settings);
+        T withOsDiskEncryptionSettings(DiskEncryptionSettings settings);
 
         /**
          * Specifies the size of the OSDisk in GB.
@@ -634,7 +634,7 @@ public interface VirtualMachine extends
          * @param size the VHD size.
          * @return the stage representing creatable VM definition
          */
-        T withOSDiskSizeInGB(Integer size);
+        T withOsDiskSizeInGb(Integer size);
 
         /**
          * Specifies the name for the OS Disk.
@@ -642,7 +642,7 @@ public interface VirtualMachine extends
          * @param name the OS Disk name.
          * @return the stage representing creatable VM definition
          */
-        T withOSDiskName(String name);
+        T withOsDiskName(String name);
     }
 
     /**
@@ -875,7 +875,7 @@ public interface VirtualMachine extends
          * @param cachingType the caching type.
          * @return the stage representing updatable VM definition
          */
-        Update withOSDiskCaching(CachingTypes cachingType);
+        Update withOsDiskCaching(CachingTypes cachingType);
 
         /**
          * Specifies the size of the OSDisk in GB.
@@ -883,7 +883,7 @@ public interface VirtualMachine extends
          * @param size the VHD size.
          * @return the stage representing updatable VM definition
          */
-        Update withOSDiskSizeInGB(Integer size);
+        Update withOsDiskSizeInGb(Integer size);
 
         /**
          * Specifies the new size for the virtual machine.

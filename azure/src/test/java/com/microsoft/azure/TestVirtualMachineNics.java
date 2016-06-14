@@ -65,7 +65,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
                 .withNewPrimaryPublicIpAddress(primaryPipName)
                 .withMarketplaceImage()
                 .popular(KnownVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                .withWindowsOS()
+                .withWindowsOs()
                 .withAdminUserName("testuser")
                 .withPassword("12NewPA$$w0rd!")
                 .withSize(VirtualMachineSizeTypes.STANDARD_A9)

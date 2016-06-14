@@ -17,7 +17,7 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
                 .withoutPrimaryPublicIpAddress()
                 .withMarketplaceImage()
                 .popular(KnownVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                .withWindowsOS()
+                .withWindowsOs()
                 .withAdminUserName("testuser")
                 .withPassword("12NewPA$$w0rd!")
                 .create();

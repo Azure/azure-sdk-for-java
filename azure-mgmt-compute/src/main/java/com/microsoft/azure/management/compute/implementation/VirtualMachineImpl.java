@@ -355,7 +355,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withOSDisk(String osDiskUrl, OperatingSystemTypes osType) {
+    public VirtualMachineImpl withOsDisk(String osDiskUrl, OperatingSystemTypes osType) {
         VirtualHardDisk osDisk = new VirtualHardDisk();
         osDisk.withUri(osDiskUrl);
         this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.ATTACH);
@@ -390,7 +390,7 @@ class VirtualMachineImpl
     //
 
     @Override
-    public VirtualMachineImpl withLinuxOS() {
+    public VirtualMachineImpl withLinuxOs() {
         OSDisk osDisk = this.inner().storageProfile().osDisk();
         if (isStoredImage(osDisk)) {
             // For platform image osType should be null, azure will pick it from the image metadata.
@@ -401,7 +401,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withWindowsOS() {
+    public VirtualMachineImpl withWindowsOs() {
         OSDisk osDisk = this.inner().storageProfile().osDisk();
         if (isStoredImage(osDisk)) {
             // For platform image osType should be null, azure will pick it from the image metadata.
@@ -448,7 +448,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl disableVMAgent() {
+    public VirtualMachineImpl disableVmAgent() {
         this.inner().osProfile().windowsConfiguration().withProvisionVMAgent(false);
         return this;
     }
@@ -466,7 +466,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withWinRM(WinRMListener listener) {
+    public VirtualMachineImpl withWinRm(WinRMListener listener) {
         if (this.inner().osProfile().windowsConfiguration().winRM() == null) {
             WinRMConfiguration winRMConfiguration = new WinRMConfiguration();
             this.inner().osProfile().windowsConfiguration().withWinRM(winRMConfiguration);
@@ -499,13 +499,13 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withOSDiskCaching(CachingTypes cachingType) {
+    public VirtualMachineImpl withOsDiskCaching(CachingTypes cachingType) {
         this.inner().storageProfile().osDisk().withCaching(cachingType);
         return this;
     }
 
     @Override
-    public VirtualMachineImpl withOSDiskVhdLocation(String containerName, String vhdName) {
+    public VirtualMachineImpl withOsDiskVhdLocation(String containerName, String vhdName) {
         VirtualHardDisk osVhd = new VirtualHardDisk();
         osVhd.withUri(temporaryBlobUrl(containerName, vhdName));
         this.inner().storageProfile().osDisk().withVhd(osVhd);
@@ -513,19 +513,19 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withOSDiskEncryptionSettings(DiskEncryptionSettings settings) {
+    public VirtualMachineImpl withOsDiskEncryptionSettings(DiskEncryptionSettings settings) {
         this.inner().storageProfile().osDisk().withEncryptionSettings(settings);
         return this;
     }
 
     @Override
-    public VirtualMachineImpl withOSDiskSizeInGB(Integer size) {
+    public VirtualMachineImpl withOsDiskSizeInGb(Integer size) {
         this.inner().storageProfile().osDisk().withDiskSizeGB(size);
         return this;
     }
 
     @Override
-    public VirtualMachineImpl withOSDiskName(String name) {
+    public VirtualMachineImpl withOsDiskName(String name) {
         this.inner().storageProfile().osDisk().withName(name);
         return this;
     }
@@ -873,7 +873,7 @@ class VirtualMachineImpl
         if (isOSDiskFromImage(osDisk)) {
             if (osDisk.vhd() == null) {
                 // Sets the OS disk VHD for "UserImage" and "VM(Platform)Image"
-                withOSDiskVhdLocation("vhds", this.vmName + "-os-disk-" + UUID.randomUUID().toString() + ".vhd");
+                withOsDiskVhdLocation("vhds", this.vmName + "-os-disk-" + UUID.randomUUID().toString() + ".vhd");
             }
             OSProfile osProfile = this.inner().osProfile();
             if (osDisk.osType() == OperatingSystemTypes.LINUX) {
@@ -885,11 +885,11 @@ class VirtualMachineImpl
         }
 
         if (osDisk.caching() == null) {
-            withOSDiskCaching(CachingTypes.READ_WRITE);
+            withOsDiskCaching(CachingTypes.READ_WRITE);
         }
 
         if (osDisk.name() == null) {
-            withOSDiskName(this.vmName + "-os-disk");
+            withOsDiskName(this.vmName + "-os-disk");
         }
     }
 
