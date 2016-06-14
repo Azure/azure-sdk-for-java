@@ -23,5 +23,5 @@ public interface DeploymentExportResult extends
     /**
      * @return the template content as a JSON string
      */
-    String templateJson();
+    String templateAsJson();
 }
