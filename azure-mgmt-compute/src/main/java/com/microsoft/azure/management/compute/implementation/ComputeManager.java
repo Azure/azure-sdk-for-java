@@ -106,7 +106,7 @@ public final class ComputeManager {
     public AvailabilitySets availabilitySets() {
         if (availabilitySets == null) {
             availabilitySets = new AvailabilitySetsImpl(computeManagementClient.availabilitySets(),
-                    resourceManager.resourceGroups(),
+                    resourceManager,
                     null /**TODO Find a way to avoid circular dependency or provide some utility methods**/);
         }
         return availabilitySets;

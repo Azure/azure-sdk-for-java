@@ -96,7 +96,9 @@ public final class StorageManager {
      */
     public StorageAccounts storageAccounts() {
         if (storageAccounts == null) {
-            storageAccounts = new StorageAccountsImpl(storageManagementClient.storageAccounts(), resourceManager.resourceGroups());
+            storageAccounts = new StorageAccountsImpl(
+                    storageManagementClient.storageAccounts(), 
+                    resourceManager);
         }
         return storageAccounts;
     }

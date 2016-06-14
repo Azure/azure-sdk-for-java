@@ -31,11 +31,13 @@ final class GenericResourcesImpl
     private final ResourceManagementClientImpl serviceClient;
     private final ResourcesInner client;
     private final ResourceGroupsInner resourceGroups;
+    private final ResourceManager resourceManager;
 
-    GenericResourcesImpl(ResourceManagementClientImpl serviceClient) {
+    GenericResourcesImpl(ResourceManagementClientImpl serviceClient, ResourceManager resourceManager) {
         this.serviceClient = serviceClient;
         this.client = serviceClient.resources();
         this.resourceGroups = serviceClient.resourceGroups();
+        this.resourceManager = resourceManager;
     }
 
     @Override
@@ -50,18 +52,35 @@ final class GenericResourcesImpl
 
     @Override
     public GenericResource.DefinitionBlank define(String name) {
-        return new GenericResourceImpl(name, new GenericResourceInner(), client, serviceClient);
+        return new GenericResourceImpl(
+                name,
+                new GenericResourceInner(),
+                client,
+                serviceClient,
+                this.resourceManager);
     }
 
     @Override
     public boolean checkExistence(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws IOException, CloudException {
-        return client.checkExistence(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).getBody();
+        return client.checkExistence(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion).getBody();
     }
 
     @Override
     public GenericResource get(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws CloudException, IOException {
         GenericResourceInner inner = client.get(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).getBody();
-        GenericResourceImpl resource = new GenericResourceImpl(resourceName, inner, client, serviceClient);
+        GenericResourceImpl resource = new GenericResourceImpl(
+                resourceName,
+                inner,
+                client,
+                serviceClient,
+                this.resourceManager);
+
         return resource.withExistingGroup(resourceGroupName)
                 .withProviderNamespace(resourceProviderNamespace)
                 .withParentResource(parentResourcePath)
@@ -86,7 +105,12 @@ final class GenericResourcesImpl
         PagedListConverter<GenericResourceInner, GenericResource> converter = new PagedListConverter<GenericResourceInner, GenericResource>() {
             @Override
             public GenericResource typeConvert(GenericResourceInner genericResourceInner) {
-                return new GenericResourceImpl(genericResourceInner.id(), genericResourceInner, client, serviceClient)
+                return new GenericResourceImpl(
+                        genericResourceInner.id(),
+                        genericResourceInner,
+                        client,
+                        serviceClient,
+                        resourceManager)
                         .withExistingGroup(ResourceUtils.groupFromResourceId(genericResourceInner.id()))
                         .withProviderNamespace(ResourceUtils.resourceProviderFromResourceId(genericResourceInner.id()))
                         .withResourceType(ResourceUtils.resourceTypeFromResourceId(genericResourceInner.id()))

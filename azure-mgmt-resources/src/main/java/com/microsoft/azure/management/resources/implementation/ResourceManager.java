@@ -169,7 +169,7 @@ public final class ResourceManager {
      */
     public GenericResources genericResources() {
         if (genericResources == null) {
-            genericResources = new GenericResourcesImpl(resourceManagementClient);
+            genericResources = new GenericResourcesImpl(resourceManagementClient, this);
         }
         return genericResources;
     }

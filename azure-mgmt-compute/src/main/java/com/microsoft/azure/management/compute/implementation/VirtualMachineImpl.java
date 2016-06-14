@@ -102,15 +102,12 @@ class VirtualMachineImpl
     private VirtualMachineInstanceView virtualMachineInstanceView;
     // The data disks associated with the virtual machine
     private List<DataDisk> dataDisks;
-    // Intermediate state of network interface definition to which private ip can be associated
-    private NetworkInterface
-            .DefinitionWithPrivateIp nicDefinitionWithPrivateIp;
+    // Intermediate state of network interface definition to which private IP can be associated
+    private NetworkInterface.DefinitionWithPrivateIp nicDefinitionWithPrivateIp;
     // Intermediate state of network interface definition to which subnet can be associated
-    private NetworkInterface
-            .DefinitionWithSubnet nicDefinitionWithSubnet;
-    // Intermediate state of network interface definition to which public Ip can be associated
-    private NetworkInterface
-            .DefinitionWithPublicIpAddress nicDefinitionWithPublicIp;
+    private NetworkInterface.DefinitionWithSubnet nicDefinitionWithSubnet;
+    // Intermediate state of network interface definition to which public IP can be associated
+    private NetworkInterface.DefinitionWithPublicIpAddress nicDefinitionWithPublicIp;
     // Virtual machine size converter
     private final PagedListConverter<VirtualMachineSizeInner, VirtualMachineSize> virtualMachineSizeConverter;
 
@@ -121,7 +118,7 @@ class VirtualMachineImpl
                        final ResourceManager resourceManager,
                        final StorageManager storageManager,
                        final NetworkManager networkManager) {
-        super(name, innerModel, resourceManager.resourceGroups());
+        super(name, innerModel, resourceManager);
         this.client = client;
         this.computeManager = computeManager;
         this.storageManager = storageManager;

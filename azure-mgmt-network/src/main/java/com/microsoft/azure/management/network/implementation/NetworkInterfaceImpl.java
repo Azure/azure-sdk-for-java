@@ -17,11 +17,11 @@ import com.microsoft.azure.management.network.implementation.api.NetworkInterfac
 import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceInner;
 import com.microsoft.azure.management.network.implementation.api.NetworkInterfacesInner;
 import com.microsoft.azure.management.resources.ResourceGroup;
-import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
@@ -59,8 +59,8 @@ class NetworkInterfaceImpl
                          final NetworkInterfacesInner client,
                          final Networks networks,
                          final PublicIpAddresses publicIpAddresses,
-                         final ResourceGroups resourceGroups) {
-        super(name, innerModel, resourceGroups);
+                         final ResourceManager resourceManager) {
+        super(name, innerModel, resourceManager);
         this.client = client;
         this.networks = networks;
         this.publicIpAddresses = publicIpAddresses;

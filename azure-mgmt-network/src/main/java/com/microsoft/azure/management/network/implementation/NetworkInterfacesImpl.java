@@ -10,9 +10,9 @@ import com.microsoft.azure.management.network.implementation.api.NetworkInterfac
 import com.microsoft.azure.management.network.implementation.api.NetworkInterfacesInner;
 import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceIPConfiguration;
 import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceDnsSettings;
-import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
+import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
@@ -25,18 +25,18 @@ class NetworkInterfacesImpl implements NetworkInterfaces {
     private final NetworkInterfacesInner client;
     private final Networks networks;
     private final PublicIpAddresses publicIpAddresses;
-    private final ResourceGroups resourceGroups;
+    private final ResourceManager resourceManager;
 
     private final PagedListConverter<NetworkInterfaceInner, NetworkInterface> converter;
 
     NetworkInterfacesImpl(final NetworkInterfacesInner client,
                           final Networks networks,
                           final PublicIpAddresses publicIpAddresses,
-                          final ResourceGroups resourceGroups) {
+                          final ResourceManager resourceManager) {
         this.client = client;
         this.networks = networks;
         this.publicIpAddresses = publicIpAddresses;
-        this.resourceGroups = resourceGroups;
+        this.resourceManager = resourceManager;
         this.converter = new PagedListConverter<NetworkInterfaceInner, NetworkInterface>() {
             @Override
             public NetworkInterface typeConvert(NetworkInterfaceInner inner) {
@@ -87,7 +87,7 @@ class NetworkInterfacesImpl implements NetworkInterfaces {
                 this.client,
                 this.networks,
                 this.publicIpAddresses,
-                this.resourceGroups);
+                this.resourceManager);
     }
 
     private NetworkInterfaceImpl createFluentModel(NetworkInterfaceInner inner) {
@@ -96,6 +96,6 @@ class NetworkInterfacesImpl implements NetworkInterfaces {
                 this.client,
                 this.networks,
                 this.publicIpAddresses,
-                this.resourceGroups);
+                this.resourceManager);
     }
 }

@@ -13,9 +13,9 @@ import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.compute.implementation.api.AvailabilitySetInner;
 import com.microsoft.azure.management.compute.implementation.api.AvailabilitySetsInner;
 import com.microsoft.azure.management.compute.implementation.api.InstanceViewStatus;
-import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceLazyList;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
@@ -44,9 +44,9 @@ class AvailabilitySetImpl
 
     AvailabilitySetImpl(String name, AvailabilitySetInner innerModel,
                                final AvailabilitySetsInner client,
-                               final ResourceGroups resourceGroups,
+                               final ResourceManager resourceManager,
                                final VirtualMachines virtualMachines) {
-        super(name, innerModel, resourceGroups);
+        super(name, innerModel, resourceManager);
         this.client = client;
         this.virtualMachines = virtualMachines;
     }

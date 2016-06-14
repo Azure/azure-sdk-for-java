@@ -12,9 +12,9 @@ import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressDnsSettings;
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressInner;
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressesInner;
-import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
+import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
@@ -26,12 +26,12 @@ import java.io.IOException;
 class PublicIpAddressesImpl
         implements PublicIpAddresses {
     private final PublicIPAddressesInner client;
-    private final ResourceGroups resourceGroups;
+    private final ResourceManager resourceManager;
     private final PagedListConverter<PublicIPAddressInner, PublicIpAddress> converter;
 
-    PublicIpAddressesImpl(final PublicIPAddressesInner client, final ResourceGroups resourceGroups) {
+    PublicIpAddressesImpl(final PublicIPAddressesInner client, final ResourceManager resourceManager) {
         this.client = client;
-        this.resourceGroups = resourceGroups;
+        this.resourceManager = resourceManager;
         this.converter = new PagedListConverter<PublicIPAddressInner, PublicIpAddress>() {
             @Override
             public PublicIpAddress typeConvert(PublicIPAddressInner inner) {
@@ -82,10 +82,10 @@ class PublicIpAddressesImpl
             inner.withDnsSettings(new PublicIPAddressDnsSettings());
         }
 
-        return new PublicIpAddressImpl(name, inner, this.client, this.resourceGroups);
+        return new PublicIpAddressImpl(name, inner, this.client, this.resourceManager);
     }
 
     private PublicIpAddressImpl createFluentModel(PublicIPAddressInner inner) {
-        return new PublicIpAddressImpl(inner.id(), inner, this.client, this.resourceGroups);
+        return new PublicIpAddressImpl(inner.id(), inner, this.client, this.resourceManager);
     }
 }

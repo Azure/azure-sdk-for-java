@@ -102,7 +102,7 @@ public final class NetworkManager {
         if (this.networks == null) {
             this.networks = new NetworksImpl(
                     this.networkManagementClient.virtualNetworks(),
-                    this.resourceManager.resourceGroups());
+                    this.resourceManager);
         }
         return this.networks;
     }
@@ -114,7 +114,7 @@ public final class NetworkManager {
         if (this.networkSecurityGroups == null) {
             this.networkSecurityGroups = new NetworkSecurityGroupsImpl(
                     this.networkManagementClient.networkSecurityGroups(),
-                    this.resourceManager.resourceGroups());
+                    this.resourceManager);
         }
         return this.networkSecurityGroups;
     }
@@ -126,7 +126,7 @@ public final class NetworkManager {
         if (this.publicIpAddresses == null) {
             this.publicIpAddresses = new PublicIpAddressesImpl(
                     this.networkManagementClient.publicIPAddresses(),
-                    this.resourceManager.resourceGroups());
+                    this.resourceManager);
         }
         return this.publicIpAddresses;
     }
@@ -140,7 +140,7 @@ public final class NetworkManager {
                 this.networkManagementClient.networkInterfaces(),
                 this.networks(),
                 this.publicIpAddresses(),
-                this.resourceManager.resourceGroups()
+                this.resourceManager
             );
         }
         return this.networkInterfaces;
