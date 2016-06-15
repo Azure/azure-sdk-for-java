@@ -70,6 +70,11 @@ class NetworkImpl
         return this.create();
     }
 
+    @Override
+    public ServiceCall applyAsync(ServiceCallback<Network> callback) {
+        return createAsync(callback);
+    }
+
     // Setters (fluent)
 
     @Override

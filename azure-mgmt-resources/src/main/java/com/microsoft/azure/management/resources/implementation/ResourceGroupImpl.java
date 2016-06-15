@@ -126,6 +126,11 @@ class ResourceGroupImpl extends
     }
 
     @Override
+    public ServiceCall applyAsync(ServiceCallback<ResourceGroup> callback) {
+        return createAsync(callback);
+    }
+
+    @Override
     public ResourceGroupImpl refresh() throws Exception {
         this.setInner(client.get(this.key).getBody());
         return this;

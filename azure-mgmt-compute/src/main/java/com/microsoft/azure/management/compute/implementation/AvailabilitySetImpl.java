@@ -94,6 +94,11 @@ class AvailabilitySetImpl
     }
 
     @Override
+    public ServiceCall applyAsync(ServiceCallback<AvailabilitySet> callback) {
+        return this.createAsync(callback);
+    }
+
+    @Override
     protected void createResource() throws Exception {
         ServiceResponse<AvailabilitySetInner> response = this.client.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
         AvailabilitySetInner availabilitySetInner = response.getBody();

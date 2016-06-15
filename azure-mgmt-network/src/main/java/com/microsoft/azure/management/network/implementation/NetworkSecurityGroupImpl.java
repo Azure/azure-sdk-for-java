@@ -79,6 +79,11 @@ class NetworkSecurityGroupImpl
     }
 
     @Override
+    public ServiceCall applyAsync(ServiceCallback<NetworkSecurityGroup> callback) {
+        return createAsync(callback);
+    }
+
+    @Override
     protected void createResource() throws Exception {
         ServiceResponse<NetworkSecurityGroupInner> response =
                 this.client.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());

@@ -7,6 +7,8 @@ import com.microsoft.azure.management.compute.implementation.api.DiskCreateOptio
 import com.microsoft.azure.management.compute.implementation.api.VirtualHardDisk;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
+import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,6 +144,11 @@ class DataDiskImpl
     @Override
     public VirtualMachine apply() {
         return this.parent();
+    }
+
+    @Override
+    public ServiceCall applyAsync(ServiceCallback callback) {
+        throw new UnsupportedOperationException("Apply doesn't run asynchronously on child resources!");
     }
 
     protected static void setDataDisksDefaults(List<DataDisk> dataDisks, String namePrefix) {

@@ -46,6 +46,11 @@ class PublicIpAddressImpl
     }
 
     @Override
+    public ServiceCall applyAsync(ServiceCallback<PublicIpAddress> callback) {
+        return this.createAsync(callback);
+    }
+
+    @Override
     public PublicIpAddress refresh() throws Exception {
         ServiceResponse<PublicIPAddressInner> response =
             this.client.get(this.resourceGroupName(), this.name());

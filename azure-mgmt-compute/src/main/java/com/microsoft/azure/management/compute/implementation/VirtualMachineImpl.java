@@ -163,6 +163,11 @@ class VirtualMachineImpl
     }
 
     @Override
+    public ServiceCall applyAsync(ServiceCallback<VirtualMachine> callback) {
+        return this.createAsync(callback);
+    }
+
+    @Override
     public void deallocate() throws CloudException, IOException, InterruptedException {
         this.client.deallocate(this.resourceGroupName(), this.name());
     }

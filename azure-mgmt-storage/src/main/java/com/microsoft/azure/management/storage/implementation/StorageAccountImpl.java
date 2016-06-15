@@ -243,6 +243,23 @@ class StorageAccountImpl
     }
 
     @Override
+    public ServiceCall applyAsync(final ServiceCallback<StorageAccount> callback) {
+        final StorageAccountImpl self = this;
+        return client.updateAsync(resourceGroupName(), name(), updateParameters, new ServiceCallback<StorageAccountInner>() {
+            @Override
+            public void failure(Throwable t) {
+                callback.failure(t);
+            }
+
+            @Override
+            public void success(ServiceResponse<StorageAccountInner> result) {
+                setInner(result.getBody());
+                callback.success(new ServiceResponse<StorageAccount>(self, result.getResponse()));
+            }
+        });
+    }
+
+    @Override
     public StorageAccountImpl withCustomDomain(CustomDomain customDomain) {
         if (isInCreateMode()) {
             createParameters.withCustomDomain(customDomain);

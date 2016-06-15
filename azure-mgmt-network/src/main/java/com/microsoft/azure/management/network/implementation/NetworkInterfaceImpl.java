@@ -89,6 +89,11 @@ class NetworkInterfaceImpl
         return this.create();
     }
 
+    @Override
+    public ServiceCall applyAsync(ServiceCallback<NetworkInterface> callback) {
+        return createAsync(callback);
+    }
+
     /**************************************************.
      * Setters
      **************************************************/

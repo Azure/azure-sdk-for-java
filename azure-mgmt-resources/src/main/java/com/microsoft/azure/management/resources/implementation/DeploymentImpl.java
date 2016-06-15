@@ -363,6 +363,7 @@ final class DeploymentImpl extends
         });
     }
 
+    @Override
     public DeploymentImpl apply() throws Exception {
         if (this.templateLink() != null && this.template() != null) {
             this.withTemplate(null);
@@ -371,5 +372,20 @@ final class DeploymentImpl extends
             this.withParameters(null);
         }
         return this.create();
+    }
+
+    @Override
+    public ServiceCall applyAsync(ServiceCallback<Deployment> callback) {
+        try {
+            if (this.templateLink() != null && this.template() != null) {
+                this.withTemplate(null);
+            }
+            if (this.parametersLink() != null && this.parameters() != null) {
+                this.withParameters(null);
+            }
+        } catch (IOException e) {
+            callback.failure(e);
+        }
+        return this.createAsync(callback);
     }
 }

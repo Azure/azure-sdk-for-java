@@ -164,4 +164,9 @@ final class GenericResourceImpl
     public GenericResourceImpl apply() throws Exception {
         return create();
     }
+
+    @Override
+    public ServiceCall applyAsync(ServiceCallback<GenericResource> callback) {
+        return createAsync(callback);
+    }
 }

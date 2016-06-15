@@ -103,6 +103,7 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
      * @param callback the callback to call on success or failure
      * @return the handle to the create REST call
      */
+    @SuppressWarnings("unchecked")
     public ServiceCall createAsync(ServiceCallback<FluentModelT> callback) {
         if (creatableTaskGroup.isRoot()) {
             return creatableTaskGroup.executeAsync(Utils.toVoidCallback((FluentModelT) this, callback));
