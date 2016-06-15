@@ -36,7 +36,7 @@ public class LifetimeAction {
      * @param trigger the trigger value to set
      * @return the LifetimeAction object itself.
      */
-    public LifetimeAction setTrigger(Trigger trigger) {
+    public LifetimeAction withTrigger(Trigger trigger) {
         this.trigger = trigger;
         return this;
     }
@@ -56,7 +56,7 @@ public class LifetimeAction {
      * @param action the action value to set
      * @return the LifetimeAction object itself.
      */
-    public LifetimeAction setAction(Action action) {
+    public LifetimeAction withAction(Action action) {
         this.action = action;
         return this;
     }

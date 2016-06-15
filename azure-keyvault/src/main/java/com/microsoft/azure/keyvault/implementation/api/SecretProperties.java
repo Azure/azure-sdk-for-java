@@ -33,7 +33,7 @@ public class SecretProperties {
      * @param contentType the contentType value to set
      * @return the SecretProperties object itself.
      */
-    public SecretProperties setContentType(String contentType) {
+    public SecretProperties withContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }

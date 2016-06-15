@@ -46,7 +46,7 @@ public class CertificateMergeParameters {
      * @param x509Certificates the x509Certificates value to set
      * @return the CertificateMergeParameters object itself.
      */
-    public CertificateMergeParameters setX509Certificates(List<byte[]> x509Certificates) {
+    public CertificateMergeParameters withX509Certificates(List<byte[]> x509Certificates) {
         this.x509Certificates = x509Certificates;
         return this;
     }
@@ -66,7 +66,7 @@ public class CertificateMergeParameters {
      * @param certificateAttributes the certificateAttributes value to set
      * @return the CertificateMergeParameters object itself.
      */
-    public CertificateMergeParameters setCertificateAttributes(CertificateAttributesInner certificateAttributes) {
+    public CertificateMergeParameters withCertificateAttributes(CertificateAttributesInner certificateAttributes) {
         this.certificateAttributes = certificateAttributes;
         return this;
     }
@@ -86,7 +86,7 @@ public class CertificateMergeParameters {
      * @param tags the tags value to set
      * @return the CertificateMergeParameters object itself.
      */
-    public CertificateMergeParameters setTags(Map<String, String> tags) {
+    public CertificateMergeParameters withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }

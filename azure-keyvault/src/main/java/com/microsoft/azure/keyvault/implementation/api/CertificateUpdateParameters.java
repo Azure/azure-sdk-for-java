@@ -39,7 +39,7 @@ public class CertificateUpdateParameters {
      * @param certificateAttributes the certificateAttributes value to set
      * @return the CertificateUpdateParameters object itself.
      */
-    public CertificateUpdateParameters setCertificateAttributes(CertificateAttributesInner certificateAttributes) {
+    public CertificateUpdateParameters withCertificateAttributes(CertificateAttributesInner certificateAttributes) {
         this.certificateAttributes = certificateAttributes;
         return this;
     }
@@ -59,7 +59,7 @@ public class CertificateUpdateParameters {
      * @param tags the tags value to set
      * @return the CertificateUpdateParameters object itself.
      */
-    public CertificateUpdateParameters setTags(Map<String, String> tags) {
+    public CertificateUpdateParameters withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }

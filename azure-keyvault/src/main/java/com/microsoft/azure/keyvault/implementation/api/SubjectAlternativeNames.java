@@ -44,7 +44,7 @@ public class SubjectAlternativeNames {
      * @param emails the emails value to set
      * @return the SubjectAlternativeNames object itself.
      */
-    public SubjectAlternativeNames setEmails(List<String> emails) {
+    public SubjectAlternativeNames withEmails(List<String> emails) {
         this.emails = emails;
         return this;
     }
@@ -64,7 +64,7 @@ public class SubjectAlternativeNames {
      * @param dnsNames the dnsNames value to set
      * @return the SubjectAlternativeNames object itself.
      */
-    public SubjectAlternativeNames setDnsNames(List<String> dnsNames) {
+    public SubjectAlternativeNames withDnsNames(List<String> dnsNames) {
         this.dnsNames = dnsNames;
         return this;
     }
@@ -84,7 +84,7 @@ public class SubjectAlternativeNames {
      * @param upns the upns value to set
      * @return the SubjectAlternativeNames object itself.
      */
-    public SubjectAlternativeNames setUpns(List<String> upns) {
+    public SubjectAlternativeNames withUpns(List<String> upns) {
         this.upns = upns;
         return this;
     }

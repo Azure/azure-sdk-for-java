@@ -39,7 +39,7 @@ public class IssuerCredentials {
      * @param accountId the accountId value to set
      * @return the IssuerCredentials object itself.
      */
-    public IssuerCredentials setAccountId(String accountId) {
+    public IssuerCredentials withAccountId(String accountId) {
         this.accountId = accountId;
         return this;
     }
@@ -59,7 +59,7 @@ public class IssuerCredentials {
      * @param password the password value to set
      * @return the IssuerCredentials object itself.
      */
-    public IssuerCredentials setPassword(String password) {
+    public IssuerCredentials withPassword(String password) {
         this.password = password;
         return this;
     }

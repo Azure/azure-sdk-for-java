@@ -50,7 +50,7 @@ public class SecretSetParameters {
      * @param value the value value to set
      * @return the SecretSetParameters object itself.
      */
-    public SecretSetParameters setValue(String value) {
+    public SecretSetParameters withValue(String value) {
         this.value = value;
         return this;
     }
@@ -70,7 +70,7 @@ public class SecretSetParameters {
      * @param tags the tags value to set
      * @return the SecretSetParameters object itself.
      */
-    public SecretSetParameters setTags(Map<String, String> tags) {
+    public SecretSetParameters withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -90,7 +90,7 @@ public class SecretSetParameters {
      * @param contentType the contentType value to set
      * @return the SecretSetParameters object itself.
      */
-    public SecretSetParameters setContentType(String contentType) {
+    public SecretSetParameters withContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -110,7 +110,7 @@ public class SecretSetParameters {
      * @param secretAttributes the secretAttributes value to set
      * @return the SecretSetParameters object itself.
      */
-    public SecretSetParameters setSecretAttributes(SecretAttributesInner secretAttributes) {
+    public SecretSetParameters withSecretAttributes(SecretAttributesInner secretAttributes) {
         this.secretAttributes = secretAttributes;
         return this;
     }

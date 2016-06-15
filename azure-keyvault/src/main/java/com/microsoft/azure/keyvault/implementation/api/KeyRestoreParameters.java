@@ -33,7 +33,7 @@ public class KeyRestoreParameters {
      * @param keyBundleBackup the keyBundleBackup value to set
      * @return the KeyRestoreParameters object itself.
      */
-    public KeyRestoreParameters setKeyBundleBackup(String keyBundleBackup) {
+    public KeyRestoreParameters withKeyBundleBackup(String keyBundleBackup) {
         this.keyBundleBackup = keyBundleBackup;
         return this;
     }

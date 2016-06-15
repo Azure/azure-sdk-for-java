@@ -31,7 +31,7 @@ public class IssuerReference {
      * @param name the name value to set
      * @return the IssuerReference object itself.
      */
-    public IssuerReference setName(String name) {
+    public IssuerReference withName(String name) {
         this.name = name;
         return this;
     }

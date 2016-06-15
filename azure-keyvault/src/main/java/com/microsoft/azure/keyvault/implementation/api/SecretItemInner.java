@@ -47,7 +47,7 @@ public class SecretItemInner {
      * @param id the id value to set
      * @return the SecretItemInner object itself.
      */
-    public SecretItemInner setId(String id) {
+    public SecretItemInner withId(String id) {
         this.id = id;
         return this;
     }
@@ -67,7 +67,7 @@ public class SecretItemInner {
      * @param attributes the attributes value to set
      * @return the SecretItemInner object itself.
      */
-    public SecretItemInner setAttributes(SecretAttributesInner attributes) {
+    public SecretItemInner withAttributes(SecretAttributesInner attributes) {
         this.attributes = attributes;
         return this;
     }
@@ -87,7 +87,7 @@ public class SecretItemInner {
      * @param tags the tags value to set
      * @return the SecretItemInner object itself.
      */
-    public SecretItemInner setTags(Map<String, String> tags) {
+    public SecretItemInner withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -107,7 +107,7 @@ public class SecretItemInner {
      * @param contentType the contentType value to set
      * @return the SecretItemInner object itself.
      */
-    public SecretItemInner setContentType(String contentType) {
+    public SecretItemInner withContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }

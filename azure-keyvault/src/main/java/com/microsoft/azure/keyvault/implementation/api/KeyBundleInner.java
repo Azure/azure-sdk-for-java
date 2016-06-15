@@ -42,7 +42,7 @@ public class KeyBundleInner {
      * @param key the key value to set
      * @return the KeyBundleInner object itself.
      */
-    public KeyBundleInner setKey(JsonWebKeyInner key) {
+    public KeyBundleInner withKey(JsonWebKeyInner key) {
         this.key = key;
         return this;
     }
@@ -62,7 +62,7 @@ public class KeyBundleInner {
      * @param attributes the attributes value to set
      * @return the KeyBundleInner object itself.
      */
-    public KeyBundleInner setAttributes(KeyAttributesInner attributes) {
+    public KeyBundleInner withAttributes(KeyAttributesInner attributes) {
         this.attributes = attributes;
         return this;
     }
@@ -82,7 +82,7 @@ public class KeyBundleInner {
      * @param tags the tags value to set
      * @return the KeyBundleInner object itself.
      */
-    public KeyBundleInner setTags(Map<String, String> tags) {
+    public KeyBundleInner withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }

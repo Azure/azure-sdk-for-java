@@ -52,7 +52,7 @@ public class SecretBundleInner {
      * @param value the value value to set
      * @return the SecretBundleInner object itself.
      */
-    public SecretBundleInner setValue(String value) {
+    public SecretBundleInner withValue(String value) {
         this.value = value;
         return this;
     }
@@ -72,7 +72,7 @@ public class SecretBundleInner {
      * @param id the id value to set
      * @return the SecretBundleInner object itself.
      */
-    public SecretBundleInner setId(String id) {
+    public SecretBundleInner withId(String id) {
         this.id = id;
         return this;
     }
@@ -92,7 +92,7 @@ public class SecretBundleInner {
      * @param contentType the contentType value to set
      * @return the SecretBundleInner object itself.
      */
-    public SecretBundleInner setContentType(String contentType) {
+    public SecretBundleInner withContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -112,7 +112,7 @@ public class SecretBundleInner {
      * @param attributes the attributes value to set
      * @return the SecretBundleInner object itself.
      */
-    public SecretBundleInner setAttributes(SecretAttributesInner attributes) {
+    public SecretBundleInner withAttributes(SecretAttributesInner attributes) {
         this.attributes = attributes;
         return this;
     }
@@ -132,7 +132,7 @@ public class SecretBundleInner {
      * @param tags the tags value to set
      * @return the SecretBundleInner object itself.
      */
-    public SecretBundleInner setTags(Map<String, String> tags) {
+    public SecretBundleInner withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }

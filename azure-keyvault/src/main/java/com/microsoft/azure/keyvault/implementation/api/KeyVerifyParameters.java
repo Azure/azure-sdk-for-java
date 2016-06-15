@@ -46,7 +46,7 @@ public class KeyVerifyParameters {
      * @param algorithm the algorithm value to set
      * @return the KeyVerifyParameters object itself.
      */
-    public KeyVerifyParameters setAlgorithm(String algorithm) {
+    public KeyVerifyParameters withAlgorithm(String algorithm) {
         this.algorithm = algorithm;
         return this;
     }
@@ -66,7 +66,7 @@ public class KeyVerifyParameters {
      * @param digest the digest value to set
      * @return the KeyVerifyParameters object itself.
      */
-    public KeyVerifyParameters setDigest(String digest) {
+    public KeyVerifyParameters withDigest(String digest) {
         this.digest = digest;
         return this;
     }
@@ -86,7 +86,7 @@ public class KeyVerifyParameters {
      * @param signature the signature value to set
      * @return the KeyVerifyParameters object itself.
      */
-    public KeyVerifyParameters setSignature(String signature) {
+    public KeyVerifyParameters withSignature(String signature) {
         this.signature = signature;
         return this;
     }

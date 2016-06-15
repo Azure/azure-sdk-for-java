@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.keyvault.implementation.api;
 
+import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
@@ -16,7 +17,6 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.serializer.AzureJacksonMapperAdapter;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
-import com.microsoft.rest.serializer.CollectionFormat;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -85,9 +85,11 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
      * Sets Gets or sets the preferred language for the response.
      *
      * @param acceptLanguage the acceptLanguage value.
+     * @return the service client itself
      */
-    public void setAcceptLanguage(String acceptLanguage) {
+    public KeyVaultClientImpl withAcceptLanguage(String acceptLanguage) {
         this.acceptLanguage = acceptLanguage;
+        return this;
     }
 
     /** Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30. */
@@ -106,9 +108,11 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
      * Sets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30.
      *
      * @param longRunningOperationRetryTimeout the longRunningOperationRetryTimeout value.
+     * @return the service client itself
      */
-    public void setLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout) {
+    public KeyVaultClientImpl withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout) {
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
+        return this;
     }
 
     /** When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true. */
@@ -127,9 +131,11 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
      * Sets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
      *
      * @param generateClientRequestId the generateClientRequestId value.
+     * @return the service client itself
      */
-    public void setGenerateClientRequestId(boolean generateClientRequestId) {
+    public KeyVaultClientImpl withGenerateClientRequestId(boolean generateClientRequestId) {
         this.generateClientRequestId = generateClientRequestId;
+        return this;
     }
 
     /**
@@ -196,171 +202,171 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
     interface KeyVaultClientService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("keys/{key-name}/create")
-        Call<ResponseBody> createKey(@Path("key-name") String keyName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyCreateParameters parameters, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> createKey(@Path("key-name") String keyName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyCreateParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("keys/{key-name}")
-        Call<ResponseBody> importKey(@Path("key-name") String keyName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyImportParameters parameters, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> importKey(@Path("key-name") String keyName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyImportParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "keys/{key-name}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteKey(@Path("key-name") String keyName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> deleteKey(@Path("key-name") String keyName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("keys/{key-name}/{key-version}")
-        Call<ResponseBody> updateKey(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyUpdateParameters parameters, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> updateKey(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyUpdateParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("keys/{key-name}/{key-version}")
-        Call<ResponseBody> getKey(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> getKey(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("keys/{key-name}/versions")
-        Call<ResponseBody> getKeyVersions(@Path("key-name") String keyName, @Query("maxresults") Integer maxresults, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> getKeyVersions(@Path("key-name") String keyName, @Query("maxresults") Integer maxresults, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("keys")
-        Call<ResponseBody> getKeys(@Query("maxresults") Integer maxresults, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> getKeys(@Query("maxresults") Integer maxresults, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("keys/{key-name}/backup")
-        Call<ResponseBody> backupKey(@Path("key-name") String keyName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> backupKey(@Path("key-name") String keyName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("keys/restore")
-        Call<ResponseBody> restoreKey(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyRestoreParameters parameters, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> restoreKey(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyRestoreParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("keys/{key-name}/{key-version}/encrypt")
-        Call<ResponseBody> encrypt(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyOperationsParameters parameters, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> encrypt(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyOperationsParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("keys/{key-name}/{key-version}/decrypt")
-        Call<ResponseBody> decrypt(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyOperationsParameters parameters, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> decrypt(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyOperationsParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("keys/{key-name}/{key-version}/sign")
-        Call<ResponseBody> sign(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyOperationsParameters parameters, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> sign(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyOperationsParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("keys/{key-name}/{key-version}/verify")
-        Call<ResponseBody> verify(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyVerifyParameters parameters, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> verify(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyVerifyParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("keys/{key-name}/{key-version}/wrapkey")
-        Call<ResponseBody> wrapKey(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyOperationsParameters parameters, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> wrapKey(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyOperationsParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("keys/{key-name}/{key-version}/unwrapkey")
-        Call<ResponseBody> unwrapKey(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyOperationsParameters parameters, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> unwrapKey(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyOperationsParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("secrets/{secret-name}")
-        Call<ResponseBody> setSecret(@Path("secret-name") String secretName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body SecretSetParameters parameters, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> setSecret(@Path("secret-name") String secretName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body SecretSetParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "secrets/{secret-name}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteSecret(@Path("secret-name") String secretName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> deleteSecret(@Path("secret-name") String secretName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("secrets/{secret-name}/{secret-version}")
-        Call<ResponseBody> updateSecret(@Path("secret-name") String secretName, @Path("secret-version") String secretVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body SecretUpdateParameters parameters, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> updateSecret(@Path("secret-name") String secretName, @Path("secret-version") String secretVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body SecretUpdateParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("secrets/{secret-name}/{secret-version}")
-        Call<ResponseBody> getSecret(@Path("secret-name") String secretName, @Path("secret-version") String secretVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> getSecret(@Path("secret-name") String secretName, @Path("secret-version") String secretVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("secrets")
-        Call<ResponseBody> getSecrets(@Query("maxresults") Integer maxresults, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> getSecrets(@Query("maxresults") Integer maxresults, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("secrets/{secret-name}/versions")
-        Call<ResponseBody> getSecretVersions(@Path("secret-name") String secretName, @Query("maxresults") Integer maxresults, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> getSecretVersions(@Path("secret-name") String secretName, @Query("maxresults") Integer maxresults, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("certificates")
-        Call<ResponseBody> getCertificates(@Query("maxresults") Integer maxresults, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> getCertificates(@Query("maxresults") Integer maxresults, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "certificates/{certificate-name}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteCertificate(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> deleteCertificate(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("certificates/contacts")
-        Call<ResponseBody> setCertificateContacts(@Body ContactsInner contacts, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> setCertificateContacts(@Body ContactsInner contacts, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("certificates/contacts")
-        Call<ResponseBody> getCertificateContacts(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> getCertificateContacts(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "certificates/contacts", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteCertificateContacts(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> deleteCertificateContacts(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("certificates/issuers")
-        Call<ResponseBody> getCertificateIssuers(@Query("maxresults") Integer maxresults, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> getCertificateIssuers(@Query("maxresults") Integer maxresults, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("certificates/issuers/{issuer-name}")
-        Call<ResponseBody> setCertificateIssuer(@Path("issuer-name") String issuerName, @Body IssuerBundleInner issuer, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> setCertificateIssuer(@Path("issuer-name") String issuerName, @Body IssuerBundleInner issuer, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("certificates/issuers/{issuer-name}")
-        Call<ResponseBody> updateCertificateIssuer(@Path("issuer-name") String issuerName, @Body IssuerBundleInner issuer, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> updateCertificateIssuer(@Path("issuer-name") String issuerName, @Body IssuerBundleInner issuer, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("certificates/issuers/{issuer-name}")
-        Call<ResponseBody> getCertificateIssuer(@Path("issuer-name") String issuerName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> getCertificateIssuer(@Path("issuer-name") String issuerName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "certificates/issuers/{issuer-name}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteCertificateIssuer(@Path("issuer-name") String issuerName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> deleteCertificateIssuer(@Path("issuer-name") String issuerName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("certificates/{certificate-name}/create")
-        Call<ResponseBody> createCertificate(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CertificateCreateParameters parameters, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> createCertificate(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CertificateCreateParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("certificates/{certificate-name}/import")
-        Call<ResponseBody> importCertificate(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CertificateImportParameters parameters, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> importCertificate(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CertificateImportParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("certificates/{certificate-name}/versions")
-        Call<ResponseBody> getCertificateVersions(@Path("certificate-name") String certificateName, @Query("maxresults") Integer maxresults, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> getCertificateVersions(@Path("certificate-name") String certificateName, @Query("maxresults") Integer maxresults, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("certificates/{certificate-name}/policy")
-        Call<ResponseBody> getCertificatePolicy(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> getCertificatePolicy(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("certificates/{certificate-name}/policy")
-        Call<ResponseBody> updateCertificatePolicy(@Path("certificate-name") String certificateName, @Body CertificatePolicyInner certificatePolicy, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> updateCertificatePolicy(@Path("certificate-name") String certificateName, @Body CertificatePolicyInner certificatePolicy, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("certificates/{certificate-name}/{certificate-version}")
-        Call<ResponseBody> updateCertificate(@Path("certificate-name") String certificateName, @Path("certificate-version") String certificateVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CertificateUpdateParameters parameters, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> updateCertificate(@Path("certificate-name") String certificateName, @Path("certificate-version") String certificateVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CertificateUpdateParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("certificates/{certificate-name}/{certificate-version}")
-        Call<ResponseBody> getCertificate(@Path("certificate-name") String certificateName, @Path("certificate-version") String certificateVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> getCertificate(@Path("certificate-name") String certificateName, @Path("certificate-version") String certificateVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("certificates/{certificate-name}/pending")
-        Call<ResponseBody> updateCertificateOperation(@Path("certificate-name") String certificateName, @Body CertificateOperationInner certificateOperation, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> updateCertificateOperation(@Path("certificate-name") String certificateName, @Body CertificateOperationInner certificateOperation, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("certificates/{certificate-name}/pending")
-        Call<ResponseBody> getCertificateOperation(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> getCertificateOperation(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "certificates/{certificate-name}/pending", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteCertificateOperation(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> deleteCertificateOperation(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("certificates/{certificate-name}/pending/merge")
-        Call<ResponseBody> mergeCertificate(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CertificateMergeParameters parameters, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> mergeCertificate(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CertificateMergeParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
@@ -417,17 +423,17 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter kty is required and cannot be null.");
         }
         final Integer keySize = null;
-        final String keyOpsConverted = null;
+        final List<String> keyOps = null;
         final KeyAttributesInner keyAttributes = null;
         final Map<String, String> tags = null;
         KeyCreateParameters parameters = new KeyCreateParameters();
-        parameters.setKty(kty);
-        parameters.setKeySize(null);
-        parameters.setKeyOps(null);
-        parameters.setKeyAttributes(null);
-        parameters.setTags(null);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.createKey(keyName, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withKty(kty);
+        parameters.withKeySize(null);
+        parameters.withKeyOps(null);
+        parameters.withKeyAttributes(null);
+        parameters.withTags(null);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.createKey(keyName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         return createKeyDelegate(call.execute());
     }
 
@@ -462,17 +468,17 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             return null;
         }
         final Integer keySize = null;
-        final String keyOpsConverted = null;
+        final List<String> keyOps = null;
         final KeyAttributesInner keyAttributes = null;
         final Map<String, String> tags = null;
         KeyCreateParameters parameters = new KeyCreateParameters();
-        parameters.setKty(kty);
-        parameters.setKeySize(null);
-        parameters.setKeyOps(null);
-        parameters.setKeyAttributes(null);
-        parameters.setTags(null);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.createKey(keyName, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withKty(kty);
+        parameters.withKeySize(null);
+        parameters.withKeyOps(null);
+        parameters.withKeyAttributes(null);
+        parameters.withTags(null);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.createKey(keyName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<KeyBundleInner>(serviceCallback) {
             @Override
@@ -519,13 +525,13 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         Validator.validate(keyAttributes);
         Validator.validate(tags);
         KeyCreateParameters parameters = new KeyCreateParameters();
-        parameters.setKty(kty);
-        parameters.setKeySize(keySize);
-        parameters.setKeyOps(keyOps);
-        parameters.setKeyAttributes(keyAttributes);
-        parameters.setTags(tags);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.createKey(keyName, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withKty(kty);
+        parameters.withKeySize(keySize);
+        parameters.withKeyOps(keyOps);
+        parameters.withKeyAttributes(keyAttributes);
+        parameters.withTags(tags);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.createKey(keyName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         return createKeyDelegate(call.execute());
     }
 
@@ -567,13 +573,13 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         Validator.validate(keyAttributes, serviceCallback);
         Validator.validate(tags, serviceCallback);
         KeyCreateParameters parameters = new KeyCreateParameters();
-        parameters.setKty(kty);
-        parameters.setKeySize(keySize);
-        parameters.setKeyOps(keyOps);
-        parameters.setKeyAttributes(keyAttributes);
-        parameters.setTags(tags);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.createKey(keyName, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withKty(kty);
+        parameters.withKeySize(keySize);
+        parameters.withKeyOps(keyOps);
+        parameters.withKeyAttributes(keyAttributes);
+        parameters.withTags(tags);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.createKey(keyName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<KeyBundleInner>(serviceCallback) {
             @Override
@@ -624,12 +630,12 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         final KeyAttributesInner keyAttributes = null;
         final Map<String, String> tags = null;
         KeyImportParameters parameters = new KeyImportParameters();
-        parameters.setHsm(null);
-        parameters.setKey(key);
-        parameters.setKeyAttributes(null);
-        parameters.setTags(null);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.importKey(keyName, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withHsm(null);
+        parameters.withKey(key);
+        parameters.withKeyAttributes(null);
+        parameters.withTags(null);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.importKey(keyName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         return importKeyDelegate(call.execute());
     }
 
@@ -668,12 +674,12 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         final KeyAttributesInner keyAttributes = null;
         final Map<String, String> tags = null;
         KeyImportParameters parameters = new KeyImportParameters();
-        parameters.setHsm(null);
-        parameters.setKey(key);
-        parameters.setKeyAttributes(null);
-        parameters.setTags(null);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.importKey(keyName, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withHsm(null);
+        parameters.withKey(key);
+        parameters.withKeyAttributes(null);
+        parameters.withTags(null);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.importKey(keyName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<KeyBundleInner>(serviceCallback) {
             @Override
@@ -719,12 +725,12 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         Validator.validate(keyAttributes);
         Validator.validate(tags);
         KeyImportParameters parameters = new KeyImportParameters();
-        parameters.setHsm(hsm);
-        parameters.setKey(key);
-        parameters.setKeyAttributes(keyAttributes);
-        parameters.setTags(tags);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.importKey(keyName, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withHsm(hsm);
+        parameters.withKey(key);
+        parameters.withKeyAttributes(keyAttributes);
+        parameters.withTags(tags);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.importKey(keyName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         return importKeyDelegate(call.execute());
     }
 
@@ -765,12 +771,12 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         Validator.validate(keyAttributes, serviceCallback);
         Validator.validate(tags, serviceCallback);
         KeyImportParameters parameters = new KeyImportParameters();
-        parameters.setHsm(hsm);
-        parameters.setKey(key);
-        parameters.setKeyAttributes(keyAttributes);
-        parameters.setTags(tags);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.importKey(keyName, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withHsm(hsm);
+        parameters.withKey(key);
+        parameters.withKeyAttributes(keyAttributes);
+        parameters.withTags(tags);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.importKey(keyName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<KeyBundleInner>(serviceCallback) {
             @Override
@@ -812,8 +818,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.deleteKey(keyName, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.deleteKey(keyName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         return deleteKeyDelegate(call.execute());
     }
 
@@ -842,8 +848,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.deleteKey(keyName, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.deleteKey(keyName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<KeyBundleInner>(serviceCallback) {
             @Override
@@ -889,15 +895,15 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        final String keyOpsConverted = null;
+        final List<String> keyOps = null;
         final KeyAttributesInner keyAttributes = null;
         final Map<String, String> tags = null;
         KeyUpdateParameters parameters = new KeyUpdateParameters();
-        parameters.setKeyOps(null);
-        parameters.setKeyAttributes(null);
-        parameters.setTags(null);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withKeyOps(null);
+        parameters.withKeyAttributes(null);
+        parameters.withTags(null);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.updateKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         return updateKeyDelegate(call.execute());
     }
 
@@ -931,15 +937,15 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null."));
             return null;
         }
-        final String keyOpsConverted = null;
+        final List<String> keyOps = null;
         final KeyAttributesInner keyAttributes = null;
         final Map<String, String> tags = null;
         KeyUpdateParameters parameters = new KeyUpdateParameters();
-        parameters.setKeyOps(null);
-        parameters.setKeyAttributes(null);
-        parameters.setTags(null);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withKeyOps(null);
+        parameters.withKeyAttributes(null);
+        parameters.withTags(null);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.updateKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<KeyBundleInner>(serviceCallback) {
             @Override
@@ -985,11 +991,11 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         Validator.validate(keyAttributes);
         Validator.validate(tags);
         KeyUpdateParameters parameters = new KeyUpdateParameters();
-        parameters.setKeyOps(keyOps);
-        parameters.setKeyAttributes(keyAttributes);
-        parameters.setTags(tags);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withKeyOps(keyOps);
+        parameters.withKeyAttributes(keyAttributes);
+        parameters.withTags(tags);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.updateKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         return updateKeyDelegate(call.execute());
     }
 
@@ -1030,11 +1036,11 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         Validator.validate(keyAttributes, serviceCallback);
         Validator.validate(tags, serviceCallback);
         KeyUpdateParameters parameters = new KeyUpdateParameters();
-        parameters.setKeyOps(keyOps);
-        parameters.setKeyAttributes(keyAttributes);
-        parameters.setTags(tags);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withKeyOps(keyOps);
+        parameters.withKeyAttributes(keyAttributes);
+        parameters.withTags(tags);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.updateKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<KeyBundleInner>(serviceCallback) {
             @Override
@@ -1080,8 +1086,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         return getKeyDelegate(call.execute());
     }
 
@@ -1115,8 +1121,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<KeyBundleInner>(serviceCallback) {
             @Override
@@ -1159,8 +1165,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         final Integer maxresults = null;
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getKeyVersions(keyName, maxresults, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getKeyVersions(keyName, maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         ServiceResponse<PageImpl<KeyItemInner>> response = getKeyVersionsDelegate(call.execute());
         PagedList<KeyItemInner> result = new PagedList<KeyItemInner>(response.getBody()) {
             @Override
@@ -1197,8 +1203,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             return null;
         }
         final Integer maxresults = null;
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getKeyVersions(keyName, maxresults, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getKeyVersions(keyName, maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<KeyItemInner>>(serviceCallback) {
             @Override
@@ -1241,8 +1247,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getKeyVersions(keyName, maxresults, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getKeyVersions(keyName, maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         ServiceResponse<PageImpl<KeyItemInner>> response = getKeyVersionsDelegate(call.execute());
         PagedList<KeyItemInner> result = new PagedList<KeyItemInner>(response.getBody()) {
             @Override
@@ -1279,8 +1285,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getKeyVersions(keyName, maxresults, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getKeyVersions(keyName, maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<KeyItemInner>>(serviceCallback) {
             @Override
@@ -1326,8 +1332,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         final Integer maxresults = null;
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getKeys(maxresults, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getKeys(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         ServiceResponse<PageImpl<KeyItemInner>> response = getKeysDelegate(call.execute());
         PagedList<KeyItemInner> result = new PagedList<KeyItemInner>(response.getBody()) {
             @Override
@@ -1359,8 +1365,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             return null;
         }
         final Integer maxresults = null;
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getKeys(maxresults, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getKeys(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<KeyItemInner>>(serviceCallback) {
             @Override
@@ -1399,8 +1405,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getKeys(maxresults, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getKeys(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         ServiceResponse<PageImpl<KeyItemInner>> response = getKeysDelegate(call.execute());
         PagedList<KeyItemInner> result = new PagedList<KeyItemInner>(response.getBody()) {
             @Override
@@ -1432,8 +1438,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getKeys(maxresults, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getKeys(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<KeyItemInner>>(serviceCallback) {
             @Override
@@ -1482,8 +1488,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.backupKey(keyName, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.backupKey(keyName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         return backupKeyDelegate(call.execute());
     }
 
@@ -1512,8 +1518,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.backupKey(keyName, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.backupKey(keyName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<BackupKeyResultInner>(serviceCallback) {
             @Override
@@ -1556,9 +1562,9 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter keyBundleBackup is required and cannot be null.");
         }
         KeyRestoreParameters parameters = new KeyRestoreParameters();
-        parameters.setKeyBundleBackup(keyBundleBackup);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.restoreKey(this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withKeyBundleBackup(keyBundleBackup);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.restoreKey(this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         return restoreKeyDelegate(call.execute());
     }
 
@@ -1588,9 +1594,9 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             return null;
         }
         KeyRestoreParameters parameters = new KeyRestoreParameters();
-        parameters.setKeyBundleBackup(keyBundleBackup);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.restoreKey(this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withKeyBundleBackup(keyBundleBackup);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.restoreKey(this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<KeyBundleInner>(serviceCallback) {
             @Override
@@ -1645,10 +1651,10 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter value is required and cannot be null.");
         }
         KeyOperationsParameters parameters = new KeyOperationsParameters();
-        parameters.setAlgorithm(algorithm);
-        parameters.setValue(value);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.encrypt(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withAlgorithm(algorithm);
+        parameters.withValue(value);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.encrypt(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         return encryptDelegate(call.execute());
     }
 
@@ -1693,10 +1699,10 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             return null;
         }
         KeyOperationsParameters parameters = new KeyOperationsParameters();
-        parameters.setAlgorithm(algorithm);
-        parameters.setValue(value);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.encrypt(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withAlgorithm(algorithm);
+        parameters.withValue(value);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.encrypt(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<KeyOperationResultInner>(serviceCallback) {
             @Override
@@ -1751,10 +1757,10 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter value is required and cannot be null.");
         }
         KeyOperationsParameters parameters = new KeyOperationsParameters();
-        parameters.setAlgorithm(algorithm);
-        parameters.setValue(value);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.decrypt(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withAlgorithm(algorithm);
+        parameters.withValue(value);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.decrypt(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         return decryptDelegate(call.execute());
     }
 
@@ -1799,10 +1805,10 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             return null;
         }
         KeyOperationsParameters parameters = new KeyOperationsParameters();
-        parameters.setAlgorithm(algorithm);
-        parameters.setValue(value);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.decrypt(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withAlgorithm(algorithm);
+        parameters.withValue(value);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.decrypt(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<KeyOperationResultInner>(serviceCallback) {
             @Override
@@ -1857,10 +1863,10 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter value is required and cannot be null.");
         }
         KeyOperationsParameters parameters = new KeyOperationsParameters();
-        parameters.setAlgorithm(algorithm);
-        parameters.setValue(value);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.sign(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withAlgorithm(algorithm);
+        parameters.withValue(value);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.sign(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         return signDelegate(call.execute());
     }
 
@@ -1905,10 +1911,10 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             return null;
         }
         KeyOperationsParameters parameters = new KeyOperationsParameters();
-        parameters.setAlgorithm(algorithm);
-        parameters.setValue(value);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.sign(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withAlgorithm(algorithm);
+        parameters.withValue(value);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.sign(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<KeyOperationResultInner>(serviceCallback) {
             @Override
@@ -1967,11 +1973,11 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter signature is required and cannot be null.");
         }
         KeyVerifyParameters parameters = new KeyVerifyParameters();
-        parameters.setAlgorithm(algorithm);
-        parameters.setDigest(digest);
-        parameters.setSignature(signature);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.verify(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withAlgorithm(algorithm);
+        parameters.withDigest(digest);
+        parameters.withSignature(signature);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.verify(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         return verifyDelegate(call.execute());
     }
 
@@ -2021,11 +2027,11 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             return null;
         }
         KeyVerifyParameters parameters = new KeyVerifyParameters();
-        parameters.setAlgorithm(algorithm);
-        parameters.setDigest(digest);
-        parameters.setSignature(signature);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.verify(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withAlgorithm(algorithm);
+        parameters.withDigest(digest);
+        parameters.withSignature(signature);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.verify(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<KeyVerifyResultInner>(serviceCallback) {
             @Override
@@ -2080,10 +2086,10 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter value is required and cannot be null.");
         }
         KeyOperationsParameters parameters = new KeyOperationsParameters();
-        parameters.setAlgorithm(algorithm);
-        parameters.setValue(value);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.wrapKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withAlgorithm(algorithm);
+        parameters.withValue(value);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.wrapKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         return wrapKeyDelegate(call.execute());
     }
 
@@ -2128,10 +2134,10 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             return null;
         }
         KeyOperationsParameters parameters = new KeyOperationsParameters();
-        parameters.setAlgorithm(algorithm);
-        parameters.setValue(value);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.wrapKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withAlgorithm(algorithm);
+        parameters.withValue(value);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.wrapKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<KeyOperationResultInner>(serviceCallback) {
             @Override
@@ -2186,10 +2192,10 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter value is required and cannot be null.");
         }
         KeyOperationsParameters parameters = new KeyOperationsParameters();
-        parameters.setAlgorithm(algorithm);
-        parameters.setValue(value);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.unwrapKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withAlgorithm(algorithm);
+        parameters.withValue(value);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.unwrapKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         return unwrapKeyDelegate(call.execute());
     }
 
@@ -2234,10 +2240,10 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             return null;
         }
         KeyOperationsParameters parameters = new KeyOperationsParameters();
-        parameters.setAlgorithm(algorithm);
-        parameters.setValue(value);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.unwrapKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withAlgorithm(algorithm);
+        parameters.withValue(value);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.unwrapKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<KeyOperationResultInner>(serviceCallback) {
             @Override
@@ -2287,12 +2293,12 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         final String contentType = null;
         final SecretAttributesInner secretAttributes = null;
         SecretSetParameters parameters = new SecretSetParameters();
-        parameters.setValue(value);
-        parameters.setTags(null);
-        parameters.setContentType(null);
-        parameters.setSecretAttributes(null);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.setSecret(secretName, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withValue(value);
+        parameters.withTags(null);
+        parameters.withContentType(null);
+        parameters.withSecretAttributes(null);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.setSecret(secretName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         return setSecretDelegate(call.execute());
     }
 
@@ -2330,12 +2336,12 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         final String contentType = null;
         final SecretAttributesInner secretAttributes = null;
         SecretSetParameters parameters = new SecretSetParameters();
-        parameters.setValue(value);
-        parameters.setTags(null);
-        parameters.setContentType(null);
-        parameters.setSecretAttributes(null);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.setSecret(secretName, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withValue(value);
+        parameters.withTags(null);
+        parameters.withContentType(null);
+        parameters.withSecretAttributes(null);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.setSecret(secretName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SecretBundleInner>(serviceCallback) {
             @Override
@@ -2380,12 +2386,12 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         Validator.validate(tags);
         Validator.validate(secretAttributes);
         SecretSetParameters parameters = new SecretSetParameters();
-        parameters.setValue(value);
-        parameters.setTags(tags);
-        parameters.setContentType(contentType);
-        parameters.setSecretAttributes(secretAttributes);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.setSecret(secretName, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withValue(value);
+        parameters.withTags(tags);
+        parameters.withContentType(contentType);
+        parameters.withSecretAttributes(secretAttributes);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.setSecret(secretName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         return setSecretDelegate(call.execute());
     }
 
@@ -2425,12 +2431,12 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         Validator.validate(tags, serviceCallback);
         Validator.validate(secretAttributes, serviceCallback);
         SecretSetParameters parameters = new SecretSetParameters();
-        parameters.setValue(value);
-        parameters.setTags(tags);
-        parameters.setContentType(contentType);
-        parameters.setSecretAttributes(secretAttributes);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.setSecret(secretName, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withValue(value);
+        parameters.withTags(tags);
+        parameters.withContentType(contentType);
+        parameters.withSecretAttributes(secretAttributes);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.setSecret(secretName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SecretBundleInner>(serviceCallback) {
             @Override
@@ -2472,8 +2478,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.deleteSecret(secretName, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.deleteSecret(secretName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         return deleteSecretDelegate(call.execute());
     }
 
@@ -2502,8 +2508,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.deleteSecret(secretName, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.deleteSecret(secretName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SecretBundleInner>(serviceCallback) {
             @Override
@@ -2553,11 +2559,11 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         final SecretAttributesInner secretAttributes = null;
         final Map<String, String> tags = null;
         SecretUpdateParameters parameters = new SecretUpdateParameters();
-        parameters.setContentType(null);
-        parameters.setSecretAttributes(null);
-        parameters.setTags(null);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateSecret(secretName, secretVersion, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withContentType(null);
+        parameters.withSecretAttributes(null);
+        parameters.withTags(null);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.updateSecret(secretName, secretVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         return updateSecretDelegate(call.execute());
     }
 
@@ -2595,11 +2601,11 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         final SecretAttributesInner secretAttributes = null;
         final Map<String, String> tags = null;
         SecretUpdateParameters parameters = new SecretUpdateParameters();
-        parameters.setContentType(null);
-        parameters.setSecretAttributes(null);
-        parameters.setTags(null);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateSecret(secretName, secretVersion, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withContentType(null);
+        parameters.withSecretAttributes(null);
+        parameters.withTags(null);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.updateSecret(secretName, secretVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SecretBundleInner>(serviceCallback) {
             @Override
@@ -2644,11 +2650,11 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         Validator.validate(secretAttributes);
         Validator.validate(tags);
         SecretUpdateParameters parameters = new SecretUpdateParameters();
-        parameters.setContentType(contentType);
-        parameters.setSecretAttributes(secretAttributes);
-        parameters.setTags(tags);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateSecret(secretName, secretVersion, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withContentType(contentType);
+        parameters.withSecretAttributes(secretAttributes);
+        parameters.withTags(tags);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.updateSecret(secretName, secretVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         return updateSecretDelegate(call.execute());
     }
 
@@ -2688,11 +2694,11 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         Validator.validate(secretAttributes, serviceCallback);
         Validator.validate(tags, serviceCallback);
         SecretUpdateParameters parameters = new SecretUpdateParameters();
-        parameters.setContentType(contentType);
-        parameters.setSecretAttributes(secretAttributes);
-        parameters.setTags(tags);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateSecret(secretName, secretVersion, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withContentType(contentType);
+        parameters.withSecretAttributes(secretAttributes);
+        parameters.withTags(tags);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.updateSecret(secretName, secretVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SecretBundleInner>(serviceCallback) {
             @Override
@@ -2738,8 +2744,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getSecret(secretName, secretVersion, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getSecret(secretName, secretVersion, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         return getSecretDelegate(call.execute());
     }
 
@@ -2773,8 +2779,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getSecret(secretName, secretVersion, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getSecret(secretName, secretVersion, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<SecretBundleInner>(serviceCallback) {
             @Override
@@ -2813,8 +2819,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         final Integer maxresults = null;
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getSecrets(maxresults, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getSecrets(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         ServiceResponse<PageImpl<SecretItemInner>> response = getSecretsDelegate(call.execute());
         PagedList<SecretItemInner> result = new PagedList<SecretItemInner>(response.getBody()) {
             @Override
@@ -2846,8 +2852,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             return null;
         }
         final Integer maxresults = null;
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getSecrets(maxresults, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getSecrets(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<SecretItemInner>>(serviceCallback) {
             @Override
@@ -2886,8 +2892,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getSecrets(maxresults, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getSecrets(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         ServiceResponse<PageImpl<SecretItemInner>> response = getSecretsDelegate(call.execute());
         PagedList<SecretItemInner> result = new PagedList<SecretItemInner>(response.getBody()) {
             @Override
@@ -2919,8 +2925,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getSecrets(maxresults, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getSecrets(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<SecretItemInner>>(serviceCallback) {
             @Override
@@ -2970,8 +2976,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         final Integer maxresults = null;
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getSecretVersions(secretName, maxresults, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getSecretVersions(secretName, maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         ServiceResponse<PageImpl<SecretItemInner>> response = getSecretVersionsDelegate(call.execute());
         PagedList<SecretItemInner> result = new PagedList<SecretItemInner>(response.getBody()) {
             @Override
@@ -3008,8 +3014,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             return null;
         }
         final Integer maxresults = null;
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getSecretVersions(secretName, maxresults, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getSecretVersions(secretName, maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<SecretItemInner>>(serviceCallback) {
             @Override
@@ -3052,8 +3058,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getSecretVersions(secretName, maxresults, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getSecretVersions(secretName, maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         ServiceResponse<PageImpl<SecretItemInner>> response = getSecretVersionsDelegate(call.execute());
         PagedList<SecretItemInner> result = new PagedList<SecretItemInner>(response.getBody()) {
             @Override
@@ -3090,8 +3096,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getSecretVersions(secretName, maxresults, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getSecretVersions(secretName, maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<SecretItemInner>>(serviceCallback) {
             @Override
@@ -3137,8 +3143,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         final Integer maxresults = null;
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificates(maxresults, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getCertificates(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         ServiceResponse<PageImpl<CertificateItemInner>> response = getCertificatesDelegate(call.execute());
         PagedList<CertificateItemInner> result = new PagedList<CertificateItemInner>(response.getBody()) {
             @Override
@@ -3170,8 +3176,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             return null;
         }
         final Integer maxresults = null;
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificates(maxresults, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getCertificates(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<CertificateItemInner>>(serviceCallback) {
             @Override
@@ -3210,8 +3216,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificates(maxresults, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getCertificates(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         ServiceResponse<PageImpl<CertificateItemInner>> response = getCertificatesDelegate(call.execute());
         PagedList<CertificateItemInner> result = new PagedList<CertificateItemInner>(response.getBody()) {
             @Override
@@ -3243,8 +3249,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificates(maxresults, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getCertificates(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<CertificateItemInner>>(serviceCallback) {
             @Override
@@ -3293,8 +3299,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.deleteCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.deleteCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         return deleteCertificateDelegate(call.execute());
     }
 
@@ -3323,8 +3329,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.deleteCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.deleteCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CertificateBundleInner>(serviceCallback) {
             @Override
@@ -3367,8 +3373,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         Validator.validate(contacts);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.setCertificateContacts(contacts, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.setCertificateContacts(contacts, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         return setCertificateContactsDelegate(call.execute());
     }
 
@@ -3398,8 +3404,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             return null;
         }
         Validator.validate(contacts, serviceCallback);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.setCertificateContacts(contacts, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.setCertificateContacts(contacts, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ContactsInner>(serviceCallback) {
             @Override
@@ -3437,8 +3443,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificateContacts(this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getCertificateContacts(this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         return getCertificateContactsDelegate(call.execute());
     }
 
@@ -3462,8 +3468,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificateContacts(this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getCertificateContacts(this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ContactsInner>(serviceCallback) {
             @Override
@@ -3501,8 +3507,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.deleteCertificateContacts(this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.deleteCertificateContacts(this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         return deleteCertificateContactsDelegate(call.execute());
     }
 
@@ -3526,8 +3532,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.deleteCertificateContacts(this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.deleteCertificateContacts(this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<ContactsInner>(serviceCallback) {
             @Override
@@ -3566,8 +3572,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         final Integer maxresults = null;
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificateIssuers(maxresults, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getCertificateIssuers(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         ServiceResponse<PageImpl<CertificateIssuerItemInner>> response = getCertificateIssuersDelegate(call.execute());
         PagedList<CertificateIssuerItemInner> result = new PagedList<CertificateIssuerItemInner>(response.getBody()) {
             @Override
@@ -3599,8 +3605,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             return null;
         }
         final Integer maxresults = null;
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificateIssuers(maxresults, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getCertificateIssuers(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<CertificateIssuerItemInner>>(serviceCallback) {
             @Override
@@ -3639,8 +3645,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificateIssuers(maxresults, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getCertificateIssuers(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         ServiceResponse<PageImpl<CertificateIssuerItemInner>> response = getCertificateIssuersDelegate(call.execute());
         PagedList<CertificateIssuerItemInner> result = new PagedList<CertificateIssuerItemInner>(response.getBody()) {
             @Override
@@ -3672,8 +3678,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificateIssuers(maxresults, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getCertificateIssuers(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<CertificateIssuerItemInner>>(serviceCallback) {
             @Override
@@ -3727,8 +3733,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         Validator.validate(issuer);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.setCertificateIssuer(issuerName, issuer, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.setCertificateIssuer(issuerName, issuer, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         return setCertificateIssuerDelegate(call.execute());
     }
 
@@ -3763,8 +3769,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             return null;
         }
         Validator.validate(issuer, serviceCallback);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.setCertificateIssuer(issuerName, issuer, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.setCertificateIssuer(issuerName, issuer, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<IssuerBundleInner>(serviceCallback) {
             @Override
@@ -3811,8 +3817,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         Validator.validate(issuer);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateCertificateIssuer(issuerName, issuer, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.updateCertificateIssuer(issuerName, issuer, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         return updateCertificateIssuerDelegate(call.execute());
     }
 
@@ -3847,8 +3853,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             return null;
         }
         Validator.validate(issuer, serviceCallback);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateCertificateIssuer(issuerName, issuer, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.updateCertificateIssuer(issuerName, issuer, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<IssuerBundleInner>(serviceCallback) {
             @Override
@@ -3890,8 +3896,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificateIssuer(issuerName, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getCertificateIssuer(issuerName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         return getCertificateIssuerDelegate(call.execute());
     }
 
@@ -3920,8 +3926,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificateIssuer(issuerName, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getCertificateIssuer(issuerName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<IssuerBundleInner>(serviceCallback) {
             @Override
@@ -3963,8 +3969,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.deleteCertificateIssuer(issuerName, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.deleteCertificateIssuer(issuerName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         return deleteCertificateIssuerDelegate(call.execute());
     }
 
@@ -3993,8 +3999,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.deleteCertificateIssuer(issuerName, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.deleteCertificateIssuer(issuerName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<IssuerBundleInner>(serviceCallback) {
             @Override
@@ -4044,11 +4050,11 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         final CertificateAttributesInner certificateAttributes = null;
         final Map<String, String> tags = null;
         CertificateCreateParameters parameters = new CertificateCreateParameters();
-        parameters.setCertificatePolicy(certificatePolicy);
-        parameters.setCertificateAttributes(null);
-        parameters.setTags(null);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.createCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withCertificatePolicy(certificatePolicy);
+        parameters.withCertificateAttributes(null);
+        parameters.withTags(null);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.createCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         return createCertificateDelegate(call.execute());
     }
 
@@ -4086,11 +4092,11 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         final CertificateAttributesInner certificateAttributes = null;
         final Map<String, String> tags = null;
         CertificateCreateParameters parameters = new CertificateCreateParameters();
-        parameters.setCertificatePolicy(certificatePolicy);
-        parameters.setCertificateAttributes(null);
-        parameters.setTags(null);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.createCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withCertificatePolicy(certificatePolicy);
+        parameters.withCertificateAttributes(null);
+        parameters.withTags(null);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.createCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CertificateOperationInner>(serviceCallback) {
             @Override
@@ -4135,11 +4141,11 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         Validator.validate(certificateAttributes);
         Validator.validate(tags);
         CertificateCreateParameters parameters = new CertificateCreateParameters();
-        parameters.setCertificatePolicy(certificatePolicy);
-        parameters.setCertificateAttributes(certificateAttributes);
-        parameters.setTags(tags);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.createCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withCertificatePolicy(certificatePolicy);
+        parameters.withCertificateAttributes(certificateAttributes);
+        parameters.withTags(tags);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.createCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         return createCertificateDelegate(call.execute());
     }
 
@@ -4179,11 +4185,11 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         Validator.validate(certificateAttributes, serviceCallback);
         Validator.validate(tags, serviceCallback);
         CertificateCreateParameters parameters = new CertificateCreateParameters();
-        parameters.setCertificatePolicy(certificatePolicy);
-        parameters.setCertificateAttributes(certificateAttributes);
-        parameters.setTags(tags);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.createCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withCertificatePolicy(certificatePolicy);
+        parameters.withCertificateAttributes(certificateAttributes);
+        parameters.withTags(tags);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.createCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CertificateOperationInner>(serviceCallback) {
             @Override
@@ -4241,13 +4247,13 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         final CertificateAttributesInner certificateAttributes = null;
         final Map<String, String> tags = null;
         CertificateImportParameters parameters = new CertificateImportParameters();
-        parameters.setBase64EncodedCertificate(base64EncodedCertificate);
-        parameters.setPassword(password);
-        parameters.setCertificatePolicy(certificatePolicy);
-        parameters.setCertificateAttributes(null);
-        parameters.setTags(null);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.importCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withBase64EncodedCertificate(base64EncodedCertificate);
+        parameters.withPassword(password);
+        parameters.withCertificatePolicy(certificatePolicy);
+        parameters.withCertificateAttributes(null);
+        parameters.withTags(null);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.importCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         return importCertificateDelegate(call.execute());
     }
 
@@ -4295,13 +4301,13 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         final CertificateAttributesInner certificateAttributes = null;
         final Map<String, String> tags = null;
         CertificateImportParameters parameters = new CertificateImportParameters();
-        parameters.setBase64EncodedCertificate(base64EncodedCertificate);
-        parameters.setPassword(password);
-        parameters.setCertificatePolicy(certificatePolicy);
-        parameters.setCertificateAttributes(null);
-        parameters.setTags(null);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.importCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withBase64EncodedCertificate(base64EncodedCertificate);
+        parameters.withPassword(password);
+        parameters.withCertificatePolicy(certificatePolicy);
+        parameters.withCertificateAttributes(null);
+        parameters.withTags(null);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.importCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CertificateBundleInner>(serviceCallback) {
             @Override
@@ -4354,13 +4360,13 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         Validator.validate(certificateAttributes);
         Validator.validate(tags);
         CertificateImportParameters parameters = new CertificateImportParameters();
-        parameters.setBase64EncodedCertificate(base64EncodedCertificate);
-        parameters.setPassword(password);
-        parameters.setCertificatePolicy(certificatePolicy);
-        parameters.setCertificateAttributes(certificateAttributes);
-        parameters.setTags(tags);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.importCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withBase64EncodedCertificate(base64EncodedCertificate);
+        parameters.withPassword(password);
+        parameters.withCertificatePolicy(certificatePolicy);
+        parameters.withCertificateAttributes(certificateAttributes);
+        parameters.withTags(tags);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.importCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         return importCertificateDelegate(call.execute());
     }
 
@@ -4410,13 +4416,13 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         Validator.validate(certificateAttributes, serviceCallback);
         Validator.validate(tags, serviceCallback);
         CertificateImportParameters parameters = new CertificateImportParameters();
-        parameters.setBase64EncodedCertificate(base64EncodedCertificate);
-        parameters.setPassword(password);
-        parameters.setCertificatePolicy(certificatePolicy);
-        parameters.setCertificateAttributes(certificateAttributes);
-        parameters.setTags(tags);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.importCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withBase64EncodedCertificate(base64EncodedCertificate);
+        parameters.withPassword(password);
+        parameters.withCertificatePolicy(certificatePolicy);
+        parameters.withCertificateAttributes(certificateAttributes);
+        parameters.withTags(tags);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.importCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CertificateBundleInner>(serviceCallback) {
             @Override
@@ -4459,8 +4465,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         final Integer maxresults = null;
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificateVersions(certificateName, maxresults, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getCertificateVersions(certificateName, maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         ServiceResponse<PageImpl<CertificateItemInner>> response = getCertificateVersionsDelegate(call.execute());
         PagedList<CertificateItemInner> result = new PagedList<CertificateItemInner>(response.getBody()) {
             @Override
@@ -4497,8 +4503,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             return null;
         }
         final Integer maxresults = null;
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificateVersions(certificateName, maxresults, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getCertificateVersions(certificateName, maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<CertificateItemInner>>(serviceCallback) {
             @Override
@@ -4541,8 +4547,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificateVersions(certificateName, maxresults, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getCertificateVersions(certificateName, maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         ServiceResponse<PageImpl<CertificateItemInner>> response = getCertificateVersionsDelegate(call.execute());
         PagedList<CertificateItemInner> result = new PagedList<CertificateItemInner>(response.getBody()) {
             @Override
@@ -4579,8 +4585,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificateVersions(certificateName, maxresults, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getCertificateVersions(certificateName, maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<List<CertificateItemInner>>(serviceCallback) {
             @Override
@@ -4629,8 +4635,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificatePolicy(certificateName, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getCertificatePolicy(certificateName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         return getCertificatePolicyDelegate(call.execute());
     }
 
@@ -4659,8 +4665,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificatePolicy(certificateName, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getCertificatePolicy(certificateName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CertificatePolicyInner>(serviceCallback) {
             @Override
@@ -4707,8 +4713,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         Validator.validate(certificatePolicy);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateCertificatePolicy(certificateName, certificatePolicy, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.updateCertificatePolicy(certificateName, certificatePolicy, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         return updateCertificatePolicyDelegate(call.execute());
     }
 
@@ -4743,8 +4749,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             return null;
         }
         Validator.validate(certificatePolicy, serviceCallback);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateCertificatePolicy(certificateName, certificatePolicy, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.updateCertificatePolicy(certificateName, certificatePolicy, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CertificatePolicyInner>(serviceCallback) {
             @Override
@@ -4793,10 +4799,10 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         final CertificateAttributesInner certificateAttributes = null;
         final Map<String, String> tags = null;
         CertificateUpdateParameters parameters = new CertificateUpdateParameters();
-        parameters.setCertificateAttributes(null);
-        parameters.setTags(null);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateCertificate(certificateName, certificateVersion, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withCertificateAttributes(null);
+        parameters.withTags(null);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.updateCertificate(certificateName, certificateVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         return updateCertificateDelegate(call.execute());
     }
 
@@ -4833,10 +4839,10 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         final CertificateAttributesInner certificateAttributes = null;
         final Map<String, String> tags = null;
         CertificateUpdateParameters parameters = new CertificateUpdateParameters();
-        parameters.setCertificateAttributes(null);
-        parameters.setTags(null);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateCertificate(certificateName, certificateVersion, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withCertificateAttributes(null);
+        parameters.withTags(null);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.updateCertificate(certificateName, certificateVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CertificateBundleInner>(serviceCallback) {
             @Override
@@ -4880,10 +4886,10 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         Validator.validate(certificateAttributes);
         Validator.validate(tags);
         CertificateUpdateParameters parameters = new CertificateUpdateParameters();
-        parameters.setCertificateAttributes(certificateAttributes);
-        parameters.setTags(tags);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateCertificate(certificateName, certificateVersion, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withCertificateAttributes(certificateAttributes);
+        parameters.withTags(tags);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.updateCertificate(certificateName, certificateVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         return updateCertificateDelegate(call.execute());
     }
 
@@ -4922,10 +4928,10 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         Validator.validate(certificateAttributes, serviceCallback);
         Validator.validate(tags, serviceCallback);
         CertificateUpdateParameters parameters = new CertificateUpdateParameters();
-        parameters.setCertificateAttributes(certificateAttributes);
-        parameters.setTags(tags);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateCertificate(certificateName, certificateVersion, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withCertificateAttributes(certificateAttributes);
+        parameters.withTags(tags);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.updateCertificate(certificateName, certificateVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CertificateBundleInner>(serviceCallback) {
             @Override
@@ -4971,8 +4977,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificate(certificateName, certificateVersion, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getCertificate(certificateName, certificateVersion, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         return getCertificateDelegate(call.execute());
     }
 
@@ -5006,8 +5012,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificate(certificateName, certificateVersion, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getCertificate(certificateName, certificateVersion, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CertificateBundleInner>(serviceCallback) {
             @Override
@@ -5054,8 +5060,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         Validator.validate(certificateOperation);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateCertificateOperation(certificateName, certificateOperation, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.updateCertificateOperation(certificateName, certificateOperation, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         return updateCertificateOperationDelegate(call.execute());
     }
 
@@ -5090,8 +5096,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             return null;
         }
         Validator.validate(certificateOperation, serviceCallback);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateCertificateOperation(certificateName, certificateOperation, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.updateCertificateOperation(certificateName, certificateOperation, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CertificateOperationInner>(serviceCallback) {
             @Override
@@ -5133,8 +5139,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificateOperation(certificateName, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getCertificateOperation(certificateName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         return getCertificateOperationDelegate(call.execute());
     }
 
@@ -5163,8 +5169,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificateOperation(certificateName, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.getCertificateOperation(certificateName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CertificateOperationInner>(serviceCallback) {
             @Override
@@ -5206,8 +5212,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.deleteCertificateOperation(certificateName, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.deleteCertificateOperation(certificateName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         return deleteCertificateOperationDelegate(call.execute());
     }
 
@@ -5236,8 +5242,8 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null."));
             return null;
         }
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.deleteCertificateOperation(certificateName, this.apiVersion(), this.acceptLanguage(), this.userAgent());
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.deleteCertificateOperation(certificateName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CertificateOperationInner>(serviceCallback) {
             @Override
@@ -5287,11 +5293,11 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         final CertificateAttributesInner certificateAttributes = null;
         final Map<String, String> tags = null;
         CertificateMergeParameters parameters = new CertificateMergeParameters();
-        parameters.setX509Certificates(x509Certificates);
-        parameters.setCertificateAttributes(null);
-        parameters.setTags(null);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.mergeCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withX509Certificates(x509Certificates);
+        parameters.withCertificateAttributes(null);
+        parameters.withTags(null);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.mergeCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         return mergeCertificateDelegate(call.execute());
     }
 
@@ -5329,11 +5335,11 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         final CertificateAttributesInner certificateAttributes = null;
         final Map<String, String> tags = null;
         CertificateMergeParameters parameters = new CertificateMergeParameters();
-        parameters.setX509Certificates(x509Certificates);
-        parameters.setCertificateAttributes(null);
-        parameters.setTags(null);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.mergeCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withX509Certificates(x509Certificates);
+        parameters.withCertificateAttributes(null);
+        parameters.withTags(null);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.mergeCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CertificateBundleInner>(serviceCallback) {
             @Override
@@ -5378,11 +5384,11 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         Validator.validate(certificateAttributes);
         Validator.validate(tags);
         CertificateMergeParameters parameters = new CertificateMergeParameters();
-        parameters.setX509Certificates(x509Certificates);
-        parameters.setCertificateAttributes(certificateAttributes);
-        parameters.setTags(tags);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.mergeCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withX509Certificates(x509Certificates);
+        parameters.withCertificateAttributes(certificateAttributes);
+        parameters.withTags(tags);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.mergeCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         return mergeCertificateDelegate(call.execute());
     }
 
@@ -5422,11 +5428,11 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         Validator.validate(certificateAttributes, serviceCallback);
         Validator.validate(tags, serviceCallback);
         CertificateMergeParameters parameters = new CertificateMergeParameters();
-        parameters.setX509Certificates(x509Certificates);
-        parameters.setCertificateAttributes(certificateAttributes);
-        parameters.setTags(tags);
-        this.restClient().setBaseUrl("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.mergeCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, this.userAgent());
+        parameters.withX509Certificates(x509Certificates);
+        parameters.withCertificateAttributes(certificateAttributes);
+        parameters.withTags(tags);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        Call<ResponseBody> call = service.mergeCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<CertificateBundleInner>(serviceCallback) {
             @Override
@@ -5461,7 +5467,6 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        this.restClient().setBaseUrl();
         Call<ResponseBody> call = service.getKeyVersionsNext(nextPageLink, this.acceptLanguage(), this.userAgent());
         return getKeyVersionsNextDelegate(call.execute());
     }
@@ -5483,7 +5488,6 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        this.restClient().setBaseUrl();
         Call<ResponseBody> call = service.getKeyVersionsNext(nextPageLink, this.acceptLanguage(), this.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<KeyItemInner>>(serviceCallback) {
@@ -5526,7 +5530,6 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        this.restClient().setBaseUrl();
         Call<ResponseBody> call = service.getKeysNext(nextPageLink, this.acceptLanguage(), this.userAgent());
         return getKeysNextDelegate(call.execute());
     }
@@ -5548,7 +5551,6 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        this.restClient().setBaseUrl();
         Call<ResponseBody> call = service.getKeysNext(nextPageLink, this.acceptLanguage(), this.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<KeyItemInner>>(serviceCallback) {
@@ -5591,7 +5593,6 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        this.restClient().setBaseUrl();
         Call<ResponseBody> call = service.getSecretsNext(nextPageLink, this.acceptLanguage(), this.userAgent());
         return getSecretsNextDelegate(call.execute());
     }
@@ -5613,7 +5614,6 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        this.restClient().setBaseUrl();
         Call<ResponseBody> call = service.getSecretsNext(nextPageLink, this.acceptLanguage(), this.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<SecretItemInner>>(serviceCallback) {
@@ -5656,7 +5656,6 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        this.restClient().setBaseUrl();
         Call<ResponseBody> call = service.getSecretVersionsNext(nextPageLink, this.acceptLanguage(), this.userAgent());
         return getSecretVersionsNextDelegate(call.execute());
     }
@@ -5678,7 +5677,6 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        this.restClient().setBaseUrl();
         Call<ResponseBody> call = service.getSecretVersionsNext(nextPageLink, this.acceptLanguage(), this.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<SecretItemInner>>(serviceCallback) {
@@ -5721,7 +5719,6 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        this.restClient().setBaseUrl();
         Call<ResponseBody> call = service.getCertificatesNext(nextPageLink, this.acceptLanguage(), this.userAgent());
         return getCertificatesNextDelegate(call.execute());
     }
@@ -5743,7 +5740,6 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        this.restClient().setBaseUrl();
         Call<ResponseBody> call = service.getCertificatesNext(nextPageLink, this.acceptLanguage(), this.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<CertificateItemInner>>(serviceCallback) {
@@ -5786,7 +5782,6 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        this.restClient().setBaseUrl();
         Call<ResponseBody> call = service.getCertificateIssuersNext(nextPageLink, this.acceptLanguage(), this.userAgent());
         return getCertificateIssuersNextDelegate(call.execute());
     }
@@ -5808,7 +5803,6 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        this.restClient().setBaseUrl();
         Call<ResponseBody> call = service.getCertificateIssuersNext(nextPageLink, this.acceptLanguage(), this.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<CertificateIssuerItemInner>>(serviceCallback) {
@@ -5851,7 +5845,6 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        this.restClient().setBaseUrl();
         Call<ResponseBody> call = service.getCertificateVersionsNext(nextPageLink, this.acceptLanguage(), this.userAgent());
         return getCertificateVersionsNextDelegate(call.execute());
     }
@@ -5873,7 +5866,6 @@ public final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
             return null;
         }
-        this.restClient().setBaseUrl();
         Call<ResponseBody> call = service.getCertificateVersionsNext(nextPageLink, this.acceptLanguage(), this.userAgent());
         serviceCall.newCall(call);
         call.enqueue(new ServiceResponseCallback<List<CertificateItemInner>>(serviceCallback) {

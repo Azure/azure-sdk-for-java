@@ -43,7 +43,7 @@ public class Contact {
      * @param emailAddress the emailAddress value to set
      * @return the Contact object itself.
      */
-    public Contact setEmailAddress(String emailAddress) {
+    public Contact withEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
         return this;
     }
@@ -63,7 +63,7 @@ public class Contact {
      * @param name the name value to set
      * @return the Contact object itself.
      */
-    public Contact setName(String name) {
+    public Contact withName(String name) {
         this.name = name;
         return this;
     }
@@ -83,7 +83,7 @@ public class Contact {
      * @param phone the phone value to set
      * @return the Contact object itself.
      */
-    public Contact setPhone(String phone) {
+    public Contact withPhone(String phone) {
         this.phone = phone;
         return this;
     }

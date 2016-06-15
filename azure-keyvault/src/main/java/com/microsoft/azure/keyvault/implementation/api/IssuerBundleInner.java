@@ -63,7 +63,7 @@ public class IssuerBundleInner {
      * @param provider the provider value to set
      * @return the IssuerBundleInner object itself.
      */
-    public IssuerBundleInner setProvider(String provider) {
+    public IssuerBundleInner withProvider(String provider) {
         this.provider = provider;
         return this;
     }
@@ -83,7 +83,7 @@ public class IssuerBundleInner {
      * @param credentials the credentials value to set
      * @return the IssuerBundleInner object itself.
      */
-    public IssuerBundleInner setCredentials(IssuerCredentials credentials) {
+    public IssuerBundleInner withCredentials(IssuerCredentials credentials) {
         this.credentials = credentials;
         return this;
     }
@@ -103,7 +103,7 @@ public class IssuerBundleInner {
      * @param organizationDetails the organizationDetails value to set
      * @return the IssuerBundleInner object itself.
      */
-    public IssuerBundleInner setOrganizationDetails(OrganizationDetails organizationDetails) {
+    public IssuerBundleInner withOrganizationDetails(OrganizationDetails organizationDetails) {
         this.organizationDetails = organizationDetails;
         return this;
     }
@@ -123,7 +123,7 @@ public class IssuerBundleInner {
      * @param attributes the attributes value to set
      * @return the IssuerBundleInner object itself.
      */
-    public IssuerBundleInner setAttributes(IssuerAttributes attributes) {
+    public IssuerBundleInner withAttributes(IssuerAttributes attributes) {
         this.attributes = attributes;
         return this;
     }

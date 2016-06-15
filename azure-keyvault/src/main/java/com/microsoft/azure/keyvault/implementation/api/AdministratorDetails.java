@@ -50,7 +50,7 @@ public class AdministratorDetails {
      * @param firstName the firstName value to set
      * @return the AdministratorDetails object itself.
      */
-    public AdministratorDetails setFirstName(String firstName) {
+    public AdministratorDetails withFirstName(String firstName) {
         this.firstName = firstName;
         return this;
     }
@@ -70,7 +70,7 @@ public class AdministratorDetails {
      * @param lastName the lastName value to set
      * @return the AdministratorDetails object itself.
      */
-    public AdministratorDetails setLastName(String lastName) {
+    public AdministratorDetails withLastName(String lastName) {
         this.lastName = lastName;
         return this;
     }
@@ -90,7 +90,7 @@ public class AdministratorDetails {
      * @param emailAddress the emailAddress value to set
      * @return the AdministratorDetails object itself.
      */
-    public AdministratorDetails setEmailAddress(String emailAddress) {
+    public AdministratorDetails withEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
         return this;
     }
@@ -110,7 +110,7 @@ public class AdministratorDetails {
      * @param phone the phone value to set
      * @return the AdministratorDetails object itself.
      */
-    public AdministratorDetails setPhone(String phone) {
+    public AdministratorDetails withPhone(String phone) {
         this.phone = phone;
         return this;
     }

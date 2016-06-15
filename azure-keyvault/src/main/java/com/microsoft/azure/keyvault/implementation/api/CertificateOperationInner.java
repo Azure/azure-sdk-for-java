@@ -50,7 +50,7 @@ public class CertificateOperationInner {
     /**
      * Error encountered, if any, during the certificate operation.
      */
-    private KeyVaultError error;
+    private Error error;
 
     /**
      * Location which contains the result of the certificate operation.
@@ -87,7 +87,7 @@ public class CertificateOperationInner {
      * @param issuerReference the issuerReference value to set
      * @return the CertificateOperationInner object itself.
      */
-    public CertificateOperationInner setIssuerReference(IssuerReference issuerReference) {
+    public CertificateOperationInner withIssuerReference(IssuerReference issuerReference) {
         this.issuerReference = issuerReference;
         return this;
     }
@@ -107,7 +107,7 @@ public class CertificateOperationInner {
      * @param csr the csr value to set
      * @return the CertificateOperationInner object itself.
      */
-    public CertificateOperationInner setCsr(String csr) {
+    public CertificateOperationInner withCsr(String csr) {
         this.csr = csr;
         return this;
     }
@@ -127,7 +127,7 @@ public class CertificateOperationInner {
      * @param cancellationRequested the cancellationRequested value to set
      * @return the CertificateOperationInner object itself.
      */
-    public CertificateOperationInner setCancellationRequested(Boolean cancellationRequested) {
+    public CertificateOperationInner withCancellationRequested(Boolean cancellationRequested) {
         this.cancellationRequested = cancellationRequested;
         return this;
     }
@@ -147,7 +147,7 @@ public class CertificateOperationInner {
      * @param status the status value to set
      * @return the CertificateOperationInner object itself.
      */
-    public CertificateOperationInner setStatus(String status) {
+    public CertificateOperationInner withStatus(String status) {
         this.status = status;
         return this;
     }
@@ -167,7 +167,7 @@ public class CertificateOperationInner {
      * @param statusDetails the statusDetails value to set
      * @return the CertificateOperationInner object itself.
      */
-    public CertificateOperationInner setStatusDetails(String statusDetails) {
+    public CertificateOperationInner withStatusDetails(String statusDetails) {
         this.statusDetails = statusDetails;
         return this;
     }
@@ -177,7 +177,7 @@ public class CertificateOperationInner {
      *
      * @return the error value
      */
-    public KeyVaultError error() {
+    public Error error() {
         return this.error;
     }
 
@@ -187,7 +187,7 @@ public class CertificateOperationInner {
      * @param error the error value to set
      * @return the CertificateOperationInner object itself.
      */
-    public CertificateOperationInner setError(KeyVaultError error) {
+    public CertificateOperationInner withError(Error error) {
         this.error = error;
         return this;
     }
@@ -207,7 +207,7 @@ public class CertificateOperationInner {
      * @param target the target value to set
      * @return the CertificateOperationInner object itself.
      */
-    public CertificateOperationInner setTarget(String target) {
+    public CertificateOperationInner withTarget(String target) {
         this.target = target;
         return this;
     }
@@ -227,7 +227,7 @@ public class CertificateOperationInner {
      * @param requestId the requestId value to set
      * @return the CertificateOperationInner object itself.
      */
-    public CertificateOperationInner setRequestId(String requestId) {
+    public CertificateOperationInner withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
