@@ -7,6 +7,9 @@
 
 package com.microsoft.azure;
 
+import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceCallback;
+
 /**
  * Represents a group of related tasks.
  * <p>
@@ -40,6 +43,11 @@ public interface TaskGroup<T, U extends TaskItem<T>> {
     void merge(TaskGroup<T, U> parentTaskGroup);
 
     /**
+     * Prepare the graph for execution.
+     */
+    void prepare();
+
+    /**
      * Executes the tasks in the group.
      * <p>
      * the order of execution of tasks ensure that a task gets selected for execution only after
@@ -47,6 +55,14 @@ public interface TaskGroup<T, U extends TaskItem<T>> {
      * @throws Exception the exception
      */
     void execute() throws Exception;
+
+    /**
+     * Executes the tasks in the group asynchronously.
+     *
+     * @param callback the callback to call on failure or success
+     * @return the handle to the REST call
+     */
+    ServiceCall executeAsync(ServiceCallback<Void> callback);
 
     /**
      * Gets the result of execution of a task in the group.
