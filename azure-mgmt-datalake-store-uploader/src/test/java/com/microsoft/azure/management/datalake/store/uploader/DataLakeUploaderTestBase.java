@@ -10,7 +10,9 @@ import com.microsoft.azure.credentials.UserTokenCredentials;
 import com.microsoft.azure.management.datalake.store.implementation.DataLakeStoreAccountManagementClientImpl;
 import com.microsoft.azure.management.datalake.store.implementation.DataLakeStoreFileSystemManagementClientImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
+import com.microsoft.azure.serializer.AzureJacksonMapperAdapter;
 import com.microsoft.rest.RestClient;
+import com.microsoft.rest.serializer.JacksonMapperAdapter;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 public abstract class DataLakeUploaderTestBase {
@@ -30,6 +32,7 @@ public abstract class DataLakeUploaderTestBase {
         RestClient restClient = new RestClient.Builder("https://management.azure.com")
                 .withCredentials(credentials)
                 .withLogLevel(HttpLoggingInterceptor.Level.BODY)
+                .withMapperAdapter(new AzureJacksonMapperAdapter())
                 .build();
 
         resourceManagementClient = new ResourceManagementClientImpl(restClient);

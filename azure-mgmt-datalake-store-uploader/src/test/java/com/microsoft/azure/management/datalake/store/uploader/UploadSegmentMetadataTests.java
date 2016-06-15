@@ -20,22 +20,22 @@ public class UploadSegmentMetadataTests {
     public void UploadMetadata_CalculateSegmentCount()
     {
         try {
-            UploadSegmentMetadata.CalculateSegmentCount(-1);
-            Assert.assertTrue("CalculateSegmentCount should have failed for invalid count but it succeeded!", false);
+            UploadSegmentMetadata.calculateSegmentCount(-1);
+            Assert.assertTrue("calculateSegmentCount should have failed for invalid count but it succeeded!", false);
         }
         catch (IllegalArgumentException ex) {
             // do nothing, this is expected
         }
 
 
-        Assert.assertEquals(0, UploadSegmentMetadata.CalculateSegmentCount(0));
+        Assert.assertEquals(0, UploadSegmentMetadata.calculateSegmentCount(0));
 
         long maxLength = 100 * (long)Math.pow(2, 40);//100 TB
         long increment = 10 * (long)Math.pow(2, 30); //10GB
         int lastValue = 0;
         for (long length = (long)Math.pow(2, 20); length < maxLength; length += increment)
         {
-            int value = UploadSegmentMetadata.CalculateSegmentCount(length);
+            int value = UploadSegmentMetadata.calculateSegmentCount(length);
             Assert.assertTrue("Function is not monotonically increasing", lastValue <= value);
             lastValue = value;
         }
@@ -48,8 +48,8 @@ public class UploadSegmentMetadataTests {
     public void UploadSegmentMetadata_CalculateTypicalSegmentLength()
     {
         try {
-            UploadSegmentMetadata.CalculateSegmentLength(1000, -1);
-            Assert.assertTrue("CalculateSegmentLength should have failed for invalid length but it succeeded!", false);
+            UploadSegmentMetadata.calculateSegmentLength(1000, -1);
+            Assert.assertTrue("calculateSegmentLength should have failed for invalid length but it succeeded!", false);
         }
         catch (IllegalArgumentException ex) {
             // do nothing, expected
@@ -61,7 +61,7 @@ public class UploadSegmentMetadataTests {
 
         for (int segmentCount = 1; segmentCount < maxSegmentCount; segmentCount++)
         {
-            segmentLength = UploadSegmentMetadata.CalculateSegmentLength(fileLength, segmentCount);
+            segmentLength = UploadSegmentMetadata.calculateSegmentLength(fileLength, segmentCount);
 
             //the next two asserts verify that the value calculated will split the input file into a balanced set of segments;
             //all the segments should have the same length, except the last one which may have less than that (but never more).
@@ -71,13 +71,13 @@ public class UploadSegmentMetadataTests {
         }
 
         // test segmentCount == fileLength;
-        segmentLength = UploadSegmentMetadata.CalculateSegmentLength(fileLength, (int)fileLength); //for this to work, FileLength must be less than In32.MaxValue
+        segmentLength = UploadSegmentMetadata.calculateSegmentLength(fileLength, (int)fileLength); //for this to work, FileLength must be less than In32.MaxValue
         Assert.assertEquals(1, segmentLength);
 
         // test that if segment count = 0 then the return value is 0.
         Assert.assertEquals(
                 0,
-                UploadSegmentMetadata.CalculateSegmentLength(fileLength, 0));
+                UploadSegmentMetadata.calculateSegmentLength(fileLength, 0));
     }
 
     /**
@@ -88,57 +88,60 @@ public class UploadSegmentMetadataTests {
     {
 
         UploadMetadata lengthOf10 = new UploadMetadata();
-        lengthOf10.FileLength = 10;
-        lengthOf10.SegmentCount = 5;
-        lengthOf10.SegmentLength = 2;
+        lengthOf10.setFileLength(10);
+        lengthOf10.setSegmentCount(5);
+        lengthOf10.setSegmentLength(2);
+        
         UploadMetadata lengthOfNegative10 = new UploadMetadata();
-        lengthOfNegative10.FileLength = -10;
-        lengthOfNegative10.SegmentCount = 5;
-        lengthOfNegative10.SegmentLength = 2;
+        lengthOfNegative10.setFileLength(-10);
+        lengthOfNegative10.setSegmentCount(5);
+        lengthOfNegative10.setSegmentLength(2);
+        
         UploadMetadata lengthOf100 = new UploadMetadata();
-        lengthOf100.FileLength = 100;
-        lengthOf100.SegmentCount = 2;
-        lengthOf100.SegmentLength = 2;
+        lengthOf100.setFileLength(100);
+        lengthOf100.setSegmentCount(2);
+        lengthOf100.setSegmentLength(2);
+        
         UploadMetadata lengthOf100SegmentCount5 = new UploadMetadata();
-        lengthOf100SegmentCount5.FileLength = 100;
-        lengthOf100SegmentCount5.SegmentCount = 5;
-        lengthOf100SegmentCount5.SegmentLength = 26;
+        lengthOf100SegmentCount5.setFileLength(100);
+        lengthOf100SegmentCount5.setSegmentCount(5);
+        lengthOf100SegmentCount5.setSegmentLength(26);
         //verify bad inputs
         try {
-            UploadSegmentMetadata.CalculateSegmentLength(-1, lengthOf10);
-            Assert.assertTrue("CalculateSegmentLength should have failed for invalid segment number but it succeeded!", false);
+            UploadSegmentMetadata.calculateSegmentLength(-1, lengthOf10);
+            Assert.assertTrue("calculateSegmentLength should have failed for invalid segment number but it succeeded!", false);
         }
         catch (IndexOutOfBoundsException ex) {
             // do nothing, expected
         }
 
         try {
-            UploadSegmentMetadata.CalculateSegmentLength(100, lengthOf10);
-            Assert.assertTrue("CalculateSegmentLength should have failed for invalid segment number but it succeeded!", false);
+            UploadSegmentMetadata.calculateSegmentLength(100, lengthOf10);
+            Assert.assertTrue("calculateSegmentLength should have failed for invalid segment number but it succeeded!", false);
         }
         catch (IndexOutOfBoundsException ex) {
             // do nothing, expected
         }
 
         try {
-            UploadSegmentMetadata.CalculateSegmentLength(1, lengthOfNegative10);
-            Assert.assertTrue("CalculateSegmentLength should have failed for invalid segment number but it succeeded!", false);
+            UploadSegmentMetadata.calculateSegmentLength(1, lengthOfNegative10);
+            Assert.assertTrue("calculateSegmentLength should have failed for invalid segment number but it succeeded!", false);
         }
         catch (IllegalArgumentException ex) {
             // do nothing, expected
         }
 
         try {
-            UploadSegmentMetadata.CalculateSegmentLength(1, lengthOf100);
-            Assert.assertTrue("CalculateSegmentLength should have failed for invalid segment number but it succeeded!", false);
+            UploadSegmentMetadata.calculateSegmentLength(1, lengthOf100);
+            Assert.assertTrue("calculateSegmentLength should have failed for invalid segment number but it succeeded!", false);
         }
         catch (IllegalArgumentException ex) {
             // do nothing, expected
         }
 
         try {
-            UploadSegmentMetadata.CalculateSegmentLength(1, lengthOf100SegmentCount5);
-            Assert.assertTrue("CalculateSegmentLength should have failed for invalid segment number but it succeeded!", false);
+            UploadSegmentMetadata.calculateSegmentLength(1, lengthOf100SegmentCount5);
+            Assert.assertTrue("calculateSegmentLength should have failed for invalid segment number but it succeeded!", false);
         }
         catch (IllegalArgumentException ex) {
             // do nothing, expected
@@ -150,15 +153,15 @@ public class UploadSegmentMetadataTests {
 
         for (int segmentCount = 1; segmentCount <= FileLength; segmentCount += 1024)
         {
-            long typicalSegmentLength = UploadSegmentMetadata.CalculateSegmentLength(FileLength, segmentCount);
+            long typicalSegmentLength = UploadSegmentMetadata.calculateSegmentLength(FileLength, segmentCount);
 
             UploadMetadata uploadMetadata = new UploadMetadata();
-            uploadMetadata.FileLength=FileLength;
-            uploadMetadata.SegmentCount=segmentCount;
-            uploadMetadata.SegmentLength=typicalSegmentLength;
+            uploadMetadata.setFileLength(FileLength);
+            uploadMetadata.setSegmentCount(segmentCount);
+            uploadMetadata.setSegmentLength(typicalSegmentLength);
 
-            long firstSegmentLength = UploadSegmentMetadata.CalculateSegmentLength(0, uploadMetadata);
-            long lastSegmentLength = UploadSegmentMetadata.CalculateSegmentLength(segmentCount - 1, uploadMetadata);
+            long firstSegmentLength = UploadSegmentMetadata.calculateSegmentLength(0, uploadMetadata);
+            long lastSegmentLength = UploadSegmentMetadata.calculateSegmentLength(segmentCount - 1, uploadMetadata);
 
             Assert.assertEquals(typicalSegmentLength, firstSegmentLength);
             if (segmentCount == 1)

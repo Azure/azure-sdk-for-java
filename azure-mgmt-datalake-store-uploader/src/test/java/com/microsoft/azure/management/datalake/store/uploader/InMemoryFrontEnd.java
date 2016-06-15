@@ -24,14 +24,14 @@ public class InMemoryFrontEnd implements FrontEndAdapter {
      * @param byteCount
      * @Throws CloudException
      */
-    public void CreateStream(String streamPath, boolean overwrite, byte[] data, int byteCount) throws CloudException {
+    public void createStream(String streamPath, boolean overwrite, byte[] data, int byteCount) throws CloudException {
         if (overwrite)
         {
             _streams.put(streamPath, new StreamData(streamPath));
         }
         else
         {
-            if (StreamExists(streamPath))
+            if (streamExists(streamPath))
             {
                 throw new CloudException("stream exists");
             }
@@ -63,8 +63,8 @@ public class InMemoryFrontEnd implements FrontEndAdapter {
      * @param recurse    if set to true recursively delete. This is used for folder streams only.
      * @Throws CloudException
      */
-    public void DeleteStream(String streamPath, boolean recurse) throws CloudException {
-        if (!StreamExists(streamPath))
+    public void deleteStream(String streamPath, boolean recurse) throws CloudException {
+        if (!streamExists(streamPath))
         {
             throw new CloudException("stream does not exist");
         }
@@ -79,8 +79,8 @@ public class InMemoryFrontEnd implements FrontEndAdapter {
      * @param byteCount
      * @Throws CloudException
      */
-    public void AppendToStream(String streamPath, byte[] data, long offset, int byteCount) throws CloudException {
-        if (!StreamExists(streamPath))
+    public void appendToStream(String streamPath, byte[] data, long offset, int byteCount) throws CloudException {
+        if (!streamExists(streamPath))
         {
             throw new CloudException("stream does not exist");
         }
@@ -108,7 +108,7 @@ public class InMemoryFrontEnd implements FrontEndAdapter {
      * @param streamPath The relative path to the stream.
      * @return True or false if the stream exists
      */
-    public boolean StreamExists(String streamPath)
+    public boolean streamExists(String streamPath)
     {
         return _streams.containsKey(streamPath);
     }
@@ -119,8 +119,8 @@ public class InMemoryFrontEnd implements FrontEndAdapter {
      * @return
      * @Throws CloudException
      */
-    public long GetStreamLength(String streamPath) throws CloudException {
-        if (!StreamExists(streamPath))
+    public long getStreamLength(String streamPath) throws CloudException {
+        if (!streamExists(streamPath))
         {
             throw new CloudException("stream does not exist");
         }
@@ -134,8 +134,8 @@ public class InMemoryFrontEnd implements FrontEndAdapter {
      * @param inputStreamPaths An ordered array of paths to the input streams.
      * @Throws CloudException
      */
-    public void Concatenate(String targetStreamPath, String[] inputStreamPaths) throws CloudException {
-        if (StreamExists(targetStreamPath))
+    public void concatenate(String targetStreamPath, String[] inputStreamPaths) throws CloudException {
+        if (streamExists(targetStreamPath))
         {
             throw new CloudException("target stream exists");
         }
@@ -145,12 +145,12 @@ public class InMemoryFrontEnd implements FrontEndAdapter {
 
         try
         {
-            CreateStream(targetStreamPath, true, null, 0);
+            createStream(targetStreamPath, true, null, 0);
             StreamData targetStream = _streams.get(targetStreamPath);
 
             for (String inputStreamPath: inputStreamPaths)
             {
-                if (!StreamExists(inputStreamPath))
+                if (!streamExists(inputStreamPath))
                 {
                     throw new CloudException("input stream does not exist");
                 }
@@ -164,16 +164,16 @@ public class InMemoryFrontEnd implements FrontEndAdapter {
         }
         catch (CloudException e)
         {
-            if (StreamExists(targetStreamPath))
+            if (streamExists(targetStreamPath))
             {
-                DeleteStream(targetStreamPath, false);
+                deleteStream(targetStreamPath, false);
             }
             throw e;
         }
 
         for (String inputStreamPath: inputStreamPaths)
         {
-            DeleteStream(inputStreamPath, false);
+            deleteStream(inputStreamPath, false);
         }
     }
 
@@ -184,7 +184,7 @@ public class InMemoryFrontEnd implements FrontEndAdapter {
      * @Throws CloudException
      */
     public Iterable<byte[]> GetAppendBlocks(String streamPath) throws CloudException {
-        if (!StreamExists(streamPath))
+        if (!streamExists(streamPath))
         {
             throw new CloudException("stream does not exist");
         }
@@ -200,7 +200,7 @@ public class InMemoryFrontEnd implements FrontEndAdapter {
      * @Throws CloudException
      */
     public byte[] GetStreamContents(String streamPath) throws CloudException {
-        if (!StreamExists(streamPath))
+        if (!streamExists(streamPath))
         {
             throw new CloudException("stream does not exist");
         }
