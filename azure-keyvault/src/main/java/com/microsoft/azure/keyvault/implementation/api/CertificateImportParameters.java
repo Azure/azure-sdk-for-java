@@ -59,7 +59,7 @@ public class CertificateImportParameters {
      * @param base64EncodedCertificate the base64EncodedCertificate value to set
      * @return the CertificateImportParameters object itself.
      */
-    public CertificateImportParameters setBase64EncodedCertificate(String base64EncodedCertificate) {
+    public CertificateImportParameters withBase64EncodedCertificate(String base64EncodedCertificate) {
         this.base64EncodedCertificate = base64EncodedCertificate;
         return this;
     }
@@ -79,7 +79,7 @@ public class CertificateImportParameters {
      * @param password the password value to set
      * @return the CertificateImportParameters object itself.
      */
-    public CertificateImportParameters setPassword(String password) {
+    public CertificateImportParameters withPassword(String password) {
         this.password = password;
         return this;
     }
@@ -99,7 +99,7 @@ public class CertificateImportParameters {
      * @param certificatePolicy the certificatePolicy value to set
      * @return the CertificateImportParameters object itself.
      */
-    public CertificateImportParameters setCertificatePolicy(CertificatePolicyInner certificatePolicy) {
+    public CertificateImportParameters withCertificatePolicy(CertificatePolicyInner certificatePolicy) {
         this.certificatePolicy = certificatePolicy;
         return this;
     }
@@ -119,7 +119,7 @@ public class CertificateImportParameters {
      * @param certificateAttributes the certificateAttributes value to set
      * @return the CertificateImportParameters object itself.
      */
-    public CertificateImportParameters setCertificateAttributes(CertificateAttributesInner certificateAttributes) {
+    public CertificateImportParameters withCertificateAttributes(CertificateAttributesInner certificateAttributes) {
         this.certificateAttributes = certificateAttributes;
         return this;
     }
@@ -139,7 +139,7 @@ public class CertificateImportParameters {
      * @param tags the tags value to set
      * @return the CertificateImportParameters object itself.
      */
-    public CertificateImportParameters setTags(Map<String, String> tags) {
+    public CertificateImportParameters withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }

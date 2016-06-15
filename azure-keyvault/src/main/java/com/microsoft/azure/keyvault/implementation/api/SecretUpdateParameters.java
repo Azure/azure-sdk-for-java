@@ -44,7 +44,7 @@ public class SecretUpdateParameters {
      * @param contentType the contentType value to set
      * @return the SecretUpdateParameters object itself.
      */
-    public SecretUpdateParameters setContentType(String contentType) {
+    public SecretUpdateParameters withContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -64,7 +64,7 @@ public class SecretUpdateParameters {
      * @param secretAttributes the secretAttributes value to set
      * @return the SecretUpdateParameters object itself.
      */
-    public SecretUpdateParameters setSecretAttributes(SecretAttributesInner secretAttributes) {
+    public SecretUpdateParameters withSecretAttributes(SecretAttributesInner secretAttributes) {
         this.secretAttributes = secretAttributes;
         return this;
     }
@@ -84,7 +84,7 @@ public class SecretUpdateParameters {
      * @param tags the tags value to set
      * @return the SecretUpdateParameters object itself.
      */
-    public SecretUpdateParameters setTags(Map<String, String> tags) {
+    public SecretUpdateParameters withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }

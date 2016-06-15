@@ -13,48 +13,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class KeyVaultError {
     /**
-     * The code property.
-     */
-    @JsonProperty(value = "error.code", access = JsonProperty.Access.WRITE_ONLY)
-    private String code;
-
-    /**
-     * The message property.
-     */
-    @JsonProperty(value = "error.message", access = JsonProperty.Access.WRITE_ONLY)
-    private String message;
-
-    /**
-     * The additionalInfo property.
+     * The error property.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Object additionalInfo;
+    private Error error;
 
     /**
-     * Get the code value.
+     * Get the error value.
      *
-     * @return the code value
+     * @return the error value
      */
-    public String code() {
-        return this.code;
-    }
-
-    /**
-     * Get the message value.
-     *
-     * @return the message value
-     */
-    public String message() {
-        return this.message;
-    }
-
-    /**
-     * Get the additionalInfo value.
-     *
-     * @return the additionalInfo value
-     */
-    public Object additionalInfo() {
-        return this.additionalInfo;
+    public Error error() {
+        return this.error;
     }
 
 }

@@ -36,7 +36,7 @@ public class CertificateIssuerItemInner {
      * @param id the id value to set
      * @return the CertificateIssuerItemInner object itself.
      */
-    public CertificateIssuerItemInner setId(String id) {
+    public CertificateIssuerItemInner withId(String id) {
         this.id = id;
         return this;
     }
@@ -56,7 +56,7 @@ public class CertificateIssuerItemInner {
      * @param provider the provider value to set
      * @return the CertificateIssuerItemInner object itself.
      */
-    public CertificateIssuerItemInner setProvider(String provider) {
+    public CertificateIssuerItemInner withProvider(String provider) {
         this.provider = provider;
         return this;
     }

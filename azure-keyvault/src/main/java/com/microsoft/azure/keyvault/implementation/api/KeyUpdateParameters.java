@@ -47,7 +47,7 @@ public class KeyUpdateParameters {
      * @param keyOps the keyOps value to set
      * @return the KeyUpdateParameters object itself.
      */
-    public KeyUpdateParameters setKeyOps(List<String> keyOps) {
+    public KeyUpdateParameters withKeyOps(List<String> keyOps) {
         this.keyOps = keyOps;
         return this;
     }
@@ -67,7 +67,7 @@ public class KeyUpdateParameters {
      * @param keyAttributes the keyAttributes value to set
      * @return the KeyUpdateParameters object itself.
      */
-    public KeyUpdateParameters setKeyAttributes(KeyAttributesInner keyAttributes) {
+    public KeyUpdateParameters withKeyAttributes(KeyAttributesInner keyAttributes) {
         this.keyAttributes = keyAttributes;
         return this;
     }
@@ -87,7 +87,7 @@ public class KeyUpdateParameters {
      * @param tags the tags value to set
      * @return the KeyUpdateParameters object itself.
      */
-    public KeyUpdateParameters setTags(Map<String, String> tags) {
+    public KeyUpdateParameters withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }

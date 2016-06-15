@@ -79,7 +79,7 @@ public class CertificatePolicyInner {
      * @param keyProperties the keyProperties value to set
      * @return the CertificatePolicyInner object itself.
      */
-    public CertificatePolicyInner setKeyProperties(KeyProperties keyProperties) {
+    public CertificatePolicyInner withKeyProperties(KeyProperties keyProperties) {
         this.keyProperties = keyProperties;
         return this;
     }
@@ -99,7 +99,7 @@ public class CertificatePolicyInner {
      * @param secretProperties the secretProperties value to set
      * @return the CertificatePolicyInner object itself.
      */
-    public CertificatePolicyInner setSecretProperties(SecretProperties secretProperties) {
+    public CertificatePolicyInner withSecretProperties(SecretProperties secretProperties) {
         this.secretProperties = secretProperties;
         return this;
     }
@@ -119,7 +119,7 @@ public class CertificatePolicyInner {
      * @param x509CertificateProperties the x509CertificateProperties value to set
      * @return the CertificatePolicyInner object itself.
      */
-    public CertificatePolicyInner setX509CertificateProperties(X509CertificateProperties x509CertificateProperties) {
+    public CertificatePolicyInner withX509CertificateProperties(X509CertificateProperties x509CertificateProperties) {
         this.x509CertificateProperties = x509CertificateProperties;
         return this;
     }
@@ -139,7 +139,7 @@ public class CertificatePolicyInner {
      * @param lifetimeActions the lifetimeActions value to set
      * @return the CertificatePolicyInner object itself.
      */
-    public CertificatePolicyInner setLifetimeActions(List<LifetimeAction> lifetimeActions) {
+    public CertificatePolicyInner withLifetimeActions(List<LifetimeAction> lifetimeActions) {
         this.lifetimeActions = lifetimeActions;
         return this;
     }
@@ -159,7 +159,7 @@ public class CertificatePolicyInner {
      * @param issuerReference the issuerReference value to set
      * @return the CertificatePolicyInner object itself.
      */
-    public CertificatePolicyInner setIssuerReference(IssuerReference issuerReference) {
+    public CertificatePolicyInner withIssuerReference(IssuerReference issuerReference) {
         this.issuerReference = issuerReference;
         return this;
     }
@@ -179,7 +179,7 @@ public class CertificatePolicyInner {
      * @param attributes the attributes value to set
      * @return the CertificatePolicyInner object itself.
      */
-    public CertificatePolicyInner setAttributes(CertificateAttributesInner attributes) {
+    public CertificatePolicyInner withAttributes(CertificateAttributesInner attributes) {
         this.attributes = attributes;
         return this;
     }

@@ -56,7 +56,7 @@ public class Attributes {
      * @param enabled the enabled value to set
      * @return the Attributes object itself.
      */
-    public Attributes setEnabled(Boolean enabled) {
+    public Attributes withEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -76,7 +76,7 @@ public class Attributes {
      * @param notBefore the notBefore value to set
      * @return the Attributes object itself.
      */
-    public Attributes setNotBefore(Long notBefore) {
+    public Attributes withNotBefore(Long notBefore) {
         this.notBefore = notBefore;
         return this;
     }
@@ -96,7 +96,7 @@ public class Attributes {
      * @param expires the expires value to set
      * @return the Attributes object itself.
      */
-    public Attributes setExpires(Long expires) {
+    public Attributes withExpires(Long expires) {
         this.expires = expires;
         return this;
     }

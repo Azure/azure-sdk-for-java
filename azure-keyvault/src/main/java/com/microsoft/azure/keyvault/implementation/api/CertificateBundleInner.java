@@ -123,7 +123,7 @@ public class CertificateBundleInner {
      * @param cer the cer value to set
      * @return the CertificateBundleInner object itself.
      */
-    public CertificateBundleInner setCer(String cer) {
+    public CertificateBundleInner withCer(String cer) {
         this.cer = cer;
         return this;
     }
@@ -143,7 +143,7 @@ public class CertificateBundleInner {
      * @param contentType the contentType value to set
      * @return the CertificateBundleInner object itself.
      */
-    public CertificateBundleInner setContentType(String contentType) {
+    public CertificateBundleInner withContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -163,7 +163,7 @@ public class CertificateBundleInner {
      * @param attributes the attributes value to set
      * @return the CertificateBundleInner object itself.
      */
-    public CertificateBundleInner setAttributes(CertificateAttributesInner attributes) {
+    public CertificateBundleInner withAttributes(CertificateAttributesInner attributes) {
         this.attributes = attributes;
         return this;
     }
@@ -183,7 +183,7 @@ public class CertificateBundleInner {
      * @param tags the tags value to set
      * @return the CertificateBundleInner object itself.
      */
-    public CertificateBundleInner setTags(Map<String, String> tags) {
+    public CertificateBundleInner withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }

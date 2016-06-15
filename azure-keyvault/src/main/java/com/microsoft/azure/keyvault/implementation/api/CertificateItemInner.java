@@ -49,7 +49,7 @@ public class CertificateItemInner {
      * @param id the id value to set
      * @return the CertificateItemInner object itself.
      */
-    public CertificateItemInner setId(String id) {
+    public CertificateItemInner withId(String id) {
         this.id = id;
         return this;
     }
@@ -69,7 +69,7 @@ public class CertificateItemInner {
      * @param attributes the attributes value to set
      * @return the CertificateItemInner object itself.
      */
-    public CertificateItemInner setAttributes(CertificateAttributesInner attributes) {
+    public CertificateItemInner withAttributes(CertificateAttributesInner attributes) {
         this.attributes = attributes;
         return this;
     }
@@ -89,7 +89,7 @@ public class CertificateItemInner {
      * @param tags the tags value to set
      * @return the CertificateItemInner object itself.
      */
-    public CertificateItemInner setTags(Map<String, String> tags) {
+    public CertificateItemInner withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -109,7 +109,7 @@ public class CertificateItemInner {
      * @param x5T the x5T value to set
      * @return the CertificateItemInner object itself.
      */
-    public CertificateItemInner setX5T(String x5T) {
+    public CertificateItemInner withX5T(String x5T) {
         this.x5T = x5T;
         return this;
     }

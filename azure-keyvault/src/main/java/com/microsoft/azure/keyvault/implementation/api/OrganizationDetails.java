@@ -70,7 +70,7 @@ public class OrganizationDetails {
      * @param name the name value to set
      * @return the OrganizationDetails object itself.
      */
-    public OrganizationDetails setName(String name) {
+    public OrganizationDetails withName(String name) {
         this.name = name;
         return this;
     }
@@ -90,7 +90,7 @@ public class OrganizationDetails {
      * @param address1 the address1 value to set
      * @return the OrganizationDetails object itself.
      */
-    public OrganizationDetails setAddress1(String address1) {
+    public OrganizationDetails withAddress1(String address1) {
         this.address1 = address1;
         return this;
     }
@@ -110,7 +110,7 @@ public class OrganizationDetails {
      * @param address2 the address2 value to set
      * @return the OrganizationDetails object itself.
      */
-    public OrganizationDetails setAddress2(String address2) {
+    public OrganizationDetails withAddress2(String address2) {
         this.address2 = address2;
         return this;
     }
@@ -130,7 +130,7 @@ public class OrganizationDetails {
      * @param city the city value to set
      * @return the OrganizationDetails object itself.
      */
-    public OrganizationDetails setCity(String city) {
+    public OrganizationDetails withCity(String city) {
         this.city = city;
         return this;
     }
@@ -150,7 +150,7 @@ public class OrganizationDetails {
      * @param zipcode the zipcode value to set
      * @return the OrganizationDetails object itself.
      */
-    public OrganizationDetails setZipcode(String zipcode) {
+    public OrganizationDetails withZipcode(String zipcode) {
         this.zipcode = zipcode;
         return this;
     }
@@ -170,7 +170,7 @@ public class OrganizationDetails {
      * @param state the state value to set
      * @return the OrganizationDetails object itself.
      */
-    public OrganizationDetails setState(String state) {
+    public OrganizationDetails withState(String state) {
         this.state = state;
         return this;
     }
@@ -190,7 +190,7 @@ public class OrganizationDetails {
      * @param country the country value to set
      * @return the OrganizationDetails object itself.
      */
-    public OrganizationDetails setCountry(String country) {
+    public OrganizationDetails withCountry(String country) {
         this.country = country;
         return this;
     }
@@ -210,7 +210,7 @@ public class OrganizationDetails {
      * @param administratorDetails the administratorDetails value to set
      * @return the OrganizationDetails object itself.
      */
-    public OrganizationDetails setAdministratorDetails(List<AdministratorDetails> administratorDetails) {
+    public OrganizationDetails withAdministratorDetails(List<AdministratorDetails> administratorDetails) {
         this.administratorDetails = administratorDetails;
         return this;
     }

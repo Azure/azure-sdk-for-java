@@ -58,7 +58,7 @@ public class KeyCreateParameters {
      * @param kty the kty value to set
      * @return the KeyCreateParameters object itself.
      */
-    public KeyCreateParameters setKty(String kty) {
+    public KeyCreateParameters withKty(String kty) {
         this.kty = kty;
         return this;
     }
@@ -78,7 +78,7 @@ public class KeyCreateParameters {
      * @param keySize the keySize value to set
      * @return the KeyCreateParameters object itself.
      */
-    public KeyCreateParameters setKeySize(Integer keySize) {
+    public KeyCreateParameters withKeySize(Integer keySize) {
         this.keySize = keySize;
         return this;
     }
@@ -98,7 +98,7 @@ public class KeyCreateParameters {
      * @param keyOps the keyOps value to set
      * @return the KeyCreateParameters object itself.
      */
-    public KeyCreateParameters setKeyOps(List<String> keyOps) {
+    public KeyCreateParameters withKeyOps(List<String> keyOps) {
         this.keyOps = keyOps;
         return this;
     }
@@ -118,7 +118,7 @@ public class KeyCreateParameters {
      * @param keyAttributes the keyAttributes value to set
      * @return the KeyCreateParameters object itself.
      */
-    public KeyCreateParameters setKeyAttributes(KeyAttributesInner keyAttributes) {
+    public KeyCreateParameters withKeyAttributes(KeyAttributesInner keyAttributes) {
         this.keyAttributes = keyAttributes;
         return this;
     }
@@ -138,7 +138,7 @@ public class KeyCreateParameters {
      * @param tags the tags value to set
      * @return the KeyCreateParameters object itself.
      */
-    public KeyCreateParameters setTags(Map<String, String> tags) {
+    public KeyCreateParameters withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }

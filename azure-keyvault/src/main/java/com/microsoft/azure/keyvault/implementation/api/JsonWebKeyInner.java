@@ -95,7 +95,7 @@ public class JsonWebKeyInner {
      * @param kid the kid value to set
      * @return the JsonWebKeyInner object itself.
      */
-    public JsonWebKeyInner setKid(String kid) {
+    public JsonWebKeyInner withKid(String kid) {
         this.kid = kid;
         return this;
     }
@@ -115,7 +115,7 @@ public class JsonWebKeyInner {
      * @param kty the kty value to set
      * @return the JsonWebKeyInner object itself.
      */
-    public JsonWebKeyInner setKty(String kty) {
+    public JsonWebKeyInner withKty(String kty) {
         this.kty = kty;
         return this;
     }
@@ -135,7 +135,7 @@ public class JsonWebKeyInner {
      * @param keyOps the keyOps value to set
      * @return the JsonWebKeyInner object itself.
      */
-    public JsonWebKeyInner setKeyOps(List<String> keyOps) {
+    public JsonWebKeyInner withKeyOps(List<String> keyOps) {
         this.keyOps = keyOps;
         return this;
     }
@@ -155,7 +155,7 @@ public class JsonWebKeyInner {
      * @param n the n value to set
      * @return the JsonWebKeyInner object itself.
      */
-    public JsonWebKeyInner setN(String n) {
+    public JsonWebKeyInner withN(String n) {
         this.n = n;
         return this;
     }
@@ -175,7 +175,7 @@ public class JsonWebKeyInner {
      * @param e the e value to set
      * @return the JsonWebKeyInner object itself.
      */
-    public JsonWebKeyInner setE(String e) {
+    public JsonWebKeyInner withE(String e) {
         this.e = e;
         return this;
     }
@@ -195,7 +195,7 @@ public class JsonWebKeyInner {
      * @param d the d value to set
      * @return the JsonWebKeyInner object itself.
      */
-    public JsonWebKeyInner setD(String d) {
+    public JsonWebKeyInner withD(String d) {
         this.d = d;
         return this;
     }
@@ -215,7 +215,7 @@ public class JsonWebKeyInner {
      * @param dp the dp value to set
      * @return the JsonWebKeyInner object itself.
      */
-    public JsonWebKeyInner setDp(String dp) {
+    public JsonWebKeyInner withDp(String dp) {
         this.dp = dp;
         return this;
     }
@@ -235,7 +235,7 @@ public class JsonWebKeyInner {
      * @param dq the dq value to set
      * @return the JsonWebKeyInner object itself.
      */
-    public JsonWebKeyInner setDq(String dq) {
+    public JsonWebKeyInner withDq(String dq) {
         this.dq = dq;
         return this;
     }
@@ -255,7 +255,7 @@ public class JsonWebKeyInner {
      * @param qi the qi value to set
      * @return the JsonWebKeyInner object itself.
      */
-    public JsonWebKeyInner setQi(String qi) {
+    public JsonWebKeyInner withQi(String qi) {
         this.qi = qi;
         return this;
     }
@@ -275,7 +275,7 @@ public class JsonWebKeyInner {
      * @param p the p value to set
      * @return the JsonWebKeyInner object itself.
      */
-    public JsonWebKeyInner setP(String p) {
+    public JsonWebKeyInner withP(String p) {
         this.p = p;
         return this;
     }
@@ -295,7 +295,7 @@ public class JsonWebKeyInner {
      * @param q the q value to set
      * @return the JsonWebKeyInner object itself.
      */
-    public JsonWebKeyInner setQ(String q) {
+    public JsonWebKeyInner withQ(String q) {
         this.q = q;
         return this;
     }
@@ -315,7 +315,7 @@ public class JsonWebKeyInner {
      * @param k the k value to set
      * @return the JsonWebKeyInner object itself.
      */
-    public JsonWebKeyInner setK(String k) {
+    public JsonWebKeyInner withK(String k) {
         this.k = k;
         return this;
     }
@@ -335,7 +335,7 @@ public class JsonWebKeyInner {
      * @param t the t value to set
      * @return the JsonWebKeyInner object itself.
      */
-    public JsonWebKeyInner setT(String t) {
+    public JsonWebKeyInner withT(String t) {
         this.t = t;
         return this;
     }

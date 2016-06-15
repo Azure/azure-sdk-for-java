@@ -42,7 +42,7 @@ public class KeyItemInner {
      * @param kid the kid value to set
      * @return the KeyItemInner object itself.
      */
-    public KeyItemInner setKid(String kid) {
+    public KeyItemInner withKid(String kid) {
         this.kid = kid;
         return this;
     }
@@ -62,7 +62,7 @@ public class KeyItemInner {
      * @param attributes the attributes value to set
      * @return the KeyItemInner object itself.
      */
-    public KeyItemInner setAttributes(KeyAttributesInner attributes) {
+    public KeyItemInner withAttributes(KeyAttributesInner attributes) {
         this.attributes = attributes;
         return this;
     }
@@ -82,7 +82,7 @@ public class KeyItemInner {
      * @param tags the tags value to set
      * @return the KeyItemInner object itself.
      */
-    public KeyItemInner setTags(Map<String, String> tags) {
+    public KeyItemInner withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }

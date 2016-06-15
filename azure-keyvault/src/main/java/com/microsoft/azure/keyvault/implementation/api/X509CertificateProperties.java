@@ -56,7 +56,7 @@ public class X509CertificateProperties {
      * @param subject the subject value to set
      * @return the X509CertificateProperties object itself.
      */
-    public X509CertificateProperties setSubject(String subject) {
+    public X509CertificateProperties withSubject(String subject) {
         this.subject = subject;
         return this;
     }
@@ -76,7 +76,7 @@ public class X509CertificateProperties {
      * @param ekus the ekus value to set
      * @return the X509CertificateProperties object itself.
      */
-    public X509CertificateProperties setEkus(List<String> ekus) {
+    public X509CertificateProperties withEkus(List<String> ekus) {
         this.ekus = ekus;
         return this;
     }
@@ -96,7 +96,7 @@ public class X509CertificateProperties {
      * @param subjectAlternativeNames the subjectAlternativeNames value to set
      * @return the X509CertificateProperties object itself.
      */
-    public X509CertificateProperties setSubjectAlternativeNames(SubjectAlternativeNames subjectAlternativeNames) {
+    public X509CertificateProperties withSubjectAlternativeNames(SubjectAlternativeNames subjectAlternativeNames) {
         this.subjectAlternativeNames = subjectAlternativeNames;
         return this;
     }
@@ -116,7 +116,7 @@ public class X509CertificateProperties {
      * @param keyUsage the keyUsage value to set
      * @return the X509CertificateProperties object itself.
      */
-    public X509CertificateProperties setKeyUsage(List<String> keyUsage) {
+    public X509CertificateProperties withKeyUsage(List<String> keyUsage) {
         this.keyUsage = keyUsage;
         return this;
     }
@@ -136,7 +136,7 @@ public class X509CertificateProperties {
      * @param validityInMonths the validityInMonths value to set
      * @return the X509CertificateProperties object itself.
      */
-    public X509CertificateProperties setValidityInMonths(Integer validityInMonths) {
+    public X509CertificateProperties withValidityInMonths(Integer validityInMonths) {
         this.validityInMonths = validityInMonths;
         return this;
     }

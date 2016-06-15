@@ -33,7 +33,7 @@ public class Trigger {
      * @param lifetimePercentage the lifetimePercentage value to set
      * @return the Trigger object itself.
      */
-    public Trigger setLifetimePercentage(Integer lifetimePercentage) {
+    public Trigger withLifetimePercentage(Integer lifetimePercentage) {
         this.lifetimePercentage = lifetimePercentage;
         return this;
     }

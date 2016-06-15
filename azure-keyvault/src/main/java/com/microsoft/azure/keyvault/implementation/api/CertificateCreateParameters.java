@@ -45,7 +45,7 @@ public class CertificateCreateParameters {
      * @param certificatePolicy the certificatePolicy value to set
      * @return the CertificateCreateParameters object itself.
      */
-    public CertificateCreateParameters setCertificatePolicy(CertificatePolicyInner certificatePolicy) {
+    public CertificateCreateParameters withCertificatePolicy(CertificatePolicyInner certificatePolicy) {
         this.certificatePolicy = certificatePolicy;
         return this;
     }
@@ -65,7 +65,7 @@ public class CertificateCreateParameters {
      * @param certificateAttributes the certificateAttributes value to set
      * @return the CertificateCreateParameters object itself.
      */
-    public CertificateCreateParameters setCertificateAttributes(CertificateAttributesInner certificateAttributes) {
+    public CertificateCreateParameters withCertificateAttributes(CertificateAttributesInner certificateAttributes) {
         this.certificateAttributes = certificateAttributes;
         return this;
     }
@@ -85,7 +85,7 @@ public class CertificateCreateParameters {
      * @param tags the tags value to set
      * @return the CertificateCreateParameters object itself.
      */
-    public CertificateCreateParameters setTags(Map<String, String> tags) {
+    public CertificateCreateParameters withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }

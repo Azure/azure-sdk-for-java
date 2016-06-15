@@ -44,7 +44,7 @@ public class IssuerAttributes {
      * @param enabled the enabled value to set
      * @return the IssuerAttributes object itself.
      */
-    public IssuerAttributes setEnabled(Boolean enabled) {
+    public IssuerAttributes withEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }

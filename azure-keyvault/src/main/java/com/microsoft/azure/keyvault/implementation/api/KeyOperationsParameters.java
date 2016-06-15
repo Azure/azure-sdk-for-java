@@ -39,7 +39,7 @@ public class KeyOperationsParameters {
      * @param algorithm the algorithm value to set
      * @return the KeyOperationsParameters object itself.
      */
-    public KeyOperationsParameters setAlgorithm(String algorithm) {
+    public KeyOperationsParameters withAlgorithm(String algorithm) {
         this.algorithm = algorithm;
         return this;
     }
@@ -59,7 +59,7 @@ public class KeyOperationsParameters {
      * @param value the value value to set
      * @return the KeyOperationsParameters object itself.
      */
-    public KeyOperationsParameters setValue(String value) {
+    public KeyOperationsParameters withValue(String value) {
         this.value = value;
         return this;
     }

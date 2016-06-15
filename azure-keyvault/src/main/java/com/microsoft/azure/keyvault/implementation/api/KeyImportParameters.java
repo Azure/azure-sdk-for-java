@@ -51,7 +51,7 @@ public class KeyImportParameters {
      * @param hsm the hsm value to set
      * @return the KeyImportParameters object itself.
      */
-    public KeyImportParameters setHsm(Boolean hsm) {
+    public KeyImportParameters withHsm(Boolean hsm) {
         this.hsm = hsm;
         return this;
     }
@@ -71,7 +71,7 @@ public class KeyImportParameters {
      * @param key the key value to set
      * @return the KeyImportParameters object itself.
      */
-    public KeyImportParameters setKey(JsonWebKeyInner key) {
+    public KeyImportParameters withKey(JsonWebKeyInner key) {
         this.key = key;
         return this;
     }
@@ -91,7 +91,7 @@ public class KeyImportParameters {
      * @param keyAttributes the keyAttributes value to set
      * @return the KeyImportParameters object itself.
      */
-    public KeyImportParameters setKeyAttributes(KeyAttributesInner keyAttributes) {
+    public KeyImportParameters withKeyAttributes(KeyAttributesInner keyAttributes) {
         this.keyAttributes = keyAttributes;
         return this;
     }
@@ -111,7 +111,7 @@ public class KeyImportParameters {
      * @param tags the tags value to set
      * @return the KeyImportParameters object itself.
      */
-    public KeyImportParameters setTags(Map<String, String> tags) {
+    public KeyImportParameters withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }

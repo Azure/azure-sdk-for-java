@@ -33,7 +33,7 @@ public class Action {
      * @param actionType the actionType value to set
      * @return the Action object itself.
      */
-    public Action setActionType(String actionType) {
+    public Action withActionType(String actionType) {
         this.actionType = actionType;
         return this;
     }

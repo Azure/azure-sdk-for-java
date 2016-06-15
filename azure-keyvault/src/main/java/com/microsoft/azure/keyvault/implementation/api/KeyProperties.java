@@ -49,7 +49,7 @@ public class KeyProperties {
      * @param exportable the exportable value to set
      * @return the KeyProperties object itself.
      */
-    public KeyProperties setExportable(Boolean exportable) {
+    public KeyProperties withExportable(Boolean exportable) {
         this.exportable = exportable;
         return this;
     }
@@ -69,7 +69,7 @@ public class KeyProperties {
      * @param kty the kty value to set
      * @return the KeyProperties object itself.
      */
-    public KeyProperties setKty(String kty) {
+    public KeyProperties withKty(String kty) {
         this.kty = kty;
         return this;
     }
@@ -89,7 +89,7 @@ public class KeyProperties {
      * @param keySize the keySize value to set
      * @return the KeyProperties object itself.
      */
-    public KeyProperties setKeySize(Integer keySize) {
+    public KeyProperties withKeySize(Integer keySize) {
         this.keySize = keySize;
         return this;
     }
@@ -109,7 +109,7 @@ public class KeyProperties {
      * @param reuseKey the reuseKey value to set
      * @return the KeyProperties object itself.
      */
-    public KeyProperties setReuseKey(Boolean reuseKey) {
+    public KeyProperties withReuseKey(Boolean reuseKey) {
         this.reuseKey = reuseKey;
         return this;
     }

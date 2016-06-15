@@ -49,7 +49,7 @@ public class ContactsInner {
      * @param contactList the contactList value to set
      * @return the ContactsInner object itself.
      */
-    public ContactsInner setContactList(List<Contact> contactList) {
+    public ContactsInner withContactList(List<Contact> contactList) {
         this.contactList = contactList;
         return this;
     }
