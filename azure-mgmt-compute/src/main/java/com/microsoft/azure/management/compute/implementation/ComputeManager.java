@@ -2,6 +2,7 @@ package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.management.compute.AvailabilitySets;
+import com.microsoft.azure.management.compute.VirtualMachineImages;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.compute.implementation.api.ComputeManagementClientImpl;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
@@ -24,6 +25,7 @@ public final class ComputeManager extends Manager {
     // The collections
     private AvailabilitySets availabilitySets;
     private VirtualMachines virtualMachines;
+    private VirtualMachineImages virtualMachineImages;
 
     /**
      * Get a Configurable instance that can be used to create ComputeManager with optional configuration.
@@ -115,5 +117,15 @@ public final class ComputeManager extends Manager {
                     networkManager);
         }
         return virtualMachines;
+    }
+
+    /**
+     * @return the virtual machine image resource management API entry point
+     */
+    public VirtualMachineImages virtualMachineImages() {
+        if (virtualMachineImages == null) {
+            virtualMachineImages = new VirtualMachineImagesImpl(computeManagementClient.virtualMachineImages());
+        }
+        return virtualMachineImages;
     }
 }

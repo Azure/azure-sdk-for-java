@@ -915,7 +915,6 @@ class VirtualMachineImpl
                     .define(nameWithPrefix("stg", null))
                     .withRegion(this.region())
                     .withExistingGroup(this.resourceGroupName())
-                    .withBlobStorageAccountKind()
                     .create();
         }
 

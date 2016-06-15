@@ -13,12 +13,16 @@ package com.microsoft.azure.management.network.samples;
  *  - Create a network security group fro the back end of a subnet
  *  - List network security groups
  *  - Update a network security group
- *  - Delete a network security group
+ *  - Delete a network security group.
  */
 
-public class ManageNetworkSecurityGroup {
+public final class ManageNetworkSecurityGroup {
 
-    public static void main (String [] args) {
+    /**
+     * Main entry point.
+     * @param args the parameters
+     */
+    public static void main(String[] args) {
 
         try {
 
@@ -32,9 +36,12 @@ public class ManageNetworkSecurityGroup {
 
             // Delete a network security group
 
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             System.err.println(e.getMessage());
         }
+    }
+
+    private ManageNetworkSecurityGroup() {
+
     }
 }
