@@ -101,8 +101,8 @@ public final class ManageVirtualMachine {
             DataDisk dataDisk = vm.dataDisks().get(0);
             vm.update()
                     .updateDataDisk(dataDisk.name())
-                    .withSizeInGB(30)
-                    .apply()
+                        .withSizeInGB(30)
+                    .set()
                     .apply();
 
 
