@@ -90,6 +90,7 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
     @SuppressWarnings("unchecked")
     public FluentModelImplT create() throws Exception {
         if (creatableTaskGroup.isRoot()) {
+            creatableTaskGroup.prepare();
             creatableTaskGroup.execute();
         } else {
             createResource();
@@ -106,6 +107,7 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
     @SuppressWarnings("unchecked")
     public ServiceCall createAsync(ServiceCallback<FluentModelT> callback) {
         if (creatableTaskGroup.isRoot()) {
+            creatableTaskGroup.prepare();
             return creatableTaskGroup.executeAsync(Utils.toVoidCallback((FluentModelT) this, callback));
         } else {
             return createResourceAsync(Utils.toVoidCallback((FluentModelT) this, callback));
