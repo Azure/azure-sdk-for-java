@@ -83,9 +83,9 @@ public final class AzureEnvironment {
             "https://management.usgovcloudapi.net/");
 
     /**
-     * Provides the settings for authentication with Azure German.
+     * Provides the settings for authentication with Azure Germany.
      */
-    public static final AzureEnvironment AZURE_GERMAN = new AzureEnvironment(
+    public static final AzureEnvironment AZURE_GERMANY = new AzureEnvironment(
             "https://login.microsoftonline.de/",
             "https://management.core.cloudapi.de/",
             true,
