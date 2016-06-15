@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroupExportResult;
 import com.microsoft.azure.management.resources.ResourceGroupExportTemplateOptions;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.resources.implementation.api.ExportTemplateRequestInner;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupExportResultInner;
@@ -31,8 +31,8 @@ import java.util.Map;
 /**
  * An instance of this class provides access to a resource group in Azure.
  */
-public class ResourceGroupImpl extends
-        CreatableImpl<ResourceGroup, ResourceGroupInner>
+class ResourceGroupImpl extends
+        CreatableUpdatableImpl<ResourceGroup, ResourceGroupInner, ResourceGroupImpl>
         implements
         ResourceGroup,
         ResourceGroup.DefinitionBlank,
@@ -126,17 +126,6 @@ public class ResourceGroupImpl extends
     }
 
     @Override
-    public ResourceGroupImpl create() throws Exception {          //  FLUENT: implementation of ResourceGroup.DefinitionCreatable.Creatable<ResourceGroup>
-        super.creatablesCreate();
-        return this;
-    }
-
-    @Override
-    public ServiceCall createAsync(final ServiceCallback<ResourceGroup> callback) {
-        return super.creatablesCreateAsync(Utils.toVoidCallback(this, callback));
-    }
-
-    @Override
     public ResourceGroupImpl refresh() throws Exception {
         this.setInner(client.get(this.key).getBody());
         return this;
@@ -145,11 +134,6 @@ public class ResourceGroupImpl extends
     @Override
     public <T extends ResourceConnector> T connectToResource(ResourceConnector.Builder<T> adapterBuilder) {
         return adapterBuilder.create(this.serviceClient.restClient(), this.serviceClient.subscriptionId(), this);
-    }
-
-    @Override
-    public Update update() throws Exception {
-        return this;
     }
 
     @Override

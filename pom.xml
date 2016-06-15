@@ -243,5 +243,6 @@
     <module>./azure-mgmt-datalake-analytics</module>
     <module>./azure-mgmt-datalake-store</module>
     <module>./azure-mgmt-datalake-store-uploader</module>
+    <module>./azure-samples</module>
   </modules>
 </project>

@@ -10,13 +10,12 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.AvailabilitySets;
-import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.compute.implementation.api.AvailabilitySetInner;
 import com.microsoft.azure.management.compute.implementation.api.AvailabilitySetsInner;
-import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
+import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.resources.implementation.api.PageImpl;
 import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceResponse;
@@ -29,16 +28,12 @@ import java.util.List;
  */
 class AvailabilitySetsImpl implements AvailabilitySets {
     private final AvailabilitySetsInner client;
-    private final ResourceGroups resourceGroups;
-    private final VirtualMachines virtualMachines;
+    private final ResourceManager resourceManager;
     private final PagedListConverter<AvailabilitySetInner, AvailabilitySet> converter;
 
-    AvailabilitySetsImpl(final AvailabilitySetsInner client,
-                                final ResourceGroups resourceGroups,
-                                final VirtualMachines virtualMachines) {
+    AvailabilitySetsImpl(final AvailabilitySetsInner client, final ResourceManager resourceManager) {
         this.client = client;
-        this.resourceGroups = resourceGroups;
-        this.virtualMachines = virtualMachines;
+        this.resourceManager = resourceManager;
         this.converter = new PagedListConverter<AvailabilitySetInner, AvailabilitySet>() {
             @Override
             public AvailabilitySet typeConvert(AvailabilitySetInner inner) {
@@ -49,7 +44,7 @@ class AvailabilitySetsImpl implements AvailabilitySets {
 
     @Override
     public PagedList<AvailabilitySet> list() throws CloudException, IOException {
-        return new GroupPagedList<AvailabilitySet>(resourceGroups.list()) {
+        return new GroupPagedList<AvailabilitySet>(resourceManager.resourceGroups().list()) {
             @Override
             public List<AvailabilitySet> listNextGroup(String resourceGroupName) throws RestException, IOException {
                 PageImpl<AvailabilitySetInner> page = new PageImpl<>();
@@ -108,15 +103,13 @@ class AvailabilitySetsImpl implements AvailabilitySets {
         return new AvailabilitySetImpl(name,
                 availabilitySetInner,
                 this.client,
-                this.resourceGroups,
-                this.virtualMachines);
+                this.resourceManager);
     }
 
     private AvailabilitySetImpl createFluentModel(AvailabilitySetInner availabilitySetInner) {
         return new AvailabilitySetImpl(availabilitySetInner.name(),
                 availabilitySetInner,
                 this.client,
-                this.resourceGroups,
-                this.virtualMachines);
+                this.resourceManager);
     }
 }

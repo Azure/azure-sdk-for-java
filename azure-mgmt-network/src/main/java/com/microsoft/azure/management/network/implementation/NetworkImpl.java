@@ -66,22 +66,6 @@ class NetworkImpl
     }
 
     @Override
-    public NetworkImpl create() throws Exception {
-        super.creatablesCreate();
-        return this;
-    }
-
-    @Override
-    public ServiceCall createAsync(ServiceCallback<Network> callback) {
-        return super.creatablesCreateAsync(Utils.toVoidCallback(this, callback));
-    }
-
-    @Override
-    public NetworkImpl update() throws Exception {
-        return this;
-    }
-
-    @Override
     public NetworkImpl apply() throws Exception {
         return this.create();
     }

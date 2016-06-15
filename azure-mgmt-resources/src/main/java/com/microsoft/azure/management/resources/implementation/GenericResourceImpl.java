@@ -34,7 +34,6 @@ final class GenericResourceImpl
         GenericResource.UpdateWithApiVersion,
         GenericResource.Update {
     private final ResourcesInner client;
-    private final ResourceManagementClientImpl serviceClient;
     private String resourceProviderNamespace;
     private String parentResourceId;
     private String resourceType;
@@ -46,7 +45,6 @@ final class GenericResourceImpl
                         final ResourceManagementClientImpl serviceClient) {
         super(key, innerModel, new ResourceGroupsImpl(serviceClient));
         this.client = client;
-        this.serviceClient = serviceClient;
     }
 
     @Override
@@ -125,7 +123,7 @@ final class GenericResourceImpl
     }
 
     @Override
-    public GenericResource create() throws Exception {
+    public GenericResourceImpl create() throws Exception {
         createResource();
         return this;
     }
@@ -163,12 +161,7 @@ final class GenericResourceImpl
     }
 
     @Override
-    public UpdateWithApiVersion update() throws Exception {
-        return this;
-    }
-
-    @Override
-    public GenericResource apply() throws Exception {
+    public GenericResourceImpl apply() throws Exception {
         return create();
     }
 }

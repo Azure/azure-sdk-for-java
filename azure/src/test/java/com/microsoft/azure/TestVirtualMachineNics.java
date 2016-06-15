@@ -1,8 +1,8 @@
 package com.microsoft.azure;
 
+import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachines;
-import com.microsoft.azure.management.compute.implementation.KnownVirtualMachineImage;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
@@ -63,9 +63,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
                 .withNewPrimaryNetwork(networkCreatable)
                 .withPrimaryPrivateIpAddressStatic("10.0.0.4")
                 .withNewPrimaryPublicIpAddress(primaryPipName)
-                .withMarketplaceImage()
-                .popular(KnownVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                .withWindowsOS()
+                .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                 .withAdminUserName("testuser")
                 .withPassword("12NewPA$$w0rd!")
                 .withSize(VirtualMachineSizeTypes.STANDARD_A9)

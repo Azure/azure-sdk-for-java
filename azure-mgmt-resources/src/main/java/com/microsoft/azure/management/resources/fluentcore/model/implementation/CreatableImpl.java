@@ -8,6 +8,7 @@ package com.microsoft.azure.management.resources.fluentcore.model.implementation
 
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 
@@ -16,8 +17,9 @@ import com.microsoft.rest.ServiceCallback;
  *
  * @param <FluentModelT> the fluent model type representing the creatable resource
  * @param <InnerModelT> the model inner type that the fluent model type wraps
+ * @param <FluentModelImplT> the fluent model implementation type
  */
-public abstract class CreatableImpl<FluentModelT, InnerModelT>
+public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
         extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
         implements CreatableTaskGroup.RootResourceCreator {
     /**
@@ -78,6 +80,35 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT>
 
     protected Resource createdResource(String key) {
         return this.creatableTaskGroup.taskResult(key);
+    }
+
+    /**
+     * Default implementation of create().
+     * @return the created resource
+     * @throws Exception when anything goes wrong
+     */
+    @SuppressWarnings("unchecked")
+    public FluentModelImplT create() throws Exception {
+        if (creatableTaskGroup.isRoot()) {
+            creatableTaskGroup.execute();
+        } else {
+            createResource();
+        }
+        return (FluentModelImplT) this;
+    }
+
+    /**
+     * Default implementation of createAsync().
+     *
+     * @param callback the callback to call on success or failure
+     * @return the handle to the create REST call
+     */
+    public ServiceCall createAsync(ServiceCallback<FluentModelT> callback) {
+        if (creatableTaskGroup.isRoot()) {
+            return creatableTaskGroup.executeAsync(Utils.toVoidCallback((FluentModelT) this, callback));
+        } else {
+            return createResourceAsync(Utils.toVoidCallback((FluentModelT) this, callback));
+        }
     }
 
     /**

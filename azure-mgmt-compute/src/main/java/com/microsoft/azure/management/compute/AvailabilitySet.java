@@ -1,6 +1,5 @@
 package com.microsoft.azure.management.compute;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.compute.implementation.api.AvailabilitySetInner;
 import com.microsoft.azure.management.compute.implementation.api.InstanceViewStatus;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -10,8 +9,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
-
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -49,16 +46,6 @@ public interface AvailabilitySet extends
      * @return list of resource ID strings
      */
     List<String> virtualMachineIds();
-
-    /**
-     * Lists the virtual machines in the availability set.
-     *
-     * @return list of virtual machines
-     * @throws CloudException exceptions thrown from the cloud
-     * @throws IOException exceptions thrown from serialization/deserialization
-
-     */
-    List<VirtualMachine> virtualMachines() throws CloudException, IOException;
 
     /**
      * Lists the statuses of the existing virtual machines in the availability set.

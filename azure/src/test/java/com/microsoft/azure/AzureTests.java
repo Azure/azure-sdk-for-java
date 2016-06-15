@@ -57,8 +57,13 @@ public class AzureTests {
         azure = azureAuthed.withSubscription(SUBSCRIPTION_ID);
 
         // Authenticate based on file
-        this.azure2 = Azure.authenticate(new File("my.azureauth"))
-            .withDefaultSubscription();
+        File authFile = new File("my.azureauth");
+        if (authFile.exists()) {
+            this.azure2 = Azure.authenticate(new File("my.azureauth"))
+                    .withDefaultSubscription();
+        } else {
+            this.azure2 = azure;
+        }
     }
 
     /**
@@ -123,6 +128,11 @@ public class AzureTests {
         new TestVirtualMachineNics(azure.resourceGroups(),
                     azure.networks(),
                     azure.networkInterfaces())
+                .runTest(azure.virtualMachines(), azure.resourceGroups());
+    }
+
+    @Test public void testVirtualMachineSSh() throws Exception {
+        new TestVirtualMachineSsh()
                 .runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 

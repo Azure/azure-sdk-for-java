@@ -85,22 +85,6 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public NetworkInterfaceImpl create() throws Exception {
-        this.creatablesCreate();
-        return this;
-    }
-
-    @Override
-    public ServiceCall createAsync(ServiceCallback<NetworkInterface> callback) {
-        return this.createResourceAsync(Utils.toVoidCallback(this, callback));
-    }
-
-    @Override
-    public NetworkInterfaceImpl update() throws Exception {
-        return this;
-    }
-
-    @Override
     public NetworkInterfaceImpl apply() throws Exception {
         return this.create();
     }

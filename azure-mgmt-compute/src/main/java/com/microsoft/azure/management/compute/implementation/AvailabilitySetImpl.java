@@ -5,23 +5,17 @@
  */
 package com.microsoft.azure.management.compute.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.compute.AvailabilitySet;
-import com.microsoft.azure.management.compute.VirtualMachine;
-import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.compute.implementation.api.AvailabilitySetInner;
 import com.microsoft.azure.management.compute.implementation.api.AvailabilitySetsInner;
 import com.microsoft.azure.management.compute.implementation.api.InstanceViewStatus;
-import com.microsoft.azure.management.resources.ResourceGroups;
-import com.microsoft.azure.management.resources.fluentcore.arm.ResourceLazyList;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.ServiceResponse;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -37,21 +31,14 @@ class AvailabilitySetImpl
         AvailabilitySet.Definitions,
         AvailabilitySet.Update {
     private List<String> idOfVMsInSet;
-    private List<VirtualMachine> vmsInSet;
-
-    // Fluent collections this model depends on.
-    private final VirtualMachines virtualMachines;
-
     // The client to make AvailabilitySet Management API calls
     private final AvailabilitySetsInner client;
 
     AvailabilitySetImpl(String name, AvailabilitySetInner innerModel,
                                final AvailabilitySetsInner client,
-                               final ResourceGroups resourceGroups,
-                               final VirtualMachines virtualMachines) {
-        super(name, innerModel, resourceGroups);
+                               final ResourceManager resourceManager) {
+        super(name, innerModel, resourceManager.resourceGroups());
         this.client = client;
-        this.virtualMachines = virtualMachines;
     }
 
     @Override
@@ -77,19 +64,6 @@ class AvailabilitySetImpl
     }
 
     @Override
-    public List<VirtualMachine> virtualMachines() throws CloudException, IOException {
-        if (vmsInSet == null) {
-            vmsInSet = new ResourceLazyList<>(virtualMachineIds(), new ResourceLazyList.Loader<VirtualMachine>() {
-                @Override
-                public VirtualMachine load(String resourceGroupName, String resourceName) throws CloudException, IOException {
-                    return virtualMachines.getByGroup(resourceGroupName, resourceName);
-                }
-            });
-        }
-        return Collections.unmodifiableList(vmsInSet);
-    }
-
-    @Override
     public List<InstanceViewStatus> statuses() {
         return Collections.unmodifiableList(this.inner().statuses());
     }
@@ -99,7 +73,6 @@ class AvailabilitySetImpl
         ServiceResponse<AvailabilitySetInner> response = client.get(this.resourceGroupName(), this.name());
         this.setInner(response.getBody());
         this.idOfVMsInSet = null;
-        this.vmsInSet = null;
         return this;
     }
 
@@ -116,24 +89,8 @@ class AvailabilitySetImpl
     }
 
     @Override
-    public AvailabilitySetImpl create() throws Exception {
-        super.creatablesCreate();
-        return this;
-    }
-
-    @Override
-    public ServiceCall createAsync(ServiceCallback<AvailabilitySet> callback) {
-        return super.creatablesCreateAsync(Utils.toVoidCallback(this, callback));
-    }
-
-    @Override
-    public AvailabilitySetImpl update() throws Exception {
-        return this;
-    }
-
-    @Override
     public AvailabilitySetImpl apply() throws Exception {
-        return create();
+        return this.create();
     }
 
     @Override
@@ -142,7 +99,6 @@ class AvailabilitySetImpl
         AvailabilitySetInner availabilitySetInner = response.getBody();
         this.setInner(availabilitySetInner);
         this.idOfVMsInSet = null;
-        this.vmsInSet = null;
     }
 
     @Override
@@ -157,7 +113,6 @@ class AvailabilitySetImpl
                     @Override
                     public void success(ServiceResponse<Void> result) {
                         idOfVMsInSet = null;
-                        vmsInSet = null;
                         callback.success(result);
                     }
                 }));

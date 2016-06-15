@@ -17,7 +17,7 @@ import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.microsoft.azure.management.resources.implementation.api.Dependency;
 import com.microsoft.azure.management.resources.implementation.api.DeploymentExportResultInner;
 import com.microsoft.azure.management.resources.implementation.api.DeploymentExtendedInner;
@@ -43,7 +43,7 @@ import java.util.List;
  * The implementation of Deployment and its parent interfaces.
  */
 final class DeploymentImpl extends
-        CreatableImpl<Deployment, DeploymentExtendedInner>
+        CreatableUpdatableImpl<Deployment, DeploymentExtendedInner, DeploymentImpl>
         implements
         Deployment,
         Deployment.DefinitionBlank,
@@ -276,7 +276,7 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public Deployment create() throws Exception {         //  FLUENT: implementation of ResourceGroup.DefinitionCreatable.Creatable<ResourceGroup>
+    public DeploymentImpl create() throws Exception {         //  FLUENT: implementation of ResourceGroup.DefinitionCreatable.Creatable<ResourceGroup>
         if (this.creatableResourceGroup != null) {
             this.creatableResourceGroup.create();
         }
@@ -363,13 +363,7 @@ final class DeploymentImpl extends
         });
     }
 
-    @Override
-    public Update update() throws Exception {
-        return this;
-    }
-
-    @Override
-    public Deployment apply() throws Exception {
+    public DeploymentImpl apply() throws Exception {
         if (this.templateLink() != null && this.template() != null) {
             this.withTemplate(null);
         }

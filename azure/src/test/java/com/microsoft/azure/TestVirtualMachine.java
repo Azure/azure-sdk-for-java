@@ -1,9 +1,9 @@
 package com.microsoft.azure;
 
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
+import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachines;
-import com.microsoft.azure.management.compute.implementation.KnownVirtualMachineImage;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.ServiceCallback;
@@ -28,9 +28,7 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIpAddressDynamic()
                 .withoutPrimaryPublicIpAddress()
-                .withMarketplaceImage()
-                .popular(KnownVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                .withWindowsOS()
+                .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                 .withAdminUserName("testuser")
                 .withPassword("12NewPA$$w0rd!")
                 .createAsync(new ServiceCallback<VirtualMachine>() {

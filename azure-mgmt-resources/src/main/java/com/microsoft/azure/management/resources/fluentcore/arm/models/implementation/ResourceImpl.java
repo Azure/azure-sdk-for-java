@@ -8,7 +8,7 @@ package com.microsoft.azure.management.resources.fluentcore.arm.models.implement
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,7 +29,7 @@ public abstract class ResourceImpl<
         InnerModelT extends com.microsoft.azure.Resource,
         FluentModelImplT extends ResourceImpl<FluentModelT, InnerModelT, FluentModelImplT>>
     extends
-        CreatableImpl<FluentModelT, InnerModelT>
+        CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
     implements
         Resource {
 

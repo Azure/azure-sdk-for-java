@@ -74,22 +74,6 @@ class NetworkSecurityGroupImpl
     }
 
     @Override
-    public NetworkSecurityGroupImpl create() throws Exception {
-        super.creatablesCreate();
-        return this;
-    }
-
-    @Override
-    public ServiceCall createAsync(ServiceCallback<NetworkSecurityGroup> callback) {
-        return super.creatablesCreateAsync(Utils.toVoidCallback(this, callback));
-    }
-
-    @Override
-    public NetworkSecurityGroupImpl update() throws Exception {
-        return this;
-    }
-
-    @Override
     public NetworkSecurityGroupImpl apply() throws Exception {
         return this.create();
     }

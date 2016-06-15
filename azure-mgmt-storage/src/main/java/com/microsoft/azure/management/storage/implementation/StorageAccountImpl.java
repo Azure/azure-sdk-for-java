@@ -46,6 +46,7 @@ class StorageAccountImpl
     private PublicEndpoints publicEndpoints;
     private AccountStatuses accountStatuses;
     private String name;
+    private List<StorageAccountKey> cachedAccountKeys;
     private StorageAccountCreateParametersInner createParameters;
     private StorageAccountUpdateParametersInner updateParameters;
 
@@ -124,10 +125,19 @@ class StorageAccountImpl
 
     @Override
     public List<StorageAccountKey> keys() throws CloudException, IOException {
+        if (cachedAccountKeys == null) {
+            cachedAccountKeys = refreshKeys();
+        }
+        return cachedAccountKeys;
+    }
+
+    @Override
+    public List<StorageAccountKey> refreshKeys() throws CloudException, IOException {
         ServiceResponse<StorageAccountListKeysResultInner> response =
                 this.client.listKeys(this.resourceGroupName(), this.key);
         StorageAccountListKeysResultInner resultInner = response.getBody();
-        return resultInner.keys();
+        cachedAccountKeys = resultInner.keys();
+        return cachedAccountKeys;
     }
 
     @Override
@@ -135,7 +145,8 @@ class StorageAccountImpl
         ServiceResponse<StorageAccountListKeysResultInner> response =
                 this.client.regenerateKey(this.resourceGroupName(), this.key, keyType.toString());
         StorageAccountListKeysResultInner resultInner = response.getBody();
-        return resultInner.keys();
+        cachedAccountKeys = resultInner.keys();
+        return cachedAccountKeys;
     }
 
     @Override
@@ -146,17 +157,6 @@ class StorageAccountImpl
         this.setInner(storageAccountInner);
         clearWrapperProperties();
         return this;
-    }
-
-    @Override
-    public StorageAccountImpl create() throws Exception {
-        super.creatablesCreate();
-        return this;
-    }
-
-    @Override
-    public ServiceCall createAsync(ServiceCallback<StorageAccount> callback) {
-        return super.creatablesCreateAsync(Utils.toVoidCallback(this, callback));
     }
 
     @Override
@@ -231,9 +231,9 @@ class StorageAccountImpl
     }
 
     @Override
-    public StorageAccountImpl update() throws Exception {
+    public StorageAccountImpl update() {
         updateParameters = new StorageAccountUpdateParametersInner();
-        return this;
+        return super.update();
     }
 
     @Override

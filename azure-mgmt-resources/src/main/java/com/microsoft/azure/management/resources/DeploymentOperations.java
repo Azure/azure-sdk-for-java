@@ -15,20 +15,4 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 public interface DeploymentOperations extends
         SupportsListing<DeploymentOperation>,
         SupportsGettingByName<DeploymentOperation> {
-
-    /**
-     * Filter the deployment operations by a specific resource group.
-     *
-     * @param resourceGroup the resource group to filter by
-     * @return the entry point to deployment operation management API in the resource group
-     */
-    InGroup resourceGroup(ResourceGroup resourceGroup);
-
-    /**
-     * Entry point to deployment operation management API in a specific resource group.
-     */
-    interface InGroup extends
-            SupportsListing<DeploymentOperation>,
-            SupportsGettingByName<DeploymentOperation> {
-    }
 }
