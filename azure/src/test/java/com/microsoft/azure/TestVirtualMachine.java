@@ -1,15 +1,28 @@
 package com.microsoft.azure;
 
+import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.compute.implementation.KnownVirtualMachineImage;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.rest.RestClient;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceResponse;
+import okhttp3.logging.HttpLoggingInterceptor;
+import org.junit.Test;
+
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+import static org.junit.Assert.fail;
 
 public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMachines> {
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
         final String vmName = "vm" + this.testId;
-        VirtualMachine vm = virtualMachines.define(vmName)
+        final CountDownLatch latch = new CountDownLatch(1);
+        final VirtualMachine[] vms = new VirtualMachine[1];
+        virtualMachines.define(vmName)
                 .withRegion(Region.US_EAST)
                 .withNewGroup()
                 .withNewPrimaryNetwork("10.0.0.0/28")
@@ -20,8 +33,20 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
                 .withWindowsOS()
                 .withAdminUserName("testuser")
                 .withPassword("12NewPA$$w0rd!")
-                .create();
-        return vm;
+                .createAsync(new ServiceCallback<VirtualMachine>() {
+                    @Override
+                    public void failure(Throwable t) {
+                        fail();
+                    }
+
+                    @Override
+                    public void success(ServiceResponse<VirtualMachine> result) {
+                        vms[0] = result.getBody();
+                        latch.countDown();
+                    }
+                });
+        latch.await(12, TimeUnit.MINUTES);
+        return vms[0];
     }
 
     @Override
@@ -32,5 +57,23 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
     @Override
     public void print(VirtualMachine virtualMachine) {
         TestUtils.print(virtualMachine);
+    }
+
+    @Test
+    public void run() throws Exception {
+        ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(
+                System.getenv("client-id"),
+                System.getenv("domain"),
+                System.getenv("secret"),
+                null);
+
+        RestClient.Builder restBuilder = AzureEnvironment.AZURE.newRestClientBuilder()
+                .withCredentials(credentials)
+                .withLogLevel(HttpLoggingInterceptor.Level.BODY);
+
+        RestClient restClient = restBuilder.build();
+
+        Azure azure = Azure.authenticate(restClient).withDefaultSubscription();
+        runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 }

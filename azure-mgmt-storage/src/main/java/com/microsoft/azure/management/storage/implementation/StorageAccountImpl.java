@@ -9,6 +9,7 @@ package com.microsoft.azure.management.storage.implementation;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.storage.KeyType;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.api.AccessTier;
@@ -24,6 +25,8 @@ import com.microsoft.azure.management.storage.implementation.api.StorageAccountK
 import com.microsoft.azure.management.storage.implementation.api.StorageAccountListKeysResultInner;
 import com.microsoft.azure.management.storage.implementation.api.StorageAccountUpdateParametersInner;
 import com.microsoft.azure.management.storage.implementation.api.StorageAccountsInner;
+import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import org.joda.time.DateTime;
 
@@ -152,6 +155,11 @@ class StorageAccountImpl
     }
 
     @Override
+    public ServiceCall createAsync(ServiceCallback<StorageAccount> callback) {
+        return super.creatablesCreateAsync(Utils.toVoidCallback(this, callback));
+    }
+
+    @Override
     public StorageAccountImpl withSku(SkuName skuName) {
         if (isInCreateMode()) {
             createParameters.withSku(new Sku().withName(skuName));
@@ -199,6 +207,27 @@ class StorageAccountImpl
                 .getBody();
         this.setInner(storageAccountInner);
         clearWrapperProperties();
+    }
+
+    @Override
+    protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
+        createParameters.withLocation(this.region());
+        createParameters.withTags(this.inner().getTags());
+        final StorageAccountImpl self = this;
+        return this.client.createAsync(this.resourceGroupName(), this.name(), createParameters,
+                new ServiceCallback<StorageAccountInner>() {
+                        @Override
+                        public void failure(Throwable t) {
+                            callback.failure(t);
+                        }
+
+                        @Override
+                        public void success(ServiceResponse<StorageAccountInner> result) {
+                            client.getPropertiesAsync(resourceGroupName(), name(),
+                                    Utils.fromVoidCallback(self, callback));
+                            clearWrapperProperties();
+                        }
+                });
     }
 
     @Override

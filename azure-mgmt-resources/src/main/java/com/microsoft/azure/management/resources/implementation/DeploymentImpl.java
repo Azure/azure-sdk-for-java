@@ -30,6 +30,9 @@ import com.microsoft.azure.management.resources.implementation.api.DeploymentsIn
 import com.microsoft.azure.management.resources.implementation.api.ParametersLink;
 import com.microsoft.azure.management.resources.implementation.api.ProviderInner;
 import com.microsoft.azure.management.resources.implementation.api.TemplateLink;
+import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceResponse;
 import org.joda.time.DateTime;
 
 import java.io.IOException;
@@ -282,6 +285,46 @@ final class DeploymentImpl extends
     }
 
     @Override
+    public ServiceCall createAsync(final ServiceCallback<Deployment> callback) {
+        final Deployment self = this;
+        if (this.creatableResourceGroup != null) {
+            return this.creatableResourceGroup.createAsync(new ServiceCallback<ResourceGroup>() {
+                @Override
+                public void failure(Throwable t) {
+                    callback.failure(t);
+                }
+
+                @Override
+                public void success(ServiceResponse<ResourceGroup> result) {
+                    createResourceAsync(new ServiceCallback<Void>() {
+                        @Override
+                        public void failure(Throwable t) {
+                            callback.failure(t);
+                        }
+
+                        @Override
+                        public void success(ServiceResponse<Void> result) {
+                            callback.success(new ServiceResponse<>(self, result.getResponse()));
+                        }
+                    });
+                }
+            });
+        } else {
+            return createResourceAsync(new ServiceCallback<Void>() {
+                @Override
+                public void failure(Throwable t) {
+                    callback.failure(t);
+                }
+
+                @Override
+                public void success(ServiceResponse<Void> result) {
+                    callback.success(new ServiceResponse<>(self, result.getResponse()));
+                }
+            });
+        }
+    }
+
+    @Override
     public Deployment refresh() throws Exception {
         return null;
     }
@@ -296,6 +339,28 @@ final class DeploymentImpl extends
         inner.properties().withParameters(parameters());
         inner.properties().withParametersLink(parametersLink());
         client.createOrUpdate(resourceGroupName(), name(), inner);
+    }
+
+    @Override
+    protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
+        DeploymentInner inner = new DeploymentInner()
+                .withProperties(new DeploymentProperties());
+        inner.properties().withMode(mode());
+        inner.properties().withTemplate(template());
+        inner.properties().withTemplateLink(templateLink());
+        inner.properties().withParameters(parameters());
+        inner.properties().withParametersLink(parametersLink());
+        return client.createOrUpdateAsync(resourceGroupName(), name(), inner, new ServiceCallback<DeploymentExtendedInner>() {
+            @Override
+            public void failure(Throwable t) {
+                callback.failure(t);
+            }
+
+            @Override
+            public void success(ServiceResponse<DeploymentExtendedInner> result) {
+                callback.success(new ServiceResponse<Void>(result.getHeadResponse()));
+            }
+        });
     }
 
     @Override

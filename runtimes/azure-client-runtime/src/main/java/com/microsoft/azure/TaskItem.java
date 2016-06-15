@@ -7,6 +7,9 @@
 
 package com.microsoft.azure;
 
+import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceCallback;
+
 /**
  * Type representing a task in a task group {@link TaskGroup}.
  *
@@ -22,7 +25,11 @@ public interface TaskItem<U> {
      * Executes the task.
      * <p>
      * once executed the result will be available through result getter
+     *
+     * @param taskGroup the task group dispatching tasks
      * @throws Exception exception
      */
-    void execute() throws Exception;
+    void execute(TaskGroup<U, TaskItem<U>> taskGroup, DAGNode<TaskItem<U>> node) throws Exception;
+
+    ServiceCall executeAsync(TaskGroup<U, TaskItem<U>> taskGroup, DAGNode<TaskItem<U>> node, ServiceCallback<Void> callback);
 }

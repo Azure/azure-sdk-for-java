@@ -8,6 +8,8 @@ package com.microsoft.azure.management.resources.fluentcore.model.implementation
 
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceCallback;
 
 /**
  * The base class for all creatable resource.
@@ -25,7 +27,7 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT>
 
     protected CreatableImpl(String name, InnerModelT innerObject) {
         super(name, innerObject);
-        creatableTaskGroup = new CreatableTaskGroup(name, (Creatable<?>) this, this);
+        creatableTaskGroup = new CreatableTaskGroup(name, (Creatable<? extends Resource>) this, this);
     }
 
     /**
@@ -38,9 +40,19 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT>
      */
     protected void creatablesCreate() throws Exception {
         if (creatableTaskGroup.isRoot()) {
+            creatableTaskGroup.prepare();
             creatableTaskGroup.execute();
         } else {
             createResource();
+        }
+    }
+
+    protected ServiceCall creatablesCreateAsync(ServiceCallback<Void> callback) {
+        if (creatableTaskGroup.isRoot()) {
+            creatableTaskGroup.prepare();
+            return creatableTaskGroup.executeAsync(callback);
+        } else {
+            return createResourceAsync(callback);
         }
     }
 
@@ -59,6 +71,11 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT>
         this.createResource();
     }
 
+    @Override
+    public ServiceCall createRootResourceAsync(ServiceCallback<Void> callback) {
+        return this.createResourceAsync(callback);
+    }
+
     protected Resource createdResource(String key) {
         return this.creatableTaskGroup.taskResult(key);
     }
@@ -69,4 +86,6 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT>
      * @throws Exception the exception
      */
     protected abstract void createResource() throws Exception;
+
+    protected abstract ServiceCall createResourceAsync(ServiceCallback<Void> callback);
 }

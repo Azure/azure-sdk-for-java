@@ -12,6 +12,9 @@ import com.microsoft.azure.management.network.implementation.api.PublicIPAddress
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressesInner;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 
 /**
@@ -60,6 +63,11 @@ class PublicIpAddressImpl
     public PublicIpAddressImpl create() throws Exception {
         super.creatablesCreate();
         return this;
+    }
+
+    @Override
+    public ServiceCall createAsync(ServiceCallback<PublicIpAddress> callback) {
+        return super.creatablesCreateAsync(Utils.toVoidCallback(this, callback));
     }
 
     // Setters (fluent)
@@ -156,5 +164,21 @@ class PublicIpAddressImpl
         ServiceResponse<PublicIPAddressInner> response =
                 this.client.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
         this.setInner(response.getBody());
+    }
+
+    @Override
+    protected ServiceCall createResourceAsync(ServiceCallback<Void> callback) {
+        // Clean up empty DNS settings
+        final PublicIPAddressDnsSettings dnsSettings = this.inner().dnsSettings();
+        if (dnsSettings != null) {
+            if ((dnsSettings.domainNameLabel() == null || dnsSettings.domainNameLabel().isEmpty())
+                    && (dnsSettings.fqdn() == null || dnsSettings.fqdn().isEmpty())
+                    && (dnsSettings.reverseFqdn() == null || dnsSettings.reverseFqdn().isEmpty())) {
+                this.inner().withDnsSettings(null);
+            }
+        }
+
+        return this.client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
+                Utils.fromVoidCallback(this, callback));
     }
 }

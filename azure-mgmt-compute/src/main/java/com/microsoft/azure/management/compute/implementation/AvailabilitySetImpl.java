@@ -16,6 +16,9 @@ import com.microsoft.azure.management.compute.implementation.api.InstanceViewSta
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceLazyList;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
@@ -119,6 +122,11 @@ class AvailabilitySetImpl
     }
 
     @Override
+    public ServiceCall createAsync(ServiceCallback<AvailabilitySet> callback) {
+        return super.creatablesCreateAsync(Utils.toVoidCallback(this, callback));
+    }
+
+    @Override
     public AvailabilitySetImpl update() throws Exception {
         return this;
     }
@@ -135,5 +143,23 @@ class AvailabilitySetImpl
         this.setInner(availabilitySetInner);
         this.idOfVMsInSet = null;
         this.vmsInSet = null;
+    }
+
+    @Override
+    protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
+        return this.client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
+                Utils.fromVoidCallback(this, new ServiceCallback<Void>() {
+                    @Override
+                    public void failure(Throwable t) {
+                        callback.failure(t);
+                    }
+
+                    @Override
+                    public void success(ServiceResponse<Void> result) {
+                        idOfVMsInSet = null;
+                        vmsInSet = null;
+                        callback.success(result);
+                    }
+                }));
     }
 }

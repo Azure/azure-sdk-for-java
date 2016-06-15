@@ -8,10 +8,13 @@ package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.management.resources.GenericResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.resources.implementation.api.GenericResourceInner;
 import com.microsoft.azure.management.resources.implementation.api.Plan;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourcesInner;
+import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceCallback;
 
 /**
  * The implementation for GenericResource and its nested interfaces.
@@ -128,6 +131,11 @@ final class GenericResourceImpl
     }
 
     @Override
+    public ServiceCall createAsync(final ServiceCallback<GenericResource> callback) {
+        return createResourceAsync(Utils.toVoidCallback(this, callback));
+    }
+
+    @Override
     protected void createResource() throws Exception {
         GenericResourceInner inner = client.createOrUpdate(
                 resourceGroupName(),
@@ -139,6 +147,19 @@ final class GenericResourceImpl
                 inner()
         ).getBody();
         this.setInner(inner);
+    }
+
+    @Override
+    protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
+        return client.createOrUpdateAsync(
+                resourceGroupName(),
+                resourceProviderNamespace,
+                parentResourceId,
+                resourceType,
+                key(),
+                apiVersion,
+                inner(),
+                Utils.fromVoidCallback(this, callback));
     }
 
     @Override

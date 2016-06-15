@@ -22,6 +22,8 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
@@ -86,6 +88,11 @@ class NetworkInterfaceImpl
     public NetworkInterfaceImpl create() throws Exception {
         this.creatablesCreate();
         return this;
+    }
+
+    @Override
+    public ServiceCall createAsync(ServiceCallback<NetworkInterface> callback) {
+        return this.createResourceAsync(Utils.toVoidCallback(this, callback));
     }
 
     @Override
@@ -307,6 +314,26 @@ class NetworkInterfaceImpl
                 this.inner());
         this.setInner(response.getBody());
         initializeNicIpConfigurations();
+    }
+
+    @Override
+    protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
+        NicIpConfigurationImpl.ensureConfigurations(this.nicIpConfigurations);
+        return this.client.createOrUpdateAsync(this.resourceGroupName(),
+                this.nicName,
+                this.inner(),
+                Utils.fromVoidCallback(this, new ServiceCallback<Void>() {
+                    @Override
+                    public void failure(Throwable t) {
+                        callback.failure(t);
+                    }
+
+                    @Override
+                    public void success(ServiceResponse<Void> result) {
+                        initializeNicIpConfigurations();
+                        callback.success(result);
+                    }
+                }));
     }
 
     /**************************************************.

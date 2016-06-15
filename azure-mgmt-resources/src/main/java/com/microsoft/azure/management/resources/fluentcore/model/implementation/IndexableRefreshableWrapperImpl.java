@@ -31,7 +31,13 @@ public abstract class IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
         return this.innerObject;
     }
 
-    protected void setInner(InnerModelT inner) {
+    /**
+     * Set the wrapped inner model.
+     * (For internal use only)
+     *
+     * @param inner the new inner model
+     */
+    public void setInner(InnerModelT inner) {
         this.innerObject = inner;
     }
 }
