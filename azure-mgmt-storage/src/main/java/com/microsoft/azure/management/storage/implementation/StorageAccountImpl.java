@@ -7,8 +7,8 @@
 package com.microsoft.azure.management.storage.implementation;
 
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.storage.KeyType;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.api.AccessTier;
@@ -52,8 +52,8 @@ class StorageAccountImpl
     StorageAccountImpl(String name,
                               StorageAccountInner innerModel,
                               final StorageAccountsInner client,
-                              final ResourceGroups resourceGroups) {
-        super(name, innerModel, resourceGroups);
+                              final ResourceManager resourceManager) {
+        super(name, innerModel, resourceManager);
         this.name = name;
         this.createParameters = new StorageAccountCreateParametersInner();
         this.client = client;

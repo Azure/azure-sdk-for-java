@@ -103,7 +103,7 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testNetworkInterfaces() throws Exception {
-        new TestNetworkInterface().runTest(azure.networkInterfaces(), azure.resourceGroups());
+        new TestNetworkInterface().runTest(azure2.networkInterfaces(), azure2.resourceGroups());
     }
 
     @Test public void testVirtualMachines() throws Exception {

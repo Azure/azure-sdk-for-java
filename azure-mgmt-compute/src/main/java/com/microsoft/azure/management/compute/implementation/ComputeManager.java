@@ -8,7 +8,7 @@ import com.microsoft.azure.management.compute.implementation.api.ComputeManageme
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.microsoft.azure.management.resources.implementation.ResourceManager;
+import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
@@ -16,9 +16,8 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 /**
  * Entry point to Azure compute resource management.
  */
-public final class ComputeManager {
+public final class ComputeManager extends Manager {
     // The service managers
-    private ResourceManager resourceManager;
     private StorageManager storageManager;
     private NetworkManager networkManager;
     // The sdk clients
@@ -86,9 +85,9 @@ public final class ComputeManager {
     }
 
     private ComputeManager(RestClient restClient, String subscriptionId) {
+        super(restClient, subscriptionId);
         computeManagementClient = new ComputeManagementClientImpl(restClient);
         computeManagementClient.withSubscriptionId(subscriptionId);
-        resourceManager = ResourceManager.authenticate(restClient).withSubscription(subscriptionId);
         storageManager = StorageManager.authenticate(restClient, subscriptionId);
         networkManager = NetworkManager.authenticate(restClient, subscriptionId);
     }
@@ -98,8 +97,9 @@ public final class ComputeManager {
      */
     public AvailabilitySets availabilitySets() {
         if (availabilitySets == null) {
-            availabilitySets = new AvailabilitySetsImpl(computeManagementClient.availabilitySets(),
-                    resourceManager);
+            availabilitySets = new AvailabilitySetsImpl(
+                    computeManagementClient.availabilitySets(),
+                    this.resourceManager());
         }
         return availabilitySets;
     }
@@ -111,8 +111,8 @@ public final class ComputeManager {
         if (virtualMachines == null) {
             virtualMachines = new VirtualMachinesImpl(computeManagementClient.virtualMachines(),
                     computeManagementClient.virtualMachineSizes(),
-                    availabilitySets(),
-                    resourceManager,
+                    this,
+                    this.resourceManager(),
                     storageManager,
                     networkManager);
         }

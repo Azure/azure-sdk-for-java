@@ -5,7 +5,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.AvailabilitySet;
-import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.DataDisk;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
@@ -72,7 +71,7 @@ class VirtualMachineImpl
         VirtualMachine.Update {
     // Clients
     private final VirtualMachinesInner client;
-    private final AvailabilitySets availabilitySets;
+    private final ComputeManager computeManager;
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
     // the name of the virtual machine
@@ -103,28 +102,25 @@ class VirtualMachineImpl
     private VirtualMachineInstanceView virtualMachineInstanceView;
     // The data disks associated with the virtual machine
     private List<DataDisk> dataDisks;
-    // Intermediate state of network interface definition to which private ip can be associated
-    private NetworkInterface
-            .DefinitionWithPrivateIp nicDefinitionWithPrivateIp;
+    // Intermediate state of network interface definition to which private IP can be associated
+    private NetworkInterface.DefinitionWithPrivateIp nicDefinitionWithPrivateIp;
     // Intermediate state of network interface definition to which subnet can be associated
-    private NetworkInterface
-            .DefinitionWithSubnet nicDefinitionWithSubnet;
-    // Intermediate state of network interface definition to which public Ip can be associated
-    private NetworkInterface
-            .DefinitionWithPublicIpAddress nicDefinitionWithPublicIp;
+    private NetworkInterface.DefinitionWithSubnet nicDefinitionWithSubnet;
+    // Intermediate state of network interface definition to which public IP can be associated
+    private NetworkInterface.DefinitionWithPublicIpAddress nicDefinitionWithPublicIp;
     // Virtual machine size converter
     private final PagedListConverter<VirtualMachineSizeInner, VirtualMachineSize> virtualMachineSizeConverter;
 
     VirtualMachineImpl(String name,
                        VirtualMachineInner innerModel,
                        VirtualMachinesInner client,
-                       AvailabilitySets availabilitySets,
+                       final ComputeManager computeManager,
                        final ResourceManager resourceManager,
                        final StorageManager storageManager,
                        final NetworkManager networkManager) {
-        super(name, innerModel, resourceManager.resourceGroups());
+        super(name, innerModel, resourceManager);
         this.client = client;
-        this.availabilitySets = availabilitySets;
+        this.computeManager = computeManager;
         this.storageManager = storageManager;
         this.networkManager = networkManager;
         this.vmName = name;
@@ -613,7 +609,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withNewAvailabilitySet(String name) {
-        return withNewAvailabilitySet(availabilitySets.define(name)
+        return withNewAvailabilitySet(this.computeManager.availabilitySets().define(name)
                 .withRegion(region())
                 .withExistingGroup(this.resourceGroupName())
         );
