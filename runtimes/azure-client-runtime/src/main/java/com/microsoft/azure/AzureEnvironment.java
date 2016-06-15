@@ -89,7 +89,7 @@ public final class AzureEnvironment {
             "https://login.microsoftonline.de/",
             "https://management.core.cloudapi.de/",
             true,
-            "https://management.microsoftazure.de");
+            "https://management.microsoftazure.de/");
 
     /**
      * Gets the base URL of the management service.
