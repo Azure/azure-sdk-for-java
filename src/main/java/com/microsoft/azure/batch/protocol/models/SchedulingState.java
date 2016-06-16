@@ -46,7 +46,7 @@ public enum SchedulingState {
     public static SchedulingState fromValue(String value) {
         SchedulingState[] items = SchedulingState.values();
         for (SchedulingState item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

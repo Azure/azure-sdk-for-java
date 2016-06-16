@@ -46,7 +46,7 @@ public enum JobPreparationTaskState {
     public static JobPreparationTaskState fromValue(String value) {
         JobPreparationTaskState[] items = JobPreparationTaskState.values();
         for (JobPreparationTaskState item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

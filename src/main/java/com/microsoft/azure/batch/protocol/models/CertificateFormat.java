@@ -49,7 +49,7 @@ public enum CertificateFormat {
     public static CertificateFormat fromValue(String value) {
         CertificateFormat[] items = CertificateFormat.values();
         for (CertificateFormat item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

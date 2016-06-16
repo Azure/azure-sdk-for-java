@@ -49,7 +49,7 @@ public enum CertificateState {
     public static CertificateState fromValue(String value) {
         CertificateState[] items = CertificateState.values();
         for (CertificateState item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

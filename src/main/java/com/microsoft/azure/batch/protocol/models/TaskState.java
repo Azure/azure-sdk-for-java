@@ -52,7 +52,7 @@ public enum TaskState {
     public static TaskState fromValue(String value) {
         TaskState[] items = TaskState.values();
         for (TaskState item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }
