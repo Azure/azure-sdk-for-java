@@ -8,7 +8,6 @@ package com.microsoft.azure.batch.protocol.implementation;
 
 import retrofit2.Retrofit;
 import com.microsoft.azure.batch.protocol.Tasks;
-import com.microsoft.azure.batch.protocol.BatchServiceClient;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.batch.protocol.models.BatchErrorException;
@@ -41,7 +40,6 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.DateTimeRfc1123;
-import com.microsoft.rest.serializer.CollectionFormat;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponseCallback;
@@ -72,7 +70,7 @@ public final class TasksImpl implements Tasks {
     /** The Retrofit service to perform REST calls. */
     private TasksService service;
     /** The service client containing this operation class. */
-    private BatchServiceClient client;
+    private BatchServiceClientImpl client;
 
     /**
      * Initializes an instance of TasksImpl.
@@ -80,7 +78,7 @@ public final class TasksImpl implements Tasks {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public TasksImpl(Retrofit retrofit, BatchServiceClient client) {
+    public TasksImpl(Retrofit retrofit, BatchServiceClientImpl client) {
         this.service = retrofit.create(TasksService.class);
         this.client = client;
     }
@@ -323,7 +321,7 @@ public final class TasksImpl implements Tasks {
     }
 
     private ServiceResponseWithHeaders<Void, TaskAddHeaders> addDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(201, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, TaskAddHeaders.class);
@@ -584,7 +582,7 @@ public final class TasksImpl implements Tasks {
     }
 
     private ServiceResponseWithHeaders<PageImpl<CloudTask>, TaskListHeaders> listDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<CloudTask>, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<CloudTask>, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<CloudTask>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, TaskListHeaders.class);
@@ -793,7 +791,7 @@ public final class TasksImpl implements Tasks {
     }
 
     private ServiceResponseWithHeaders<TaskAddCollectionResult, TaskAddCollectionHeaders> addCollectionDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<TaskAddCollectionResult, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<TaskAddCollectionResult, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<TaskAddCollectionResult>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, TaskAddCollectionHeaders.class);
@@ -1062,7 +1060,7 @@ public final class TasksImpl implements Tasks {
     }
 
     private ServiceResponseWithHeaders<Void, TaskDeleteHeaders> deleteDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, TaskDeleteHeaders.class);
@@ -1351,7 +1349,7 @@ public final class TasksImpl implements Tasks {
     }
 
     private ServiceResponseWithHeaders<CloudTask, TaskGetHeaders> getDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CloudTask, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<CloudTask, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<CloudTask>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, TaskGetHeaders.class);
@@ -1634,7 +1632,7 @@ public final class TasksImpl implements Tasks {
     }
 
     private ServiceResponseWithHeaders<Void, TaskUpdateHeaders> updateDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, TaskUpdateHeaders.class);
@@ -1841,7 +1839,7 @@ public final class TasksImpl implements Tasks {
     }
 
     private ServiceResponseWithHeaders<CloudTaskListSubtasksResult, TaskListSubtasksHeaders> listSubtasksDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CloudTaskListSubtasksResult, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<CloudTaskListSubtasksResult, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<CloudTaskListSubtasksResult>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, TaskListSubtasksHeaders.class);
@@ -2110,7 +2108,7 @@ public final class TasksImpl implements Tasks {
     }
 
     private ServiceResponseWithHeaders<Void, TaskTerminateHeaders> terminateDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, TaskTerminateHeaders.class);
@@ -2281,7 +2279,7 @@ public final class TasksImpl implements Tasks {
     }
 
     private ServiceResponseWithHeaders<PageImpl<CloudTask>, TaskListHeaders> listNextDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<CloudTask>, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<CloudTask>, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<CloudTask>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, TaskListHeaders.class);

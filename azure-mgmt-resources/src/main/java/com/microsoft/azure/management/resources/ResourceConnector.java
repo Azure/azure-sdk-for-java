@@ -6,7 +6,7 @@
 
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.rest.RestClient;
+import com.microsoft.azure.RestClient;
 
 /**
  * Defines a connector that connects other resources to a resource group.

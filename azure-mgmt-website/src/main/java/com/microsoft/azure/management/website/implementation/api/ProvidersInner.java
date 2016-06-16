@@ -122,7 +122,7 @@ public final class ProvidersInner {
     }
 
     private ServiceResponse<SourceControlCollectionInner> getSourceControlsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SourceControlCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<SourceControlCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<SourceControlCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -184,7 +184,7 @@ public final class ProvidersInner {
     }
 
     private ServiceResponse<SourceControlInner> getSourceControlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SourceControlInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<SourceControlInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<SourceControlInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -257,7 +257,7 @@ public final class ProvidersInner {
     }
 
     private ServiceResponse<SourceControlInner> updateSourceControlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SourceControlInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<SourceControlInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<SourceControlInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -310,7 +310,7 @@ public final class ProvidersInner {
     }
 
     private ServiceResponse<UserInner> getPublishingUserDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<UserInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<UserInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<UserInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -374,7 +374,7 @@ public final class ProvidersInner {
     }
 
     private ServiceResponse<UserInner> updatePublishingUserDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<UserInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<UserInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<UserInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

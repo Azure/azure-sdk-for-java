@@ -303,7 +303,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<HostingEnvironmentInner> getHostingEnvironmentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HostingEnvironmentInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<HostingEnvironmentInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<HostingEnvironmentInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -470,7 +470,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<HostingEnvironmentInner> beginCreateOrUpdateHostingEnvironmentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HostingEnvironmentInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<HostingEnvironmentInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<HostingEnvironmentInner>() { }.getType())
                 .register(202, new TypeToken<HostingEnvironmentInner>() { }.getType())
                 .register(400, new TypeToken<Void>() { }.getType())
@@ -766,7 +766,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<Object> beginDeleteHostingEnvironmentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .register(202, new TypeToken<Object>() { }.getType())
                 .register(400, new TypeToken<Void>() { }.getType())
@@ -848,7 +848,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<List<HostingEnvironmentDiagnosticsInner>> getHostingEnvironmentDiagnosticsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<HostingEnvironmentDiagnosticsInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<List<HostingEnvironmentDiagnosticsInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<List<HostingEnvironmentDiagnosticsInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -935,7 +935,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<HostingEnvironmentDiagnosticsInner> getHostingEnvironmentDiagnosticsItemDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HostingEnvironmentDiagnosticsInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<HostingEnvironmentDiagnosticsInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<HostingEnvironmentDiagnosticsInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1013,7 +1013,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<StampCapacityCollectionInner> getHostingEnvironmentCapacitiesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StampCapacityCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<StampCapacityCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<StampCapacityCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1091,7 +1091,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<AddressResponseInner> getHostingEnvironmentVipsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<AddressResponseInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<AddressResponseInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<AddressResponseInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1160,7 +1160,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<HostingEnvironmentCollectionInner> getHostingEnvironmentsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HostingEnvironmentCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<HostingEnvironmentCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<HostingEnvironmentCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1238,7 +1238,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<Object> rebootHostingEnvironmentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
                 .register(202, new TypeToken<Object>() { }.getType())
                 .register(400, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
@@ -1319,7 +1319,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<Object> getHostingEnvironmentOperationsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1406,7 +1406,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<Object> getHostingEnvironmentOperationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .register(202, new TypeToken<Object>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
@@ -1566,7 +1566,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<ResourceMetricCollectionInner> getHostingEnvironmentMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceMetricCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<ResourceMetricCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<ResourceMetricCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1644,7 +1644,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<MetricDefinitionInner> getHostingEnvironmentMetricDefinitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<MetricDefinitionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<MetricDefinitionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<MetricDefinitionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1797,7 +1797,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<CsmUsageQuotaCollectionInner> getHostingEnvironmentUsagesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CsmUsageQuotaCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<CsmUsageQuotaCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<CsmUsageQuotaCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1966,7 +1966,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<ResourceMetricCollectionInner> getHostingEnvironmentMultiRoleMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceMetricCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<ResourceMetricCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<ResourceMetricCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2141,7 +2141,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<ResourceMetricCollectionInner> getHostingEnvironmentWebWorkerMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceMetricCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<ResourceMetricCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<ResourceMetricCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2219,7 +2219,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<MetricDefinitionCollectionInner> getHostingEnvironmentMultiRoleMetricDefinitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<MetricDefinitionCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<MetricDefinitionCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<MetricDefinitionCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2306,7 +2306,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<MetricDefinitionCollectionInner> getHostingEnvironmentWebWorkerMetricDefinitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<MetricDefinitionCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<MetricDefinitionCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<MetricDefinitionCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2384,7 +2384,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<UsageCollectionInner> getHostingEnvironmentMultiRoleUsagesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<UsageCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<UsageCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<UsageCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2471,7 +2471,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<UsageCollectionInner> getHostingEnvironmentWebWorkerUsagesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<UsageCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<UsageCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<UsageCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2624,7 +2624,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<SiteCollectionInner> getHostingEnvironmentSitesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<SiteCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<SiteCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2702,7 +2702,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<ServerFarmCollectionInner> getHostingEnvironmentWebHostingPlansDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ServerFarmCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<ServerFarmCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<ServerFarmCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2780,7 +2780,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<ServerFarmCollectionInner> getHostingEnvironmentServerFarmsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ServerFarmCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<ServerFarmCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<ServerFarmCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2858,7 +2858,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<WorkerPoolCollectionInner> getMultiRolePoolsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<WorkerPoolCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<WorkerPoolCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<WorkerPoolCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2936,7 +2936,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<WorkerPoolInner> getMultiRolePoolDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<WorkerPoolInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<WorkerPoolInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<WorkerPoolInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3103,7 +3103,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<WorkerPoolInner> beginCreateOrUpdateMultiRolePoolDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<WorkerPoolInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<WorkerPoolInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<WorkerPoolInner>() { }.getType())
                 .register(202, new TypeToken<WorkerPoolInner>() { }.getType())
                 .register(400, new TypeToken<Void>() { }.getType())
@@ -3185,7 +3185,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<SkuInfoCollectionInner> getMultiRolePoolSkusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SkuInfoCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<SkuInfoCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<SkuInfoCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3263,7 +3263,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<WorkerPoolCollectionInner> getWorkerPoolsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<WorkerPoolCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<WorkerPoolCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<WorkerPoolCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3350,7 +3350,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<WorkerPoolInner> getWorkerPoolDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<WorkerPoolInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<WorkerPoolInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<WorkerPoolInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3534,7 +3534,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<WorkerPoolInner> beginCreateOrUpdateWorkerPoolDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<WorkerPoolInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<WorkerPoolInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<WorkerPoolInner>() { }.getType())
                 .register(202, new TypeToken<WorkerPoolInner>() { }.getType())
                 .register(400, new TypeToken<Void>() { }.getType())
@@ -3625,7 +3625,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<SkuInfoCollectionInner> getWorkerPoolSkusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SkuInfoCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<SkuInfoCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<SkuInfoCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3818,7 +3818,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<Object> getWorkerPoolInstanceMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3914,7 +3914,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<Object> getWorkerPoolInstanceMetricDefinitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4085,7 +4085,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<Object> getMultiRolePoolInstanceMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4172,7 +4172,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<Object> getMultiRolePoolInstanceMetricDefinitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4318,7 +4318,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<SiteCollectionInner> beginSuspendHostingEnvironmentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<SiteCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<SiteCollectionInner>() { }.getType())
                 .register(202, new TypeToken<SiteCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -4465,7 +4465,7 @@ public final class HostingEnvironmentsInner {
     }
 
     private ServiceResponse<SiteCollectionInner> beginResumeHostingEnvironmentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<SiteCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<SiteCollectionInner>() { }.getType())
                 .register(202, new TypeToken<SiteCollectionInner>() { }.getType())
                 .registerError(CloudException.class)

@@ -271,7 +271,7 @@ public final class ResourceGroupsInner {
     }
 
     private ServiceResponse<PageImpl<GenericResourceInner>> listResourcesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<GenericResourceInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<GenericResourceInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<GenericResourceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -340,7 +340,7 @@ public final class ResourceGroupsInner {
     }
 
     private ServiceResponse<Boolean> checkExistenceDelegate(Response<Void> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Boolean, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Boolean, CloudException>(this.client.mapperAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -421,7 +421,7 @@ public final class ResourceGroupsInner {
     }
 
     private ServiceResponse<ResourceGroupInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceGroupInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<ResourceGroupInner, CloudException>(this.client.mapperAdapter())
                 .register(201, new TypeToken<ResourceGroupInner>() { }.getType())
                 .register(200, new TypeToken<ResourceGroupInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -551,7 +551,7 @@ public final class ResourceGroupsInner {
     }
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -620,7 +620,7 @@ public final class ResourceGroupsInner {
     }
 
     private ServiceResponse<ResourceGroupInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceGroupInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<ResourceGroupInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<ResourceGroupInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -700,7 +700,7 @@ public final class ResourceGroupsInner {
     }
 
     private ServiceResponse<ResourceGroupInner> patchDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceGroupInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<ResourceGroupInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<ResourceGroupInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -780,7 +780,7 @@ public final class ResourceGroupsInner {
     }
 
     private ServiceResponse<ResourceGroupExportResultInner> exportTemplateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceGroupExportResultInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<ResourceGroupExportResultInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<ResourceGroupExportResultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -929,7 +929,7 @@ public final class ResourceGroupsInner {
     }
 
     private ServiceResponse<PageImpl<ResourceGroupInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceGroupInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<ResourceGroupInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceGroupInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -992,7 +992,7 @@ public final class ResourceGroupsInner {
     }
 
     private ServiceResponse<PageImpl<GenericResourceInner>> listResourcesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<GenericResourceInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<GenericResourceInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<GenericResourceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1055,7 +1055,7 @@ public final class ResourceGroupsInner {
     }
 
     private ServiceResponse<PageImpl<ResourceGroupInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ResourceGroupInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<ResourceGroupInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<ResourceGroupInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

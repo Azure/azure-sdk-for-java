@@ -255,7 +255,7 @@ public final class VirtualMachineExtensionsInner {
     }
 
     private ServiceResponse<VirtualMachineExtensionInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VirtualMachineExtensionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<VirtualMachineExtensionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<VirtualMachineExtensionInner>() { }.getType())
                 .register(201, new TypeToken<VirtualMachineExtensionInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -419,7 +419,7 @@ public final class VirtualMachineExtensionsInner {
     }
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -590,7 +590,7 @@ public final class VirtualMachineExtensionsInner {
     }
 
     private ServiceResponse<VirtualMachineExtensionInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VirtualMachineExtensionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<VirtualMachineExtensionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<VirtualMachineExtensionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

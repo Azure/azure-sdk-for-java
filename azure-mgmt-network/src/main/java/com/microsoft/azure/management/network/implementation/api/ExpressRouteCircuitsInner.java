@@ -262,7 +262,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<Void>() { }.getType())
@@ -341,7 +341,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     private ServiceResponse<ExpressRouteCircuitInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ExpressRouteCircuitInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<ExpressRouteCircuitInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<ExpressRouteCircuitInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -508,7 +508,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     private ServiceResponse<ExpressRouteCircuitInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ExpressRouteCircuitInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<ExpressRouteCircuitInner, CloudException>(this.client.mapperAdapter())
                 .register(201, new TypeToken<ExpressRouteCircuitInner>() { }.getType())
                 .register(200, new TypeToken<ExpressRouteCircuitInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -601,7 +601,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuitArpTableInner>> listArpTableDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitArpTableInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitArpTableInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitArpTableInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -693,7 +693,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuitRoutesTableInner>> listRoutesTableDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitRoutesTableInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitRoutesTableInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitRoutesTableInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -785,7 +785,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuitStatsInner>> listStatsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitStatsInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitStatsInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitStatsInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -868,7 +868,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuitInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -942,7 +942,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuitInner>> listAllDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1005,7 +1005,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuitArpTableInner>> listArpTableNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitArpTableInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitArpTableInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitArpTableInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1068,7 +1068,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuitRoutesTableInner>> listRoutesTableNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitRoutesTableInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitRoutesTableInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitRoutesTableInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1131,7 +1131,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuitStatsInner>> listStatsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitStatsInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitStatsInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitStatsInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1194,7 +1194,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuitInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1257,7 +1257,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuitInner>> listAllNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

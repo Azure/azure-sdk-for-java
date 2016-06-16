@@ -8,7 +8,7 @@ package com.microsoft.azure.management.resources.fluentcore.arm.implementation;
 
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
-import com.microsoft.rest.RestClient;
+import com.microsoft.azure.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import okhttp3.Interceptor;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -21,7 +21,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
  */
 public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
         implements AzureConfigurable<T> {
-    private RestClient.Builder restClientBuilder;
+    private RestClient.Builder.Buildable restClientBuilder;
 
     protected AzureConfigurableImpl() {
         this.restClientBuilder = AzureEnvironment.AZURE.newRestClientBuilder();
