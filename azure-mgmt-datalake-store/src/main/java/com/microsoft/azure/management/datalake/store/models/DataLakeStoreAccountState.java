@@ -27,34 +27,25 @@ public enum DataLakeStoreAccountState {
     }
 
     /**
-     * Gets the serialized value for a DataLakeStoreAccountState instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a DataLakeStoreAccountState instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed DataLakeStoreAccountState object, or null if unable to parse.
      */
     @JsonCreator
-    public static DataLakeStoreAccountState fromValue(String value) {
+    public static DataLakeStoreAccountState fromString(String value) {
         DataLakeStoreAccountState[] items = DataLakeStoreAccountState.values();
         for (DataLakeStoreAccountState item : items) {
-            if (item.toValue().equalsIgnoreCase(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

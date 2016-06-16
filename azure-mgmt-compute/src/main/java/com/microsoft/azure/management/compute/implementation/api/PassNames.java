@@ -24,34 +24,25 @@ public enum PassNames {
     }
 
     /**
-     * Gets the serialized value for a PassNames instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a PassNames instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed PassNames object, or null if unable to parse.
      */
     @JsonCreator
-    public static PassNames fromValue(String value) {
+    public static PassNames fromString(String value) {
         PassNames[] items = PassNames.values();
         for (PassNames item : items) {
-            if (item.toValue().equalsIgnoreCase(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

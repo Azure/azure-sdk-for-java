@@ -30,34 +30,25 @@ public enum StatusLevelTypes {
     }
 
     /**
-     * Gets the serialized value for a StatusLevelTypes instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a StatusLevelTypes instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed StatusLevelTypes object, or null if unable to parse.
      */
     @JsonCreator
-    public static StatusLevelTypes fromValue(String value) {
+    public static StatusLevelTypes fromString(String value) {
         StatusLevelTypes[] items = StatusLevelTypes.values();
         for (StatusLevelTypes item : items) {
-            if (item.toValue().equalsIgnoreCase(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

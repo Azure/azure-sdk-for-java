@@ -39,34 +39,25 @@ public enum UsageUnit {
     }
 
     /**
-     * Gets the serialized value for a UsageUnit instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a UsageUnit instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed UsageUnit object, or null if unable to parse.
      */
     @JsonCreator
-    public static UsageUnit fromValue(String value) {
+    public static UsageUnit fromString(String value) {
         UsageUnit[] items = UsageUnit.values();
         for (UsageUnit item : items) {
-            if (item.toValue().equalsIgnoreCase(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

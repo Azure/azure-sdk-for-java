@@ -27,34 +27,25 @@ public enum SkuTier {
     }
 
     /**
-     * Gets the serialized value for a SkuTier instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a SkuTier instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed SkuTier object, or null if unable to parse.
      */
     @JsonCreator
-    public static SkuTier fromValue(String value) {
+    public static SkuTier fromString(String value) {
         SkuTier[] items = SkuTier.values();
         for (SkuTier item : items) {
-            if (item.toValue().equalsIgnoreCase(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

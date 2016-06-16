@@ -27,34 +27,25 @@ public enum FileType {
     }
 
     /**
-     * Gets the serialized value for a FileType instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a FileType instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed FileType object, or null if unable to parse.
      */
     @JsonCreator
-    public static FileType fromValue(String value) {
+    public static FileType fromString(String value) {
         FileType[] items = FileType.values();
         for (FileType item : items) {
-            if (item.toValue().equalsIgnoreCase(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

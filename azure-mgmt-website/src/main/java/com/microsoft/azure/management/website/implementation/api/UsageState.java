@@ -27,34 +27,25 @@ public enum UsageState {
     }
 
     /**
-     * Gets the serialized value for a UsageState instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a UsageState instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed UsageState object, or null if unable to parse.
      */
     @JsonCreator
-    public static UsageState fromValue(String value) {
+    public static UsageState fromString(String value) {
         UsageState[] items = UsageState.values();
         for (UsageState item : items) {
-            if (item.toValue().equalsIgnoreCase(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

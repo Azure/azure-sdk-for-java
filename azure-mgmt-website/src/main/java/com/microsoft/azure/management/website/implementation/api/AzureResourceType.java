@@ -27,34 +27,25 @@ public enum AzureResourceType {
     }
 
     /**
-     * Gets the serialized value for a AzureResourceType instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a AzureResourceType instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed AzureResourceType object, or null if unable to parse.
      */
     @JsonCreator
-    public static AzureResourceType fromValue(String value) {
+    public static AzureResourceType fromString(String value) {
         AzureResourceType[] items = AzureResourceType.values();
         for (AzureResourceType item : items) {
-            if (item.toValue().equalsIgnoreCase(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

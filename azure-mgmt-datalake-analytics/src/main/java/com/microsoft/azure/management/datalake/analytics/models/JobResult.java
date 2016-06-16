@@ -33,34 +33,25 @@ public enum JobResult {
     }
 
     /**
-     * Gets the serialized value for a JobResult instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a JobResult instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed JobResult object, or null if unable to parse.
      */
     @JsonCreator
-    public static JobResult fromValue(String value) {
+    public static JobResult fromString(String value) {
         JobResult[] items = JobResult.values();
         for (JobResult item : items) {
-            if (item.toValue().equalsIgnoreCase(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

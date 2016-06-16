@@ -30,34 +30,25 @@ public enum ComputeModeOptions {
     }
 
     /**
-     * Gets the serialized value for a ComputeModeOptions instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a ComputeModeOptions instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed ComputeModeOptions object, or null if unable to parse.
      */
     @JsonCreator
-    public static ComputeModeOptions fromValue(String value) {
+    public static ComputeModeOptions fromString(String value) {
         ComputeModeOptions[] items = ComputeModeOptions.values();
         for (ComputeModeOptions item : items) {
-            if (item.toValue().equalsIgnoreCase(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

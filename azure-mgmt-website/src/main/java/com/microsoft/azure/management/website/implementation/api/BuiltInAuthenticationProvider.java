@@ -36,34 +36,25 @@ public enum BuiltInAuthenticationProvider {
     }
 
     /**
-     * Gets the serialized value for a BuiltInAuthenticationProvider instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a BuiltInAuthenticationProvider instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed BuiltInAuthenticationProvider object, or null if unable to parse.
      */
     @JsonCreator
-    public static BuiltInAuthenticationProvider fromValue(String value) {
+    public static BuiltInAuthenticationProvider fromString(String value) {
         BuiltInAuthenticationProvider[] items = BuiltInAuthenticationProvider.values();
         for (BuiltInAuthenticationProvider item : items) {
-            if (item.toValue().equalsIgnoreCase(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

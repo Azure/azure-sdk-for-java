@@ -27,34 +27,25 @@ public enum OperatingSystemTypes {
     }
 
     /**
-     * Gets the serialized value for a OperatingSystemTypes instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a OperatingSystemTypes instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed OperatingSystemTypes object, or null if unable to parse.
      */
     @JsonCreator
-    public static OperatingSystemTypes fromValue(String value) {
+    public static OperatingSystemTypes fromString(String value) {
         OperatingSystemTypes[] items = OperatingSystemTypes.values();
         for (OperatingSystemTypes item : items) {
-            if (item.toValue().equalsIgnoreCase(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

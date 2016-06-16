@@ -24,34 +24,25 @@ public enum ForceUpdateTagTypes {
     }
 
     /**
-     * Gets the serialized value for a ForceUpdateTagTypes instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a ForceUpdateTagTypes instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed ForceUpdateTagTypes object, or null if unable to parse.
      */
     @JsonCreator
-    public static ForceUpdateTagTypes fromValue(String value) {
+    public static ForceUpdateTagTypes fromString(String value) {
         ForceUpdateTagTypes[] items = ForceUpdateTagTypes.values();
         for (ForceUpdateTagTypes item : items) {
-            if (item.toValue().equalsIgnoreCase(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

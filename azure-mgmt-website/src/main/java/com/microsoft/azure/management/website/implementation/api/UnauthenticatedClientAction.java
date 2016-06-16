@@ -27,34 +27,25 @@ public enum UnauthenticatedClientAction {
     }
 
     /**
-     * Gets the serialized value for a UnauthenticatedClientAction instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a UnauthenticatedClientAction instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed UnauthenticatedClientAction object, or null if unable to parse.
      */
     @JsonCreator
-    public static UnauthenticatedClientAction fromValue(String value) {
+    public static UnauthenticatedClientAction fromString(String value) {
         UnauthenticatedClientAction[] items = UnauthenticatedClientAction.values();
         for (UnauthenticatedClientAction item : items) {
-            if (item.toValue().equalsIgnoreCase(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

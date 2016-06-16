@@ -27,34 +27,25 @@ public enum JobPreparationTaskState {
     }
 
     /**
-     * Gets the serialized value for a JobPreparationTaskState instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a JobPreparationTaskState instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed JobPreparationTaskState object, or null if unable to parse.
      */
     @JsonCreator
-    public static JobPreparationTaskState fromValue(String value) {
+    public static JobPreparationTaskState fromString(String value) {
         JobPreparationTaskState[] items = JobPreparationTaskState.values();
         for (JobPreparationTaskState item : items) {
-            if (item.toValue().equalsIgnoreCase(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

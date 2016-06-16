@@ -24,34 +24,25 @@ public enum ComponentNames {
     }
 
     /**
-     * Gets the serialized value for a ComponentNames instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a ComponentNames instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed ComponentNames object, or null if unable to parse.
      */
     @JsonCreator
-    public static ComponentNames fromValue(String value) {
+    public static ComponentNames fromString(String value) {
         ComponentNames[] items = ComponentNames.values();
         for (ComponentNames item : items) {
-            if (item.toValue().equalsIgnoreCase(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

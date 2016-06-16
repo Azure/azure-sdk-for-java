@@ -33,34 +33,25 @@ public enum NotificationLevel {
     }
 
     /**
-     * Gets the serialized value for a NotificationLevel instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a NotificationLevel instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed NotificationLevel object, or null if unable to parse.
      */
     @JsonCreator
-    public static NotificationLevel fromValue(String value) {
+    public static NotificationLevel fromString(String value) {
         NotificationLevel[] items = NotificationLevel.values();
         for (NotificationLevel item : items) {
-            if (item.toValue().equalsIgnoreCase(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

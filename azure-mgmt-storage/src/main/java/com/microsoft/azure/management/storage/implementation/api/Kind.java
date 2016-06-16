@@ -27,34 +27,25 @@ public enum Kind {
     }
 
     /**
-     * Gets the serialized value for a Kind instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a Kind instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed Kind object, or null if unable to parse.
      */
     @JsonCreator
-    public static Kind fromValue(String value) {
+    public static Kind fromString(String value) {
         Kind[] items = Kind.values();
         for (Kind item : items) {
-            if (item.toValue().equalsIgnoreCase(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

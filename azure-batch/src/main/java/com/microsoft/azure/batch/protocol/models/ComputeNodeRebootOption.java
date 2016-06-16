@@ -33,34 +33,25 @@ public enum ComputeNodeRebootOption {
     }
 
     /**
-     * Gets the serialized value for a ComputeNodeRebootOption instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a ComputeNodeRebootOption instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed ComputeNodeRebootOption object, or null if unable to parse.
      */
     @JsonCreator
-    public static ComputeNodeRebootOption fromValue(String value) {
+    public static ComputeNodeRebootOption fromString(String value) {
         ComputeNodeRebootOption[] items = ComputeNodeRebootOption.values();
         for (ComputeNodeRebootOption item : items) {
-            if (item.toValue().equalsIgnoreCase(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

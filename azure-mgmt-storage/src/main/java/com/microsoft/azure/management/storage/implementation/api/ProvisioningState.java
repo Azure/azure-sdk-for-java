@@ -30,34 +30,25 @@ public enum ProvisioningState {
     }
 
     /**
-     * Gets the serialized value for a ProvisioningState instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a ProvisioningState instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed ProvisioningState object, or null if unable to parse.
      */
     @JsonCreator
-    public static ProvisioningState fromValue(String value) {
+    public static ProvisioningState fromString(String value) {
         ProvisioningState[] items = ProvisioningState.values();
         for (ProvisioningState item : items) {
-            if (item.toValue().equalsIgnoreCase(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

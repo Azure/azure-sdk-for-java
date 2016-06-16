@@ -30,34 +30,25 @@ public enum CompileMode {
     }
 
     /**
-     * Gets the serialized value for a CompileMode instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a CompileMode instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed CompileMode object, or null if unable to parse.
      */
     @JsonCreator
-    public static CompileMode fromValue(String value) {
+    public static CompileMode fromString(String value) {
         CompileMode[] items = CompileMode.values();
         for (CompileMode item : items) {
-            if (item.toValue().equalsIgnoreCase(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

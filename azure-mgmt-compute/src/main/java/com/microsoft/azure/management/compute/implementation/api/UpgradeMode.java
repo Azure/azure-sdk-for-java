@@ -27,34 +27,25 @@ public enum UpgradeMode {
     }
 
     /**
-     * Gets the serialized value for a UpgradeMode instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a UpgradeMode instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed UpgradeMode object, or null if unable to parse.
      */
     @JsonCreator
-    public static UpgradeMode fromValue(String value) {
+    public static UpgradeMode fromString(String value) {
         UpgradeMode[] items = UpgradeMode.values();
         for (UpgradeMode item : items) {
-            if (item.toValue().equalsIgnoreCase(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

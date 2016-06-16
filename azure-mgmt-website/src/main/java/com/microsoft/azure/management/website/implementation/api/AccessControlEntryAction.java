@@ -27,34 +27,25 @@ public enum AccessControlEntryAction {
     }
 
     /**
-     * Gets the serialized value for a AccessControlEntryAction instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a AccessControlEntryAction instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed AccessControlEntryAction object, or null if unable to parse.
      */
     @JsonCreator
-    public static AccessControlEntryAction fromValue(String value) {
+    public static AccessControlEntryAction fromString(String value) {
         AccessControlEntryAction[] items = AccessControlEntryAction.values();
         for (AccessControlEntryAction item : items) {
-            if (item.toValue().equalsIgnoreCase(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

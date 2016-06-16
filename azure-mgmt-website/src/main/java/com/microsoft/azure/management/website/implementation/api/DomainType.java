@@ -27,34 +27,25 @@ public enum DomainType {
     }
 
     /**
-     * Gets the serialized value for a DomainType instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a DomainType instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed DomainType object, or null if unable to parse.
      */
     @JsonCreator
-    public static DomainType fromValue(String value) {
+    public static DomainType fromString(String value) {
         DomainType[] items = DomainType.values();
         for (DomainType item : items) {
-            if (item.toValue().equalsIgnoreCase(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

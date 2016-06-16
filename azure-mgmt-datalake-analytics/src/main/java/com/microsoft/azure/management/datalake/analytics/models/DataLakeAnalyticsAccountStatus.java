@@ -48,34 +48,25 @@ public enum DataLakeAnalyticsAccountStatus {
     }
 
     /**
-     * Gets the serialized value for a DataLakeAnalyticsAccountStatus instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a DataLakeAnalyticsAccountStatus instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed DataLakeAnalyticsAccountStatus object, or null if unable to parse.
      */
     @JsonCreator
-    public static DataLakeAnalyticsAccountStatus fromValue(String value) {
+    public static DataLakeAnalyticsAccountStatus fromString(String value) {
         DataLakeAnalyticsAccountStatus[] items = DataLakeAnalyticsAccountStatus.values();
         for (DataLakeAnalyticsAccountStatus item : items) {
-            if (item.toValue().equalsIgnoreCase(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }
