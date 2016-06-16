@@ -13,7 +13,6 @@ import com.microsoft.azure.management.resources.DeploymentExportResult;
 import com.microsoft.azure.management.resources.DeploymentOperations;
 import com.microsoft.azure.management.resources.Provider;
 import com.microsoft.azure.management.resources.ResourceGroup;
-import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -52,7 +51,7 @@ final class DeploymentImpl extends
 
     private final DeploymentsInner client;
     private final DeploymentOperationsInner deploymentOperationsClient;
-    private final ResourceGroups resourceGroups;
+    private final ResourceManager resourceManager;
     private String resourceGroupName;
     private Creatable<ResourceGroup> creatableResourceGroup;
     private ObjectMapper objectMapper;
@@ -60,12 +59,12 @@ final class DeploymentImpl extends
     DeploymentImpl(DeploymentExtendedInner innerModel,
                           final DeploymentsInner client,
                           final DeploymentOperationsInner deploymentOperationsClient,
-                          final ResourceGroups resourceGroups) {
+                          final ResourceManager resourceManager) {
         super(innerModel.name(), innerModel);
         this.client = client;
         this.deploymentOperationsClient = deploymentOperationsClient;
         this.resourceGroupName = ResourceUtils.groupFromResourceId(innerModel.id());
-        this.resourceGroups = resourceGroups;
+        this.resourceManager = resourceManager;
         this.objectMapper = new ObjectMapper();
     }
 
@@ -173,7 +172,7 @@ final class DeploymentImpl extends
 
     @Override
     public DeploymentOperations deploymentOperations() {
-        return new DeploymentOperationsImpl(deploymentOperationsClient, this, resourceGroups);
+        return new DeploymentOperationsImpl(deploymentOperationsClient, this);
     }
 
     @Override
@@ -189,7 +188,7 @@ final class DeploymentImpl extends
 
     @Override
     public DefinitionWithTemplate withNewResourceGroup(String resourceGroupName, Region region) {
-        this.creatableResourceGroup = this.resourceGroups.define(resourceGroupName).withRegion(region);
+        this.creatableResourceGroup = this.resourceManager.resourceGroups().define(resourceGroupName).withRegion(region);
         this.resourceGroupName = resourceGroupName;
         return this;
     }

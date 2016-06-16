@@ -11,7 +11,6 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.DeploymentOperation;
 import com.microsoft.azure.management.resources.DeploymentOperations;
-import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.api.DeploymentOperationInner;
 import com.microsoft.azure.management.resources.implementation.api.DeploymentOperationsInner;
@@ -28,8 +27,7 @@ final class DeploymentOperationsImpl
     private final PagedListConverter<DeploymentOperationInner, DeploymentOperation> converter;
 
     DeploymentOperationsImpl(final DeploymentOperationsInner client,
-                                    final Deployment deployment,
-                                    final ResourceGroups resourceGroups) {
+                                    final Deployment deployment) {
         this.client = client;
         this.deployment = deployment;
         converter = new PagedListConverter<DeploymentOperationInner, DeploymentOperation>() {

@@ -14,12 +14,16 @@ package com.microsoft.azure.management.resources.samples;
  *  - Create another resource group
  *  - Export an ARM template
  *  - List resource groups
- *  - Delete a resource group
+ *  - Delete a resource group.
  */
 
-public class ManageResourceGroup {
+public final class ManageResourceGroup {
 
-    public static void main (String [] args) {
+    /**
+     * Main entry point.
+     * @param args the parameters
+     */
+    public static void main(String[] args) {
 
         try {
 
@@ -35,11 +39,13 @@ public class ManageResourceGroup {
 
             // Delete a resource group
 
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             System.err.println(e.getMessage());
         }
 
     }
 
+    private ManageResourceGroup() {
+
+    }
 }

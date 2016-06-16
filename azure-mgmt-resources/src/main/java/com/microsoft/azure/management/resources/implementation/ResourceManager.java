@@ -169,7 +169,7 @@ public final class ResourceManager {
      */
     public GenericResources genericResources() {
         if (genericResources == null) {
-            genericResources = new GenericResourcesImpl(resourceManagementClient);
+            genericResources = new GenericResourcesImpl(resourceManagementClient, this);
         }
         return genericResources;
     }
@@ -182,7 +182,7 @@ public final class ResourceManager {
             deployments = new DeploymentsImpl(
                     resourceManagementClient.deployments(),
                     resourceManagementClient.deploymentOperations(),
-                    resourceGroups());
+                    this);
         }
         return deployments;
     }

@@ -15,12 +15,16 @@ package com.microsoft.azure.management.compute.samples;
  *  - Update the availability set
  *  - Create another availability set
  *  - List availability sets
- *  - Delete an availability set
+ *  - Delete an availability set.
  */
 
-public class ManageAvailabilitySet {
+public final class ManageAvailabilitySet {
 
-    public static void main (String [] args) {
+    /**
+     * Main entry point.
+     * @param args parameters
+     */
+    public static void main(String[] args) {
 
         try {
 
@@ -39,11 +43,13 @@ public class ManageAvailabilitySet {
             // Delete an availability set
 
 
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             System.err.println(e.getMessage());
         }
 
+    }
+
+    private ManageAvailabilitySet() {
     }
 
 }

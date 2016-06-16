@@ -34,7 +34,7 @@ class AvailabilitySetImpl
     AvailabilitySetImpl(String name, AvailabilitySetInner innerModel,
                                final AvailabilitySetsInner client,
                                final ResourceManager resourceManager) {
-        super(name, innerModel, resourceManager.resourceGroups());
+        super(name, innerModel, resourceManager);
         this.client = client;
     }
 

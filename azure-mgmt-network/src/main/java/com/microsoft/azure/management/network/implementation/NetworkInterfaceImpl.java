@@ -11,21 +11,18 @@ import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
-import com.microsoft.azure.management.network.NetworkSecurityGroups;
-import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.NicIpConfiguration;
 import com.microsoft.azure.management.network.PublicIpAddress;
-import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceIPConfiguration;
 import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceInner;
 import com.microsoft.azure.management.network.implementation.api.NetworkInterfacesInner;
 import com.microsoft.azure.management.resources.ResourceGroup;
-import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
@@ -44,9 +41,7 @@ class NetworkInterfaceImpl
         NetworkInterface.Update {
     // Clients
     private final NetworkInterfacesInner client;
-    private final Networks networks;
-    private final PublicIpAddresses publicIpAddresses;
-    private final NetworkSecurityGroups networkSecurityGroups;
+    private final NetworkManager networkManager;
     // the name of the network interface
     private final String nicName;
     // used to generate unique name for any dependency resources
@@ -67,15 +62,11 @@ class NetworkInterfaceImpl
     NetworkInterfaceImpl(String name,
                          NetworkInterfaceInner innerModel,
                          final NetworkInterfacesInner client,
-                         final Networks networks,
-                         final PublicIpAddresses publicIpAddresses,
-                         final NetworkSecurityGroups networkSecurityGroups,
-                         final ResourceGroups resourceGroups) {
-        super(name, innerModel, resourceGroups);
+                         final NetworkManager networkManager,
+                         final ResourceManager resourceManager) {
+        super(name, innerModel, resourceManager);
         this.client = client;
-        this.networks = networks;
-        this.publicIpAddresses = publicIpAddresses;
-        this.networkSecurityGroups = networkSecurityGroups;
+        this.networkManager = networkManager;
         this.nicName = name;
         this.randomId = Utils.randomId(this.nicName);
         initializeNicIpConfigurations();
@@ -327,7 +318,9 @@ class NetworkInterfaceImpl
     public NetworkSecurityGroup networkSecurityGroup() throws CloudException, IOException {
         if (this.networkSecurityGroup == null && this.networkSecurityGroupId() != null) {
             String id = this.networkSecurityGroupId();
-            this.networkSecurityGroup = this.networkSecurityGroups.getByGroup(ResourceUtils.groupFromResourceId(id),
+            this.networkSecurityGroup = this.networkManager
+                    .networkSecurityGroups()
+                    .getByGroup(ResourceUtils.groupFromResourceId(id),
                     ResourceUtils.nameFromResourceId(id));
         }
         return this.networkSecurityGroup;
@@ -406,8 +399,7 @@ class NetworkInterfaceImpl
             NicIpConfigurationImpl  nicIpConfiguration = new NicIpConfigurationImpl(ipConfig.name(),
                     ipConfig,
                     this,
-                    this.networks,
-                    this.publicIpAddresses,
+                    this.networkManager,
                     false);
             this.nicIpConfigurations.add(nicIpConfiguration);
         }
@@ -423,8 +415,7 @@ class NetworkInterfaceImpl
         NicIpConfigurationImpl nicIpConfiguration = NicIpConfigurationImpl.prepareNicIpConfiguration(
                 name,
                 this,
-                this.networks,
-                this.publicIpAddresses
+                this.networkManager
         );
         this.nicIpConfigurations.add(nicIpConfiguration);
         return nicIpConfiguration;

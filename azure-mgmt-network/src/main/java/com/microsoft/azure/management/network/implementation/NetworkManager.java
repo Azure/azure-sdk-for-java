@@ -13,18 +13,15 @@ import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.network.implementation.api.NetworkManagementClientImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.microsoft.azure.management.resources.implementation.ResourceManager;
+import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
 /**
  * Entry point to Azure network management.
  */
-public final class NetworkManager {
+public final class NetworkManager extends Manager {
     private final NetworkManagementClientImpl networkManagementClient;
-
-    // Dependent managers
-    private final ResourceManager resourceManager;
 
     // Collections
     private PublicIpAddresses publicIpAddresses;
@@ -83,16 +80,19 @@ public final class NetworkManager {
     /**
      * The implementation for Configurable interface.
      */
-    private static class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
+    private static class ConfigurableImpl
+        extends AzureConfigurableImpl<Configurable>
+        implements Configurable {
+
         public NetworkManager authenticate(ServiceClientCredentials credentials, String subscriptionId) {
             return NetworkManager.authenticate(buildRestClient(credentials), subscriptionId);
         }
     }
 
     private NetworkManager(RestClient restClient, String subscriptionId) {
+        super(restClient, subscriptionId);
         networkManagementClient = new NetworkManagementClientImpl(restClient);
         networkManagementClient.withSubscriptionId(subscriptionId);
-        this.resourceManager = ResourceManager.authenticate(restClient).withSubscription(subscriptionId);
     }
 
     /**
@@ -102,7 +102,7 @@ public final class NetworkManager {
         if (this.networks == null) {
             this.networks = new NetworksImpl(
                     this.networkManagementClient.virtualNetworks(),
-                    this.resourceManager.resourceGroups());
+                    super.resourceManager());
         }
         return this.networks;
     }
@@ -114,7 +114,7 @@ public final class NetworkManager {
         if (this.networkSecurityGroups == null) {
             this.networkSecurityGroups = new NetworkSecurityGroupsImpl(
                     this.networkManagementClient.networkSecurityGroups(),
-                    this.resourceManager.resourceGroups());
+                    super.resourceManager());
         }
         return this.networkSecurityGroups;
     }
@@ -126,7 +126,7 @@ public final class NetworkManager {
         if (this.publicIpAddresses == null) {
             this.publicIpAddresses = new PublicIpAddressesImpl(
                     this.networkManagementClient.publicIPAddresses(),
-                    this.resourceManager.resourceGroups());
+                    super.resourceManager());
         }
         return this.publicIpAddresses;
     }
@@ -138,10 +138,8 @@ public final class NetworkManager {
         if (networkInterfaces == null) {
             this.networkInterfaces = new NetworkInterfacesImpl(
                 this.networkManagementClient.networkInterfaces(),
-                this.networks(),
-                this.publicIpAddresses(),
-                this.networkSecurityGroups(),
-                this.resourceManager.resourceGroups()
+                this,
+                super.resourceManager()
             );
         }
         return this.networkInterfaces;

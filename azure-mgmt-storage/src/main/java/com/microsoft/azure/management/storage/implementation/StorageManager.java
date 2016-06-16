@@ -9,7 +9,7 @@ package com.microsoft.azure.management.storage.implementation;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.microsoft.azure.management.resources.implementation.ResourceManager;
+import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
@@ -19,11 +19,8 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 /**
  * Entry point to Azure storage resource management.
  */
-public final class StorageManager {
+public final class StorageManager extends Manager {
     private final StorageManagementClientImpl storageManagementClient;
-
-    // Dependent managers
-    private final ResourceManager resourceManager;
 
     // Collections
     private StorageAccounts storageAccounts;
@@ -86,9 +83,9 @@ public final class StorageManager {
     }
 
     private StorageManager(RestClient restClient, String subscriptionId) {
+        super(restClient, subscriptionId);
         storageManagementClient = new StorageManagementClientImpl(restClient);
         storageManagementClient.withSubscriptionId(subscriptionId);
-        resourceManager = ResourceManager.authenticate(restClient).withSubscription(subscriptionId);
     }
 
     /**
@@ -96,7 +93,9 @@ public final class StorageManager {
      */
     public StorageAccounts storageAccounts() {
         if (storageAccounts == null) {
-            storageAccounts = new StorageAccountsImpl(storageManagementClient.storageAccounts(), resourceManager.resourceGroups());
+            storageAccounts = new StorageAccountsImpl(
+                    storageManagementClient.storageAccounts(),
+                    super.resourceManager());
         }
         return storageAccounts;
     }
