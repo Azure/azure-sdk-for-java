@@ -12,6 +12,7 @@ import com.microsoft.azure.management.compute.DataDisk;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.implementation.api.CachingTypes;
+import com.microsoft.azure.management.compute.implementation.api.DiskCreateOptionTypes;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.samples.Utils;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -87,6 +88,8 @@ public final class ManageVirtualMachine {
             //=============================================================
             // Update - Tag the virtual machine
 
+            temporaryFix(vm, dataDiskName);
+
             vm.update()
                     .withTag("who-rocks", "java")
                     .withTag("where", "on azure")
@@ -97,6 +100,8 @@ public final class ManageVirtualMachine {
 
             //=============================================================
             // Update - Attach data disks
+
+            temporaryFix(vm, dataDiskName);
 
             vm.update()
                     .withNewDataDisk(10)
@@ -112,6 +117,8 @@ public final class ManageVirtualMachine {
 
             //=============================================================
             // Update - detach data disk
+
+            temporaryFix(vm, dataDiskName);
 
             vm.update()
                     .withoutDataDisk(dataDiskName)
@@ -130,6 +137,7 @@ public final class ManageVirtualMachine {
             System.out.println("De-allocated VM: " + vm.id());
 
             DataDisk dataDisk = vm.dataDisks().get(0);
+            temporaryFix(vm, dataDiskName);
 
             vm.update()
                     .updateDataDisk(dataDisk.name())
@@ -144,6 +152,7 @@ public final class ManageVirtualMachine {
             // Update - Expand the OS drive size by 10 GB
 
             int osDiskSizeInGb = vm.osDiskSize();
+            temporaryFix(vm, dataDiskName);
 
             vm.update()
                     .withOsDiskSizeInGb(osDiskSizeInGb + 10)
@@ -203,6 +212,21 @@ public final class ManageVirtualMachine {
             System.out.println("Deleted VM: " + vm.id());
         } catch (Exception e) {
             System.err.println(e.getMessage());
+        }
+    }
+
+    /**
+     * https://github.com/Azure/azure-sdk-for-java/issues/795.
+     */
+    private  static void temporaryFix(VirtualMachine vm, String diskName) {
+        // ToFix: Using 'withCreateOption' will be removed once we fix
+        // https://github.com/Azure/azure-sdk-for-java/issues/795
+        //
+        vm.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
+        for (DataDisk dataDisk : vm.dataDisks()) {
+            if (!dataDisk.name().equalsIgnoreCase(diskName)) {
+                dataDisk.inner().withCreateOption(DiskCreateOptionTypes.EMPTY);
+            }
         }
     }
 

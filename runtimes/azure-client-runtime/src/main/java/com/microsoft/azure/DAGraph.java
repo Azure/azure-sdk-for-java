@@ -77,6 +77,10 @@ public class DAGraph<T, U extends DAGNode<T>> extends Graph<T, U> {
      * in the DAG with no dependencies.
      */
     public void prepare() {
+        for (Map.Entry<String, U> entry: graph.entrySet()) {
+            entry.getValue().prepare();
+        }
+
         initializeQueue();
         if (queue.isEmpty()) {
             throw new RuntimeException("Found circular dependency");
