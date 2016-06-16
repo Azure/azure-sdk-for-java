@@ -7,9 +7,9 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.models.implementation;
 
 import com.microsoft.azure.management.resources.ResourceGroup;
-import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.implementation.ResourceManager;
 
 /**
  * The implementation for {@link GroupableResource}.
@@ -28,19 +28,13 @@ public abstract class GroupableResourceImpl<
         implements
             GroupableResource {
 
-    private ResourceGroups resourceGroups;
+    private final ResourceManager resourceManager;
     protected ResourceGroup.DefinitionCreatable newGroup;
     private String groupName;
 
-    protected GroupableResourceImpl(String key, InnerModelT innerObject, ResourceGroups resourceGroups) {
+    protected GroupableResourceImpl(String key, InnerModelT innerObject, ResourceManager resourceManager) {
         super(key, innerObject);
-        this.resourceGroups = resourceGroups;
-    }
-
-    protected GroupableResourceImpl(String key, InnerModelT innerObject, ResourceGroup resourceGroup) {
-        super(key, innerObject);
-        this.withRegion(resourceGroup.region());
-        this.withExistingGroup(resourceGroup);
+        this.resourceManager = resourceManager;
     }
 
     /*******************************************
@@ -68,7 +62,8 @@ public abstract class GroupableResourceImpl<
      * @return the next stage of the resource definition
      */
     public final FluentModelImplT withNewGroup(String groupName) {
-        return this.withNewGroup(resourceGroups.define(groupName).withRegion(this.region()));
+        return this.withNewGroup(
+                this.resourceManager.resourceGroups().define(groupName).withRegion(this.region()));
     }
 
     /**

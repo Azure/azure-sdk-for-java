@@ -30,34 +30,25 @@ public enum DisableJobOption {
     }
 
     /**
-     * Gets the serialized value for a DisableJobOption instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a DisableJobOption instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed DisableJobOption object, or null if unable to parse.
      */
     @JsonCreator
-    public static DisableJobOption fromValue(String value) {
+    public static DisableJobOption fromString(String value) {
         DisableJobOption[] items = DisableJobOption.values();
         for (DisableJobOption item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

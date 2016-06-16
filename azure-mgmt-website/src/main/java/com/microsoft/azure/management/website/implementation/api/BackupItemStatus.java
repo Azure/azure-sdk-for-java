@@ -51,34 +51,25 @@ public enum BackupItemStatus {
     }
 
     /**
-     * Gets the serialized value for a BackupItemStatus instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a BackupItemStatus instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed BackupItemStatus object, or null if unable to parse.
      */
     @JsonCreator
-    public static BackupItemStatus fromValue(String value) {
+    public static BackupItemStatus fromString(String value) {
         BackupItemStatus[] items = BackupItemStatus.values();
         for (BackupItemStatus item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

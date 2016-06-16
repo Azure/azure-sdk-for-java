@@ -10,11 +10,11 @@ import com.microsoft.azure.management.network.implementation.api.IPAllocationMet
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressDnsSettings;
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressInner;
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressesInner;
-import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.ServiceResponse;
 
 /**
@@ -33,8 +33,8 @@ class PublicIpAddressImpl
     PublicIpAddressImpl(String name,
             PublicIPAddressInner innerModel,
             final PublicIPAddressesInner client,
-            final ResourceGroups resourceGroups) {
-        super(name, innerModel, resourceGroups);
+            final ResourceManager resourceManager) {
+        super(name, innerModel, resourceManager);
         this.client = client;
     }
 

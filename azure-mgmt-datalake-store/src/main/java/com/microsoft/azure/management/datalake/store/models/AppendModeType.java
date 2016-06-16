@@ -24,34 +24,25 @@ public enum AppendModeType {
     }
 
     /**
-     * Gets the serialized value for a AppendModeType instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a AppendModeType instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed AppendModeType object, or null if unable to parse.
      */
     @JsonCreator
-    public static AppendModeType fromValue(String value) {
+    public static AppendModeType fromString(String value) {
         AppendModeType[] items = AppendModeType.values();
         for (AppendModeType item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

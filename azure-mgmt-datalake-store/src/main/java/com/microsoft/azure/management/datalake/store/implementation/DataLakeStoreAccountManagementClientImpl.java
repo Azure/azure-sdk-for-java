@@ -10,9 +10,8 @@ import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.management.datalake.store.Accounts;
 import com.microsoft.azure.management.datalake.store.DataLakeStoreAccountManagementClient;
-import com.microsoft.azure.serializer.AzureJacksonMapperAdapter;
+import com.microsoft.azure.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
-import com.microsoft.rest.RestClient;
 
 /**
  * Initializes a new instance of the DataLakeStoreAccountManagementClientImpl class.
@@ -162,8 +161,8 @@ public final class DataLakeStoreAccountManagementClientImpl extends AzureService
      * @param credentials the management credentials for Azure
      */
     public DataLakeStoreAccountManagementClientImpl(String baseUrl, ServiceClientCredentials credentials) {
-        this(new RestClient.Builder(baseUrl)
-                .withMapperAdapter(new AzureJacksonMapperAdapter())
+        this(new RestClient.Builder()
+                .withBaseUrl(baseUrl)
                 .withCredentials(credentials)
                 .build());
     }

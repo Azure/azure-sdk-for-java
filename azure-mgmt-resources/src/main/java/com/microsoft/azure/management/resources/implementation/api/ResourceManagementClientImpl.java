@@ -8,9 +8,8 @@ package com.microsoft.azure.management.resources.implementation.api;
 
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
-import com.microsoft.azure.serializer.AzureJacksonMapperAdapter;
+import com.microsoft.azure.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
-import com.microsoft.rest.RestClient;
 
 /**
  * Initializes a new instance of the ResourceManagementClientImpl class.
@@ -210,19 +209,6 @@ public final class ResourceManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The ResourceProviderOperationDetailsInner object to access its operations.
-     */
-    private ResourceProviderOperationDetailsInner resourceProviderOperationDetails;
-
-    /**
-     * Gets the ResourceProviderOperationDetailsInner object to access its operations.
-     * @return the ResourceProviderOperationDetailsInner object.
-     */
-    public ResourceProviderOperationDetailsInner resourceProviderOperationDetails() {
-        return this.resourceProviderOperationDetails;
-    }
-
-    /**
      * Initializes an instance of ResourceManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -238,8 +224,8 @@ public final class ResourceManagementClientImpl extends AzureServiceClient {
      * @param credentials the management credentials for Azure
      */
     public ResourceManagementClientImpl(String baseUrl, ServiceClientCredentials credentials) {
-        this(new RestClient.Builder(baseUrl)
-                .withMapperAdapter(new AzureJacksonMapperAdapter())
+        this(new RestClient.Builder()
+                .withBaseUrl(baseUrl)
                 .withCredentials(credentials)
                 .build());
     }
@@ -265,7 +251,6 @@ public final class ResourceManagementClientImpl extends AzureServiceClient {
         this.resources = new ResourcesInner(restClient().retrofit(), this);
         this.tags = new TagsInner(restClient().retrofit(), this);
         this.deploymentOperations = new DeploymentOperationsInner(restClient().retrofit(), this);
-        this.resourceProviderOperationDetails = new ResourceProviderOperationDetailsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 

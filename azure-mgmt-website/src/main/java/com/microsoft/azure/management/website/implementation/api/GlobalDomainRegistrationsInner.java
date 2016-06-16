@@ -129,7 +129,7 @@ public final class GlobalDomainRegistrationsInner {
     }
 
     private ServiceResponse<DomainCollectionInner> getAllDomainsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DomainCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<DomainCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<DomainCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -189,7 +189,7 @@ public final class GlobalDomainRegistrationsInner {
     }
 
     private ServiceResponse<DomainControlCenterSsoRequestInner> getDomainControlCenterSsoRequestDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DomainControlCenterSsoRequestInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<DomainControlCenterSsoRequestInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<DomainControlCenterSsoRequestInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -260,7 +260,7 @@ public final class GlobalDomainRegistrationsInner {
     }
 
     private ServiceResponse<Object> validateDomainPurchaseInformationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -385,7 +385,7 @@ public final class GlobalDomainRegistrationsInner {
     }
 
     private ServiceResponse<DomainAvailablilityCheckResultInner> checkDomainAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DomainAvailablilityCheckResultInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<DomainAvailablilityCheckResultInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<DomainAvailablilityCheckResultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -456,7 +456,7 @@ public final class GlobalDomainRegistrationsInner {
     }
 
     private ServiceResponse<NameIdentifierCollectionInner> listDomainRecommendationsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<NameIdentifierCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<NameIdentifierCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<NameIdentifierCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

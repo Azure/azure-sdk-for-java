@@ -4,10 +4,8 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
-import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.NicIpConfiguration;
 import com.microsoft.azure.management.network.PublicIpAddress;
-import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceIPConfiguration;
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressInner;
 import com.microsoft.azure.management.network.implementation.api.SubnetInner;
@@ -28,8 +26,7 @@ class NicIpConfigurationImpl
         NicIpConfiguration.Definitions,
         NicIpConfiguration.Update {
     // Clients
-    private final Networks networks;
-    private final PublicIpAddresses publicIpAddresses;
+    private final NetworkManager networkManager;
     // flag indicating whether Ip configuration is in create or update mode
     private final boolean isInCreateMode;
     // unique key of a creatable virtual network to be associated with the ip configuration
@@ -48,27 +45,23 @@ class NicIpConfigurationImpl
     protected NicIpConfigurationImpl(String name,
                                      NetworkInterfaceIPConfiguration inner,
                                      NetworkInterfaceImpl parent,
-                                     final Networks networks,
-                                     final PublicIpAddresses publicIpAddresses,
+                                     NetworkManager networkManager,
                                      final boolean isInCreateModel) {
         super(name, inner, parent);
-        this.networks = networks;
-        this.publicIpAddresses = publicIpAddresses;
         this.isInCreateMode = isInCreateModel;
+        this.networkManager = networkManager;
     }
 
     protected static NicIpConfigurationImpl prepareNicIpConfiguration(String name,
                                                                       NetworkInterfaceImpl parent,
-                                                                      final Networks networks,
-                                                                      final PublicIpAddresses publicIpAddresses) {
+                                                                      final NetworkManager networkManager) {
         NetworkInterfaceIPConfiguration ipConfigurationInner = new NetworkInterfaceIPConfiguration();
         ipConfigurationInner.withName(name);
         parent.inner().ipConfigurations().add(ipConfigurationInner);
         return new NicIpConfigurationImpl(name,
                 ipConfigurationInner,
                 parent,
-                networks,
-                publicIpAddresses,
+                networkManager,
                 true);
     }
 
@@ -92,7 +85,8 @@ class NicIpConfigurationImpl
             return null;
         }
 
-        return this.publicIpAddresses.getByGroup(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+        return this.networkManager.publicIpAddresses().getByGroup(
+                ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
@@ -103,7 +97,7 @@ class NicIpConfigurationImpl
     @Override
     public Network network() throws CloudException, IOException {
         String id = subnetId();
-        return this.networks.getByGroup(ResourceUtils.groupFromResourceId(id),
+        return this.networkManager.networks().getByGroup(ResourceUtils.groupFromResourceId(id),
                 ResourceUtils.extractFromResourceId(id, "virtualNetworks"));
     }
 
@@ -123,13 +117,8 @@ class NicIpConfigurationImpl
     }
 
     @Override
-    public NetworkInterface apply() {
+    public NetworkInterface set() {
         return parent();
-    }
-
-    @Override
-    public ServiceCall applyAsync(ServiceCallback callback) {
-        throw new UnsupportedOperationException("Apply doesn't run asynchronously on child resources!");
     }
 
     @Override
@@ -141,7 +130,7 @@ class NicIpConfigurationImpl
 
     @Override
     public NicIpConfigurationImpl withNewNetwork(String name, String addressSpaceCidr) {
-        Network.DefinitionWithGroup definitionWithGroup = this.networks
+        Network.DefinitionWithGroup definitionWithGroup = this.networkManager.networks()
                 .define(name)
                 .withRegion(this.parent().region());
 
@@ -156,7 +145,7 @@ class NicIpConfigurationImpl
 
     @Override
     public NicIpConfigurationImpl withNewNetwork(String addressSpaceCidr) {
-        return withNewNetwork(this.parent().nameWithPrefix("vnet"), addressSpaceCidr);
+        return withNewNetwork(this.parent().namer.randomName("vnet", 20), addressSpaceCidr);
     }
 
     @Override
@@ -188,13 +177,13 @@ class NicIpConfigurationImpl
 
     @Override
     public NicIpConfigurationImpl withNewPublicIpAddress() {
-        String name = this.parent().nameWithPrefix("pip");
+        String name = this.parent().namer.randomName("pip", 15);
         return withNewPublicIpAddress(prepareCreatablePublicIp(name, name));
     }
 
     @Override
     public NicIpConfigurationImpl withNewPublicIpAddress(String leafDnsLabel) {
-        return withNewPublicIpAddress(prepareCreatablePublicIp(this.parent().nameWithPrefix("pip"), leafDnsLabel));
+        return withNewPublicIpAddress(prepareCreatablePublicIp(this.parent().namer.randomName("pip", 15), leafDnsLabel));
     }
 
     @Override
@@ -231,7 +220,7 @@ class NicIpConfigurationImpl
      * @return {@link PublicIpAddress.DefinitionCreatable}
      */
     private PublicIpAddress.DefinitionCreatable prepareCreatablePublicIp(String name, String leafDnsLabel) {
-        PublicIpAddress.DefinitionWithGroup definitionWithGroup = this.publicIpAddresses
+        PublicIpAddress.DefinitionWithGroup definitionWithGroup = this.networkManager.publicIpAddresses()
                     .define(name)
                     .withRegion(this.parent().region());
 

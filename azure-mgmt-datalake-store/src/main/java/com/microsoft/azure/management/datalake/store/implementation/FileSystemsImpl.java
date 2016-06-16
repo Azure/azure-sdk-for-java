@@ -8,7 +8,6 @@ package com.microsoft.azure.management.datalake.store.implementation;
 
 import retrofit2.Retrofit;
 import com.microsoft.azure.management.datalake.store.FileSystems;
-import com.microsoft.azure.management.datalake.store.DataLakeStoreFileSystemManagementClient;
 import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
@@ -52,7 +51,7 @@ public final class FileSystemsImpl implements FileSystems {
     /** The Retrofit service to perform REST calls. */
     private FileSystemsService service;
     /** The service client containing this operation class. */
-    private DataLakeStoreFileSystemManagementClient client;
+    private DataLakeStoreFileSystemManagementClientImpl client;
 
     /**
      * Initializes an instance of FileSystemsImpl.
@@ -60,7 +59,7 @@ public final class FileSystemsImpl implements FileSystems {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public FileSystemsImpl(Retrofit retrofit, DataLakeStoreFileSystemManagementClient client) {
+    public FileSystemsImpl(Retrofit retrofit, DataLakeStoreFileSystemManagementClientImpl client) {
         this.service = retrofit.create(FileSystemsService.class);
         this.client = client;
     }
@@ -330,7 +329,7 @@ public final class FileSystemsImpl implements FileSystems {
     }
 
     private ServiceResponse<Void> concurrentAppendDelegate(Response<ResponseBody> response) throws AdlsErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, AdlsErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, AdlsErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(AdlsErrorException.class)
                 .build(response);
@@ -491,7 +490,7 @@ public final class FileSystemsImpl implements FileSystems {
     }
 
     private ServiceResponse<Void> checkAccessDelegate(Response<ResponseBody> response) throws AdlsErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, AdlsErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, AdlsErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(AdlsErrorException.class)
                 .build(response);
@@ -573,7 +572,7 @@ public final class FileSystemsImpl implements FileSystems {
     }
 
     private ServiceResponse<FileOperationResult> mkdirsDelegate(Response<ResponseBody> response) throws AdlsErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<FileOperationResult, AdlsErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<FileOperationResult, AdlsErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<FileOperationResult>() { }.getType())
                 .registerError(AdlsErrorException.class)
                 .build(response);
@@ -609,7 +608,7 @@ public final class FileSystemsImpl implements FileSystems {
         Validator.validate(sources);
         final String op = "CONCAT";
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
-        String sourcesConverted = this.client.restClient().mapperAdapter().serializeList(sources, CollectionFormat.CSV);
+        String sourcesConverted = this.client.mapperAdapter().serializeList(sources, CollectionFormat.CSV);
         Call<ResponseBody> call = service.concat(destinationPath, sourcesConverted, op, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
         return concatDelegate(call.execute());
     }
@@ -651,7 +650,7 @@ public final class FileSystemsImpl implements FileSystems {
         Validator.validate(sources, serviceCallback);
         final String op = "CONCAT";
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
-        String sourcesConverted = this.client.restClient().mapperAdapter().serializeList(sources, CollectionFormat.CSV);
+        String sourcesConverted = this.client.mapperAdapter().serializeList(sources, CollectionFormat.CSV);
         Call<ResponseBody> call = service.concat(destinationPath, sourcesConverted, op, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
@@ -668,7 +667,7 @@ public final class FileSystemsImpl implements FileSystems {
     }
 
     private ServiceResponse<Void> concatDelegate(Response<ResponseBody> response) throws AdlsErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, AdlsErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, AdlsErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(AdlsErrorException.class)
                 .build(response);
@@ -851,7 +850,7 @@ public final class FileSystemsImpl implements FileSystems {
     }
 
     private ServiceResponse<Void> msConcatDelegate(Response<ResponseBody> response) throws AdlsErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, AdlsErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, AdlsErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(AdlsErrorException.class)
                 .build(response);
@@ -1020,7 +1019,7 @@ public final class FileSystemsImpl implements FileSystems {
     }
 
     private ServiceResponse<FileStatusesResult> listFileStatusDelegate(Response<ResponseBody> response) throws AdlsErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<FileStatusesResult, AdlsErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<FileStatusesResult, AdlsErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<FileStatusesResult>() { }.getType())
                 .registerError(AdlsErrorException.class)
                 .build(response);
@@ -1102,7 +1101,7 @@ public final class FileSystemsImpl implements FileSystems {
     }
 
     private ServiceResponse<ContentSummaryResult> getContentSummaryDelegate(Response<ResponseBody> response) throws AdlsErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ContentSummaryResult, AdlsErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<ContentSummaryResult, AdlsErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<ContentSummaryResult>() { }.getType())
                 .registerError(AdlsErrorException.class)
                 .build(response);
@@ -1184,7 +1183,7 @@ public final class FileSystemsImpl implements FileSystems {
     }
 
     private ServiceResponse<FileStatusResult> getFileStatusDelegate(Response<ResponseBody> response) throws AdlsErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<FileStatusResult, AdlsErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<FileStatusResult, AdlsErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<FileStatusResult>() { }.getType())
                 .registerError(AdlsErrorException.class)
                 .build(response);
@@ -1281,7 +1280,7 @@ public final class FileSystemsImpl implements FileSystems {
     }
 
     private ServiceResponse<Void> appendDelegate(Response<ResponseBody> response) throws AdlsErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, AdlsErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, AdlsErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(AdlsErrorException.class)
                 .build(response);
@@ -1470,7 +1469,7 @@ public final class FileSystemsImpl implements FileSystems {
     }
 
     private ServiceResponse<Void> createDelegate(Response<ResponseBody> response) throws AdlsErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, AdlsErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, AdlsErrorException>(this.client.mapperAdapter())
                 .register(201, new TypeToken<Void>() { }.getType())
                 .registerError(AdlsErrorException.class)
                 .build(response);
@@ -1639,7 +1638,7 @@ public final class FileSystemsImpl implements FileSystems {
     }
 
     private ServiceResponse<InputStream> openDelegate(Response<ResponseBody> response) throws AdlsErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<InputStream, AdlsErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<InputStream, AdlsErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<InputStream>() { }.getType())
                 .registerError(AdlsErrorException.class)
                 .build(response);
@@ -1730,7 +1729,7 @@ public final class FileSystemsImpl implements FileSystems {
     }
 
     private ServiceResponse<Void> setAclDelegate(Response<ResponseBody> response) throws AdlsErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, AdlsErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, AdlsErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(AdlsErrorException.class)
                 .build(response);
@@ -1821,7 +1820,7 @@ public final class FileSystemsImpl implements FileSystems {
     }
 
     private ServiceResponse<Void> modifyAclEntriesDelegate(Response<ResponseBody> response) throws AdlsErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, AdlsErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, AdlsErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(AdlsErrorException.class)
                 .build(response);
@@ -1912,7 +1911,7 @@ public final class FileSystemsImpl implements FileSystems {
     }
 
     private ServiceResponse<Void> removeAclEntriesDelegate(Response<ResponseBody> response) throws AdlsErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, AdlsErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, AdlsErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(AdlsErrorException.class)
                 .build(response);
@@ -1994,7 +1993,7 @@ public final class FileSystemsImpl implements FileSystems {
     }
 
     private ServiceResponse<AclStatusResult> getAclStatusDelegate(Response<ResponseBody> response) throws AdlsErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<AclStatusResult, AdlsErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<AclStatusResult, AdlsErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<AclStatusResult>() { }.getType())
                 .registerError(AdlsErrorException.class)
                 .build(response);
@@ -2155,7 +2154,7 @@ public final class FileSystemsImpl implements FileSystems {
     }
 
     private ServiceResponse<FileOperationResult> deleteDelegate(Response<ResponseBody> response) throws AdlsErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<FileOperationResult, AdlsErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<FileOperationResult, AdlsErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<FileOperationResult>() { }.getType())
                 .registerError(AdlsErrorException.class)
                 .build(response);
@@ -2246,7 +2245,7 @@ public final class FileSystemsImpl implements FileSystems {
     }
 
     private ServiceResponse<FileOperationResult> renameDelegate(Response<ResponseBody> response) throws AdlsErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<FileOperationResult, AdlsErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<FileOperationResult, AdlsErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<FileOperationResult>() { }.getType())
                 .registerError(AdlsErrorException.class)
                 .build(response);
@@ -2411,7 +2410,7 @@ public final class FileSystemsImpl implements FileSystems {
     }
 
     private ServiceResponse<Void> setOwnerDelegate(Response<ResponseBody> response) throws AdlsErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, AdlsErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, AdlsErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(AdlsErrorException.class)
                 .build(response);
@@ -2572,7 +2571,7 @@ public final class FileSystemsImpl implements FileSystems {
     }
 
     private ServiceResponse<Void> setPermissionDelegate(Response<ResponseBody> response) throws AdlsErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, AdlsErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, AdlsErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(AdlsErrorException.class)
                 .build(response);

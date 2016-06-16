@@ -162,7 +162,7 @@ public final class GlobalsInner {
     }
 
     private ServiceResponse<UserInner> getSubscriptionPublishingCredentialsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<UserInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<UserInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<UserInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -233,7 +233,7 @@ public final class GlobalsInner {
     }
 
     private ServiceResponse<UserInner> updateSubscriptionPublishingCredentialsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<UserInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<UserInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<UserInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -350,7 +350,7 @@ public final class GlobalsInner {
     }
 
     private ServiceResponse<GeoRegionCollectionInner> getSubscriptionGeoRegionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<GeoRegionCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<GeoRegionCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<GeoRegionCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -410,7 +410,7 @@ public final class GlobalsInner {
     }
 
     private ServiceResponse<CertificateCollectionInner> getAllCertificatesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CertificateCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<CertificateCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<CertificateCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -529,7 +529,7 @@ public final class GlobalsInner {
     }
 
     private ServiceResponse<ServerFarmCollectionInner> getAllServerFarmsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ServerFarmCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<ServerFarmCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<ServerFarmCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -589,7 +589,7 @@ public final class GlobalsInner {
     }
 
     private ServiceResponse<SiteCollectionInner> getAllSitesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<SiteCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<SiteCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -649,7 +649,7 @@ public final class GlobalsInner {
     }
 
     private ServiceResponse<HostingEnvironmentCollectionInner> getAllHostingEnvironmentsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HostingEnvironmentCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<HostingEnvironmentCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<HostingEnvironmentCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -709,7 +709,7 @@ public final class GlobalsInner {
     }
 
     private ServiceResponse<ManagedHostingEnvironmentCollectionInner> getAllManagedHostingEnvironmentsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ManagedHostingEnvironmentCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<ManagedHostingEnvironmentCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<ManagedHostingEnvironmentCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -769,7 +769,7 @@ public final class GlobalsInner {
     }
 
     private ServiceResponse<ClassicMobileServiceCollectionInner> getAllClassicMobileServicesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ClassicMobileServiceCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<ClassicMobileServiceCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<ClassicMobileServiceCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -829,7 +829,7 @@ public final class GlobalsInner {
     }
 
     private ServiceResponse<Object> listPremierAddOnOffersDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -898,7 +898,7 @@ public final class GlobalsInner {
     }
 
     private ServiceResponse<Object> isHostingEnvironmentNameAvailableDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -967,7 +967,7 @@ public final class GlobalsInner {
     }
 
     private ServiceResponse<Object> isHostingEnvironmentWithLegacyNameAvailableDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1038,7 +1038,7 @@ public final class GlobalsInner {
     }
 
     private ServiceResponse<ResourceNameAvailabilityInner> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceNameAvailabilityInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<ResourceNameAvailabilityInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<ResourceNameAvailabilityInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

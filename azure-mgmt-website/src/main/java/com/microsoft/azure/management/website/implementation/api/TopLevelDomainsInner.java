@@ -120,7 +120,7 @@ public final class TopLevelDomainsInner {
     }
 
     private ServiceResponse<TopLevelDomainCollectionInner> getGetTopLevelDomainsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<TopLevelDomainCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<TopLevelDomainCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<TopLevelDomainCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -189,7 +189,7 @@ public final class TopLevelDomainsInner {
     }
 
     private ServiceResponse<TopLevelDomainInner> getTopLevelDomainDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<TopLevelDomainInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<TopLevelDomainInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<TopLevelDomainInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -332,7 +332,7 @@ public final class TopLevelDomainsInner {
     }
 
     private ServiceResponse<TldLegalAgreementCollectionInner> listTopLevelDomainAgreementsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<TldLegalAgreementCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<TldLegalAgreementCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<TldLegalAgreementCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

@@ -27,34 +27,25 @@ public enum FrequencyUnit {
     }
 
     /**
-     * Gets the serialized value for a FrequencyUnit instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a FrequencyUnit instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed FrequencyUnit object, or null if unable to parse.
      */
     @JsonCreator
-    public static FrequencyUnit fromValue(String value) {
+    public static FrequencyUnit fromString(String value) {
         FrequencyUnit[] items = FrequencyUnit.values();
         for (FrequencyUnit item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

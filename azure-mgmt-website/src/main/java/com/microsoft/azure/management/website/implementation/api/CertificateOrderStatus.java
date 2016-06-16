@@ -51,34 +51,25 @@ public enum CertificateOrderStatus {
     }
 
     /**
-     * Gets the serialized value for a CertificateOrderStatus instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a CertificateOrderStatus instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed CertificateOrderStatus object, or null if unable to parse.
      */
     @JsonCreator
-    public static CertificateOrderStatus fromValue(String value) {
+    public static CertificateOrderStatus fromString(String value) {
         CertificateOrderStatus[] items = CertificateOrderStatus.values();
         for (CertificateOrderStatus item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

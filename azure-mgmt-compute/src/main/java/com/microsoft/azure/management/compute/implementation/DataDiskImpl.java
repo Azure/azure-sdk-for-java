@@ -142,15 +142,10 @@ class DataDiskImpl
     }
 
     @Override
-    public VirtualMachine apply() {
+    public VirtualMachine set() {
         return this.parent();
     }
-
-    @Override
-    public ServiceCall applyAsync(ServiceCallback callback) {
-        throw new UnsupportedOperationException("Apply doesn't run asynchronously on child resources!");
-    }
-
+    
     protected static void setDataDisksDefaults(List<DataDisk> dataDisks, String namePrefix) {
         List<Integer> usedLuns = new ArrayList<>();
         for (DataDisk dataDisk : dataDisks) {

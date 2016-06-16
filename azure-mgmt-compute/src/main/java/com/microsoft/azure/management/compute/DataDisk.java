@@ -3,8 +3,8 @@ package com.microsoft.azure.management.compute;
 import com.microsoft.azure.management.compute.implementation.api.CachingTypes;
 import com.microsoft.azure.management.compute.implementation.api.DiskCreateOptionTypes;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
-import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
+import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
 /**
@@ -171,10 +171,10 @@ public interface DataDisk extends
      * The template for a data disk update operation, containing all the settings that
      * can be modified.
      *
-     * @param <ParentT> the return type of the final {@link Appliable#apply()}
+     * @param <ParentT> the return type of the final {@link Settable#set()}
      */
     interface Update<ParentT> extends
-            Appliable<ParentT> {
+            Settable<ParentT> {
         /**
          * Specifies the new size in GB for data disk.
          *

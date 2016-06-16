@@ -31,7 +31,6 @@ import com.microsoft.azure.management.resources.implementation.api.ResourceManag
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
-import com.microsoft.rest.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
 import java.io.File;
@@ -92,6 +91,10 @@ public final class Azure {
         return new AuthenticatedImpl(restClient);
     }
 
+    private static Authenticated authenticate(RestClient restClient, String subscriptionId) throws IOException {
+        return new AuthenticatedImpl(restClient).withDefaultSubscription(subscriptionId);
+    }
+
     /**
      * @return an interface allow configurations on the client.
      */
@@ -133,7 +136,8 @@ public final class Azure {
 
         @Override
         public Authenticated authenticate(File credentialsFile) throws IOException {
-            return Azure.authenticate(credentialsFile);
+            ApplicationTokenCredentials credentials = ApplicationTokenCredentials.fromFile(credentialsFile);
+            return Azure.authenticate(buildRestClient(credentials), credentials.defaultSubscriptionId());
         }
     }
 

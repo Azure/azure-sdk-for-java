@@ -19,7 +19,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Az
 import com.microsoft.azure.management.resources.implementation.api.FeatureClientImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.implementation.api.SubscriptionClientImpl;
-import com.microsoft.rest.RestClient;
+import com.microsoft.azure.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
 /**
@@ -169,7 +169,7 @@ public final class ResourceManager {
      */
     public GenericResources genericResources() {
         if (genericResources == null) {
-            genericResources = new GenericResourcesImpl(resourceManagementClient);
+            genericResources = new GenericResourcesImpl(resourceManagementClient, this);
         }
         return genericResources;
     }
@@ -182,7 +182,7 @@ public final class ResourceManager {
             deployments = new DeploymentsImpl(
                     resourceManagementClient.deployments(),
                     resourceManagementClient.deploymentOperations(),
-                    resourceGroups());
+                    this);
         }
         return deployments;
     }

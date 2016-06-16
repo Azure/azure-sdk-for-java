@@ -69,10 +69,6 @@ public final class SubscriptionsInner {
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> listLocationsNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
         Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
@@ -86,7 +82,7 @@ public final class SubscriptionsInner {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;LocationInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<LocationInner>> listLocations(final String subscriptionId) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<List<LocationInner>> listLocations(String subscriptionId) throws CloudException, IOException, IllegalArgumentException {
         if (subscriptionId == null) {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
@@ -95,12 +91,7 @@ public final class SubscriptionsInner {
         }
         Call<ResponseBody> call = service.listLocations(subscriptionId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         ServiceResponse<PageImpl<LocationInner>> response = listLocationsDelegate(call.execute());
-        PagedList<LocationInner> result = new PagedList<LocationInner>(response.getBody()) {
-            @Override
-            public Page<LocationInner> nextPage(String nextPageLink) throws CloudException, IOException {
-                return listLocationsNext(nextPageLink).getBody();
-            }
-        };
+        List<LocationInner> result = response.getBody().getItems();
         return new ServiceResponse<>(result, response.getResponse());
     }
 
@@ -112,7 +103,7 @@ public final class SubscriptionsInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listLocationsAsync(final String subscriptionId, final ListOperationCallback<LocationInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listLocationsAsync(String subscriptionId, final ServiceCallback<List<LocationInner>> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -131,13 +122,7 @@ public final class SubscriptionsInner {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     ServiceResponse<PageImpl<LocationInner>> result = listLocationsDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listLocationsNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                    }
+                    serviceCallback.success(new ServiceResponse<>(result.getBody().getItems(), result.getResponse()));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -147,7 +132,7 @@ public final class SubscriptionsInner {
     }
 
     private ServiceResponse<PageImpl<LocationInner>> listLocationsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<LocationInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<LocationInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<LocationInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -209,7 +194,7 @@ public final class SubscriptionsInner {
     }
 
     private ServiceResponse<SubscriptionInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SubscriptionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<SubscriptionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<SubscriptionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -228,7 +213,7 @@ public final class SubscriptionsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        ServiceResponse<PageImpl<SubscriptionInner>> response = listDelegate(call.execute());
+        ServiceResponse<PageImpl1<SubscriptionInner>> response = listDelegate(call.execute());
         PagedList<SubscriptionInner> result = new PagedList<SubscriptionInner>(response.getBody()) {
             @Override
             public Page<SubscriptionInner> nextPage(String nextPageLink) throws CloudException, IOException {
@@ -259,7 +244,7 @@ public final class SubscriptionsInner {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<SubscriptionInner>> result = listDelegate(response);
+                    ServiceResponse<PageImpl1<SubscriptionInner>> result = listDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
@@ -275,72 +260,9 @@ public final class SubscriptionsInner {
         return serviceCall;
     }
 
-    private ServiceResponse<PageImpl<SubscriptionInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SubscriptionInner>, CloudException>(this.client.restClient().mapperAdapter())
-                .register(200, new TypeToken<PageImpl<SubscriptionInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Gets a list of the subscription locations.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;LocationInner&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<PageImpl<LocationInner>> listLocationsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listLocationsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
-        return listLocationsNextDelegate(call.execute());
-    }
-
-    /**
-     * Gets a list of the subscription locations.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listLocationsNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<LocationInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listLocationsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<LocationInner>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<LocationInner>> result = listLocationsNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listLocationsNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                    }
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<PageImpl<LocationInner>> listLocationsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<LocationInner>, CloudException>(this.client.restClient().mapperAdapter())
-                .register(200, new TypeToken<PageImpl<LocationInner>>() { }.getType())
+    private ServiceResponse<PageImpl1<SubscriptionInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl1<SubscriptionInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl1<SubscriptionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -354,7 +276,7 @@ public final class SubscriptionsInner {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;SubscriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<SubscriptionInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl1<SubscriptionInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -385,7 +307,7 @@ public final class SubscriptionsInner {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<SubscriptionInner>> result = listNextDelegate(response);
+                    ServiceResponse<PageImpl1<SubscriptionInner>> result = listNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
@@ -401,9 +323,9 @@ public final class SubscriptionsInner {
         return serviceCall;
     }
 
-    private ServiceResponse<PageImpl<SubscriptionInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SubscriptionInner>, CloudException>(this.client.restClient().mapperAdapter())
-                .register(200, new TypeToken<PageImpl<SubscriptionInner>>() { }.getType())
+    private ServiceResponse<PageImpl1<SubscriptionInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl1<SubscriptionInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl1<SubscriptionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

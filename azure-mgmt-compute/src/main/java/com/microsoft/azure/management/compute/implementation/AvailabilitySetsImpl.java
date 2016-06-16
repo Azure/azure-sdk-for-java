@@ -30,8 +30,9 @@ class AvailabilitySetsImpl implements AvailabilitySets {
     private final AvailabilitySetsInner client;
     private final ResourceManager resourceManager;
     private final PagedListConverter<AvailabilitySetInner, AvailabilitySet> converter;
-
-    AvailabilitySetsImpl(final AvailabilitySetsInner client, final ResourceManager resourceManager) {
+    AvailabilitySetsImpl(
+            final AvailabilitySetsInner client,
+            final ResourceManager resourceManager) {
         this.client = client;
         this.resourceManager = resourceManager;
         this.converter = new PagedListConverter<AvailabilitySetInner, AvailabilitySet>() {
@@ -44,7 +45,7 @@ class AvailabilitySetsImpl implements AvailabilitySets {
 
     @Override
     public PagedList<AvailabilitySet> list() throws CloudException, IOException {
-        return new GroupPagedList<AvailabilitySet>(resourceManager.resourceGroups().list()) {
+        return new GroupPagedList<AvailabilitySet>(this.resourceManager.resourceGroups().list()) {
             @Override
             public List<AvailabilitySet> listNextGroup(String resourceGroupName) throws RestException, IOException {
                 PageImpl<AvailabilitySetInner> page = new PageImpl<>();

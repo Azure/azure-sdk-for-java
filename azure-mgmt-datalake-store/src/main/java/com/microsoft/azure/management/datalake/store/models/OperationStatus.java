@@ -30,34 +30,25 @@ public enum OperationStatus {
     }
 
     /**
-     * Gets the serialized value for a OperationStatus instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a OperationStatus instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed OperationStatus object, or null if unable to parse.
      */
     @JsonCreator
-    public static OperationStatus fromValue(String value) {
+    public static OperationStatus fromString(String value) {
         OperationStatus[] items = OperationStatus.values();
         for (OperationStatus item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

@@ -33,34 +33,25 @@ public enum Channels {
     }
 
     /**
-     * Gets the serialized value for a Channels instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a Channels instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed Channels object, or null if unable to parse.
      */
     @JsonCreator
-    public static Channels fromValue(String value) {
+    public static Channels fromString(String value) {
         Channels[] items = Channels.values();
         for (Channels item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

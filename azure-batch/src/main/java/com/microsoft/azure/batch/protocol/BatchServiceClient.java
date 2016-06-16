@@ -7,7 +7,7 @@
 package com.microsoft.azure.batch.protocol;
 
 import com.microsoft.azure.AzureClient;
-import com.microsoft.rest.RestClient;
+import com.microsoft.azure.RestClient;
 
 /**
  * The interface for BatchServiceClient class.
@@ -51,8 +51,9 @@ public interface BatchServiceClient {
      * Sets Gets or sets the preferred language for the response..
      *
      * @param acceptLanguage the acceptLanguage value.
+     * @return the service client itself
      */
-    void withAcceptLanguage(String acceptLanguage);
+    BatchServiceClient withAcceptLanguage(String acceptLanguage);
 
     /**
      * Gets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30..
@@ -65,8 +66,9 @@ public interface BatchServiceClient {
      * Sets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30..
      *
      * @param longRunningOperationRetryTimeout the longRunningOperationRetryTimeout value.
+     * @return the service client itself
      */
-    void withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout);
+    BatchServiceClient withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout);
 
     /**
      * Gets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true..
@@ -79,8 +81,9 @@ public interface BatchServiceClient {
      * Sets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true..
      *
      * @param generateClientRequestId the generateClientRequestId value.
+     * @return the service client itself
      */
-    void withGenerateClientRequestId(boolean generateClientRequestId);
+    BatchServiceClient withGenerateClientRequestId(boolean generateClientRequestId);
 
     /**
      * Gets the Applications object to access its operations.

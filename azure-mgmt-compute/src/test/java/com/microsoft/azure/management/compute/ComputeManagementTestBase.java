@@ -6,7 +6,7 @@ import com.microsoft.azure.management.compute.implementation.api.ComputeManageme
 import com.microsoft.azure.management.network.implementation.api.NetworkManagementClientImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
-import com.microsoft.rest.RestClient;
+import com.microsoft.azure.RestClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 public abstract class ComputeManagementTestBase {
@@ -22,7 +22,7 @@ public abstract class ComputeManagementTestBase {
                 System.getenv("secret"),
                 null);
 
-        RestClient.Builder restBuilder = AzureEnvironment.AZURE.newRestClientBuilder()
+        RestClient.Builder.Buildable restBuilder = AzureEnvironment.AZURE.newRestClientBuilder()
                 .withCredentials(credentials)
                 .withLogLevel(HttpLoggingInterceptor.Level.BODY);
 

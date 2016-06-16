@@ -211,7 +211,7 @@ public final class ServerFarmsInner {
     }
 
     private ServiceResponse<ServerFarmCollectionInner> getServerFarmsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ServerFarmCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<ServerFarmCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<ServerFarmCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -289,7 +289,7 @@ public final class ServerFarmsInner {
     }
 
     private ServiceResponse<ServerFarmWithRichSkuInner> getServerFarmDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ServerFarmWithRichSkuInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<ServerFarmWithRichSkuInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<ServerFarmWithRichSkuInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -623,7 +623,7 @@ public final class ServerFarmsInner {
     }
 
     private ServiceResponse<ServerFarmWithRichSkuInner> beginCreateOrUpdateServerFarmDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ServerFarmWithRichSkuInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<ServerFarmWithRichSkuInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<ServerFarmWithRichSkuInner>() { }.getType())
                 .register(202, new TypeToken<ServerFarmWithRichSkuInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -702,7 +702,7 @@ public final class ServerFarmsInner {
     }
 
     private ServiceResponse<Object> deleteServerFarmDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -859,7 +859,7 @@ public final class ServerFarmsInner {
     }
 
     private ServiceResponse<ResourceMetricCollectionInner> getServerFarmMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceMetricCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<ResourceMetricCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<ResourceMetricCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -937,7 +937,7 @@ public final class ServerFarmsInner {
     }
 
     private ServiceResponse<MetricDefinitionCollectionInner> getServerFarmMetricDefintionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<MetricDefinitionCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<MetricDefinitionCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<MetricDefinitionCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1015,7 +1015,7 @@ public final class ServerFarmsInner {
     }
 
     private ServiceResponse<List<VnetInfoInner>> getVnetsForServerFarmDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<VnetInfoInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<List<VnetInfoInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<List<VnetInfoInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1102,7 +1102,7 @@ public final class ServerFarmsInner {
     }
 
     private ServiceResponse<VnetInfoInner> getVnetFromServerFarmDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetInfoInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<VnetInfoInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<VnetInfoInner>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -1190,7 +1190,7 @@ public final class ServerFarmsInner {
     }
 
     private ServiceResponse<List<VnetRouteInner>> getRoutesForVnetDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<VnetRouteInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<List<VnetRouteInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<List<VnetRouteInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1286,7 +1286,7 @@ public final class ServerFarmsInner {
     }
 
     private ServiceResponse<List<VnetRouteInner>> getRouteForVnetDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<VnetRouteInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<List<VnetRouteInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<List<VnetRouteInner>>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -1394,7 +1394,7 @@ public final class ServerFarmsInner {
     }
 
     private ServiceResponse<VnetRouteInner> createOrUpdateVnetRouteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetRouteInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<VnetRouteInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<VnetRouteInner>() { }.getType())
                 .register(400, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
@@ -1492,7 +1492,7 @@ public final class ServerFarmsInner {
     }
 
     private ServiceResponse<Object> deleteVnetRouteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -1600,7 +1600,7 @@ public final class ServerFarmsInner {
     }
 
     private ServiceResponse<VnetRouteInner> updateVnetRouteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetRouteInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<VnetRouteInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<VnetRouteInner>() { }.getType())
                 .register(400, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
@@ -1698,7 +1698,7 @@ public final class ServerFarmsInner {
     }
 
     private ServiceResponse<VnetGatewayInner> getServerFarmVnetGatewayDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetGatewayInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<VnetGatewayInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<VnetGatewayInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1805,7 +1805,7 @@ public final class ServerFarmsInner {
     }
 
     private ServiceResponse<VnetGatewayInner> updateServerFarmVnetGatewayDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VnetGatewayInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<VnetGatewayInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<VnetGatewayInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1994,7 +1994,7 @@ public final class ServerFarmsInner {
     }
 
     private ServiceResponse<PageImpl<SiteInner>> getServerFarmSitesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2081,7 +2081,7 @@ public final class ServerFarmsInner {
     }
 
     private ServiceResponse<Object> rebootWorkerForServerFarmDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2234,7 +2234,7 @@ public final class ServerFarmsInner {
     }
 
     private ServiceResponse<Object> restartSitesForServerFarmDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2321,7 +2321,7 @@ public final class ServerFarmsInner {
     }
 
     private ServiceResponse<ServerFarmWithRichSkuInner> getServerFarmOperationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ServerFarmWithRichSkuInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<ServerFarmWithRichSkuInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<ServerFarmWithRichSkuInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2384,7 +2384,7 @@ public final class ServerFarmsInner {
     }
 
     private ServiceResponse<PageImpl<SiteInner>> getServerFarmSitesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

@@ -251,7 +251,7 @@ public final class LocalNetworkGatewaysInner {
     }
 
     private ServiceResponse<LocalNetworkGatewayInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<LocalNetworkGatewayInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<LocalNetworkGatewayInner, CloudException>(this.client.mapperAdapter())
                 .register(201, new TypeToken<LocalNetworkGatewayInner>() { }.getType())
                 .register(200, new TypeToken<LocalNetworkGatewayInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -330,7 +330,7 @@ public final class LocalNetworkGatewaysInner {
     }
 
     private ServiceResponse<LocalNetworkGatewayInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<LocalNetworkGatewayInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<LocalNetworkGatewayInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<LocalNetworkGatewayInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -476,7 +476,7 @@ public final class LocalNetworkGatewaysInner {
     }
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
@@ -560,7 +560,7 @@ public final class LocalNetworkGatewaysInner {
     }
 
     private ServiceResponse<PageImpl<LocalNetworkGatewayInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<LocalNetworkGatewayInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<LocalNetworkGatewayInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<LocalNetworkGatewayInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -623,7 +623,7 @@ public final class LocalNetworkGatewaysInner {
     }
 
     private ServiceResponse<PageImpl<LocalNetworkGatewayInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<LocalNetworkGatewayInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<LocalNetworkGatewayInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<LocalNetworkGatewayInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

@@ -36,34 +36,25 @@ public enum LogLevel {
     }
 
     /**
-     * Gets the serialized value for a LogLevel instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a LogLevel instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed LogLevel object, or null if unable to parse.
      */
     @JsonCreator
-    public static LogLevel fromValue(String value) {
+    public static LogLevel fromString(String value) {
         LogLevel[] items = LogLevel.values();
         for (LogLevel item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

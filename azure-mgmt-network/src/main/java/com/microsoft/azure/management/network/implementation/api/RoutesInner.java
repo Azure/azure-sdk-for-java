@@ -247,7 +247,7 @@ public final class RoutesInner {
     }
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
@@ -335,7 +335,7 @@ public final class RoutesInner {
     }
 
     private ServiceResponse<RouteInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RouteInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<RouteInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<RouteInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -519,7 +519,7 @@ public final class RoutesInner {
     }
 
     private ServiceResponse<RouteInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RouteInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<RouteInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<RouteInner>() { }.getType())
                 .register(201, new TypeToken<RouteInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -612,7 +612,7 @@ public final class RoutesInner {
     }
 
     private ServiceResponse<PageImpl<RouteInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<RouteInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<RouteInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<RouteInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -675,7 +675,7 @@ public final class RoutesInner {
     }
 
     private ServiceResponse<PageImpl<RouteInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<RouteInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<RouteInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<RouteInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

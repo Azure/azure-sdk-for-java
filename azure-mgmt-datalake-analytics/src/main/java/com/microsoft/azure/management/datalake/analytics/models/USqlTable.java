@@ -50,6 +50,11 @@ public class USqlTable extends CatalogItem {
     private ExternalTable externalTable;
 
     /**
+     * the distributions info of the table.
+     */
+    private USqlDistributionInfo distributionInfo;
+
+    /**
      * Get the databaseName value.
      *
      * @return the databaseName value
@@ -186,6 +191,26 @@ public class USqlTable extends CatalogItem {
      */
     public USqlTable withExternalTable(ExternalTable externalTable) {
         this.externalTable = externalTable;
+        return this;
+    }
+
+    /**
+     * Get the distributionInfo value.
+     *
+     * @return the distributionInfo value
+     */
+    public USqlDistributionInfo distributionInfo() {
+        return this.distributionInfo;
+    }
+
+    /**
+     * Set the distributionInfo value.
+     *
+     * @param distributionInfo the distributionInfo value to set
+     * @return the USqlTable object itself.
+     */
+    public USqlTable withDistributionInfo(USqlDistributionInfo distributionInfo) {
+        this.distributionInfo = distributionInfo;
         return this;
     }
 

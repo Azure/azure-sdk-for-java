@@ -10,7 +10,7 @@ import com.microsoft.azure.credentials.UserTokenCredentials;
 import com.microsoft.azure.management.datalake.store.implementation.DataLakeStoreAccountManagementClientImpl;
 import com.microsoft.azure.management.datalake.store.implementation.DataLakeStoreFileSystemManagementClientImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
-import com.microsoft.rest.RestClient;
+import com.microsoft.azure.RestClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 public abstract class DataLakeUploaderTestBase {
@@ -27,7 +27,8 @@ public abstract class DataLakeUploaderTestBase {
                 null,
                 AzureEnvironment.AZURE);
 
-        RestClient restClient = new RestClient.Builder("https://management.azure.com")
+        RestClient restClient = new RestClient.Builder()
+                .withDefaultBaseUrl(AzureEnvironment.AZURE)
                 .withCredentials(credentials)
                 .withLogLevel(HttpLoggingInterceptor.Level.BODY)
                 .build();
@@ -42,7 +43,7 @@ public abstract class DataLakeUploaderTestBase {
     }
 
     public static String generateName(String prefix) {
-        int randomSuffix = (int)(Math.random() * 1000);
+        int randomSuffix = (int) (Math.random() * 1000);
         return prefix + randomSuffix;
     }
 }

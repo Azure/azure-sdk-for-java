@@ -30,34 +30,25 @@ public enum CertificateFormat {
     }
 
     /**
-     * Gets the serialized value for a CertificateFormat instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a CertificateFormat instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed CertificateFormat object, or null if unable to parse.
      */
     @JsonCreator
-    public static CertificateFormat fromValue(String value) {
+    public static CertificateFormat fromString(String value) {
         CertificateFormat[] items = CertificateFormat.values();
         for (CertificateFormat item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }
