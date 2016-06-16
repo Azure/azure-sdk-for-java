@@ -11,8 +11,9 @@ import com.microsoft.rest.RestClient;
 
 /**
  * Base class for Azure resource managers.
+ * @param <T> specific manager type
  */
-public abstract class Manager {
+public abstract class Manager<T> {
 
     private final ResourceManager resourceManager;
 
