@@ -49,7 +49,7 @@ public enum StatusLevelTypes {
     public static StatusLevelTypes fromValue(String value) {
         StatusLevelTypes[] items = StatusLevelTypes.values();
         for (StatusLevelTypes item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

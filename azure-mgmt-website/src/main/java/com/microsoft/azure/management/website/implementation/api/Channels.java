@@ -52,7 +52,7 @@ public enum Channels {
     public static Channels fromValue(String value) {
         Channels[] items = Channels.values();
         for (Channels item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

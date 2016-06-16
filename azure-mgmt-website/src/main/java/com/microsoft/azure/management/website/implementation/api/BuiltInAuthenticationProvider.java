@@ -55,7 +55,7 @@ public enum BuiltInAuthenticationProvider {
     public static BuiltInAuthenticationProvider fromValue(String value) {
         BuiltInAuthenticationProvider[] items = BuiltInAuthenticationProvider.values();
         for (BuiltInAuthenticationProvider item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

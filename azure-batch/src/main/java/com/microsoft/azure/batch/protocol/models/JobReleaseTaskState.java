@@ -46,7 +46,7 @@ public enum JobReleaseTaskState {
     public static JobReleaseTaskState fromValue(String value) {
         JobReleaseTaskState[] items = JobReleaseTaskState.values();
         for (JobReleaseTaskState item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

@@ -52,7 +52,7 @@ public enum HostingEnvironmentStatus {
     public static HostingEnvironmentStatus fromValue(String value) {
         HostingEnvironmentStatus[] items = HostingEnvironmentStatus.values();
         for (HostingEnvironmentStatus item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

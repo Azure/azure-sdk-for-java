@@ -46,7 +46,7 @@ public enum JobType {
     public static JobType fromValue(String value) {
         JobType[] items = JobType.values();
         for (JobType item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

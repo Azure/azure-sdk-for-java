@@ -49,7 +49,7 @@ public enum PoolState {
     public static PoolState fromValue(String value) {
         PoolState[] items = PoolState.values();
         for (PoolState item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

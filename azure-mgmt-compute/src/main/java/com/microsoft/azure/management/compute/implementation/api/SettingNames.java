@@ -46,7 +46,7 @@ public enum SettingNames {
     public static SettingNames fromValue(String value) {
         SettingNames[] items = SettingNames.values();
         for (SettingNames item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

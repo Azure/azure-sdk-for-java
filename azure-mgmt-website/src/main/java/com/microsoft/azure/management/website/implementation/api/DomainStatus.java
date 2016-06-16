@@ -103,7 +103,7 @@ public enum DomainStatus {
     public static DomainStatus fromValue(String value) {
         DomainStatus[] items = DomainStatus.values();
         for (DomainStatus item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

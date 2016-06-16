@@ -49,7 +49,7 @@ public enum OSType {
     public static OSType fromValue(String value) {
         OSType[] items = OSType.values();
         for (OSType item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

@@ -46,7 +46,7 @@ public enum UpgradeMode {
     public static UpgradeMode fromValue(String value) {
         UpgradeMode[] items = UpgradeMode.values();
         for (UpgradeMode item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

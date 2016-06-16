@@ -43,7 +43,7 @@ public enum AppendModeType {
     public static AppendModeType fromValue(String value) {
         AppendModeType[] items = AppendModeType.values();
         for (AppendModeType item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

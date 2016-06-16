@@ -58,7 +58,7 @@ public enum UsageUnit {
     public static UsageUnit fromValue(String value) {
         UsageUnit[] items = UsageUnit.values();
         for (UsageUnit item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

@@ -46,7 +46,7 @@ public enum CertificateProductType {
     public static CertificateProductType fromValue(String value) {
         CertificateProductType[] items = CertificateProductType.values();
         for (CertificateProductType item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

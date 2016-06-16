@@ -49,7 +49,7 @@ public enum CompileMode {
     public static CompileMode fromValue(String value) {
         CompileMode[] items = CompileMode.values();
         for (CompileMode item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

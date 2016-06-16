@@ -49,7 +49,7 @@ public enum SchedulingErrorCategory {
     public static SchedulingErrorCategory fromValue(String value) {
         SchedulingErrorCategory[] items = SchedulingErrorCategory.values();
         for (SchedulingErrorCategory item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

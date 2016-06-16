@@ -49,7 +49,7 @@ public enum DisableJobOption {
     public static DisableJobOption fromValue(String value) {
         DisableJobOption[] items = DisableJobOption.values();
         for (DisableJobOption item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

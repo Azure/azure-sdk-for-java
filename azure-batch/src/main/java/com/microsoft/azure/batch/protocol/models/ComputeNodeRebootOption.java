@@ -52,7 +52,7 @@ public enum ComputeNodeRebootOption {
     public static ComputeNodeRebootOption fromValue(String value) {
         ComputeNodeRebootOption[] items = ComputeNodeRebootOption.values();
         for (ComputeNodeRebootOption item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

@@ -49,7 +49,7 @@ public enum AutoHealActionType {
     public static AutoHealActionType fromValue(String value) {
         AutoHealActionType[] items = AutoHealActionType.values();
         for (AutoHealActionType item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

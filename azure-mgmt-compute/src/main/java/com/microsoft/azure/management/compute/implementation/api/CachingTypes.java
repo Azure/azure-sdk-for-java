@@ -49,7 +49,7 @@ public enum CachingTypes {
     public static CachingTypes fromValue(String value) {
         CachingTypes[] items = CachingTypes.values();
         for (CachingTypes item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

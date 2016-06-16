@@ -49,7 +49,7 @@ public enum CertificateStoreLocation {
     public static CertificateStoreLocation fromValue(String value) {
         CertificateStoreLocation[] items = CertificateStoreLocation.values();
         for (CertificateStoreLocation item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

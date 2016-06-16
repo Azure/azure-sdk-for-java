@@ -55,7 +55,7 @@ public enum SiteLoadBalancing {
     public static SiteLoadBalancing fromValue(String value) {
         SiteLoadBalancing[] items = SiteLoadBalancing.values();
         for (SiteLoadBalancing item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

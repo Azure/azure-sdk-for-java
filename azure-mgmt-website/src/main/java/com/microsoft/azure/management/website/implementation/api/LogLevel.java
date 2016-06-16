@@ -55,7 +55,7 @@ public enum LogLevel {
     public static LogLevel fromValue(String value) {
         LogLevel[] items = LogLevel.values();
         for (LogLevel item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

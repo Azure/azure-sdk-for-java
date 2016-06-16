@@ -58,7 +58,7 @@ public enum JobResourceType {
     public static JobResourceType fromValue(String value) {
         JobResourceType[] items = JobResourceType.values();
         for (JobResourceType item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

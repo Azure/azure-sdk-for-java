@@ -70,7 +70,7 @@ public enum CertificateOrderStatus {
     public static CertificateOrderStatus fromValue(String value) {
         CertificateOrderStatus[] items = CertificateOrderStatus.values();
         for (CertificateOrderStatus item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

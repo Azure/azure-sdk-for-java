@@ -46,7 +46,7 @@ public enum Kind {
     public static Kind fromValue(String value) {
         Kind[] items = Kind.values();
         for (Kind item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

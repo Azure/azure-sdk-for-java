@@ -52,7 +52,7 @@ public enum DatabaseServerType {
     public static DatabaseServerType fromValue(String value) {
         DatabaseServerType[] items = DatabaseServerType.values();
         for (DatabaseServerType item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

@@ -67,7 +67,7 @@ public enum CertificateOrderActionType {
     public static CertificateOrderActionType fromValue(String value) {
         CertificateOrderActionType[] items = CertificateOrderActionType.values();
         for (CertificateOrderActionType item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

@@ -52,7 +52,7 @@ public enum TaskAddStatus {
     public static TaskAddStatus fromValue(String value) {
         TaskAddStatus[] items = TaskAddStatus.values();
         for (TaskAddStatus item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

@@ -70,7 +70,7 @@ public enum BackupItemStatus {
     public static BackupItemStatus fromValue(String value) {
         BackupItemStatus[] items = BackupItemStatus.values();
         for (BackupItemStatus item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

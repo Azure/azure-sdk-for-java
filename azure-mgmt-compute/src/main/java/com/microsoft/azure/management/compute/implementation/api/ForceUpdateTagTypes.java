@@ -43,7 +43,7 @@ public enum ForceUpdateTagTypes {
     public static ForceUpdateTagTypes fromValue(String value) {
         ForceUpdateTagTypes[] items = ForceUpdateTagTypes.values();
         for (ForceUpdateTagTypes item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

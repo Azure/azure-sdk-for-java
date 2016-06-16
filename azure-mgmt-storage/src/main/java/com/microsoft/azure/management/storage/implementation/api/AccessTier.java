@@ -46,7 +46,7 @@ public enum AccessTier {
     public static AccessTier fromValue(String value) {
         AccessTier[] items = AccessTier.values();
         for (AccessTier item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

@@ -46,7 +46,7 @@ public enum CustomHostNameDnsRecordType {
     public static CustomHostNameDnsRecordType fromValue(String value) {
         CustomHostNameDnsRecordType[] items = CustomHostNameDnsRecordType.values();
         for (CustomHostNameDnsRecordType item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

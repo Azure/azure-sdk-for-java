@@ -49,7 +49,7 @@ public enum AllocationState {
     public static AllocationState fromValue(String value) {
         AllocationState[] items = AllocationState.values();
         for (AllocationState item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

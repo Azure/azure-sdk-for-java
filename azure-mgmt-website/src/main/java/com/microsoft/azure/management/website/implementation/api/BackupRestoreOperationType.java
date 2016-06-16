@@ -49,7 +49,7 @@ public enum BackupRestoreOperationType {
     public static BackupRestoreOperationType fromValue(String value) {
         BackupRestoreOperationType[] items = BackupRestoreOperationType.values();
         for (BackupRestoreOperationType item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

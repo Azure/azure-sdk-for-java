@@ -46,7 +46,7 @@ public enum ManagedPipelineMode {
     public static ManagedPipelineMode fromValue(String value) {
         ManagedPipelineMode[] items = ManagedPipelineMode.values();
         for (ManagedPipelineMode item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

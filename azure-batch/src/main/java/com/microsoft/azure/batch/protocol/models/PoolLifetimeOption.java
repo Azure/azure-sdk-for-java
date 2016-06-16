@@ -49,7 +49,7 @@ public enum PoolLifetimeOption {
     public static PoolLifetimeOption fromValue(String value) {
         PoolLifetimeOption[] items = PoolLifetimeOption.values();
         for (PoolLifetimeOption item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

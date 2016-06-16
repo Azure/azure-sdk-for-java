@@ -46,7 +46,7 @@ public enum Reason {
     public static Reason fromValue(String value) {
         Reason[] items = Reason.values();
         for (Reason item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

@@ -49,7 +49,7 @@ public enum SeverityTypes {
     public static SeverityTypes fromValue(String value) {
         SeverityTypes[] items = SeverityTypes.values();
         for (SeverityTypes item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

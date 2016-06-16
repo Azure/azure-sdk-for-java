@@ -46,7 +46,7 @@ public enum DataLakeStoreAccountState {
     public static DataLakeStoreAccountState fromValue(String value) {
         DataLakeStoreAccountState[] items = DataLakeStoreAccountState.values();
         for (DataLakeStoreAccountState item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

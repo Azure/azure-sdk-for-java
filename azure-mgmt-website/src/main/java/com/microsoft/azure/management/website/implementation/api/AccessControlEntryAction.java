@@ -46,7 +46,7 @@ public enum AccessControlEntryAction {
     public static AccessControlEntryAction fromValue(String value) {
         AccessControlEntryAction[] items = AccessControlEntryAction.values();
         for (AccessControlEntryAction item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

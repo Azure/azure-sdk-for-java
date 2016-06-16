@@ -49,7 +49,7 @@ public enum ManagedHostingEnvironmentStatus {
     public static ManagedHostingEnvironmentStatus fromValue(String value) {
         ManagedHostingEnvironmentStatus[] items = ManagedHostingEnvironmentStatus.values();
         for (ManagedHostingEnvironmentStatus item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

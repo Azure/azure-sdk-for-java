@@ -49,7 +49,7 @@ public enum DiskCreateOptionTypes {
     public static DiskCreateOptionTypes fromValue(String value) {
         DiskCreateOptionTypes[] items = DiskCreateOptionTypes.values();
         for (DiskCreateOptionTypes item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

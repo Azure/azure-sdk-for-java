@@ -52,7 +52,7 @@ public enum WorkerSizeOptions {
     public static WorkerSizeOptions fromValue(String value) {
         WorkerSizeOptions[] items = WorkerSizeOptions.values();
         for (WorkerSizeOptions item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

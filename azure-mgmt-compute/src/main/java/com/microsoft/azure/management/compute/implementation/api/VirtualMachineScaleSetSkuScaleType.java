@@ -46,7 +46,7 @@ public enum VirtualMachineScaleSetSkuScaleType {
     public static VirtualMachineScaleSetSkuScaleType fromValue(String value) {
         VirtualMachineScaleSetSkuScaleType[] items = VirtualMachineScaleSetSkuScaleType.values();
         for (VirtualMachineScaleSetSkuScaleType item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

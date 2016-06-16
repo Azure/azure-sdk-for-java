@@ -55,7 +55,7 @@ public enum SkuName {
     public static SkuName fromValue(String value) {
         SkuName[] items = SkuName.values();
         for (SkuName item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

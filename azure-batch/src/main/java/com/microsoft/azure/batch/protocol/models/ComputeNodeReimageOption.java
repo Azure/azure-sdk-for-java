@@ -52,7 +52,7 @@ public enum ComputeNodeReimageOption {
     public static ComputeNodeReimageOption fromValue(String value) {
         ComputeNodeReimageOption[] items = ComputeNodeReimageOption.values();
         for (ComputeNodeReimageOption item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

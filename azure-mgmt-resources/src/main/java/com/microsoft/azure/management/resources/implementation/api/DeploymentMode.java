@@ -46,7 +46,7 @@ public enum DeploymentMode {
     public static DeploymentMode fromValue(String value) {
         DeploymentMode[] items = DeploymentMode.values();
         for (DeploymentMode item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

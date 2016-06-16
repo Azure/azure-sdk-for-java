@@ -46,7 +46,7 @@ public enum FileType {
     public static FileType fromValue(String value) {
         FileType[] items = FileType.values();
         for (FileType item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

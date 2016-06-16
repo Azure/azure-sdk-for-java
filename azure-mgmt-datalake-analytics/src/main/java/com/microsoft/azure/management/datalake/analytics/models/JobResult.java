@@ -52,7 +52,7 @@ public enum JobResult {
     public static JobResult fromValue(String value) {
         JobResult[] items = JobResult.values();
         for (JobResult item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

@@ -46,7 +46,7 @@ public enum UsageState {
     public static UsageState fromValue(String value) {
         UsageState[] items = UsageState.values();
         for (UsageState item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

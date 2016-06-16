@@ -49,7 +49,7 @@ public enum ProvisioningState {
     public static ProvisioningState fromValue(String value) {
         ProvisioningState[] items = ProvisioningState.values();
         for (ProvisioningState item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

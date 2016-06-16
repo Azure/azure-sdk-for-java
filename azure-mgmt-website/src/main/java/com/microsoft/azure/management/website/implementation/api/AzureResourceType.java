@@ -46,7 +46,7 @@ public enum AzureResourceType {
     public static AzureResourceType fromValue(String value) {
         AzureResourceType[] items = AzureResourceType.values();
         for (AzureResourceType item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

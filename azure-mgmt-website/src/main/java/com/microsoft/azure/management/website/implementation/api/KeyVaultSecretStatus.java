@@ -70,7 +70,7 @@ public enum KeyVaultSecretStatus {
     public static KeyVaultSecretStatus fromValue(String value) {
         KeyVaultSecretStatus[] items = KeyVaultSecretStatus.values();
         for (KeyVaultSecretStatus item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

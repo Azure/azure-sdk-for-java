@@ -76,7 +76,7 @@ public enum ComputeNodeState {
     public static ComputeNodeState fromValue(String value) {
         ComputeNodeState[] items = ComputeNodeState.values();
         for (ComputeNodeState item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

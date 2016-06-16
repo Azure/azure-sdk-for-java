@@ -46,7 +46,7 @@ public enum ProtocolTypes {
     public static ProtocolTypes fromValue(String value) {
         ProtocolTypes[] items = ProtocolTypes.values();
         for (ProtocolTypes item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

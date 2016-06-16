@@ -49,7 +49,7 @@ public enum SslState {
     public static SslState fromValue(String value) {
         SslState[] items = SslState.values();
         for (SslState item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

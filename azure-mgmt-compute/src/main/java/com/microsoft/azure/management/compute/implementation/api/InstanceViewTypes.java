@@ -43,7 +43,7 @@ public enum InstanceViewTypes {
     public static InstanceViewTypes fromValue(String value) {
         InstanceViewTypes[] items = InstanceViewTypes.values();
         for (InstanceViewTypes item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

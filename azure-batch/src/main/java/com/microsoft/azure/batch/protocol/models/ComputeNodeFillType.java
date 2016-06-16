@@ -49,7 +49,7 @@ public enum ComputeNodeFillType {
     public static ComputeNodeFillType fromValue(String value) {
         ComputeNodeFillType[] items = ComputeNodeFillType.values();
         for (ComputeNodeFillType item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

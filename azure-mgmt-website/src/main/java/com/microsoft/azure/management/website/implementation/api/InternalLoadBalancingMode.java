@@ -49,7 +49,7 @@ public enum InternalLoadBalancingMode {
     public static InternalLoadBalancingMode fromValue(String value) {
         InternalLoadBalancingMode[] items = InternalLoadBalancingMode.values();
         for (InternalLoadBalancingMode item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

@@ -46,7 +46,7 @@ public enum StartTaskState {
     public static StartTaskState fromValue(String value) {
         StartTaskState[] items = StartTaskState.values();
         for (StartTaskState item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

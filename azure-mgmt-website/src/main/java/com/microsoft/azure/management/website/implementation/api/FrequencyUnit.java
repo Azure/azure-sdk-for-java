@@ -46,7 +46,7 @@ public enum FrequencyUnit {
     public static FrequencyUnit fromValue(String value) {
         FrequencyUnit[] items = FrequencyUnit.values();
         for (FrequencyUnit item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

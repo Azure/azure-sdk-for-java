@@ -49,7 +49,7 @@ public enum SiteAvailabilityState {
     public static SiteAvailabilityState fromValue(String value) {
         SiteAvailabilityState[] items = SiteAvailabilityState.values();
         for (SiteAvailabilityState item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

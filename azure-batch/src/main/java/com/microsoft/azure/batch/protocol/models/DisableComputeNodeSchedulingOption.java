@@ -49,7 +49,7 @@ public enum DisableComputeNodeSchedulingOption {
     public static DisableComputeNodeSchedulingOption fromValue(String value) {
         DisableComputeNodeSchedulingOption[] items = DisableComputeNodeSchedulingOption.values();
         for (DisableComputeNodeSchedulingOption item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

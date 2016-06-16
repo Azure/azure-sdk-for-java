@@ -46,7 +46,7 @@ public enum DomainType {
     public static DomainType fromValue(String value) {
         DomainType[] items = DomainType.values();
         for (DomainType item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

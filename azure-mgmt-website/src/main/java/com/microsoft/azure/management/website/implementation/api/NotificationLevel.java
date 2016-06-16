@@ -52,7 +52,7 @@ public enum NotificationLevel {
     public static NotificationLevel fromValue(String value) {
         NotificationLevel[] items = NotificationLevel.values();
         for (NotificationLevel item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

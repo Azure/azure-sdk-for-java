@@ -46,7 +46,7 @@ public enum AccountStatus {
     public static AccountStatus fromValue(String value) {
         AccountStatus[] items = AccountStatus.values();
         for (AccountStatus item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

@@ -70,7 +70,7 @@ public enum JobState {
     public static JobState fromValue(String value) {
         JobState[] items = JobState.values();
         for (JobState item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

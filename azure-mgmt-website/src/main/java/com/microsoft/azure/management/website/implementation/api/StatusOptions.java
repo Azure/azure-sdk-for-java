@@ -46,7 +46,7 @@ public enum StatusOptions {
     public static StatusOptions fromValue(String value) {
         StatusOptions[] items = StatusOptions.values();
         for (StatusOptions item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

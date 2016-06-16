@@ -52,7 +52,7 @@ public enum ComputeNodeDeallocationOption {
     public static ComputeNodeDeallocationOption fromValue(String value) {
         ComputeNodeDeallocationOption[] items = ComputeNodeDeallocationOption.values();
         for (ComputeNodeDeallocationOption item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

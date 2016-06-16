@@ -43,7 +43,7 @@ public enum PassNames {
     public static PassNames fromValue(String value) {
         PassNames[] items = PassNames.values();
         for (PassNames item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

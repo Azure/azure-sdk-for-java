@@ -49,7 +49,7 @@ public enum CloneAbilityResult {
     public static CloneAbilityResult fromValue(String value) {
         CloneAbilityResult[] items = CloneAbilityResult.values();
         for (CloneAbilityResult item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

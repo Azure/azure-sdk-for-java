@@ -43,7 +43,7 @@ public enum ComponentNames {
     public static ComponentNames fromValue(String value) {
         ComponentNames[] items = ComponentNames.values();
         for (ComponentNames item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

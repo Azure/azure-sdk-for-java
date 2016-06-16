@@ -46,7 +46,7 @@ public enum UnauthenticatedClientAction {
     public static UnauthenticatedClientAction fromValue(String value) {
         UnauthenticatedClientAction[] items = UnauthenticatedClientAction.values();
         for (UnauthenticatedClientAction item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

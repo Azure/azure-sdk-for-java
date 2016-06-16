@@ -46,7 +46,7 @@ public enum HostNameType {
     public static HostNameType fromValue(String value) {
         HostNameType[] items = HostNameType.values();
         for (HostNameType item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

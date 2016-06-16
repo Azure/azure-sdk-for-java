@@ -46,7 +46,7 @@ public enum OperatingSystemTypes {
     public static OperatingSystemTypes fromValue(String value) {
         OperatingSystemTypes[] items = OperatingSystemTypes.values();
         for (OperatingSystemTypes item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

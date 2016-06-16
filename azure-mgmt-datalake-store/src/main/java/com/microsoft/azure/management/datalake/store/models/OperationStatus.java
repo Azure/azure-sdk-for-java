@@ -49,7 +49,7 @@ public enum OperationStatus {
     public static OperationStatus fromValue(String value) {
         OperationStatus[] items = OperationStatus.values();
         for (OperationStatus item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

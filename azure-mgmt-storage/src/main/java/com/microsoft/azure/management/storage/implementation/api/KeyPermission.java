@@ -46,7 +46,7 @@ public enum KeyPermission {
     public static KeyPermission fromValue(String value) {
         KeyPermission[] items = KeyPermission.values();
         for (KeyPermission item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

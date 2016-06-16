@@ -49,7 +49,7 @@ public enum ComputeModeOptions {
     public static ComputeModeOptions fromValue(String value) {
         ComputeModeOptions[] items = ComputeModeOptions.values();
         for (ComputeModeOptions item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

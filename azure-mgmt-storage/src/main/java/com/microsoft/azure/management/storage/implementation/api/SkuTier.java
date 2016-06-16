@@ -46,7 +46,7 @@ public enum SkuTier {
     public static SkuTier fromValue(String value) {
         SkuTier[] items = SkuTier.values();
         for (SkuTier item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

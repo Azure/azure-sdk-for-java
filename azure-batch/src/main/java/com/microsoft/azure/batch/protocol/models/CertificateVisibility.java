@@ -52,7 +52,7 @@ public enum CertificateVisibility {
     public static CertificateVisibility fromValue(String value) {
         CertificateVisibility[] items = CertificateVisibility.values();
         for (CertificateVisibility item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }

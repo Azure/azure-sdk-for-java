@@ -55,7 +55,7 @@ public enum JobScheduleState {
     public static JobScheduleState fromValue(String value) {
         JobScheduleState[] items = JobScheduleState.values();
         for (JobScheduleState item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toValue().equalsIgnoreCase(value)) {
                 return item;
             }
         }
