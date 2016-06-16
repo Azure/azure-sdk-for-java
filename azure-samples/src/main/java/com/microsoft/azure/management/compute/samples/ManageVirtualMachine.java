@@ -142,7 +142,7 @@ public final class ManageVirtualMachine {
             vm.update()
                     .updateDataDisk(dataDisk.name())
                         .withSizeInGB(30)
-                        .apply()
+                    .set()
                     .apply();
 
             System.out.println("Expanded VM " + vm.id() + "'s data disk to 30GB");

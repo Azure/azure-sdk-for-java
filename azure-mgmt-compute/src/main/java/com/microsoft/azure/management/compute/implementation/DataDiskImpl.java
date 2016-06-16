@@ -140,7 +140,7 @@ class DataDiskImpl
     }
 
     @Override
-    public VirtualMachine apply() {
+    public VirtualMachine set() {
         return this.parent();
     }
 

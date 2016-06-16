@@ -115,7 +115,7 @@ class NicIpConfigurationImpl
     }
 
     @Override
-    public NetworkInterface apply() {
+    public NetworkInterface set() {
         return parent();
     }
 
