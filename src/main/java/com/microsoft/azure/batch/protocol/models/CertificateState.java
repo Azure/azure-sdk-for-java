@@ -30,34 +30,25 @@ public enum CertificateState {
     }
 
     /**
-     * Gets the serialized value for a CertificateState instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a CertificateState instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed CertificateState object, or null if unable to parse.
      */
     @JsonCreator
-    public static CertificateState fromValue(String value) {
+    public static CertificateState fromString(String value) {
         CertificateState[] items = CertificateState.values();
         for (CertificateState item : items) {
-            if (item.toValue().equalsIgnoreCase(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

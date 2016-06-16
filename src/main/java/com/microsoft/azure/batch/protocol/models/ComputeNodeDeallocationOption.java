@@ -33,34 +33,25 @@ public enum ComputeNodeDeallocationOption {
     }
 
     /**
-     * Gets the serialized value for a ComputeNodeDeallocationOption instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a ComputeNodeDeallocationOption instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed ComputeNodeDeallocationOption object, or null if unable to parse.
      */
     @JsonCreator
-    public static ComputeNodeDeallocationOption fromValue(String value) {
+    public static ComputeNodeDeallocationOption fromString(String value) {
         ComputeNodeDeallocationOption[] items = ComputeNodeDeallocationOption.values();
         for (ComputeNodeDeallocationOption item : items) {
-            if (item.toValue().equalsIgnoreCase(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

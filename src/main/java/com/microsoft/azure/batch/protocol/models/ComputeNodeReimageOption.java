@@ -33,34 +33,25 @@ public enum ComputeNodeReimageOption {
     }
 
     /**
-     * Gets the serialized value for a ComputeNodeReimageOption instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a ComputeNodeReimageOption instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed ComputeNodeReimageOption object, or null if unable to parse.
      */
     @JsonCreator
-    public static ComputeNodeReimageOption fromValue(String value) {
+    public static ComputeNodeReimageOption fromString(String value) {
         ComputeNodeReimageOption[] items = ComputeNodeReimageOption.values();
         for (ComputeNodeReimageOption item : items) {
-            if (item.toValue().equalsIgnoreCase(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

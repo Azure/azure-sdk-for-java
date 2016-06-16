@@ -30,34 +30,25 @@ public enum CertificateStoreLocation {
     }
 
     /**
-     * Gets the serialized value for a CertificateStoreLocation instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a CertificateStoreLocation instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed CertificateStoreLocation object, or null if unable to parse.
      */
     @JsonCreator
-    public static CertificateStoreLocation fromValue(String value) {
+    public static CertificateStoreLocation fromString(String value) {
         CertificateStoreLocation[] items = CertificateStoreLocation.values();
         for (CertificateStoreLocation item : items) {
-            if (item.toValue().equalsIgnoreCase(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }
