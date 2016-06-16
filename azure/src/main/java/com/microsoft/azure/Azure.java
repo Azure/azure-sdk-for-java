@@ -92,6 +92,10 @@ public final class Azure {
         return new AuthenticatedImpl(restClient);
     }
 
+    private static Authenticated authenticate(RestClient restClient, String subscriptionId) throws IOException {
+        return new AuthenticatedImpl(restClient).withDefaultSubscription(subscriptionId);
+    }
+
     /**
      * @return an interface allow configurations on the client.
      */
@@ -133,7 +137,8 @@ public final class Azure {
 
         @Override
         public Authenticated authenticate(File credentialsFile) throws IOException {
-            return Azure.authenticate(credentialsFile);
+            ApplicationTokenCredentials credentials = ApplicationTokenCredentials.fromFile(credentialsFile);
+            return Azure.authenticate(buildRestClient(credentials), credentials.defaultSubscriptionId());
         }
     }
 
