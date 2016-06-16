@@ -251,8 +251,8 @@ public final class Utils {
     public static String createRandomName(String namePrefix) {
         String root = UUID.randomUUID().toString().replace("-", "");
         long millis = Calendar.getInstance().getTimeInMillis();
-        long datePart = millis % 1000000000;
-        return namePrefix + root.toLowerCase().substring(0, 8) + datePart;
+        long datePart = millis % 10000000L;
+        return namePrefix + root.toLowerCase().substring(0, 3) + datePart;
     }
 
     private Utils() {

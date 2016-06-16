@@ -18,6 +18,7 @@ import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.ServiceResponse;
@@ -42,7 +43,7 @@ class NetworkInterfaceImpl
     // the name of the network interface
     private final String nicName;
     // used to generate unique name for any dependency resources
-    private final String randomId;
+    protected final ResourceNamer namer;
     // reference to the primary ip configuration
     private NicIpConfigurationImpl nicPrimaryIpConfiguration;
     // list of references to all ip configuration
@@ -60,7 +61,7 @@ class NetworkInterfaceImpl
         this.client = client;
         this.networkManager = networkManager;
         this.nicName = name;
-        this.randomId = Utils.randomId(this.nicName);
+        this.namer = new ResourceNamer(this.nicName);
         initializeNicIpConfigurations();
     }
 
@@ -361,14 +362,6 @@ class NetworkInterfaceImpl
         );
         this.nicIpConfigurations.add(nicIpConfiguration);
         return nicIpConfiguration;
-    }
-
-    /**
-     * @param prefix the prefix
-     * @return a random value (derived from the resource) with the given prefix
-     */
-    String nameWithPrefix(String prefix) {
-        return prefix + "-" + this.randomId;
     }
 
     void addToCreatableDependencies(Creatable<?> creatableResource) {
