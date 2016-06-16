@@ -14,6 +14,8 @@ import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.implementation.api.CachingTypes;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.samples.Utils;
+import okhttp3.logging.HttpLoggingInterceptor;
+
 import java.io.File;
 
 /**
@@ -45,7 +47,13 @@ public final class ManageVirtualMachine {
 
             final File credFile = new File("my.azureauth");
 
-            Azure azure = Azure.authenticate(credFile).withDefaultSubscription();
+            Azure azure = Azure
+                    .configure()
+                    .withLogLevel(HttpLoggingInterceptor.Level.BODY)
+                    .authenticate(credFile)
+                    .withDefaultSubscription();
+
+            azure.resourceGroups().list();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());
