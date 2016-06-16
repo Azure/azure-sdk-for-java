@@ -8,7 +8,6 @@ package com.microsoft.azure.management.datalake.analytics.implementation;
 
 import retrofit2.Retrofit;
 import com.microsoft.azure.management.datalake.analytics.Catalogs;
-import com.microsoft.azure.management.datalake.analytics.DataLakeAnalyticsCatalogManagementClient;
 import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
@@ -27,6 +26,7 @@ import com.microsoft.azure.management.datalake.analytics.models.USqlSecret;
 import com.microsoft.azure.management.datalake.analytics.models.USqlTable;
 import com.microsoft.azure.management.datalake.analytics.models.USqlTablePartition;
 import com.microsoft.azure.management.datalake.analytics.models.USqlTableStatistics;
+import com.microsoft.azure.management.datalake.analytics.models.USqlTableType;
 import com.microsoft.azure.management.datalake.analytics.models.USqlTableValuedFunction;
 import com.microsoft.azure.management.datalake.analytics.models.USqlType;
 import com.microsoft.azure.management.datalake.analytics.models.USqlView;
@@ -61,7 +61,7 @@ public final class CatalogsImpl implements Catalogs {
     /** The Retrofit service to perform REST calls. */
     private CatalogsService service;
     /** The service client containing this operation class. */
-    private DataLakeAnalyticsCatalogManagementClient client;
+    private DataLakeAnalyticsCatalogManagementClientImpl client;
 
     /**
      * Initializes an instance of CatalogsImpl.
@@ -69,7 +69,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public CatalogsImpl(Retrofit retrofit, DataLakeAnalyticsCatalogManagementClient client) {
+    public CatalogsImpl(Retrofit retrofit, DataLakeAnalyticsCatalogManagementClientImpl client) {
         this.service = retrofit.create(CatalogsService.class);
         this.client = client;
     }
@@ -130,6 +130,14 @@ public final class CatalogsImpl implements Catalogs {
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables")
         Call<ResponseBody> listTables(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/tabletypes/{tableTypeName}")
+        Call<ResponseBody> getTableType(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Path("tableTypeName") String tableTypeName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/tabletypes")
+        Call<ResponseBody> listTableTypes(@Path("databaseName") String databaseName, @Path("schemaName") String schemaName, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Query("$expand") String expand, @Query("$select") String select, @Query("$orderby") String orderby, @Query("$count") Boolean count, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("catalog/usql/databases/{databaseName}/schemas/{schemaName}/views/{viewName}")
@@ -206,6 +214,10 @@ public final class CatalogsImpl implements Catalogs {
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
         Call<ResponseBody> listTablesNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET
+        Call<ResponseBody> listTableTypesNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
@@ -335,7 +347,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<USqlSecret> createSecretDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<USqlSecret, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<USqlSecret, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<USqlSecret>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -435,7 +447,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<USqlSecret> updateSecretDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<USqlSecret, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<USqlSecret, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<USqlSecret>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -524,7 +536,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<USqlSecret> getSecretDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<USqlSecret, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<USqlSecret, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<USqlSecret>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -613,7 +625,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<Void> deleteSecretDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -692,7 +704,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<Void> deleteAllSecretsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -780,7 +792,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<USqlExternalDataSource> getExternalDataSourceDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<USqlExternalDataSource, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<USqlExternalDataSource, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<USqlExternalDataSource>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -989,7 +1001,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlExternalDataSource>> listExternalDataSourcesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlExternalDataSource>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<USqlExternalDataSource>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<USqlExternalDataSource>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1078,7 +1090,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<USqlCredential> getCredentialDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<USqlCredential, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<USqlCredential, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<USqlCredential>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1287,7 +1299,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlCredential>> listCredentialsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlCredential>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<USqlCredential>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<USqlCredential>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1385,7 +1397,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<USqlProcedure> getProcedureDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<USqlProcedure, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<USqlProcedure, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<USqlProcedure>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1612,7 +1624,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlProcedure>> listProceduresDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlProcedure>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<USqlProcedure>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<USqlProcedure>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1710,7 +1722,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<USqlTable> getTableDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<USqlTable, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<USqlTable, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<USqlTable>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1937,8 +1949,333 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlTable>> listTablesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlTable>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<USqlTable>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<USqlTable>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Retrieves the specified table type from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the table type.
+     * @param schemaName The name of the schema containing the table type.
+     * @param tableTypeName The name of the table type to retrieve.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the USqlTableType object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<USqlTableType> getTableType(String accountName, String databaseName, String schemaName, String tableTypeName) throws CloudException, IOException, IllegalArgumentException {
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.adlaCatalogDnsSuffix() == null) {
+            throw new IllegalArgumentException("Parameter this.client.adlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (schemaName == null) {
+            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
+        }
+        if (tableTypeName == null) {
+            throw new IllegalArgumentException("Parameter tableTypeName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        Call<ResponseBody> call = service.getTableType(databaseName, schemaName, tableTypeName, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
+        return getTableTypeDelegate(call.execute());
+    }
+
+    /**
+     * Retrieves the specified table type from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the table type.
+     * @param schemaName The name of the schema containing the table type.
+     * @param tableTypeName The name of the table type to retrieve.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getTableTypeAsync(String accountName, String databaseName, String schemaName, String tableTypeName, final ServiceCallback<USqlTableType> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (accountName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.adlaCatalogDnsSuffix() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (schemaName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
+            return null;
+        }
+        if (tableTypeName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter tableTypeName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        Call<ResponseBody> call = service.getTableType(databaseName, schemaName, tableTypeName, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<USqlTableType>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getTableTypeDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<USqlTableType> getTableTypeDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<USqlTableType, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<USqlTableType>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Retrieves the list of table types from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the table types.
+     * @param schemaName The name of the schema containing the table types.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;USqlTableType&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<USqlTableType>> listTableTypes(final String accountName, final String databaseName, final String schemaName) throws CloudException, IOException, IllegalArgumentException {
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.adlaCatalogDnsSuffix() == null) {
+            throw new IllegalArgumentException("Parameter this.client.adlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (schemaName == null) {
+            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final String filter = null;
+        final Integer top = null;
+        final Integer skip = null;
+        final String expand = null;
+        final String select = null;
+        final String orderby = null;
+        final Boolean count = null;
+        String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        Call<ResponseBody> call = service.listTableTypes(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
+        ServiceResponse<PageImpl<USqlTableType>> response = listTableTypesDelegate(call.execute());
+        PagedList<USqlTableType> result = new PagedList<USqlTableType>(response.getBody()) {
+            @Override
+            public Page<USqlTableType> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listTableTypesNext(nextPageLink).getBody();
+            }
+        };
+        return new ServiceResponse<>(result, response.getResponse());
+    }
+
+    /**
+     * Retrieves the list of table types from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the table types.
+     * @param schemaName The name of the schema containing the table types.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listTableTypesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTableType> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (accountName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.adlaCatalogDnsSuffix() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (schemaName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String filter = null;
+        final Integer top = null;
+        final Integer skip = null;
+        final String expand = null;
+        final String select = null;
+        final String orderby = null;
+        final Boolean count = null;
+        String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        Call<ResponseBody> call = service.listTableTypes(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<List<USqlTableType>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<PageImpl<USqlTableType>> result = listTableTypesDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        listTableTypesNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+                    }
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Retrieves the list of table types from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the table types.
+     * @param schemaName The name of the schema containing the table types.
+     * @param filter OData filter. Optional.
+     * @param top The number of items to return. Optional.
+     * @param skip The number of items to skip over before returning elements. Optional.
+     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
+     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;USqlTableType&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<USqlTableType>> listTableTypes(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) throws CloudException, IOException, IllegalArgumentException {
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.adlaCatalogDnsSuffix() == null) {
+            throw new IllegalArgumentException("Parameter this.client.adlaCatalogDnsSuffix() is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (schemaName == null) {
+            throw new IllegalArgumentException("Parameter schemaName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        Call<ResponseBody> call = service.listTableTypes(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
+        ServiceResponse<PageImpl<USqlTableType>> response = listTableTypesDelegate(call.execute());
+        PagedList<USqlTableType> result = new PagedList<USqlTableType>(response.getBody()) {
+            @Override
+            public Page<USqlTableType> nextPage(String nextPageLink) throws CloudException, IOException {
+                return listTableTypesNext(nextPageLink).getBody();
+            }
+        };
+        return new ServiceResponse<>(result, response.getResponse());
+    }
+
+    /**
+     * Retrieves the list of table types from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the table types.
+     * @param schemaName The name of the schema containing the table types.
+     * @param filter OData filter. Optional.
+     * @param top The number of items to return. Optional.
+     * @param skip The number of items to skip over before returning elements. Optional.
+     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
+     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listTableTypesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableType> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (accountName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.adlaCatalogDnsSuffix() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlaCatalogDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (databaseName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            return null;
+        }
+        if (schemaName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlaCatalogDnsSuffix}", this.client.adlaCatalogDnsSuffix());
+        Call<ResponseBody> call = service.listTableTypes(databaseName, schemaName, filter, top, skip, expand, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<List<USqlTableType>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<PageImpl<USqlTableType>> result = listTableTypesDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        listTableTypesNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+                    }
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<PageImpl<USqlTableType>> listTableTypesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<USqlTableType>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<USqlTableType>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -2035,7 +2372,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<USqlView> getViewDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<USqlView, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<USqlView, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<USqlView>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2262,7 +2599,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlView>> listViewsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlView>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<USqlView>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<USqlView>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2369,7 +2706,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<USqlTableStatistics> getTableStatisticDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<USqlTableStatistics, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<USqlTableStatistics, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<USqlTableStatistics>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2614,7 +2951,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlTableStatistics>> listTableStatisticsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlTableStatistics>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<USqlTableStatistics>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<USqlTableStatistics>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2721,7 +3058,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<USqlTablePartition> getTablePartitionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<USqlTablePartition, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<USqlTablePartition, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<USqlTablePartition>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2966,7 +3303,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlTablePartition>> listTablePartitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlTablePartition>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<USqlTablePartition>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<USqlTablePartition>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3193,7 +3530,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlType>> listTypesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlType>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<USqlType>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<USqlType>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3291,7 +3628,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<USqlTableValuedFunction> getTableValuedFunctionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<USqlTableValuedFunction, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<USqlTableValuedFunction, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<USqlTableValuedFunction>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3518,7 +3855,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlTableValuedFunction>> listTableValuedFunctionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlTableValuedFunction>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<USqlTableValuedFunction>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<USqlTableValuedFunction>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3607,7 +3944,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<USqlAssembly> getAssemblyDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<USqlAssembly, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<USqlAssembly, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<USqlAssembly>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3816,7 +4153,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlAssemblyClr>> listAssembliesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlAssemblyClr>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<USqlAssemblyClr>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<USqlAssemblyClr>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -3905,7 +4242,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<USqlSchema> getSchemaDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<USqlSchema, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<USqlSchema, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<USqlSchema>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4114,7 +4451,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlSchema>> listSchemasDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlSchema>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<USqlSchema>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<USqlSchema>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4194,7 +4531,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<USqlDatabase> getDatabaseDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<USqlDatabase, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<USqlDatabase, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<USqlDatabase>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4385,7 +4722,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlDatabase>> listDatabasesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlDatabase>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<USqlDatabase>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<USqlDatabase>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4448,7 +4785,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlExternalDataSource>> listExternalDataSourcesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlExternalDataSource>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<USqlExternalDataSource>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<USqlExternalDataSource>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4511,7 +4848,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlCredential>> listCredentialsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlCredential>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<USqlCredential>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<USqlCredential>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4574,7 +4911,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlProcedure>> listProceduresNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlProcedure>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<USqlProcedure>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<USqlProcedure>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4637,8 +4974,71 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlTable>> listTablesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlTable>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<USqlTable>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<USqlTable>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Retrieves the list of table types from the Data Lake Analytics catalog.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;USqlTableType&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PageImpl<USqlTableType>> listTableTypesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.listTableTypesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
+        return listTableTypesNextDelegate(call.execute());
+    }
+
+    /**
+     * Retrieves the list of table types from the Data Lake Analytics catalog.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listTableTypesNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<USqlTableType> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (nextPageLink == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            return null;
+        }
+        Call<ResponseBody> call = service.listTableTypesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
+        serviceCall.newCall(call);
+        call.enqueue(new ServiceResponseCallback<List<USqlTableType>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<PageImpl<USqlTableType>> result = listTableTypesNextDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        listTableTypesNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+                    }
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<PageImpl<USqlTableType>> listTableTypesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<USqlTableType>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<USqlTableType>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -4700,7 +5100,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlView>> listViewsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlView>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<USqlView>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<USqlView>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4763,7 +5163,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlTableStatistics>> listTableStatisticsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlTableStatistics>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<USqlTableStatistics>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<USqlTableStatistics>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4826,7 +5226,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlTablePartition>> listTablePartitionsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlTablePartition>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<USqlTablePartition>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<USqlTablePartition>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4889,7 +5289,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlType>> listTypesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlType>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<USqlType>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<USqlType>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -4952,7 +5352,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlTableValuedFunction>> listTableValuedFunctionsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlTableValuedFunction>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<USqlTableValuedFunction>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<USqlTableValuedFunction>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -5015,7 +5415,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlAssemblyClr>> listAssembliesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlAssemblyClr>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<USqlAssemblyClr>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<USqlAssemblyClr>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -5078,7 +5478,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlSchema>> listSchemasNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlSchema>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<USqlSchema>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<USqlSchema>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -5141,7 +5541,7 @@ public final class CatalogsImpl implements Catalogs {
     }
 
     private ServiceResponse<PageImpl<USqlDatabase>> listDatabasesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<USqlDatabase>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<USqlDatabase>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<USqlDatabase>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

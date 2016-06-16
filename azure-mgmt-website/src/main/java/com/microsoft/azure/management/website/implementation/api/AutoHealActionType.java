@@ -30,34 +30,25 @@ public enum AutoHealActionType {
     }
 
     /**
-     * Gets the serialized value for a AutoHealActionType instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a AutoHealActionType instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed AutoHealActionType object, or null if unable to parse.
      */
     @JsonCreator
-    public static AutoHealActionType fromValue(String value) {
+    public static AutoHealActionType fromString(String value) {
         AutoHealActionType[] items = AutoHealActionType.values();
         for (AutoHealActionType item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

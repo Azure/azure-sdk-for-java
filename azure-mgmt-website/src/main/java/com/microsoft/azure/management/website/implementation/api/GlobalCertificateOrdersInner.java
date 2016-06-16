@@ -117,7 +117,7 @@ public final class GlobalCertificateOrdersInner {
     }
 
     private ServiceResponse<CertificateOrderCollectionInner> getAllCertificateOrdersDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CertificateOrderCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<CertificateOrderCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<CertificateOrderCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -188,7 +188,7 @@ public final class GlobalCertificateOrdersInner {
     }
 
     private ServiceResponse<Object> validateCertificatePurchaseInformationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

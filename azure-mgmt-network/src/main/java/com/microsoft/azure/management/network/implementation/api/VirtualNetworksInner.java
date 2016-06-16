@@ -238,7 +238,7 @@ public final class VirtualNetworksInner {
     }
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<Void>() { }.getType())
@@ -392,7 +392,7 @@ public final class VirtualNetworksInner {
     }
 
     private ServiceResponse<VirtualNetworkInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VirtualNetworkInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<VirtualNetworkInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<VirtualNetworkInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -559,7 +559,7 @@ public final class VirtualNetworksInner {
     }
 
     private ServiceResponse<VirtualNetworkInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<VirtualNetworkInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<VirtualNetworkInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<VirtualNetworkInner>() { }.getType())
                 .register(201, new TypeToken<VirtualNetworkInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -634,7 +634,7 @@ public final class VirtualNetworksInner {
     }
 
     private ServiceResponse<PageImpl<VirtualNetworkInner>> listAllDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<VirtualNetworkInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -717,7 +717,7 @@ public final class VirtualNetworksInner {
     }
 
     private ServiceResponse<PageImpl<VirtualNetworkInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<VirtualNetworkInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -780,7 +780,7 @@ public final class VirtualNetworksInner {
     }
 
     private ServiceResponse<PageImpl<VirtualNetworkInner>> listAllNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<VirtualNetworkInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -843,7 +843,7 @@ public final class VirtualNetworksInner {
     }
 
     private ServiceResponse<PageImpl<VirtualNetworkInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<VirtualNetworkInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

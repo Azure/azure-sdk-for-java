@@ -247,7 +247,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
@@ -335,7 +335,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     private ServiceResponse<ExpressRouteCircuitAuthorizationInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ExpressRouteCircuitAuthorizationInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<ExpressRouteCircuitAuthorizationInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<ExpressRouteCircuitAuthorizationInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -519,7 +519,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     private ServiceResponse<ExpressRouteCircuitAuthorizationInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ExpressRouteCircuitAuthorizationInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<ExpressRouteCircuitAuthorizationInner, CloudException>(this.client.mapperAdapter())
                 .register(201, new TypeToken<ExpressRouteCircuitAuthorizationInner>() { }.getType())
                 .register(200, new TypeToken<ExpressRouteCircuitAuthorizationInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -612,7 +612,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuitAuthorizationInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitAuthorizationInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitAuthorizationInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitAuthorizationInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -675,7 +675,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     private ServiceResponse<PageImpl<ExpressRouteCircuitAuthorizationInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitAuthorizationInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitAuthorizationInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitAuthorizationInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

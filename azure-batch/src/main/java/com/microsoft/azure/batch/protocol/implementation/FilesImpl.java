@@ -8,7 +8,6 @@ package com.microsoft.azure.batch.protocol.implementation;
 
 import retrofit2.Retrofit;
 import com.microsoft.azure.batch.protocol.Files;
-import com.microsoft.azure.batch.protocol.BatchServiceClient;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.batch.protocol.models.BatchErrorException;
@@ -67,7 +66,7 @@ public final class FilesImpl implements Files {
     /** The Retrofit service to perform REST calls. */
     private FilesService service;
     /** The service client containing this operation class. */
-    private BatchServiceClient client;
+    private BatchServiceClientImpl client;
 
     /**
      * Initializes an instance of FilesImpl.
@@ -75,7 +74,7 @@ public final class FilesImpl implements Files {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public FilesImpl(Retrofit retrofit, BatchServiceClient client) {
+    public FilesImpl(Retrofit retrofit, BatchServiceClientImpl client) {
         this.service = retrofit.create(FilesService.class);
         this.client = client;
     }
@@ -342,7 +341,7 @@ public final class FilesImpl implements Files {
     }
 
     private ServiceResponseWithHeaders<Void, FileDeleteFromTaskHeaders> deleteFromTaskDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, FileDeleteFromTaskHeaders.class);
@@ -619,7 +618,7 @@ public final class FilesImpl implements Files {
     }
 
     private ServiceResponseWithHeaders<InputStream, FileGetFromTaskHeaders> getFromTaskDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<InputStream, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<InputStream, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<InputStream>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, FileGetFromTaskHeaders.class);
@@ -886,7 +885,7 @@ public final class FilesImpl implements Files {
     }
 
     private ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromTaskHeaders> getNodeFilePropertiesFromTaskDelegate(Response<Void> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildEmptyWithHeaders(response, FileGetNodeFilePropertiesFromTaskHeaders.class);
@@ -1105,7 +1104,7 @@ public final class FilesImpl implements Files {
     }
 
     private ServiceResponseWithHeaders<Void, FileDeleteFromComputeNodeHeaders> deleteFromComputeNodeDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, FileDeleteFromComputeNodeHeaders.class);
@@ -1382,7 +1381,7 @@ public final class FilesImpl implements Files {
     }
 
     private ServiceResponseWithHeaders<InputStream, FileGetFromComputeNodeHeaders> getFromComputeNodeDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<InputStream, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<InputStream, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<InputStream>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, FileGetFromComputeNodeHeaders.class);
@@ -1649,7 +1648,7 @@ public final class FilesImpl implements Files {
     }
 
     private ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromComputeNodeHeaders> getNodeFilePropertiesFromComputeNodeDelegate(Response<Void> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildEmptyWithHeaders(response, FileGetNodeFilePropertiesFromComputeNodeHeaders.class);
@@ -1912,7 +1911,7 @@ public final class FilesImpl implements Files {
     }
 
     private ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> listFromTaskDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<NodeFile>, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<NodeFile>, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<NodeFile>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, FileListFromTaskHeaders.class);
@@ -2175,7 +2174,7 @@ public final class FilesImpl implements Files {
     }
 
     private ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> listFromComputeNodeDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<NodeFile>, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<NodeFile>, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<NodeFile>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, FileListFromComputeNodeHeaders.class);
@@ -2346,7 +2345,7 @@ public final class FilesImpl implements Files {
     }
 
     private ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> listFromTaskNextDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<NodeFile>, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<NodeFile>, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<NodeFile>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, FileListFromTaskHeaders.class);
@@ -2517,7 +2516,7 @@ public final class FilesImpl implements Files {
     }
 
     private ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> listFromComputeNodeNextDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<NodeFile>, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<NodeFile>, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<NodeFile>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, FileListFromComputeNodeHeaders.class);

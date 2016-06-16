@@ -27,34 +27,25 @@ public enum StatusOptions {
     }
 
     /**
-     * Gets the serialized value for a StatusOptions instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a StatusOptions instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed StatusOptions object, or null if unable to parse.
      */
     @JsonCreator
-    public static StatusOptions fromValue(String value) {
+    public static StatusOptions fromString(String value) {
         StatusOptions[] items = StatusOptions.values();
         for (StatusOptions item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

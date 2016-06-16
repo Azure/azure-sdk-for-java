@@ -130,7 +130,7 @@ public final class GlobalResourceGroupsInner {
     }
 
     private ServiceResponse<Void> moveResourcesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }

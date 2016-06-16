@@ -30,34 +30,25 @@ public enum SslState {
     }
 
     /**
-     * Gets the serialized value for a SslState instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a SslState instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed SslState object, or null if unable to parse.
      */
     @JsonCreator
-    public static SslState fromValue(String value) {
+    public static SslState fromString(String value) {
         SslState[] items = SslState.values();
         for (SslState item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

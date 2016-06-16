@@ -27,34 +27,25 @@ public enum SchedulingState {
     }
 
     /**
-     * Gets the serialized value for a SchedulingState instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a SchedulingState instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed SchedulingState object, or null if unable to parse.
      */
     @JsonCreator
-    public static SchedulingState fromValue(String value) {
+    public static SchedulingState fromString(String value) {
         SchedulingState[] items = SchedulingState.values();
         for (SchedulingState item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

@@ -8,7 +8,6 @@ package com.microsoft.azure.management.datalake.analytics.implementation;
 
 import retrofit2.Retrofit;
 import com.microsoft.azure.management.datalake.analytics.Accounts;
-import com.microsoft.azure.management.datalake.analytics.DataLakeAnalyticsAccountManagementClient;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
@@ -54,7 +53,7 @@ public final class AccountsImpl implements Accounts {
     /** The Retrofit service to perform REST calls. */
     private AccountsService service;
     /** The service client containing this operation class. */
-    private DataLakeAnalyticsAccountManagementClient client;
+    private DataLakeAnalyticsAccountManagementClientImpl client;
 
     /**
      * Initializes an instance of AccountsImpl.
@@ -62,7 +61,7 @@ public final class AccountsImpl implements Accounts {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public AccountsImpl(Retrofit retrofit, DataLakeAnalyticsAccountManagementClient client) {
+    public AccountsImpl(Retrofit retrofit, DataLakeAnalyticsAccountManagementClientImpl client) {
         this.service = retrofit.create(AccountsService.class);
         this.client = client;
     }
@@ -263,7 +262,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<StorageAccountInfo> getStorageAccountDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StorageAccountInfo, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<StorageAccountInfo, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<StorageAccountInfo>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -350,7 +349,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<Void> deleteStorageAccountDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -447,7 +446,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<Void> updateStorageAccountDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -544,7 +543,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<Void> addStorageAccountDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -639,7 +638,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<BlobContainer> getStorageContainerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<BlobContainer, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<BlobContainer, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<BlobContainer>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -740,7 +739,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<PageImpl<BlobContainer>> listStorageContainersDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<BlobContainer>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<BlobContainer>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<BlobContainer>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -850,7 +849,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<PageImpl<SasTokenInfo>> listSasTokensDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SasTokenInfo>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<SasTokenInfo>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<SasTokenInfo>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -937,7 +936,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<DataLakeStoreAccountInfo> getDataLakeStoreAccountDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DataLakeStoreAccountInfo, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<DataLakeStoreAccountInfo, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<DataLakeStoreAccountInfo>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1024,7 +1023,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<Void> deleteDataLakeStoreAccountDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -1121,7 +1120,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<Void> addDataLakeStoreAccountDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -1333,7 +1332,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<PageImpl<StorageAccountInfo>> listStorageAccountsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<StorageAccountInfo>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<StorageAccountInfo>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<StorageAccountInfo>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1546,7 +1545,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<PageImpl<DataLakeStoreAccountInfo>> listDataLakeStoreAccountsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DataLakeStoreAccountInfo>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<DataLakeStoreAccountInfo>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<DataLakeStoreAccountInfo>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1741,7 +1740,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DataLakeAnalyticsAccount>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<DataLakeAnalyticsAccount>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<DataLakeAnalyticsAccount>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1918,7 +1917,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DataLakeAnalyticsAccount>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<DataLakeAnalyticsAccount>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<DataLakeAnalyticsAccount>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1996,7 +1995,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<DataLakeAnalyticsAccount> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DataLakeAnalyticsAccount, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<DataLakeAnalyticsAccount, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<DataLakeAnalyticsAccount>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2142,7 +2141,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
@@ -2311,7 +2310,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<DataLakeAnalyticsAccount> beginCreateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DataLakeAnalyticsAccount, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<DataLakeAnalyticsAccount, CloudException>(this.client.mapperAdapter())
                 .register(201, new TypeToken<DataLakeAnalyticsAccount>() { }.getType())
                 .register(200, new TypeToken<DataLakeAnalyticsAccount>() { }.getType())
                 .registerError(CloudException.class)
@@ -2479,7 +2478,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<DataLakeAnalyticsAccount> beginUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DataLakeAnalyticsAccount, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<DataLakeAnalyticsAccount, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<DataLakeAnalyticsAccount>() { }.getType())
                 .register(201, new TypeToken<DataLakeAnalyticsAccount>() { }.getType())
                 .registerError(CloudException.class)
@@ -2543,7 +2542,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<PageImpl<BlobContainer>> listStorageContainersNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<BlobContainer>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<BlobContainer>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<BlobContainer>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2606,7 +2605,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<PageImpl<SasTokenInfo>> listSasTokensNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SasTokenInfo>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<SasTokenInfo>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<SasTokenInfo>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2669,7 +2668,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<PageImpl<StorageAccountInfo>> listStorageAccountsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<StorageAccountInfo>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<StorageAccountInfo>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<StorageAccountInfo>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2732,7 +2731,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<PageImpl<DataLakeStoreAccountInfo>> listDataLakeStoreAccountsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DataLakeStoreAccountInfo>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<DataLakeStoreAccountInfo>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<DataLakeStoreAccountInfo>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2795,7 +2794,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DataLakeAnalyticsAccount>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<DataLakeAnalyticsAccount>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<DataLakeAnalyticsAccount>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -2858,7 +2857,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DataLakeAnalyticsAccount>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<DataLakeAnalyticsAccount>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<DataLakeAnalyticsAccount>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

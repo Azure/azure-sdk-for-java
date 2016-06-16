@@ -7,7 +7,7 @@
 package com.microsoft.azure.management.datalake.analytics;
 
 import com.microsoft.azure.AzureClient;
-import com.microsoft.rest.RestClient;
+import com.microsoft.azure.RestClient;
 
 /**
  * The interface for DataLakeAnalyticsCatalogManagementClient class.

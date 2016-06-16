@@ -128,7 +128,7 @@ public final class ClassicMobileServicesInner {
     }
 
     private ServiceResponse<ClassicMobileServiceCollectionInner> getClassicMobileServicesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ClassicMobileServiceCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<ClassicMobileServiceCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<ClassicMobileServiceCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -206,7 +206,7 @@ public final class ClassicMobileServicesInner {
     }
 
     private ServiceResponse<ClassicMobileServiceInner> getClassicMobileServiceDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ClassicMobileServiceInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<ClassicMobileServiceInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<ClassicMobileServiceInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -284,7 +284,7 @@ public final class ClassicMobileServicesInner {
     }
 
     private ServiceResponse<Object> deleteClassicMobileServiceDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

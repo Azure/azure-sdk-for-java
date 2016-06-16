@@ -110,7 +110,7 @@ public final class UsagesInner {
     }
 
     private ServiceResponse<UsageListResultInner> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<UsageListResultInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<UsageListResultInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<UsageListResultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

@@ -8,7 +8,6 @@ package com.microsoft.azure.batch.protocol.implementation;
 
 import retrofit2.Retrofit;
 import com.microsoft.azure.batch.protocol.Certificates;
-import com.microsoft.azure.batch.protocol.BatchServiceClient;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.batch.protocol.models.BatchErrorException;
@@ -59,7 +58,7 @@ public final class CertificatesImpl implements Certificates {
     /** The Retrofit service to perform REST calls. */
     private CertificatesService service;
     /** The service client containing this operation class. */
-    private BatchServiceClient client;
+    private BatchServiceClientImpl client;
 
     /**
      * Initializes an instance of CertificatesImpl.
@@ -67,7 +66,7 @@ public final class CertificatesImpl implements Certificates {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public CertificatesImpl(Retrofit retrofit, BatchServiceClient client) {
+    public CertificatesImpl(Retrofit retrofit, BatchServiceClientImpl client) {
         this.service = retrofit.create(CertificatesService.class);
         this.client = client;
     }
@@ -280,7 +279,7 @@ public final class CertificatesImpl implements Certificates {
     }
 
     private ServiceResponseWithHeaders<Void, CertificateAddHeaders> addDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(201, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, CertificateAddHeaders.class);
@@ -513,7 +512,7 @@ public final class CertificatesImpl implements Certificates {
     }
 
     private ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> listDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<Certificate>, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<Certificate>, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<Certificate>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, CertificateListHeaders.class);
@@ -710,7 +709,7 @@ public final class CertificatesImpl implements Certificates {
     }
 
     private ServiceResponseWithHeaders<Void, CertificateCancelDeletionHeaders> cancelDeletionDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, CertificateCancelDeletionHeaders.class);
@@ -907,7 +906,7 @@ public final class CertificatesImpl implements Certificates {
     }
 
     private ServiceResponseWithHeaders<Void, CertificateDeleteHeaders> deleteDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, CertificateDeleteHeaders.class);
@@ -1114,7 +1113,7 @@ public final class CertificatesImpl implements Certificates {
     }
 
     private ServiceResponseWithHeaders<Certificate, CertificateGetHeaders> getDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Certificate, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Certificate, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Certificate>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, CertificateGetHeaders.class);
@@ -1285,7 +1284,7 @@ public final class CertificatesImpl implements Certificates {
     }
 
     private ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> listNextDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<Certificate>, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<Certificate>, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<Certificate>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, CertificateListHeaders.class);

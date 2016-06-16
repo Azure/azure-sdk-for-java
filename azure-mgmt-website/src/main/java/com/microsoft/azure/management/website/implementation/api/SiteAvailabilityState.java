@@ -30,34 +30,25 @@ public enum SiteAvailabilityState {
     }
 
     /**
-     * Gets the serialized value for a SiteAvailabilityState instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a SiteAvailabilityState instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed SiteAvailabilityState object, or null if unable to parse.
      */
     @JsonCreator
-    public static SiteAvailabilityState fromValue(String value) {
+    public static SiteAvailabilityState fromString(String value) {
         SiteAvailabilityState[] items = SiteAvailabilityState.values();
         for (SiteAvailabilityState item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

@@ -8,7 +8,6 @@ package com.microsoft.azure.batch.protocol.implementation;
 
 import retrofit2.Retrofit;
 import com.microsoft.azure.batch.protocol.Accounts;
-import com.microsoft.azure.batch.protocol.BatchServiceClient;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.batch.protocol.models.AccountListNodeAgentSkusHeaders;
@@ -45,7 +44,7 @@ public final class AccountsImpl implements Accounts {
     /** The Retrofit service to perform REST calls. */
     private AccountsService service;
     /** The service client containing this operation class. */
-    private BatchServiceClient client;
+    private BatchServiceClientImpl client;
 
     /**
      * Initializes an instance of AccountsImpl.
@@ -53,7 +52,7 @@ public final class AccountsImpl implements Accounts {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public AccountsImpl(Retrofit retrofit, BatchServiceClient client) {
+    public AccountsImpl(Retrofit retrofit, BatchServiceClientImpl client) {
         this.service = retrofit.create(AccountsService.class);
         this.client = client;
     }
@@ -290,7 +289,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> listNodeAgentSkusDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<NodeAgentSku>, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<NodeAgentSku>, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<NodeAgentSku>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, AccountListNodeAgentSkusHeaders.class);
@@ -461,7 +460,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> listNodeAgentSkusNextDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<NodeAgentSku>, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<NodeAgentSku>, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<NodeAgentSku>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, AccountListNodeAgentSkusHeaders.class);
