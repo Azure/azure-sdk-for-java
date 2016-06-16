@@ -8,7 +8,6 @@ package com.microsoft.azure.batch.protocol.implementation;
 
 import retrofit2.Retrofit;
 import com.microsoft.azure.batch.protocol.Applications;
-import com.microsoft.azure.batch.protocol.BatchServiceClient;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.batch.protocol.models.ApplicationGetHeaders;
@@ -49,7 +48,7 @@ public final class ApplicationsImpl implements Applications {
     /** The Retrofit service to perform REST calls. */
     private ApplicationsService service;
     /** The service client containing this operation class. */
-    private BatchServiceClient client;
+    private BatchServiceClientImpl client;
 
     /**
      * Initializes an instance of ApplicationsImpl.
@@ -57,7 +56,7 @@ public final class ApplicationsImpl implements Applications {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public ApplicationsImpl(Retrofit retrofit, BatchServiceClient client) {
+    public ApplicationsImpl(Retrofit retrofit, BatchServiceClientImpl client) {
         this.service = retrofit.create(ApplicationsService.class);
         this.client = client;
     }
@@ -288,7 +287,7 @@ public final class ApplicationsImpl implements Applications {
     }
 
     private ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> listDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ApplicationSummary>, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<ApplicationSummary>, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<ApplicationSummary>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, ApplicationListHeaders.class);
@@ -467,7 +466,7 @@ public final class ApplicationsImpl implements Applications {
     }
 
     private ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders> getDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ApplicationSummary, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<ApplicationSummary, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<ApplicationSummary>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, ApplicationGetHeaders.class);
@@ -638,7 +637,7 @@ public final class ApplicationsImpl implements Applications {
     }
 
     private ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> listNextDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ApplicationSummary>, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<ApplicationSummary>, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<ApplicationSummary>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, ApplicationListHeaders.class);
