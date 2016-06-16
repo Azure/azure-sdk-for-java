@@ -61,7 +61,11 @@ public abstract class TaskGroupBase<T>
         if (dag.isRootNode(nextNode)) {
             executeRootTask(nextNode.data());
         } else {
-            nextNode.data().execute(this, nextNode);
+            // TaskGroupBase::execute will be called both in update and create
+            // scenarios, so run the task only if it not not executed already.
+            if (nextNode.data().result() == null) {
+                nextNode.data().execute(this, nextNode);
+            }
         }
     }
 
@@ -75,7 +79,13 @@ public abstract class TaskGroupBase<T>
         if (dag.isRootNode(nextNode)) {
             return executeRootTaskAsync(nextNode.data(), callback);
         } else {
-            return nextNode.data().executeAsync(this, nextNode, callback);
+            // TaskGroupBase::execute will be called both in update and create
+            // scenarios, so run the task only if it not not executed already.
+            if (nextNode.data().result() == null) {
+                return nextNode.data().executeAsync(this, nextNode, callback);
+            } else {
+                return null;
+            }
         }
     }
 
