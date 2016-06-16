@@ -59,7 +59,6 @@ public class DAGNode<T> extends Node<T> {
      * @param dependencyKey the id of the dependency node
      */
     public void addDependency(String dependencyKey) {
-        toBeResolved++;
         super.addChild(dependencyKey);
     }
 
@@ -68,6 +67,13 @@ public class DAGNode<T> extends Node<T> {
      */
     public boolean hasDependencies() {
         return this.hasChildren();
+    }
+
+    /**
+     * prepare the node for traversal.
+     */
+    public void prepare() {
+        this.toBeResolved = this.dependencyKeys().size();
     }
 
     /**
