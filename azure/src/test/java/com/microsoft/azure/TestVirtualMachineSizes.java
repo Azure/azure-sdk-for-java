@@ -1,6 +1,5 @@
 package com.microsoft.azure;
 
-import com.microsoft.azure.TestTemplate;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSize;
