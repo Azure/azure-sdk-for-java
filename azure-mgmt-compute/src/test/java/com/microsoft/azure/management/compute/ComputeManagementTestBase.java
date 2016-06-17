@@ -2,18 +2,14 @@ package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
-import com.microsoft.azure.management.compute.implementation.api.ComputeManagementClientImpl;
-import com.microsoft.azure.management.network.implementation.api.NetworkManagementClientImpl;
-import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
-import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
+import com.microsoft.azure.management.compute.implementation.ComputeManager;
+import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.RestClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 public abstract class ComputeManagementTestBase {
-    protected static ResourceManagementClientImpl resourceManagementClient;
-    protected static StorageManagementClientImpl storageManagementClient;
-    protected static ComputeManagementClientImpl computeManagementClient;
-    protected static NetworkManagementClientImpl networkManagementClient;
+    protected static ResourceManager resourceManager;
+    protected static ComputeManager computeManager;
 
     public static void createClients() {
         ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(
@@ -22,18 +18,16 @@ public abstract class ComputeManagementTestBase {
                 System.getenv("secret"),
                 null);
 
-        RestClient.Builder.Buildable restBuilder = AzureEnvironment.AZURE.newRestClientBuilder()
+        RestClient restClient = AzureEnvironment.AZURE.newRestClientBuilder()
                 .withCredentials(credentials)
-                .withLogLevel(HttpLoggingInterceptor.Level.BODY);
+                .withLogLevel(HttpLoggingInterceptor.Level.BODY)
+                .build();
 
-        RestClient restClient = restBuilder.build();
-        resourceManagementClient = new ResourceManagementClientImpl(restClient);
-        resourceManagementClient.withSubscriptionId(System.getenv("arm.subscriptionid"));
-        storageManagementClient = new StorageManagementClientImpl(restClient);
-        storageManagementClient.withSubscriptionId(System.getenv("arm.subscriptionid"));
-        networkManagementClient = new NetworkManagementClientImpl(restClient);
-        networkManagementClient.withSubscriptionId(System.getenv("arm.subscriptionid"));
-        computeManagementClient = new ComputeManagementClientImpl(restClient);
-        computeManagementClient.withSubscriptionId(System.getenv("arm.subscriptionid"));
+        resourceManager = ResourceManager
+                .authenticate(restClient)
+                .withSubscription(System.getenv("subscription-id"));
+
+        computeManager = ComputeManager
+                .authenticate(restClient, System.getenv("subscription-id"));
     }
 }
