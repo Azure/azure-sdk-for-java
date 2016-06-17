@@ -4,8 +4,8 @@ import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachines;
+import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.rest.RestClient;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -31,6 +31,7 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
                 .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                 .withAdminUserName("testuser")
                 .withPassword("12NewPA$$w0rd!")
+                .withSize(VirtualMachineSizeTypes.STANDARD_D1_V2)
                 .createAsync(new ServiceCallback<VirtualMachine>() {
                     @Override
                     public void failure(Throwable t) {
@@ -65,13 +66,10 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
                 System.getenv("secret"),
                 null);
 
-        RestClient.Builder restBuilder = AzureEnvironment.AZURE.newRestClientBuilder()
-                .withCredentials(credentials)
-                .withLogLevel(HttpLoggingInterceptor.Level.BODY);
-
-        RestClient restClient = restBuilder.build();
-
-        Azure azure = Azure.authenticate(restClient).withDefaultSubscription();
+        Azure azure = Azure.configure()
+                .withLogLevel(HttpLoggingInterceptor.Level.BODY)
+                .authenticate(credentials)
+                .withDefaultSubscription();
         runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 }
