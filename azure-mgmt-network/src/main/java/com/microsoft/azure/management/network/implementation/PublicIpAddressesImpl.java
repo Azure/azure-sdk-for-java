@@ -13,6 +13,7 @@ import com.microsoft.azure.management.network.implementation.api.PublicIPAddress
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressInner;
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressesInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.ServiceResponse;
@@ -24,6 +25,7 @@ import java.io.IOException;
  * (Internal use only)
  */
 class PublicIpAddressesImpl
+        extends ResourcesImpl<PublicIpAddress>
         implements PublicIpAddresses {
     private final PublicIPAddressesInner client;
     private final ResourceManager resourceManager;
