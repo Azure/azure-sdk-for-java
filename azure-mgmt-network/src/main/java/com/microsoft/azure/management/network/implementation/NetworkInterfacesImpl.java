@@ -9,7 +9,7 @@ import com.microsoft.azure.management.network.implementation.api.NetworkInterfac
 import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceIPConfiguration;
 import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceDnsSettings;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.ServiceResponse;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
  * The type representing Azure network interfaces.
  */
 class NetworkInterfacesImpl
-        extends ResourcesImpl<NetworkInterface, NetworkInterfaceImpl>
+        extends GroupableResourcesImpl<NetworkInterface, NetworkInterfaceImpl, NetworkInterfaceInner>
         implements NetworkInterfaces {
     private final NetworkInterfacesInner client;
     private final ResourceManager resourceManager;
@@ -89,7 +89,8 @@ class NetworkInterfacesImpl
                 this.resourceManager);
     }
 
-    private NetworkInterfaceImpl createFluentModel(NetworkInterfaceInner inner) {
+    @Override
+    protected NetworkInterfaceImpl createFluentModel(NetworkInterfaceInner inner) {
         return new NetworkInterfaceImpl(inner.name(),
                 inner,
                 this.client,

@@ -8,17 +8,23 @@ package com.microsoft.azure.management.resources.fluentcore.arm.collection.imple
 import java.io.IOException;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 
 /**
  * Base class for resource collection classes.
  * (Internal use only)
  * @param <T> the individual resource type returned
  * @param <ImplT> the individual resource implementation
+ * @param <InnerT> the wrapper inner type
  */
-public abstract class ResourcesImpl<T, ImplT>
+public abstract class GroupableResourcesImpl<
+        T extends GroupableResource,
+        ImplT extends T,
+        InnerT extends Resource>
     implements
         SupportsGettingById<T>,
         SupportsGettingByGroup<T> {
@@ -34,4 +40,6 @@ public abstract class ResourcesImpl<T, ImplT>
     }
 
     protected abstract ImplT createFluentModel(String name);
+
+    protected abstract ImplT createFluentModel(InnerT inner);
 }

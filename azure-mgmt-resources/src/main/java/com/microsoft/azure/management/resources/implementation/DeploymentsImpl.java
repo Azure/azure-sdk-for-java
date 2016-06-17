@@ -10,7 +10,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Deployments;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.api.DeploymentOperationsInner;
@@ -27,7 +26,6 @@ import java.util.List;
  * The implementation for Deployments and its parent interfaces.
  */
 final class DeploymentsImpl
-    extends ResourcesImpl<Deployment, DeploymentImpl>
     implements Deployments {
 
     private final DeploymentsInner client;
@@ -105,14 +103,20 @@ final class DeploymentsImpl
         return client.checkExistence(resourceGroupName, deploymentName).getBody();
     }
 
-    @Override
     protected DeploymentImpl createFluentModel(String name) {
         DeploymentExtendedInner deploymentExtendedInner = new DeploymentExtendedInner();
         deploymentExtendedInner.withName(name);
         return new DeploymentImpl(deploymentExtendedInner, client, deploymentOperationsClient, this.resourceManager);
     }
 
-    private DeploymentImpl createFluentModel(DeploymentExtendedInner deploymentExtendedInner) {
+    protected DeploymentImpl createFluentModel(DeploymentExtendedInner deploymentExtendedInner) {
         return new DeploymentImpl(deploymentExtendedInner, client, deploymentOperationsClient, this.resourceManager);
+    }
+
+    @Override
+    public Deployment getById(String id) throws CloudException, IllegalArgumentException, IOException {
+        return this.getByGroup(
+                ResourceUtils.groupFromResourceId(id),
+                ResourceUtils.nameFromResourceId(id));
     }
 }

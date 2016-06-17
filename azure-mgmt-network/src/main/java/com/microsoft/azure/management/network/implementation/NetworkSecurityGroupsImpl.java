@@ -13,7 +13,7 @@ import com.microsoft.azure.management.network.implementation.api.NetworkSecurity
 import com.microsoft.azure.management.network.implementation.api.NetworkSecurityGroupsInner;
 import com.microsoft.azure.management.network.implementation.api.SecurityRuleInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.ServiceResponse;
@@ -26,7 +26,7 @@ import java.util.ArrayList;
  * (Internal use only)
  */
 class NetworkSecurityGroupsImpl
-        extends ResourcesImpl<NetworkSecurityGroup, NetworkSecurityGroupImpl>
+        extends GroupableResourcesImpl<NetworkSecurityGroup, NetworkSecurityGroupImpl, NetworkSecurityGroupInner>
         implements NetworkSecurityGroups {
     private final NetworkSecurityGroupsInner client;
     private final ResourceManager resourceManager;
@@ -94,7 +94,8 @@ class NetworkSecurityGroupsImpl
         return new NetworkSecurityGroupImpl(name, inner, this.client, this.resourceManager);
     }
 
-    private NetworkSecurityGroupImpl createFluentModel(NetworkSecurityGroupInner inner) {
+    @Override
+    protected NetworkSecurityGroupImpl createFluentModel(NetworkSecurityGroupInner inner) {
         return new NetworkSecurityGroupImpl(inner.name(), inner, this.client, this.resourceManager);
     }
 }

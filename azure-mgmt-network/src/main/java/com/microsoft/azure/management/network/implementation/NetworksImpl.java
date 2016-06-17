@@ -15,7 +15,7 @@ import com.microsoft.azure.management.network.implementation.api.SubnetInner;
 import com.microsoft.azure.management.network.implementation.api.VirtualNetworkInner;
 import com.microsoft.azure.management.network.implementation.api.VirtualNetworksInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.ServiceResponse;
@@ -28,7 +28,7 @@ import java.util.ArrayList;
  * (Internal use only)
  */
 class NetworksImpl
-        extends ResourcesImpl<Network, NetworkImpl>
+        extends GroupableResourcesImpl<Network, NetworkImpl, VirtualNetworkInner>
         implements Networks {
     private final VirtualNetworksInner client;
     private final ResourceManager resourceManager;
@@ -114,7 +114,8 @@ class NetworksImpl
         return new NetworkImpl(name, inner, this.client, this.resourceManager);
     }
 
-    private NetworkImpl createFluentModel(VirtualNetworkInner inner) {
+    @Override
+    protected NetworkImpl createFluentModel(VirtualNetworkInner inner) {
         return new NetworkImpl(inner.name(), inner, this.client, this.resourceManager);
     }
 }

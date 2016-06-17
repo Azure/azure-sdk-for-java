@@ -13,7 +13,7 @@ import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.implementation.api.AvailabilitySetInner;
 import com.microsoft.azure.management.compute.implementation.api.AvailabilitySetsInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
@@ -28,7 +28,7 @@ import java.util.List;
  * The implementation for {@link AvailabilitySets}.
  */
 class AvailabilitySetsImpl
-    extends ResourcesImpl<AvailabilitySet, AvailabilitySetImpl>
+    extends GroupableResourcesImpl<AvailabilitySet, AvailabilitySetImpl, AvailabilitySetInner>
     implements AvailabilitySets {
     private final AvailabilitySetsInner client;
     private final ResourceManager resourceManager;
@@ -104,14 +104,14 @@ class AvailabilitySetsImpl
 
     @Override
     protected AvailabilitySetImpl createFluentModel(String name) {
-        AvailabilitySetInner availabilitySetInner = new AvailabilitySetInner();
         return new AvailabilitySetImpl(name,
-                availabilitySetInner,
+                new AvailabilitySetInner(),
                 this.client,
                 this.resourceManager);
     }
 
-    private AvailabilitySetImpl createFluentModel(AvailabilitySetInner availabilitySetInner) {
+    @Override
+    protected AvailabilitySetImpl createFluentModel(AvailabilitySetInner availabilitySetInner) {
         return new AvailabilitySetImpl(availabilitySetInner.name(),
                 availabilitySetInner,
                 this.client,

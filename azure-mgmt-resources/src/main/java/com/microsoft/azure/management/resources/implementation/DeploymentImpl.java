@@ -71,7 +71,6 @@ final class DeploymentImpl extends
         this.objectMapper = new ObjectMapper();
     }
 
-    @Override
     public String resourceGroupName() {
         return this.resourceGroupName;
     }
