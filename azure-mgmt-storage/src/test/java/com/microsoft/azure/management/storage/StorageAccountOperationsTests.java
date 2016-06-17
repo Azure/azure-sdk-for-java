@@ -11,6 +11,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.storage.implementation.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.storage.implementation.api.AccessTier;
 import com.microsoft.azure.management.storage.implementation.api.SkuName;
+import com.microsoft.azure.management.storage.implementation.api.StorageAccountKey;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -21,8 +22,8 @@ import java.util.List;
 import static org.junit.Assert.fail;
 
 public class StorageAccountOperationsTests extends StorageManagementTestBase {
-    private static final String RG_NAME = "javacsmrg7";
-    private static final String SA_NAME = "javacsmsa2";
+    private static final String RG_NAME = "javacsmrg9";
+    private static final String SA_NAME = "javacsmsa4";
     private static ResourceGroup resourceGroup;
 
     @BeforeClass
@@ -61,6 +62,22 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
         // Get
         storageAccount = storageManager.storageAccounts().getByGroup(RG_NAME, SA_NAME);
         Assert.assertNotNull(storageAccount);
+
+        // Get Keys
+        List<StorageAccountKey> keys = storageAccount.keys();
+        Assert.assertTrue(keys.size() > 0);
+
+        // Regen key
+        StorageAccountKey oldKey = keys.get(0);
+        List<StorageAccountKey> updatedKeys = storageAccount.regenerateKey(oldKey.keyName());
+        Assert.assertTrue(updatedKeys.size() > 0);
+        for (StorageAccountKey updatedKey : updatedKeys) {
+            if (updatedKey.keyName().equalsIgnoreCase(oldKey.keyName())) {
+                Assert.assertNotEquals(oldKey.value(), updatedKey.value());
+                break;
+            }
+        }
+
         // Update
         try {
             storageAccount.update()
