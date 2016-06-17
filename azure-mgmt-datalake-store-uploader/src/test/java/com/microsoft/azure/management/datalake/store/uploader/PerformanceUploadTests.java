@@ -93,7 +93,7 @@ public class PerformanceUploadTests extends DataLakeUploaderTestBase {
         String folder = "begoldsm";
         ArrayList<Long> perfMetrics = new ArrayList();
 
-        // Upload Rentrak data.
+        // upload Rentrak data.
         boolean force = true;  //Set this to true if you want to overwrite existing data
         System.out.println("Uploading 4mb data...");
         for (int i = 0; i < 10; ++i) {
@@ -116,7 +116,7 @@ public class PerformanceUploadTests extends DataLakeUploaderTestBase {
         String folder = "begoldsm";
         ArrayList<Long> perfMetrics = new ArrayList();
 
-        // Upload Rentrak data.
+        // upload Rentrak data.
         boolean force = true;  //Set this to true if you want to overwrite existing data
         System.out.println("Uploading 2.5GB data...");
         for (int i = 0; i < 5; ++i) {
@@ -134,12 +134,12 @@ public class PerformanceUploadTests extends DataLakeUploaderTestBase {
         }
     }
 
-    @Test
+    //@Test
     public void Test10gbFileUpload() throws Exception {
         String folder = "begoldsm";
         ArrayList<Long> perfMetrics = new ArrayList();
 
-        // Upload Rentrak data.
+        // upload Rentrak data.
         boolean force = true;  //Set this to true if you want to overwrite existing data
         System.out.println("Uploading 10GB data...");
         for (int i = 0; i < 3; ++i) {
@@ -161,7 +161,7 @@ public class PerformanceUploadTests extends DataLakeUploaderTestBase {
         UploadParameters parameters = new UploadParameters(srcPath, destPath, dlAccountName, 40, force, false);
         FrontEndAdapter frontend = new DataLakeStoreFrontEndAdapterImpl(dlAccountName, dataLakeStoreFileSystemClient);
         DataLakeStoreUploader uploader = new DataLakeStoreUploader(parameters, frontend);
-        uploader.Execute();
+        uploader.execute();
         return true;
     }
 }

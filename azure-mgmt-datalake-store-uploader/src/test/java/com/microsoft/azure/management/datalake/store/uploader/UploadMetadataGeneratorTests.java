@@ -54,7 +54,7 @@ public class UploadMetadataGeneratorTests {
 
                 UploadParameters up = new UploadParameters(filePath.getAbsolutePath(), filePath.getAbsolutePath(), null, 1, false, false, false, 4*1024*1024, null);
                 UploadMetadataGenerator mg = new UploadMetadataGenerator(up, MaxAppendLength);
-                UploadMetadata metadata = mg.CreateNewMetadata(metadataFilePath);
+                UploadMetadata metadata = mg.createNewMetadata(metadataFilePath);
 
                 VerifySegmentsAreOnRecordBoundaries(metadata, filePath.getAbsolutePath());
             }
@@ -97,8 +97,8 @@ public class UploadMetadataGeneratorTests {
                     UploadMetadataGenerator mg = new UploadMetadataGenerator(up, MaxAppendLength);
 
                     try {
-                        mg.CreateNewMetadata(metadataFilePath);
-                        Assert.assertTrue("Method CreateNewMetadata should fail due to record boundaries being being too large for the record, but didn't", false);
+                        mg.createNewMetadata(metadataFilePath);
+                        Assert.assertTrue("Method createNewMetadata should fail due to record boundaries being being too large for the record, but didn't", false);
                     }
                     catch(Exception e) {
                         // do nothing, expected
@@ -118,22 +118,22 @@ public class UploadMetadataGeneratorTests {
     private void VerifySegmentsAreOnRecordBoundaries(UploadMetadata metadata, String filePath) throws IOException {
         try(RandomAccessFile stream = new RandomAccessFile(filePath, "r"))
         {
-            for (UploadSegmentMetadata segment: metadata.Segments)
+            for (UploadSegmentMetadata segment: metadata.getSegments())
             {
-                if (segment.SegmentNumber > 0)
+                if (segment.getSegmentNumber() > 0)
                 {
                     //verify that each segment starts with a non-newline and that the 2 previous characters before that offset are newline characters
 
                     //2 characters behind: newline
                     // always seek from the file origin
                     stream.seek(0);
-                    stream.seek(segment.Offset - 2);
+                    stream.seek(segment.getOffset() - 2);
                     char c1 = (char)stream.read();
-                    Assert.assertTrue(MessageFormat.format("Expecting a newline at offset {0}", segment.Offset - 2), IsNewline(c1));
+                    Assert.assertTrue(MessageFormat.format("Expecting a newline at offset {0}", segment.getOffset() - 2), IsNewline(c1));
 
                     //1 character behind: newline
                     char c2 = (char)stream.read();
-                    Assert.assertTrue(MessageFormat.format("Expecting a newline at offset {0}", segment.Offset - 2), IsNewline(c2));
+                    Assert.assertTrue(MessageFormat.format("Expecting a newline at offset {0}", segment.getOffset() - 2), IsNewline(c2));
 
                     //by test design, we never have two consecutive newlines that are the same; we'd always have \r\n, but never \r\r or \r\n
                     char c3 = (char)stream.read();
