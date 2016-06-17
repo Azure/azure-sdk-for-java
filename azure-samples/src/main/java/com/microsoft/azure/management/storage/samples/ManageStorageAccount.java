@@ -120,7 +120,7 @@ public final class ManageStorageAccount {
                 System.out.println("Deleting a storage account - " + storageAccount.name()
                         + " created @ " + storageAccount.creationTime());
 
-                azure.storageAccounts().delete(storageAccountName);
+                azure.storageAccounts().delete(storageAccount.id());
 
                 System.out.println("Deleted storage account");
             } catch (Exception f) {
