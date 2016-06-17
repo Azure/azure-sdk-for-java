@@ -13,11 +13,14 @@ import com.microsoft.azure.management.resources.ResourceGroupExportResult;
 import com.microsoft.azure.management.resources.ResourceGroupExportTemplateOptions;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.resources.implementation.api.ExportTemplateRequestInner;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupExportResultInner;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupsInner;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
+import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceCallback;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -123,7 +126,12 @@ class ResourceGroupImpl extends
     }
 
     @Override
-    public ResourceGroupImpl refresh() throws Exception {            //  FLUENT: implementation of ResourceGroup.Refreshable<ResourceGroup>
+    public ServiceCall applyAsync(ServiceCallback<ResourceGroup> callback) {
+        return createAsync(callback);
+    }
+
+    @Override
+    public ResourceGroupImpl refresh() throws Exception {
         this.setInner(client.get(this.key).getBody());
         return this;
     }
@@ -139,5 +147,13 @@ class ResourceGroupImpl extends
         params.withLocation(this.inner().location());
         params.withTags(this.inner().tags());
         client.createOrUpdate(this.name(), params);
+    }
+
+    @Override
+    protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
+        ResourceGroupInner params = new ResourceGroupInner();
+        params.withLocation(this.inner().location());
+        params.withTags(this.inner().tags());
+        return client.createOrUpdateAsync(this.name(), params, Utils.fromVoidCallback(this, callback));
     }
 }

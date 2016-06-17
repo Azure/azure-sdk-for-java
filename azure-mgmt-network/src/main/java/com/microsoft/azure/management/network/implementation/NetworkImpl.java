@@ -5,20 +5,23 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.network.implementation.api.SubnetInner;
 import com.microsoft.azure.management.network.implementation.api.VirtualNetworkInner;
 import com.microsoft.azure.management.network.implementation.api.VirtualNetworksInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceCallback;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.ServiceResponse;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Internal virtual network implementation of the fluent interface.
@@ -65,6 +68,11 @@ class NetworkImpl
     @Override
     public NetworkImpl apply() throws Exception {
         return this.create();
+    }
+
+    @Override
+    public ServiceCall applyAsync(ServiceCallback<Network> callback) {
+        return createAsync(callback);
     }
 
     // Setters (fluent)
@@ -164,5 +172,34 @@ class NetworkImpl
                 this.client.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
         this.setInner(response.getBody());
         initializeSubnetsFromInner();
+    }
+
+    @Override
+    protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
+        // Ensure address spaces
+        if (this.addressSpaces().size() == 0) {
+            this.withAddressSpace("10.0.0.0/16");
+        }
+
+        if (isInCreateMode()) {
+            // Create a subnet as needed, covering the entire first address space
+            if (this.inner().subnets().size() == 0) {
+                this.withSubnet("subnet1", this.addressSpaces().get(0));
+            }
+        }
+
+        return this.client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
+                Utils.fromVoidCallback(this, new ServiceCallback<Void>() {
+                    @Override
+                    public void failure(Throwable t) {
+                        callback.failure(t);
+                    }
+
+                    @Override
+                    public void success(ServiceResponse<Void> result) {
+                        initializeSubnetsFromInner();
+                        callback.success(result);
+                    }
+                }));
     }
 }

@@ -5,16 +5,14 @@
  */
 package com.microsoft.azure;
 
-import java.io.IOException;
-
-import org.junit.Assert;
-import org.junit.Test;
-
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import org.junit.Assert;
+
+import java.io.IOException;
 
 /**
  * Base class for CRUD test cases for top level Azure resource models.
@@ -89,7 +87,6 @@ public abstract class TestTemplate<
      * @param resourceGroups the resource groups collection
      * @throws Exception if anything goes wrong
      */
-    @Test
     public void runTest(C collection, ResourceGroups resourceGroups) throws Exception {
         this.collection = collection;
         this.resourceGroups = resourceGroups;
