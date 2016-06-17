@@ -15,6 +15,7 @@ import com.microsoft.azure.management.network.implementation.api.SubnetInner;
 import com.microsoft.azure.management.network.implementation.api.VirtualNetworkInner;
 import com.microsoft.azure.management.network.implementation.api.VirtualNetworksInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.ServiceResponse;
@@ -26,7 +27,9 @@ import java.util.ArrayList;
  * Implementation of the Networks interface.
  * (Internal use only)
  */
-class NetworksImpl implements Networks {
+class NetworksImpl
+        extends ResourcesImpl<Network>
+        implements Networks {
     private final VirtualNetworksInner client;
     private final ResourceManager resourceManager;
     private final PagedListConverter<VirtualNetworkInner, Network> converter;
