@@ -37,7 +37,6 @@ public abstract class DataLakeUploaderTestBase {
                 .withDefaultBaseUrl(AzureEnvironment.AZURE)
                 .withCredentials(credentials)
                 .withLogLevel(HttpLoggingInterceptor.Level.BODY)
-                .withMapperAdapter(new AzureJacksonMapperAdapter())
                 .build();
 
         resourceManagementClient = new ResourceManagementClientImpl(restClient);
@@ -46,10 +45,10 @@ public abstract class DataLakeUploaderTestBase {
         dataLakeStoreAccountManagementClient = new DataLakeStoreAccountManagementClientImpl(restClient);
         dataLakeStoreAccountManagementClient.withSubscriptionId(System.getenv("arm.subscriptionid"));
 
-        RestClient dataPlaneClient = new RestClient.Builder("https://{accountName}.{adlsFileSystemDnsSuffix}", new OkHttpClient.Builder().connectTimeout(100, TimeUnit.SECONDS), new Retrofit.Builder())
+        RestClient dataPlaneClient = new RestClient.Builder(new OkHttpClient.Builder().connectTimeout(100, TimeUnit.SECONDS), new Retrofit.Builder())
+                .withBaseUrl("https://{accountName}.{adlsFileSystemDnsSuffix}")
                 .withCredentials(credentials)
                 .withLogLevel(HttpLoggingInterceptor.Level.NONE) // No logging for this client because we are executing a lot of requests.
-                .withMapperAdapter(new AzureJacksonMapperAdapter())
                 .build();
 
         dataLakeStoreFileSystemManagementClient = new DataLakeStoreFileSystemManagementClientImpl(dataPlaneClient);
