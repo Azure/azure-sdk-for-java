@@ -26,7 +26,7 @@ public abstract class ResourcesImpl<T>
     public abstract T getByGroup(String groupName, String name) throws CloudException, IOException;
 
     @Override
-    public T getById(String id) throws CloudException, IOException {
+    public final T getById(String id) throws CloudException, IOException {
         return this.getByGroup(
                 ResourceUtils.groupFromResourceId(id),
                 ResourceUtils.nameFromResourceId(id));
