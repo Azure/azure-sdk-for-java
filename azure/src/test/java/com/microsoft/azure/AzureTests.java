@@ -136,6 +136,11 @@ public class AzureTests {
                 .runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 
+    @Test public void testVirtualMachineSizes() throws Exception {
+        new TestVirtualMachineSizes()
+                .runTest(azure.virtualMachines(), azure.resourceGroups());
+    }
+
     @Test
     public void listSubscriptions() throws Exception {
         Assert.assertTrue(0 < subscriptions.list().size());

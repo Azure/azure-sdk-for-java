@@ -21,6 +21,7 @@ import com.microsoft.azure.management.compute.implementation.api.NetworkProfile;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineCaptureParametersInner;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineCaptureResultInner;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
@@ -123,6 +124,11 @@ class VirtualMachinesImpl
                 return null;
             }
         });
+    }
+
+    @Override
+    public PagedList<VirtualMachineSize> availableSizesByRegion(Region region) throws CloudException, IOException {
+        return this.availableSizesByRegion(region.toString());
     }
 
     @Override
