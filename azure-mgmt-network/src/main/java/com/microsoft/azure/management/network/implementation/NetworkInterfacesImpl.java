@@ -21,9 +21,8 @@ import java.util.ArrayList;
  * The type representing Azure network interfaces.
  */
 class NetworkInterfacesImpl
-        extends GroupableResourcesImpl<NetworkInterface, NetworkInterfaceImpl, NetworkInterfaceInner>
+        extends GroupableResourcesImpl<NetworkInterface, NetworkInterfaceImpl, NetworkInterfaceInner, NetworkInterfacesInner>
         implements NetworkInterfaces {
-    private final NetworkInterfacesInner client;
     private final NetworkManager networkManager;
 
     private final PagedListConverter<NetworkInterfaceInner, NetworkInterface> converter;
@@ -32,8 +31,7 @@ class NetworkInterfacesImpl
             final NetworkInterfacesInner client,
             final NetworkManager networkManager,
             final ResourceManager resourceManager) {
-        super(resourceManager);
-        this.client = client;
+        super(resourceManager, client);
         this.networkManager = networkManager;
         this.converter = new PagedListConverter<NetworkInterfaceInner, NetworkInterface>() {
             @Override
@@ -45,19 +43,19 @@ class NetworkInterfacesImpl
 
     @Override
     public PagedList<NetworkInterface> list() throws CloudException, IOException {
-        ServiceResponse<PagedList<NetworkInterfaceInner>> response = client.listAll();
+        ServiceResponse<PagedList<NetworkInterfaceInner>> response = innerCollection.listAll();
         return converter.convert(response.getBody());
     }
 
     @Override
     public PagedList<NetworkInterface> listByGroup(String groupName) throws CloudException, IOException {
-        ServiceResponse<PagedList<NetworkInterfaceInner>> response = client.list(groupName);
+        ServiceResponse<PagedList<NetworkInterfaceInner>> response = innerCollection.list(groupName);
         return converter.convert(response.getBody());
     }
 
     @Override
     public NetworkInterface getByGroup(String groupName, String name) throws CloudException, IOException {
-        ServiceResponse<NetworkInterfaceInner> serviceResponse = this.client.get(groupName, name);
+        ServiceResponse<NetworkInterfaceInner> serviceResponse = this.innerCollection.get(groupName, name);
         return createFluentModel(serviceResponse.getBody());
     }
 
@@ -68,7 +66,7 @@ class NetworkInterfacesImpl
 
     @Override
     public void delete(String groupName, String name) throws Exception {
-        this.client.delete(groupName, name);
+        this.innerCollection.delete(groupName, name);
     }
 
     @Override
@@ -83,17 +81,17 @@ class NetworkInterfacesImpl
         inner.withDnsSettings(new NetworkInterfaceDnsSettings());
         return new NetworkInterfaceImpl(name,
                 inner,
-                this.client,
+                this.innerCollection,
                 this.networkManager,
-                this.resourceManager());
+                this.resourceManager);
     }
 
     @Override
     protected NetworkInterfaceImpl createFluentModel(NetworkInterfaceInner inner) {
         return new NetworkInterfaceImpl(inner.name(),
                 inner,
-                this.client,
+                this.innerCollection,
                 this.networkManager,
-                this.resourceManager());
+                this.resourceManager);
     }
 }

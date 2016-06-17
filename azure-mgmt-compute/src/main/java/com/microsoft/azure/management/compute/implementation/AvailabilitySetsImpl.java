@@ -28,15 +28,13 @@ import java.util.List;
  * The implementation for {@link AvailabilitySets}.
  */
 class AvailabilitySetsImpl
-    extends GroupableResourcesImpl<AvailabilitySet, AvailabilitySetImpl, AvailabilitySetInner>
+    extends GroupableResourcesImpl<AvailabilitySet, AvailabilitySetImpl, AvailabilitySetInner, AvailabilitySetsInner>
     implements AvailabilitySets {
-    private final AvailabilitySetsInner client;
     private final PagedListConverter<AvailabilitySetInner, AvailabilitySet> converter;
     AvailabilitySetsImpl(
             final AvailabilitySetsInner client,
             final ResourceManager resourceManager) {
-        super(resourceManager);
-        this.client = client;
+        super(resourceManager, client);
         this.converter = new PagedListConverter<AvailabilitySetInner, AvailabilitySet>() {
             @Override
             public AvailabilitySet typeConvert(AvailabilitySetInner inner) {
@@ -47,11 +45,11 @@ class AvailabilitySetsImpl
 
     @Override
     public PagedList<AvailabilitySet> list() throws CloudException, IOException {
-        return new GroupPagedList<AvailabilitySet>(this.resourceManager().resourceGroups().list()) {
+        return new GroupPagedList<AvailabilitySet>(this.resourceManager.resourceGroups().list()) {
             @Override
             public List<AvailabilitySet> listNextGroup(String resourceGroupName) throws RestException, IOException {
                 PageImpl<AvailabilitySetInner> page = new PageImpl<>();
-                page.setItems(client.list(resourceGroupName).getBody());
+                page.setItems(innerCollection.list(resourceGroupName).getBody());
                 page.setNextPageLink(null);
                 return converter.convert(new PagedList<AvailabilitySetInner>(page) {
                     @Override
@@ -66,7 +64,7 @@ class AvailabilitySetsImpl
     @Override
     public PagedList<AvailabilitySet> listByGroup(String groupName) throws CloudException, IOException {
         PageImpl<AvailabilitySetInner> page = new PageImpl<>();
-        page.setItems(client.list(groupName).getBody());
+        page.setItems(this.innerCollection.list(groupName).getBody());
         page.setNextPageLink(null);
         return this.converter.convert(new PagedList<AvailabilitySetInner>(page) {
             @Override
@@ -78,7 +76,7 @@ class AvailabilitySetsImpl
 
     @Override
     public AvailabilitySetImpl getByGroup(String groupName, String name) throws CloudException, IOException {
-        ServiceResponse<AvailabilitySetInner> response = this.client.get(groupName, name);
+        ServiceResponse<AvailabilitySetInner> response = this.innerCollection.get(groupName, name);
         return createFluentModel(response.getBody());
     }
 
@@ -94,7 +92,7 @@ class AvailabilitySetsImpl
 
     @Override
     public void delete(String groupName, String name) throws Exception {
-        this.client.delete(groupName, name);
+        this.innerCollection.delete(groupName, name);
     }
 
     /**************************************************************
@@ -105,15 +103,15 @@ class AvailabilitySetsImpl
     protected AvailabilitySetImpl createFluentModel(String name) {
         return new AvailabilitySetImpl(name,
                 new AvailabilitySetInner(),
-                this.client,
-                this.resourceManager());
+                this.innerCollection,
+                this.resourceManager);
     }
 
     @Override
     protected AvailabilitySetImpl createFluentModel(AvailabilitySetInner availabilitySetInner) {
         return new AvailabilitySetImpl(availabilitySetInner.name(),
                 availabilitySetInner,
-                this.client,
-                this.resourceManager());
+                this.innerCollection,
+                this.resourceManager);
     }
 }

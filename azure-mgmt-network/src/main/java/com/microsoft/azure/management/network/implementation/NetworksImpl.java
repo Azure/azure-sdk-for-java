@@ -28,14 +28,12 @@ import java.util.ArrayList;
  * (Internal use only)
  */
 class NetworksImpl
-        extends GroupableResourcesImpl<Network, NetworkImpl, VirtualNetworkInner>
+        extends GroupableResourcesImpl<Network, NetworkImpl, VirtualNetworkInner, VirtualNetworksInner>
         implements Networks {
-    private final VirtualNetworksInner client;
     private final PagedListConverter<VirtualNetworkInner, Network> converter;
 
     NetworksImpl(final VirtualNetworksInner client, final ResourceManager resourceManager) {
-        super(resourceManager);
-        this.client = client;
+        super(resourceManager, client);
         this.converter = new PagedListConverter<VirtualNetworkInner, Network>() {
             @Override
             public Network typeConvert(VirtualNetworkInner inner) {
@@ -46,19 +44,19 @@ class NetworksImpl
 
     @Override
     public PagedList<Network> list() throws CloudException, IOException {
-        ServiceResponse<PagedList<VirtualNetworkInner>> response = client.listAll();
+        ServiceResponse<PagedList<VirtualNetworkInner>> response = this.innerCollection.listAll();
         return converter.convert(response.getBody());
     }
 
     @Override
     public PagedList<Network> listByGroup(String groupName) throws CloudException, IOException {
-        ServiceResponse<PagedList<VirtualNetworkInner>> response = client.list(groupName);
+        ServiceResponse<PagedList<VirtualNetworkInner>> response = this.innerCollection.list(groupName);
         return converter.convert(response.getBody());
     }
 
     @Override
     public NetworkImpl getByGroup(String groupName, String name) throws CloudException, IOException {
-        ServiceResponse<VirtualNetworkInner> serviceResponse = this.client.get(groupName, name);
+        ServiceResponse<VirtualNetworkInner> serviceResponse = this.innerCollection.get(groupName, name);
         return createFluentModel(serviceResponse.getBody());
     }
 
@@ -69,7 +67,7 @@ class NetworksImpl
 
     @Override
     public void delete(String groupName, String name) throws Exception {
-        this.client.delete(groupName, name);
+        this.innerCollection.delete(groupName, name);
     }
 
     @Override
@@ -110,11 +108,11 @@ class NetworksImpl
             dhcp.withDnsServers(new ArrayList<String>());
         }
 
-        return new NetworkImpl(name, inner, this.client, this.resourceManager());
+        return new NetworkImpl(name, inner, this.innerCollection, this.resourceManager);
     }
 
     @Override
     protected NetworkImpl createFluentModel(VirtualNetworkInner inner) {
-        return new NetworkImpl(inner.name(), inner, this.client, this.resourceManager());
+        return new NetworkImpl(inner.name(), inner, this.innerCollection, this.resourceManager);
     }
 }

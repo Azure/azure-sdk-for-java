@@ -26,14 +26,12 @@ import java.util.ArrayList;
  * (Internal use only)
  */
 class NetworkSecurityGroupsImpl
-        extends GroupableResourcesImpl<NetworkSecurityGroup, NetworkSecurityGroupImpl, NetworkSecurityGroupInner>
+        extends GroupableResourcesImpl<NetworkSecurityGroup, NetworkSecurityGroupImpl, NetworkSecurityGroupInner, NetworkSecurityGroupsInner>
         implements NetworkSecurityGroups {
-    private final NetworkSecurityGroupsInner client;
     private final PagedListConverter<NetworkSecurityGroupInner, NetworkSecurityGroup> converter;
 
     NetworkSecurityGroupsImpl(final NetworkSecurityGroupsInner client, final ResourceManager resourceManager) {
-        super(resourceManager);
-        this.client = client;
+        super(resourceManager, client);
         this.converter = new PagedListConverter<NetworkSecurityGroupInner, NetworkSecurityGroup>() {
             @Override
             public NetworkSecurityGroup typeConvert(NetworkSecurityGroupInner inner) {
@@ -44,19 +42,19 @@ class NetworkSecurityGroupsImpl
 
     @Override
     public PagedList<NetworkSecurityGroup> list() throws CloudException, IOException {
-        ServiceResponse<PagedList<NetworkSecurityGroupInner>> response = client.listAll();
+        ServiceResponse<PagedList<NetworkSecurityGroupInner>> response = this.innerCollection.listAll();
         return converter.convert(response.getBody());
     }
 
     @Override
     public PagedList<NetworkSecurityGroup> listByGroup(String groupName) throws CloudException, IOException {
-        ServiceResponse<PagedList<NetworkSecurityGroupInner>> response = client.list(groupName);
+        ServiceResponse<PagedList<NetworkSecurityGroupInner>> response = this.innerCollection.list(groupName);
         return converter.convert(response.getBody());
     }
 
     @Override
     public NetworkSecurityGroupImpl getByGroup(String groupName, String name) throws CloudException, IOException {
-        ServiceResponse<NetworkSecurityGroupInner> serviceResponse = this.client.get(groupName, name);
+        ServiceResponse<NetworkSecurityGroupInner> serviceResponse = this.innerCollection.get(groupName, name);
         return createFluentModel(serviceResponse.getBody());
     }
 
@@ -67,7 +65,7 @@ class NetworkSecurityGroupsImpl
 
     @Override
     public void delete(String groupName, String name) throws Exception {
-        this.client.delete(groupName, name);
+        this.innerCollection.delete(groupName, name);
     }
 
     @Override
@@ -90,11 +88,11 @@ class NetworkSecurityGroupsImpl
             inner.withDefaultSecurityRules(new ArrayList<SecurityRuleInner>());
         }
 
-        return new NetworkSecurityGroupImpl(name, inner, this.client, this.resourceManager());
+        return new NetworkSecurityGroupImpl(name, inner, this.innerCollection, this.resourceManager);
     }
 
     @Override
     protected NetworkSecurityGroupImpl createFluentModel(NetworkSecurityGroupInner inner) {
-        return new NetworkSecurityGroupImpl(inner.name(), inner, this.client, this.resourceManager());
+        return new NetworkSecurityGroupImpl(inner.name(), inner, this.innerCollection, this.resourceManager);
     }
 }

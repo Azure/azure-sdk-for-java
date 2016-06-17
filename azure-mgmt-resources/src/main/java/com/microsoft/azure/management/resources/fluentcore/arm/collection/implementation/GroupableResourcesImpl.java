@@ -25,19 +25,20 @@ import com.microsoft.azure.management.resources.implementation.ResourceManager;
 public abstract class GroupableResourcesImpl<
         T extends GroupableResource,
         ImplT extends T,
-        InnerT extends Resource>
+        InnerT extends Resource,
+        InnerCollectionT>
     implements
         SupportsGettingById<T>,
         SupportsGettingByGroup<T> {
 
-    private final ResourceManager resourceManager;
+    protected final ResourceManager resourceManager;
+    protected final InnerCollectionT innerCollection;
     
-    protected GroupableResourcesImpl(ResourceManager resourceManager) {
+    protected GroupableResourcesImpl(
+            ResourceManager resourceManager,
+            InnerCollectionT innerCollection) {
         this.resourceManager = resourceManager;
-    }
-    
-    protected ResourceManager resourceManager() {
-        return this.resourceManager;
+        this.innerCollection = innerCollection;
     }
     
     @Override
