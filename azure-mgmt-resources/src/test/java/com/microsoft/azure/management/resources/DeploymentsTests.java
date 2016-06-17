@@ -72,7 +72,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
         // Deployment operations
         List<DeploymentOperation> operations = deployment.deploymentOperations().list();
         Assert.assertEquals(2, operations.size());
-        DeploymentOperation op = deployment.deploymentOperations().get(operations.get(0).operationId());
+        DeploymentOperation op = deployment.deploymentOperations().getById(operations.get(0).operationId());
         Assert.assertNotNull(op);
         resourceClient.genericResources().delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", "2015-06-15");
     }

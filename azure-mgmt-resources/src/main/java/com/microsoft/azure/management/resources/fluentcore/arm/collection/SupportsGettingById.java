@@ -12,18 +12,19 @@ import com.microsoft.azure.CloudException;
 import java.io.IOException;
 
 /**
- * Provides access to getting a specific Azure resource based on its name within the current resource group.
+ * Provides access to getting a specific Azure resource based on its resource ID.
  *
  * @param <T> the type of the resource collection
  */
-public interface SupportsGettingByName<T> {
+public interface SupportsGettingById<T> {
     /**
-     * Gets the information about a resource from Azure based on the resource name within the current resource group.
+     * Gets the information about a resource from Azure based on the resource id.
      *
-     * @param name the name of the resource. (Note, this is not the resource ID.)
+     * @param id the id of the resource.
      * @return an immutable representation of the resource
      * @throws CloudException exceptions thrown from the cloud
      * @throws IOException exceptions thrown from serialization/deserialization
+     * @throws IllegalArgumentException exceptions thrown when something is wrong with the input parameters
      */
-    T getByName(String name) throws CloudException, IOException;
+    T getById(String id) throws CloudException, IllegalArgumentException, IOException;
 }

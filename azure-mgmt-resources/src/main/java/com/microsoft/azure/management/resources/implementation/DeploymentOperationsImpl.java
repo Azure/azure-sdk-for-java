@@ -44,7 +44,7 @@ final class DeploymentOperationsImpl
     }
 
     @Override
-    public DeploymentOperation get(String operationId) throws IOException, CloudException {
+    public DeploymentOperation getById(String operationId) throws CloudException, IllegalArgumentException, IOException {
         return createFluentModel(client.get(deployment.resourceGroupName(), deployment.name(), operationId).getBody());
     }
 

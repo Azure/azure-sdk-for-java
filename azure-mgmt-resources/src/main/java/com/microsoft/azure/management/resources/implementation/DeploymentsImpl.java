@@ -63,7 +63,7 @@ final class DeploymentsImpl
     }
 
     @Override
-    public Deployment get(String name) throws IOException, CloudException {
+    public Deployment getByName(String name) throws IOException, CloudException {
         for (ResourceGroup group : this.resourceManager.resourceGroups().list()) {
             try {
                 DeploymentExtendedInner inner = client.get(group.name(), name).getBody();

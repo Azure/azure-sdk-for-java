@@ -30,7 +30,7 @@ public class GenericResourcesTests extends ResourceManagerTestBase {
         resourceGroups.define(newRgName)
                 .withRegion(Region.US_SOUTH_CENTRAL)
                 .create();
-        resourceGroup = resourceGroups.get(rgName);
+        resourceGroup = resourceGroups.getByName(rgName);
     }
 
     @AfterClass
@@ -65,7 +65,7 @@ public class GenericResourcesTests extends ResourceManagerTestBase {
         // Get
         Assert.assertNotNull(genericResources.get(rgName, resource.resourceProviderNamespace(), resource.parentResourceId(), resource.resourceType(), resource.name(), resource.apiVersion()));
         // Move
-        genericResources.moveResources(rgName, resourceGroups.get(newRgName), Arrays.asList(resource.id()));
+        genericResources.moveResources(rgName, resourceGroups.getByName(newRgName), Arrays.asList(resource.id()));
         Assert.assertFalse(genericResources.checkExistence(rgName, resource.resourceProviderNamespace(), resource.parentResourceId(), resource.resourceType(), resource.name(), resource.apiVersion()));
         resource = genericResources.get(newRgName, resource.resourceProviderNamespace(), resource.parentResourceId(), resource.resourceType(), resource.name(), resource.apiVersion());
         Assert.assertNotNull(resource);

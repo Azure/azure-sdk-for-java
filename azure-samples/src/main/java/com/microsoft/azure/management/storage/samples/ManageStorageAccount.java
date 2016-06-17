@@ -128,7 +128,7 @@ public final class ManageStorageAccount {
                 System.out.println(f.getMessage());
                 f.printStackTrace();
             } finally {
-                if (azure.resourceGroups().get(rgName) != null) {
+                if (azure.resourceGroups().getByName(rgName) != null) {
                     System.out.println("Deleting Resource Group: " + rgName);
                     azure.resourceGroups().delete(rgName);
                     System.out.println("Deleted Resource Group: " + rgName);

@@ -49,7 +49,7 @@ final class ProvidersImpl
     }
 
     @Override
-    public Provider get(String resourceProviderNamespace) throws CloudException, IOException {
+    public Provider getByName(String resourceProviderNamespace) throws CloudException, IOException {
         return new ProviderImpl(client.get(resourceProviderNamespace).getBody());
     }
 }

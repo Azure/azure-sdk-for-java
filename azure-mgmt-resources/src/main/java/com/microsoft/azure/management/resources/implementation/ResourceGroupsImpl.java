@@ -47,7 +47,7 @@ final class ResourceGroupsImpl
     }
 
     @Override
-    public ResourceGroupImpl get(String name) throws CloudException, IOException {
+    public ResourceGroupImpl getByName(String name) throws CloudException, IOException {
         ResourceGroupInner resourceGroupInner = client.get(name).getBody();
         return createFluentModel(resourceGroupInner);
     }
