@@ -10,7 +10,6 @@ package com.microsoft.azure.management.storage.samples;
 import com.microsoft.azure.Azure;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.samples.Utils;
-import com.microsoft.azure.management.storage.KeyType;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.implementation.api.StorageAccountKey;
@@ -78,9 +77,9 @@ public final class ManageStorageAccount {
 
                 Utils.print(storageAccountKeys);
 
-                System.out.println("Regenerating primary storage account access key");
+                System.out.println("Regenerating first storage account access key");
 
-                storageAccountKeys = storageAccount.regenerateKey(KeyType.PRIMARY);
+                storageAccountKeys = storageAccount.regenerateKey(storageAccountKeys.get(0).keyName());
 
                 Utils.print(storageAccountKeys);
 

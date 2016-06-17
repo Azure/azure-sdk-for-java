@@ -130,12 +130,12 @@ public interface StorageAccount extends
     /**
      * Regenerates the access keys for this storage account.
      *
-     * @param keyType if the key is primary or secondary
+     * @param keyName if the key name
      * @return the generated access keys for this storage account
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      */
-    List<StorageAccountKey> regenerateKey(KeyType keyType) throws CloudException, IOException;
+    List<StorageAccountKey> regenerateKey(String keyName) throws CloudException, IOException;
 
     /**************************************************************
      * Fluent interfaces to provision a StorageAccount
