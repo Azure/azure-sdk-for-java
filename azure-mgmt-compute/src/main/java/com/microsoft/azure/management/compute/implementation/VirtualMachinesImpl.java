@@ -22,6 +22,7 @@ import com.microsoft.azure.management.compute.implementation.api.VirtualMachineC
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineCaptureResultInner;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.resources.implementation.api.PageImpl;
@@ -37,6 +38,7 @@ import java.util.List;
  * The implementation for {@link VirtualMachines}.
  */
 class VirtualMachinesImpl
+        extends ResourcesImpl<VirtualMachine>
         implements VirtualMachines {
     private final VirtualMachinesInner client;
     private final VirtualMachineSizesInner virtualMachineSizesClient;

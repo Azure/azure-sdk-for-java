@@ -4,6 +4,7 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
@@ -18,6 +19,7 @@ public interface VirtualMachines extends
         SupportsListing<VirtualMachine>,
         SupportsListingByGroup<VirtualMachine>,
         SupportsGettingByGroup<VirtualMachine>,
+        SupportsGettingById<VirtualMachine>,
         SupportsCreating<VirtualMachine.DefinitionBlank>,
         SupportsDeleting,
         SupportsDeletingByGroup {
