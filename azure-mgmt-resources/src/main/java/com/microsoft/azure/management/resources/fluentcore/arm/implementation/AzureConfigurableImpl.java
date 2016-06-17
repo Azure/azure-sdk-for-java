@@ -7,11 +7,15 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.implementation;
 
 import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.RestClient;
+import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import okhttp3.Interceptor;
 import okhttp3.logging.HttpLoggingInterceptor;
+
+import java.net.Proxy;
+import java.util.concurrent.Executor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * The implementation for {@link AzureConfigurable<T>} and the base class for
@@ -45,6 +49,41 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
     @Override
     public T withUserAgent(String userAgent) {
         this.restClientBuilder = this.restClientBuilder.withUserAgent(userAgent);
+        return (T) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public T withReadTimeout(long timeout, TimeUnit unit) {
+        this.restClientBuilder = restClientBuilder.withReadTimeout(timeout, unit);
+        return (T) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public T withConnectionTimeout(long timeout, TimeUnit unit) {
+        this.restClientBuilder = restClientBuilder.withConnectionTimeout(timeout, unit);
+        return (T) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public T withMaxIdleConnections(int maxIdleConnections) {
+        this.restClientBuilder = restClientBuilder.withMaxIdleConnections(5);
+        return (T) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public T withCallbackExecutor(Executor executor) {
+        this.restClientBuilder = restClientBuilder.withCallbackExecutor(executor);
+        return (T) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public T withProxy(Proxy proxy) {
+        this.restClientBuilder = restClientBuilder.withProxy(proxy);
         return (T) this;
     }
 
