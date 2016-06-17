@@ -16,9 +16,12 @@ import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.storage.StorageAccount;
+import com.microsoft.azure.management.storage.implementation.api.StorageAccountKey;
 
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -242,6 +245,29 @@ public final class Utils {
     }
 
 
+    /**
+     * Print storage account.
+     * @param storageAccount a storage account
+     */
+    public static void print(StorageAccount storageAccount) {
+        System.out.println(storageAccount.name()
+                + " created @ " + storageAccount.creationTime());
+    }
+
+    /**
+     * Print storage account keys.
+     * @param storageAccountKeys a list of storage account keys
+     */
+    public static void print(List<StorageAccountKey> storageAccountKeys) {
+        StorageAccountKey storageAccountKey;
+
+        for (int i = 0; i < storageAccountKeys.size(); i++) {
+            storageAccountKey = (StorageAccountKey) storageAccountKeys.get(i);
+            System.out.println("Key (" + i + ") " + storageAccountKey.keyName() + "="
+                    + storageAccountKey.value());
+        }
+
+    }
 
     /**
      * Creates and returns a randomized name based on the prefix file for use by the sample.

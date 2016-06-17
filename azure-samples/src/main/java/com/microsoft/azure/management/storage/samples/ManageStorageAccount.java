@@ -10,16 +10,19 @@ package com.microsoft.azure.management.storage.samples;
 import com.microsoft.azure.Azure;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.samples.Utils;
+import com.microsoft.azure.management.storage.KeyType;
 import com.microsoft.azure.management.storage.StorageAccount;
+import com.microsoft.azure.management.storage.StorageAccounts;
+import com.microsoft.azure.management.storage.implementation.api.StorageAccountKey;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Azure Storage sample for managing storage accounts -
  *  - Create a storage account
- *  - Set a default storage account
- *  - Create storage account access keys
+ *  - Get | regenerate storage account access keys
  *  - Create another storage account
  *  - List storage accounts
  *  - Delete a storage account.
@@ -34,6 +37,7 @@ public final class ManageStorageAccount {
     public static void main(String[] args) {
 
         final String storageAccountName = Utils.createRandomName("sa");
+        final String storageAccountName2 = Utils.createRandomName("sa2");
         final String rgName = Utils.createRandomName("rgSTMS");
 
         try {
@@ -51,28 +55,75 @@ public final class ManageStorageAccount {
 
             try {
 
-
                 // ============================================================
                 // Create a storage account
+
+                System.out.println("Creating a Storage Account");
+
                 StorageAccount storageAccount = azure.storageAccounts().define(storageAccountName)
                         .withRegion(Region.US_EAST)
                         .withNewGroup(rgName)
                         .create();
 
-
-                // Set a default storage account
-
-
-                // Create storage account access keys
+                System.out.println("Created a Storage Account:");
+                Utils.print(storageAccount);
 
 
+                // ============================================================
+                // Get | regenerate storage account access keys
+
+                System.out.println("Getting storage account access keys");
+
+                List<StorageAccountKey> storageAccountKeys = storageAccount.keys();
+
+                Utils.print(storageAccountKeys);
+
+                System.out.println("Regenerating primary storage account access key");
+
+                storageAccountKeys = storageAccount.regenerateKey(KeyType.PRIMARY);
+
+                Utils.print(storageAccountKeys);
+
+
+                // ============================================================
                 // Create another storage account
 
+                System.out.println("Creating a 2nd Storage Account");
 
+                StorageAccount storageAccount2 = azure.storageAccounts().define(storageAccountName2)
+                        .withRegion(Region.US_EAST)
+                        .withNewGroup(rgName)
+                        .create();
+
+                System.out.println("Created a Storage Account:");
+                Utils.print(storageAccount2);
+
+
+                // ============================================================
                 // List storage accounts
 
+                System.out.println("Listing storage accounts");
 
+                StorageAccounts storageAccounts = azure.storageAccounts();
+
+                List accounts = storageAccounts.listByGroup(rgName);
+                StorageAccount sa;
+                for (int i = 0; i < accounts.size(); i++) {
+                    sa = (StorageAccount) accounts.get(i);
+                    System.out.println("Storage Account (" + i + ") " + sa.name()
+                            + " created @ " + sa.creationTime());
+                }
+
+
+                // ============================================================
                 // Delete a storage account
+
+                System.out.println("Deleting a storage account - " + storageAccount.name()
+                        + " created @ " + storageAccount.creationTime());
+
+                azure.storageAccounts().delete(storageAccountName);
+
+                System.out.println("Deleted storage account");
             } catch (Exception f) {
                 System.out.println(f.getMessage());
                 f.printStackTrace();
