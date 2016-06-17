@@ -27,34 +27,25 @@ public enum KeyPermission {
     }
 
     /**
-     * Gets the serialized value for a KeyPermission instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a KeyPermission instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed KeyPermission object, or null if unable to parse.
      */
     @JsonCreator
-    public static KeyPermission fromValue(String value) {
+    public static KeyPermission fromString(String value) {
         KeyPermission[] items = KeyPermission.values();
         for (KeyPermission item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

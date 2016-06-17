@@ -8,7 +8,6 @@ package com.microsoft.azure.management.datalake.store.implementation;
 
 import retrofit2.Retrofit;
 import com.microsoft.azure.management.datalake.store.Accounts;
-import com.microsoft.azure.management.datalake.store.DataLakeStoreAccountManagementClient;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
@@ -48,7 +47,7 @@ public final class AccountsImpl implements Accounts {
     /** The Retrofit service to perform REST calls. */
     private AccountsService service;
     /** The service client containing this operation class. */
-    private DataLakeStoreAccountManagementClient client;
+    private DataLakeStoreAccountManagementClientImpl client;
 
     /**
      * Initializes an instance of AccountsImpl.
@@ -56,7 +55,7 @@ public final class AccountsImpl implements Accounts {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public AccountsImpl(Retrofit retrofit, DataLakeStoreAccountManagementClient client) {
+    public AccountsImpl(Retrofit retrofit, DataLakeStoreAccountManagementClientImpl client) {
         this.service = retrofit.create(AccountsService.class);
         this.client = client;
     }
@@ -213,7 +212,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<Void> deleteFirewallRuleDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
@@ -300,7 +299,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<FirewallRule> getFirewallRuleDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<FirewallRule, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<FirewallRule, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<FirewallRule>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -392,7 +391,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<PageImpl<FirewallRule>> listFirewallRulesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<FirewallRule>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<FirewallRule>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<FirewallRule>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -490,7 +489,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<FirewallRule> createOrUpdateFirewallRuleDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<FirewallRule, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<FirewallRule, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<FirewallRule>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -657,7 +656,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<DataLakeStoreAccount> beginCreateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DataLakeStoreAccount, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<DataLakeStoreAccount, CloudException>(this.client.mapperAdapter())
                 .register(201, new TypeToken<DataLakeStoreAccount>() { }.getType())
                 .register(200, new TypeToken<DataLakeStoreAccount>() { }.getType())
                 .registerError(CloudException.class)
@@ -825,7 +824,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<DataLakeStoreAccount> beginUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DataLakeStoreAccount, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<DataLakeStoreAccount, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<DataLakeStoreAccount>() { }.getType())
                 .register(201, new TypeToken<DataLakeStoreAccount>() { }.getType())
                 .registerError(CloudException.class)
@@ -972,7 +971,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
@@ -1052,7 +1051,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<DataLakeStoreAccount> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DataLakeStoreAccount, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<DataLakeStoreAccount, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<DataLakeStoreAccount>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1247,7 +1246,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<PageImpl<DataLakeStoreAccount>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DataLakeStoreAccount>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<DataLakeStoreAccount>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<DataLakeStoreAccount>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1424,7 +1423,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<PageImpl<DataLakeStoreAccount>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DataLakeStoreAccount>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<DataLakeStoreAccount>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<DataLakeStoreAccount>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1487,7 +1486,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<PageImpl<FirewallRule>> listFirewallRulesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<FirewallRule>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<FirewallRule>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<FirewallRule>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1550,7 +1549,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<PageImpl<DataLakeStoreAccount>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DataLakeStoreAccount>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<DataLakeStoreAccount>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<DataLakeStoreAccount>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -1613,7 +1612,7 @@ public final class AccountsImpl implements Accounts {
     }
 
     private ServiceResponse<PageImpl<DataLakeStoreAccount>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<DataLakeStoreAccount>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<DataLakeStoreAccount>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<DataLakeStoreAccount>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

@@ -51,7 +51,11 @@ public abstract class TaskGroupBase<T, U extends TaskItem<T>>
                 if (dag.isRootNode(nextNode)) {
                     executeRootTask(nextNode.data());
                 } else {
-                    nextNode.data().execute();
+                    // TaskGroupBase::execute will be called both in update and create
+                    // scenarios, so run the task only if it not not executed already.
+                    if (nextNode.data().result() == null) {
+                        nextNode.data().execute();
+                    }
                 }
                 dag.reportedCompleted(nextNode);
                 nextNode = dag.getNext();

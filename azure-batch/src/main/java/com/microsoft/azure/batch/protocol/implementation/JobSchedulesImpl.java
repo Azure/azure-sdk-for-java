@@ -8,7 +8,6 @@ package com.microsoft.azure.batch.protocol.implementation;
 
 import retrofit2.Retrofit;
 import com.microsoft.azure.batch.protocol.JobSchedules;
-import com.microsoft.azure.batch.protocol.BatchServiceClient;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.batch.protocol.models.BatchErrorException;
@@ -75,7 +74,7 @@ public final class JobSchedulesImpl implements JobSchedules {
     /** The Retrofit service to perform REST calls. */
     private JobSchedulesService service;
     /** The service client containing this operation class. */
-    private BatchServiceClient client;
+    private BatchServiceClientImpl client;
 
     /**
      * Initializes an instance of JobSchedulesImpl.
@@ -83,7 +82,7 @@ public final class JobSchedulesImpl implements JobSchedules {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public JobSchedulesImpl(Retrofit retrofit, BatchServiceClient client) {
+    public JobSchedulesImpl(Retrofit retrofit, BatchServiceClientImpl client) {
         this.service = retrofit.create(JobSchedulesService.class);
         this.client = client;
     }
@@ -384,7 +383,7 @@ public final class JobSchedulesImpl implements JobSchedules {
     }
 
     private ServiceResponseWithHeaders<Boolean, JobScheduleExistsHeaders> existsDelegate(Response<Void> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Boolean, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Boolean, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
@@ -636,7 +635,7 @@ public final class JobSchedulesImpl implements JobSchedules {
     }
 
     private ServiceResponseWithHeaders<Void, JobScheduleDeleteHeaders> deleteDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobScheduleDeleteHeaders.class);
@@ -907,7 +906,7 @@ public final class JobSchedulesImpl implements JobSchedules {
     }
 
     private ServiceResponseWithHeaders<CloudJobSchedule, JobScheduleGetHeaders> getDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CloudJobSchedule, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<CloudJobSchedule, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<CloudJobSchedule>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobScheduleGetHeaders.class);
@@ -1180,7 +1179,7 @@ public final class JobSchedulesImpl implements JobSchedules {
     }
 
     private ServiceResponseWithHeaders<Void, JobSchedulePatchHeaders> patchDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobSchedulePatchHeaders.class);
@@ -1453,7 +1452,7 @@ public final class JobSchedulesImpl implements JobSchedules {
     }
 
     private ServiceResponseWithHeaders<Void, JobScheduleUpdateHeaders> updateDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobScheduleUpdateHeaders.class);
@@ -1704,7 +1703,7 @@ public final class JobSchedulesImpl implements JobSchedules {
     }
 
     private ServiceResponseWithHeaders<Void, JobScheduleDisableHeaders> disableDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobScheduleDisableHeaders.class);
@@ -1955,7 +1954,7 @@ public final class JobSchedulesImpl implements JobSchedules {
     }
 
     private ServiceResponseWithHeaders<Void, JobScheduleEnableHeaders> enableDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobScheduleEnableHeaders.class);
@@ -2206,7 +2205,7 @@ public final class JobSchedulesImpl implements JobSchedules {
     }
 
     private ServiceResponseWithHeaders<Void, JobScheduleTerminateHeaders> terminateDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobScheduleTerminateHeaders.class);
@@ -2389,7 +2388,7 @@ public final class JobSchedulesImpl implements JobSchedules {
     }
 
     private ServiceResponseWithHeaders<Void, JobScheduleAddHeaders> addDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(201, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobScheduleAddHeaders.class);
@@ -2632,7 +2631,7 @@ public final class JobSchedulesImpl implements JobSchedules {
     }
 
     private ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> listDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<CloudJobSchedule>, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<CloudJobSchedule>, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<CloudJobSchedule>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobScheduleListHeaders.class);
@@ -2803,7 +2802,7 @@ public final class JobSchedulesImpl implements JobSchedules {
     }
 
     private ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> listNextDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<CloudJobSchedule>, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<CloudJobSchedule>, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<CloudJobSchedule>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobScheduleListHeaders.class);

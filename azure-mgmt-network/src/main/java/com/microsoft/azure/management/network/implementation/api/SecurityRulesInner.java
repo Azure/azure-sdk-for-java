@@ -247,7 +247,7 @@ public final class SecurityRulesInner {
     }
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<Void>() { }.getType())
@@ -335,7 +335,7 @@ public final class SecurityRulesInner {
     }
 
     private ServiceResponse<SecurityRuleInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SecurityRuleInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<SecurityRuleInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<SecurityRuleInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -519,7 +519,7 @@ public final class SecurityRulesInner {
     }
 
     private ServiceResponse<SecurityRuleInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SecurityRuleInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<SecurityRuleInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<SecurityRuleInner>() { }.getType())
                 .register(201, new TypeToken<SecurityRuleInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -612,7 +612,7 @@ public final class SecurityRulesInner {
     }
 
     private ServiceResponse<PageImpl<SecurityRuleInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SecurityRuleInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<SecurityRuleInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<SecurityRuleInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -675,7 +675,7 @@ public final class SecurityRulesInner {
     }
 
     private ServiceResponse<PageImpl<SecurityRuleInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SecurityRuleInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<SecurityRuleInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<SecurityRuleInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

@@ -3,8 +3,8 @@ package com.microsoft.azure.management.network;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceIPConfiguration;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
-import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
+import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
 import java.io.IOException;
@@ -233,10 +233,10 @@ public interface NicIpConfiguration extends
      * The template for a ip configuration update operation, containing all the settings that
      * can be modified.
      *
-     * @param <ParentT> the return type of the final {@link Appliable#apply()}
+     * @param <ParentT> the return type of the final {@link Settable#set()}
      */
     interface Update<ParentT> extends
-            Appliable<ParentT> {
+            Settable<ParentT> {
         /**
          * Associate a subnet with the Ip configuration.
          *

@@ -33,34 +33,25 @@ public enum WorkerSizeOptions {
     }
 
     /**
-     * Gets the serialized value for a WorkerSizeOptions instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a WorkerSizeOptions instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed WorkerSizeOptions object, or null if unable to parse.
      */
     @JsonCreator
-    public static WorkerSizeOptions fromValue(String value) {
+    public static WorkerSizeOptions fromString(String value) {
         WorkerSizeOptions[] items = WorkerSizeOptions.values();
         for (WorkerSizeOptions item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

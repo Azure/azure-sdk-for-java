@@ -12,6 +12,7 @@ import com.microsoft.azure.management.compute.DataDisk;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.implementation.api.CachingTypes;
+import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.samples.Utils;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -53,8 +54,6 @@ public final class ManageVirtualMachine {
                     .authenticate(credFile)
                     .withDefaultSubscription();
 
-            azure.resourceGroups().list();
-
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());
 
@@ -77,6 +76,7 @@ public final class ManageVirtualMachine {
                     .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                     .withAdminUserName(userName)
                     .withPassword(password)
+                    .withSize(VirtualMachineSizeTypes.STANDARD_D3)
                     .create();
 
             System.out.println("Created VM: " + vm.id());
@@ -101,8 +101,8 @@ public final class ManageVirtualMachine {
             vm.update()
                     .withNewDataDisk(10)
                     .defineNewDataDisk(dataDiskName)
-                    .withSizeInGB(20)
-                    .withCaching(CachingTypes.READ_WRITE)
+                        .withSizeInGB(20)
+                        .withCaching(CachingTypes.READ_WRITE)
                     .attach()
                     .apply();
 
@@ -134,7 +134,7 @@ public final class ManageVirtualMachine {
             vm.update()
                     .updateDataDisk(dataDisk.name())
                         .withSizeInGB(30)
-                        .apply()
+                    .set()
                     .apply();
 
             System.out.println("Expanded VM " + vm.id() + "'s data disk to 30GB");
@@ -143,10 +143,16 @@ public final class ManageVirtualMachine {
             //=============================================================
             // Update - Expand the OS drive size by 10 GB
 
-            int osDiskSizeInGb = vm.osDiskSize();
+            Integer osDiskSizeInGb = vm.osDiskSize();
+            if (osDiskSizeInGb == null) {
+                // Server is not returning the OS Disk size, possible bug in server
+                osDiskSizeInGb = 256;
+            } else {
+                osDiskSizeInGb += 10;
+            }
 
             vm.update()
-                    .withOsDiskSizeInGb(osDiskSizeInGb + 10)
+                    .withOsDiskSizeInGb(osDiskSizeInGb)
                     .apply();
 
             System.out.println("Expanded VM " + vm.id() + "'s OS disk to" + osDiskSizeInGb + 10);

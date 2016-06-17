@@ -30,34 +30,25 @@ public enum PoolState {
     }
 
     /**
-     * Gets the serialized value for a PoolState instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a PoolState instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed PoolState object, or null if unable to parse.
      */
     @JsonCreator
-    public static PoolState fromValue(String value) {
+    public static PoolState fromString(String value) {
         PoolState[] items = PoolState.values();
         for (PoolState item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

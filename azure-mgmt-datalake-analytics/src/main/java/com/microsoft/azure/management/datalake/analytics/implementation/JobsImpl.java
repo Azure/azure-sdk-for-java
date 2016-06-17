@@ -8,7 +8,6 @@ package com.microsoft.azure.management.datalake.analytics.implementation;
 
 import retrofit2.Retrofit;
 import com.microsoft.azure.management.datalake.analytics.Jobs;
-import com.microsoft.azure.management.datalake.analytics.DataLakeAnalyticsJobManagementClient;
 import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
@@ -49,7 +48,7 @@ public final class JobsImpl implements Jobs {
     /** The Retrofit service to perform REST calls. */
     private JobsService service;
     /** The service client containing this operation class. */
-    private DataLakeAnalyticsJobManagementClient client;
+    private DataLakeAnalyticsJobManagementClientImpl client;
 
     /**
      * Initializes an instance of JobsImpl.
@@ -57,7 +56,7 @@ public final class JobsImpl implements Jobs {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public JobsImpl(Retrofit retrofit, DataLakeAnalyticsJobManagementClient client) {
+    public JobsImpl(Retrofit retrofit, DataLakeAnalyticsJobManagementClientImpl client) {
         this.service = retrofit.create(JobsService.class);
         this.client = client;
     }
@@ -175,7 +174,7 @@ public final class JobsImpl implements Jobs {
     }
 
     private ServiceResponse<JobStatistics> getStatisticsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<JobStatistics, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<JobStatistics, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<JobStatistics>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -255,7 +254,7 @@ public final class JobsImpl implements Jobs {
     }
 
     private ServiceResponse<JobDataPath> getDebugDataPathDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<JobDataPath, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<JobDataPath, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<JobDataPath>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -337,7 +336,7 @@ public final class JobsImpl implements Jobs {
     }
 
     private ServiceResponse<JobInformation> buildDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<JobInformation, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<JobInformation, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<JobInformation>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -417,7 +416,7 @@ public final class JobsImpl implements Jobs {
     }
 
     private ServiceResponse<Void> cancelDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
@@ -496,7 +495,7 @@ public final class JobsImpl implements Jobs {
     }
 
     private ServiceResponse<JobInformation> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<JobInformation, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<JobInformation, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<JobInformation>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -587,7 +586,7 @@ public final class JobsImpl implements Jobs {
     }
 
     private ServiceResponse<JobInformation> createDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<JobInformation, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<JobInformation, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<JobInformation>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -786,7 +785,7 @@ public final class JobsImpl implements Jobs {
     }
 
     private ServiceResponse<PageImpl<JobInformation>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<JobInformation>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<JobInformation>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<JobInformation>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -849,7 +848,7 @@ public final class JobsImpl implements Jobs {
     }
 
     private ServiceResponse<PageImpl<JobInformation>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<JobInformation>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<JobInformation>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<JobInformation>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

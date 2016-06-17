@@ -27,34 +27,25 @@ public enum ManagedPipelineMode {
     }
 
     /**
-     * Gets the serialized value for a ManagedPipelineMode instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a ManagedPipelineMode instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed ManagedPipelineMode object, or null if unable to parse.
      */
     @JsonCreator
-    public static ManagedPipelineMode fromValue(String value) {
+    public static ManagedPipelineMode fromString(String value) {
         ManagedPipelineMode[] items = ManagedPipelineMode.values();
         for (ManagedPipelineMode item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

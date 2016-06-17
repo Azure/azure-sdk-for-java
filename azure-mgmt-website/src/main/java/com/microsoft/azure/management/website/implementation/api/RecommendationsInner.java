@@ -184,7 +184,7 @@ public final class RecommendationsInner {
     }
 
     private ServiceResponse<List<RecommendationInner>> getRecommendationBySubscriptionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<RecommendationInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<List<RecommendationInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<List<RecommendationInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -271,7 +271,7 @@ public final class RecommendationsInner {
     }
 
     private ServiceResponse<RecommendationRuleInner> getRuleDetailsBySiteNameDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<RecommendationRuleInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<RecommendationRuleInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<RecommendationRuleInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -432,7 +432,7 @@ public final class RecommendationsInner {
     }
 
     private ServiceResponse<List<RecommendationInner>> getRecommendedRulesForSiteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<RecommendationInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<List<RecommendationInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<List<RecommendationInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -589,7 +589,7 @@ public final class RecommendationsInner {
     }
 
     private ServiceResponse<List<RecommendationInner>> getRecommendationHistoryForSiteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<List<RecommendationInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<List<RecommendationInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<List<RecommendationInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

@@ -8,7 +8,6 @@ package com.microsoft.azure.batch.protocol.implementation;
 
 import retrofit2.Retrofit;
 import com.microsoft.azure.batch.protocol.ComputeNodes;
-import com.microsoft.azure.batch.protocol.BatchServiceClient;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.batch.protocol.models.BatchErrorException;
@@ -82,7 +81,7 @@ public final class ComputeNodesImpl implements ComputeNodes {
     /** The Retrofit service to perform REST calls. */
     private ComputeNodesService service;
     /** The service client containing this operation class. */
-    private BatchServiceClient client;
+    private BatchServiceClientImpl client;
 
     /**
      * Initializes an instance of ComputeNodesImpl.
@@ -90,7 +89,7 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public ComputeNodesImpl(Retrofit retrofit, BatchServiceClient client) {
+    public ComputeNodesImpl(Retrofit retrofit, BatchServiceClientImpl client) {
         this.service = retrofit.create(ComputeNodesService.class);
         this.client = client;
     }
@@ -364,7 +363,7 @@ public final class ComputeNodesImpl implements ComputeNodes {
     }
 
     private ServiceResponseWithHeaders<Void, ComputeNodeAddUserHeaders> addUserDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(201, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, ComputeNodeAddUserHeaders.class);
@@ -579,7 +578,7 @@ public final class ComputeNodesImpl implements ComputeNodes {
     }
 
     private ServiceResponseWithHeaders<Void, ComputeNodeDeleteUserHeaders> deleteUserDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, ComputeNodeDeleteUserHeaders.class);
@@ -816,7 +815,7 @@ public final class ComputeNodesImpl implements ComputeNodes {
     }
 
     private ServiceResponseWithHeaders<Void, ComputeNodeUpdateUserHeaders> updateUserDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, ComputeNodeUpdateUserHeaders.class);
@@ -1023,7 +1022,7 @@ public final class ComputeNodesImpl implements ComputeNodes {
     }
 
     private ServiceResponseWithHeaders<ComputeNode, ComputeNodeGetHeaders> getDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ComputeNode, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<ComputeNode, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<ComputeNode>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, ComputeNodeGetHeaders.class);
@@ -1238,7 +1237,7 @@ public final class ComputeNodesImpl implements ComputeNodes {
     }
 
     private ServiceResponseWithHeaders<Void, ComputeNodeRebootHeaders> rebootDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, ComputeNodeRebootHeaders.class);
@@ -1453,7 +1452,7 @@ public final class ComputeNodesImpl implements ComputeNodes {
     }
 
     private ServiceResponseWithHeaders<Void, ComputeNodeReimageHeaders> reimageDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, ComputeNodeReimageHeaders.class);
@@ -1668,7 +1667,7 @@ public final class ComputeNodesImpl implements ComputeNodes {
     }
 
     private ServiceResponseWithHeaders<Void, ComputeNodeDisableSchedulingHeaders> disableSchedulingDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, ComputeNodeDisableSchedulingHeaders.class);
@@ -1865,7 +1864,7 @@ public final class ComputeNodesImpl implements ComputeNodes {
     }
 
     private ServiceResponseWithHeaders<Void, ComputeNodeEnableSchedulingHeaders> enableSchedulingDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, ComputeNodeEnableSchedulingHeaders.class);
@@ -2062,7 +2061,7 @@ public final class ComputeNodesImpl implements ComputeNodes {
     }
 
     private ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders> getRemoteLoginSettingsDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ComputeNodeGetRemoteLoginSettingsResult, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<ComputeNodeGetRemoteLoginSettingsResult, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<ComputeNodeGetRemoteLoginSettingsResult>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, ComputeNodeGetRemoteLoginSettingsHeaders.class);
@@ -2259,7 +2258,7 @@ public final class ComputeNodesImpl implements ComputeNodes {
     }
 
     private ServiceResponseWithHeaders<InputStream, ComputeNodeGetRemoteDesktopHeaders> getRemoteDesktopDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<InputStream, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<InputStream, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<InputStream>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, ComputeNodeGetRemoteDesktopHeaders.class);
@@ -2510,7 +2509,7 @@ public final class ComputeNodesImpl implements ComputeNodes {
     }
 
     private ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> listDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ComputeNode>, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<ComputeNode>, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<ComputeNode>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, ComputeNodeListHeaders.class);
@@ -2681,7 +2680,7 @@ public final class ComputeNodesImpl implements ComputeNodes {
     }
 
     private ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> listNextDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ComputeNode>, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<ComputeNode>, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<ComputeNode>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, ComputeNodeListHeaders.class);

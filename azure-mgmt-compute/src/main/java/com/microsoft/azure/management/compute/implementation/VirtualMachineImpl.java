@@ -47,7 +47,7 @@ import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.resources.implementation.api.PageImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
@@ -77,7 +77,7 @@ class VirtualMachineImpl
     // the name of the virtual machine
     private final String vmName;
     // used to generate unique name for any dependency resources
-    private final String randomId;
+    private final ResourceNamer namer;
     // unique key of a creatable storage account to be used for virtual machine child resources that
     // requires storage [OS disk, data disk etc..]
     private String creatableStorageAccountKey;
@@ -124,7 +124,7 @@ class VirtualMachineImpl
         this.storageManager = storageManager;
         this.networkManager = networkManager;
         this.vmName = name;
-        this.randomId = Utils.randomId(this.vmName);
+        this.namer = new ResourceNamer(this.vmName);
         this.creatableSecondaryNetworkInterfaceKeys = new ArrayList<>();
         this.existingSecondaryNetworkInterfacesToAssociate = new ArrayList<>();
         this.virtualMachineSizeConverter = new PagedListConverter<VirtualMachineSizeInner, VirtualMachineSize>() {
@@ -226,21 +226,21 @@ class VirtualMachineImpl
     // Fluent methods for defining virtual network association for the new primary network interface
     @Override
     public VirtualMachineImpl withNewPrimaryNetwork(Network.DefinitionCreatable creatable) {
-        this.nicDefinitionWithPrivateIp = this.preparePrimaryNetworkInterface(nameWithPrefix("nic", "-"))
+        this.nicDefinitionWithPrivateIp = this.preparePrimaryNetworkInterface(this.namer.randomName("nic", 20))
                 .withNewPrimaryNetwork(creatable);
         return this;
     }
 
     @Override
     public VirtualMachineImpl withNewPrimaryNetwork(String addressSpace) {
-        this.nicDefinitionWithPrivateIp = this.preparePrimaryNetworkInterface(nameWithPrefix("nic", "-"))
+        this.nicDefinitionWithPrivateIp = this.preparePrimaryNetworkInterface(this.namer.randomName("nic", 20))
                 .withNewPrimaryNetwork(addressSpace);
         return this;
     }
 
     @Override
     public VirtualMachineImpl withExistingPrimaryNetwork(Network network) {
-        this.nicDefinitionWithSubnet = this.preparePrimaryNetworkInterface(nameWithPrefix("nic", "-"))
+        this.nicDefinitionWithSubnet = this.preparePrimaryNetworkInterface(this.namer.randomName("nic", 20))
                 .withExistingPrimaryNetwork(network);
         return this;
     }
@@ -854,15 +854,6 @@ class VirtualMachineImpl
      * Helper methods
      **************************************************/
 
-    /**
-     * @param prefix    the prefix
-     * @param separator the separator between prefix and random string
-     * @return a random value (derived from the resource name) with the given prefix
-     */
-    private String nameWithPrefix(String prefix, String separator) {
-        return prefix + separator + this.randomId;
-    }
-
     private void setOSDiskAndOSProfileDefaults() {
         if (!isInCreateMode()) {
             return;
@@ -912,7 +903,7 @@ class VirtualMachineImpl
         } else if (osDiskRequiresImplicitStorageAccountCreation()
                 || dataDisksRequiresImplicitStorageAccountCreation()) {
             storageAccount = this.storageManager.storageAccounts()
-                    .define(nameWithPrefix("stg", null))
+                    .define(this.namer.randomName("stg", 24))
                     .withRegion(this.region())
                     .withExistingGroup(this.resourceGroupName())
                     .create();

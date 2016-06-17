@@ -30,34 +30,25 @@ public enum PoolLifetimeOption {
     }
 
     /**
-     * Gets the serialized value for a PoolLifetimeOption instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a PoolLifetimeOption instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed PoolLifetimeOption object, or null if unable to parse.
      */
     @JsonCreator
-    public static PoolLifetimeOption fromValue(String value) {
+    public static PoolLifetimeOption fromString(String value) {
         PoolLifetimeOption[] items = PoolLifetimeOption.values();
         for (PoolLifetimeOption item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

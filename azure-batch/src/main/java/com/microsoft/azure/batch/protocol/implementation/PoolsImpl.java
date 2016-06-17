@@ -8,7 +8,6 @@ package com.microsoft.azure.batch.protocol.implementation;
 
 import retrofit2.Retrofit;
 import com.microsoft.azure.batch.protocol.Pools;
-import com.microsoft.azure.batch.protocol.BatchServiceClient;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.batch.protocol.models.AutoScaleRun;
@@ -95,7 +94,7 @@ public final class PoolsImpl implements Pools {
     /** The Retrofit service to perform REST calls. */
     private PoolsService service;
     /** The service client containing this operation class. */
-    private BatchServiceClient client;
+    private BatchServiceClientImpl client;
 
     /**
      * Initializes an instance of PoolsImpl.
@@ -103,7 +102,7 @@ public final class PoolsImpl implements Pools {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public PoolsImpl(Retrofit retrofit, BatchServiceClient client) {
+    public PoolsImpl(Retrofit retrofit, BatchServiceClientImpl client) {
         this.service = retrofit.create(PoolsService.class);
         this.client = client;
     }
@@ -424,7 +423,7 @@ public final class PoolsImpl implements Pools {
     }
 
     private ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> listPoolUsageMetricsDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<PoolUsageMetrics>, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<PoolUsageMetrics>, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<PoolUsageMetrics>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolListPoolUsageMetricsHeaders.class);
@@ -585,7 +584,7 @@ public final class PoolsImpl implements Pools {
     }
 
     private ServiceResponseWithHeaders<PoolStatistics, PoolGetAllPoolsLifetimeStatisticsHeaders> getAllPoolsLifetimeStatisticsDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PoolStatistics, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PoolStatistics, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PoolStatistics>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolGetAllPoolsLifetimeStatisticsHeaders.class);
@@ -768,7 +767,7 @@ public final class PoolsImpl implements Pools {
     }
 
     private ServiceResponseWithHeaders<Void, PoolAddHeaders> addDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(201, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolAddHeaders.class);
@@ -1011,7 +1010,7 @@ public final class PoolsImpl implements Pools {
     }
 
     private ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> listDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<CloudPool>, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<CloudPool>, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<CloudPool>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolListHeaders.class);
@@ -1262,7 +1261,7 @@ public final class PoolsImpl implements Pools {
     }
 
     private ServiceResponseWithHeaders<Void, PoolDeleteHeaders> deleteDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolDeleteHeaders.class);
@@ -1513,7 +1512,7 @@ public final class PoolsImpl implements Pools {
     }
 
     private ServiceResponseWithHeaders<Boolean, PoolExistsHeaders> existsDelegate(Response<Void> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Boolean, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Boolean, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
@@ -1785,7 +1784,7 @@ public final class PoolsImpl implements Pools {
     }
 
     private ServiceResponseWithHeaders<CloudPool, PoolGetHeaders> getDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CloudPool, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<CloudPool, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<CloudPool>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolGetHeaders.class);
@@ -2058,7 +2057,7 @@ public final class PoolsImpl implements Pools {
     }
 
     private ServiceResponseWithHeaders<Void, PoolPatchHeaders> patchDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolPatchHeaders.class);
@@ -2237,7 +2236,7 @@ public final class PoolsImpl implements Pools {
     }
 
     private ServiceResponseWithHeaders<Void, PoolDisableAutoScaleHeaders> disableAutoScaleDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolDisableAutoScaleHeaders.class);
@@ -2510,7 +2509,7 @@ public final class PoolsImpl implements Pools {
     }
 
     private ServiceResponseWithHeaders<Void, PoolEnableAutoScaleHeaders> enableAutoScaleDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolEnableAutoScaleHeaders.class);
@@ -2715,7 +2714,7 @@ public final class PoolsImpl implements Pools {
     }
 
     private ServiceResponseWithHeaders<AutoScaleRun, PoolEvaluateAutoScaleHeaders> evaluateAutoScaleDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<AutoScaleRun, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<AutoScaleRun, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<AutoScaleRun>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolEvaluateAutoScaleHeaders.class);
@@ -2988,7 +2987,7 @@ public final class PoolsImpl implements Pools {
     }
 
     private ServiceResponseWithHeaders<Void, PoolResizeHeaders> resizeDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolResizeHeaders.class);
@@ -3239,7 +3238,7 @@ public final class PoolsImpl implements Pools {
     }
 
     private ServiceResponseWithHeaders<Void, PoolStopResizeHeaders> stopResizeDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolStopResizeHeaders.class);
@@ -3440,7 +3439,7 @@ public final class PoolsImpl implements Pools {
     }
 
     private ServiceResponseWithHeaders<Void, PoolUpdatePropertiesHeaders> updatePropertiesDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolUpdatePropertiesHeaders.class);
@@ -3717,7 +3716,7 @@ public final class PoolsImpl implements Pools {
     }
 
     private ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders> upgradeOSDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolUpgradeOSHeaders.class);
@@ -3990,7 +3989,7 @@ public final class PoolsImpl implements Pools {
     }
 
     private ServiceResponseWithHeaders<Void, PoolRemoveNodesHeaders> removeNodesDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolRemoveNodesHeaders.class);
@@ -4161,7 +4160,7 @@ public final class PoolsImpl implements Pools {
     }
 
     private ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> listPoolUsageMetricsNextDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<PoolUsageMetrics>, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<PoolUsageMetrics>, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<PoolUsageMetrics>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolListPoolUsageMetricsHeaders.class);
@@ -4332,7 +4331,7 @@ public final class PoolsImpl implements Pools {
     }
 
     private ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> listNextDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<CloudPool>, BatchErrorException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<CloudPool>, BatchErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<CloudPool>>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolListHeaders.class);

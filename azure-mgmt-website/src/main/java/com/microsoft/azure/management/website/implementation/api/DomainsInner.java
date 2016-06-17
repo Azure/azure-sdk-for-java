@@ -144,7 +144,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<DomainCollectionInner> getDomainsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DomainCollectionInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<DomainCollectionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<DomainCollectionInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -222,7 +222,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<DomainInner> getDomainDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DomainInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<DomainInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<DomainInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -311,7 +311,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<DomainInner> createOrUpdateDomainDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DomainInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<DomainInner, CloudException>(this.client.mapperAdapter())
                 .register(202, new TypeToken<DomainInner>() { }.getType())
                 .register(200, new TypeToken<DomainInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -465,7 +465,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<Object> deleteDomainDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
                 .register(204, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -554,7 +554,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<DomainInner> updateDomainDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DomainInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<DomainInner, CloudException>(this.client.mapperAdapter())
                 .register(202, new TypeToken<DomainInner>() { }.getType())
                 .register(200, new TypeToken<DomainInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -642,7 +642,7 @@ public final class DomainsInner {
     }
 
     private ServiceResponse<DomainInner> getDomainOperationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DomainInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<DomainInner, CloudException>(this.client.mapperAdapter())
                 .register(202, new TypeToken<DomainInner>() { }.getType())
                 .register(200, new TypeToken<DomainInner>() { }.getType())
                 .register(500, new TypeToken<Void>() { }.getType())
