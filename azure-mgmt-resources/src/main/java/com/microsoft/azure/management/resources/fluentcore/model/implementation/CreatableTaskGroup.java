@@ -1,13 +1,17 @@
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.TaskGroupBase;
+import com.microsoft.azure.TaskItem;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceCallback;
 
 /**
  * Type representing a group of creatable tasks and the dependency between them.
  */
-public class CreatableTaskGroup extends TaskGroupBase<Resource, CreatableTaskItem> {
+public class CreatableTaskGroup extends TaskGroupBase<Resource> {
+
     /**
      * Represents a type that know how to create the root resource in a CreatableTaskGroup.
      */
@@ -16,6 +20,8 @@ public class CreatableTaskGroup extends TaskGroupBase<Resource, CreatableTaskIte
          * Creates the root resource.
          */
         void createRootResource() throws Exception;
+
+        ServiceCall createRootResourceAsync(ServiceCallback<Void> serviceCallback);
     }
 
     private final RootResourceCreator rootCreate;
@@ -28,7 +34,7 @@ public class CreatableTaskGroup extends TaskGroupBase<Resource, CreatableTaskIte
      * @param rootCreate {@link RootResourceCreator} that know how to create the rootCreatable once all the
      *                                              dependencies are available
      */
-    public CreatableTaskGroup(String rootCreatableId, Creatable<?> rootCreatable, RootResourceCreator rootCreate) {
+    public CreatableTaskGroup(String rootCreatableId, Creatable<? extends Resource> rootCreatable, RootResourceCreator rootCreate) {
         this(rootCreatableId, new CreatableTaskItem(rootCreatable), rootCreate);
     }
 
@@ -59,7 +65,12 @@ public class CreatableTaskGroup extends TaskGroupBase<Resource, CreatableTaskIte
     }
 
     @Override
-    public void executeRootTask(CreatableTaskItem rootTaskItem) throws Exception {
+    public void executeRootTask(TaskItem<Resource> task) throws Exception {
         this.rootCreate.createRootResource();
+    }
+
+    @Override
+    public ServiceCall executeRootTaskAsync(TaskItem<Resource> task, ServiceCallback<Void> callback) {
+        return this.rootCreate.createRootResourceAsync(callback);
     }
 }

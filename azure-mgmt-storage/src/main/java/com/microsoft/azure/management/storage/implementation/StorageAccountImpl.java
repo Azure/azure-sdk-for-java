@@ -8,6 +8,7 @@ package com.microsoft.azure.management.storage.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.storage.KeyType;
 import com.microsoft.azure.management.storage.StorageAccount;
@@ -24,6 +25,8 @@ import com.microsoft.azure.management.storage.implementation.api.StorageAccountK
 import com.microsoft.azure.management.storage.implementation.api.StorageAccountListKeysResultInner;
 import com.microsoft.azure.management.storage.implementation.api.StorageAccountUpdateParametersInner;
 import com.microsoft.azure.management.storage.implementation.api.StorageAccountsInner;
+import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import org.joda.time.DateTime;
 
@@ -207,6 +210,27 @@ class StorageAccountImpl
     }
 
     @Override
+    protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
+        createParameters.withLocation(this.region());
+        createParameters.withTags(this.inner().getTags());
+        final StorageAccountImpl self = this;
+        return this.client.createAsync(this.resourceGroupName(), this.name(), createParameters,
+                new ServiceCallback<StorageAccountInner>() {
+                        @Override
+                        public void failure(Throwable t) {
+                            callback.failure(t);
+                        }
+
+                        @Override
+                        public void success(ServiceResponse<StorageAccountInner> result) {
+                            client.getPropertiesAsync(resourceGroupName(), name(),
+                                    Utils.fromVoidCallback(self, callback));
+                            clearWrapperProperties();
+                        }
+                });
+    }
+
+    @Override
     public StorageAccountImpl update() {
         updateParameters = new StorageAccountUpdateParametersInner();
         return super.update();
@@ -216,6 +240,23 @@ class StorageAccountImpl
     public StorageAccountImpl apply() throws Exception {
         this.setInner(client.update(resourceGroupName(), name(), updateParameters).getBody());
         return this;
+    }
+
+    @Override
+    public ServiceCall applyAsync(final ServiceCallback<StorageAccount> callback) {
+        final StorageAccountImpl self = this;
+        return client.updateAsync(resourceGroupName(), name(), updateParameters, new ServiceCallback<StorageAccountInner>() {
+            @Override
+            public void failure(Throwable t) {
+                callback.failure(t);
+            }
+
+            @Override
+            public void success(ServiceResponse<StorageAccountInner> result) {
+                setInner(result.getBody());
+                callback.success(new ServiceResponse<StorageAccount>(self, result.getResponse()));
+            }
+        });
     }
 
     @Override

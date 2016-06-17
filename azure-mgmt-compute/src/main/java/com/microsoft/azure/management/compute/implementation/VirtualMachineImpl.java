@@ -48,11 +48,14 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.resources.implementation.api.PageImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import com.microsoft.rest.RestException;
+import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
@@ -154,6 +157,11 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl apply() throws Exception {
         return this.create();
+    }
+
+    @Override
+    public ServiceCall applyAsync(ServiceCallback<VirtualMachine> callback) {
+        return this.createAsync(callback);
     }
 
     @Override
@@ -850,6 +858,43 @@ class VirtualMachineImpl
         initializeDataDisks();
     }
 
+    @Override
+    protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
+        if (isInCreateMode()) {
+            setOSDiskAndOSProfileDefaults();
+            setHardwareProfileDefaults();
+        }
+        DataDiskImpl.setDataDisksDefaults(this.dataDisks, this.vmName);
+        final VirtualMachineImpl self = this;
+        final ServiceCall call = new ServiceCall(null);
+        handleStorageSettingsAsync(new ServiceCallback<Void>() {
+            @Override
+            public void failure(Throwable t) {
+                callback.failure(t);
+            }
+
+            @Override
+            public void success(ServiceResponse<Void> result) {
+                handleNetworkSettings();
+                handleAvailabilitySettings();
+                call.newCall(client.createOrUpdateAsync(resourceGroupName(), vmName, inner(),
+                        Utils.fromVoidCallback(self, new ServiceCallback<Void>() {
+                            @Override
+                            public void failure(Throwable t) {
+                                callback.failure(t);
+                            }
+
+                            @Override
+                            public void success(ServiceResponse<Void> result) {
+                                initializeDataDisks();
+                                callback.success(result);
+                            }
+                        })).getCall());
+            }
+        });
+        return call;
+    }
+
     /**************************************************.
      * Helper methods
      **************************************************/
@@ -925,6 +970,61 @@ class VirtualMachineImpl
                 DataDiskImpl.ensureDisksVhdUri(this.dataDisks, this.vmName);
             }
         }
+    }
+
+    private void handleStorageSettingsAsync(final ServiceCallback<Void> callback) {
+        final ServiceCallback<StorageAccount> storageAccountServiceCallback = new ServiceCallback<StorageAccount>() {
+            @Override
+            public void failure(Throwable t) {
+                callback.failure(t);
+            }
+
+            @Override
+            public void success(ServiceResponse<StorageAccount> result) {
+                if (isInCreateMode()) {
+                    if (isOSDiskFromImage(inner().storageProfile().osDisk())) {
+                        String uri = inner()
+                                .storageProfile()
+                                .osDisk().vhd().uri()
+                                .replaceFirst("\\{storage-base-url}", result.getBody().endPoints().primary().blob());
+                        inner().storageProfile().osDisk().vhd().withUri(uri);
+                    }
+                    DataDiskImpl.ensureDisksVhdUri(dataDisks, result.getBody(), vmName);
+                } else {
+                    if (result.getBody() != null) {
+                        DataDiskImpl.ensureDisksVhdUri(dataDisks, result.getBody(), vmName);
+                    } else {
+                        DataDiskImpl.ensureDisksVhdUri(dataDisks, vmName);
+                    }
+                }
+                callback.success(new ServiceResponse<Void>(result.getHeadResponse()));
+            }
+        };
+        if (this.creatableStorageAccountKey != null) {
+            storageAccountServiceCallback.success(new ServiceResponse<>(
+                    (StorageAccount) this.createdResource(this.creatableStorageAccountKey), null));
+        } else if (this.existingStorageAccountToAssociate != null) {
+            storageAccountServiceCallback.success(new ServiceResponse<>(
+                    this.existingStorageAccountToAssociate, null));
+        } else if (osDiskRequiresImplicitStorageAccountCreation()
+                || dataDisksRequiresImplicitStorageAccountCreation()) {
+            this.storageManager.storageAccounts()
+                    .define(this.namer.randomName("stg", 24))
+                    .withRegion(this.region())
+                    .withExistingGroup(this.resourceGroupName())
+                    .createAsync(new ServiceCallback<StorageAccount>() {
+                        @Override
+                        public void failure(Throwable t) {
+                            callback.failure(t);
+                        }
+
+                        @Override
+                        public void success(ServiceResponse<StorageAccount> result) {
+                            storageAccountServiceCallback.success(result);
+                        }
+                    });
+        }
+
     }
 
     private void handleNetworkSettings() {

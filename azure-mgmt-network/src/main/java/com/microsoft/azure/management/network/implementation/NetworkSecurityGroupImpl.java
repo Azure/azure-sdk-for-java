@@ -5,10 +5,6 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
 import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceInner;
@@ -16,8 +12,15 @@ import com.microsoft.azure.management.network.implementation.api.NetworkSecurity
 import com.microsoft.azure.management.network.implementation.api.NetworkSecurityGroupsInner;
 import com.microsoft.azure.management.network.implementation.api.SecurityRuleInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceCallback;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.ServiceResponse;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Implementation of the NetworkSecurityGroup interface.
@@ -76,11 +79,33 @@ class NetworkSecurityGroupImpl
     }
 
     @Override
+    public ServiceCall applyAsync(ServiceCallback<NetworkSecurityGroup> callback) {
+        return createAsync(callback);
+    }
+
+    @Override
     protected void createResource() throws Exception {
         ServiceResponse<NetworkSecurityGroupInner> response =
                 this.client.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
         this.setInner(response.getBody());
         initializeRulesFromInner();
+    }
+
+    @Override
+    protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
+        return this.client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
+                Utils.fromVoidCallback(this, new ServiceCallback<Void>() {
+                    @Override
+                    public void failure(Throwable t) {
+                        callback.failure(t);
+                    }
+
+                    @Override
+                    public void success(ServiceResponse<Void> result) {
+                        initializeRulesFromInner();
+                        callback.success(result);
+                    }
+                }));
     }
 
 
