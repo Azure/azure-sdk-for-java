@@ -26,7 +26,7 @@ import java.util.ArrayList;
  * (Internal use only)
  */
 class NetworkSecurityGroupsImpl
-        extends ResourcesImpl<NetworkSecurityGroup>
+        extends ResourcesImpl<NetworkSecurityGroup, NetworkSecurityGroupImpl>
         implements NetworkSecurityGroups {
     private final NetworkSecurityGroupsInner client;
     private final ResourceManager resourceManager;
@@ -77,7 +77,9 @@ class NetworkSecurityGroupsImpl
     }
 
     // Fluent model create helpers
-    private NetworkSecurityGroupImpl createFluentModel(String name) {
+
+    @Override
+    protected NetworkSecurityGroupImpl createFluentModel(String name) {
         NetworkSecurityGroupInner inner = new NetworkSecurityGroupInner();
 
         // Initialize rules

@@ -28,7 +28,7 @@ import java.util.List;
  * The implementation for {@link AvailabilitySets}.
  */
 class AvailabilitySetsImpl
-    extends ResourcesImpl<AvailabilitySet>
+    extends ResourcesImpl<AvailabilitySet, AvailabilitySetImpl>
     implements AvailabilitySets {
     private final AvailabilitySetsInner client;
     private final ResourceManager resourceManager;
@@ -102,7 +102,8 @@ class AvailabilitySetsImpl
      * Fluent model helpers.
      **************************************************************/
 
-    private AvailabilitySetImpl createFluentModel(String name) {
+    @Override
+    protected AvailabilitySetImpl createFluentModel(String name) {
         AvailabilitySetInner availabilitySetInner = new AvailabilitySetInner();
         return new AvailabilitySetImpl(name,
                 availabilitySetInner,

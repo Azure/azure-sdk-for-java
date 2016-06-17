@@ -25,7 +25,7 @@ import java.io.IOException;
  * (Internal use only)
  */
 class PublicIpAddressesImpl
-        extends ResourcesImpl<PublicIpAddress>
+        extends ResourcesImpl<PublicIpAddress, PublicIpAddressImpl>
         implements PublicIpAddresses {
     private final PublicIPAddressesInner client;
     private final ResourceManager resourceManager;
@@ -77,7 +77,8 @@ class PublicIpAddressesImpl
 
     // Fluent model create helpers
 
-    private PublicIpAddressImpl createFluentModel(String name) {
+    @Override
+    protected PublicIpAddressImpl createFluentModel(String name) {
         PublicIPAddressInner inner = new PublicIPAddressInner();
 
         if (null == inner.dnsSettings()) {

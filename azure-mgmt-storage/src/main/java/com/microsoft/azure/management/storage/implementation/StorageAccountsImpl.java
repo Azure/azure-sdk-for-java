@@ -30,7 +30,7 @@ import java.util.List;
  * The implementation of StorageAccounts and its parent interfaces.
  */
 class StorageAccountsImpl
-        extends ResourcesImpl<StorageAccount>
+        extends ResourcesImpl<StorageAccount, StorageAccountImpl>
         implements StorageAccounts {
     private final StorageAccountsInner client;
     private final ResourceManager resourceManager;
@@ -100,9 +100,9 @@ class StorageAccountsImpl
         };
     }
 
-    private StorageAccountImpl createFluentModel(String name) {
-        StorageAccountInner storageAccountInner = new StorageAccountInner();
-        return new StorageAccountImpl(name, storageAccountInner, this.client, this.resourceManager);
+    @Override
+    protected StorageAccountImpl createFluentModel(String name) {
+        return new StorageAccountImpl(name, new StorageAccountInner(), this.client, this.resourceManager);
     }
 
     private StorageAccountImpl createFluentModel(StorageAccountInner storageAccountInner) {

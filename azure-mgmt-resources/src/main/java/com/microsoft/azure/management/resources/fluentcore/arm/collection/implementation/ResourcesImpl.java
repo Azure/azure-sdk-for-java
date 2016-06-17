@@ -16,8 +16,9 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
  * Base class for resource collection classes.
  * (Internal use only)
  * @param <T> the individual resource type returned
+ * @param <ImplT> the individual resource implementation
  */
-public abstract class ResourcesImpl<T>
+public abstract class ResourcesImpl<T, ImplT>
     implements
         SupportsGettingById<T>,
         SupportsGettingByGroup<T> {
@@ -31,4 +32,6 @@ public abstract class ResourcesImpl<T>
                 ResourceUtils.groupFromResourceId(id),
                 ResourceUtils.nameFromResourceId(id));
     }
+
+    protected abstract ImplT createFluentModel(String name);
 }

@@ -28,7 +28,7 @@ import java.util.ArrayList;
  * (Internal use only)
  */
 class NetworksImpl
-        extends ResourcesImpl<Network>
+        extends ResourcesImpl<Network, NetworkImpl>
         implements Networks {
     private final VirtualNetworksInner client;
     private final ResourceManager resourceManager;
@@ -80,7 +80,8 @@ class NetworksImpl
 
     // Fluent model create helpers
 
-    private NetworkImpl createFluentModel(String name) {
+    @Override
+    protected NetworkImpl createFluentModel(String name) {
         VirtualNetworkInner inner = new VirtualNetworkInner();
 
         // Initialize address space

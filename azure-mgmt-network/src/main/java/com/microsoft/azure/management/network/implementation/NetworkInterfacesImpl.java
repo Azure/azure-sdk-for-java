@@ -21,7 +21,7 @@ import java.util.ArrayList;
  * The type representing Azure network interfaces.
  */
 class NetworkInterfacesImpl
-        extends ResourcesImpl<NetworkInterface>
+        extends ResourcesImpl<NetworkInterface, NetworkInterfaceImpl>
         implements NetworkInterfaces {
     private final NetworkInterfacesInner client;
     private final ResourceManager resourceManager;
@@ -77,7 +77,8 @@ class NetworkInterfacesImpl
         return createFluentModel(name);
     }
 
-    private NetworkInterfaceImpl createFluentModel(String name) {
+    @Override
+    protected NetworkInterfaceImpl createFluentModel(String name) {
         NetworkInterfaceInner inner = new NetworkInterfaceInner();
         inner.withIpConfigurations(new ArrayList<NetworkInterfaceIPConfiguration>());
         inner.withDnsSettings(new NetworkInterfaceDnsSettings());

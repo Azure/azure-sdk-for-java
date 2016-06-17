@@ -27,7 +27,7 @@ import java.util.List;
  * The implementation for Deployments and its parent interfaces.
  */
 final class DeploymentsImpl
-    extends ResourcesImpl<Deployment>
+    extends ResourcesImpl<Deployment, DeploymentImpl>
     implements Deployments {
 
     private final DeploymentsInner client;
@@ -105,7 +105,8 @@ final class DeploymentsImpl
         return client.checkExistence(resourceGroupName, deploymentName).getBody();
     }
 
-    private DeploymentImpl createFluentModel(String name) {
+    @Override
+    protected DeploymentImpl createFluentModel(String name) {
         DeploymentExtendedInner deploymentExtendedInner = new DeploymentExtendedInner();
         deploymentExtendedInner.withName(name);
         return new DeploymentImpl(deploymentExtendedInner, client, deploymentOperationsClient, this.resourceManager);

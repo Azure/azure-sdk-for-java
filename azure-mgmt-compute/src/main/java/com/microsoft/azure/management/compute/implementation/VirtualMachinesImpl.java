@@ -39,7 +39,7 @@ import java.util.List;
  * The implementation for {@link VirtualMachines}.
  */
 class VirtualMachinesImpl
-        extends ResourcesImpl<VirtualMachine>
+        extends ResourcesImpl<VirtualMachine, VirtualMachineImpl>
         implements VirtualMachines {
     private final VirtualMachinesInner client;
     private final VirtualMachineSizesInner virtualMachineSizesClient;
@@ -177,7 +177,8 @@ class VirtualMachinesImpl
     // Helper methods
     //
 
-    private VirtualMachineImpl createFluentModel(String name) {
+    @Override
+    protected VirtualMachineImpl createFluentModel(String name) {
         VirtualMachineInner inner = new VirtualMachineInner();
         inner.withStorageProfile(new StorageProfile()
             .withOsDisk(new OSDisk())
