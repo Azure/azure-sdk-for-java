@@ -2,6 +2,7 @@ package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
@@ -30,6 +31,16 @@ public interface VirtualMachines extends
      * @throws IOException thrown for IO exception.
      */
     PagedList<VirtualMachineSize> availableSizesByRegion(String region) throws CloudException, IOException;
+
+    /**
+     * Lists all available virtual machine sizes in a region.
+     *
+     * @param region The {@link Region} upon which virtual-machine-sizes is queried.
+     * @return the List&lt;VirtualMachineSize&gt; if successful.
+     * @throws CloudException thrown for an invalid response from the service.
+     * @throws IOException thrown for IO exception.
+     */
+    PagedList<VirtualMachineSize> availableSizesByRegion(Region region) throws CloudException, IOException;
 
     /**
      * Shuts down the Virtual Machine and releases the compute resources.
