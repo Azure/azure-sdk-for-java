@@ -19,8 +19,8 @@ import java.text.MessageFormat;
  */
 public class UploadMetadataGenerator {
 
-    private UploadParameters _parameters;
-    private int _maxAppendLength;
+    private UploadParameters parameters;
+    private int maxAppendLength;
 
     /**
      * Creates a new instance of the UploadMetadataGenerator with the given parameters and the default maximum append length.
@@ -28,7 +28,7 @@ public class UploadMetadataGenerator {
      * @param parameters The parameters.
      */
     public UploadMetadataGenerator(UploadParameters parameters) {
-        this(parameters, SingleSegmentUploader.BufferLength);
+        this(parameters, SingleSegmentUploader.BUFFER_LENGTH);
     }
 
     /**
@@ -38,8 +38,8 @@ public class UploadMetadataGenerator {
      * @param maxAppendLength The maximum allowed append length when uploading a file.
      */
     public UploadMetadataGenerator(UploadParameters parameters, int maxAppendLength) {
-        _parameters = parameters;
-        _maxAppendLength = maxAppendLength;
+        this.parameters = parameters;
+        this.maxAppendLength = maxAppendLength;
     }
 
     /**
@@ -47,13 +47,13 @@ public class UploadMetadataGenerator {
      *
      * @param metadataFilePath The metadata file path.
      * @return The deserialized {@link UploadMetadata} from the specified file path.
-     * @throws FileNotFoundException
-     * @throws InvalidMetadataException
+     * @throws FileNotFoundException Thrown if the specified metadataFilePath is invalid.
+     * @throws InvalidMetadataException Thrown if the metadata itself is invalid.
      */
-    public UploadMetadata GetExistingMetadata(String metadataFilePath) throws FileNotFoundException, InvalidMetadataException {
+    public UploadMetadata getExistingMetadata(String metadataFilePath) throws FileNotFoundException, InvalidMetadataException {
         //load from file (based on input parameters)
-        UploadMetadata metadata = UploadMetadata.LoadFrom(metadataFilePath);
-        metadata.ValidateConsistency();
+        UploadMetadata metadata = UploadMetadata.loadFrom(metadataFilePath);
+        metadata.validateConsistency();
         return metadata;
     }
 
@@ -62,21 +62,21 @@ public class UploadMetadataGenerator {
      *
      * @param metadataFilePath Where the serialized metadata will be saved
      * @return A new {@link UploadMetadata} object.
-     * @throws IOException
-     * @throws UploadFailedException
-     * @throws InvalidMetadataException
+     * @throws IOException Thrown if there is an issue saving the metadata to disk.
+     * @throws UploadFailedException Thrown if there is an issue aligning the segment record boundaries
+     * @throws InvalidMetadataException Thrown if the metadata is invalid.
      */
-    public UploadMetadata CreateNewMetadata(String metadataFilePath) throws IOException, UploadFailedException, InvalidMetadataException {
-        //determine segment count, segment length and Upload Id
+    public UploadMetadata createNewMetadata(String metadataFilePath) throws IOException, UploadFailedException, InvalidMetadataException {
+        //determine segment count, segment length and upload Id
         //create metadata
-        UploadMetadata metadata = new UploadMetadata(metadataFilePath, _parameters);
+        UploadMetadata metadata = new UploadMetadata(metadataFilePath, parameters);
 
-        if (!_parameters.isBinary() && metadata.SegmentCount > 1) {
-            this.AlignSegmentsToRecordBoundaries(metadata);
+        if (!parameters.isBinary() && metadata.getSegmentCount() > 1) {
+            this.alignSegmentsToRecordBoundaries(metadata);
         }
 
         //save the initial version
-        metadata.Save();
+        metadata.save();
 
         return metadata;
     }
@@ -86,49 +86,49 @@ public class UploadMetadataGenerator {
      * If not possible (max record size = 4MB), throws an exception.
      *
      * @param metadata The metadata to realign
-     * @throws IOException
-     * @throws UploadFailedException
+     * @throws IOException Thrown if the input file path in the metadata is invalid or inaccessible.
+     * @throws UploadFailedException Thrown if the length adjustment cannot be determined.
      */
-    private void AlignSegmentsToRecordBoundaries(UploadMetadata metadata) throws IOException, UploadFailedException {
+    private void alignSegmentsToRecordBoundaries(UploadMetadata metadata) throws IOException, UploadFailedException {
         int remainingSegments = 0;
 
-        try (RandomAccessFile stream = new RandomAccessFile(metadata.InputFilePath, "r")) {
+        try (RandomAccessFile stream = new RandomAccessFile(metadata.getInputFilePath(), "r")) {
             long offset = 0;
-            for (int i = 0; i < metadata.Segments.length; i++) {
-                UploadSegmentMetadata segment = metadata.Segments[i];
+            for (int i = 0; i < metadata.getSegments().length; i++) {
+                UploadSegmentMetadata segment = metadata.getSegments()[i];
 
                 //updating segment lengths means that both the offset and the length of the next segment needs to be recalculated, to keep the segment lengths somewhat balanced
-                long diff = segment.Offset - offset;
-                segment.Offset = offset;
-                segment.Length += diff;
-                if (segment.Offset >= metadata.FileLength) {
+                long diff = segment.getOffset() - offset;
+                segment.setOffset(offset);
+                segment.setLength(segment.getLength() + diff);
+                if (segment.getOffset() >= metadata.getFileLength()) {
                     continue;
                 }
 
-                if (segment.SegmentNumber == metadata.Segments.length - 1) {
+                if (segment.getSegmentNumber() == metadata.getSegments().length - 1) {
                     //last segment picks up the slack
-                    segment.Length = metadata.FileLength - segment.Offset;
+                    segment.setLength(metadata.getFileLength() - segment.getOffset());
                 } else {
                     //figure out how much do we need to adjust the length of the segment so it ends on a record boundary (this can be negative or positive)
-                    int lengthAdjustment = DetermineLengthAdjustment(segment, stream, Charset.forName(metadata.EncodingName), metadata.Delimiter) + 1;
+                    int lengthAdjustment = determineLengthAdjustment(segment, stream, Charset.forName(metadata.getEncodingName()), metadata.getDelimiter()) + 1;
 
                     //adjust segment length and offset
-                    segment.Length += lengthAdjustment;
+                    segment.setLength(segment.getLength() + lengthAdjustment);
                 }
-                offset += segment.Length;
+                offset += segment.getLength();
                 remainingSegments++;
             }
         }
 
         //since we adjusted the segment lengths, it's possible that the last segment(s) became of zero length; so remove it
-        UploadSegmentMetadata[] segments = metadata.Segments;
+        UploadSegmentMetadata[] segments = metadata.getSegments();
         if (remainingSegments < segments.length) {
             ArrayUtils.subarray(segments, 0, remainingSegments);
-            metadata.Segments = segments;
-            metadata.SegmentCount = segments.length;
+            metadata.setSegments(segments);
+            metadata.setSegmentCount(segments.length);
         }
 
-        //NOTE: we are not validating consistency here; this method is called by CreateNewMetadata which calls Save() after this, which validates consistency anyway.
+        //NOTE: we are not validating consistency here; this method is called by createNewMetadata which calls save() after this, which validates consistency anyway.
     }
 
     /**
@@ -140,35 +140,35 @@ public class UploadMetadataGenerator {
      * @param encoding The encoding to use to determine where the cutoffs are
      * @param delimiter The delimiter that determines how we adjust. If null then '\\r', \\n' and '\\r\\n' are used.
      * @return How much to adjust the segment length by.
-     * @throws UploadFailedException
-     * @throws IOException
+     * @throws UploadFailedException Thrown if proper upload boundaries cannot be determined.
+     * @throws IOException Thrown if the stream being used is invalid or inaccessible.
      */
-    private int DetermineLengthAdjustment(UploadSegmentMetadata segment, RandomAccessFile stream, Charset encoding, String delimiter) throws UploadFailedException, IOException {
-        long referenceFileOffset = segment.Offset + segment.Length;
-        byte[] buffer = new byte[_maxAppendLength];
+    private int determineLengthAdjustment(UploadSegmentMetadata segment, RandomAccessFile stream, Charset encoding, String delimiter) throws UploadFailedException, IOException {
+        long referenceFileOffset = segment.getOffset() + segment.getLength();
+        byte[] buffer = new byte[maxAppendLength];
 
         //read 2MB before the segment boundary and 2MB after (for a total of 4MB = max append length)
-        int bytesRead = ReadIntoBufferAroundReference(stream, buffer, referenceFileOffset);
+        int bytesRead = readIntoBufferAroundReference(stream, buffer, referenceFileOffset);
         if (bytesRead > 0) {
             int middlePoint = bytesRead / 2;
             //search for newline in it
-            int newLinePosBefore = StringExtensions.FindNewline(buffer, middlePoint + 1, middlePoint + 1, true, encoding, delimiter);
+            int newLinePosBefore = StringExtensions.findNewline(buffer, middlePoint + 1, middlePoint + 1, true, encoding, delimiter);
 
             //in some cases, we may have a newline that is 2 characters long, and it occurrs exactly on the midpoint, which means we won't be able to find its end.
             //see if that's the case, and then search for a new candidate before it.
             if ((delimiter == null || StringUtils.isEmpty(delimiter)) && newLinePosBefore == middlePoint + 1 && buffer[newLinePosBefore] == (byte) '\r') {
-                int newNewLinePosBefore = StringExtensions.FindNewline(buffer, middlePoint, middlePoint, true, encoding, delimiter);
+                int newNewLinePosBefore = StringExtensions.findNewline(buffer, middlePoint, middlePoint, true, encoding, delimiter);
                 if (newNewLinePosBefore >= 0) {
                     newLinePosBefore = newNewLinePosBefore;
                 }
             }
 
-            int newLinePosAfter = StringExtensions.FindNewline(buffer, middlePoint, middlePoint, false, encoding, delimiter);
+            int newLinePosAfter = StringExtensions.findNewline(buffer, middlePoint, middlePoint, false, encoding, delimiter);
             if ((delimiter == null || StringUtils.isEmpty(delimiter)) && newLinePosAfter == buffer.length - 1 && buffer[newLinePosAfter] == (byte) '\r' && newLinePosBefore >= 0) {
                 newLinePosAfter = -1;
             }
 
-            int closestNewLinePos = FindClosestToCenter(newLinePosBefore, newLinePosAfter, middlePoint);
+            int closestNewLinePos = findClosestToCenter(newLinePosBefore, newLinePosAfter, middlePoint);
 
             //middle point of the buffer corresponds to the reference file offset, so all we need to do is return the difference between the closest newline and the center of the buffer
             if (closestNewLinePos >= 0) {
@@ -180,10 +180,10 @@ public class UploadMetadataGenerator {
         throw new UploadFailedException(
                 MessageFormat.format(
                         "Unable to locate a record boundary within {0}MB on either side of segment {1} (offset {2}). This means the record at that offset is larger than {0}MB.",
-                        _maxAppendLength / 1024 / 1024 / 2,
-                        segment.SegmentNumber,
-                        segment.Offset,
-                        _maxAppendLength / 1024 / 1024));
+                        maxAppendLength / 1024 / 1024 / 2,
+                        segment.getSegmentNumber(),
+                        segment.getOffset(),
+                        maxAppendLength / 1024 / 1024));
     }
 
     /**
@@ -195,7 +195,7 @@ public class UploadMetadataGenerator {
      * @param centerValue The center value they are compared against.
      * @return Either value1 or value2 depending on which is closest to the centerValue
      */
-    private static int FindClosestToCenter(int value1, int value2, int centerValue) {
+    private static int findClosestToCenter(int value1, int value2, int centerValue) {
         if (value1 >= 0) {
             if (value2 >= 0) {
                 return Math.abs(value2 - centerValue) > Math.abs(value1 - centerValue) ? value1 : value2;
@@ -214,9 +214,9 @@ public class UploadMetadataGenerator {
      * @param buffer The buffer to read data into
      * @param fileReferenceOffset The offset to start reading from in the stream.
      * @return The number of bytes reads, which could be less than the length of the input buffer if we can't read due to the beginning or the end of the file.
-     * @throws IOException
+     * @throws IOException Thrown if the stream being used is invalid or inaccessible.
      */
-    private static int ReadIntoBufferAroundReference(RandomAccessFile stream, byte[] buffer, long fileReferenceOffset) throws IOException {
+    private static int readIntoBufferAroundReference(RandomAccessFile stream, byte[] buffer, long fileReferenceOffset) throws IOException {
         int length = buffer.length;
         //calculate start offset
         long fileStartOffset = fileReferenceOffset - length / 2;

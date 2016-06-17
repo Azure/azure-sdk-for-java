@@ -40,9 +40,9 @@ public class SsuMockFrontEnd implements FrontEndAdapter {
         FailCount = failCount;
     }
 
-    public void CreateStream(String streamPath, boolean overwrite, byte[] data, int byteCount) throws RestException, IOException {
+    public void createStream(String streamPath, boolean overwrite, byte[] data, int byteCount) throws RestException, IOException {
         if (!DoNothing && !TestRetry) {
-            BaseAdapter.CreateStream(streamPath, overwrite, data, byteCount);
+            BaseAdapter.createStream(streamPath, overwrite, data, byteCount);
         }
         else if(TestRetry) {
             CallCount++;
@@ -50,19 +50,19 @@ public class SsuMockFrontEnd implements FrontEndAdapter {
             {
                 throw new IntentionalException();
             }
-            BaseAdapter.CreateStream(streamPath, overwrite, data, byteCount);
+            BaseAdapter.createStream(streamPath, overwrite, data, byteCount);
         }
     }
 
-    public void DeleteStream(String streamPath, boolean recurse) throws RestException, IOException {
+    public void deleteStream(String streamPath, boolean recurse) throws RestException, IOException {
         if (!DoNothing) {
-            BaseAdapter.DeleteStream(streamPath, recurse);
+            BaseAdapter.deleteStream(streamPath, recurse);
         }
     }
 
-    public void AppendToStream(String streamPath, byte[] data, long offset, int byteCount) throws RestException, IOException {
+    public void appendToStream(String streamPath, byte[] data, long offset, int byteCount) throws RestException, IOException {
         if (!DoNothing && !TestRetry) {
-            BaseAdapter.AppendToStream(streamPath, data, offset, byteCount);
+            BaseAdapter.appendToStream(streamPath, data, offset, byteCount);
         }
         else if(TestRetry) {
             CallCount++;
@@ -70,29 +70,29 @@ public class SsuMockFrontEnd implements FrontEndAdapter {
             {
                 throw new IntentionalException();
             }
-            BaseAdapter.AppendToStream(streamPath, data, offset, byteCount);
+            BaseAdapter.appendToStream(streamPath, data, offset, byteCount);
         }
     }
 
-    public boolean StreamExists(String streamPath) throws RestException, IOException {
+    public boolean streamExists(String streamPath) throws RestException, IOException {
         if (!DoNothing) {
-            return BaseAdapter.StreamExists(streamPath);
+            return BaseAdapter.streamExists(streamPath);
         }
 
         return true;
     }
 
-    public long GetStreamLength(String streamPath) throws RestException, IOException {
+    public long getStreamLength(String streamPath) throws RestException, IOException {
         if (!DoNothing) {
-            return BaseAdapter.GetStreamLength(streamPath);
+            return BaseAdapter.getStreamLength(streamPath);
         }
 
         return 0;
     }
 
-    public void Concatenate(String targetStreamPath, String[] inputStreamPaths) throws RestException, IOException {
+    public void concatenate(String targetStreamPath, String[] inputStreamPaths) throws RestException, IOException {
         if (!DoNothing) {
-            BaseAdapter.Concatenate(targetStreamPath, inputStreamPaths);
+            BaseAdapter.concatenate(targetStreamPath, inputStreamPaths);
         }
     }
 }

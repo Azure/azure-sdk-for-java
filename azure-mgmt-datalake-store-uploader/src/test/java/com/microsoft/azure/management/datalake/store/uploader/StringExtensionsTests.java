@@ -138,16 +138,16 @@ public class StringExtensionsTests {
             byte[] largerBuffer = new byte[exactBuffer.length + 100];
             System.arraycopy(exactBuffer, 0, largerBuffer, 0, exactBuffer.length);
 
-            int forwardInExactBuffer =  StringExtensions.FindNewline(exactBuffer, 0, exactBuffer.length, false, StandardCharsets.UTF_8, null);
+            int forwardInExactBuffer =  StringExtensions.findNewline(exactBuffer, 0, exactBuffer.length, false, StandardCharsets.UTF_8, null);
             Assert.assertEquals(t.getMiddle().intValue(), forwardInExactBuffer);
 
-            int forwardInLargeBuffer = StringExtensions.FindNewline(largerBuffer, 0, exactBuffer.length, false, StandardCharsets.UTF_8, null);
+            int forwardInLargeBuffer = StringExtensions.findNewline(largerBuffer, 0, exactBuffer.length, false, StandardCharsets.UTF_8, null);
             Assert.assertEquals(t.getMiddle().intValue(), forwardInLargeBuffer);
 
-            int reverseInExactBuffer = StringExtensions.FindNewline(exactBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.UTF_8, null);
+            int reverseInExactBuffer = StringExtensions.findNewline(exactBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.UTF_8, null);
             Assert.assertEquals(t.getRight().intValue(), reverseInExactBuffer);
 
-            int reverseInLargeBuffer = StringExtensions.FindNewline(largerBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.UTF_8, null);
+            int reverseInLargeBuffer = StringExtensions.findNewline(largerBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.UTF_8, null);
             Assert.assertEquals(t.getRight().intValue(), reverseInLargeBuffer);
         }
 
@@ -157,16 +157,16 @@ public class StringExtensionsTests {
             byte[] largerBuffer = new byte[exactBuffer.length + 100];
             System.arraycopy(exactBuffer, 0, largerBuffer, 0, exactBuffer.length);
 
-            int forwardInExactBuffer = StringExtensions.FindNewline(exactBuffer, 0, exactBuffer.length, false, StandardCharsets.UTF_8, customDelim);
+            int forwardInExactBuffer = StringExtensions.findNewline(exactBuffer, 0, exactBuffer.length, false, StandardCharsets.UTF_8, customDelim);
             Assert.assertEquals(t.getMiddle().intValue(), forwardInExactBuffer);
 
-            int forwardInLargeBuffer = StringExtensions.FindNewline(largerBuffer, 0, exactBuffer.length, false, StandardCharsets.UTF_8, customDelim);
+            int forwardInLargeBuffer = StringExtensions.findNewline(largerBuffer, 0, exactBuffer.length, false, StandardCharsets.UTF_8, customDelim);
             Assert.assertEquals(t.getMiddle().intValue(), forwardInLargeBuffer);
 
-            int reverseInExactBuffer = StringExtensions.FindNewline(exactBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.UTF_8, customDelim);
+            int reverseInExactBuffer = StringExtensions.findNewline(exactBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.UTF_8, customDelim);
             Assert.assertEquals(t.getRight().intValue(), reverseInExactBuffer);
 
-            int reverseInLargeBuffer = StringExtensions.FindNewline(largerBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.UTF_8, customDelim);
+            int reverseInLargeBuffer = StringExtensions.findNewline(largerBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.UTF_8, customDelim);
             Assert.assertEquals(t.getRight().intValue(), reverseInLargeBuffer);
         }
     }
@@ -180,16 +180,16 @@ public class StringExtensionsTests {
             byte[] largerBuffer = new byte[exactBuffer.length + 100];
             System.arraycopy(exactBuffer, 0, largerBuffer, 0, exactBuffer.length);
 
-            int forwardInExactBuffer = StringExtensions.FindNewline(exactBuffer, 0, exactBuffer.length, false, StandardCharsets.UTF_16LE, null);
+            int forwardInExactBuffer = StringExtensions.findNewline(exactBuffer, 0, exactBuffer.length, false, StandardCharsets.UTF_16LE, null);
             Assert.assertEquals(t.getMiddle().intValue(), forwardInExactBuffer);
 
-            int forwardInLargeBuffer = StringExtensions.FindNewline(largerBuffer, 0, exactBuffer.length, false, StandardCharsets.UTF_16LE, null);
+            int forwardInLargeBuffer = StringExtensions.findNewline(largerBuffer, 0, exactBuffer.length, false, StandardCharsets.UTF_16LE, null);
             Assert.assertEquals(t.getMiddle().intValue(), forwardInLargeBuffer);
 
-            int reverseInExactBuffer = StringExtensions.FindNewline(exactBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.UTF_16LE, null);
+            int reverseInExactBuffer = StringExtensions.findNewline(exactBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.UTF_16LE, null);
             Assert.assertEquals(t.getRight().intValue(), reverseInExactBuffer);
 
-            int reverseInLargeBuffer = StringExtensions.FindNewline(largerBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.UTF_16LE, null);
+            int reverseInLargeBuffer = StringExtensions.findNewline(largerBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.UTF_16LE, null);
             Assert.assertEquals(t.getRight().intValue(), reverseInLargeBuffer);
         }
 
@@ -199,16 +199,16 @@ public class StringExtensionsTests {
             byte[] largerBuffer = new byte[exactBuffer.length + 100];
             System.arraycopy(exactBuffer, 0, largerBuffer, 0, exactBuffer.length);
 
-            int forwardInExactBuffer = StringExtensions.FindNewline(exactBuffer, 0, exactBuffer.length, false, StandardCharsets.UTF_16LE, customDelim);
+            int forwardInExactBuffer = StringExtensions.findNewline(exactBuffer, 0, exactBuffer.length, false, StandardCharsets.UTF_16LE, customDelim);
             Assert.assertEquals(t.getMiddle().intValue(), forwardInExactBuffer);
 
-            int forwardInLargeBuffer = StringExtensions.FindNewline(largerBuffer, 0, exactBuffer.length, false, StandardCharsets.UTF_16LE, customDelim);
+            int forwardInLargeBuffer = StringExtensions.findNewline(largerBuffer, 0, exactBuffer.length, false, StandardCharsets.UTF_16LE, customDelim);
             Assert.assertEquals(t.getMiddle().intValue(), forwardInLargeBuffer);
 
-            int reverseInExactBuffer = StringExtensions.FindNewline(exactBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.UTF_16LE, customDelim);
+            int reverseInExactBuffer = StringExtensions.findNewline(exactBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.UTF_16LE, customDelim);
             Assert.assertEquals(t.getRight().intValue(), reverseInExactBuffer);
 
-            int reverseInLargeBuffer = StringExtensions.FindNewline(largerBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.UTF_16LE, customDelim);
+            int reverseInLargeBuffer = StringExtensions.findNewline(largerBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.UTF_16LE, customDelim);
             Assert.assertEquals(t.getRight().intValue(), reverseInLargeBuffer);
         }
     }
@@ -222,16 +222,16 @@ public class StringExtensionsTests {
             byte[] largerBuffer = new byte[exactBuffer.length + 100];
             System.arraycopy(exactBuffer, 0, largerBuffer, 0, exactBuffer.length);
 
-            int forwardInExactBuffer = StringExtensions.FindNewline(exactBuffer, 0, exactBuffer.length, false, StandardCharsets.UTF_16BE, null);
+            int forwardInExactBuffer = StringExtensions.findNewline(exactBuffer, 0, exactBuffer.length, false, StandardCharsets.UTF_16BE, null);
             Assert.assertEquals(t.getMiddle().intValue(), forwardInExactBuffer);
 
-            int forwardInLargeBuffer = StringExtensions.FindNewline(largerBuffer, 0, exactBuffer.length, false, StandardCharsets.UTF_16BE, null);
+            int forwardInLargeBuffer = StringExtensions.findNewline(largerBuffer, 0, exactBuffer.length, false, StandardCharsets.UTF_16BE, null);
             Assert.assertEquals(t.getMiddle().intValue(), forwardInLargeBuffer);
 
-            int reverseInExactBuffer = StringExtensions.FindNewline(exactBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.UTF_16BE, null);
+            int reverseInExactBuffer = StringExtensions.findNewline(exactBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.UTF_16BE, null);
             Assert.assertEquals(t.getRight().intValue(), reverseInExactBuffer);
 
-            int reverseInLargeBuffer = StringExtensions.FindNewline(largerBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.UTF_16BE, null);
+            int reverseInLargeBuffer = StringExtensions.findNewline(largerBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.UTF_16BE, null);
             Assert.assertEquals(t.getRight().intValue(), reverseInLargeBuffer);
         }
 
@@ -241,16 +241,16 @@ public class StringExtensionsTests {
             byte[] largerBuffer = new byte[exactBuffer.length + 100];
             System.arraycopy(exactBuffer, 0, largerBuffer, 0, exactBuffer.length);
 
-            int forwardInExactBuffer = StringExtensions.FindNewline(exactBuffer, 0, exactBuffer.length, false, StandardCharsets.UTF_16BE, customDelim);
+            int forwardInExactBuffer = StringExtensions.findNewline(exactBuffer, 0, exactBuffer.length, false, StandardCharsets.UTF_16BE, customDelim);
             Assert.assertEquals(t.getMiddle().intValue(), forwardInExactBuffer);
 
-            int forwardInLargeBuffer = StringExtensions.FindNewline(largerBuffer, 0, exactBuffer.length, false, StandardCharsets.UTF_16BE, customDelim);
+            int forwardInLargeBuffer = StringExtensions.findNewline(largerBuffer, 0, exactBuffer.length, false, StandardCharsets.UTF_16BE, customDelim);
             Assert.assertEquals(t.getMiddle().intValue(), forwardInLargeBuffer);
 
-            int reverseInExactBuffer = StringExtensions.FindNewline(exactBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.UTF_16BE, customDelim);
+            int reverseInExactBuffer = StringExtensions.findNewline(exactBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.UTF_16BE, customDelim);
             Assert.assertEquals(t.getRight().intValue(), reverseInExactBuffer);
 
-            int reverseInLargeBuffer = StringExtensions.FindNewline(largerBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.UTF_16BE, customDelim);
+            int reverseInLargeBuffer = StringExtensions.findNewline(largerBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.UTF_16BE, customDelim);
             Assert.assertEquals(t.getRight().intValue(), reverseInLargeBuffer);
         }
     }
@@ -264,16 +264,16 @@ public class StringExtensionsTests {
             byte[] largerBuffer = new byte[exactBuffer.length + 100];
             System.arraycopy(exactBuffer, 0, largerBuffer, 0, exactBuffer.length);
 
-            int forwardInExactBuffer = StringExtensions.FindNewline(exactBuffer, 0, exactBuffer.length, false, StandardCharsets.US_ASCII, null);
+            int forwardInExactBuffer = StringExtensions.findNewline(exactBuffer, 0, exactBuffer.length, false, StandardCharsets.US_ASCII, null);
             Assert.assertEquals(t.getMiddle().intValue(), forwardInExactBuffer);
 
-            int forwardInLargeBuffer = StringExtensions.FindNewline(largerBuffer, 0, exactBuffer.length, false, StandardCharsets.US_ASCII, null);
+            int forwardInLargeBuffer = StringExtensions.findNewline(largerBuffer, 0, exactBuffer.length, false, StandardCharsets.US_ASCII, null);
             Assert.assertEquals(t.getMiddle().intValue(), forwardInLargeBuffer);
 
-            int reverseInExactBuffer = StringExtensions.FindNewline(exactBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.US_ASCII, null);
+            int reverseInExactBuffer = StringExtensions.findNewline(exactBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.US_ASCII, null);
             Assert.assertEquals(t.getRight().intValue(), reverseInExactBuffer);
 
-            int reverseInLargeBuffer = StringExtensions.FindNewline(largerBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.US_ASCII, null);
+            int reverseInLargeBuffer = StringExtensions.findNewline(largerBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.US_ASCII, null);
             Assert.assertEquals(t.getRight().intValue(), reverseInLargeBuffer);
         }
 
@@ -283,16 +283,16 @@ public class StringExtensionsTests {
             byte[] largerBuffer = new byte[exactBuffer.length + 100];
             System.arraycopy(exactBuffer, 0, largerBuffer, 0, exactBuffer.length);
 
-            int forwardInExactBuffer = StringExtensions.FindNewline(exactBuffer, 0, exactBuffer.length, false, StandardCharsets.US_ASCII, customDelim);
+            int forwardInExactBuffer = StringExtensions.findNewline(exactBuffer, 0, exactBuffer.length, false, StandardCharsets.US_ASCII, customDelim);
             Assert.assertEquals(t.getMiddle().intValue(), forwardInExactBuffer);
 
-            int forwardInLargeBuffer = StringExtensions.FindNewline(largerBuffer, 0, exactBuffer.length, false, StandardCharsets.US_ASCII, customDelim);
+            int forwardInLargeBuffer = StringExtensions.findNewline(largerBuffer, 0, exactBuffer.length, false, StandardCharsets.US_ASCII, customDelim);
             Assert.assertEquals(t.getMiddle().intValue(), forwardInLargeBuffer);
 
-            int reverseInExactBuffer = StringExtensions.FindNewline(exactBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.US_ASCII, customDelim);
+            int reverseInExactBuffer = StringExtensions.findNewline(exactBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.US_ASCII, customDelim);
             Assert.assertEquals(t.getRight().intValue(), reverseInExactBuffer);
 
-            int reverseInLargeBuffer = StringExtensions.FindNewline(largerBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.US_ASCII, customDelim);
+            int reverseInLargeBuffer = StringExtensions.findNewline(largerBuffer, Math.max(0, exactBuffer.length - 1), exactBuffer.length, true, StandardCharsets.US_ASCII, customDelim);
             Assert.assertEquals(t.getRight().intValue(), reverseInLargeBuffer);
         }
     }

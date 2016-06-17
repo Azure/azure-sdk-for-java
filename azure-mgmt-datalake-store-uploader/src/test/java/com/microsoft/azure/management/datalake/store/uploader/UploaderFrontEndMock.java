@@ -34,7 +34,7 @@ public class UploaderFrontEndMock implements FrontEndAdapter {
         BaseAdapter = baseAdapter;
     }
 
-    public void CreateStream(String streamPath, boolean overwrite, byte[] data, int byteCount) throws RestException, IOException {
+    public void createStream(String streamPath, boolean overwrite, byte[] data, int byteCount) throws RestException, IOException {
 
         if(ThrowInCreate) {
             createStreamCount++;
@@ -44,31 +44,31 @@ public class UploaderFrontEndMock implements FrontEndAdapter {
             }
         }
 
-        BaseAdapter.CreateStream(streamPath, overwrite, data, byteCount);
+        BaseAdapter.createStream(streamPath, overwrite, data, byteCount);
     }
 
-    public void DeleteStream(String streamPath, boolean recurse) throws RestException, IOException {
-        BaseAdapter.DeleteStream(streamPath, recurse);
+    public void deleteStream(String streamPath, boolean recurse) throws RestException, IOException {
+        BaseAdapter.deleteStream(streamPath, recurse);
     }
 
-    public void AppendToStream(String streamPath, byte[] data, long offset, int byteCount) throws RestException, IOException {
-        BaseAdapter.AppendToStream(streamPath, data, offset, byteCount);
+    public void appendToStream(String streamPath, byte[] data, long offset, int byteCount) throws RestException, IOException {
+        BaseAdapter.appendToStream(streamPath, data, offset, byteCount);
     }
 
-    public boolean StreamExists(String streamPath) throws RestException, IOException {
-        return BaseAdapter.StreamExists(streamPath);
+    public boolean streamExists(String streamPath) throws RestException, IOException {
+        return BaseAdapter.streamExists(streamPath);
     }
 
-    public long GetStreamLength(String streamPath) throws RestException, IOException {
-        return BaseAdapter.GetStreamLength(streamPath);
+    public long getStreamLength(String streamPath) throws RestException, IOException {
+        return BaseAdapter.getStreamLength(streamPath);
     }
 
-    public void Concatenate(String targetStreamPath, String[] inputStreamPaths) throws RestException, IOException {
+    public void concatenate(String targetStreamPath, String[] inputStreamPaths) throws RestException, IOException {
         if(ThrowInConcat) {
             throw new IntentionalException();
         }
 
-        Assert.assertTrue("Concatenate should not be called when using 1 segment", false);
-        BaseAdapter.Concatenate(targetStreamPath, inputStreamPaths);
+        Assert.assertTrue("concatenate should not be called when using 1 segment", false);
+        BaseAdapter.concatenate(targetStreamPath, inputStreamPaths);
     }
 }

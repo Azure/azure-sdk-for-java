@@ -7,7 +7,15 @@ package com.microsoft.azure.management.datalake.store.uploader;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.BitSet;
@@ -17,7 +25,7 @@ import java.util.UUID;
  * Represents general metadata pertaining to an upload.
  */
 public class UploadMetadata implements Serializable {
-    private static Object SaveSync = new Object();
+    private static Object saveSync = new Object();
 
     /**
      * Constructs a new UploadMetadata from the given parameters.
@@ -26,113 +34,268 @@ public class UploadMetadata implements Serializable {
      * @param uploadParameters The parameters to use for constructing this metadata.
      */
     public UploadMetadata(String metadataFilePath, UploadParameters uploadParameters) {
-        this.MetadataFilePath = metadataFilePath;
+        this.metadataFilePath = metadataFilePath;
 
-        this.UploadId = UUID.randomUUID().toString();
-        this.InputFilePath = uploadParameters.getInputFilePath();
-        this.TargetStreamPath = uploadParameters.getTargetStreamPath();
+        this.uploadId = UUID.randomUUID().toString();
+        this.inputFilePath = uploadParameters.getInputFilePath();
+        this.targetStreamPath = uploadParameters.getTargetStreamPath();
 
 
-        String[] streamData = SplitTargetStreamPathByName();
+        String[] streamData = splitTargetStreamPathByName();
         String streamName = streamData[0];
         String streamDirectory = streamData[1];
 
         if (streamDirectory == null || StringUtils.isEmpty(streamDirectory)) {
             // the scenario where the file is being uploaded at the root
-            this.SegmentStreamDirectory = MessageFormat.format("/{0}.segments.{1}", streamName, UUID.randomUUID());
+            this.segmentStreamDirectory = MessageFormat.format("/{0}.segments.{1}", streamName, UUID.randomUUID());
         } else {
             // the scenario where the file is being uploaded in a sub folder
-            this.SegmentStreamDirectory = MessageFormat.format("{0}/{1}.segments.{2}",
+            this.segmentStreamDirectory = MessageFormat.format("{0}/{1}.segments.{2}",
                     streamDirectory,
                     streamName, UUID.randomUUID());
         }
 
-        this.IsBinary = uploadParameters.isBinary();
+        this.isBinary = uploadParameters.isBinary();
 
         File fileInfo = new File(uploadParameters.getInputFilePath());
-        this.FileLength = fileInfo.length();
+        this.fileLength = fileInfo.length();
 
-        this.EncodingName = uploadParameters.getFileEncoding().name();
+        this.encodingName = uploadParameters.getFileEncoding().name();
 
         // we are taking the smaller number of segments between segment lengths of 256 and the segment growth logic.
         // this protects us against agressive increase of thread count resulting in far more segments than
         // is reasonable for a given file size. We also ensure that each segment is at least 256mb in size.
         // This is the size that ensures we have the optimal storage creation in the store.
         int preliminarySegmentCount = (int) Math.ceil((double) fileInfo.length() / uploadParameters.getMaxSegementLength());
-        this.SegmentCount = Math.min(preliminarySegmentCount, UploadSegmentMetadata.CalculateSegmentCount(fileInfo.length()));
-        this.SegmentLength = UploadSegmentMetadata.CalculateSegmentLength(fileInfo.length(), this.SegmentCount);
+        this.segmentCount = Math.min(preliminarySegmentCount, UploadSegmentMetadata.calculateSegmentCount(fileInfo.length()));
+        this.segmentLength = UploadSegmentMetadata.calculateSegmentLength(fileInfo.length(), this.segmentCount);
 
-        this.Segments = new UploadSegmentMetadata[this.SegmentCount];
-        for (int i = 0; i < this.SegmentCount; i++) {
-            this.Segments[i] = new UploadSegmentMetadata(i, this);
+        this.segments = new UploadSegmentMetadata[this.segmentCount];
+        for (int i = 0; i < this.segmentCount; i++) {
+            this.segments[i] = new UploadSegmentMetadata(i, this);
         }
     }
 
     /**
-     * Gets or sets a value indicating the unique identifier associated with this upload.
+     *
+     * @return A value indicating the unique identifier associated with this upload.
      */
-    public String UploadId;
+    public String getUploadId() {
+        return uploadId;
+    }
 
     /**
-     * Gets or sets a value indicating the full path to the file to be uploaded.
+     *
+     * @return A value indicating the full path to the file to be uploaded.
      */
-    public String InputFilePath;
+    public String getInputFilePath() {
+        return inputFilePath;
+    }
 
     /**
-     * Gets or sets a value indicating the length (in bytes) of the file to be uploaded.
+     *
+     * @return A value indicating the length (in bytes) of the file to be uploaded.
      */
-    public long FileLength;
+    public long getFileLength() {
+        return fileLength;
+    }
 
     /**
-     * Gets or sets a value indicating the full stream path where the file will be uploaded to.
+     *
+     * @return A value indicating the full stream path where the file will be uploaded to.
      */
-    public String TargetStreamPath;
+    public String getTargetStreamPath() {
+        return targetStreamPath;
+    }
 
     /**
-     * Gets or sets a value indicating the directory path where intermediate segment streams will be stored.
+     *
+     * @return A value indicating the directory path where intermediate segment streams will be stored.
      */
-    public String SegmentStreamDirectory;
+    public String getSegmentStreamDirectory() {
+        return segmentStreamDirectory;
+    }
 
     /**
-     * Gets or sets a value indicating the number of segments this file is split into for purposes of uploading it.
+     *
+     * @return A value indicating the number of segments this file is split into for purposes of uploading it.
      */
-    public int SegmentCount;
+    public int getSegmentCount() {
+        return segmentCount;
+    }
 
     /**
-     * Gets or sets a value indicating the length (in bytes) of each segment of the file (except the last one, which may be less).
+     *
+     * @param segCount Sets the segment count to the specified count.
      */
-    public long SegmentLength;
+    public void setSegmentCount(int segCount) {
+        segmentCount = segCount;
+    }
 
     /**
-     * Gets a pointer to an array of segment metadata. The segments are ordered by their segment number (sequence).
+     *
+     * @return A value indicating the length (in bytes) of each segment of the file (except the last one, which may be less).
      */
-    public UploadSegmentMetadata[] Segments;
+    public long getSegmentLength() {
+        return segmentLength;
+    }
 
     /**
-     * Gets a value indicating whether the upload file should be treated as a binary file or not.
+     *
+     * @param segLength The length to set the segment length to.
      */
-    public boolean IsBinary;
-    
+    public void setSegmentLength(long segLength) {
+        segmentLength = segLength;
+    }
     /**
-     * Gets the name of the current encoding being used.
+     *
+     * @return A pointer to an array of segment metadata. The segments are ordered by their segment number (sequence).
      */
-    public String EncodingName;
+    public UploadSegmentMetadata[] getSegments() {
+        return segments;
+    }
 
     /**
-     * Gets a value indicating the record boundary delimiter for the file, if any.
+     *
+     * @param segs The value to set the segment array to.
      */
-    public String Delimiter;
+    public void setSegments(UploadSegmentMetadata[] segs) {
+        segments = segs;
+    }
 
     /**
-     * Gets a value indicating the path where this metadata file is located.
+     *
+     * @return A value indicating whether the upload file should be treated as a binary file or not.
      */
-    public transient String MetadataFilePath;
+    public boolean isBinary() {
+        return isBinary;
+    }
 
     /**
-     * Initializes a new instance of the UploadMetadata class for use with unit testing
+     *
+     * @return The name of the current encoding being used.
+     */
+    public String getEncodingName() {
+        return encodingName;
+    }
+
+    /**
+     *
+     * @return A value indicating the record boundary delimiter for the file, if any.
+     */
+    public String getDelimiter() {
+        return delimiter;
+    }
+
+    /**
+     *
+     * @return A value indicating the path where this metadata file is located.
+     */
+    public String getMetadataFilePath() {
+        return metadataFilePath;
+    }
+
+    /**
+     *
+     * @param metadataFilePath A value indicating the path where this metadata file is located.
+     */
+    public void setMetadataFilePath(String metadataFilePath) {
+        this.metadataFilePath = metadataFilePath;
+    }
+
+    private transient String metadataFilePath;
+
+    /**
+     *
+     * @param uploadId A value indicating the unique identifier associated with this upload.
+     */
+    public void setUploadId(String uploadId) {
+        this.uploadId = uploadId;
+    }
+
+    /**
+     *
+     * @param inputFilePath A value indicating the full path to the file to be uploaded.
+     */
+    public void setInputFilePath(String inputFilePath) {
+        this.inputFilePath = inputFilePath;
+    }
+
+    /**
+     *
+     * @param fileLength A value indicating the length (in bytes) of the file to be uploaded.
+     */
+    public void setFileLength(long fileLength) {
+        this.fileLength = fileLength;
+    }
+
+    /**
+     *
+     * @param targetStreamPath A value indicating the full stream path where the file will be uploaded to.
+     */
+    public void setTargetStreamPath(String targetStreamPath) {
+        this.targetStreamPath = targetStreamPath;
+    }
+
+    /**
+     *
+     * @param segmentStreamDirectory A value indicating the directory path where intermediate segment streams will be stored.
+     */
+    public void setSegmentStreamDirectory(String segmentStreamDirectory) {
+        this.segmentStreamDirectory = segmentStreamDirectory;
+    }
+
+    /**
+     *
+     * @param binary A value indicating whether the upload file should be treated as a binary file or not.
+     */
+    public void setBinary(boolean binary) {
+        isBinary = binary;
+    }
+
+    /**
+     *
+     * @param encodingName The name of the current encoding being used.
+     */
+    public void setEncodingName(String encodingName) {
+        this.encodingName = encodingName;
+    }
+
+    /**
+     *
+     * @param delimiter A value indicating the record boundary delimiter for the file, if any.
+     */
+    public void setDelimiter(String delimiter) {
+        this.delimiter = delimiter;
+    }
+
+    private String uploadId;
+
+    private String inputFilePath;
+
+    private long fileLength;
+
+    private String targetStreamPath;
+
+    private String segmentStreamDirectory;
+
+    private int segmentCount;
+
+    private long segmentLength;
+
+    private UploadSegmentMetadata[] segments;
+
+    private boolean isBinary;
+
+    private String encodingName;
+
+    private String delimiter;
+
+    /**
+     * Initializes a new instance of the UploadMetadata class for use with unit testing.
      */
     protected UploadMetadata() {
-        this.EncodingName = StandardCharsets.UTF_8.name();
+        this.encodingName = StandardCharsets.UTF_8.name();
     }
 
     /**
@@ -140,10 +303,10 @@ public class UploadMetadata implements Serializable {
      *
      * @param filePath The full path to the file where to load the metadata from
      * @return A deserialized {@link UploadMetadata} object from the file specified.
-     * @throws FileNotFoundException
-     * @throws InvalidMetadataException
+     * @throws FileNotFoundException Thrown if the filePath is inaccessible or does not exist
+     * @throws InvalidMetadataException Thrown if the metadata is not in the expected format.
      */
-    public static UploadMetadata LoadFrom(String filePath) throws FileNotFoundException, InvalidMetadataException {
+    public static UploadMetadata loadFrom(String filePath) throws FileNotFoundException, InvalidMetadataException {
         if (!new File(filePath).exists()) {
             throw new FileNotFoundException("Could not find metadata file: " + filePath);
         }
@@ -155,7 +318,7 @@ public class UploadMetadata implements Serializable {
             result = (UploadMetadata) in.readObject();
             in.close();
             fileIn.close();
-            result.MetadataFilePath = filePath;
+            result.metadataFilePath = filePath;
             return result;
         } catch (Exception ex) {
             throw new InvalidMetadataException("Unable to parse metadata file", ex);
@@ -165,19 +328,19 @@ public class UploadMetadata implements Serializable {
     /**
      * Saves the given metadata to its canonical location. This method is thread-safe.
      *
-     * @throws IOException
-     * @throws InvalidMetadataException
+     * @throws IOException Thrown if the file cannot be saved due to accessibility or there is an error saving the stream to disk.
+     * @throws InvalidMetadataException Thrown if the metadata is invalid.
      */
-    public void Save() throws IOException, InvalidMetadataException {
-        if (this.MetadataFilePath == null || StringUtils.isEmpty(this.MetadataFilePath)) {
-            throw new InvalidObjectException("Null or empty MetadataFilePath. Cannot save metadata until this property is set.");
+    public void save() throws IOException, InvalidMetadataException {
+        if (this.metadataFilePath == null || StringUtils.isEmpty(this.metadataFilePath)) {
+            throw new InvalidObjectException("Null or empty metadataFilePath. Cannot save metadata until this property is set.");
         }
 
         //quick check to ensure that the metadata we constructed is sane
-        this.ValidateConsistency();
+        this.validateConsistency();
 
-        synchronized (SaveSync) {
-            File curMetadata = new File(this.MetadataFilePath);
+        synchronized (saveSync) {
+            File curMetadata = new File(this.metadataFilePath);
             if (curMetadata.exists()) {
                 curMetadata.delete();
             }
@@ -187,7 +350,7 @@ public class UploadMetadata implements Serializable {
             curMetadata.createNewFile();
             try {
                 FileOutputStream fileOut =
-                        new FileOutputStream(this.MetadataFilePath);
+                        new FileOutputStream(this.metadataFilePath);
                 ObjectOutputStream out = new ObjectOutputStream(fileOut);
                 out.writeObject(this);
                 out.close();
@@ -201,14 +364,14 @@ public class UploadMetadata implements Serializable {
     /**
      * Deletes the metadata file from disk.
      *
-     * @throws InvalidObjectException
+     * @throws InvalidObjectException Thrown if the metadata file path has not yet been set.
      */
-    public void DeleteFile() throws InvalidObjectException {
-        if (this.MetadataFilePath == null || StringUtils.isEmpty(this.MetadataFilePath)) {
-            throw new InvalidObjectException("Null or empty MetadataFilePath. Cannot delete metadata until this property is set.");
+    public void deleteFile() throws InvalidObjectException {
+        if (this.metadataFilePath == null || StringUtils.isEmpty(this.metadataFilePath)) {
+            throw new InvalidObjectException("Null or empty metadataFilePath. Cannot delete metadata until this property is set.");
         }
 
-        File curMetadata = new File(this.MetadataFilePath);
+        File curMetadata = new File(this.metadataFilePath);
         if (curMetadata.exists()) {
             curMetadata.delete();
         }
@@ -220,41 +383,41 @@ public class UploadMetadata implements Serializable {
      *  Existence and consistency with local file
      *  Segment data consistency
      *
-     * @throws InvalidMetadataException
+     * @throws InvalidMetadataException Thrown if the metadata is invalid.
      */
-    public void ValidateConsistency() throws InvalidMetadataException {
-        if (this.Segments == null || this.Segments.length != this.SegmentCount) {
+    public void validateConsistency() throws InvalidMetadataException {
+        if (this.segments == null || this.segments.length != this.segmentCount) {
             throw new InvalidMetadataException("Inconsistent number of segments");
         }
 
         long sum = 0;
         int lastSegmentNumber = -1;
-        BitSet segments = new BitSet(this.SegmentCount);
+        BitSet segments = new BitSet(this.segmentCount);
 
-        for (UploadSegmentMetadata segment : this.Segments) {
-            if (segment.SegmentNumber < 0 || segment.SegmentNumber >= this.SegmentCount) {
-                throw new InvalidMetadataException(MessageFormat.format("Segment numbers must be at least 0 and less than {0}. Found segment number {1}.", this.SegmentCount, segment.SegmentNumber));
+        for (UploadSegmentMetadata segment : this.segments) {
+            if (segment.getSegmentNumber() < 0 || segment.getSegmentNumber() >= this.segmentCount) {
+                throw new InvalidMetadataException(MessageFormat.format("Segment numbers must be at least 0 and less than {0}. Found segment number {1}.", this.segmentCount, segment.getSegmentNumber()));
             }
 
-            if (segment.SegmentNumber <= lastSegmentNumber) {
-                throw new InvalidMetadataException(MessageFormat.format("Segment number {0} appears out of order.", segment.SegmentNumber));
+            if (segment.getSegmentNumber() <= lastSegmentNumber) {
+                throw new InvalidMetadataException(MessageFormat.format("Segment number {0} appears out of order.", segment.getSegmentNumber()));
             }
 
-            if (segments.get(segment.SegmentNumber)) {
-                throw new InvalidMetadataException(MessageFormat.format("Segment number {0} appears twice", segment.SegmentNumber));
+            if (segments.get(segment.getSegmentNumber())) {
+                throw new InvalidMetadataException(MessageFormat.format("Segment number {0} appears twice", segment.getSegmentNumber()));
             }
 
-            if (segment.Offset != sum) {
-                throw new InvalidMetadataException(MessageFormat.format("Segment number {0} has an invalid starting offset ({1}). Expected {2}.", segment.SegmentNumber, segment.Offset, sum));
+            if (segment.getOffset() != sum) {
+                throw new InvalidMetadataException(MessageFormat.format("Segment number {0} has an invalid starting offset ({1}). Expected {2}.", segment.getSegmentNumber(), segment.getOffset(), sum));
             }
 
-            segments.set(segment.SegmentNumber);
-            sum += segment.Length;
-            lastSegmentNumber = segment.SegmentNumber;
+            segments.set(segment.getSegmentNumber());
+            sum += segment.getLength();
+            lastSegmentNumber = segment.getSegmentNumber();
         }
 
-        if (sum != this.FileLength) {
-            throw new InvalidMetadataException("The individual segment lengths do not add up to the input File Length");
+        if (sum != this.fileLength) {
+            throw new InvalidMetadataException("The individual segment lengths do not add up to the input File length");
         }
     }
 
@@ -263,17 +426,17 @@ public class UploadMetadata implements Serializable {
      *
      * @return A string array with the stream name is at index 0 and the stream path (if any) at index 1.
      */
-    public String[] SplitTargetStreamPathByName() {
+    public String[] splitTargetStreamPathByName() {
         String[] toReturn = new String[2];
-        int numFoldersInPath = this.TargetStreamPath.split("/").length;
-        if (numFoldersInPath - 1 == 0 || (numFoldersInPath - 1 == 1 && this.TargetStreamPath.startsWith("/"))) {
+        int numFoldersInPath = this.targetStreamPath.split("/").length;
+        if (numFoldersInPath - 1 == 0 || (numFoldersInPath - 1 == 1 && this.targetStreamPath.startsWith("/"))) {
             // the scenario where the file is being uploaded at the root
-            toReturn[0] = this.TargetStreamPath.replaceAll("^[/]", "");
+            toReturn[0] = this.targetStreamPath.replaceAll("^[/]", "");
             toReturn[1] = null;
         } else {
             // the scenario where the file is being uploaded in a sub folder
-            toReturn[0] = this.TargetStreamPath.substring(this.TargetStreamPath.lastIndexOf('/') + 1);
-            toReturn[1] = this.TargetStreamPath.substring(0, this.TargetStreamPath.lastIndexOf('/'));
+            toReturn[0] = this.targetStreamPath.substring(this.targetStreamPath.lastIndexOf('/') + 1);
+            toReturn[1] = this.targetStreamPath.substring(0, this.targetStreamPath.lastIndexOf('/'));
         }
 
         return toReturn;

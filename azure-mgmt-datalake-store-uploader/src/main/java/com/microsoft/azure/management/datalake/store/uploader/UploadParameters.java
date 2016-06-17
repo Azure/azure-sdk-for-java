@@ -16,7 +16,13 @@ import java.nio.charset.StandardCharsets;
 public class UploadParameters {
 
     /**
-     * Creates a new set of parameters for the DataLake Uploader with optional values set with their defaults:
+     * The default segment length that is used to ensure maximum life cycle performance for uploaded data.
+     * 256MB is the default and should not be changed without a good reason.
+     */
+    private static final long SEGMENT_LENGTH  = 256 * 1024 * 1024;
+    /**
+     * Creates a new set of parameters for the DataLake Uploader with optional values set with their defaults.
+     * Defaults are as follows:
      *  threadCount = 1
      *  isOverwrite = false
      *  isResume = false
@@ -29,15 +35,15 @@ public class UploadParameters {
      * @param accountName Name of the account to upload to.
      */
     public UploadParameters(String inputFilePath, String targetStreamPath, String accountName) {
-        this(inputFilePath, targetStreamPath, accountName, 1, false, false, true, 256*1024*1024, null);
+        this(inputFilePath, targetStreamPath, accountName, 1, false, false, true, SEGMENT_LENGTH, null);
     }
 
     /**
-     * Creates a new set of parameters for the DataLake Uploader with the following optional values set with their defaults:
-     *
+     * Creates a new set of parameters for the DataLake Uploader with the following optional values set with their defaults.
+     * Defaults are as follows:
      *  isBinary = true
      *  maxSegmentLength = 256mb
-     *  localMetadataLocation = File.createTempFile()
+     *  localMetadataLocation = File.createTempFile().
      *
      * @param inputFilePath The full path to the file to be uploaded.
      * @param targetStreamPath The full stream path where the file will be uploaded to.
@@ -47,12 +53,12 @@ public class UploadParameters {
      * @param isResume Indicates whether to resume a previously interrupted upload.
      */
     public UploadParameters(String inputFilePath, String targetStreamPath, String accountName, int threadCount, boolean isOverwrite, boolean isResume) {
-        this(inputFilePath, targetStreamPath, accountName, threadCount, isOverwrite, isResume, true, 256*1024*1024, null);
+        this(inputFilePath, targetStreamPath, accountName, threadCount, isOverwrite, isResume, true, SEGMENT_LENGTH, null);
     }
 
     /**
-     * Creates a new set of parameters for the DataLake Uploader with the following optional values set with their defaults:
-     *
+     * Creates a new set of parameters for the DataLake Uploader with the following optional values set with their defaults.
+     * Defaults are as follows:
      *  isBinary = true
      *  maxSegmentLength = 256mb
      *
@@ -65,7 +71,7 @@ public class UploadParameters {
      * @param localMetadataLocation Indicates the directory path where to store the local upload metadata file while the upload is in progress. This location must be writeable from this application. Default location if null: File.createTempFile()
      */
     public UploadParameters(String inputFilePath, String targetStreamPath, String accountName, int threadCount, boolean isOverwrite, boolean isResume, String localMetadataLocation) {
-        this(inputFilePath, targetStreamPath, accountName, threadCount, isOverwrite, isResume, true, 256*1024*1024, localMetadataLocation);
+        this(inputFilePath, targetStreamPath, accountName, threadCount, isOverwrite, isResume, true, SEGMENT_LENGTH, localMetadataLocation);
     }
 
     /**
@@ -105,7 +111,7 @@ public class UploadParameters {
     }
 
     /**
-     * Creates a new set of parameters for the DataLake Uploader used for unit testing
+     * Creates a new set of parameters for the DataLake Uploader used for unit testing.
      *
      * @param inputFilePath The full path to the file to be uploaded.
      * @param targetStreamPath The full stream path where the file will be uploaded to.
@@ -151,7 +157,7 @@ public class UploadParameters {
     }
 
     /**
-     * Internally sets the input file path
+     * Internally sets the input file path.
      *
      * @param inputFilePath
      */
@@ -313,7 +319,7 @@ public class UploadParameters {
     }
 
     /**
-     * Internally sets the value of the file encoding
+     * Internally sets the value of the file encoding.
      *
      * @param fileEncoding
      */

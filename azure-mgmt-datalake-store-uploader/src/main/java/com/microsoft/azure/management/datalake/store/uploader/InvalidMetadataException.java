@@ -11,7 +11,7 @@ package com.microsoft.azure.management.datalake.store.uploader;
 public class InvalidMetadataException extends Exception {
 
     /**
-     * Initializes a new instance of the InvalidMetadataException exception
+     * Initializes a new instance of the InvalidMetadataException exception.
      *
      * @param message The message that describes the error.
      */
@@ -20,7 +20,7 @@ public class InvalidMetadataException extends Exception {
     }
 
     /**
-     * Initializes a new instance of the InvalidMetadataException exception
+     * Initializes a new instance of the InvalidMetadataException exception.
      *
      * @param message The error message that explains the reason for the exception.
      * @param innerException The exception that is the cause of the current exception, or a null reference if no inner exception is specified.

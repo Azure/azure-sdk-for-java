@@ -64,13 +64,13 @@ public class MultipleSegmentUploaderTests {
         try
         {
             MultipleSegmentUploader msu = new MultipleSegmentUploader(metadata, 1, fe);
-            msu.UseSegmentBlockBackOffRetryStrategy = false;
-            msu.Upload();
+            msu.setUseSegmentBlockBackOffRetryStrategy(false);
+            msu.upload();
             VerifyTargetStreamsAreComplete(metadata, fe);
         }
         finally
         {
-            metadata.DeleteFile();
+            metadata.deleteFile();
         }
     }
 
@@ -87,13 +87,13 @@ public class MultipleSegmentUploaderTests {
         try
         {
             MultipleSegmentUploader msu = new MultipleSegmentUploader(metadata, 1, fe);
-            msu.UseSegmentBlockBackOffRetryStrategy = false;
-            msu.Upload();
+            msu.setUseSegmentBlockBackOffRetryStrategy(false);
+            msu.upload();
             VerifyTargetStreamsAreComplete(metadata, fe);
         }
         finally
         {
-            metadata.DeleteFile();
+            metadata.deleteFile();
         }
     }
 
@@ -107,17 +107,17 @@ public class MultipleSegmentUploaderTests {
     {
         InMemoryFrontEnd fe = new InMemoryFrontEnd();
         UploadMetadata metadata = CreateMetadata(10);
-        int threadCount = metadata.SegmentCount * 10; //intentionally setting this higher than the # of segments
+        int threadCount = metadata.getSegmentCount() * 10; //intentionally setting this higher than the # of segments
         try
         {
             MultipleSegmentUploader msu = new MultipleSegmentUploader(metadata, threadCount, fe);
-            msu.UseSegmentBlockBackOffRetryStrategy = false;
-            msu.Upload();
+            msu.setUseSegmentBlockBackOffRetryStrategy(false);
+            msu.upload();
             VerifyTargetStreamsAreComplete(metadata, fe);
         }
         finally
         {
-            metadata.DeleteFile();
+            metadata.deleteFile();
         }
     }
 
@@ -137,29 +137,29 @@ public class MultipleSegmentUploaderTests {
         try
         {
             MultipleSegmentUploader msu = new MultipleSegmentUploader(metadata, 1, fe);
-            msu.UseSegmentBlockBackOffRetryStrategy = false;
-            msu.Upload();
+            msu.setUseSegmentBlockBackOffRetryStrategy(false);
+            msu.upload();
             VerifyTargetStreamsAreComplete(metadata, fe);
 
             //delete about 50% of segments
-            for (int i = 0; i < metadata.SegmentCount; i++)
+            for (int i = 0; i < metadata.getSegmentCount(); i++)
             {
-                UploadSegmentMetadata currentSegment = metadata.Segments[i];
+                UploadSegmentMetadata currentSegment = metadata.getSegments()[i];
                 if (i % 2 == 0)
                 {
-                    currentSegment.Status = SegmentUploadStatus.Pending;
-                    fe.DeleteStream(currentSegment.Path, false);
+                    currentSegment.setStatus(SegmentUploadStatus.Pending);
+                    fe.deleteStream(currentSegment.getPath(), false);
                 }
             }
 
             //re-upload everything
             msu = new MultipleSegmentUploader(metadata, 1, fe);
-            msu.Upload();
+            msu.upload();
             VerifyTargetStreamsAreComplete(metadata, fe);
         }
         finally
         {
-            metadata.DeleteFile();
+            metadata.deleteFile();
         }
     }
 
@@ -185,8 +185,8 @@ public class MultipleSegmentUploaderTests {
     {
         //we only have access to the underlying FrontEnd, so we need to simulate many exceptions in order to force a segment to fail the upload (multiply by SingleSegmentUploader.MaxBufferUploadAttemptAccount)
         //this only works because we have a small file, which we know will fit in only one buffer (for a larger file, more complex operations are necessary)
-        int actualfailCount = segmentFailCount * SingleSegmentUploader.MaxBufferUploadAttemptCount;
-        boolean expectSuccess = segmentFailCount < MultipleSegmentUploader.MaxUploadAttemptCount;
+        int actualfailCount = segmentFailCount * SingleSegmentUploader.MAX_BUFFER_UPLOAD_ATTEMPT_COUNT;
+        boolean expectSuccess = segmentFailCount < MultipleSegmentUploader.MAX_UPLOAD_ATTEMPT_COUNT;
 
         int callCount = 0;
 
@@ -198,21 +198,21 @@ public class MultipleSegmentUploaderTests {
         try
         {
             MultipleSegmentUploader msu = new MultipleSegmentUploader(metadata, 1, fe);
-            msu.UseSegmentBlockBackOffRetryStrategy = false;
+            msu.setUseSegmentBlockBackOffRetryStrategy(false);
 
             if (expectSuccess)
             {
-                //the Upload method should not throw any exceptions in this case
-                msu.Upload();
+                //the upload method should not throw any exceptions in this case
+                msu.upload();
 
                 //if we are expecting success, verify that both the metadata and the target streams are complete
                 VerifyTargetStreamsAreComplete(metadata, workingFrontEnd);
             }
             else
             {
-                //the Upload method should throw an aggregate exception in this case
+                //the upload method should throw an aggregate exception in this case
                 try {
-                    msu.Upload();
+                    msu.upload();
                     Assert.assertTrue("An aggregate upload exception was expected but no exception was thrown.", false);
                 }
                 catch (AggregateUploadException ex) {
@@ -221,8 +221,8 @@ public class MultipleSegmentUploaderTests {
 
                 //if we do not expect success, verify that at least 1 segment was marked as Failed
                 boolean foundFailedSegment = false;
-                for (UploadSegmentMetadata s: metadata.Segments) {
-                    if(s.Status == SegmentUploadStatus.Failed) {
+                for (UploadSegmentMetadata s: metadata.getSegments()) {
+                    if(s.getStatus() == SegmentUploadStatus.Failed) {
                         foundFailedSegment = true;
                         break;
                     }
@@ -230,9 +230,9 @@ public class MultipleSegmentUploaderTests {
                 Assert.assertTrue("Could not find any failed segments", foundFailedSegment);
 
                 //for every other segment, verify it was completed OK
-                for (UploadSegmentMetadata segment: metadata.Segments)
+                for (UploadSegmentMetadata segment: metadata.getSegments())
                 {
-                    if( segment.Status != SegmentUploadStatus.Failed) {
+                    if( segment.getStatus() != SegmentUploadStatus.Failed) {
                         VerifyTargetStreamIsComplete(segment, metadata, workingFrontEnd);
                     }
                 }
@@ -240,32 +240,32 @@ public class MultipleSegmentUploaderTests {
         }
         finally
         {
-            metadata.DeleteFile();
+            metadata.deleteFile();
         }
     }
 
     private void VerifyTargetStreamsAreComplete(UploadMetadata metadata, InMemoryFrontEnd fe) throws Exception {
-        for (UploadSegmentMetadata segment: metadata.Segments)
+        for (UploadSegmentMetadata segment: metadata.getSegments())
         {
             VerifyTargetStreamIsComplete(segment, metadata, fe);
         }
     }
 
     private void VerifyTargetStreamIsComplete(UploadSegmentMetadata segmentMetadata, UploadMetadata metadata, InMemoryFrontEnd frontEnd) throws Exception {
-        Assert.assertEquals(SegmentUploadStatus.Complete, segmentMetadata.Status);
-        Assert.assertTrue(MessageFormat.format("Segment {0} was not uploaded", segmentMetadata.SegmentNumber), frontEnd.StreamExists(segmentMetadata.Path));
-        Assert.assertEquals(segmentMetadata.Length, frontEnd.GetStreamLength(segmentMetadata.Path));
+        Assert.assertEquals(SegmentUploadStatus.Complete, segmentMetadata.getStatus());
+        Assert.assertTrue(MessageFormat.format("Segment {0} was not uploaded", segmentMetadata.getSegmentNumber()), frontEnd.streamExists(segmentMetadata.getPath()));
+        Assert.assertEquals(segmentMetadata.getLength(), frontEnd.getStreamLength(segmentMetadata.getPath()));
 
-        byte[] actualContents = frontEnd.GetStreamContents(segmentMetadata.Path);
+        byte[] actualContents = frontEnd.GetStreamContents(segmentMetadata.getPath());
         byte[] expectedContents = GetExpectedContents(segmentMetadata, metadata);
-        Assert.assertArrayEquals(MessageFormat.format("Segment {0} has unexpected contents", segmentMetadata.SegmentNumber), expectedContents, actualContents);
+        Assert.assertArrayEquals(MessageFormat.format("Segment {0} has unexpected contents", segmentMetadata.getSegmentNumber()), expectedContents, actualContents);
     }
 
 
     private byte[] GetExpectedContents(UploadSegmentMetadata segment, UploadMetadata metadata)
     {
-        byte[] result = new byte[(int)segment.Length];
-        System.arraycopy(_smallFileContents, (int) (segment.SegmentNumber * metadata.SegmentLength), result, 0, (int)segment.Length);
+        byte[] result = new byte[(int)segment.getLength()];
+        System.arraycopy(_smallFileContents, (int) (segment.getSegmentNumber() * metadata.getSegmentLength()), result, 0, (int)segment.getLength());
         return result;
     }
 
@@ -273,32 +273,33 @@ public class MultipleSegmentUploaderTests {
         File path = File.createTempFile("adlsmsumetadata", ".xml");
         UploadMetadata metadata = new UploadMetadata();
 
-        metadata.MetadataFilePath = path.getAbsolutePath();
-        metadata.InputFilePath = _smallFilePath;
-        metadata.FileLength = _smallFileContents.length;
-        metadata.SegmentCount = segmentCount;
-        metadata.SegmentLength = UploadSegmentMetadata.CalculateSegmentLength(_smallFileContents.length, segmentCount);
-        metadata.Segments = new UploadSegmentMetadata[segmentCount];
-        metadata.TargetStreamPath = "abc";
-        metadata.UploadId = "123";
-        metadata.IsBinary = true;
+        metadata.setMetadataFilePath(path.getAbsolutePath());
+        metadata.setInputFilePath(_smallFilePath);
+        metadata.setFileLength(_smallFileContents.length);
+        metadata.setSegmentCount(segmentCount);
+        metadata.setSegmentLength(UploadSegmentMetadata.calculateSegmentLength(_smallFileContents.length, segmentCount));
 
+        metadata.setTargetStreamPath("abc");
+        metadata.setUploadId("123");
+        metadata.setBinary(true);
 
+        UploadSegmentMetadata[] toSet = new UploadSegmentMetadata[segmentCount];
         long offset = 0;
         for (int i = 0; i < segmentCount; i++)
         {
-            long length = UploadSegmentMetadata.CalculateSegmentLength(i, metadata);
-            metadata.Segments[i] = new UploadSegmentMetadata();
+            long length = UploadSegmentMetadata.calculateSegmentLength(i, metadata);
+            toSet[i] = new UploadSegmentMetadata();
 
-            metadata.Segments[i].SegmentNumber = i;
-            metadata.Segments[i].Offset = offset;
-            metadata.Segments[i].Status = SegmentUploadStatus.Pending;
-            metadata.Segments[i].Length = length;
-            metadata.Segments[i].Path = MessageFormat.format("{0}.{1}.segment{2}", metadata.TargetStreamPath, metadata.UploadId, i);
+            toSet[i].setSegmentNumber(i);
+            toSet[i].setOffset(offset);
+            toSet[i].setStatus(SegmentUploadStatus.Pending);
+            toSet[i].setLength(length);
+            toSet[i].setPath(MessageFormat.format("{0}.{1}.segment{2}", metadata.getTargetStreamPath(), metadata.getUploadId(), i));
 
             offset += length;
         }
 
+        metadata.setSegments(toSet);
         return metadata;
     }
 }

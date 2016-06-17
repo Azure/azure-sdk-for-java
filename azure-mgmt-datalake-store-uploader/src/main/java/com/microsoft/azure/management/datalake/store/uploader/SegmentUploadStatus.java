@@ -6,7 +6,7 @@
 package com.microsoft.azure.management.datalake.store.uploader;
 
 /**
- * Defines various states that a segment upload can have
+ * Defines various states that a segment upload can have.
  */
 public enum SegmentUploadStatus {
     /**
