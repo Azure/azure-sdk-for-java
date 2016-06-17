@@ -10,6 +10,7 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.resources.implementation.api.PageImpl;
@@ -29,6 +30,7 @@ import java.util.List;
  * The implementation of StorageAccounts and its parent interfaces.
  */
 class StorageAccountsImpl
+        extends ResourcesImpl<StorageAccount>
         implements StorageAccounts {
     private final StorageAccountsInner client;
     private final ResourceManager resourceManager;
