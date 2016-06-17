@@ -27,25 +27,24 @@ public class DataLakeStoreUploader {
     /**
      * The maximum number of parallel threads to allow.
      */
-    public static final int MaxAllowedThreads = 1024;
-    private FrontEndAdapter _frontEnd;
-    private String _metadataFilePath;
-    private int _previousDefaultConnectionLimit;
+    public static final int MAX_ALLOWED_THREADS = 1024;
+    private FrontEndAdapter frontEnd;
+    private String metadataFilePath;
 
     /**
      * Creates a new instance of the DataLakeUploader class, by specifying a pointer to the FrontEnd to use for the upload.
      *
-     * @param uploadParameters The Upload Parameters to use.
+     * @param uploadParameters The upload parameters to use.
      * @param frontEnd A pointer to the FrontEnd interface to use for the upload.
-     * @throws FileNotFoundException
+     * @throws FileNotFoundException if the local file cannot be found or is inaccessible
      */
     public DataLakeStoreUploader(UploadParameters uploadParameters, FrontEndAdapter frontEnd) throws FileNotFoundException {
-        this.Parameters = uploadParameters;
-        _frontEnd = frontEnd;
+        this.parameters = uploadParameters;
+        this.frontEnd = frontEnd;
 
         //ensure that input parameters are correct
-        ValidateParameters();
-        _metadataFilePath = GetCanonicalMetadataFilePath();
+        validateParameters();
+        metadataFilePath = getCanonicalMetadataFilePath();
     }
 
     /**
@@ -53,35 +52,39 @@ public class DataLakeStoreUploader {
      *
      * @return A string representation of the canonical metadata file path.
      */
-    private String GetCanonicalMetadataFilePath() {
-        return Paths.get(this.Parameters.getLocalMetadataLocation(), MessageFormat.format("{0}.upload.xml", Paths.get(this.Parameters.getInputFilePath()).getFileName())).toString();
+    private String getCanonicalMetadataFilePath() {
+        return Paths.get(this.getParameters().getLocalMetadataLocation(), MessageFormat.format("{0}.upload.xml", Paths.get(this.getParameters().getInputFilePath()).getFileName())).toString();
     }
 
-    /**
-     *  Gets the parameters to use for this upload.
-     */
-    public UploadParameters Parameters;
+    private UploadParameters parameters;
 
+    /**
+     * Gets the parameters to use for this upload.
+     * @return the parameters for this upload.
+     */
+    public UploadParameters getParameters() {
+        return parameters;
+    }
     /**
      * Executes the upload as defined by the input parameters.
      *
-     * @throws Exception
+     * @throws Exception if there is any failure that occurs during execution.
      */
-    public void Execute() throws Exception {
+    public void execute() throws Exception {
         //load up existing metadata or create a fresh one
-        UploadMetadata metadata = GetMetadata();
+        UploadMetadata metadata = getMetadata();
 
-        if (metadata.SegmentCount < this.Parameters.getThreadCount()) {
+        if (metadata.getSegmentCount() < this.getParameters().getThreadCount()) {
             // reducing the thread count to make it equal to the segment count
             // if it is larger, since those extra threads will not be used.
-            this.Parameters.setThreadCount(metadata.SegmentCount);
+            this.getParameters().setThreadCount(metadata.getSegmentCount());
         }
 
         //begin (or resume) uploading the file
-        UploadFile(metadata);
+        uploadFile(metadata);
 
         //clean up metadata after a successful upload
-        metadata.DeleteFile();
+        metadata.deleteFile();
     }
 
     /**
@@ -90,25 +93,25 @@ public class DataLakeStoreUploader {
      * @throws FileNotFoundException Could not find input file
      * @throws IllegalArgumentException Null or empty account name, stream path should not end with a '/' or the thread count is out of range.
      */
-    private void ValidateParameters() throws FileNotFoundException, IllegalArgumentException {
-        if (!(new File(this.Parameters.getInputFilePath()).exists())) {
-            throw new FileNotFoundException("Could not find input file: " + this.Parameters.getInputFilePath());
+    private void validateParameters() throws FileNotFoundException, IllegalArgumentException {
+        if (!(new File(this.getParameters().getInputFilePath()).exists())) {
+            throw new FileNotFoundException("Could not find input file: " + this.getParameters().getInputFilePath());
         }
 
-        if (this.Parameters.getTargetStreamPath() == null || StringUtils.isEmpty(this.Parameters.getTargetStreamPath())) {
-            throw new IllegalArgumentException("Null or empty Target Stream Path");
+        if (this.getParameters().getTargetStreamPath() == null || StringUtils.isEmpty(this.getParameters().getTargetStreamPath())) {
+            throw new IllegalArgumentException("Null or empty Target Stream path");
         }
 
-        if (this.Parameters.getTargetStreamPath().endsWith("/")) {
+        if (this.getParameters().getTargetStreamPath().endsWith("/")) {
             throw new IllegalArgumentException("Invalid TargetStreamPath, a stream path should not end with /");
         }
 
-        if (this.Parameters.getAccountName() == null || StringUtils.isEmpty(this.Parameters.getAccountName())) {
+        if (this.getParameters().getAccountName() == null || StringUtils.isEmpty(this.getParameters().getAccountName())) {
             throw new IllegalArgumentException("Null or empty Account Name");
         }
 
-        if (this.Parameters.getThreadCount() < 1 || this.Parameters.getThreadCount() > MaxAllowedThreads) {
-            throw new IllegalArgumentException(MessageFormat.format("ThreadCount must be at least 1 and at most {0}", MaxAllowedThreads));
+        if (this.getParameters().getThreadCount() < 1 || this.getParameters().getThreadCount() > MAX_ALLOWED_THREADS) {
+            throw new IllegalArgumentException(MessageFormat.format("ThreadCount must be at least 1 and at most {0}", MAX_ALLOWED_THREADS));
         }
     }
 
@@ -120,20 +123,20 @@ public class DataLakeStoreUploader {
      * @throws InvalidMetadataException
      * @throws UploadFailedException
      */
-    private UploadMetadata GetMetadata() throws IOException, InvalidMetadataException, UploadFailedException {
-        UploadMetadataGenerator metadataGenerator = new UploadMetadataGenerator(this.Parameters);
-        if (this.Parameters.isResume()) {
-            return metadataGenerator.GetExistingMetadata(_metadataFilePath);
+    private UploadMetadata getMetadata() throws IOException, InvalidMetadataException, UploadFailedException {
+        UploadMetadataGenerator metadataGenerator = new UploadMetadataGenerator(this.parameters);
+        if (this.getParameters().isResume()) {
+            return metadataGenerator.getExistingMetadata(metadataFilePath);
         } else {
-            return metadataGenerator.CreateNewMetadata(_metadataFilePath);
+            return metadataGenerator.createNewMetadata(metadataFilePath);
         }
     }
 
     /**
      * Deletes the metadata file from disk.
      */
-    public void DeleteMetadataFile() {
-        File toDelete = new File(_metadataFilePath);
+    public void deleteMetadataFile() {
+        File toDelete = new File(metadataFilePath);
         if (toDelete.exists()) {
             toDelete.delete();
         }
@@ -146,60 +149,60 @@ public class DataLakeStoreUploader {
      * @param metadata The {@link UploadMetadata} to resume the upload from.
      * @throws Exception
      */
-    private void ValidateMetadataForResume(UploadMetadata metadata) throws Exception {
-        ValidateMetadataMatchesLocalFile(metadata);
+    private void validateMetadataForResume(UploadMetadata metadata) throws Exception {
+        validateMetadataMatchesLocalFile(metadata);
 
         //verify that the target stream does not already exist (in case we don't want to overwrite)
-        if (!this.Parameters.isOverwrite() && _frontEnd.StreamExists(metadata.TargetStreamPath)) {
+        if (!this.getParameters().isOverwrite() && frontEnd.streamExists(metadata.getTargetStreamPath())) {
             throw new OperationsException("Target Stream already exists");
         }
 
         //make sure we don't upload part of the file as binary, while the rest is non-binary (that's just asking for trouble)
-        if (this.Parameters.isBinary() != metadata.IsBinary) {
+        if (this.getParameters().isBinary() != metadata.isBinary()) {
             throw new OperationsException(
                     MessageFormat.format(
                             "Existing metadata was created for a {0}binary file while the current parameters requested a {1}binary upload.",
-                            metadata.IsBinary ? "" : "non-",
-                            this.Parameters.isBinary() ? "" : "non-"));
+                            metadata.isBinary() ? "" : "non-",
+                            this.getParameters().isBinary() ? "" : "non-"));
         }
 
         //see what files(segments) already exist - update metadata accordingly (only for segments that are missing from server; if it's on the server but not in metadata, reupload)
-        for (UploadSegmentMetadata segment : metadata.Segments) {
-            if (segment.Status == SegmentUploadStatus.Complete) {
+        for (UploadSegmentMetadata segment : metadata.getSegments()) {
+            if (segment.getStatus() == SegmentUploadStatus.Complete) {
                 int retryCount = 0;
-                while (retryCount < SingleSegmentUploader.MaxBufferUploadAttemptCount) {
+                while (retryCount < SingleSegmentUploader.MAX_BUFFER_UPLOAD_ATTEMPT_COUNT) {
                     retryCount++;
                     try {
                         //verify that the stream exists and that the length is as expected
-                        if (!_frontEnd.StreamExists(segment.Path)) {
+                        if (!frontEnd.streamExists(segment.getPath())) {
                             // this segment was marked as completed, but no target stream exists; it needs to be reuploaded
-                            segment.Status = SegmentUploadStatus.Pending;
+                            segment.setStatus(SegmentUploadStatus.Pending);
                         } else {
-                            long remoteLength = _frontEnd.GetStreamLength(segment.Path);
-                            if (remoteLength != segment.Length) {
+                            long remoteLength = frontEnd.getStreamLength(segment.getPath());
+                            if (remoteLength != segment.getLength()) {
                                 //the target stream has a different length than the input segment, which implies they are inconsistent; it needs to be reuploaded
-                                segment.Status = SegmentUploadStatus.Pending;
+                                segment.setStatus(SegmentUploadStatus.Pending);
                             }
                         }
 
                         break;
                     } catch (Exception e) {
-                        if (retryCount >= SingleSegmentUploader.MaxBufferUploadAttemptCount) {
+                        if (retryCount >= SingleSegmentUploader.MAX_BUFFER_UPLOAD_ATTEMPT_COUNT) {
                             throw new UploadFailedException(
                                     MessageFormat.format(
                                             "Cannot validate metadata in order to resume due to the following exception retrieving file information: {0}",
                                             e));
                         }
 
-                        SingleSegmentUploader.WaitForRetry(retryCount, Parameters.isUseSegmentBlockBackOffRetryStrategy());
+                        SingleSegmentUploader.waitForRetry(retryCount, parameters.isUseSegmentBlockBackOffRetryStrategy());
                     }
                 }
             } else {
                 //anything which is not in 'Completed' status needs to be reuploaded
-                segment.Status = SegmentUploadStatus.Pending;
+                segment.setStatus(SegmentUploadStatus.Pending);
             }
         }
-        metadata.Save();
+        metadata.save();
     }
 
     /**
@@ -208,11 +211,11 @@ public class DataLakeStoreUploader {
      * @param metadata {@link UploadMetadata} to validate for a fresh upload.
      * @throws Exception
      */
-    private void ValidateMetadataForFreshUpload(UploadMetadata metadata) throws Exception {
-        ValidateMetadataMatchesLocalFile(metadata);
+    private void validateMetadataForFreshUpload(UploadMetadata metadata) throws Exception {
+        validateMetadataMatchesLocalFile(metadata);
 
         //verify that the target stream does not already exist (in case we don't want to overwrite)
-        if (!this.Parameters.isOverwrite() && _frontEnd.StreamExists(metadata.TargetStreamPath)) {
+        if (!this.getParameters().isOverwrite() && frontEnd.streamExists(metadata.getTargetStreamPath())) {
             throw new OperationsException("Target Stream already exists");
         }
     }
@@ -223,14 +226,14 @@ public class DataLakeStoreUploader {
      * @param metadata The {@link UploadMetadata} to check against a serialized copy.
      * @throws OperationsException
      */
-    private void ValidateMetadataMatchesLocalFile(UploadMetadata metadata) throws OperationsException {
-        if (!metadata.TargetStreamPath.trim().equalsIgnoreCase(this.Parameters.getTargetStreamPath().trim())) {
+    private void validateMetadataMatchesLocalFile(UploadMetadata metadata) throws OperationsException {
+        if (!metadata.getTargetStreamPath().trim().equalsIgnoreCase(this.getParameters().getTargetStreamPath().trim())) {
             throw new OperationsException("Metadata points to a different target stream than the input parameters");
         }
 
         //verify that it matches against local file (size, name)
-        File metadataInputFileInfo = new File(metadata.InputFilePath);
-        File paramInputFileInfo = new File(this.Parameters.getInputFilePath());
+        File metadataInputFileInfo = new File(metadata.getInputFilePath());
+        File paramInputFileInfo = new File(this.getParameters().getInputFilePath());
 
         if (!paramInputFileInfo.toString().toLowerCase().equals(metadataInputFileInfo.toString().toLowerCase())) {
             throw new OperationsException("The metadata refers to different file than the one requested");
@@ -240,7 +243,7 @@ public class DataLakeStoreUploader {
             throw new OperationsException("The metadata refers to a file that does not exist");
         }
 
-        if (metadata.FileLength != metadataInputFileInfo.length()) {
+        if (metadata.getFileLength() != metadataInputFileInfo.length()) {
             throw new OperationsException("The metadata's file information differs from the actual file");
         }
     }
@@ -250,34 +253,36 @@ public class DataLakeStoreUploader {
      * @param metadata The {@link UploadMetadata} to use to upload the file.
      * @throws Exception
      */
-    private void UploadFile(UploadMetadata metadata) throws Exception {
+    private void uploadFile(UploadMetadata metadata) throws Exception {
         try {
             //TODO: figure out if we need a ServicePointManager equivalent for the connection limit
             //match up the metadata with the information on the server
-            if (this.Parameters.isResume()) {
-                ValidateMetadataForResume(metadata);
+            if (this.getParameters().isResume()) {
+                validateMetadataForResume(metadata);
             } else {
-                ValidateMetadataForFreshUpload(metadata);
+                validateMetadataForFreshUpload(metadata);
             }
 
             // TODO: figure out if we need a way to track progress.
-            if (metadata.SegmentCount == 0) {
+            if (metadata.getSegmentCount() == 0) {
                 // simply create the target stream, overwriting existing streams if they exist
-                _frontEnd.CreateStream(metadata.TargetStreamPath, true, null, 0);
-            } else if (metadata.SegmentCount > 1) {
+                frontEnd.createStream(metadata.getTargetStreamPath(), true, null, 0);
+            } else if (metadata.getSegmentCount() > 1) {
                 //perform the multi-segment upload
-                MultipleSegmentUploader msu = new MultipleSegmentUploader(metadata, this.Parameters.getThreadCount(), _frontEnd);
-                msu.UseSegmentBlockBackOffRetryStrategy = this.Parameters.isUseSegmentBlockBackOffRetryStrategy();
-                msu.Upload();
+                MultipleSegmentUploader msu = new MultipleSegmentUploader(metadata, this.getParameters().getThreadCount(), frontEnd);
+                msu.setUseSegmentBlockBackOffRetryStrategy(this.getParameters().isUseSegmentBlockBackOffRetryStrategy());
+                msu.upload();
 
                 //concatenate the files at the end
-                ConcatenateSegments(metadata);
+                concatenateSegments(metadata);
             } else {
                 //optimization if we only have one segment: upload it directly to the target stream
-                metadata.Segments[0].Path = metadata.TargetStreamPath;
-                SingleSegmentUploader ssu = new SingleSegmentUploader(0, metadata, _frontEnd);
-                ssu.UseBackOffRetryStrategy = this.Parameters.isUseSegmentBlockBackOffRetryStrategy();
-                ssu.Upload();
+                UploadSegmentMetadata[] toUse = metadata.getSegments();
+                toUse[0].setPath(metadata.getTargetStreamPath());
+                metadata.setSegments(toUse);
+                SingleSegmentUploader ssu = new SingleSegmentUploader(0, metadata, frontEnd);
+                ssu.setUseBackOffRetryStrategy(this.getParameters().isUseSegmentBlockBackOffRetryStrategy());
+                ssu.upload();
             }
         } catch (InterruptedException ex) {
             // do nothing since we have already marked everything as failed
@@ -290,13 +295,13 @@ public class DataLakeStoreUploader {
      * @param metadata The {@link UploadMetadata} to determine the segments to concatenate
      * @throws Exception
      */
-    private void ConcatenateSegments(final UploadMetadata metadata) throws Exception {
-        final String[] inputPaths = new String[metadata.SegmentCount];
+    private void concatenateSegments(final UploadMetadata metadata) throws Exception {
+        final String[] inputPaths = new String[metadata.getSegmentCount()];
 
         //verify if target stream exists
-        if (_frontEnd.StreamExists(metadata.TargetStreamPath)) {
-            if (this.Parameters.isOverwrite()) {
-                _frontEnd.DeleteStream(metadata.TargetStreamPath, false);
+        if (frontEnd.streamExists(metadata.getTargetStreamPath())) {
+            if (this.getParameters().isOverwrite()) {
+                frontEnd.deleteStream(metadata.getTargetStreamPath(), false);
             } else {
                 throw new OperationsException("Target Stream already exists");
             }
@@ -305,41 +310,41 @@ public class DataLakeStoreUploader {
         //ensure all input streams exist and are of the expected length
         //ensure all segments in the metadata are marked as 'complete'
         final List<Exception> exceptions = new ArrayList<>();
-        ExecutorService exec = Executors.newFixedThreadPool(this.Parameters.getThreadCount());
-        for (int i = 0; i < metadata.SegmentCount; i++) {
+        ExecutorService exec = Executors.newFixedThreadPool(this.getParameters().getThreadCount());
+        for (int i = 0; i < metadata.getSegmentCount(); i++) {
             final int finalI = i;
             exec.submit(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        if (metadata.Segments[finalI].Status != SegmentUploadStatus.Complete) {
-                            throw new UploadFailedException("Cannot perform 'Concatenate' operation because not all streams are fully uploaded.");
+                        if (metadata.getSegments()[finalI].getStatus() != SegmentUploadStatus.Complete) {
+                            throw new UploadFailedException("Cannot perform 'concatenate' operation because not all streams are fully uploaded.");
                         }
 
-                        String remoteStreamPath = metadata.Segments[finalI].Path;
+                        String remoteStreamPath = metadata.getSegments()[finalI].getPath();
                         int retryCount = 0;
                         long remoteLength = -1;
 
-                        while (retryCount < SingleSegmentUploader.MaxBufferUploadAttemptCount) {
+                        while (retryCount < SingleSegmentUploader.MAX_BUFFER_UPLOAD_ATTEMPT_COUNT) {
                             retryCount++;
                             try {
-                                remoteLength = _frontEnd.GetStreamLength(remoteStreamPath);
+                                remoteLength = frontEnd.getStreamLength(remoteStreamPath);
                                 break;
                             } catch (Exception e) {
-                                if (retryCount >= SingleSegmentUploader.MaxBufferUploadAttemptCount) {
+                                if (retryCount >= SingleSegmentUploader.MAX_BUFFER_UPLOAD_ATTEMPT_COUNT) {
                                     throw new UploadFailedException(
                                             MessageFormat.format(
-                                                    "Cannot perform 'Concatenate' operation due to the following exception retrieving file information: {0}",
+                                                    "Cannot perform 'concatenate' operation due to the following exception retrieving file information: {0}",
                                                     e));
                                 }
 
-                                SingleSegmentUploader.WaitForRetry(retryCount, Parameters.isUseSegmentBlockBackOffRetryStrategy());
+                                SingleSegmentUploader.waitForRetry(retryCount, parameters.isUseSegmentBlockBackOffRetryStrategy());
                             }
                         }
 
 
-                        if (remoteLength != metadata.Segments[finalI].Length) {
-                            throw new UploadFailedException(MessageFormat.format("Cannot perform 'Concatenate' operation because segment {0} has an incorrect length (expected {1}, actual {2}).", finalI, metadata.Segments[finalI].Length, remoteLength));
+                        if (remoteLength != metadata.getSegments()[finalI].getLength()) {
+                            throw new UploadFailedException(MessageFormat.format("Cannot perform 'concatenate' operation because segment {0} has an incorrect length (expected {1}, actual {2}).", finalI, metadata.getSegments()[finalI].getLength(), remoteLength));
                         }
 
                         inputPaths[finalI] = remoteStreamPath;
@@ -369,6 +374,6 @@ public class DataLakeStoreUploader {
         }
 
         //issue the command
-        _frontEnd.Concatenate(metadata.TargetStreamPath, inputPaths);
+        frontEnd.concatenate(metadata.getTargetStreamPath(), inputPaths);
     }
 }

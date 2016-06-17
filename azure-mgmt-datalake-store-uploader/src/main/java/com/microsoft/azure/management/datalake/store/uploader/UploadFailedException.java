@@ -10,7 +10,7 @@ package com.microsoft.azure.management.datalake.store.uploader;
  */
 public class UploadFailedException extends Exception {
     /**
-     * Initializes a new instance of the UploadFailedException exception
+     * Initializes a new instance of the UploadFailedException exception.
      * @param message The message that describes the error.
      */
     public UploadFailedException(String message) {

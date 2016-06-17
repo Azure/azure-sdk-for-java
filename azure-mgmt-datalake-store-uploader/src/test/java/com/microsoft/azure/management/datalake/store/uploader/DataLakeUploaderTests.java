@@ -111,7 +111,7 @@ public class DataLakeUploaderTests {
         }
 
         try {
-            new DataLakeStoreUploader(new UploadParameters(_largeFilePath, "1", "foo", DataLakeStoreUploader.MaxAllowedThreads + 1, false, false, true, 4 * 1024 * 1024, null),new InMemoryFrontEnd());
+            new DataLakeStoreUploader(new UploadParameters(_largeFilePath, "1", "foo", DataLakeStoreUploader.MAX_ALLOWED_THREADS + 1, false, false, true, 4 * 1024 * 1024, null),new InMemoryFrontEnd());
             Assert.assertTrue("Expected an exception for invalid thread count but no exception was thrown!", false);
         }
         catch (IllegalArgumentException e) {
@@ -127,13 +127,13 @@ public class DataLakeUploaderTests {
     @Test
     public void DataLakeUploader_TargetExistsNoOverwrite() throws Exception {
         InMemoryFrontEnd frontEnd = new InMemoryFrontEnd();
-        frontEnd.CreateStream(TargetStreamPath, true, null, 0);
+        frontEnd.createStream(TargetStreamPath, true, null, 0);
 
         //no resume, no overwrite
         UploadParameters up = CreateParameters(false, false, _smallFilePath, true);
         DataLakeStoreUploader uploader = new DataLakeStoreUploader(up, frontEnd);
         try {
-            uploader.Execute();
+            uploader.execute();
             Assert.assertTrue("Expected an exception for no overwrite when file exists but no exception was thrown!", false);
         }
         catch (OperationsException e) {
@@ -144,7 +144,7 @@ public class DataLakeUploaderTests {
         up = CreateParameters(true, false, _smallFilePath, false);
         uploader = new DataLakeStoreUploader(up, frontEnd);
         try {
-            uploader.Execute();
+            uploader.execute();
             Assert.assertTrue("Expected an exception for no overwrite when file exists but no exception was thrown!", false);
         }
         catch (OperationsException e) {
@@ -154,13 +154,13 @@ public class DataLakeUploaderTests {
         //resume, overwrite
         up = CreateParameters(true, true, _smallFilePath, false);
         uploader = new DataLakeStoreUploader(up, frontEnd);
-        uploader.Execute();
+        uploader.execute();
 
 
         //no resume, overwrite
         up = CreateParameters(false, true, _smallFilePath, true);
         uploader = new DataLakeStoreUploader(up, frontEnd);
-        uploader.Execute();
+        uploader.execute();
     }
 
     /**
@@ -174,7 +174,7 @@ public class DataLakeUploaderTests {
         UploadParameters up = CreateParameters(false, false, null, true);
         DataLakeStoreUploader uploader = new DataLakeStoreUploader(up, frontEnd);
 
-        uploader.Execute();
+        uploader.execute();
 
         VerifyFileUploadedSuccessfully(up, frontEnd);
     }
@@ -195,17 +195,17 @@ public class DataLakeUploaderTests {
         //attempt full upload
         UploadParameters up = CreateParameters(false, false, null, true);
         DataLakeStoreUploader uploader = new DataLakeStoreUploader(up, frontEnd1);
-        uploader.DeleteMetadataFile();
+        uploader.deleteMetadataFile();
 
         try {
-            uploader.Execute();
+            uploader.execute();
             Assert.assertTrue("Expected an intentional exception during concat but none was thrown!", false);
         }
         catch (IntentionalException e) {
             // expected
         }
 
-        Assert.assertFalse("Target stream should not have been created", frontEnd1.StreamExists(up.getTargetStreamPath()));
+        Assert.assertFalse("Target stream should not have been created", frontEnd1.streamExists(up.getTargetStreamPath()));
         Assert.assertTrue("No temporary streams seem to have been created", 0 < backingFrontEnd1.getStreamCount());
 
         //attempt to resume the upload
@@ -216,11 +216,11 @@ public class DataLakeUploaderTests {
         //at this point the metadata exists locally but there are no target files in frontEnd2
         try
         {
-            uploader.Execute();
+            uploader.execute();
         }
         finally
         {
-            uploader.DeleteMetadataFile();
+            uploader.deleteMetadataFile();
         }
 
         VerifyFileUploadedSuccessfully(up, frontEnd2);
@@ -239,17 +239,17 @@ public class DataLakeUploaderTests {
 
         UploadParameters up = CreateParameters(false, false, null, true);
         DataLakeStoreUploader uploader = new DataLakeStoreUploader(up, frontEnd);
-        uploader.DeleteMetadataFile();
+        uploader.deleteMetadataFile();
 
         try {
-            uploader.Execute();
+            uploader.execute();
             Assert.assertTrue("Expected an aggregate exception during upload due to failing out creating more than one stream but no exception was thrown!", false);
         }
         catch (AggregateUploadException e) {
             // expected
         }
 
-        Assert.assertFalse("Target stream should not have been created", frontEnd.StreamExists(up.getTargetStreamPath()));
+        Assert.assertFalse("Target stream should not have been created", frontEnd.streamExists(up.getTargetStreamPath()));
         Assert.assertEquals(1, backingFrontEnd.getStreamCount());
 
         //resume the upload but point it to the real back-end, which doesn't throw exceptions
@@ -258,11 +258,11 @@ public class DataLakeUploaderTests {
 
         try
         {
-            uploader.Execute();
+            uploader.execute();
         }
         finally
         {
-            uploader.DeleteMetadataFile();
+            uploader.deleteMetadataFile();
         }
 
         VerifyFileUploadedSuccessfully(up, backingFrontEnd);
@@ -296,7 +296,7 @@ public class DataLakeUploaderTests {
         writer.close();
 
         DataLakeStoreUploader uploader = new DataLakeStoreUploader(up, frontEnd);
-        uploader.Execute();
+        uploader.execute();
 
         VerifyFileUploadedSuccessfully(up, frontEnd, _smallFileData);
     }
@@ -356,9 +356,9 @@ public class DataLakeUploaderTests {
      * @throws Exception
      */
     private void VerifyFileUploadedSuccessfully(UploadParameters up, InMemoryFrontEnd frontEnd, byte[] fileContents) throws Exception {
-        Assert.assertTrue("Uploaded stream does not exist", frontEnd.StreamExists(up.getTargetStreamPath()));
+        Assert.assertTrue("Uploaded stream does not exist", frontEnd.streamExists(up.getTargetStreamPath()));
         Assert.assertEquals(1, frontEnd.getStreamCount());
-        Assert.assertEquals(fileContents.length, frontEnd.GetStreamLength(up.getTargetStreamPath()));
+        Assert.assertEquals(fileContents.length, frontEnd.getStreamLength(up.getTargetStreamPath()));
 
         byte[] uploadedData = frontEnd.GetStreamContents(up.getTargetStreamPath());
         Assert.assertArrayEquals("Uploaded stream is not binary identical to input file", fileContents, uploadedData);

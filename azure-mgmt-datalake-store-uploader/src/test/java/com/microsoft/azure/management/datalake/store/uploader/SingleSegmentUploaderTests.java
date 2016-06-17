@@ -32,8 +32,8 @@ public class SingleSegmentUploaderTests {
     public static void Setup() throws IOException {
         _smallFilePath = TestHelpers.GenerateFileData(_smallFileContents);
         _largeFilePath = TestHelpers.GenerateFileData(_largeFileContents);
-        _textFilePath = TestHelpers.GenerateTextFileData(_textFileContents, 1, SingleSegmentUploader.BufferLength);
-        _badTextFilePath = TestHelpers.GenerateTextFileData(_badTextFileContents, SingleSegmentUploader.BufferLength + 1, SingleSegmentUploader.BufferLength + 2);
+        _textFilePath = TestHelpers.GenerateTextFileData(_textFileContents, 1, SingleSegmentUploader.BUFFER_LENGTH);
+        _badTextFilePath = TestHelpers.GenerateTextFileData(_badTextFileContents, SingleSegmentUploader.BUFFER_LENGTH + 1, SingleSegmentUploader.BUFFER_LENGTH + 2);
     }
 
     @AfterClass
@@ -75,8 +75,8 @@ public class SingleSegmentUploaderTests {
 
         UploadMetadata metadata = CreateMetadata(_smallFilePath, _smallFileContents.length);
         SingleSegmentUploader ssu = new SingleSegmentUploader(0, metadata, fe);
-        ssu.UseBackOffRetryStrategy = false;
-        ssu.Upload();
+        ssu.setUseBackOffRetryStrategy(false);
+        ssu.upload();
 
         byte[] actualContents = fe.GetStreamContents(StreamPath);
         Assert.assertArrayEquals("Unexpected uploaded stream contents.", _smallFileContents, actualContents);
@@ -94,8 +94,8 @@ public class SingleSegmentUploaderTests {
         UploadMetadata metadata = CreateMetadata(_largeFilePath, _largeFileContents.length);
         
         SingleSegmentUploader ssu = new SingleSegmentUploader(0, metadata, fe);
-        ssu.UseBackOffRetryStrategy = false;
-        ssu.Upload();
+        ssu.setUseBackOffRetryStrategy(false);
+        ssu.upload();
 
         byte[] actualContents = fe.GetStreamContents(StreamPath);
         Assert.assertArrayEquals("Unexpected uploaded stream contents.", _largeFileContents, actualContents);
@@ -115,8 +115,8 @@ public class SingleSegmentUploaderTests {
         UploadMetadata metadata = CreateMetadata(_smallFilePath, length);
         
         SingleSegmentUploader ssu = new SingleSegmentUploader(0, metadata, fe);
-        ssu.UseBackOffRetryStrategy = false;
-        ssu.Upload();
+        ssu.setUseBackOffRetryStrategy(false);
+        ssu.upload();
 
         byte[] actualContents = fe.GetStreamContents(StreamPath);
         byte[] expectedContents = new byte[length];
@@ -135,15 +135,15 @@ public class SingleSegmentUploaderTests {
         InMemoryFrontEnd fe = new InMemoryFrontEnd();
 
         //load up an existing stream
-        fe.CreateStream(StreamPath, true, null, 0);
+        fe.createStream(StreamPath, true, null, 0);
         byte[] data = "random".getBytes();
-        fe.AppendToStream(StreamPath, data, 0, data.length);
+        fe.appendToStream(StreamPath, data, 0, data.length);
 
         //force a re-upload of the stream
         UploadMetadata metadata = CreateMetadata(_smallFilePath, _smallFileContents.length);
         SingleSegmentUploader ssu = new SingleSegmentUploader(0, metadata, fe);
-        ssu.UseBackOffRetryStrategy = false;
-        ssu.Upload();
+        ssu.setUseBackOffRetryStrategy(false);
+        ssu.upload();
 
         byte[] actualContents = fe.GetStreamContents(StreamPath);
         Assert.assertArrayEquals("Unexpected uploaded stream contents.", _smallFileContents, actualContents);
@@ -162,12 +162,12 @@ public class SingleSegmentUploaderTests {
         //upload some data
         UploadMetadata metadata = CreateMetadata(_smallFilePath, _smallFileContents.length);
         SingleSegmentUploader ssu = new SingleSegmentUploader(0, metadata, fe);
-        ssu.UseBackOffRetryStrategy = false;
+        ssu.setUseBackOffRetryStrategy(false);
 
-        //the Upload method should fail if it cannot verify that the stream was uploaded after the upload (i.e., it will get a length of 0 at the end)
+        //the upload method should fail if it cannot verify that the stream was uploaded after the upload (i.e., it will get a length of 0 at the end)
         try {
-            ssu.Upload();
-            Assert.assertTrue("the Upload method should fail if it cannot verify that the stream was uploaded, but it succeeded!", false);
+            ssu.upload();
+            Assert.assertTrue("the upload method should fail if it cannot verify that the stream was uploaded, but it succeeded!", false);
         }
         catch (UploadFailedException ex) {
             // do nothing, expected
@@ -184,11 +184,11 @@ public class SingleSegmentUploaderTests {
         InMemoryFrontEnd fe = new InMemoryFrontEnd();
 
         UploadMetadata metadata = CreateMetadata(_textFilePath, _textFileContents.length);
-        metadata.IsBinary = false;
+        metadata.setBinary(false);
         
         SingleSegmentUploader ssu = new SingleSegmentUploader(0, metadata, fe);
-        ssu.UseBackOffRetryStrategy = false;
-        ssu.Upload();
+        ssu.setUseBackOffRetryStrategy(false);
+        ssu.upload();
 
         //verify the entire file is identical to the source file
         byte[] actualContents = fe.GetStreamContents(StreamPath);
@@ -217,13 +217,13 @@ public class SingleSegmentUploaderTests {
         InMemoryFrontEnd fe = new InMemoryFrontEnd();
 
         UploadMetadata metadata = CreateMetadata(_badTextFilePath, _badTextFileContents.length);
-        metadata.IsBinary = false;
+        metadata.setBinary(false);
         
         SingleSegmentUploader ssu = new SingleSegmentUploader(0, metadata, fe);
-        ssu.UseBackOffRetryStrategy = false;
+        ssu.setUseBackOffRetryStrategy(false);
 
         try {
-            ssu.Upload();
+            ssu.upload();
             Assert.assertTrue("Should fail when a record is too large to fit within a single record boundary when splitting on boundaries, but didn't!", false);
         }
         catch (UploadFailedException ex) {
@@ -247,7 +247,7 @@ public class SingleSegmentUploaderTests {
     }
 
     public void TestRetryBlock(int failCount) throws Exception {
-        boolean expectSuccess = failCount < SingleSegmentUploader.MaxBufferUploadAttemptCount;
+        boolean expectSuccess = failCount < SingleSegmentUploader.MAX_BUFFER_UPLOAD_ATTEMPT_COUNT;
 
         int callCount = 0;
 
@@ -257,19 +257,19 @@ public class SingleSegmentUploaderTests {
         UploadMetadata metadata = CreateMetadata(_smallFilePath, _smallFileContents.length);
         
         SingleSegmentUploader ssu = new SingleSegmentUploader(0, metadata, fe);
-        ssu.UseBackOffRetryStrategy = false;
+        ssu.setUseBackOffRetryStrategy(false);
 
         if (expectSuccess)
         {
-            ssu.Upload();
+            ssu.upload();
             byte[] actualContents = workingFrontEnd.GetStreamContents(StreamPath);
             Assert.assertArrayEquals("Unexpected uploaded stream contents.", _smallFileContents, actualContents);
         }
         else
         {
             try {
-                ssu.Upload();
-                Assert.assertTrue("Upload should have failed due to too many retries but didn't!", false);
+                ssu.upload();
+                Assert.assertTrue("upload should have failed due to too many retries but didn't!", false);
             }
             catch (Exception ex) {
                 Assert.assertTrue("Expected an intentional exception and got: " + ex, IntentionalException.class.isInstance(ex));
@@ -280,16 +280,17 @@ public class SingleSegmentUploaderTests {
     private UploadMetadata CreateMetadata(String filePath, long filelength)
     {
         UploadMetadata metadata = new UploadMetadata();
-        metadata.InputFilePath = filePath;
-        metadata.FileLength = filelength;
-        metadata.TargetStreamPath = StreamPath;
-        metadata.SegmentCount = 1;
-        metadata.SegmentLength = UploadSegmentMetadata.CalculateSegmentLength(filelength, 1);
-        metadata.Segments = new UploadSegmentMetadata[1];
-        metadata.IsBinary = true;
+        metadata.setInputFilePath(filePath);
+        metadata.setFileLength(filelength);
+        metadata.setTargetStreamPath(StreamPath);
+        metadata.setSegmentCount(1);
+        metadata.setSegmentLength(UploadSegmentMetadata.calculateSegmentLength(filelength, 1));
+        metadata.setBinary(true);
 
-        metadata.Segments[0] = new UploadSegmentMetadata(0, metadata);
-        metadata.Segments[0].Path = metadata.TargetStreamPath;
+        UploadSegmentMetadata[] toSet = new UploadSegmentMetadata[1];
+        toSet[0] = new UploadSegmentMetadata(0, metadata);
+        toSet[0].setPath(metadata.getTargetStreamPath());
+        metadata.setSegments(toSet);
         return metadata;
     }
 }

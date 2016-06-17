@@ -13,8 +13,11 @@ import java.nio.charset.StandardCharsets;
 /**
  * A class of helpers to determine the location of record boundaries within byte arrays.
  */
-public class StringExtensions {
+public final class StringExtensions {
 
+    private StringExtensions() {
+        // empty constructor that should not be used.
+    }
     /**
      * Finds the index in the given buffer of a newline character, either the first or the last (based on the parameters).
      * If a combined newline (\r\n), the index returned is that of the last character in the sequence.
@@ -27,7 +30,7 @@ public class StringExtensions {
      * @param delimiter Optionally indicates the delimiter to consider as the "new line", which MUST BE a single character. If null, the default is '\\r', '\\n' and '\\r\\n'.
      * @return The index of the closest newline character in the sequence (based on direction) that was found. Returns -1 if not found.
      */
-    public static int FindNewline(byte[] buffer, int startOffset, int length, boolean reverse, Charset encoding, String delimiter) {
+    public static int findNewline(byte[] buffer, int startOffset, int length, boolean reverse, Charset encoding, String delimiter) {
         if (buffer.length == 0 || length == 0) {
             return -1;
         }
@@ -68,7 +71,7 @@ public class StringExtensions {
             return toReturn - 1;
         }
 
-        //endOffset is a 'sentinel' value; we use that to figure out when to stop searching 
+        //endOffset is a 'sentinel' value; we use that to figure out when to stop searching
         int endOffset = reverse ? startOffset - length : startOffset + length;
 
         // if we are starting at the end, we need to move toward the front enough to grab the right number of bytes
@@ -80,7 +83,7 @@ public class StringExtensions {
 
         // make sure that the length we are traversing is at least as long as a single character
         if (length < bytesPerChar) {
-            throw new IllegalArgumentException("Length must be at least as long as the length, in bytes, of a single character");
+            throw new IllegalArgumentException("length must be at least as long as the length, in bytes, of a single character");
         }
 
         if (endOffset < -1 || endOffset > buffer.length) {
@@ -104,7 +107,7 @@ public class StringExtensions {
                 }
             }
 
-            if (IsNewline(c, delimiter)) {
+            if (isNewline(c, delimiter)) {
                 result = charPos + bytesPerChar - 1;
                 break;
             }
@@ -127,7 +130,7 @@ public class StringExtensions {
                 }
             }
 
-            if(IsNewline(c, delimiter)) {
+            if (isNewline(c, delimiter)) {
                 //we originally landed on a \r character; if we have a \r\n character, advance one position to include that
                 result += bytesPerChar;
             }
@@ -143,7 +146,7 @@ public class StringExtensions {
      * @param delimiter The delimiter to use. If null or empty CR LF characters are used.
      * @return
      */
-    private static boolean IsNewline(char c, String delimiter) {
+    private static boolean isNewline(char c, String delimiter) {
         if ((delimiter == null || StringUtils.isEmpty(delimiter))) {
             return c == '\r' || c == '\n';
         }

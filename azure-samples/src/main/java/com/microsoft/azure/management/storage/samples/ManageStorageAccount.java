@@ -11,6 +11,7 @@ import com.microsoft.azure.Azure;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.azure.management.storage.StorageAccount;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 import java.io.File;
 
@@ -32,39 +33,61 @@ public final class ManageStorageAccount {
      */
     public static void main(String[] args) {
 
+        final String storageAccountName = Utils.createRandomName("sa");
+        final String rgName = Utils.createRandomName("rgSTMS");
+
         try {
 
             final File credFile = new File("my.azureauth");
 
-            Azure azure = Azure.authenticate(credFile).withDefaultSubscription();
+            Azure azure = Azure
+                    .configure()
+                    .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
+                    .authenticate(credFile)
+                    .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());
 
-            final String storageAccountName = Utils.createRandomName("sa");
-
-            // Create a storage account
-            StorageAccount storageAccount = azure.storageAccounts().define(storageAccountName)
-                    .withRegion(Region.US_EAST)
-                    .withNewGroup()
-                    .create();
-
-            // Set a default storage account
+            try {
 
 
-            // Create storage account access keys
+                // ============================================================
+                // Create a storage account
+                StorageAccount storageAccount = azure.storageAccounts().define(storageAccountName)
+                        .withRegion(Region.US_EAST)
+                        .withNewGroup(rgName)
+                        .create();
 
 
-            // Create another storage account
+                // Set a default storage account
 
 
-            // List storage accounts
+                // Create storage account access keys
 
 
-            // Delete a storage account
+                // Create another storage account
 
+
+                // List storage accounts
+
+
+                // Delete a storage account
+            } catch (Exception f) {
+                System.out.println(f.getMessage());
+                f.printStackTrace();
+            } finally {
+                if (azure.resourceGroups().get(rgName) != null) {
+                    System.out.println("Deleting Resource Group: " + rgName);
+                    azure.resourceGroups().delete(rgName);
+                    System.out.println("Deleted Resource Group: " + rgName);
+                } else {
+                    System.out.println("Did not create any resources in Azure. No clean up is necessary");
+                }
+            }
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 

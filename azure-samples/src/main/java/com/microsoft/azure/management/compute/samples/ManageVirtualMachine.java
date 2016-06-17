@@ -18,6 +18,7 @@ import com.microsoft.azure.management.samples.Utils;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 import java.io.File;
+import java.util.Date;
 
 /**
  * Azure Compute sample for managing virtual machines -
@@ -40,8 +41,14 @@ public final class ManageVirtualMachine {
      * @param args the parameters
      */
     public static void main(String[] args) {
-        try {
 
+        final String vmName = Utils.createRandomName("vm");
+        final String rgName = Utils.createRandomName("rgCOMV");
+        final String userName = "tirekicker";
+        final String password = "12NewPA$$w0rd!";
+        final String dataDiskName = "disk2";
+
+        try {
 
             //=============================================================
             // Authenticate
@@ -50,165 +57,186 @@ public final class ManageVirtualMachine {
 
             Azure azure = Azure
                     .configure()
-                    .withLogLevel(HttpLoggingInterceptor.Level.BODY)
+                    .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());
 
-            final String vmName = Utils.createRandomName("vm");
-            final String userName = "tirekicker";
-            final String password = "12NewPA$$w0rd!";
-            final String dataDiskName = "disk2";
 
-            //=============================================================
-            // Create a Windows virtual machine
+            try {
 
-            System.out.println("Creating a Windows VM");
+                //=============================================================
+                // Create a Windows virtual machine
 
-            VirtualMachine vm = azure.virtualMachines().define(vmName)
-                    .withRegion(Region.US_EAST)
-                    .withNewGroup()
-                    .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIpAddressDynamic()
-                    .withoutPrimaryPublicIpAddress()
-                    .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                    .withAdminUserName(userName)
-                    .withPassword(password)
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3)
-                    .create();
+                System.out.println("Creating a Windows VM");
 
-            System.out.println("Created VM: " + vm.id());
-            // Print virtual machine details
-            Utils.print(vm);
+                Date t1 = new Date();
 
+                VirtualMachine vm = azure.virtualMachines().define(vmName)
+                        .withRegion(Region.US_EAST)
+                        .withNewGroup(rgName)
+                        .withNewPrimaryNetwork("10.0.0.0/28")
+                        .withPrimaryPrivateIpAddressDynamic()
+                        .withoutPrimaryPublicIpAddress()
+                        .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
+                        .withAdminUserName(userName)
+                        .withPassword(password)
+                        .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                        .create();
 
-            //=============================================================
-            // Update - Tag the virtual machine
-
-            vm.update()
-                    .withTag("who-rocks", "java")
-                    .withTag("where", "on azure")
-                    .apply();
-
-            System.out.println("Tagged VM: " + vm.id());
+                Date t2 = new Date();
+                System.out.println("Created VM: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + vm.id());
+                // Print virtual machine details
+                Utils.print(vm);
 
 
-            //=============================================================
-            // Update - Attach data disks
+                //=============================================================
+                // Update - Tag the virtual machine
 
-            vm.update()
-                    .withNewDataDisk(10)
-                    .defineNewDataDisk(dataDiskName)
-                        .withSizeInGB(20)
-                        .withCaching(CachingTypes.READ_WRITE)
-                    .attach()
-                    .apply();
+                vm.update()
+                        .withTag("who-rocks", "java")
+                        .withTag("where", "on azure")
+                        .apply();
 
-            System.out.println("Attached a new data disk" + dataDiskName + " to VM" + vm.id());
-            Utils.print(vm);
+                System.out.println("Tagged VM: " + vm.id());
 
 
-            //=============================================================
-            // Update - detach data disk
+                //=============================================================
+                // Update - Attach data disks
 
-            vm.update()
-                    .withoutDataDisk(dataDiskName)
-                    .apply();
+                vm.update()
+                        .withNewDataDisk(10)
+                        .defineNewDataDisk(dataDiskName)
+                            .withSizeInGB(20)
+                            .withCaching(CachingTypes.READ_WRITE)
+                        .attach()
+                        .apply();
 
-            System.out.println("Detached data disk " + dataDiskName + "from VM " + vm.id());
-
-
-            //=============================================================
-            // Update - Resize (expand) the data disk
-            // First, deallocate teh virtual machine and then proceed with resize
-            // TODO must not use two apply () in a sequence, very confusing
-
-            vm.deallocate();
-
-            System.out.println("De-allocated VM: " + vm.id());
-
-            DataDisk dataDisk = vm.dataDisks().get(0);
-
-            vm.update()
-                    .updateDataDisk(dataDisk.name())
-                        .withSizeInGB(30)
-                    .set()
-                    .apply();
-
-            System.out.println("Expanded VM " + vm.id() + "'s data disk to 30GB");
+                System.out.println("Attached a new data disk" + dataDiskName + " to VM" + vm.id());
+                Utils.print(vm);
 
 
-            //=============================================================
-            // Update - Expand the OS drive size by 10 GB
+                //=============================================================
+                // Update - detach data disk
 
-            Integer osDiskSizeInGb = vm.osDiskSize();
-            if (osDiskSizeInGb == null) {
-                // Server is not returning the OS Disk size, possible bug in server
-                osDiskSizeInGb = 256;
-            } else {
-                osDiskSizeInGb += 10;
+                vm.update()
+                        .withoutDataDisk(dataDiskName)
+                        .apply();
+
+                System.out.println("Detached data disk " + dataDiskName + " from VM " + vm.id());
+
+
+                //=============================================================
+                // Update - Resize (expand) the data disk
+                // First, deallocate teh virtual machine and then proceed with resize
+
+                System.out.println("De-allocating VM: " + vm.id());
+
+                vm.deallocate();
+
+                System.out.println("De-allocated VM: " + vm.id());
+
+                DataDisk dataDisk = vm.dataDisks().get(0);
+
+                vm.update()
+                        .updateDataDisk(dataDisk.name())
+                            .withSizeInGB(30)
+                        .set()
+                        .apply();
+
+                System.out.println("Expanded VM " + vm.id() + "'s data disk to 30GB");
+
+
+                //=============================================================
+                // Update - Expand the OS drive size by 10 GB
+
+                Integer osDiskSizeInGb = vm.osDiskSize();
+                if (osDiskSizeInGb == null) {
+                    // Server is not returning the OS Disk size, possible bug in server
+                    System.out.println("Server is not returning the OS disk size, possible bug in the server?");
+                    System.out.println("Assuming that the OS disk size is 256 GB");
+                    osDiskSizeInGb = 256;
+                }
+
+                vm.update()
+                        .withOsDiskSizeInGb(osDiskSizeInGb + 10)
+                        .apply();
+
+                System.out.println("Expanded VM " + vm.id() + "'s OS disk to " + (osDiskSizeInGb + 10));
+
+
+                //=============================================================
+                // Start the virtual machine
+
+                System.out.println("Starting VM " + vm.id());
+
+                vm.start();
+
+                System.out.println("Started VM: " + vm.id() + "; state = " + vm.powerState());
+
+
+                //=============================================================
+                // Restart the virtual machine
+
+                System.out.println("Restarting VM: " + vm.id());
+
+                vm.restart();
+
+                System.out.println("Restarted VM: " + vm.id() + "; state = " + vm.powerState());
+
+
+                //=============================================================
+                // Stop (powerOff) the virtual machine
+
+                System.out.println("Powering OFF VM: " + vm.id());
+
+                vm.powerOff();
+
+                System.out.println("Powered OFF VM: " + vm.id() + "; state = " + vm.powerState());
+
+
+                //=============================================================
+                // TODO Create a Linux VM
+
+
+                //=============================================================
+                // List virtual machines in the resource group
+
+                String resourceGroupName = vm.resourceGroupName();
+
+                System.out.println("Printing list of VMs =======");
+
+                for (VirtualMachine virtualMachine : azure.virtualMachines().listByGroup(resourceGroupName)) {
+                    Utils.print(virtualMachine);
+                }
+
+
+                //=============================================================
+                // Delete the virtual machine
+                System.out.println("Deleting VM: " + vm.id());
+
+                azure.virtualMachines().delete(vm.id());
+
+                System.out.println("Deleted VM: " + vm.id());
+
+            } catch (Exception f) {
+                System.out.println(f.getMessage());
+                f.printStackTrace();
+            } finally {
+                if (azure.resourceGroups().get(rgName) != null) {
+                    System.out.println("Deleting Resource Group: " + rgName);
+                    azure.resourceGroups().delete(rgName);
+                    System.out.println("Deleted Resource Group: " + rgName);
+                } else {
+                    System.out.println("Did not create any resources in Azure. No clean up is necessary");
+                }
             }
 
-            vm.update()
-                    .withOsDiskSizeInGb(osDiskSizeInGb)
-                    .apply();
-
-            System.out.println("Expanded VM " + vm.id() + "'s OS disk to" + osDiskSizeInGb + 10);
-
-
-            //=============================================================
-            // Start the virtual machine
-
-            System.out.println("Starting VM " + vm.id());
-
-            vm.start();
-
-            System.out.println("Started VM: " + vm.id() + "; state = " + vm.powerState());
-
-
-            //=============================================================
-            // Restart the virtual machine
-
-            System.out.println("Restarting VM: " + vm.id());
-
-            vm.restart();
-
-            System.out.println("Restarted VM: " + vm.id() + "; state = " + vm.powerState());
-
-
-            //=============================================================
-            // Stop (powerOff) the virtual machine
-
-            System.out.println("Powering OFF VM: " + vm.id());
-
-            vm.powerOff();
-
-            System.out.println("Powered OFF VM: " + vm.id() + "; state = " + vm.powerState());
-
-
-            //=============================================================
-            // List virtual machines in the resource group
-
-            String resourceGroupName = vm.resourceGroupName();
-
-            System.out.println("Printing list of VMs =======");
-
-            for (VirtualMachine virtualMachine : azure.virtualMachines().listByGroup(resourceGroupName)) {
-                Utils.print(virtualMachine);
-            }
-
-
-            //=============================================================
-            // Delete the virtual machine
-            System.out.println("Deleting VM: " + vm.id());
-
-            azure.virtualMachines().delete(vm.id());
-
-            System.out.println("Deleted VM: " + vm.id());
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 

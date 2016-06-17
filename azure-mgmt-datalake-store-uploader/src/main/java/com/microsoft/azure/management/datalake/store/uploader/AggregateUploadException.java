@@ -16,6 +16,13 @@ public class AggregateUploadException extends Exception {
 
     private final List<Exception> secondaryExceptions;
 
+    /**
+     * Constructor for the custom aggregate exception thrown by the uploader in the event of failure
+     * during parallel execution.
+     * @param message The message to be displayed at the top level of the exception (should be the most relevant message).
+     * @param primary The primary exception at the top level (should be the most relevant).
+     * @param others All other exceptions that were also thrown during parallel execution.
+     */
     public AggregateUploadException(String message, Exception primary, List<Exception> others) {
         super(message, primary);
         this.secondaryExceptions = others;
@@ -23,7 +30,7 @@ public class AggregateUploadException extends Exception {
 
     /***
      * Returns all of the exceptions (except the first one, which is used to construct this exception)
-     * that are associated with this exception
+     * that are associated with this exception.
      * @return an Array of {@link Throwable} objects that are associated with this exception
      */
     public Throwable[] getAllExceptions() {

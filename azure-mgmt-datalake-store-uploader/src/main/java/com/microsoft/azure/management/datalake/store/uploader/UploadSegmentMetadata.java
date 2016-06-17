@@ -27,13 +27,13 @@ public class UploadSegmentMetadata implements Serializable {
      * @param metadata The full metadata associated with this segment.
      */
     public UploadSegmentMetadata(int segmentNumber, UploadMetadata metadata) {
-        this.SegmentNumber = segmentNumber;
-        this.Status = SegmentUploadStatus.Pending;
+        this.segmentNumber = segmentNumber;
+        this.status = SegmentUploadStatus.Pending;
 
-        String targetStreamName = metadata.SplitTargetStreamPathByName()[0];
-        this.Path = MessageFormat.format("{0}/{1}.{2}.segment{3}", metadata.SegmentStreamDirectory, targetStreamName, metadata.UploadId, this.SegmentNumber);
-        this.Offset = this.SegmentNumber * metadata.SegmentLength; // segment number is zero-based
-        this.Length = CalculateSegmentLength(this.SegmentNumber, metadata);
+        String targetStreamName = metadata.splitTargetStreamPathByName()[0];
+        this.path = MessageFormat.format("{0}/{1}.{2}.segment{3}", metadata.getSegmentStreamDirectory(), targetStreamName, metadata.getUploadId(), this.segmentNumber);
+        this.offset = this.segmentNumber * metadata.getSegmentLength(); // segment number is zero-based
+        this.length = calculateSegmentLength(this.segmentNumber, metadata);
     }
 
     /**
@@ -43,7 +43,7 @@ public class UploadSegmentMetadata implements Serializable {
      * @param segmentCount The number of segments to split the file into.
      * @return The length of this segment, in bytes.
      */
-    public static long CalculateSegmentLength(long fileLength, int segmentCount) {
+    public static long calculateSegmentLength(long fileLength, int segmentCount) {
         if (segmentCount < 0) {
             throw new IllegalArgumentException("Number of segments must be a positive integer");
         }
@@ -74,34 +74,34 @@ public class UploadSegmentMetadata implements Serializable {
      * @param metadata The metadata for the current upload.
      * @return The length of this segment, in bytes.
      */
-    public static long CalculateSegmentLength(int segmentNumber, UploadMetadata metadata) {
-        if (segmentNumber < 0 || segmentNumber >= metadata.SegmentCount) {
+    public static long calculateSegmentLength(int segmentNumber, UploadMetadata metadata) {
+        if (segmentNumber < 0 || segmentNumber >= metadata.getSegmentCount()) {
             throw new IndexOutOfBoundsException("Segment Number must be at least zero and less than the total number of segments");
         }
 
-        if (metadata.FileLength < 0) {
+        if (metadata.getFileLength() < 0) {
             throw new IllegalArgumentException("Cannot have a negative file length");
         }
 
         //verify if the last segment would have a positive value
-        long lastSegmentLength = metadata.FileLength - (metadata.SegmentCount - 1) * metadata.SegmentLength;
+        long lastSegmentLength = metadata.getFileLength() - (metadata.getSegmentCount() - 1) * metadata.getSegmentLength();
         if (lastSegmentLength < 0) {
             throw new IllegalArgumentException("The given values for segmentCount and segmentLength cannot possibly be used to split a file with the given fileLength (the last segment would have a negative length)");
-        } else if (lastSegmentLength > metadata.SegmentLength) {
+        } else if (lastSegmentLength > metadata.getSegmentLength()) {
             //verify if the given segmentCount and segmentLength combination would produce an even split
-            if (metadata.FileLength - (metadata.SegmentCount - 1) * (metadata.SegmentLength + 1) > 0) {
+            if (metadata.getFileLength() - (metadata.getSegmentCount() - 1) * (metadata.getSegmentLength() + 1) > 0) {
                 throw new IllegalArgumentException("The given values for segmentCount and segmentLength would not produce an even split of a file with given fileLength");
             }
         }
 
-        if (metadata.FileLength == 0) {
+        if (metadata.getFileLength() == 0) {
             return 0;
         }
 
         //all segments except the last one have the same length;
-        //the last one only has the 'full' length if by some miracle the file length is a perfect multiple of the Segment Length
-        if (segmentNumber < metadata.SegmentCount - 1) {
-            return metadata.SegmentLength;
+        //the last one only has the 'full' length if by some miracle the file length is a perfect multiple of the Segment length
+        if (segmentNumber < metadata.getSegmentCount() - 1) {
+            return metadata.getSegmentLength();
         } else {
             return lastSegmentLength;
         }
@@ -110,17 +110,17 @@ public class UploadSegmentMetadata implements Serializable {
     /**
      * Used to calculate the total number of segments that we should create.
      */
-    private static final int BaseMultiplier = 50;
+    private static final int BASE_MULTIPLIER = 50;
 
     /**
      * The Multiplier is the number of times the segment count is inflated when the length of the file increases by a factor of 'Reducer'.
      */
-    private static final int SegmentCountMultiplier = 2;
+    private static final int SEGMENT_COUNT_MULTIPLIER = 2;
 
     /**
      * The minimum number of bytes in a segment. For best performance, should be sync-ed with the upload buffer length.
      */
-    public static final int MinimumSegmentSize = SingleSegmentUploader.BufferLength;
+    public static final int MINIMUM_SEGMENT_SIZE = SingleSegmentUploader.BUFFER_LENGTH;
 
     /**
      * Calculates the number of segments a file of the given length should be split into.
@@ -135,9 +135,9 @@ public class UploadSegmentMetadata implements Serializable {
      * @param fileLength The length of the file, in bytes.
      * @return The number of segments to split the file into. Returns 0 if fileLength is 0.
      */
-    public static int CalculateSegmentCount(long fileLength) {
+    public static int calculateSegmentCount(long fileLength) {
         if (fileLength < 0) {
-            throw new IllegalArgumentException("File Length cannot be negative");
+            throw new IllegalArgumentException("File length cannot be negative");
         }
 
         if (fileLength == 0) {
@@ -145,14 +145,14 @@ public class UploadSegmentMetadata implements Serializable {
             return 0;
         }
 
-        int minNumberOfSegments = (int) Math.max(1, fileLength / MinimumSegmentSize);
+        int minNumberOfSegments = (int) Math.max(1, fileLength / MINIMUM_SEGMENT_SIZE);
 
         //convert the file length into GB
         double lengthInGb = fileLength / 1024.0 / 1024 / 1024;
 
         //apply the formula described in the class description and return the result
-        double baseMultiplier = CalculateBaseMultiplier(lengthInGb);
-        int segmentCount = (int) (baseMultiplier * Math.pow(SegmentCountMultiplier, Math.log10(lengthInGb)));
+        double baseMultiplier = calculateBaseMultiplier(lengthInGb);
+        int segmentCount = (int) (baseMultiplier * Math.pow(SEGMENT_COUNT_MULTIPLIER, Math.log10(lengthInGb)));
         if (segmentCount > minNumberOfSegments) {
             segmentCount = minNumberOfSegments;
         }
@@ -164,33 +164,98 @@ public class UploadSegmentMetadata implements Serializable {
         return segmentCount;
     }
 
-    private static double CalculateBaseMultiplier(double lengthInGb) {
-        double value = BaseMultiplier * Math.pow(2, Math.log10(lengthInGb));
+    private static double calculateBaseMultiplier(double lengthInGb) {
+        double value = BASE_MULTIPLIER * Math.pow(2, Math.log10(lengthInGb));
         return Math.min(100, value);
     }
 
-    /**
-     * Gets or sets a value indicating the number (sequence) of the segment in the file.
-     */
-    public int SegmentNumber;
+    private int segmentNumber;
+
+    private long offset;
+
+    private long length;
+
+    private SegmentUploadStatus status;
+
+    private String path;
 
     /**
-     * Gets or sets a value indicating the starting offset of the segment in the file.
+     *
+     * @return A value indicating the stream path assigned to this segment.
      */
-    public long Offset;
+    public String getPath() {
+        return path;
+    }
 
     /**
-     * Gets or sets a value indicating the size of the segment (in bytes).
+     *
+     * @param path A value indicating the stream path assigned to this segment.
      */
-    public long Length;
+    public void setPath(String path) {
+        this.path = path;
+    }
 
     /**
-     * Gets or sets a value indicating the current upload status for this segment.
+     *
+     * @return A value indicating the number (sequence) of the segment in the file.
      */
-    public SegmentUploadStatus Status;
+    public int getSegmentNumber() {
+        return segmentNumber;
+    }
 
     /**
-     * Gets or sets a value indicating the stream path assigned to this segment.
+     *
+     * @param segmentNumber A value indicating the number (sequence) of the segment in the file.
      */
-    public String Path;
+    public void setSegmentNumber(int segmentNumber) {
+        this.segmentNumber = segmentNumber;
+    }
+
+    /**
+     *
+     * @return A value indicating the starting offset of the segment in the file.
+     */
+    public long getOffset() {
+        return offset;
+    }
+
+    /**
+     *
+     * @param offset A value indicating the starting offset of the segment in the file.
+     */
+    public void setOffset(long offset) {
+        this.offset = offset;
+    }
+
+    /**
+     *
+     * @return A value indicating the size of the segment (in bytes).
+     */
+    public long getLength() {
+        return length;
+    }
+
+    /**
+     *
+     * @param length A value indicating the size of the segment (in bytes).
+     */
+    public void setLength(long length) {
+        this.length = length;
+    }
+
+    /**
+     *
+     * @return A value indicating the current upload status for this segment.
+     */
+    public SegmentUploadStatus getStatus() {
+        return status;
+    }
+
+    /**
+     *
+     * @param status A value indicating the current upload status for this segment.
+     */
+    public void setStatus(SegmentUploadStatus status) {
+        this.status = status;
+    }
 }
