@@ -188,10 +188,22 @@ public class UploadMetadata implements Serializable {
     }
 
     /**
-     * A value indicating the path where this metadata file is located.
+     *
+     * @return A value indicating the path where this metadata file is located.
      */
-    @SuppressWarnings("CheckStyle") // suppressing for this field to ensure transient access.
-    public transient String metadataFilePath;
+    public String getMetadataFilePath() {
+        return metadataFilePath;
+    }
+
+    /**
+     *
+     * @param metadataFilePath A value indicating the path where this metadata file is located.
+     */
+    public void setMetadataFilePath(String metadataFilePath) {
+        this.metadataFilePath = metadataFilePath;
+    }
+
+    private transient String metadataFilePath;
 
     /**
      *

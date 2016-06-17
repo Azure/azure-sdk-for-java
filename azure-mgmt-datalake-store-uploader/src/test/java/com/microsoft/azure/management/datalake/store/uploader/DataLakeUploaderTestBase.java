@@ -13,7 +13,11 @@ import com.microsoft.azure.management.resources.implementation.api.ResourceManag
 import com.microsoft.azure.serializer.AzureJacksonMapperAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.serializer.JacksonMapperAdapter;
+import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+
+import java.util.concurrent.TimeUnit;
 
 public abstract class DataLakeUploaderTestBase {
     protected static ResourceManagementClientImpl resourceManagementClient;
@@ -41,7 +45,13 @@ public abstract class DataLakeUploaderTestBase {
         dataLakeStoreAccountManagementClient = new DataLakeStoreAccountManagementClientImpl(restClient);
         dataLakeStoreAccountManagementClient.withSubscriptionId(System.getenv("arm.subscriptionid"));
 
-        dataLakeStoreFileSystemManagementClient = new DataLakeStoreFileSystemManagementClientImpl(restClient);
+        RestClient dataPlaneClient = new RestClient.Builder("https://{accountName}.{adlsFileSystemDnsSuffix}", new OkHttpClient.Builder().connectTimeout(100, TimeUnit.SECONDS), new Retrofit.Builder())
+                .withCredentials(credentials)
+                .withLogLevel(HttpLoggingInterceptor.Level.NONE) // No logging for this client because we are executing a lot of requests.
+                .withMapperAdapter(new AzureJacksonMapperAdapter())
+                .build();
+
+        dataLakeStoreFileSystemManagementClient = new DataLakeStoreFileSystemManagementClientImpl(dataPlaneClient);
     }
 
     public static String generateName(String prefix) {

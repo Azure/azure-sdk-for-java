@@ -273,7 +273,7 @@ public class MultipleSegmentUploaderTests {
         File path = File.createTempFile("adlsmsumetadata", ".xml");
         UploadMetadata metadata = new UploadMetadata();
 
-        metadata.metadataFilePath = path.getAbsolutePath();
+        metadata.setMetadataFilePath(path.getAbsolutePath());
         metadata.setInputFilePath(_smallFilePath);
         metadata.setFileLength(_smallFileContents.length);
         metadata.setSegmentCount(segmentCount);

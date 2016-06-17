@@ -111,7 +111,7 @@ public class PerformanceUploadTests extends DataLakeUploaderTestBase {
         }
     }
 
-    //@Test
+    @Test
     public void Test2_5gbFileUpload() throws Exception {
         String folder = "begoldsm";
         ArrayList<Long> perfMetrics = new ArrayList();
