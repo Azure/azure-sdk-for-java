@@ -14,9 +14,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.qpid.proton.message.Message;
 
+import com.microsoft.azure.servicebus.ClientConstants;
 import com.microsoft.azure.servicebus.ClientEntity;
 import com.microsoft.azure.servicebus.MessageReceiver;
 import com.microsoft.azure.servicebus.MessagingFactory;
@@ -37,6 +40,8 @@ import com.microsoft.azure.servicebus.StringUtil;
  */
 public final class PartitionReceiver extends ClientEntity
 {
+	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
+	
 	private static final int MINIMUM_PREFETCH_COUNT = 10;
 	private static final int MAXIMUM_PREFETCH_COUNT = 999;
 
@@ -350,25 +355,40 @@ public final class PartitionReceiver extends ClientEntity
 					{
 						Throwable cause = clientException.getCause();
 
-						if (!(clientException instanceof TimeoutException)
-								&& ((cause != null 
-									&& ((cause instanceof ServiceBusException && !((ServiceBusException) cause).getIsTransient())
-									|| cause instanceof RuntimeException))))
+						if (clientException instanceof TimeoutException)
 						{
-							synchronized (PartitionReceiver.this.receiveHandlerSync)
+							receivedEvents = null;
+						}
+						else
+						{
+							if (((cause != null 
+										&& ((cause instanceof ServiceBusException && !((ServiceBusException) cause).getIsTransient())
+										|| cause instanceof RuntimeException))))
 							{
-								PartitionReceiver.this.isOnReceivePumpRunning = false;
+								synchronized (PartitionReceiver.this.receiveHandlerSync)
+								{
+									PartitionReceiver.this.isOnReceivePumpRunning = false;
+								}
+	
+								PartitionReceiver.this.onReceiveHandler.onError(cause);
 							}
-
-							PartitionReceiver.this.onReceiveHandler.onError(cause);
+	
+							if (clientException instanceof InterruptedException)
+							{
+								Thread.currentThread().interrupt();
+								if(TRACE_LOGGER.isLoggable(Level.FINE))
+								{
+									// This is the normal exit path so don't log it as severe.
+									TRACE_LOGGER.log(Level.FINE, String.format("Receive pump for partition %s interrupted", PartitionReceiver.this.partitionId));
+								}
+							}
+							else if (TRACE_LOGGER.isLoggable(Level.SEVERE))
+							{
+								TRACE_LOGGER.log(Level.SEVERE, String.format("Receive pump for partition %s exiting after receive exception %s", PartitionReceiver.this.partitionId, cause.toString()));
+							}
+							
+							return;
 						}
-
-						if (clientException instanceof InterruptedException)
-						{
-							Thread.currentThread().interrupt();
-						}
-
-						return;
 					}
 
 					try
@@ -387,11 +407,19 @@ public final class PartitionReceiver extends ClientEntity
 						if (userCodeError instanceof InterruptedException)
 						{
 							Thread.currentThread().interrupt();
+							if(TRACE_LOGGER.isLoggable(Level.FINE))
+							{
+								TRACE_LOGGER.log(Level.FINE, String.format("Receive pump for partition %s interrupted", PartitionReceiver.this.partitionId));
+							}
 						}
-
+						else if (TRACE_LOGGER.isLoggable(Level.SEVERE))
+						{
+							TRACE_LOGGER.log(Level.SEVERE, String.format("Receive pump for partition %s exiting after user exception %s", PartitionReceiver.this.partitionId, userCodeError.toString()));
+						}
+						
 						return;
 					}
-				}						
+				}
 			}
 		});
 
