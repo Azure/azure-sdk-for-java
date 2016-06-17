@@ -31,12 +31,11 @@ class NetworksImpl
         extends GroupableResourcesImpl<Network, NetworkImpl, VirtualNetworkInner>
         implements Networks {
     private final VirtualNetworksInner client;
-    private final ResourceManager resourceManager;
     private final PagedListConverter<VirtualNetworkInner, Network> converter;
 
     NetworksImpl(final VirtualNetworksInner client, final ResourceManager resourceManager) {
+        super(resourceManager);
         this.client = client;
-        this.resourceManager = resourceManager;
         this.converter = new PagedListConverter<VirtualNetworkInner, Network>() {
             @Override
             public Network typeConvert(VirtualNetworkInner inner) {
@@ -111,11 +110,11 @@ class NetworksImpl
             dhcp.withDnsServers(new ArrayList<String>());
         }
 
-        return new NetworkImpl(name, inner, this.client, this.resourceManager);
+        return new NetworkImpl(name, inner, this.client, this.resourceManager());
     }
 
     @Override
     protected NetworkImpl createFluentModel(VirtualNetworkInner inner) {
-        return new NetworkImpl(inner.name(), inner, this.client, this.resourceManager);
+        return new NetworkImpl(inner.name(), inner, this.client, this.resourceManager());
     }
 }

@@ -24,7 +24,6 @@ class NetworkInterfacesImpl
         extends GroupableResourcesImpl<NetworkInterface, NetworkInterfaceImpl, NetworkInterfaceInner>
         implements NetworkInterfaces {
     private final NetworkInterfacesInner client;
-    private final ResourceManager resourceManager;
     private final NetworkManager networkManager;
 
     private final PagedListConverter<NetworkInterfaceInner, NetworkInterface> converter;
@@ -33,9 +32,9 @@ class NetworkInterfacesImpl
             final NetworkInterfacesInner client,
             final NetworkManager networkManager,
             final ResourceManager resourceManager) {
+        super(resourceManager);
         this.client = client;
         this.networkManager = networkManager;
-        this.resourceManager = resourceManager;
         this.converter = new PagedListConverter<NetworkInterfaceInner, NetworkInterface>() {
             @Override
             public NetworkInterface typeConvert(NetworkInterfaceInner inner) {
@@ -86,7 +85,7 @@ class NetworkInterfacesImpl
                 inner,
                 this.client,
                 this.networkManager,
-                this.resourceManager);
+                this.resourceManager());
     }
 
     @Override
@@ -95,6 +94,6 @@ class NetworkInterfacesImpl
                 inner,
                 this.client,
                 this.networkManager,
-                this.resourceManager);
+                this.resourceManager());
     }
 }

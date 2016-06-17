@@ -44,7 +44,6 @@ class VirtualMachinesImpl
     private final VirtualMachinesInner client;
     private final VirtualMachineSizesInner virtualMachineSizesClient;
     private final ComputeManager computeManager;
-    private final ResourceManager resourceManager;
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
     private final PagedListConverter<VirtualMachineInner, VirtualMachine> converter;
@@ -55,10 +54,10 @@ class VirtualMachinesImpl
                         ResourceManager resourceManager,
                         StorageManager storageManager,
                         NetworkManager networkManager) {
+        super(resourceManager);
         this.client = client;
         this.virtualMachineSizesClient = virtualMachineSizesClient;
         this.computeManager = computeManager;
-        this.resourceManager = resourceManager;
         this.storageManager = storageManager;
         this.networkManager = networkManager;
         this.converter = new PagedListConverter<VirtualMachineInner, VirtualMachine>() {
@@ -191,7 +190,7 @@ class VirtualMachinesImpl
             inner,
             this.client,
             this.computeManager,
-            this.resourceManager,
+            this.resourceManager(),
             this.storageManager,
             this.networkManager);
     }
@@ -202,7 +201,7 @@ class VirtualMachinesImpl
                 virtualMachineInner,
                 this.client,
                 this.computeManager,
-                this.resourceManager,
+                this.resourceManager(),
                 this.storageManager,
                 this.networkManager);
     }

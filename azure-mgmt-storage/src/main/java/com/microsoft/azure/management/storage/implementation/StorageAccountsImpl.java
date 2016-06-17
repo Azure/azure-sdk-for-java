@@ -33,12 +33,11 @@ class StorageAccountsImpl
         extends GroupableResourcesImpl<StorageAccount, StorageAccountImpl, StorageAccountInner>
         implements StorageAccounts {
     private final StorageAccountsInner client;
-    private final ResourceManager resourceManager;
     private final PagedListConverter<StorageAccountInner, StorageAccount> converter;
 
     StorageAccountsImpl(final StorageAccountsInner client, final ResourceManager resourceManager) {
+        super(resourceManager);
         this.client = client;
-        this.resourceManager = resourceManager;
         this.converter = new PagedListConverter<StorageAccountInner, StorageAccount>() {
             @Override
             public StorageAccount typeConvert(StorageAccountInner storageAccountInner) {
@@ -102,11 +101,11 @@ class StorageAccountsImpl
 
     @Override
     protected StorageAccountImpl createFluentModel(String name) {
-        return new StorageAccountImpl(name, new StorageAccountInner(), this.client, this.resourceManager);
+        return new StorageAccountImpl(name, new StorageAccountInner(), this.client, this.resourceManager());
     }
 
     @Override
     protected StorageAccountImpl createFluentModel(StorageAccountInner storageAccountInner) {
-        return new StorageAccountImpl(storageAccountInner.name(), storageAccountInner, this.client, this.resourceManager);
+        return new StorageAccountImpl(storageAccountInner.name(), storageAccountInner, this.client, this.resourceManager());
     }
 }

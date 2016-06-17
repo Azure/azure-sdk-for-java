@@ -29,12 +29,11 @@ class NetworkSecurityGroupsImpl
         extends GroupableResourcesImpl<NetworkSecurityGroup, NetworkSecurityGroupImpl, NetworkSecurityGroupInner>
         implements NetworkSecurityGroups {
     private final NetworkSecurityGroupsInner client;
-    private final ResourceManager resourceManager;
     private final PagedListConverter<NetworkSecurityGroupInner, NetworkSecurityGroup> converter;
 
     NetworkSecurityGroupsImpl(final NetworkSecurityGroupsInner client, final ResourceManager resourceManager) {
+        super(resourceManager);
         this.client = client;
-        this.resourceManager = resourceManager;
         this.converter = new PagedListConverter<NetworkSecurityGroupInner, NetworkSecurityGroup>() {
             @Override
             public NetworkSecurityGroup typeConvert(NetworkSecurityGroupInner inner) {
@@ -91,11 +90,11 @@ class NetworkSecurityGroupsImpl
             inner.withDefaultSecurityRules(new ArrayList<SecurityRuleInner>());
         }
 
-        return new NetworkSecurityGroupImpl(name, inner, this.client, this.resourceManager);
+        return new NetworkSecurityGroupImpl(name, inner, this.client, this.resourceManager());
     }
 
     @Override
     protected NetworkSecurityGroupImpl createFluentModel(NetworkSecurityGroupInner inner) {
-        return new NetworkSecurityGroupImpl(inner.name(), inner, this.client, this.resourceManager);
+        return new NetworkSecurityGroupImpl(inner.name(), inner, this.client, this.resourceManager());
     }
 }

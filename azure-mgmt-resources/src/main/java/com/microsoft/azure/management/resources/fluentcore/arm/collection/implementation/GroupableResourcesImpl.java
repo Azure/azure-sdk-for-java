@@ -13,6 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.implementation.ResourceManager;
 
 /**
  * Base class for resource collection classes.
@@ -29,6 +30,16 @@ public abstract class GroupableResourcesImpl<
         SupportsGettingById<T>,
         SupportsGettingByGroup<T> {
 
+    private final ResourceManager resourceManager;
+    
+    protected GroupableResourcesImpl(ResourceManager resourceManager) {
+        this.resourceManager = resourceManager;
+    }
+    
+    protected ResourceManager resourceManager() {
+        return this.resourceManager;
+    }
+    
     @Override
     public abstract T getByGroup(String groupName, String name) throws CloudException, IOException;
 

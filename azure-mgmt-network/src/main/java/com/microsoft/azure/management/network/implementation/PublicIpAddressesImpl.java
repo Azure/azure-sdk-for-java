@@ -28,12 +28,11 @@ class PublicIpAddressesImpl
         extends GroupableResourcesImpl<PublicIpAddress, PublicIpAddressImpl, PublicIPAddressInner>
         implements PublicIpAddresses {
     private final PublicIPAddressesInner client;
-    private final ResourceManager resourceManager;
     private final PagedListConverter<PublicIPAddressInner, PublicIpAddress> converter;
 
     PublicIpAddressesImpl(final PublicIPAddressesInner client, final ResourceManager resourceManager) {
+        super(resourceManager);
         this.client = client;
-        this.resourceManager = resourceManager;
         this.converter = new PagedListConverter<PublicIPAddressInner, PublicIpAddress>() {
             @Override
             public PublicIpAddress typeConvert(PublicIPAddressInner inner) {
@@ -85,11 +84,11 @@ class PublicIpAddressesImpl
             inner.withDnsSettings(new PublicIPAddressDnsSettings());
         }
 
-        return new PublicIpAddressImpl(name, inner, this.client, this.resourceManager);
+        return new PublicIpAddressImpl(name, inner, this.client, this.resourceManager());
     }
 
     @Override
     protected PublicIpAddressImpl createFluentModel(PublicIPAddressInner inner) {
-        return new PublicIpAddressImpl(inner.id(), inner, this.client, this.resourceManager);
+        return new PublicIpAddressImpl(inner.id(), inner, this.client, this.resourceManager());
     }
 }
