@@ -27,34 +27,25 @@ public enum CertificateProductType {
     }
 
     /**
-     * Gets the serialized value for a CertificateProductType instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a CertificateProductType instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed CertificateProductType object, or null if unable to parse.
      */
     @JsonCreator
-    public static CertificateProductType fromValue(String value) {
+    public static CertificateProductType fromString(String value) {
         CertificateProductType[] items = CertificateProductType.values();
         for (CertificateProductType item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

@@ -30,34 +30,25 @@ public enum DiskCreateOptionTypes {
     }
 
     /**
-     * Gets the serialized value for a DiskCreateOptionTypes instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a DiskCreateOptionTypes instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed DiskCreateOptionTypes object, or null if unable to parse.
      */
     @JsonCreator
-    public static DiskCreateOptionTypes fromValue(String value) {
+    public static DiskCreateOptionTypes fromString(String value) {
         DiskCreateOptionTypes[] items = DiskCreateOptionTypes.values();
         for (DiskCreateOptionTypes item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

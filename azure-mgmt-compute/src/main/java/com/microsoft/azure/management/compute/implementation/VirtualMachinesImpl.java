@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSize;
 import com.microsoft.azure.management.compute.VirtualMachines;
@@ -41,7 +40,7 @@ class VirtualMachinesImpl
         implements VirtualMachines {
     private final VirtualMachinesInner client;
     private final VirtualMachineSizesInner virtualMachineSizesClient;
-    private final AvailabilitySets availabilitySets;
+    private final ComputeManager computeManager;
     private final ResourceManager resourceManager;
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
@@ -49,13 +48,13 @@ class VirtualMachinesImpl
 
     VirtualMachinesImpl(VirtualMachinesInner client,
                         VirtualMachineSizesInner virtualMachineSizesClient,
-                        AvailabilitySets availabilitySets,
+                        ComputeManager computeManager,
                         ResourceManager resourceManager,
                         StorageManager storageManager,
                         NetworkManager networkManager) {
         this.client = client;
         this.virtualMachineSizesClient = virtualMachineSizesClient;
-        this.availabilitySets = availabilitySets;
+        this.computeManager = computeManager;
         this.resourceManager = resourceManager;
         this.storageManager = storageManager;
         this.networkManager = networkManager;
@@ -182,7 +181,7 @@ class VirtualMachinesImpl
         return new VirtualMachineImpl(name,
             inner,
             this.client,
-            this.availabilitySets,
+            this.computeManager,
             this.resourceManager,
             this.storageManager,
             this.networkManager);
@@ -192,7 +191,7 @@ class VirtualMachinesImpl
         return new VirtualMachineImpl(virtualMachineInner.name(),
                 virtualMachineInner,
                 this.client,
-                this.availabilitySets,
+                this.computeManager,
                 this.resourceManager,
                 this.storageManager,
                 this.networkManager);

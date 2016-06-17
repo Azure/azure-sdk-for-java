@@ -5,7 +5,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.AvailabilitySet;
-import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.DataDisk;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
@@ -48,7 +47,7 @@ import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.resources.implementation.api.PageImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
@@ -72,13 +71,13 @@ class VirtualMachineImpl
         VirtualMachine.Update {
     // Clients
     private final VirtualMachinesInner client;
-    private final AvailabilitySets availabilitySets;
+    private final ComputeManager computeManager;
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
     // the name of the virtual machine
     private final String vmName;
     // used to generate unique name for any dependency resources
-    private final String randomId;
+    private final ResourceNamer namer;
     // unique key of a creatable storage account to be used for virtual machine child resources that
     // requires storage [OS disk, data disk etc..]
     private String creatableStorageAccountKey;
@@ -103,32 +102,29 @@ class VirtualMachineImpl
     private VirtualMachineInstanceView virtualMachineInstanceView;
     // The data disks associated with the virtual machine
     private List<DataDisk> dataDisks;
-    // Intermediate state of network interface definition to which private ip can be associated
-    private NetworkInterface
-            .DefinitionWithPrivateIp nicDefinitionWithPrivateIp;
+    // Intermediate state of network interface definition to which private IP can be associated
+    private NetworkInterface.DefinitionWithPrivateIp nicDefinitionWithPrivateIp;
     // Intermediate state of network interface definition to which subnet can be associated
-    private NetworkInterface
-            .DefinitionWithSubnet nicDefinitionWithSubnet;
-    // Intermediate state of network interface definition to which public Ip can be associated
-    private NetworkInterface
-            .DefinitionWithPublicIpAddress nicDefinitionWithPublicIp;
+    private NetworkInterface.DefinitionWithSubnet nicDefinitionWithSubnet;
+    // Intermediate state of network interface definition to which public IP can be associated
+    private NetworkInterface.DefinitionWithPublicIpAddress nicDefinitionWithPublicIp;
     // Virtual machine size converter
     private final PagedListConverter<VirtualMachineSizeInner, VirtualMachineSize> virtualMachineSizeConverter;
 
     VirtualMachineImpl(String name,
                        VirtualMachineInner innerModel,
                        VirtualMachinesInner client,
-                       AvailabilitySets availabilitySets,
+                       final ComputeManager computeManager,
                        final ResourceManager resourceManager,
                        final StorageManager storageManager,
                        final NetworkManager networkManager) {
-        super(name, innerModel, resourceManager.resourceGroups());
+        super(name, innerModel, resourceManager);
         this.client = client;
-        this.availabilitySets = availabilitySets;
+        this.computeManager = computeManager;
         this.storageManager = storageManager;
         this.networkManager = networkManager;
         this.vmName = name;
-        this.randomId = Utils.randomId(this.vmName);
+        this.namer = new ResourceNamer(this.vmName);
         this.creatableSecondaryNetworkInterfaceKeys = new ArrayList<>();
         this.existingSecondaryNetworkInterfacesToAssociate = new ArrayList<>();
         this.virtualMachineSizeConverter = new PagedListConverter<VirtualMachineSizeInner, VirtualMachineSize>() {
@@ -230,21 +226,21 @@ class VirtualMachineImpl
     // Fluent methods for defining virtual network association for the new primary network interface
     @Override
     public VirtualMachineImpl withNewPrimaryNetwork(Network.DefinitionCreatable creatable) {
-        this.nicDefinitionWithPrivateIp = this.preparePrimaryNetworkInterface(nameWithPrefix("nic", "-"))
+        this.nicDefinitionWithPrivateIp = this.preparePrimaryNetworkInterface(this.namer.randomName("nic", 20))
                 .withNewPrimaryNetwork(creatable);
         return this;
     }
 
     @Override
     public VirtualMachineImpl withNewPrimaryNetwork(String addressSpace) {
-        this.nicDefinitionWithPrivateIp = this.preparePrimaryNetworkInterface(nameWithPrefix("nic", "-"))
+        this.nicDefinitionWithPrivateIp = this.preparePrimaryNetworkInterface(this.namer.randomName("nic", 20))
                 .withNewPrimaryNetwork(addressSpace);
         return this;
     }
 
     @Override
     public VirtualMachineImpl withExistingPrimaryNetwork(Network network) {
-        this.nicDefinitionWithSubnet = this.preparePrimaryNetworkInterface(nameWithPrefix("nic", "-"))
+        this.nicDefinitionWithSubnet = this.preparePrimaryNetworkInterface(this.namer.randomName("nic", 20))
                 .withExistingPrimaryNetwork(network);
         return this;
     }
@@ -613,7 +609,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withNewAvailabilitySet(String name) {
-        return withNewAvailabilitySet(availabilitySets.define(name)
+        return withNewAvailabilitySet(this.computeManager.availabilitySets().define(name)
                 .withRegion(region())
                 .withExistingGroup(this.resourceGroupName())
         );
@@ -858,15 +854,6 @@ class VirtualMachineImpl
      * Helper methods
      **************************************************/
 
-    /**
-     * @param prefix    the prefix
-     * @param separator the separator between prefix and random string
-     * @return a random value (derived from the resource name) with the given prefix
-     */
-    private String nameWithPrefix(String prefix, String separator) {
-        return prefix + separator + this.randomId;
-    }
-
     private void setOSDiskAndOSProfileDefaults() {
         if (!isInCreateMode()) {
             return;
@@ -916,10 +903,9 @@ class VirtualMachineImpl
         } else if (osDiskRequiresImplicitStorageAccountCreation()
                 || dataDisksRequiresImplicitStorageAccountCreation()) {
             storageAccount = this.storageManager.storageAccounts()
-                    .define(nameWithPrefix("stg", null))
+                    .define(this.namer.randomName("stg", 24))
                     .withRegion(this.region())
                     .withExistingGroup(this.resourceGroupName())
-                    .withBlobStorageAccountKind()
                     .create();
         }
 

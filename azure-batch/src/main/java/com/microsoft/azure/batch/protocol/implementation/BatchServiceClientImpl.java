@@ -18,9 +18,8 @@ import com.microsoft.azure.batch.protocol.Jobs;
 import com.microsoft.azure.batch.protocol.JobSchedules;
 import com.microsoft.azure.batch.protocol.Pools;
 import com.microsoft.azure.batch.protocol.Tasks;
-import com.microsoft.azure.serializer.AzureJacksonMapperAdapter;
+import com.microsoft.azure.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
-import com.microsoft.rest.RestClient;
 
 /**
  * Initializes a new instance of the BatchServiceClientImpl class.
@@ -65,9 +64,11 @@ public final class BatchServiceClientImpl extends AzureServiceClient implements 
      * Sets Gets or sets the preferred language for the response.
      *
      * @param acceptLanguage the acceptLanguage value.
+     * @return the service client itself
      */
-    public void withAcceptLanguage(String acceptLanguage) {
+    public BatchServiceClientImpl withAcceptLanguage(String acceptLanguage) {
         this.acceptLanguage = acceptLanguage;
+        return this;
     }
 
     /** Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30. */
@@ -86,9 +87,11 @@ public final class BatchServiceClientImpl extends AzureServiceClient implements 
      * Sets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30.
      *
      * @param longRunningOperationRetryTimeout the longRunningOperationRetryTimeout value.
+     * @return the service client itself
      */
-    public void withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout) {
+    public BatchServiceClientImpl withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout) {
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
+        return this;
     }
 
     /** When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true. */
@@ -107,9 +110,11 @@ public final class BatchServiceClientImpl extends AzureServiceClient implements 
      * Sets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
      *
      * @param generateClientRequestId the generateClientRequestId value.
+     * @return the service client itself
      */
-    public void withGenerateClientRequestId(boolean generateClientRequestId) {
+    public BatchServiceClientImpl withGenerateClientRequestId(boolean generateClientRequestId) {
         this.generateClientRequestId = generateClientRequestId;
+        return this;
     }
 
     /**
@@ -245,8 +250,8 @@ public final class BatchServiceClientImpl extends AzureServiceClient implements 
      * @param credentials the management credentials for Azure
      */
     public BatchServiceClientImpl(String baseUrl, ServiceClientCredentials credentials) {
-        this(new RestClient.Builder(baseUrl)
-                .withMapperAdapter(new AzureJacksonMapperAdapter())
+        this(new RestClient.Builder()
+                .withBaseUrl(baseUrl)
                 .withCredentials(credentials)
                 .build());
     }

@@ -14,9 +14,9 @@ import com.microsoft.azure.management.network.implementation.api.DhcpOptions;
 import com.microsoft.azure.management.network.implementation.api.SubnetInner;
 import com.microsoft.azure.management.network.implementation.api.VirtualNetworkInner;
 import com.microsoft.azure.management.network.implementation.api.VirtualNetworksInner;
-import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
+import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
@@ -28,12 +28,12 @@ import java.util.ArrayList;
  */
 class NetworksImpl implements Networks {
     private final VirtualNetworksInner client;
-    private final ResourceGroups resourceGroups;
+    private final ResourceManager resourceManager;
     private final PagedListConverter<VirtualNetworkInner, Network> converter;
 
-    NetworksImpl(final VirtualNetworksInner client, final ResourceGroups resourceGroups) {
+    NetworksImpl(final VirtualNetworksInner client, final ResourceManager resourceManager) {
         this.client = client;
-        this.resourceGroups = resourceGroups;
+        this.resourceManager = resourceManager;
         this.converter = new PagedListConverter<VirtualNetworkInner, Network>() {
             @Override
             public Network typeConvert(VirtualNetworkInner inner) {
@@ -107,10 +107,10 @@ class NetworksImpl implements Networks {
             dhcp.withDnsServers(new ArrayList<String>());
         }
 
-        return new NetworkImpl(name, inner, this.client, this.resourceGroups);
+        return new NetworkImpl(name, inner, this.client, this.resourceManager);
     }
 
     private NetworkImpl createFluentModel(VirtualNetworkInner inner) {
-        return new NetworkImpl(inner.name(), inner, this.client, this.resourceGroups);
+        return new NetworkImpl(inner.name(), inner, this.client, this.resourceManager);
     }
 }

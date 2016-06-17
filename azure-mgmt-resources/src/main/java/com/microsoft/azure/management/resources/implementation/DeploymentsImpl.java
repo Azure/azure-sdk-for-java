@@ -9,7 +9,6 @@ package com.microsoft.azure.management.resources.implementation;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Deployments;
-import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
@@ -31,15 +30,15 @@ final class DeploymentsImpl
 
     private final DeploymentsInner client;
     private final DeploymentOperationsInner deploymentOperationsClient;
-    private final ResourceGroups resourceGroups;
+    private final ResourceManager resourceManager;
     private PagedListConverter<DeploymentExtendedInner, Deployment> converter;
 
     DeploymentsImpl(final DeploymentsInner client,
                            final DeploymentOperationsInner deploymentOperationsClient,
-                           final ResourceGroups resourceGroups) {
+                           final ResourceManager resourceManager) {
         this.client = client;
         this.deploymentOperationsClient = deploymentOperationsClient;
-        this.resourceGroups = resourceGroups;
+        this.resourceManager = resourceManager;
         converter = new PagedListConverter<DeploymentExtendedInner, Deployment>() {
             @Override
             public Deployment typeConvert(DeploymentExtendedInner deploymentInner) {
@@ -50,7 +49,7 @@ final class DeploymentsImpl
 
     @Override
     public PagedList<Deployment> list() throws CloudException, IOException {
-        return new GroupPagedList<Deployment>(resourceGroups.list()) {
+        return new GroupPagedList<Deployment>(this.resourceManager.resourceGroups().list()) {
             @Override
             public List<Deployment> listNextGroup(String resourceGroupName) throws RestException, IOException {
                 return converter.convert(client.list(resourceGroupName).getBody());
@@ -65,7 +64,7 @@ final class DeploymentsImpl
 
     @Override
     public Deployment get(String name) throws IOException, CloudException {
-        for (ResourceGroup group : resourceGroups.list()) {
+        for (ResourceGroup group : this.resourceManager.resourceGroups().list()) {
             try {
                 DeploymentExtendedInner inner = client.get(group.name(), name).getBody();
                 if (inner != null) {
@@ -107,10 +106,10 @@ final class DeploymentsImpl
     private DeploymentImpl createFluentModel(String name) {
         DeploymentExtendedInner deploymentExtendedInner = new DeploymentExtendedInner();
         deploymentExtendedInner.withName(name);
-        return new DeploymentImpl(deploymentExtendedInner, client, deploymentOperationsClient, resourceGroups);
+        return new DeploymentImpl(deploymentExtendedInner, client, deploymentOperationsClient, this.resourceManager);
     }
 
     private DeploymentImpl createFluentModel(DeploymentExtendedInner deploymentExtendedInner) {
-        return new DeploymentImpl(deploymentExtendedInner, client, deploymentOperationsClient, resourceGroups);
+        return new DeploymentImpl(deploymentExtendedInner, client, deploymentOperationsClient, this.resourceManager);
     }
 }

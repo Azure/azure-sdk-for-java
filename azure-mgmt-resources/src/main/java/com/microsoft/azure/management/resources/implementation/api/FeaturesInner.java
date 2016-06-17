@@ -150,7 +150,7 @@ public final class FeaturesInner {
     }
 
     private ServiceResponse<PageImpl<FeatureResultInner>> listAllDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<FeatureResultInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<FeatureResultInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<FeatureResultInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -233,7 +233,7 @@ public final class FeaturesInner {
     }
 
     private ServiceResponse<PageImpl<FeatureResultInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<FeatureResultInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<FeatureResultInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<FeatureResultInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -311,7 +311,7 @@ public final class FeaturesInner {
     }
 
     private ServiceResponse<FeatureResultInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<FeatureResultInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<FeatureResultInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<FeatureResultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -389,7 +389,7 @@ public final class FeaturesInner {
     }
 
     private ServiceResponse<FeatureResultInner> registerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<FeatureResultInner, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<FeatureResultInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<FeatureResultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -452,7 +452,7 @@ public final class FeaturesInner {
     }
 
     private ServiceResponse<PageImpl<FeatureResultInner>> listAllNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<FeatureResultInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<FeatureResultInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<FeatureResultInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -515,7 +515,7 @@ public final class FeaturesInner {
     }
 
     private ServiceResponse<PageImpl<FeatureResultInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<FeatureResultInner>, CloudException>(this.client.restClient().mapperAdapter())
+        return new AzureServiceResponseBuilder<PageImpl<FeatureResultInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<FeatureResultInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

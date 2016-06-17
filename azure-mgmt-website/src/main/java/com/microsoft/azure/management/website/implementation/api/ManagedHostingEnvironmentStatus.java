@@ -30,34 +30,25 @@ public enum ManagedHostingEnvironmentStatus {
     }
 
     /**
-     * Gets the serialized value for a ManagedHostingEnvironmentStatus instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a ManagedHostingEnvironmentStatus instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed ManagedHostingEnvironmentStatus object, or null if unable to parse.
      */
     @JsonCreator
-    public static ManagedHostingEnvironmentStatus fromValue(String value) {
+    public static ManagedHostingEnvironmentStatus fromString(String value) {
         ManagedHostingEnvironmentStatus[] items = ManagedHostingEnvironmentStatus.values();
         for (ManagedHostingEnvironmentStatus item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

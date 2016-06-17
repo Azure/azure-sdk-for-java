@@ -13,12 +13,16 @@ package com.microsoft.azure.management.network.samples;
  *  - Assign a public IP address for a virtual machine through an virtual machine update action
  *  - Get the associated public IP address for a virtual machine
  *  - Get the assigned public IP address for a virtual machine
- *  - Remove a public IP address from a virtual machine
+ *  - Remove a public IP address from a virtual machine.
  */
 
-public class ManageIPAddress {
+public final class ManageIPAddress {
 
-    public static void main (String [] args) {
+    /**
+     * Main entry point.
+     * @param args the parameters
+     */
+    public static void main(String[] args) {
 
         try {
 
@@ -32,10 +36,13 @@ public class ManageIPAddress {
 
             // Remove a public IP address from a virtual machine
 
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             System.err.println(e.getMessage());
         }
+
+    }
+
+    private ManageIPAddress() {
 
     }
 

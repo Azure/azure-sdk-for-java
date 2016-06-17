@@ -14,7 +14,7 @@ import com.microsoft.azure.management.datalake.store.implementation.DataLakeStor
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
 
-import com.microsoft.rest.RestClient;
+import com.microsoft.azure.RestClient;
 import org.junit.Assert;
 
 import java.text.MessageFormat;
@@ -71,13 +71,15 @@ public abstract class DataLakeAnalyticsManagementTestBase {
                 null,
                 authEnv);
 
-        RestClient restClient = new RestClient.Builder(armUri)
+        RestClient restClient = new RestClient.Builder()
+                .withBaseUrl(armUri)
                 .withCredentials(credentials)
                 .withLogLevel(HttpLoggingInterceptor.Level.BODY)
                 .build();
         dataLakeAnalyticsAccountManagementClient = new DataLakeAnalyticsAccountManagementClientImpl(restClient);
         dataLakeAnalyticsAccountManagementClient.withSubscriptionId(System.getenv("arm.subscriptionid"));
-        RestClient restClientWithTimeout = new RestClient.Builder(armUri, new OkHttpClient.Builder().readTimeout(5, TimeUnit.MINUTES), new Retrofit.Builder())
+        RestClient restClientWithTimeout = new RestClient.Builder(new OkHttpClient.Builder().readTimeout(5, TimeUnit.MINUTES), new Retrofit.Builder())
+                .withBaseUrl(armUri)
                 .withCredentials(credentials)
                 .withLogLevel(HttpLoggingInterceptor.Level.BODY)
                 .build();
@@ -116,8 +118,7 @@ public abstract class DataLakeAnalyticsManagementTestBase {
         int maxWaitInSeconds = 2700; // giving it 45 minutes for now.
         int curWaitInSeconds = 0;
 
-        while (getJobResponse.state() != JobState.ENDED && curWaitInSeconds < maxWaitInSeconds)
-        {
+        while (getJobResponse.state() != JobState.ENDED && curWaitInSeconds < maxWaitInSeconds) {
             // wait 5 seconds before polling again
             Thread.sleep(5000);
             curWaitInSeconds += 5;
@@ -135,7 +136,7 @@ public abstract class DataLakeAnalyticsManagementTestBase {
     }
 
     public static String generateName(String prefix) {
-        int randomSuffix = (int)(Math.random() * 1000);
+        int randomSuffix = (int) (Math.random() * 1000);
         return prefix + randomSuffix;
     }
 }

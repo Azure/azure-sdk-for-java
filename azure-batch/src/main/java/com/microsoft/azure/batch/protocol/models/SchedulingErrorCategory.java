@@ -30,34 +30,25 @@ public enum SchedulingErrorCategory {
     }
 
     /**
-     * Gets the serialized value for a SchedulingErrorCategory instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a SchedulingErrorCategory instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed SchedulingErrorCategory object, or null if unable to parse.
      */
     @JsonCreator
-    public static SchedulingErrorCategory fromValue(String value) {
+    public static SchedulingErrorCategory fromString(String value) {
         SchedulingErrorCategory[] items = SchedulingErrorCategory.values();
         for (SchedulingErrorCategory item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }

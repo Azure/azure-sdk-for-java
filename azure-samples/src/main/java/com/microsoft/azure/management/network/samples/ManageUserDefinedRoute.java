@@ -13,12 +13,16 @@ package com.microsoft.azure.management.network.samples;
  *  - Create an user defined route for a back end subnet
  *  - Enable IP forwarding
  *  See https://azure.microsoft.com/en-us/documentation/articles/virtual-networks-udr-overview/
- *  See https://azure.microsoft.com/en-us/documentation/articles/virtual-network-create-udr-arm-ps/
+ *  See https://azure.microsoft.com/en-us/documentation/articles/virtual-network-create-udr-arm-ps/.
  */
 
-public class ManageUserDefinedRoute {
+public final class ManageUserDefinedRoute {
 
-    public static void main (String [] args) {
+    /**
+     * Main entry point.
+     * @param args the parameters
+     */
+    public static void main(String[] args) {
 
         try {
 
@@ -28,10 +32,13 @@ public class ManageUserDefinedRoute {
 
             // Enable IP forwarding
 
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             System.err.println(e.getMessage());
         }
+
+    }
+
+    private ManageUserDefinedRoute() {
 
     }
 }

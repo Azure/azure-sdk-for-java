@@ -33,34 +33,25 @@ public enum HostingEnvironmentStatus {
     }
 
     /**
-     * Gets the serialized value for a HostingEnvironmentStatus instance.
-     *
-     * @return the serialized value.
-     */
-    @JsonValue
-    public String toValue() {
-        return this.value;
-    }
-
-    /**
      * Parses a serialized value to a HostingEnvironmentStatus instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed HostingEnvironmentStatus object, or null if unable to parse.
      */
     @JsonCreator
-    public static HostingEnvironmentStatus fromValue(String value) {
+    public static HostingEnvironmentStatus fromString(String value) {
         HostingEnvironmentStatus[] items = HostingEnvironmentStatus.values();
         for (HostingEnvironmentStatus item : items) {
-            if (item.toValue().equals(value)) {
+            if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return toValue();
+        return this.value;
     }
 }
