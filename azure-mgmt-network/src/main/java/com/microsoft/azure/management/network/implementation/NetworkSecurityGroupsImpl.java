@@ -13,6 +13,7 @@ import com.microsoft.azure.management.network.implementation.api.NetworkSecurity
 import com.microsoft.azure.management.network.implementation.api.NetworkSecurityGroupsInner;
 import com.microsoft.azure.management.network.implementation.api.SecurityRuleInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.ServiceResponse;
@@ -24,7 +25,9 @@ import java.util.ArrayList;
  * Implementation of the NetworkSecurityGroups interface.
  * (Internal use only)
  */
-class NetworkSecurityGroupsImpl implements NetworkSecurityGroups {
+class NetworkSecurityGroupsImpl
+        extends ResourcesImpl<NetworkSecurityGroup>
+        implements NetworkSecurityGroups {
     private final NetworkSecurityGroupsInner client;
     private final ResourceManager resourceManager;
     private final PagedListConverter<NetworkSecurityGroupInner, NetworkSecurityGroup> converter;
