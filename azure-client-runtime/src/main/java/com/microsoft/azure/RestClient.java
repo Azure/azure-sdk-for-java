@@ -330,6 +330,7 @@ public class RestClient {
                 OkHttpClient httpClient = httpClientBuilder
                         .addInterceptor(baseUrlHandler)
                         .addInterceptor(customHeadersInterceptor)
+                        .addInterceptor(new RetryHandler(new ResourceGetExponentialBackoffRetryStrategy()))
                         .addInterceptor(new RetryHandler())
                         .build();
                 return new RestClient(httpClient,
