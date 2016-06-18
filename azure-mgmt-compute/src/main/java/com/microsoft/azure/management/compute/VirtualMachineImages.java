@@ -5,6 +5,11 @@
  */
 package com.microsoft.azure.management.compute;
 
+import java.io.IOException;
+import java.util.List;
+
+import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingByRegion;
 
 /**
@@ -16,4 +21,26 @@ public interface VirtualMachineImages extends
      * @return entry point to virtual machine image publishers
      */
     Publishers publishers();
+
+    /**
+     * Lists all the virtual machine images available in a given region.
+     * <p>
+     * Note this is a very long running call, as it enumerates through all publishers, offers and skus.
+     * @return list of virtual machine images
+     * @param regionName the name of the region as used internally by Azure
+     * @throws CloudException exceptions thrown from the cloud
+     * @throws IOException exceptions thrown from serialization/deserialization
+     */
+    List<VirtualMachineImage> listByRegion(String regionName) throws CloudException, IOException;
+
+    /**
+     * Lists all the virtual machine images available in a given region.
+     * <p>
+     * Note this is a very long running call, as it enumerates through all publishers, offers and skus.
+     * @return list of virtual machine images
+     * @param region the region to list the images from
+     * @throws CloudException exceptions thrown from the cloud
+     * @throws IOException exceptions thrown from serialization/deserialization
+     */
+    List<VirtualMachineImage> listByRegion(Region region) throws CloudException, IOException;
 }
