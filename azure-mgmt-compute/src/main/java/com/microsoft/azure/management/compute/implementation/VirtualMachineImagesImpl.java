@@ -3,7 +3,6 @@ package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachineImages;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImageResourceInner;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImagesInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
@@ -17,25 +16,10 @@ import java.util.List;
  */
 class VirtualMachineImagesImpl
         implements VirtualMachineImages {
-    private final VirtualMachineImagesInner client;
+    private final VirtualMachineImages.Publishers publishers;
 
     VirtualMachineImagesImpl(VirtualMachineImagesInner client) {
-        this.client = client;
-    }
-
-    @Override
-    public List<VirtualMachineImage.Publisher> listPublishers(final Region region) throws CloudException, IOException {
-        return listPublishers(region.toString());
-    }
-
-    @Override
-    public List<VirtualMachineImage.Publisher> listPublishers(String regionName) throws CloudException, IOException {
-        List<VirtualMachineImage.Publisher> publishers = new ArrayList<>();
-        for (VirtualMachineImageResourceInner inner
-                : client.listPublishers(regionName).getBody()) {
-            publishers.add(new VirtualMachineImagePublisherImpl(Region.fromName(regionName), inner.name(), client));
-        }
-        return Collections.unmodifiableList(publishers);
+        this.publishers = new VirtualMachineImagePublishersImpl(client);
     }
 
     @Override
@@ -46,7 +30,7 @@ class VirtualMachineImagesImpl
     @Override
     public List<VirtualMachineImage> listByRegion(String regionName) throws CloudException, IOException {
         List<VirtualMachineImage> images = new ArrayList<>();
-        for (VirtualMachineImage.Publisher publisher : listPublishers(regionName)) {
+        for (VirtualMachineImage.Publisher publisher : this.publishers().listByRegion(regionName)) {
             for (VirtualMachineImage.Offer offer : publisher.listOffers()) {
                 for (VirtualMachineImage.Sku sku : offer.listSkus()) {
                     images.addAll(sku.listImages());
@@ -54,6 +38,11 @@ class VirtualMachineImagesImpl
             }
         }
         return Collections.unmodifiableList(images);
+    }
+
+    @Override
+    public Publishers publishers() {
+        return this.publishers;
     }
 
 }

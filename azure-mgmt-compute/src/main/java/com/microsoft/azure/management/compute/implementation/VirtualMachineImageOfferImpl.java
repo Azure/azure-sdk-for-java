@@ -32,7 +32,7 @@ class VirtualMachineImageOfferImpl
 
     @Override
     public String publisher() {
-        return publisher.publisher();
+        return publisher.name();
     }
 
     @Override

@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.CloudException;
@@ -31,7 +36,7 @@ class VirtualMachineImagePublisherImpl
     }
 
     @Override
-    public String publisher() {
+    public String name() {
         return publisher;
     }
 
@@ -39,7 +44,7 @@ class VirtualMachineImagePublisherImpl
     public List<VirtualMachineImage.Offer> listOffers() throws CloudException, IOException {
         List<VirtualMachineImage.Offer> offers = new ArrayList<>();
         for (VirtualMachineImageResourceInner inner
-                : client.listOffers(region().toString(), publisher()).getBody()) {
+                : client.listOffers(region().toString(), name()).getBody()) {
             offers.add(new VirtualMachineImageOfferImpl(this, inner.name(), client));
         }
         return offers;

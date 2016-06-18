@@ -47,7 +47,7 @@ class VirtualMachineImageImpl
     }
 
     @Override
-    public String publisher() {
+    public String publisherName() {
         return imageReference.publisher();
     }
 

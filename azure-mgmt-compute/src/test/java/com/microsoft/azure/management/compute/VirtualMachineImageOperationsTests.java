@@ -22,11 +22,11 @@ public class VirtualMachineImageOperationsTests extends ComputeManagementTestBas
     @Test
     public void canListVirtualMachineImages() throws Exception {
         List<VirtualMachineImage.Publisher> publishers =
-                computeManager.virtualMachineImages().listPublishers(Region.US_EAST);
+                computeManager.virtualMachineImages().publishers().listByRegion(Region.US_EAST);
 
         VirtualMachineImage.Publisher canonicalPublisher = null;
         for (VirtualMachineImage.Publisher publisher : publishers) {
-            if (publisher.publisher().equalsIgnoreCase("Canonical")) {
+            if (publisher.name().equalsIgnoreCase("Canonical")) {
                 canonicalPublisher = publisher;
                 break;
             }

@@ -30,7 +30,7 @@ public interface VirtualMachineImage extends
     /**
      * @return the publisher name of the virtual machine image
      */
-    String publisher();
+    String publisherName();
 
     /**
      * @return the name of the virtual machine image offer
@@ -68,7 +68,7 @@ public interface VirtualMachineImage extends
     List<DataDiskImage> dataDiskImages();
 
     /**
-     * Represents a virtual image image publisher.
+     * Represents a virtual machine image publisher.
      */
     interface Publisher {
         /**
@@ -79,7 +79,7 @@ public interface VirtualMachineImage extends
         /**
          * @return the name of the virtual machine image publisher
          */
-        String publisher();
+        String name();
 
         /**
          * Lists the virtual machine image offers from this publisher in the specific region.
