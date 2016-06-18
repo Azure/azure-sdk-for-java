@@ -64,20 +64,17 @@ class VirtualMachinesImpl
 
     @Override
     public PagedList<VirtualMachine> list() throws CloudException, IOException {
-        ServiceResponse<PagedList<VirtualMachineInner>> response = this.innerCollection.listAll();
-        return this.converter.convert(response.getBody());
+        return this.converter.convert(this.innerCollection.listAll().getBody());
     }
 
     @Override
     public PagedList<VirtualMachine> listByGroup(String groupName) throws CloudException, IOException {
-        ServiceResponse<List<VirtualMachineInner>> response = this.innerCollection.list(groupName);
-        return this.converter.convert(toPagedList(response.getBody()));
+        return this.converter.convert(toPagedList(this.innerCollection.list(groupName).getBody()));
     }
 
     @Override
     public VirtualMachine getByGroup(String groupName, String name) throws CloudException, IOException {
-        ServiceResponse<VirtualMachineInner> response = this.innerCollection.get(groupName, name);
-        return createFluentModel(response.getBody());
+        return createFluentModel(this.innerCollection.get(groupName, name).getBody());
     }
 
     @Override

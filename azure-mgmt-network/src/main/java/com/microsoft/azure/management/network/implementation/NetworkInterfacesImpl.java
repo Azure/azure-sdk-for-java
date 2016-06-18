@@ -11,7 +11,6 @@ import com.microsoft.azure.management.network.implementation.api.NetworkInterfac
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
-import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,20 +33,17 @@ class NetworkInterfacesImpl
 
     @Override
     public PagedList<NetworkInterface> list() throws CloudException, IOException {
-        ServiceResponse<PagedList<NetworkInterfaceInner>> response = innerCollection.listAll();
-        return this.converter.convert(response.getBody());
+        return this.converter.convert(innerCollection.listAll().getBody());
     }
 
     @Override
     public PagedList<NetworkInterface> listByGroup(String groupName) throws CloudException, IOException {
-        ServiceResponse<PagedList<NetworkInterfaceInner>> response = innerCollection.list(groupName);
-        return this.converter.convert(response.getBody());
+        return this.converter.convert(innerCollection.list(groupName).getBody());
     }
 
     @Override
     public NetworkInterface getByGroup(String groupName, String name) throws CloudException, IOException {
-        ServiceResponse<NetworkInterfaceInner> serviceResponse = this.innerCollection.get(groupName, name);
-        return createFluentModel(serviceResponse.getBody());
+        return createFluentModel(this.innerCollection.get(groupName, name).getBody());
     }
 
     @Override

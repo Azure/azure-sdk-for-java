@@ -79,8 +79,7 @@ final class DeploymentsImpl
 
     @Override
     public Deployment getByGroup(String groupName, String name) throws IOException, CloudException {
-        DeploymentExtendedInner inner = client.get(groupName, name).getBody();
-        return createFluentModel(inner);
+        return createFluentModel(client.get(groupName, name).getBody());
     }
 
     @Override
@@ -104,9 +103,11 @@ final class DeploymentsImpl
     }
 
     protected DeploymentImpl createFluentModel(String name) {
-        DeploymentExtendedInner deploymentExtendedInner = new DeploymentExtendedInner();
-        deploymentExtendedInner.withName(name);
-        return new DeploymentImpl(deploymentExtendedInner, client, deploymentOperationsClient, this.resourceManager);
+        return new DeploymentImpl(
+                new DeploymentExtendedInner().withName(name),
+                client,
+                deploymentOperationsClient,
+                this.resourceManager);
     }
 
     protected DeploymentImpl createFluentModel(DeploymentExtendedInner deploymentExtendedInner) {

@@ -15,7 +15,6 @@ import com.microsoft.azure.management.network.implementation.api.PublicIPAddress
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
-import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
 
@@ -33,20 +32,17 @@ class PublicIpAddressesImpl
 
     @Override
     public PagedList<PublicIpAddress> list() throws CloudException, IOException {
-        ServiceResponse<PagedList<PublicIPAddressInner>> response = this.innerCollection.listAll();
-        return this.converter.convert(response.getBody());
+        return this.converter.convert(this.innerCollection.listAll().getBody());
     }
 
     @Override
     public PagedList<PublicIpAddress> listByGroup(String groupName) throws CloudException, IOException {
-        ServiceResponse<PagedList<PublicIPAddressInner>> response = this.innerCollection.list(groupName);
-        return this.converter.convert(response.getBody());
+        return this.converter.convert(this.innerCollection.list(groupName).getBody());
     }
 
     @Override
     public PublicIpAddressImpl getByGroup(String groupName, String name) throws CloudException, IOException {
-        ServiceResponse<PublicIPAddressInner> serviceResponse = this.innerCollection.get(groupName, name);
-        return createFluentModel(serviceResponse.getBody());
+        return createFluentModel(this.innerCollection.get(groupName, name).getBody());
     }
 
     @Override
