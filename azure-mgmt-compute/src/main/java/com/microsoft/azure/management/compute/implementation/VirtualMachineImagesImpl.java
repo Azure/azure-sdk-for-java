@@ -21,7 +21,7 @@ class VirtualMachineImagesImpl
     private final VirtualMachineImages.Publishers publishers;
 
     VirtualMachineImagesImpl(VirtualMachineImagesInner client) {
-        this.publishers = new VirtualMachineImagePublishersImpl(client);
+        this.publishers = new PublishersImpl(client);
     }
 
     @Override

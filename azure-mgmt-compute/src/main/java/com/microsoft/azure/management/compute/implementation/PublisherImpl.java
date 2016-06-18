@@ -13,13 +13,13 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 /**
  * The implementation for {@link VirtualMachineImage.Publisher}.
  */
-class VirtualMachineImagePublisherImpl
+class PublisherImpl
         implements Publisher {
     private final Region location;
     private final String publisher;
     private final Offers offers;
 
-    VirtualMachineImagePublisherImpl(Region location, String publisher, VirtualMachineImagesInner client) {
+    PublisherImpl(Region location, String publisher, VirtualMachineImagesInner client) {
         this.location = location;
         this.publisher = publisher;
         this.offers = new OffersImpl(client, this);

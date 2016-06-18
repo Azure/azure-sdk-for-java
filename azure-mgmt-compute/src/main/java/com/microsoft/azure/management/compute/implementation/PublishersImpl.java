@@ -19,13 +19,13 @@ import java.util.List;
 /**
  * The implementation for {@link VirtualMachineImagePublishers}.
  */
-class VirtualMachineImagePublishersImpl
-        extends WrappersImpl<Publisher, VirtualMachineImagePublisherImpl, VirtualMachineImageResourceInner>
+class PublishersImpl
+        extends WrappersImpl<Publisher, PublisherImpl, VirtualMachineImageResourceInner>
         implements VirtualMachineImages.Publishers {
 
     private final VirtualMachineImagesInner innerCollection;
 
-    VirtualMachineImagePublishersImpl(VirtualMachineImagesInner innerCollection) {
+    PublishersImpl(VirtualMachineImagesInner innerCollection) {
         this.innerCollection = innerCollection;
     }
 
@@ -35,14 +35,14 @@ class VirtualMachineImagePublishersImpl
     }
 
     @Override
-    protected VirtualMachineImagePublisherImpl wrapModel(String name) {
+    protected PublisherImpl wrapModel(String name) {
         // Not supported
         return null;
     }
 
     @Override
-    protected VirtualMachineImagePublisherImpl wrapModel(VirtualMachineImageResourceInner inner) {
-        return new VirtualMachineImagePublisherImpl(Region.fromName(inner.location()), inner.name(), this.innerCollection);
+    protected PublisherImpl wrapModel(VirtualMachineImageResourceInner inner) {
+        return new PublisherImpl(Region.fromName(inner.location()), inner.name(), this.innerCollection);
     }
 
     @Override
