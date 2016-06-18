@@ -12,7 +12,6 @@ import com.microsoft.azure.management.resources.GenericResources;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupsInner;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourcesInner;
@@ -42,7 +41,7 @@ final class GenericResourcesImpl
 
     @Override
     public PagedList<GenericResource> listByGroup(String groupName) throws CloudException, IOException {
-        return listIntern(groupName);
+        return this.converter.convert(resourceGroupsInner.listResources(groupName).getBody());
     }
 
     @Override
@@ -94,15 +93,6 @@ final class GenericResourcesImpl
     @Override
     public void delete(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws CloudException, IOException {
         this.innerCollection.delete(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion);
-    }
-
-    private PagedList<GenericResource> listIntern(String groupName) throws IOException, CloudException {
-        PagedListConverter<GenericResourceInner, GenericResource> converter = new PagedListConverter<GenericResourceInner, GenericResource>() {
-            @Override
-            public GenericResource typeConvert(GenericResourceInner genericResourceInner) {
-                return createFluentModel(genericResourceInner);            }
-        };
-        return converter.convert(resourceGroupsInner.listResources(groupName).getBody());
     }
 
     @Override

@@ -10,7 +10,6 @@ import com.microsoft.azure.management.network.implementation.api.NetworkInterfac
 import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceDnsSettings;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.ServiceResponse;
 
@@ -25,32 +24,24 @@ class NetworkInterfacesImpl
         implements NetworkInterfaces {
     private final NetworkManager networkManager;
 
-    private final PagedListConverter<NetworkInterfaceInner, NetworkInterface> converter;
-
     NetworkInterfacesImpl(
             final NetworkInterfacesInner client,
             final NetworkManager networkManager,
             final ResourceManager resourceManager) {
         super(resourceManager, client);
         this.networkManager = networkManager;
-        this.converter = new PagedListConverter<NetworkInterfaceInner, NetworkInterface>() {
-            @Override
-            public NetworkInterface typeConvert(NetworkInterfaceInner inner) {
-                return createFluentModel(inner);
-            }
-        };
     }
 
     @Override
     public PagedList<NetworkInterface> list() throws CloudException, IOException {
         ServiceResponse<PagedList<NetworkInterfaceInner>> response = innerCollection.listAll();
-        return converter.convert(response.getBody());
+        return this.converter.convert(response.getBody());
     }
 
     @Override
     public PagedList<NetworkInterface> listByGroup(String groupName) throws CloudException, IOException {
         ServiceResponse<PagedList<NetworkInterfaceInner>> response = innerCollection.list(groupName);
-        return converter.convert(response.getBody());
+        return this.converter.convert(response.getBody());
     }
 
     @Override

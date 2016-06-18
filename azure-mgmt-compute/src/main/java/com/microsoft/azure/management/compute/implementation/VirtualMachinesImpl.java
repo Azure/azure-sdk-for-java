@@ -45,7 +45,6 @@ class VirtualMachinesImpl
     private final ComputeManager computeManager;
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
-    private final PagedListConverter<VirtualMachineInner, VirtualMachine> converter;
 
     VirtualMachinesImpl(VirtualMachinesInner client,
                         VirtualMachineSizesInner virtualMachineSizesClient,
@@ -58,12 +57,6 @@ class VirtualMachinesImpl
         this.computeManager = computeManager;
         this.storageManager = storageManager;
         this.networkManager = networkManager;
-        this.converter = new PagedListConverter<VirtualMachineInner, VirtualMachine>() {
-            @Override
-            public VirtualMachine typeConvert(VirtualMachineInner inner) {
-                return createFluentModel(inner);
-            }
-        };
     }
 
     // Actions
@@ -72,13 +65,13 @@ class VirtualMachinesImpl
     @Override
     public PagedList<VirtualMachine> list() throws CloudException, IOException {
         ServiceResponse<PagedList<VirtualMachineInner>> response = this.innerCollection.listAll();
-        return converter.convert(response.getBody());
+        return this.converter.convert(response.getBody());
     }
 
     @Override
     public PagedList<VirtualMachine> listByGroup(String groupName) throws CloudException, IOException {
         ServiceResponse<List<VirtualMachineInner>> response = this.innerCollection.list(groupName);
-        return converter.convert(toPagedList(response.getBody()));
+        return this.converter.convert(toPagedList(response.getBody()));
     }
 
     @Override

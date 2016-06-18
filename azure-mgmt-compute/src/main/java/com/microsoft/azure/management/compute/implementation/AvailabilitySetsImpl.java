@@ -15,7 +15,6 @@ import com.microsoft.azure.management.compute.implementation.api.AvailabilitySet
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
-import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.resources.implementation.api.PageImpl;
 import com.microsoft.rest.RestException;
@@ -30,17 +29,10 @@ import java.util.List;
 class AvailabilitySetsImpl
     extends GroupableResourcesImpl<AvailabilitySet, AvailabilitySetImpl, AvailabilitySetInner, AvailabilitySetsInner>
     implements AvailabilitySets {
-    private final PagedListConverter<AvailabilitySetInner, AvailabilitySet> converter;
     AvailabilitySetsImpl(
             final AvailabilitySetsInner client,
             final ResourceManager resourceManager) {
         super(resourceManager, client);
-        this.converter = new PagedListConverter<AvailabilitySetInner, AvailabilitySet>() {
-            @Override
-            public AvailabilitySet typeConvert(AvailabilitySetInner inner) {
-                return createFluentModel(inner);
-            }
-        };
     }
 
     @Override

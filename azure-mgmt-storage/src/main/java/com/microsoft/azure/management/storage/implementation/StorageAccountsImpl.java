@@ -11,7 +11,6 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.resources.implementation.api.PageImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
@@ -32,16 +31,9 @@ import java.util.List;
 class StorageAccountsImpl
         extends GroupableResourcesImpl<StorageAccount, StorageAccountImpl, StorageAccountInner, StorageAccountsInner>
         implements StorageAccounts {
-    private final PagedListConverter<StorageAccountInner, StorageAccount> converter;
 
     StorageAccountsImpl(final StorageAccountsInner client, final ResourceManager resourceManager) {
         super(resourceManager, client);
-        this.converter = new PagedListConverter<StorageAccountInner, StorageAccount>() {
-            @Override
-            public StorageAccount typeConvert(StorageAccountInner storageAccountInner) {
-                return createFluentModel(storageAccountInner);
-            }
-        };
     }
 
     @Override
@@ -53,13 +45,13 @@ class StorageAccountsImpl
     @Override
     public PagedList<StorageAccount> list() throws CloudException, IOException {
         ServiceResponse<List<StorageAccountInner>> response = this.innerCollection.list();
-        return converter.convert(toPagedList(response.getBody()));
+        return this.converter.convert(toPagedList(response.getBody()));
     }
 
     @Override
     public PagedList<StorageAccount> listByGroup(String groupName) throws CloudException, IOException {
         ServiceResponse<List<StorageAccountInner>> response = this.innerCollection.listByResourceGroup(groupName);
-        return converter.convert(toPagedList(response.getBody()));
+        return this.converter.convert(toPagedList(response.getBody()));
     }
 
     @Override

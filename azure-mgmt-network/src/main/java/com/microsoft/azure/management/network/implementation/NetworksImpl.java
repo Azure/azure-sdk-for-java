@@ -16,7 +16,6 @@ import com.microsoft.azure.management.network.implementation.api.VirtualNetworkI
 import com.microsoft.azure.management.network.implementation.api.VirtualNetworksInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.ServiceResponse;
 
@@ -30,28 +29,21 @@ import java.util.ArrayList;
 class NetworksImpl
         extends GroupableResourcesImpl<Network, NetworkImpl, VirtualNetworkInner, VirtualNetworksInner>
         implements Networks {
-    private final PagedListConverter<VirtualNetworkInner, Network> converter;
 
     NetworksImpl(final VirtualNetworksInner client, final ResourceManager resourceManager) {
         super(resourceManager, client);
-        this.converter = new PagedListConverter<VirtualNetworkInner, Network>() {
-            @Override
-            public Network typeConvert(VirtualNetworkInner inner) {
-                return createFluentModel(inner);
-            }
-        };
     }
 
     @Override
     public PagedList<Network> list() throws CloudException, IOException {
         ServiceResponse<PagedList<VirtualNetworkInner>> response = this.innerCollection.listAll();
-        return converter.convert(response.getBody());
+        return this.converter.convert(response.getBody());
     }
 
     @Override
     public PagedList<Network> listByGroup(String groupName) throws CloudException, IOException {
         ServiceResponse<PagedList<VirtualNetworkInner>> response = this.innerCollection.list(groupName);
-        return converter.convert(response.getBody());
+        return this.converter.convert(response.getBody());
     }
 
     @Override

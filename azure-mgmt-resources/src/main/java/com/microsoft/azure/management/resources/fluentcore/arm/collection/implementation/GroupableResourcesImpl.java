@@ -13,6 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 
 /**
@@ -34,12 +35,19 @@ public abstract class GroupableResourcesImpl<
 
     protected final ResourceManager resourceManager;
     protected final InnerCollectionT innerCollection;
+    protected final PagedListConverter<InnerT, T> converter;
 
     protected GroupableResourcesImpl(
             ResourceManager resourceManager,
             InnerCollectionT innerCollection) {
         this.resourceManager = resourceManager;
         this.innerCollection = innerCollection;
+        this.converter = new PagedListConverter<InnerT, T>() {
+            @Override
+            public T typeConvert(InnerT inner) {
+                return createFluentModel(inner);
+            }
+        };
     }
 
     @Override
