@@ -1,4 +1,4 @@
-/**
+ /**
  *
  * Copyright (c) Microsoft Corporation. All rights reserved.
  * Licensed under the MIT License. See License.txt in the project root for license information.
@@ -64,6 +64,7 @@ public final class ManageAvailabilitySet {
             System.out.println("Selected subscription: " + azure.subscriptionId());
 
             try {
+
                 //=============================================================
                 // Create an availability set
 
@@ -71,14 +72,14 @@ public final class ManageAvailabilitySet {
 
                 AvailabilitySet availSet1 = azure.availabilitySets().define(availSetName1)
                         .withRegion(Region.US_EAST)
-                        .withNewGroup()
+                        .withNewGroup(rgName)
                         .withFaultDomainCount(2)
                         .withUpdateDomainCount(4)
                         .withTag("cluster", "Windowslinux")
                         .withTag("tag1", "tag1val")
                         .create();
 
-                System.out.println("Created first availability set:" + availSet1.id());
+                System.out.println("Created first availability set: " + availSet1.id());
                 Utils.print(availSet1);
 
 
@@ -123,7 +124,7 @@ public final class ManageAvailabilitySet {
                         .withExistingAvailabilitySet(availSet1)
                         .create();
 
-                System.out.println("Created second VM:" + vm2.id());
+                System.out.println("Created second VM: " + vm2.id());
                 Utils.print(vm2);
 
 
@@ -146,10 +147,10 @@ public final class ManageAvailabilitySet {
 
                 AvailabilitySet availSet2 = azure.availabilitySets().define(availSetName2)
                         .withRegion(Region.US_EAST)
-                        .withNewGroup()
+                        .withExistingGroup(rgName)
                         .create();
 
-                System.out.println("Created second availability set:" + availSet2.id());
+                System.out.println("Created second availability set: " + availSet2.id());
                 Utils.print(availSet2);
 
 
