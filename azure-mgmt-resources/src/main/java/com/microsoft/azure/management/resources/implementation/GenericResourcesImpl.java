@@ -41,7 +41,7 @@ final class GenericResourcesImpl
 
     @Override
     public PagedList<GenericResource> listByGroup(String groupName) throws CloudException, IOException {
-        return this.converter.convert(resourceGroupsInner.listResources(groupName).getBody());
+        return wrapList(resourceGroupsInner.listResources(groupName).getBody());
     }
 
     @Override
@@ -107,7 +107,7 @@ final class GenericResourcesImpl
     }
 
     @Override
-    protected GenericResourceImpl createFluentModel(String id) {
+    protected GenericResourceImpl wrapModel(String id) {
         return new GenericResourceImpl(
                 id,
                 new GenericResourceInner(),
@@ -121,7 +121,7 @@ final class GenericResourcesImpl
     }
 
     @Override
-    protected GenericResourceImpl createFluentModel(GenericResourceInner inner) {
+    protected GenericResourceImpl wrapModel(GenericResourceInner inner) {
         return new GenericResourceImpl(
                 inner.id(),
                 inner,

@@ -32,22 +32,22 @@ class PublicIpAddressesImpl
 
     @Override
     public PagedList<PublicIpAddress> list() throws CloudException, IOException {
-        return this.converter.convert(this.innerCollection.listAll().getBody());
+        return wrapList(this.innerCollection.listAll().getBody());
     }
 
     @Override
     public PagedList<PublicIpAddress> listByGroup(String groupName) throws CloudException, IOException {
-        return this.converter.convert(this.innerCollection.list(groupName).getBody());
+        return wrapList(this.innerCollection.list(groupName).getBody());
     }
 
     @Override
     public PublicIpAddressImpl getByGroup(String groupName, String name) throws CloudException, IOException {
-        return createFluentModel(this.innerCollection.get(groupName, name).getBody());
+        return wrapModel(this.innerCollection.get(groupName, name).getBody());
     }
 
     @Override
     public void delete(String id) throws Exception {
-        this.delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+        delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
@@ -57,13 +57,13 @@ class PublicIpAddressesImpl
 
     @Override
     public PublicIpAddressImpl define(String name) {
-        return createFluentModel(name);
+        return wrapModel(name);
     }
 
     // Fluent model create helpers
 
     @Override
-    protected PublicIpAddressImpl createFluentModel(String name) {
+    protected PublicIpAddressImpl wrapModel(String name) {
         PublicIPAddressInner inner = new PublicIPAddressInner();
 
         if (null == inner.dnsSettings()) {
@@ -74,7 +74,7 @@ class PublicIpAddressesImpl
     }
 
     @Override
-    protected PublicIpAddressImpl createFluentModel(PublicIPAddressInner inner) {
+    protected PublicIpAddressImpl wrapModel(PublicIPAddressInner inner) {
         return new PublicIpAddressImpl(inner.id(), inner, this.innerCollection, this.resourceManager);
     }
 }

@@ -7,21 +7,17 @@
 package com.microsoft.azure.management.storage.implementation;
 
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
-import com.microsoft.azure.management.resources.implementation.api.PageImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.implementation.api.SkuName;
 import com.microsoft.azure.management.storage.implementation.api.StorageAccountInner;
 import com.microsoft.azure.management.storage.implementation.api.StorageAccountsInner;
-import com.microsoft.rest.RestException;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * The implementation of StorageAccounts and its parent interfaces.
@@ -41,22 +37,22 @@ class StorageAccountsImpl
 
     @Override
     public PagedList<StorageAccount> list() throws CloudException, IOException {
-        return this.converter.convert(toPagedList(this.innerCollection.list().getBody()));
+        return wrapList(this.innerCollection.list().getBody());
     }
 
     @Override
     public PagedList<StorageAccount> listByGroup(String groupName) throws CloudException, IOException {
-        return this.converter.convert(toPagedList(this.innerCollection.listByResourceGroup(groupName).getBody()));
+        return wrapList(this.innerCollection.listByResourceGroup(groupName).getBody());
     }
 
     @Override
     public StorageAccount getByGroup(String groupName, String name) throws CloudException, IOException {
-        return createFluentModel(this.innerCollection.getProperties(groupName, name).getBody());
+        return wrapModel(this.innerCollection.getProperties(groupName, name).getBody());
     }
 
     @Override
     public void delete(String id) throws Exception {
-        this.delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+        delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
@@ -66,25 +62,13 @@ class StorageAccountsImpl
 
     @Override
     public StorageAccountImpl define(String name) {
-        return createFluentModel(name)
+        return wrapModel(name)
                 .withSku(SkuName.STANDARD_GRS)
                 .withGeneralPurposeAccountKind();
     }
 
-    private PagedList<StorageAccountInner> toPagedList(List<StorageAccountInner> list) {
-        PageImpl<StorageAccountInner> page = new PageImpl<>();
-        page.setItems(list);
-        page.setNextPageLink(null);
-        return new PagedList<StorageAccountInner>(page) {
-            @Override
-            public Page<StorageAccountInner> nextPage(String nextPageLink) throws RestException, IOException {
-                return null;
-            }
-        };
-    }
-
     @Override
-    protected StorageAccountImpl createFluentModel(String name) {
+    protected StorageAccountImpl wrapModel(String name) {
         return new StorageAccountImpl(
                 name,
                 new StorageAccountInner(),
@@ -93,7 +77,7 @@ class StorageAccountsImpl
     }
 
     @Override
-    protected StorageAccountImpl createFluentModel(StorageAccountInner storageAccountInner) {
+    protected StorageAccountImpl wrapModel(StorageAccountInner storageAccountInner) {
         return new StorageAccountImpl(
                 storageAccountInner.name(),
                 storageAccountInner,

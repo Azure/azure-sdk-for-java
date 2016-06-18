@@ -35,22 +35,22 @@ class NetworksImpl
 
     @Override
     public PagedList<Network> list() throws CloudException, IOException {
-        return this.converter.convert(this.innerCollection.listAll().getBody());
+        return wrapList(this.innerCollection.listAll().getBody());
     }
 
     @Override
     public PagedList<Network> listByGroup(String groupName) throws CloudException, IOException {
-        return this.converter.convert(this.innerCollection.list(groupName).getBody());
+        return wrapList(this.innerCollection.list(groupName).getBody());
     }
 
     @Override
     public NetworkImpl getByGroup(String groupName, String name) throws CloudException, IOException {
-        return createFluentModel(this.innerCollection.get(groupName, name).getBody());
+        return wrapModel(this.innerCollection.get(groupName, name).getBody());
     }
 
     @Override
     public void delete(String id) throws Exception {
-        this.delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+        delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
@@ -60,13 +60,13 @@ class NetworksImpl
 
     @Override
     public NetworkImpl define(String name) {
-        return createFluentModel(name);
+        return wrapModel(name);
     }
 
     // Fluent model create helpers
 
     @Override
-    protected NetworkImpl createFluentModel(String name) {
+    protected NetworkImpl wrapModel(String name) {
         VirtualNetworkInner inner = new VirtualNetworkInner();
 
         // Initialize address space
@@ -100,7 +100,7 @@ class NetworksImpl
     }
 
     @Override
-    protected NetworkImpl createFluentModel(VirtualNetworkInner inner) {
+    protected NetworkImpl wrapModel(VirtualNetworkInner inner) {
         return new NetworkImpl(inner.name(), inner, this.innerCollection, this.resourceManager);
     }
 }

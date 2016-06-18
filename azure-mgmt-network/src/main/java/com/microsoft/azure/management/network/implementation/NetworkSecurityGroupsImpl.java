@@ -33,22 +33,22 @@ class NetworkSecurityGroupsImpl
 
     @Override
     public PagedList<NetworkSecurityGroup> list() throws CloudException, IOException {
-        return this.converter.convert(this.innerCollection.listAll().getBody());
+        return wrapList(this.innerCollection.listAll().getBody());
     }
 
     @Override
     public PagedList<NetworkSecurityGroup> listByGroup(String groupName) throws CloudException, IOException {
-        return this.converter.convert(this.innerCollection.list(groupName).getBody());
+        return wrapList(this.innerCollection.list(groupName).getBody());
     }
 
     @Override
     public NetworkSecurityGroupImpl getByGroup(String groupName, String name) throws CloudException, IOException {
-        return createFluentModel(this.innerCollection.get(groupName, name).getBody());
+        return wrapModel(this.innerCollection.get(groupName, name).getBody());
     }
 
     @Override
     public void delete(String id) throws Exception {
-        this.delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+        delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
@@ -58,13 +58,13 @@ class NetworkSecurityGroupsImpl
 
     @Override
     public NetworkSecurityGroupImpl define(String name) {
-        return createFluentModel(name);
+        return wrapModel(name);
     }
 
     // Fluent model create helpers
 
     @Override
-    protected NetworkSecurityGroupImpl createFluentModel(String name) {
+    protected NetworkSecurityGroupImpl wrapModel(String name) {
         NetworkSecurityGroupInner inner = new NetworkSecurityGroupInner();
 
         // Initialize rules
@@ -80,7 +80,7 @@ class NetworkSecurityGroupsImpl
     }
 
     @Override
-    protected NetworkSecurityGroupImpl createFluentModel(NetworkSecurityGroupInner inner) {
+    protected NetworkSecurityGroupImpl wrapModel(NetworkSecurityGroupInner inner) {
         return new NetworkSecurityGroupImpl(inner.name(), inner, this.innerCollection, this.resourceManager);
     }
 }

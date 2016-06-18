@@ -21,6 +21,7 @@ import java.util.ArrayList;
 class NetworkInterfacesImpl
         extends GroupableResourcesImpl<NetworkInterface, NetworkInterfaceImpl, NetworkInterfaceInner, NetworkInterfacesInner>
         implements NetworkInterfaces {
+
     private final NetworkManager networkManager;
 
     NetworkInterfacesImpl(
@@ -33,17 +34,17 @@ class NetworkInterfacesImpl
 
     @Override
     public PagedList<NetworkInterface> list() throws CloudException, IOException {
-        return this.converter.convert(innerCollection.listAll().getBody());
+        return wrapList(innerCollection.listAll().getBody());
     }
 
     @Override
     public PagedList<NetworkInterface> listByGroup(String groupName) throws CloudException, IOException {
-        return this.converter.convert(innerCollection.list(groupName).getBody());
+        return wrapList(innerCollection.list(groupName).getBody());
     }
 
     @Override
     public NetworkInterface getByGroup(String groupName, String name) throws CloudException, IOException {
-        return createFluentModel(this.innerCollection.get(groupName, name).getBody());
+        return wrapModel(this.innerCollection.get(groupName, name).getBody());
     }
 
     @Override
@@ -57,12 +58,12 @@ class NetworkInterfacesImpl
     }
 
     @Override
-    public NetworkInterface.DefinitionBlank define(String name) {
-        return createFluentModel(name);
+    public NetworkInterfaceImpl define(String name) {
+        return wrapModel(name);
     }
 
     @Override
-    protected NetworkInterfaceImpl createFluentModel(String name) {
+    protected NetworkInterfaceImpl wrapModel(String name) {
         NetworkInterfaceInner inner = new NetworkInterfaceInner();
         inner.withIpConfigurations(new ArrayList<NetworkInterfaceIPConfiguration>());
         inner.withDnsSettings(new NetworkInterfaceDnsSettings());
@@ -74,7 +75,7 @@ class NetworkInterfacesImpl
     }
 
     @Override
-    protected NetworkInterfaceImpl createFluentModel(NetworkInterfaceInner inner) {
+    protected NetworkInterfaceImpl wrapModel(NetworkInterfaceInner inner) {
         return new NetworkInterfaceImpl(inner.name(),
                 inner,
                 this.innerCollection,

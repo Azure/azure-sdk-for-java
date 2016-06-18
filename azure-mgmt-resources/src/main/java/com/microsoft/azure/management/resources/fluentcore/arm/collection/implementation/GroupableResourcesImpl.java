@@ -6,8 +6,11 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation;
 
 import java.io.IOException;
+import java.util.List;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
@@ -15,6 +18,8 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
+import com.microsoft.azure.management.resources.implementation.api.PageImpl;
+import com.microsoft.rest.RestException;
 
 /**
  * Base class for resource collection classes.
@@ -35,7 +40,7 @@ public abstract class GroupableResourcesImpl<
 
     protected final ResourceManager resourceManager;
     protected final InnerCollectionT innerCollection;
-    protected final PagedListConverter<InnerT, T> converter;
+    private final PagedListConverter<InnerT, T> converter;
 
     protected GroupableResourcesImpl(
             ResourceManager resourceManager,
@@ -45,7 +50,7 @@ public abstract class GroupableResourcesImpl<
         this.converter = new PagedListConverter<InnerT, T>() {
             @Override
             public T typeConvert(InnerT inner) {
-                return createFluentModel(inner);
+                return wrapModel(inner);
             }
         };
     }
@@ -60,7 +65,25 @@ public abstract class GroupableResourcesImpl<
                 ResourceUtils.nameFromResourceId(id));
     }
 
-    protected abstract ImplT createFluentModel(String name);
+    protected abstract ImplT wrapModel(String name);
 
-    protected abstract ImplT createFluentModel(InnerT inner);
+    protected abstract ImplT wrapModel(InnerT inner);
+
+    protected PagedList<T> wrapList(PagedList<InnerT> pagedList) {
+        return converter.convert(pagedList);
+    }
+
+    protected PagedList<T> wrapList(List<InnerT> list) {
+        PageImpl<InnerT> page = new PageImpl<>();
+        page.setItems(list);
+        page.setNextPageLink(null);
+        PagedList<InnerT> pagedList = new PagedList<InnerT>(page) {
+            @Override
+            public Page<InnerT> nextPage(String nextPageLink) throws RestException, IOException {
+                return null;
+            }
+        };
+
+        return converter.convert(pagedList);
+    }
 }
