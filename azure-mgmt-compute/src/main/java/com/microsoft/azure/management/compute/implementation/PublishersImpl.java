@@ -7,7 +7,7 @@ package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.compute.Publisher;
-import com.microsoft.azure.management.compute.VirtualMachineImages;
+import com.microsoft.azure.management.compute.Publishers;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImageResourceInner;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImagesInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -21,7 +21,7 @@ import java.util.List;
  */
 class PublishersImpl
         extends WrappersImpl<Publisher, PublisherImpl, VirtualMachineImageResourceInner>
-        implements VirtualMachineImages.Publishers {
+        implements Publishers {
 
     private final VirtualMachineImagesInner innerCollection;
 

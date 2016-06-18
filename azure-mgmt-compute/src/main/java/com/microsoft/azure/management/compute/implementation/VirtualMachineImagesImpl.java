@@ -3,6 +3,7 @@ package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.compute.Offer;
 import com.microsoft.azure.management.compute.Publisher;
+import com.microsoft.azure.management.compute.Publishers;
 import com.microsoft.azure.management.compute.Sku;
 import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachineImages;
@@ -19,7 +20,7 @@ import java.util.List;
  */
 class VirtualMachineImagesImpl
         implements VirtualMachineImages {
-    private final VirtualMachineImages.Publishers publishers;
+    private final Publishers publishers;
 
     VirtualMachineImagesImpl(VirtualMachineImagesInner client) {
         this.publishers = new PublishersImpl(client);
