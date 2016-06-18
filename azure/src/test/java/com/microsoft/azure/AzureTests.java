@@ -6,6 +6,11 @@
 package com.microsoft.azure;
 
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
+import com.microsoft.azure.management.compute.Offer;
+import com.microsoft.azure.management.compute.Publisher;
+import com.microsoft.azure.management.compute.Sku;
+import com.microsoft.azure.management.compute.VirtualMachineImage;
+import com.microsoft.azure.management.resources.GenericResource;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.storage.StorageAccount;
@@ -18,6 +23,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public class AzureTests {
     private static final ServiceClientCredentials CREDENTIALS = new ApplicationTokenCredentials(
@@ -67,6 +73,38 @@ public class AzureTests {
     }
 
     /**
+     * Tests basic generic resources retrieval
+     * @throws Exception
+     */
+    @Test public void testGenericResources() throws Exception {
+        azure2.genericResources().listByGroup("sdkpriv");
+        GenericResource resourceByGroup = azure2.genericResources().getByGroup("sdkpriv", "sdkpriv");
+        GenericResource resourceById = azure2.genericResources().getById(resourceByGroup.id());
+        Assert.assertTrue(resourceById.id().equalsIgnoreCase(resourceByGroup.id()));
+    }
+
+    /**
+     * Tests VM images
+     * @throws IOException
+     * @throws CloudException
+     */
+    @Test public void testVMImages() throws CloudException, IOException {
+        List<Publisher> publishers = azure2.virtualMachineImages().publishers().listByRegion(Region.US_WEST);
+        Assert.assertTrue(publishers.size() > 0);
+        for (Publisher p : publishers) {
+            System.out.println(String.format("Publisher name: %s, region: %s", p.name(), p.region()));
+            for (Offer o : p.offers().list()) {
+                System.out.println(String.format("\tOffer name: %s", o.name()));
+                for (Sku s : o.skus().list()) {
+                    System.out.println(String.format("\t\tSku name: %s", s.name()));
+                }
+            }
+        }
+        List<VirtualMachineImage> images = azure2.virtualMachineImages().listByRegion(Region.US_WEST);
+        Assert.assertTrue(images.size() > 0);
+    }
+
+    /**
      * Tests the network security group implementation
      * @throws Exception
      */
@@ -109,7 +147,7 @@ public class AzureTests {
     @Test public void testVirtualMachines() throws Exception {
         // Future: This method needs to have a better specific name since we are going to include unit test for
         // different vm scenarios.
-        new TestVirtualMachine().runTest(azure.virtualMachines(), azure.resourceGroups());
+        new TestVirtualMachine().runTest(azure2.virtualMachines(), azure2.resourceGroups());
     }
 
     /**
@@ -125,10 +163,10 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testVirtualMachineNics() throws Exception {
-        new TestVirtualMachineNics(azure.resourceGroups(),
-                    azure.networks(),
-                    azure.networkInterfaces())
-                .runTest(azure.virtualMachines(), azure.resourceGroups());
+        new TestVirtualMachineNics(azure2.resourceGroups(),
+                    azure2.networks(),
+                    azure2.networkInterfaces())
+                .runTest(azure2.virtualMachines(), azure2.resourceGroups());
     }
 
     @Test public void testVirtualMachineSSh() throws Exception {
@@ -138,7 +176,7 @@ public class AzureTests {
 
     @Test public void testVirtualMachineSizes() throws Exception {
         new TestVirtualMachineSizes()
-                .runTest(azure.virtualMachines(), azure.resourceGroups());
+                .runTest(azure2.virtualMachines(), azure2.resourceGroups());
     }
 
     @Test

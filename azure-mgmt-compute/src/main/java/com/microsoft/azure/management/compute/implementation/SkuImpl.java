@@ -1,6 +1,9 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.compute.Offer;
+import com.microsoft.azure.management.compute.Publisher;
+import com.microsoft.azure.management.compute.Sku;
 import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImageResourceInner;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImagesInner;
@@ -13,15 +16,15 @@ import java.util.List;
 /**
  * The implementation for {@link VirtualMachineImage.Sku}.
  */
-class VirtualMachineImageSkuImpl
-        implements VirtualMachineImage.Sku {
+class SkuImpl
+        implements Sku {
     private final VirtualMachineImagesInner client;
-    private final VirtualMachineImage.Offer offer;
-    private final String sku;
+    private final Offer offer;
+    private final String skuName;
 
-    VirtualMachineImageSkuImpl(VirtualMachineImage.Offer offer, String sku, VirtualMachineImagesInner client) {
+    SkuImpl(Offer offer, String skuName, VirtualMachineImagesInner client) {
         this.offer = offer;
-        this.sku = sku;
+        this.skuName = skuName;
         this.client = client;
     }
 
@@ -31,17 +34,17 @@ class VirtualMachineImageSkuImpl
     }
 
     @Override
-    public String publisher() {
+    public Publisher publisher() {
         return offer.publisher();
     }
 
     @Override
-    public String offer() {
-        return offer.offer();
+    public Offer offer() {
+        return offer;
     }
 
-    public String sku() {
-        return this.sku;
+    public String name() {
+        return this.skuName;
     }
 
     @Override
@@ -50,17 +53,17 @@ class VirtualMachineImageSkuImpl
         for (VirtualMachineImageResourceInner inner
                 : client.list(
                         region().toString(),
-                        publisher(),
-                        offer(),
-                        sku).getBody()) {
+                        publisher().name(),
+                        offer.name(),
+                        skuName).getBody()) {
             String version = inner.name();
             images.add(new VirtualMachineImageImpl(
                     region(),
-                    publisher(),
-                    offer(),
-                    sku,
+                    publisher().name(),
+                    offer.name(),
+                    skuName,
                     version,
-                    client.get(region().toString(), publisher(), offer(), sku, version).getBody(),
+                    client.get(region().toString(), publisher().name(), offer.name(), skuName, version).getBody(),
                     client));
         }
         return images;

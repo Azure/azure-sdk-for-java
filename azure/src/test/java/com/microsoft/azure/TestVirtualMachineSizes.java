@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure;
 
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
@@ -12,9 +18,9 @@ import java.util.List;
 public class TestVirtualMachineSizes extends TestTemplate<VirtualMachine, VirtualMachines> {
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
-        List<VirtualMachineSize> availableSizes = virtualMachines.availableSizesByRegion(Region.US_EAST);
+        List<VirtualMachineSize> availableSizes = virtualMachines.sizes().listByRegion(Region.US_EAST);
         Assert.assertTrue(availableSizes.size() > 0);
-
+        System.out.println("VM Sizes: " + availableSizes);
         final String vmName = "vm" + this.testId;
         VirtualMachine vm = virtualMachines.define(vmName)
                 .withRegion(Region.US_EAST)

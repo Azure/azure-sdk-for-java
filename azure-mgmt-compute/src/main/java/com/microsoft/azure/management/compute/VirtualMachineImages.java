@@ -1,11 +1,16 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 package com.microsoft.azure.management.compute;
+
+import java.io.IOException;
+import java.util.List;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingByRegion;
-
-import java.io.IOException;
-import java.util.List;
 
 /**
  *  Entry point to virtual machine image management API.
@@ -13,12 +18,29 @@ import java.util.List;
 public interface VirtualMachineImages extends
         SupportsListingByRegion<VirtualMachineImage> {
     /**
-     * Lists the virtual machine publishers in a region.
-     *
-     * @param region the region
-     * @return the list of VM image publishers
-     * @throws CloudException thrown for an invalid response from the service
-     * @throws IOException thrown for IO exception
+     * @return entry point to virtual machine image publishers
      */
-    List<VirtualMachineImage.Publisher> listPublishers(final Region region) throws CloudException, IOException;
+    Publishers publishers();
+
+    /**
+     * Lists all the virtual machine images available in a given region.
+     * <p>
+     * Note this is a very long running call, as it enumerates through all publishers, offers and skus.
+     * @return list of virtual machine images
+     * @param regionName the name of the region as used internally by Azure
+     * @throws CloudException exceptions thrown from the cloud
+     * @throws IOException exceptions thrown from serialization/deserialization
+     */
+    List<VirtualMachineImage> listByRegion(String regionName) throws CloudException, IOException;
+
+    /**
+     * Lists all the virtual machine images available in a given region.
+     * <p>
+     * Note this is a very long running call, as it enumerates through all publishers, offers and skus.
+     * @return list of virtual machine images
+     * @param region the region to list the images from
+     * @throws CloudException exceptions thrown from the cloud
+     * @throws IOException exceptions thrown from serialization/deserialization
+     */
+    List<VirtualMachineImage> listByRegion(Region region) throws CloudException, IOException;
 }
