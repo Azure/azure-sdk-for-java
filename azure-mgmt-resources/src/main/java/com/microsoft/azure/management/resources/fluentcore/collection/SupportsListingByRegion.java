@@ -23,10 +23,19 @@ public interface SupportsListingByRegion<T> {
     /**
      * Lists all the resources of the specified type in the specified region.
      *
-     * @param region the Azure region to list the resources from
+     * @param region the selected Azure region
      * @return list of resources
      * @throws CloudException exceptions thrown from the cloud.
      * @throws IOException exceptions thrown from serialization/deserialization.
      */
-    List<T> list(Region region) throws CloudException, IOException;
+    List<T> listByRegion(Region region) throws CloudException, IOException;
+
+    /**
+     * List all the resources of the specified type in the specified region.
+     * @param regionName the name of an Azure region
+     * @return list of resources
+     * @throws CloudException exceptions thrown from the cloud.
+     * @throws IOException exceptions thrown from serialization/deserialization.
+     */
+    List<T> listByRegion(String regionName) throws CloudException, IOException;
 }
