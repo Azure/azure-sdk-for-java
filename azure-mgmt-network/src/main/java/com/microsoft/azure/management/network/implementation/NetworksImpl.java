@@ -17,7 +17,6 @@ import com.microsoft.azure.management.network.implementation.api.VirtualNetworks
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
-import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,25 +35,22 @@ class NetworksImpl
 
     @Override
     public PagedList<Network> list() throws CloudException, IOException {
-        ServiceResponse<PagedList<VirtualNetworkInner>> response = this.innerCollection.listAll();
-        return this.converter.convert(response.getBody());
+        return wrapList(this.innerCollection.listAll().getBody());
     }
 
     @Override
     public PagedList<Network> listByGroup(String groupName) throws CloudException, IOException {
-        ServiceResponse<PagedList<VirtualNetworkInner>> response = this.innerCollection.list(groupName);
-        return this.converter.convert(response.getBody());
+        return wrapList(this.innerCollection.list(groupName).getBody());
     }
 
     @Override
     public NetworkImpl getByGroup(String groupName, String name) throws CloudException, IOException {
-        ServiceResponse<VirtualNetworkInner> serviceResponse = this.innerCollection.get(groupName, name);
-        return createFluentModel(serviceResponse.getBody());
+        return wrapModel(this.innerCollection.get(groupName, name).getBody());
     }
 
     @Override
     public void delete(String id) throws Exception {
-        this.delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+        delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
@@ -64,13 +60,13 @@ class NetworksImpl
 
     @Override
     public NetworkImpl define(String name) {
-        return createFluentModel(name);
+        return wrapModel(name);
     }
 
     // Fluent model create helpers
 
     @Override
-    protected NetworkImpl createFluentModel(String name) {
+    protected NetworkImpl wrapModel(String name) {
         VirtualNetworkInner inner = new VirtualNetworkInner();
 
         // Initialize address space
@@ -104,7 +100,7 @@ class NetworksImpl
     }
 
     @Override
-    protected NetworkImpl createFluentModel(VirtualNetworkInner inner) {
+    protected NetworkImpl wrapModel(VirtualNetworkInner inner) {
         return new NetworkImpl(inner.name(), inner, this.innerCollection, this.resourceManager);
     }
 }

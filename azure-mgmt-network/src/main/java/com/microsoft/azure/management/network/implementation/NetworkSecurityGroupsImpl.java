@@ -15,7 +15,6 @@ import com.microsoft.azure.management.network.implementation.api.SecurityRuleInn
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
-import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,25 +33,22 @@ class NetworkSecurityGroupsImpl
 
     @Override
     public PagedList<NetworkSecurityGroup> list() throws CloudException, IOException {
-        ServiceResponse<PagedList<NetworkSecurityGroupInner>> response = this.innerCollection.listAll();
-        return this.converter.convert(response.getBody());
+        return wrapList(this.innerCollection.listAll().getBody());
     }
 
     @Override
     public PagedList<NetworkSecurityGroup> listByGroup(String groupName) throws CloudException, IOException {
-        ServiceResponse<PagedList<NetworkSecurityGroupInner>> response = this.innerCollection.list(groupName);
-        return this.converter.convert(response.getBody());
+        return wrapList(this.innerCollection.list(groupName).getBody());
     }
 
     @Override
     public NetworkSecurityGroupImpl getByGroup(String groupName, String name) throws CloudException, IOException {
-        ServiceResponse<NetworkSecurityGroupInner> serviceResponse = this.innerCollection.get(groupName, name);
-        return createFluentModel(serviceResponse.getBody());
+        return wrapModel(this.innerCollection.get(groupName, name).getBody());
     }
 
     @Override
     public void delete(String id) throws Exception {
-        this.delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+        delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
@@ -62,13 +58,13 @@ class NetworkSecurityGroupsImpl
 
     @Override
     public NetworkSecurityGroupImpl define(String name) {
-        return createFluentModel(name);
+        return wrapModel(name);
     }
 
     // Fluent model create helpers
 
     @Override
-    protected NetworkSecurityGroupImpl createFluentModel(String name) {
+    protected NetworkSecurityGroupImpl wrapModel(String name) {
         NetworkSecurityGroupInner inner = new NetworkSecurityGroupInner();
 
         // Initialize rules
@@ -84,7 +80,7 @@ class NetworkSecurityGroupsImpl
     }
 
     @Override
-    protected NetworkSecurityGroupImpl createFluentModel(NetworkSecurityGroupInner inner) {
+    protected NetworkSecurityGroupImpl wrapModel(NetworkSecurityGroupInner inner) {
         return new NetworkSecurityGroupImpl(inner.name(), inner, this.innerCollection, this.resourceManager);
     }
 }

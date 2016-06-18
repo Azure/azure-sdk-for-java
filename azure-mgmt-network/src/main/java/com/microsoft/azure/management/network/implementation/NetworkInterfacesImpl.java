@@ -11,7 +11,6 @@ import com.microsoft.azure.management.network.implementation.api.NetworkInterfac
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
-import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,6 +21,7 @@ import java.util.ArrayList;
 class NetworkInterfacesImpl
         extends GroupableResourcesImpl<NetworkInterface, NetworkInterfaceImpl, NetworkInterfaceInner, NetworkInterfacesInner>
         implements NetworkInterfaces {
+
     private final NetworkManager networkManager;
 
     NetworkInterfacesImpl(
@@ -34,20 +34,17 @@ class NetworkInterfacesImpl
 
     @Override
     public PagedList<NetworkInterface> list() throws CloudException, IOException {
-        ServiceResponse<PagedList<NetworkInterfaceInner>> response = innerCollection.listAll();
-        return this.converter.convert(response.getBody());
+        return wrapList(innerCollection.listAll().getBody());
     }
 
     @Override
     public PagedList<NetworkInterface> listByGroup(String groupName) throws CloudException, IOException {
-        ServiceResponse<PagedList<NetworkInterfaceInner>> response = innerCollection.list(groupName);
-        return this.converter.convert(response.getBody());
+        return wrapList(innerCollection.list(groupName).getBody());
     }
 
     @Override
     public NetworkInterface getByGroup(String groupName, String name) throws CloudException, IOException {
-        ServiceResponse<NetworkInterfaceInner> serviceResponse = this.innerCollection.get(groupName, name);
-        return createFluentModel(serviceResponse.getBody());
+        return wrapModel(this.innerCollection.get(groupName, name).getBody());
     }
 
     @Override
@@ -61,12 +58,12 @@ class NetworkInterfacesImpl
     }
 
     @Override
-    public NetworkInterface.DefinitionBlank define(String name) {
-        return createFluentModel(name);
+    public NetworkInterfaceImpl define(String name) {
+        return wrapModel(name);
     }
 
     @Override
-    protected NetworkInterfaceImpl createFluentModel(String name) {
+    protected NetworkInterfaceImpl wrapModel(String name) {
         NetworkInterfaceInner inner = new NetworkInterfaceInner();
         inner.withIpConfigurations(new ArrayList<NetworkInterfaceIPConfiguration>());
         inner.withDnsSettings(new NetworkInterfaceDnsSettings());
@@ -78,7 +75,7 @@ class NetworkInterfacesImpl
     }
 
     @Override
-    protected NetworkInterfaceImpl createFluentModel(NetworkInterfaceInner inner) {
+    protected NetworkInterfaceImpl wrapModel(NetworkInterfaceInner inner) {
         return new NetworkInterfaceImpl(inner.name(),
                 inner,
                 this.innerCollection,

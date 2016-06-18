@@ -15,7 +15,6 @@ import com.microsoft.azure.management.network.implementation.api.PublicIPAddress
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
-import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
 
@@ -33,25 +32,22 @@ class PublicIpAddressesImpl
 
     @Override
     public PagedList<PublicIpAddress> list() throws CloudException, IOException {
-        ServiceResponse<PagedList<PublicIPAddressInner>> response = this.innerCollection.listAll();
-        return this.converter.convert(response.getBody());
+        return wrapList(this.innerCollection.listAll().getBody());
     }
 
     @Override
     public PagedList<PublicIpAddress> listByGroup(String groupName) throws CloudException, IOException {
-        ServiceResponse<PagedList<PublicIPAddressInner>> response = this.innerCollection.list(groupName);
-        return this.converter.convert(response.getBody());
+        return wrapList(this.innerCollection.list(groupName).getBody());
     }
 
     @Override
     public PublicIpAddressImpl getByGroup(String groupName, String name) throws CloudException, IOException {
-        ServiceResponse<PublicIPAddressInner> serviceResponse = this.innerCollection.get(groupName, name);
-        return createFluentModel(serviceResponse.getBody());
+        return wrapModel(this.innerCollection.get(groupName, name).getBody());
     }
 
     @Override
     public void delete(String id) throws Exception {
-        this.delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+        delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
@@ -61,13 +57,13 @@ class PublicIpAddressesImpl
 
     @Override
     public PublicIpAddressImpl define(String name) {
-        return createFluentModel(name);
+        return wrapModel(name);
     }
 
     // Fluent model create helpers
 
     @Override
-    protected PublicIpAddressImpl createFluentModel(String name) {
+    protected PublicIpAddressImpl wrapModel(String name) {
         PublicIPAddressInner inner = new PublicIPAddressInner();
 
         if (null == inner.dnsSettings()) {
@@ -78,7 +74,7 @@ class PublicIpAddressesImpl
     }
 
     @Override
-    protected PublicIpAddressImpl createFluentModel(PublicIPAddressInner inner) {
+    protected PublicIpAddressImpl wrapModel(PublicIPAddressInner inner) {
         return new PublicIpAddressImpl(inner.id(), inner, this.innerCollection, this.resourceManager);
     }
 }

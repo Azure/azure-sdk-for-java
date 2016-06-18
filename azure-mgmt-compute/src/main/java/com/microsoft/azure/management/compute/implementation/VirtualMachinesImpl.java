@@ -33,7 +33,6 @@ import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The implementation for {@link VirtualMachines}.
@@ -60,29 +59,25 @@ class VirtualMachinesImpl
     }
 
     // Actions
-    //
 
     @Override
     public PagedList<VirtualMachine> list() throws CloudException, IOException {
-        ServiceResponse<PagedList<VirtualMachineInner>> response = this.innerCollection.listAll();
-        return this.converter.convert(response.getBody());
+        return wrapList(this.innerCollection.listAll().getBody());
     }
 
     @Override
     public PagedList<VirtualMachine> listByGroup(String groupName) throws CloudException, IOException {
-        ServiceResponse<List<VirtualMachineInner>> response = this.innerCollection.list(groupName);
-        return this.converter.convert(toPagedList(response.getBody()));
+        return wrapList(this.innerCollection.list(groupName).getBody());
     }
 
     @Override
     public VirtualMachine getByGroup(String groupName, String name) throws CloudException, IOException {
-        ServiceResponse<VirtualMachineInner> response = this.innerCollection.get(groupName, name);
-        return createFluentModel(response.getBody());
+        return wrapModel(this.innerCollection.get(groupName, name).getBody());
     }
 
     @Override
     public void delete(String id) throws Exception {
-        this.delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+        delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
@@ -92,7 +87,7 @@ class VirtualMachinesImpl
 
     @Override
     public VirtualMachine.DefinitionBlank define(String name) {
-        return createFluentModel(name);
+        return wrapModel(name);
     }
 
     @Override
@@ -118,7 +113,7 @@ class VirtualMachinesImpl
 
     @Override
     public PagedList<VirtualMachineSize> availableSizesByRegion(Region region) throws CloudException, IOException {
-        return this.availableSizesByRegion(region.toString());
+        return availableSizesByRegion(region.toString());
     }
 
     @Override
@@ -168,7 +163,7 @@ class VirtualMachinesImpl
     //
 
     @Override
-    protected VirtualMachineImpl createFluentModel(String name) {
+    protected VirtualMachineImpl wrapModel(String name) {
         VirtualMachineInner inner = new VirtualMachineInner();
         inner.withStorageProfile(new StorageProfile()
             .withOsDisk(new OSDisk())
@@ -187,7 +182,7 @@ class VirtualMachinesImpl
     }
 
     @Override
-    protected VirtualMachineImpl createFluentModel(VirtualMachineInner virtualMachineInner) {
+    protected VirtualMachineImpl wrapModel(VirtualMachineInner virtualMachineInner) {
         return new VirtualMachineImpl(virtualMachineInner.name(),
                 virtualMachineInner,
                 this.innerCollection,
@@ -195,17 +190,5 @@ class VirtualMachinesImpl
                 this.resourceManager,
                 this.storageManager,
                 this.networkManager);
-    }
-
-    private PagedList<VirtualMachineInner> toPagedList(List<VirtualMachineInner> list) {
-        PageImpl<VirtualMachineInner> page = new PageImpl<>();
-        page.setItems(list);
-        page.setNextPageLink(null);
-        return new PagedList<VirtualMachineInner>(page) {
-            @Override
-            public Page<VirtualMachineInner> nextPage(String nextPageLink) throws RestException, IOException {
-                return null;
-            }
-        };
     }
 }
