@@ -1,4 +1,4 @@
-/**
+ /**
  *
  * Copyright (c) Microsoft Corporation. All rights reserved.
  * Licensed under the MIT License. See License.txt in the project root for license information.
@@ -13,6 +13,7 @@ import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeTypes;
+import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.samples.Utils;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -43,6 +44,7 @@ public final class ManageAvailabilitySet {
         final String availSetName2 = Utils.createRandomName("av2");
         final String vm1Name = Utils.createRandomName("vm1");
         final String vm2Name = Utils.createRandomName("vm2");
+        final String vnetName = Utils.createRandomName("vnet");
 
         final String userName = "tirekicker";
         final String password = "12NewPA$$w0rd!";
@@ -64,6 +66,7 @@ public final class ManageAvailabilitySet {
             System.out.println("Selected subscription: " + azure.subscriptionId());
 
             try {
+
                 //=============================================================
                 // Create an availability set
 
@@ -71,15 +74,24 @@ public final class ManageAvailabilitySet {
 
                 AvailabilitySet availSet1 = azure.availabilitySets().define(availSetName1)
                         .withRegion(Region.US_EAST)
-                        .withNewGroup()
+                        .withNewGroup(rgName)
                         .withFaultDomainCount(2)
                         .withUpdateDomainCount(4)
                         .withTag("cluster", "Windowslinux")
                         .withTag("tag1", "tag1val")
                         .create();
 
-                System.out.println("Created first availability set:" + availSet1.id());
+                System.out.println("Created first availability set: " + availSet1.id());
                 Utils.print(availSet1);
+
+                //=============================================================
+                // Define a virtual network for the VMs in this availability set
+
+                Network.DefinitionCreatable network = azure.networks()
+                        .define(vnetName)
+                        .withRegion(Region.US_EAST)
+                        .withExistingGroup(rgName)
+                        .withAddressSpace("10.0.0.0/28");
 
 
                 //=============================================================
@@ -90,7 +102,7 @@ public final class ManageAvailabilitySet {
                 VirtualMachine vm1 = azure.virtualMachines().define(vm1Name)
                         .withRegion(Region.US_EAST)
                         .withExistingGroup(rgName)
-                        .withNewPrimaryNetwork("10.0.0.0/28")
+                        .withNewPrimaryNetwork(network)
                         .withPrimaryPrivateIpAddressDynamic()
                         .withoutPrimaryPublicIpAddress()
                         .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
@@ -113,7 +125,7 @@ public final class ManageAvailabilitySet {
                 VirtualMachine vm2 = azure.virtualMachines().define(vm2Name)
                         .withRegion(Region.US_EAST)
                         .withExistingGroup(rgName)
-                        .withNewPrimaryNetwork("10.0.0.0/28")
+                        .withNewPrimaryNetwork(network)
                         .withPrimaryPrivateIpAddressDynamic()
                         .withoutPrimaryPublicIpAddress()
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
@@ -123,7 +135,7 @@ public final class ManageAvailabilitySet {
                         .withExistingAvailabilitySet(availSet1)
                         .create();
 
-                System.out.println("Created second VM:" + vm2.id());
+                System.out.println("Created second VM: " + vm2.id());
                 Utils.print(vm2);
 
 
@@ -146,10 +158,10 @@ public final class ManageAvailabilitySet {
 
                 AvailabilitySet availSet2 = azure.availabilitySets().define(availSetName2)
                         .withRegion(Region.US_EAST)
-                        .withNewGroup()
+                        .withExistingGroup(rgName)
                         .create();
 
-                System.out.println("Created second availability set:" + availSet2.id());
+                System.out.println("Created second availability set: " + availSet2.id());
                 Utils.print(availSet2);
 
 

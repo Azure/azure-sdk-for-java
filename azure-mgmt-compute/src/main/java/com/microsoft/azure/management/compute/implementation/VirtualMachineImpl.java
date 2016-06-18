@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.DataDisk;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
@@ -1075,6 +1076,10 @@ class VirtualMachineImpl
         }
 
         if (availabilitySet != null) {
+            if (this.inner().availabilitySet() == null) {
+                this.inner().withAvailabilitySet(new SubResource());
+            }
+
             this.inner().availabilitySet().withId(availabilitySet.id());
         }
     }

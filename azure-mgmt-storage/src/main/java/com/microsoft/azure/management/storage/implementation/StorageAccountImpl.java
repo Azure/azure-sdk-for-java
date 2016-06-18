@@ -10,7 +10,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
-import com.microsoft.azure.management.storage.KeyType;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.api.AccessTier;
 import com.microsoft.azure.management.storage.implementation.api.CustomDomain;
@@ -141,9 +140,9 @@ class StorageAccountImpl
     }
 
     @Override
-    public List<StorageAccountKey> regenerateKey(KeyType keyType) throws CloudException, IOException {
+    public List<StorageAccountKey> regenerateKey(String keyName) throws CloudException, IOException {
         ServiceResponse<StorageAccountListKeysResultInner> response =
-                this.client.regenerateKey(this.resourceGroupName(), this.key, keyType.toString());
+                this.client.regenerateKey(this.resourceGroupName(), this.key, keyName);
         StorageAccountListKeysResultInner resultInner = response.getBody();
         cachedAccountKeys = resultInner.keys();
         return cachedAccountKeys;
