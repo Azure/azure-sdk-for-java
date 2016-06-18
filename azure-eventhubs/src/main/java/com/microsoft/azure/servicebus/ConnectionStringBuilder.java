@@ -37,7 +37,9 @@ import com.microsoft.azure.eventhubs.*;
 public class ConnectionStringBuilder
 {
 	final static String endpointFormat = "amqps://%s.servicebus.windows.net";
+	final static String endpointRawFormat = "amqps://%s";
 
+	final static String HostnameConfigName = "Hostname";
 	final static String EndpointConfigName = "Endpoint";
 	final static String SharedAccessKeyNameConfigName = "SharedAccessKeyName";
 	final static String SharedAccessKeyConfigName = "SharedAccessKey";
@@ -47,7 +49,7 @@ public class ConnectionStringBuilder
 	final static String KeyValueSeparator = "=";
 	final static String KeyValuePairDelimiter = ";";
 
-	private static final String AllKeyEnumerateRegex = "(" + EndpointConfigName + "|" + SharedAccessKeyNameConfigName
+	private static final String AllKeyEnumerateRegex = "(" + HostnameConfigName + "|" +  EndpointConfigName + "|" + SharedAccessKeyNameConfigName
 			+ "|" + SharedAccessKeyConfigName + "|" + EntityPathConfigName + "|" + OperationTimeoutConfigName
 			+ "|" + RetryPolicyConfigName + ")";
 
@@ -62,8 +64,29 @@ public class ConnectionStringBuilder
 	private Duration operationTimeout;
 	private RetryPolicy retryPolicy;
 
-	private ConnectionStringBuilder(final String namespaceName, final String entityPath, final String sharedAccessKeyName,
-			final String sharedAccessKey, final Duration operationTimeout, final RetryPolicy retryPolicy)
+	private ConnectionStringBuilder(
+			final URI endpointAddress, 
+			final String entityPath, 
+			final String sharedAccessKeyName,
+			final String sharedAccessKey, 
+			final Duration operationTimeout, 
+			final RetryPolicy retryPolicy)
+	{
+		this.endpoint = endpointAddress;
+		this.sharedAccessKey = sharedAccessKey;
+		this.sharedAccessKeyName = sharedAccessKeyName;
+		this.operationTimeout = operationTimeout;
+		this.retryPolicy = retryPolicy;
+		this.entityPath = entityPath;
+	}
+	
+	private ConnectionStringBuilder(
+			final String namespaceName, 
+			final String entityPath, 
+			final String sharedAccessKeyName,
+			final String sharedAccessKey, 
+			final Duration operationTimeout, 
+			final RetryPolicy retryPolicy)
 	{
 		try
 		{
@@ -85,15 +108,35 @@ public class ConnectionStringBuilder
 
 	/**
 	 * Build a connection string consumable by {@link EventHubClient#createFromConnectionString(String)}
-	 * @param namespaceName Namespace name (dns suffix - ex: .servicebus.windows.net is not required) 
+	 * @param namespaceName Namespace name (dns suffix - ex: .servicebus.windows.net is not required)
 	 * @param entityPath Entity path. For eventHubs case specify - eventHub name.
 	 * @param sharedAccessKeyName Shared Access Key name
 	 * @param sharedAccessKey Shared Access Key
 	 */
-	public ConnectionStringBuilder(final String namespaceName, final String entityPath, final String sharedAccessKeyName,
+	public ConnectionStringBuilder(
+			final String namespaceName, 
+			final String entityPath, 
+			final String sharedAccessKeyName,
 			final String sharedAccessKey)
 	{
 		this(namespaceName, entityPath, sharedAccessKeyName, sharedAccessKey, MessagingFactory.DefaultOperationTimeout, RetryPolicy.getDefault());
+	}
+	
+
+	/**
+	 * Build a connection string consumable by {@link EventHubClient#createFromConnectionString(String)}
+	 * @param endpointAddress namespace level endpoint. This needs to be in the format of scheme://fullyQualifiedServiceBusNamespaceEndpointName
+	 * @param entityPath Entity path. For eventHubs case specify - eventHub name.
+	 * @param sharedAccessKeyName Shared Access Key name
+	 * @param sharedAccessKey Shared Access Key
+	 */
+	public ConnectionStringBuilder(
+			final URI endpointAddress, 
+			final String entityPath, 
+			final String sharedAccessKeyName,
+			final String sharedAccessKey)
+	{
+		this(endpointAddress, entityPath, sharedAccessKeyName, sharedAccessKey, MessagingFactory.DefaultOperationTimeout, RetryPolicy.getDefault());
 	}
 
 	/**
@@ -275,6 +318,13 @@ public class ConnectionStringBuilder
 
 			if (key.equalsIgnoreCase(EndpointConfigName))
 			{
+				if (this.endpoint != null)
+				{
+					// we have parsed the endpoint once, which means we have multiple config which is not allowed
+					throw new IllegalConnectionStringFormatException(
+							String.format(Locale.US, "Multiple %s and/or %s detected. Make sure only one is defined", EndpointConfigName, HostnameConfigName));
+				}
+				
 				try
 				{
 					this.endpoint = new URI(values[valueIndex]); 
@@ -283,6 +333,26 @@ public class ConnectionStringBuilder
 				{
 					throw new IllegalConnectionStringFormatException(
 							String.format(Locale.US, "%s should be in format scheme://fullyQualifiedServiceBusNamespaceEndpointName", EndpointConfigName),
+							exception);
+				}
+			}
+			else if (key.equalsIgnoreCase(HostnameConfigName))
+			{
+				if (this.endpoint != null)
+				{
+					// we have parsed the endpoint once, which means we have multiple config which is not allowed
+					throw new IllegalConnectionStringFormatException(
+							String.format(Locale.US, "Multiple %s and/or %s detected. Make sure only one is defined", EndpointConfigName, HostnameConfigName));
+				}
+				
+				try
+				{
+					this.endpoint = new URI(String.format(Locale.US, endpointRawFormat, values[valueIndex])); 
+				}
+				catch(URISyntaxException exception)
+				{
+					throw new IllegalConnectionStringFormatException(
+							String.format(Locale.US, "%s should be a fully quantified host name address", HostnameConfigName),
 							exception);
 				}
 			}

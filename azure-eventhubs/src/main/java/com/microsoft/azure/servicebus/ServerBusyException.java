@@ -4,10 +4,18 @@
  */
 package com.microsoft.azure.servicebus;
 
+/**
+ * Server busy exception is thrown when the current entity's activity has put excessive load onto the service.
+ * When encountered this exception user should wait at least 4 seconds before any retry/runtime operations for the said entity again.
+ * <remark>For detail guidline on how to handle service bus exceptions please refer to http://go.microsoft.com/fwlink/?LinkId=761101</remark>
+ */
 public class ServerBusyException extends ServiceBusException 
 {
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Default constructor for the exception
+	 */
 	public ServerBusyException()
 	{
 		super(true);

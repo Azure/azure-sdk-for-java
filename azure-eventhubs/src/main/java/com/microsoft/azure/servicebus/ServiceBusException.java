@@ -6,6 +6,9 @@ package com.microsoft.azure.servicebus;
 
 import java.util.Locale;
 
+/**
+ * This is the base exception that service bus will produce for all error cases.
+ */
 public class ServiceBusException extends Exception
 {
 	private static final long serialVersionUID = -3654294093967132325L;
@@ -25,6 +28,9 @@ public class ServiceBusException extends Exception
 		this.isTransient = isTransient;
 	}
 
+	/**
+	 * Constructor for the base error case
+	 */
 	public ServiceBusException(final boolean isTransient, final Throwable cause)
 	{
 		super(cause);

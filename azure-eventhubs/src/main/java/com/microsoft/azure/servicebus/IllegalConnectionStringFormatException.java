@@ -4,6 +4,9 @@
  */
 package com.microsoft.azure.servicebus;
 
+/**
+ * This exception is thrown when the connection string provided does not meet the requirement for connection.
+ */
 public class IllegalConnectionStringFormatException extends IllegalArgumentException
 {
 
