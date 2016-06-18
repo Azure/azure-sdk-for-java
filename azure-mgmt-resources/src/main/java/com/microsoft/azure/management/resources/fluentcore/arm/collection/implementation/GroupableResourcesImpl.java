@@ -21,6 +21,7 @@ import com.microsoft.azure.management.resources.implementation.ResourceManager;
  * @param <T> the individual resource type returned
  * @param <ImplT> the individual resource implementation
  * @param <InnerT> the wrapper inner type
+ * @param <InnerCollectionT> the inner type of the collection object
  */
 public abstract class GroupableResourcesImpl<
         T extends GroupableResource,
@@ -33,14 +34,14 @@ public abstract class GroupableResourcesImpl<
 
     protected final ResourceManager resourceManager;
     protected final InnerCollectionT innerCollection;
-    
+
     protected GroupableResourcesImpl(
             ResourceManager resourceManager,
             InnerCollectionT innerCollection) {
         this.resourceManager = resourceManager;
         this.innerCollection = innerCollection;
     }
-    
+
     @Override
     public abstract T getByGroup(String groupName, String name) throws CloudException, IOException;
 
