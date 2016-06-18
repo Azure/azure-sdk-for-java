@@ -8,7 +8,7 @@ package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.Offer;
-import com.microsoft.azure.management.compute.VirtualMachineImage;
+import com.microsoft.azure.management.compute.Publisher;
 import com.microsoft.azure.management.compute.VirtualMachineImages;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImageResourceInner;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImagesInner;
@@ -24,9 +24,9 @@ class OffersImpl
         implements VirtualMachineImages.Offers {
 
     private final VirtualMachineImagesInner innerCollection;
-    private final VirtualMachineImage.Publisher publisher;
+    private final Publisher publisher;
 
-    OffersImpl(VirtualMachineImagesInner innerCollection, VirtualMachineImage.Publisher publisher) {
+    OffersImpl(VirtualMachineImagesInner innerCollection, Publisher publisher) {
         this.innerCollection = innerCollection;
         this.publisher = publisher;
     }

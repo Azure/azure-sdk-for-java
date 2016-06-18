@@ -5,7 +5,7 @@
  */
 package com.microsoft.azure.management.compute.implementation;
 
-import com.microsoft.azure.management.compute.VirtualMachineImage;
+import com.microsoft.azure.management.compute.Publisher;
 import com.microsoft.azure.management.compute.VirtualMachineImages.Offers;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImagesInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -14,7 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
  * The implementation for {@link VirtualMachineImage.Publisher}.
  */
 class VirtualMachineImagePublisherImpl
-        implements VirtualMachineImage.Publisher {
+        implements Publisher {
     private final Region location;
     private final String publisher;
     private final Offers offers;

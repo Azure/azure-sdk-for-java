@@ -24,7 +24,7 @@ public interface Offer {
     /**
      * @return the publisher of this virtual machine image offer
      */
-    VirtualMachineImage.Publisher publisher();
+    Publisher publisher();
 
     /**
      * @return the name of the virtual machine image offer

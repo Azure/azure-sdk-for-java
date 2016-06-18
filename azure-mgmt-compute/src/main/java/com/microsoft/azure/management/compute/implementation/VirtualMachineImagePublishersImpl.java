@@ -6,7 +6,7 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.compute.VirtualMachineImage;
+import com.microsoft.azure.management.compute.Publisher;
 import com.microsoft.azure.management.compute.VirtualMachineImages;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImageResourceInner;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImagesInner;
@@ -20,7 +20,7 @@ import java.util.List;
  * The implementation for {@link VirtualMachineImagePublishers}.
  */
 class VirtualMachineImagePublishersImpl
-        extends WrappersImpl<VirtualMachineImage.Publisher, VirtualMachineImagePublisherImpl, VirtualMachineImageResourceInner>
+        extends WrappersImpl<Publisher, VirtualMachineImagePublisherImpl, VirtualMachineImageResourceInner>
         implements VirtualMachineImages.Publishers {
 
     private final VirtualMachineImagesInner innerCollection;
@@ -30,7 +30,7 @@ class VirtualMachineImagePublishersImpl
     }
 
     @Override
-    public List<VirtualMachineImage.Publisher> listByRegion(Region region) throws CloudException, IOException {
+    public List<Publisher> listByRegion(Region region) throws CloudException, IOException {
         return listByRegion(region.toString());
     }
 
@@ -46,7 +46,7 @@ class VirtualMachineImagePublishersImpl
     }
 
     @Override
-    public List<VirtualMachineImage.Publisher> listByRegion(String regionName) throws CloudException, IOException {
+    public List<Publisher> listByRegion(String regionName) throws CloudException, IOException {
         return wrapList(innerCollection.listPublishers(regionName).getBody());
     }
 }

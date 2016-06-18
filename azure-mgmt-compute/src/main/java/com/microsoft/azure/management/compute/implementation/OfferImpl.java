@@ -2,6 +2,7 @@ package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.compute.Offer;
+import com.microsoft.azure.management.compute.Publisher;
 import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImageResourceInner;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImagesInner;
@@ -16,10 +17,10 @@ import java.util.List;
  */
 class OfferImpl implements Offer {
     private final VirtualMachineImagesInner client;
-    private final VirtualMachineImage.Publisher publisher;
+    private final Publisher publisher;
     private final String offerName;
 
-    OfferImpl(VirtualMachineImage.Publisher publisher, String offer, VirtualMachineImagesInner client) {
+    OfferImpl(Publisher publisher, String offer, VirtualMachineImagesInner client) {
         this.publisher = publisher;
         this.offerName = offer;
         this.client = client;
@@ -31,7 +32,7 @@ class OfferImpl implements Offer {
     }
 
     @Override
-    public VirtualMachineImage.Publisher publisher() {
+    public Publisher publisher() {
         return publisher;
     }
 

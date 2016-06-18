@@ -2,6 +2,7 @@ package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.compute.Offer;
+import com.microsoft.azure.management.compute.Publisher;
 import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImageResourceInner;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImagesInner;
@@ -32,7 +33,7 @@ class VirtualMachineImageSkuImpl
     }
 
     @Override
-    public VirtualMachineImage.Publisher publisher() {
+    public Publisher publisher() {
         return offer.publisher();
     }
 

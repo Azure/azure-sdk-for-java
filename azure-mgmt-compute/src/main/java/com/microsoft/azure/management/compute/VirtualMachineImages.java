@@ -21,7 +21,7 @@ public interface VirtualMachineImages extends
     /**
      * Entry point to virtual machine image publishers.
      */
-    interface Publishers extends SupportsListingByRegion<VirtualMachineImage.Publisher> {
+    interface Publishers extends SupportsListingByRegion<Publisher> {
     }
 
     /**

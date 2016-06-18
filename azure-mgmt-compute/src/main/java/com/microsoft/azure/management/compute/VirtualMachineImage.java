@@ -68,26 +68,6 @@ public interface VirtualMachineImage extends
     List<DataDiskImage> dataDiskImages();
 
     /**
-     * Represents a virtual machine image publisher.
-     */
-    interface Publisher {
-        /**
-         * @return the region where virtual machine images from this publisher is available
-         */
-        Region region();
-
-        /**
-         * @return the name of the publisher
-         */
-        String name();
-
-        /**
-         * @return the offers from this publisher
-         */
-        VirtualMachineImages.Offers offers();
-    }
-
-    /**
      * Represents a virtual machine image SKU.
      */
     interface Sku {
@@ -97,9 +77,9 @@ public interface VirtualMachineImage extends
         Region region();
 
         /**
-         * @return the publisher name of this virtual machine image offer SKU
+         * @return the publisher of this virtual machine image offer SKU
          */
-        VirtualMachineImage.Publisher publisher();
+        Publisher publisher();
 
         /**
          * @return the virtual machine offer name that this SKU belongs to
