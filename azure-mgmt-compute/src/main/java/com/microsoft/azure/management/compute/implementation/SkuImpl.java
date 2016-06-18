@@ -20,11 +20,11 @@ class SkuImpl
         implements Sku {
     private final VirtualMachineImagesInner client;
     private final Offer offer;
-    private final String sku;
+    private final String skuName;
 
     SkuImpl(Offer offer, String skuName, VirtualMachineImagesInner client) {
         this.offer = offer;
-        this.sku = skuName;
+        this.skuName = skuName;
         this.client = client;
     }
 
@@ -39,12 +39,12 @@ class SkuImpl
     }
 
     @Override
-    public String offerName() {
-        return offer.name();
+    public Offer offer() {
+        return offer;
     }
 
     public String name() {
-        return this.sku;
+        return this.skuName;
     }
 
     @Override
@@ -54,16 +54,16 @@ class SkuImpl
                 : client.list(
                         region().toString(),
                         publisher().name(),
-                        offerName(),
-                        sku).getBody()) {
+                        offer.name(),
+                        skuName).getBody()) {
             String version = inner.name();
             images.add(new VirtualMachineImageImpl(
                     region(),
                     publisher().name(),
-                    offerName(),
-                    sku,
+                    offer.name(),
+                    skuName,
                     version,
-                    client.get(region().toString(), publisher().name(), offerName(), sku, version).getBody(),
+                    client.get(region().toString(), publisher().name(), offer.name(), skuName, version).getBody(),
                     client));
         }
         return images;

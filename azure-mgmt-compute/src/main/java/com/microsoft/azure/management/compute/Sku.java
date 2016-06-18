@@ -28,7 +28,7 @@ public interface Sku {
     /**
      * @return the virtual machine offer name that this SKU belongs to
      */
-    String offerName();
+    Offer offer();
 
     /**
      * @return the commercial name of the virtual machine image (SKU)
