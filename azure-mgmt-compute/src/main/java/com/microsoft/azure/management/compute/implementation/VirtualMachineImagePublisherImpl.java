@@ -22,7 +22,7 @@ class VirtualMachineImagePublisherImpl
     VirtualMachineImagePublisherImpl(Region location, String publisher, VirtualMachineImagesInner client) {
         this.location = location;
         this.publisher = publisher;
-        this.offers = new VirtualMachineImageOffersImpl(client, this);
+        this.offers = new OffersImpl(client, this);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.compute.Offer;
 import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImageResourceInner;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImagesInner;
@@ -16,10 +17,10 @@ import java.util.List;
 class VirtualMachineImageSkuImpl
         implements VirtualMachineImage.Sku {
     private final VirtualMachineImagesInner client;
-    private final VirtualMachineImage.Offer offer;
+    private final Offer offer;
     private final String sku;
 
-    VirtualMachineImageSkuImpl(VirtualMachineImage.Offer offer, String sku, VirtualMachineImagesInner client) {
+    VirtualMachineImageSkuImpl(Offer offer, String sku, VirtualMachineImagesInner client) {
         this.offer = offer;
         this.sku = sku;
         this.client = client;
@@ -31,12 +32,12 @@ class VirtualMachineImageSkuImpl
     }
 
     @Override
-    public String publisher() {
+    public VirtualMachineImage.Publisher publisher() {
         return offer.publisher();
     }
 
     @Override
-    public String offer() {
+    public String offerName() {
         return offer.name();
     }
 
@@ -50,17 +51,17 @@ class VirtualMachineImageSkuImpl
         for (VirtualMachineImageResourceInner inner
                 : client.list(
                         region().toString(),
-                        publisher(),
-                        offer(),
+                        publisher().name(),
+                        offerName(),
                         sku).getBody()) {
             String version = inner.name();
             images.add(new VirtualMachineImageImpl(
                     region(),
-                    publisher(),
-                    offer(),
+                    publisher().name(),
+                    offerName(),
                     sku,
                     version,
-                    client.get(region().toString(), publisher(), offer(), sku, version).getBody(),
+                    client.get(region().toString(), publisher().name(), offerName(), sku, version).getBody(),
                     client));
         }
         return images;

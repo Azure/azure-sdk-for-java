@@ -33,7 +33,7 @@ public interface VirtualMachineImage extends
     String publisherName();
 
     /**
-     * @return the name of the virtual machine image offer
+     * @return the name of the virtual machine image offer this image is part of
      */
     String offer();
 
@@ -48,7 +48,7 @@ public interface VirtualMachineImage extends
     String version();
 
     /**
-     * @return The image reference representing publisher, offer, sku and version of the virtual machine image
+     * @return the image reference representing publisher, offer, sku and version of the virtual machine image
      */
     ImageReference imageReference();
 
@@ -77,43 +77,14 @@ public interface VirtualMachineImage extends
         Region region();
 
         /**
-         * @return the name of the virtual machine image publisher
+         * @return the name of the publisher
          */
         String name();
 
         /**
-         * @return entry point to virtual machine image offers
+         * @return the offers from this publisher
          */
         VirtualMachineImages.Offers offers();
-    }
-
-    /**
-     * Represents a virtual machine image offer.
-     */
-    interface Offer {
-        /**
-         * @return the region where this virtual machine image offer is available
-         */
-        Region region();
-
-        /**
-         * @return the publisher name of this virtual machine image offer
-         */
-        String publisher();
-
-        /**
-         * @return the name of the virtual machine image offer
-         */
-        String name();
-
-        /**
-         * Lists the virtual machine image SKUs in this offer.
-         *
-         * @return the virtual machine image SKUs
-         * @throws CloudException thrown for an invalid response from the service
-         * @throws IOException thrown for IO exception
-         */
-        List<Sku> listSkus() throws CloudException, IOException;
     }
 
     /**
@@ -128,12 +99,12 @@ public interface VirtualMachineImage extends
         /**
          * @return the publisher name of this virtual machine image offer SKU
          */
-        String publisher();
+        VirtualMachineImage.Publisher publisher();
 
         /**
          * @return the virtual machine offer name that this SKU belongs to
          */
-        String offer();
+        String offerName();
 
         /**
          * @return the commercial name of the virtual machine image (SKU)

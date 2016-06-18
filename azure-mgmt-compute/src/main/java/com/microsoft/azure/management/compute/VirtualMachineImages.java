@@ -27,6 +27,6 @@ public interface VirtualMachineImages extends
     /**
      * Entry point to virtual machine image offers.
      */
-    interface Offers extends SupportsListing<VirtualMachineImage.Offer> {
+    interface Offers extends SupportsListing<Offer> {
     }
 }

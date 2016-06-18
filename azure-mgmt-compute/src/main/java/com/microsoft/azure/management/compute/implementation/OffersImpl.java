@@ -7,8 +7,8 @@ package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.compute.Offer;
 import com.microsoft.azure.management.compute.VirtualMachineImage;
-import com.microsoft.azure.management.compute.VirtualMachineImage.Offer;
 import com.microsoft.azure.management.compute.VirtualMachineImages;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImageResourceInner;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImagesInner;
@@ -19,28 +19,28 @@ import java.io.IOException;
 /**
  * The implementation for {@link VirtualMachineImagePublishers}.
  */
-class VirtualMachineImageOffersImpl
-        extends WrappersImpl<VirtualMachineImage.Offer, VirtualMachineImageOfferImpl, VirtualMachineImageResourceInner>
+class OffersImpl
+        extends WrappersImpl<Offer, OfferImpl, VirtualMachineImageResourceInner>
         implements VirtualMachineImages.Offers {
 
     private final VirtualMachineImagesInner innerCollection;
     private final VirtualMachineImage.Publisher publisher;
 
-    VirtualMachineImageOffersImpl(VirtualMachineImagesInner innerCollection, VirtualMachineImage.Publisher publisher) {
+    OffersImpl(VirtualMachineImagesInner innerCollection, VirtualMachineImage.Publisher publisher) {
         this.innerCollection = innerCollection;
         this.publisher = publisher;
     }
 
 
     @Override
-    protected VirtualMachineImageOfferImpl wrapModel(String name) {
+    protected OfferImpl wrapModel(String name) {
         // Not supported
         return null;
     }
 
     @Override
-    protected VirtualMachineImageOfferImpl wrapModel(VirtualMachineImageResourceInner inner) {
-        return new VirtualMachineImageOfferImpl(this.publisher, inner.name(), this.innerCollection);
+    protected OfferImpl wrapModel(VirtualMachineImageResourceInner inner) {
+        return new OfferImpl(this.publisher, inner.name(), this.innerCollection);
     }
 
     @Override
