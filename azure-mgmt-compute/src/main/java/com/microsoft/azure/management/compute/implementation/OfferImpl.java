@@ -46,7 +46,7 @@ class OfferImpl implements Offer {
         List<Sku> skus = new ArrayList<>();
         for (VirtualMachineImageResourceInner inner
                 : client.listSkus(region().toString(), publisher().name(), name()).getBody()) {
-            skus.add(new VirtualMachineImageSkuImpl(this, inner.name(), client));
+            skus.add(new SkuImpl(this, inner.name(), client));
         }
         return skus;
     }

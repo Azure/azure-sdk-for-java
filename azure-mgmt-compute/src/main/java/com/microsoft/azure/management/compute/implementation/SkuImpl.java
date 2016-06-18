@@ -16,13 +16,13 @@ import java.util.List;
 /**
  * The implementation for {@link VirtualMachineImage.Sku}.
  */
-class VirtualMachineImageSkuImpl
+class SkuImpl
         implements Sku {
     private final VirtualMachineImagesInner client;
     private final Offer offer;
     private final String sku;
 
-    VirtualMachineImageSkuImpl(Offer offer, String sku, VirtualMachineImagesInner client) {
+    SkuImpl(Offer offer, String sku, VirtualMachineImagesInner client) {
         this.offer = offer;
         this.sku = sku;
         this.client = client;
