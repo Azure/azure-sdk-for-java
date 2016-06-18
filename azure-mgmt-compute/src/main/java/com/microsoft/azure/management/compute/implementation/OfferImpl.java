@@ -3,7 +3,7 @@ package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.compute.Offer;
 import com.microsoft.azure.management.compute.Publisher;
-import com.microsoft.azure.management.compute.VirtualMachineImage;
+import com.microsoft.azure.management.compute.Sku;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImageResourceInner;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImagesInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -42,8 +42,8 @@ class OfferImpl implements Offer {
     }
 
     @Override
-    public List<VirtualMachineImage.Sku> listSkus() throws CloudException, IOException {
-        List<VirtualMachineImage.Sku> skus = new ArrayList<>();
+    public List<Sku> listSkus() throws CloudException, IOException {
+        List<Sku> skus = new ArrayList<>();
         for (VirtualMachineImageResourceInner inner
                 : client.listSkus(region().toString(), publisher().name(), name()).getBody()) {
             skus.add(new VirtualMachineImageSkuImpl(this, inner.name(), client));

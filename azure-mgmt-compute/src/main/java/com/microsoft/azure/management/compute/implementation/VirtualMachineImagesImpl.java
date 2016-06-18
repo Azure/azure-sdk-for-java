@@ -3,6 +3,7 @@ package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.compute.Offer;
 import com.microsoft.azure.management.compute.Publisher;
+import com.microsoft.azure.management.compute.Sku;
 import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachineImages;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImagesInner;
@@ -34,7 +35,7 @@ class VirtualMachineImagesImpl
         List<VirtualMachineImage> images = new ArrayList<>();
         for (Publisher publisher : this.publishers().listByRegion(regionName)) {
             for (Offer offer : publisher.offers().list()) {
-                for (VirtualMachineImage.Sku sku : offer.listSkus()) {
+                for (Sku sku : offer.listSkus()) {
                     images.addAll(sku.listImages());
                 }
             }

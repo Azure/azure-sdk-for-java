@@ -3,6 +3,7 @@ package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.compute.Offer;
 import com.microsoft.azure.management.compute.Publisher;
+import com.microsoft.azure.management.compute.Sku;
 import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImageResourceInner;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImagesInner;
@@ -16,7 +17,7 @@ import java.util.List;
  * The implementation for {@link VirtualMachineImage.Sku}.
  */
 class VirtualMachineImageSkuImpl
-        implements VirtualMachineImage.Sku {
+        implements Sku {
     private final VirtualMachineImagesInner client;
     private final Offer offer;
     private final String sku;

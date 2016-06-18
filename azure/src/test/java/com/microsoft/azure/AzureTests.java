@@ -6,9 +6,9 @@
 package com.microsoft.azure;
 
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
+import com.microsoft.azure.management.compute.Offer;
+import com.microsoft.azure.management.compute.Publisher;
 import com.microsoft.azure.management.compute.VirtualMachineImage;
-import com.microsoft.azure.management.compute.VirtualMachineImage.Offer;
-import com.microsoft.azure.management.compute.VirtualMachineImage.Publisher;
 import com.microsoft.azure.management.resources.GenericResource;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
