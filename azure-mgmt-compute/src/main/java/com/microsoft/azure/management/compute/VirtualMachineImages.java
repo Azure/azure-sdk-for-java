@@ -5,7 +5,7 @@
  */
 package com.microsoft.azure.management.compute;
 
-import com.microsoft.azure.management.compute.VirtualMachineImage.Publisher;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingByRegion;
 
 /**
@@ -21,6 +21,12 @@ public interface VirtualMachineImages extends
     /**
      * Entry point to virtual machine image publishers.
      */
-    interface Publishers extends SupportsListingByRegion<Publisher> {
+    interface Publishers extends SupportsListingByRegion<VirtualMachineImage.Publisher> {
+    }
+
+    /**
+     * Entry point to virtual machine image offers.
+     */
+    interface Offers extends SupportsListing<VirtualMachineImage.Offer> {
     }
 }

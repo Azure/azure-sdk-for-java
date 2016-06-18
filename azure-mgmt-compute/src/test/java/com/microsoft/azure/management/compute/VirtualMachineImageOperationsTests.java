@@ -34,7 +34,7 @@ public class VirtualMachineImageOperationsTests extends ComputeManagementTestBas
 
         Assert.assertNotNull(canonicalPublisher);
         VirtualMachineImage firstVMImage = null;
-        for (VirtualMachineImage.Offer offer : canonicalPublisher.listOffers()) {
+        for (VirtualMachineImage.Offer offer : canonicalPublisher.offers().list()) {
             for (VirtualMachineImage.Sku sku: offer.listSkus()) {
                 for (VirtualMachineImage image : sku.listImages()) {
                     firstVMImage = image;

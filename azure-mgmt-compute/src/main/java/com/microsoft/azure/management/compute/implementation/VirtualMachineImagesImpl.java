@@ -31,7 +31,7 @@ class VirtualMachineImagesImpl
     public List<VirtualMachineImage> listByRegion(String regionName) throws CloudException, IOException {
         List<VirtualMachineImage> images = new ArrayList<>();
         for (VirtualMachineImage.Publisher publisher : this.publishers().listByRegion(regionName)) {
-            for (VirtualMachineImage.Offer offer : publisher.listOffers()) {
+            for (VirtualMachineImage.Offer offer : publisher.offers().list()) {
                 for (VirtualMachineImage.Sku sku : offer.listSkus()) {
                     images.addAll(sku.listImages());
                 }

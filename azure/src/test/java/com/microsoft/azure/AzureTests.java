@@ -7,6 +7,7 @@ package com.microsoft.azure;
 
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.compute.VirtualMachineImage;
+import com.microsoft.azure.management.compute.VirtualMachineImage.Offer;
 import com.microsoft.azure.management.compute.VirtualMachineImage.Publisher;
 import com.microsoft.azure.management.resources.GenericResource;
 import com.microsoft.azure.management.resources.Subscriptions;
@@ -91,6 +92,9 @@ public class AzureTests {
         Assert.assertTrue(publishers.size() > 0);
         for (Publisher p : publishers) {
             System.out.println(String.format("Publisher name: %s, region: %s", p.name(), p.region()));
+            for (Offer o : p.offers().list()) {
+                System.out.println(String.format("\tOffer name: %s", o.name()));
+            }
         }
         List<VirtualMachineImage> images = azure2.virtualMachineImages().listByRegion(Region.US_WEST);
         Assert.assertTrue(images.size() > 0);

@@ -37,7 +37,7 @@ class VirtualMachineImageSkuImpl
 
     @Override
     public String offer() {
-        return offer.offer();
+        return offer.name();
     }
 
     public String sku() {

@@ -36,7 +36,7 @@ class VirtualMachineImageOfferImpl
     }
 
     @Override
-    public String offer() {
+    public String name() {
         return this.offer;
     }
 
@@ -44,7 +44,7 @@ class VirtualMachineImageOfferImpl
     public List<VirtualMachineImage.Sku> listSkus() throws CloudException, IOException {
         List<VirtualMachineImage.Sku> skus = new ArrayList<>();
         for (VirtualMachineImageResourceInner inner
-                : client.listSkus(region().toString(), publisher(), offer()).getBody()) {
+                : client.listSkus(region().toString(), publisher(), name()).getBody()) {
             skus.add(new VirtualMachineImageSkuImpl(this, inner.name(), client));
         }
         return skus;

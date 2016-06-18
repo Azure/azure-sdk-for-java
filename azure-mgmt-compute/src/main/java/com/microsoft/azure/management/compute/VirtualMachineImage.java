@@ -82,13 +82,9 @@ public interface VirtualMachineImage extends
         String name();
 
         /**
-         * Lists the virtual machine image offers from this publisher in the specific region.
-         *
-         * @return list of virtual machine image offers
-         * @throws CloudException thrown for an invalid response from the service
-         * @throws IOException thrown for IO exception
+         * @return entry point to virtual machine image offers
          */
-        List<Offer> listOffers() throws CloudException, IOException;
+        VirtualMachineImages.Offers offers();
     }
 
     /**
@@ -108,7 +104,7 @@ public interface VirtualMachineImage extends
         /**
          * @return the name of the virtual machine image offer
          */
-        String offer();
+        String name();
 
         /**
          * Lists the virtual machine image SKUs in this offer.

@@ -1,0 +1,50 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+package com.microsoft.azure.management.compute.implementation;
+
+import com.microsoft.azure.CloudException;
+import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.compute.VirtualMachineImage;
+import com.microsoft.azure.management.compute.VirtualMachineImage.Offer;
+import com.microsoft.azure.management.compute.VirtualMachineImages;
+import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImageResourceInner;
+import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImagesInner;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.WrappersImpl;
+
+import java.io.IOException;
+
+/**
+ * The implementation for {@link VirtualMachineImagePublishers}.
+ */
+class VirtualMachineImageOffersImpl
+        extends WrappersImpl<VirtualMachineImage.Offer, VirtualMachineImageOfferImpl, VirtualMachineImageResourceInner>
+        implements VirtualMachineImages.Offers {
+
+    private final VirtualMachineImagesInner innerCollection;
+    private final VirtualMachineImage.Publisher publisher;
+
+    VirtualMachineImageOffersImpl(VirtualMachineImagesInner innerCollection, VirtualMachineImage.Publisher publisher) {
+        this.innerCollection = innerCollection;
+        this.publisher = publisher;
+    }
+
+
+    @Override
+    protected VirtualMachineImageOfferImpl wrapModel(String name) {
+        // Not supported
+        return null;
+    }
+
+    @Override
+    protected VirtualMachineImageOfferImpl wrapModel(VirtualMachineImageResourceInner inner) {
+        return new VirtualMachineImageOfferImpl(this.publisher, inner.name(), this.innerCollection);
+    }
+
+    @Override
+    public PagedList<Offer> list() throws CloudException, IllegalArgumentException, IOException {
+        return wrapList(innerCollection.listOffers(publisher.region().toString(), publisher.name()).getBody());
+    }
+}
