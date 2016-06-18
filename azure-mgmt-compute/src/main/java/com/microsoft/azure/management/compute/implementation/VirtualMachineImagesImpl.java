@@ -9,6 +9,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -24,24 +25,35 @@ class VirtualMachineImagesImpl
 
     @Override
     public List<VirtualMachineImage.Publisher> listPublishers(final Region region) throws CloudException, IOException {
-        List<VirtualMachineImage.Publisher> publishers = new ArrayList<>();
-        for (VirtualMachineImageResourceInner inner
-                : client.listPublishers(region.toString()).getBody()) {
-            publishers.add(new VirtualMachineImagePublisherImpl(region, inner.name(), client));
-        }
-        return publishers;
+        return listPublishers(region.toString());
     }
 
     @Override
-    public List<VirtualMachineImage> list(Region location) throws CloudException, IOException {
+    public List<VirtualMachineImage.Publisher> listPublishers(String regionName) throws CloudException, IOException {
+        List<VirtualMachineImage.Publisher> publishers = new ArrayList<>();
+        for (VirtualMachineImageResourceInner inner
+                : client.listPublishers(regionName).getBody()) {
+            publishers.add(new VirtualMachineImagePublisherImpl(Region.fromName(regionName), inner.name(), client));
+        }
+        return Collections.unmodifiableList(publishers);
+    }
+
+    @Override
+    public List<VirtualMachineImage> listByRegion(Region location) throws CloudException, IOException {
+        return listByRegion(location.toString());
+    }
+
+    @Override
+    public List<VirtualMachineImage> listByRegion(String regionName) throws CloudException, IOException {
         List<VirtualMachineImage> images = new ArrayList<>();
-        for (VirtualMachineImage.Publisher publisher : listPublishers(location)) {
+        for (VirtualMachineImage.Publisher publisher : listPublishers(regionName)) {
             for (VirtualMachineImage.Offer offer : publisher.listOffers()) {
                 for (VirtualMachineImage.Sku sku : offer.listSkus()) {
                     images.addAll(sku.listImages());
                 }
             }
         }
-        return images;
+        return Collections.unmodifiableList(images);
     }
+
 }

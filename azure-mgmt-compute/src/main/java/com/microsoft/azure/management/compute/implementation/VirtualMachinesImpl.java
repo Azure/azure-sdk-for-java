@@ -1,17 +1,20 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 package com.microsoft.azure.management.compute.implementation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.VirtualMachine;
-import com.microsoft.azure.management.compute.VirtualMachineSize;
+import com.microsoft.azure.management.compute.VirtualMachineSizes;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.compute.implementation.api.NetworkInterfaceReference;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachinesInner;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizesInner;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineInner;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeInner;
 import com.microsoft.azure.management.compute.implementation.api.StorageProfile;
 import com.microsoft.azure.management.compute.implementation.api.OSDisk;
 import com.microsoft.azure.management.compute.implementation.api.DataDisk;
@@ -21,14 +24,10 @@ import com.microsoft.azure.management.compute.implementation.api.NetworkProfile;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineCaptureParametersInner;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineCaptureResultInner;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
-import com.microsoft.azure.management.resources.implementation.api.PageImpl;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
@@ -40,10 +39,10 @@ import java.util.ArrayList;
 class VirtualMachinesImpl
         extends GroupableResourcesImpl<VirtualMachine, VirtualMachineImpl, VirtualMachineInner, VirtualMachinesInner>
         implements VirtualMachines {
-    private final VirtualMachineSizesInner virtualMachineSizesClient;
     private final ComputeManager computeManager;
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
+    private final VirtualMachineSizesImpl vmSizes;
 
     VirtualMachinesImpl(VirtualMachinesInner client,
                         VirtualMachineSizesInner virtualMachineSizesClient,
@@ -52,10 +51,10 @@ class VirtualMachinesImpl
                         StorageManager storageManager,
                         NetworkManager networkManager) {
         super(resourceManager, client);
-        this.virtualMachineSizesClient = virtualMachineSizesClient;
         this.computeManager = computeManager;
         this.storageManager = storageManager;
         this.networkManager = networkManager;
+        this.vmSizes = new VirtualMachineSizesImpl(virtualMachineSizesClient);
     }
 
     // Actions
@@ -88,32 +87,6 @@ class VirtualMachinesImpl
     @Override
     public VirtualMachine.DefinitionBlank define(String name) {
         return wrapModel(name);
-    }
-
-    @Override
-    public PagedList<VirtualMachineSize> availableSizesByRegion(String region) throws CloudException, IOException {
-        PagedListConverter<VirtualMachineSizeInner, VirtualMachineSize> converter =
-                new PagedListConverter<VirtualMachineSizeInner, VirtualMachineSize>() {
-            @Override
-            public VirtualMachineSize typeConvert(VirtualMachineSizeInner virtualMachineSizeInner) {
-                return new VirtualMachineSizeImpl(virtualMachineSizeInner);
-            }
-        };
-
-        PageImpl<VirtualMachineSizeInner> page = new PageImpl<>();
-        page.setItems(virtualMachineSizesClient.list(region).getBody());
-        page.setNextPageLink(null);
-        return converter.convert(new PagedList<VirtualMachineSizeInner>(page) {
-            @Override
-            public Page<VirtualMachineSizeInner> nextPage(String nextPageLink) throws RestException, IOException {
-                return null;
-            }
-        });
-    }
-
-    @Override
-    public PagedList<VirtualMachineSize> availableSizesByRegion(Region region) throws CloudException, IOException {
-        return availableSizesByRegion(region.toString());
     }
 
     @Override
@@ -159,8 +132,15 @@ class VirtualMachinesImpl
         return mapper.writeValueAsString(captureResult.getBody().output());
     }
 
+
+    // Getters
+    @Override
+    public VirtualMachineSizes sizes() {
+        return this.vmSizes;
+    }
+
+
     // Helper methods
-    //
 
     @Override
     protected VirtualMachineImpl wrapModel(String name) {

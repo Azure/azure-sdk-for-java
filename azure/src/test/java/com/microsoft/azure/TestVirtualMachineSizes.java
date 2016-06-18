@@ -12,9 +12,9 @@ import java.util.List;
 public class TestVirtualMachineSizes extends TestTemplate<VirtualMachine, VirtualMachines> {
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
-        List<VirtualMachineSize> availableSizes = virtualMachines.availableSizesByRegion(Region.US_EAST);
+        List<VirtualMachineSize> availableSizes = virtualMachines.sizes().listByRegion(Region.US_EAST);
         Assert.assertTrue(availableSizes.size() > 0);
-
+        System.out.println("VM Sizes: " + availableSizes);
         final String vmName = "vm" + this.testId;
         VirtualMachine vm = virtualMachines.define(vmName)
                 .withRegion(Region.US_EAST)
