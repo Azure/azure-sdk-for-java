@@ -8,8 +8,8 @@ package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.Offer;
+import com.microsoft.azure.management.compute.Offers;
 import com.microsoft.azure.management.compute.Publisher;
-import com.microsoft.azure.management.compute.VirtualMachineImages;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImageResourceInner;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImagesInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.WrappersImpl;
@@ -21,7 +21,7 @@ import java.io.IOException;
  */
 class OffersImpl
         extends WrappersImpl<Offer, OfferImpl, VirtualMachineImageResourceInner>
-        implements VirtualMachineImages.Offers {
+        implements Offers {
 
     private final VirtualMachineImagesInner innerCollection;
     private final Publisher publisher;

@@ -24,5 +24,5 @@ public interface Publisher {
     /**
      * @return the offers from this publisher
      */
-    VirtualMachineImages.Offers offers();
+    Offers offers();
 }

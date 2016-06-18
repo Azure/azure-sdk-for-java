@@ -5,8 +5,8 @@
  */
 package com.microsoft.azure.management.compute.implementation;
 
+import com.microsoft.azure.management.compute.Offers;
 import com.microsoft.azure.management.compute.Publisher;
-import com.microsoft.azure.management.compute.VirtualMachineImages.Offers;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImagesInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
