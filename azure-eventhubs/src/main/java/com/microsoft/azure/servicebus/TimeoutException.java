@@ -7,12 +7,15 @@ package com.microsoft.azure.servicebus;
 /**
  * This exception is thrown when the operation has exceeded the predetermined time limit.
  * User should check connectivity is healthy between client process and service.
- * <remark>For detail guidline on how to handle service bus exceptions please refer to http://go.microsoft.com/fwlink/?LinkId=761101</remark>
+ * <remark>For detail guideline on how to handle service bus exceptions please refer to http://go.microsoft.com/fwlink/?LinkId=761101</remark>
  */
 public class TimeoutException extends ServiceBusException
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -3505469991851121512L;
 
+	/**
+	 * Default constructor for exception type.
+	 */
 	public TimeoutException()
 	{
 		super(true);

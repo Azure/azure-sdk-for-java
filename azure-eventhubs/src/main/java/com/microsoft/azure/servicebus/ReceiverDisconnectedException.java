@@ -13,10 +13,12 @@ package com.microsoft.azure.servicebus;
  * </ul>
  * User should make sure either all code are using non-epoch receivers, or ensure that there is only one epoch receiver processing a given partition 
  * at any given point in time. 
- * <remark>For detail guidline on how to handle service bus exceptions please refer to http://go.microsoft.com/fwlink/?LinkId=761101</remark>
+ * <remark>For detail guideline on how to handle service bus exceptions please refer to http://go.microsoft.com/fwlink/?LinkId=761101</remark>
  */
 public class ReceiverDisconnectedException extends ServiceBusException
 {
+	private static final long serialVersionUID = 3385140843418138213L;
+
 	ReceiverDisconnectedException()
 	{
 		super(false);

@@ -11,11 +11,11 @@ import com.microsoft.azure.eventhubs.EventHubClient;
  * When encountered this exception user should check whether the token/key provided in the connection string (e.g. one passed to 
  * {@link EventHubClient#createFromConnectionString(String)}) is valid, and has correct execution right for the intended operations (e.g. 
  * Receive call will need Listen claim associated with the key/token).
- * <remark>For detail guidline on how to handle service bus exceptions please refer to http://go.microsoft.com/fwlink/?LinkId=761101</remark>
+ * <remark>For detail guideline on how to handle service bus exceptions please refer to http://go.microsoft.com/fwlink/?LinkId=761101</remark>
  */
 public class AuthorizationFailedException extends ServiceBusException
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 5384872132102860710L;
 
 	AuthorizationFailedException()
 	{

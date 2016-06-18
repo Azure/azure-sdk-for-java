@@ -9,6 +9,7 @@ package com.microsoft.azure.servicebus;
  */
 public class IllegalConnectionStringFormatException extends IllegalArgumentException
 {
+	private static final long serialVersionUID = 2514898858133972030L;
 
 	IllegalConnectionStringFormatException()
 	{
