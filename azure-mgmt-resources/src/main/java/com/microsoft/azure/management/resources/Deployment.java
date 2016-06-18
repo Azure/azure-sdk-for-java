@@ -32,7 +32,7 @@ public interface Deployment extends
         Wrapper<DeploymentExtendedInner> {
 
     /**
-     * @return the name of the resource group
+     * @return the name of this deployment's resource group
      */
     String resourceGroupName();
 

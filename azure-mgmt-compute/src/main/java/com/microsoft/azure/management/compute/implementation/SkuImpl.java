@@ -22,9 +22,9 @@ class SkuImpl
     private final Offer offer;
     private final String sku;
 
-    SkuImpl(Offer offer, String sku, VirtualMachineImagesInner client) {
+    SkuImpl(Offer offer, String skuName, VirtualMachineImagesInner client) {
         this.offer = offer;
-        this.sku = sku;
+        this.sku = skuName;
         this.client = client;
     }
 
@@ -43,7 +43,7 @@ class SkuImpl
         return offer.name();
     }
 
-    public String sku() {
+    public String name() {
         return this.sku;
     }
 

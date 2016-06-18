@@ -36,7 +36,7 @@ class VirtualMachineImagesImpl
         List<VirtualMachineImage> images = new ArrayList<>();
         for (Publisher publisher : this.publishers().listByRegion(regionName)) {
             for (Offer offer : publisher.offers().list()) {
-                for (Sku sku : offer.listSkus()) {
+                for (Sku sku : offer.skus().list()) {
                     images.addAll(sku.listImages());
                 }
             }

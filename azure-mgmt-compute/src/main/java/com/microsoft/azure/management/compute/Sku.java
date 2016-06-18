@@ -33,7 +33,7 @@ public interface Sku {
     /**
      * @return the commercial name of the virtual machine image (SKU)
      */
-    String sku();
+    String name();
 
     /**
      * Lists the virtual machines in this SKU.

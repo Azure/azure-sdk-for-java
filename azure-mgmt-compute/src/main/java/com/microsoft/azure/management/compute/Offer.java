@@ -5,10 +5,6 @@
  */
 package com.microsoft.azure.management.compute;
 
-import java.io.IOException;
-import java.util.List;
-
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
 /**
@@ -31,11 +27,7 @@ public interface Offer {
     String name();
 
     /**
-     * Lists the virtual machine image SKUs in this offer.
-     *
-     * @return the virtual machine image SKUs
-     * @throws CloudException thrown for an invalid response from the service
-     * @throws IOException thrown for IO exception
+     * @return Virtual machine image SKUs available in this offer.
      */
-    List<Sku> listSkus() throws CloudException, IOException;
+    Skus skus();
 }

@@ -1,29 +1,23 @@
 package com.microsoft.azure.management.compute.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.compute.Offer;
 import com.microsoft.azure.management.compute.Publisher;
-import com.microsoft.azure.management.compute.Sku;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImageResourceInner;
+import com.microsoft.azure.management.compute.Skus;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImagesInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The implementation for {@link VirtualMachineImage.Offer}.
  */
 class OfferImpl implements Offer {
-    private final VirtualMachineImagesInner client;
     private final Publisher publisher;
     private final String offerName;
+    private final Skus skus;
 
     OfferImpl(Publisher publisher, String offer, VirtualMachineImagesInner client) {
         this.publisher = publisher;
         this.offerName = offer;
-        this.client = client;
+        this.skus = new SkusImpl(this, client);
     }
 
     @Override
@@ -42,12 +36,7 @@ class OfferImpl implements Offer {
     }
 
     @Override
-    public List<Sku> listSkus() throws CloudException, IOException {
-        List<Sku> skus = new ArrayList<>();
-        for (VirtualMachineImageResourceInner inner
-                : client.listSkus(region().toString(), publisher().name(), name()).getBody()) {
-            skus.add(new SkuImpl(this, inner.name(), client));
-        }
-        return skus;
+    public Skus skus() {
+        return this.skus;
     }
 }
