@@ -10,10 +10,6 @@ import java.util.List;
 
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.Resource;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.api.PageImpl;
 import com.microsoft.rest.RestException;
@@ -26,12 +22,9 @@ import com.microsoft.rest.RestException;
  * @param <InnerT> the wrapper inner type
  */
 public abstract class WrappersImpl<
-        T extends GroupableResource,
+        T,
         ImplT extends T,
-        InnerT extends Resource>
-    implements
-        SupportsGettingById<T>,
-        SupportsGettingByGroup<T> {
+        InnerT> {
 
     private final PagedListConverter<InnerT, T> converter;
 
