@@ -13,8 +13,8 @@ import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.implementation.api.AvailabilitySetInner;
 import com.microsoft.azure.management.compute.implementation.api.AvailabilitySetsInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
-import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.resources.implementation.api.PageImpl;
 import com.microsoft.rest.RestException;
@@ -26,21 +26,13 @@ import java.util.List;
 /**
  * The implementation for {@link AvailabilitySets}.
  */
-class AvailabilitySetsImpl implements AvailabilitySets {
-    private final AvailabilitySetsInner client;
-    private final ResourceManager resourceManager;
-    private final PagedListConverter<AvailabilitySetInner, AvailabilitySet> converter;
+class AvailabilitySetsImpl
+    extends GroupableResourcesImpl<AvailabilitySet, AvailabilitySetImpl, AvailabilitySetInner, AvailabilitySetsInner>
+    implements AvailabilitySets {
     AvailabilitySetsImpl(
             final AvailabilitySetsInner client,
             final ResourceManager resourceManager) {
-        this.client = client;
-        this.resourceManager = resourceManager;
-        this.converter = new PagedListConverter<AvailabilitySetInner, AvailabilitySet>() {
-            @Override
-            public AvailabilitySet typeConvert(AvailabilitySetInner inner) {
-                return createFluentModel(inner);
-            }
-        };
+        super(resourceManager, client);
     }
 
     @Override
@@ -49,7 +41,7 @@ class AvailabilitySetsImpl implements AvailabilitySets {
             @Override
             public List<AvailabilitySet> listNextGroup(String resourceGroupName) throws RestException, IOException {
                 PageImpl<AvailabilitySetInner> page = new PageImpl<>();
-                page.setItems(client.list(resourceGroupName).getBody());
+                page.setItems(innerCollection.list(resourceGroupName).getBody());
                 page.setNextPageLink(null);
                 return converter.convert(new PagedList<AvailabilitySetInner>(page) {
                     @Override
@@ -64,7 +56,7 @@ class AvailabilitySetsImpl implements AvailabilitySets {
     @Override
     public PagedList<AvailabilitySet> listByGroup(String groupName) throws CloudException, IOException {
         PageImpl<AvailabilitySetInner> page = new PageImpl<>();
-        page.setItems(client.list(groupName).getBody());
+        page.setItems(this.innerCollection.list(groupName).getBody());
         page.setNextPageLink(null);
         return this.converter.convert(new PagedList<AvailabilitySetInner>(page) {
             @Override
@@ -76,7 +68,7 @@ class AvailabilitySetsImpl implements AvailabilitySets {
 
     @Override
     public AvailabilitySetImpl getByGroup(String groupName, String name) throws CloudException, IOException {
-        ServiceResponse<AvailabilitySetInner> response = this.client.get(groupName, name);
+        ServiceResponse<AvailabilitySetInner> response = this.innerCollection.get(groupName, name);
         return createFluentModel(response.getBody());
     }
 
@@ -92,25 +84,26 @@ class AvailabilitySetsImpl implements AvailabilitySets {
 
     @Override
     public void delete(String groupName, String name) throws Exception {
-        this.client.delete(groupName, name);
+        this.innerCollection.delete(groupName, name);
     }
 
     /**************************************************************
      * Fluent model helpers.
      **************************************************************/
 
-    private AvailabilitySetImpl createFluentModel(String name) {
-        AvailabilitySetInner availabilitySetInner = new AvailabilitySetInner();
+    @Override
+    protected AvailabilitySetImpl createFluentModel(String name) {
         return new AvailabilitySetImpl(name,
-                availabilitySetInner,
-                this.client,
+                new AvailabilitySetInner(),
+                this.innerCollection,
                 this.resourceManager);
     }
 
-    private AvailabilitySetImpl createFluentModel(AvailabilitySetInner availabilitySetInner) {
+    @Override
+    protected AvailabilitySetImpl createFluentModel(AvailabilitySetInner availabilitySetInner) {
         return new AvailabilitySetImpl(availabilitySetInner.name(),
                 availabilitySetInner,
-                this.client,
+                this.innerCollection,
                 this.resourceManager);
     }
 }

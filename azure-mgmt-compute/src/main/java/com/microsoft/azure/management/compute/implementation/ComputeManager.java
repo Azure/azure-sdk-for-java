@@ -16,7 +16,7 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 /**
  * Entry point to Azure compute resource management.
  */
-public final class ComputeManager extends Manager {
+public final class ComputeManager extends Manager<ComputeManager> {
     // The service managers
     private StorageManager storageManager;
     private NetworkManager networkManager;

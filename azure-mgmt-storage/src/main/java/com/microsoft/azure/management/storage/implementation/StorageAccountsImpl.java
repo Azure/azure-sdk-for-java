@@ -10,7 +10,7 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
-import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.resources.implementation.api.PageImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
@@ -29,43 +29,34 @@ import java.util.List;
  * The implementation of StorageAccounts and its parent interfaces.
  */
 class StorageAccountsImpl
+        extends GroupableResourcesImpl<StorageAccount, StorageAccountImpl, StorageAccountInner, StorageAccountsInner>
         implements StorageAccounts {
-    private final StorageAccountsInner client;
-    private final ResourceManager resourceManager;
-    private final PagedListConverter<StorageAccountInner, StorageAccount> converter;
 
     StorageAccountsImpl(final StorageAccountsInner client, final ResourceManager resourceManager) {
-        this.client = client;
-        this.resourceManager = resourceManager;
-        this.converter = new PagedListConverter<StorageAccountInner, StorageAccount>() {
-            @Override
-            public StorageAccount typeConvert(StorageAccountInner storageAccountInner) {
-                return createFluentModel(storageAccountInner);
-            }
-        };
+        super(resourceManager, client);
     }
 
     @Override
     public CheckNameAvailabilityResult checkNameAvailability(String name) throws CloudException, IOException {
-        CheckNameAvailabilityResultInner inner = client.checkNameAvailability(name).getBody();
+        CheckNameAvailabilityResultInner inner = this.innerCollection.checkNameAvailability(name).getBody();
         return new CheckNameAvailabilityResult(inner);
     }
 
     @Override
     public PagedList<StorageAccount> list() throws CloudException, IOException {
-        ServiceResponse<List<StorageAccountInner>> response = client.list();
-        return converter.convert(toPagedList(response.getBody()));
+        ServiceResponse<List<StorageAccountInner>> response = this.innerCollection.list();
+        return this.converter.convert(toPagedList(response.getBody()));
     }
 
     @Override
     public PagedList<StorageAccount> listByGroup(String groupName) throws CloudException, IOException {
-        ServiceResponse<List<StorageAccountInner>> response = client.listByResourceGroup(groupName);
-        return converter.convert(toPagedList(response.getBody()));
+        ServiceResponse<List<StorageAccountInner>> response = this.innerCollection.listByResourceGroup(groupName);
+        return this.converter.convert(toPagedList(response.getBody()));
     }
 
     @Override
     public StorageAccount getByGroup(String groupName, String name) throws CloudException, IOException {
-        ServiceResponse<StorageAccountInner> serviceResponse = this.client.getProperties(groupName, name);
+        ServiceResponse<StorageAccountInner> serviceResponse = this.innerCollection.getProperties(groupName, name);
         return createFluentModel(serviceResponse.getBody());
     }
 
@@ -76,7 +67,7 @@ class StorageAccountsImpl
 
     @Override
     public void delete(String groupName, String name) throws Exception {
-        this.client.delete(groupName, name);
+        this.innerCollection.delete(groupName, name);
     }
 
     @Override
@@ -98,12 +89,13 @@ class StorageAccountsImpl
         };
     }
 
-    private StorageAccountImpl createFluentModel(String name) {
-        StorageAccountInner storageAccountInner = new StorageAccountInner();
-        return new StorageAccountImpl(name, storageAccountInner, this.client, this.resourceManager);
+    @Override
+    protected StorageAccountImpl createFluentModel(String name) {
+        return new StorageAccountImpl(name, new StorageAccountInner(), this.innerCollection, this.resourceManager);
     }
 
-    private StorageAccountImpl createFluentModel(StorageAccountInner storageAccountInner) {
-        return new StorageAccountImpl(storageAccountInner.name(), storageAccountInner, this.client, this.resourceManager);
+    @Override
+    protected StorageAccountImpl createFluentModel(StorageAccountInner storageAccountInner) {
+        return new StorageAccountImpl(storageAccountInner.name(), storageAccountInner, this.innerCollection, this.resourceManager);
     }
 }

@@ -40,7 +40,7 @@ final class SubscriptionsImpl
 
     @Override
     // Gets a specific resource group
-    public SubscriptionImpl get(String name) throws CloudException, IOException {
+    public SubscriptionImpl getByName(String name) throws CloudException, IOException {
         SubscriptionInner subscription = client.get(name).getBody();
         return new SubscriptionImpl(subscription, client);
     }

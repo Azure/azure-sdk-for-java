@@ -7,6 +7,7 @@ package com.microsoft.azure;
 
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
@@ -21,7 +22,7 @@ import java.io.IOException;
  */
 public abstract class TestTemplate<
     T extends GroupableResource,
-    C extends SupportsListing<T> & SupportsGettingByGroup<T> & SupportsDeleting> {
+    C extends SupportsListing<T> & SupportsGettingByGroup<T> & SupportsDeleting & SupportsGettingById<T>> {
 
     protected String testId = String.valueOf(System.currentTimeMillis() % 100000L);
     private T resource;
@@ -61,7 +62,10 @@ public abstract class TestTemplate<
      * @throws IOException if anything goes wrong
      */
     public T verifyGetting() throws CloudException, IOException {
-        return this.collection.getByGroup(this.resource.resourceGroupName(), this.resource.name());
+        T resourceByGroup = this.collection.getByGroup(this.resource.resourceGroupName(), this.resource.name());
+        T resourceById = this.collection.getById(resourceByGroup.id());
+        Assert.assertTrue(resourceById.id().equalsIgnoreCase(resourceByGroup.id()));
+        return resourceById;
     }
 
     /**

@@ -7,9 +7,10 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,8 +19,9 @@ import java.util.List;
  * Entry point to generic resources management API.
  */
 public interface GenericResources extends
-        SupportsListing<GenericResource>,
         SupportsListingByGroup<GenericResource>,
+        SupportsGettingByGroup<GenericResource>,
+        SupportsGettingById<GenericResource>,
         SupportsCreating<GenericResource.DefinitionBlank> {
     /**
      * Checks if a resource exists in a resource group.

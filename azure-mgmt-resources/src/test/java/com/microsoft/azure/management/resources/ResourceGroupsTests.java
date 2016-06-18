@@ -37,7 +37,7 @@ public class ResourceGroupsTests extends ResourceManagerTestBase {
         Assert.assertEquals("tagvalue", groupResult.tags().get("tagname"));
         Assert.assertEquals(location, groupResult.region());
         // Get
-        ResourceGroup getGroup = resourceGroups.get(rgName);
+        ResourceGroup getGroup = resourceGroups.getByName(rgName);
         Assert.assertNotNull(getGroup);
         Assert.assertEquals(rgName, getGroup.name());
         // Update

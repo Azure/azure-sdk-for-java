@@ -9,6 +9,7 @@ package com.microsoft.azure.management.storage;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
@@ -26,6 +27,7 @@ public interface StorageAccounts extends
         SupportsDeleting,
         SupportsListingByGroup<StorageAccount>,
         SupportsGettingByGroup<StorageAccount>,
+        SupportsGettingById<StorageAccount>,
         SupportsDeletingByGroup {
     /**
      * Checks that account name is valid and is not in use.

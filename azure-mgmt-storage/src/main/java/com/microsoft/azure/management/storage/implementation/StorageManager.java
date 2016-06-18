@@ -19,7 +19,7 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 /**
  * Entry point to Azure storage resource management.
  */
-public final class StorageManager extends Manager {
+public final class StorageManager extends Manager<StorageManager> {
     private final StorageManagementClientImpl storageManagementClient;
 
     // Collections

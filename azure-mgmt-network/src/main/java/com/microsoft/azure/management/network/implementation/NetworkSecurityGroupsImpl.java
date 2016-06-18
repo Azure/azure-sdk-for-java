@@ -13,7 +13,7 @@ import com.microsoft.azure.management.network.implementation.api.NetworkSecurity
 import com.microsoft.azure.management.network.implementation.api.NetworkSecurityGroupsInner;
 import com.microsoft.azure.management.network.implementation.api.SecurityRuleInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
-import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.ServiceResponse;
 
@@ -24,37 +24,29 @@ import java.util.ArrayList;
  * Implementation of the NetworkSecurityGroups interface.
  * (Internal use only)
  */
-class NetworkSecurityGroupsImpl implements NetworkSecurityGroups {
-    private final NetworkSecurityGroupsInner client;
-    private final ResourceManager resourceManager;
-    private final PagedListConverter<NetworkSecurityGroupInner, NetworkSecurityGroup> converter;
+class NetworkSecurityGroupsImpl
+        extends GroupableResourcesImpl<NetworkSecurityGroup, NetworkSecurityGroupImpl, NetworkSecurityGroupInner, NetworkSecurityGroupsInner>
+        implements NetworkSecurityGroups {
 
     NetworkSecurityGroupsImpl(final NetworkSecurityGroupsInner client, final ResourceManager resourceManager) {
-        this.client = client;
-        this.resourceManager = resourceManager;
-        this.converter = new PagedListConverter<NetworkSecurityGroupInner, NetworkSecurityGroup>() {
-            @Override
-            public NetworkSecurityGroup typeConvert(NetworkSecurityGroupInner inner) {
-                return createFluentModel(inner);
-            }
-        };
+        super(resourceManager, client);
     }
 
     @Override
     public PagedList<NetworkSecurityGroup> list() throws CloudException, IOException {
-        ServiceResponse<PagedList<NetworkSecurityGroupInner>> response = client.listAll();
-        return converter.convert(response.getBody());
+        ServiceResponse<PagedList<NetworkSecurityGroupInner>> response = this.innerCollection.listAll();
+        return this.converter.convert(response.getBody());
     }
 
     @Override
     public PagedList<NetworkSecurityGroup> listByGroup(String groupName) throws CloudException, IOException {
-        ServiceResponse<PagedList<NetworkSecurityGroupInner>> response = client.list(groupName);
-        return converter.convert(response.getBody());
+        ServiceResponse<PagedList<NetworkSecurityGroupInner>> response = this.innerCollection.list(groupName);
+        return this.converter.convert(response.getBody());
     }
 
     @Override
     public NetworkSecurityGroupImpl getByGroup(String groupName, String name) throws CloudException, IOException {
-        ServiceResponse<NetworkSecurityGroupInner> serviceResponse = this.client.get(groupName, name);
+        ServiceResponse<NetworkSecurityGroupInner> serviceResponse = this.innerCollection.get(groupName, name);
         return createFluentModel(serviceResponse.getBody());
     }
 
@@ -65,7 +57,7 @@ class NetworkSecurityGroupsImpl implements NetworkSecurityGroups {
 
     @Override
     public void delete(String groupName, String name) throws Exception {
-        this.client.delete(groupName, name);
+        this.innerCollection.delete(groupName, name);
     }
 
     @Override
@@ -74,7 +66,9 @@ class NetworkSecurityGroupsImpl implements NetworkSecurityGroups {
     }
 
     // Fluent model create helpers
-    private NetworkSecurityGroupImpl createFluentModel(String name) {
+
+    @Override
+    protected NetworkSecurityGroupImpl createFluentModel(String name) {
         NetworkSecurityGroupInner inner = new NetworkSecurityGroupInner();
 
         // Initialize rules
@@ -86,10 +80,11 @@ class NetworkSecurityGroupsImpl implements NetworkSecurityGroups {
             inner.withDefaultSecurityRules(new ArrayList<SecurityRuleInner>());
         }
 
-        return new NetworkSecurityGroupImpl(name, inner, this.client, this.resourceManager);
+        return new NetworkSecurityGroupImpl(name, inner, this.innerCollection, this.resourceManager);
     }
 
-    private NetworkSecurityGroupImpl createFluentModel(NetworkSecurityGroupInner inner) {
-        return new NetworkSecurityGroupImpl(inner.name(), inner, this.client, this.resourceManager);
+    @Override
+    protected NetworkSecurityGroupImpl createFluentModel(NetworkSecurityGroupInner inner) {
+        return new NetworkSecurityGroupImpl(inner.name(), inner, this.innerCollection, this.resourceManager);
     }
 }

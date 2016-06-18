@@ -63,7 +63,7 @@ final class DeploymentsImpl
     }
 
     @Override
-    public Deployment get(String name) throws IOException, CloudException {
+    public Deployment getByName(String name) throws IOException, CloudException {
         for (ResourceGroup group : this.resourceManager.resourceGroups().list()) {
             try {
                 DeploymentExtendedInner inner = client.get(group.name(), name).getBody();
@@ -103,13 +103,20 @@ final class DeploymentsImpl
         return client.checkExistence(resourceGroupName, deploymentName).getBody();
     }
 
-    private DeploymentImpl createFluentModel(String name) {
+    protected DeploymentImpl createFluentModel(String name) {
         DeploymentExtendedInner deploymentExtendedInner = new DeploymentExtendedInner();
         deploymentExtendedInner.withName(name);
         return new DeploymentImpl(deploymentExtendedInner, client, deploymentOperationsClient, this.resourceManager);
     }
 
-    private DeploymentImpl createFluentModel(DeploymentExtendedInner deploymentExtendedInner) {
+    protected DeploymentImpl createFluentModel(DeploymentExtendedInner deploymentExtendedInner) {
         return new DeploymentImpl(deploymentExtendedInner, client, deploymentOperationsClient, this.resourceManager);
+    }
+
+    @Override
+    public Deployment getById(String id) throws CloudException, IllegalArgumentException, IOException {
+        return this.getByGroup(
+                ResourceUtils.groupFromResourceId(id),
+                ResourceUtils.nameFromResourceId(id));
     }
 }

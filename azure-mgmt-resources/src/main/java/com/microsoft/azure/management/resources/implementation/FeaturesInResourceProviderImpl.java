@@ -46,7 +46,7 @@ final class FeaturesInResourceProviderImpl
     }
 
     @Override
-    public Feature get(String name) throws CloudException, IOException {
+    public Feature getByName(String name) throws CloudException, IOException {
         return new FeatureImpl(client.get(resourceProviderNamespace, name).getBody());
     }
 }

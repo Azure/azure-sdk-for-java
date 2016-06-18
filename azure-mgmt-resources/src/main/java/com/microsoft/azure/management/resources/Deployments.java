@@ -9,6 +9,7 @@ package com.microsoft.azure.management.resources;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
@@ -26,6 +27,7 @@ public interface Deployments extends
         SupportsListingByGroup<Deployment>,
         SupportsGettingByName<Deployment>,
         SupportsGettingByGroup<Deployment>,
+        SupportsGettingById<Deployment>,
         SupportsDeleting,
         SupportsDeletingByGroup {
     /**
