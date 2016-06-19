@@ -1,5 +1,6 @@
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.implementation.api.DataDiskImage;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import org.junit.AfterClass;
@@ -21,6 +22,20 @@ public class VirtualMachineImageOperationsTests extends ComputeManagementTestBas
 
     @Test
     public void canListVirtualMachineImages() throws Exception {
+        int maxListing = 20;
+        int count = 0;
+        PagedList<VirtualMachineImage> images = computeManager.virtualMachineImages()
+                .listByRegion(Region.US_EAST);
+        // Lazy listing
+        for (VirtualMachineImage image : images) {
+            count++;
+            if (count >= maxListing) {
+                break;
+            }
+            System.out.println(count + ":" + image.publisherName() + ":" + image.offer() + ":" + image.version());
+        }
+        Assert.assertTrue(count == maxListing);
+
         List<Publisher> publishers =
                 computeManager.virtualMachineImages().publishers().listByRegion(Region.US_EAST);
 
@@ -36,7 +51,7 @@ public class VirtualMachineImageOperationsTests extends ComputeManagementTestBas
         VirtualMachineImage firstVMImage = null;
         for (Offer offer : canonicalPublisher.offers().list()) {
             for (Sku sku: offer.skus().list()) {
-                for (VirtualMachineImage image : sku.listImages()) {
+                for (VirtualMachineImage image : sku.images().list()) {
                     firstVMImage = image;
                     break;
                 }

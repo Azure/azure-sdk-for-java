@@ -17,7 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 import java.io.IOException;
 
 /**
- * The implementation for {@link VirtualMachineImagePublishers}.
+ * The implementation for {@link Skus}.
  */
 class SkusImpl
         extends WrappersImpl<Sku, SkuImpl, VirtualMachineImageResourceInner>

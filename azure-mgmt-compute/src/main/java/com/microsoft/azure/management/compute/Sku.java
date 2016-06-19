@@ -36,11 +36,7 @@ public interface Sku {
     String name();
 
     /**
-     * Lists the virtual machines in this SKU.
-     *
-     * @return the virtual machine images
-     * @throws CloudException thrown for an invalid response from the service
-     * @throws IOException thrown for IO exception
+     * @return virtual machine images in the sku
      */
-    List<VirtualMachineImage> listImages() throws CloudException, IOException;
+    VirtualMachineImagesInSku images();
 }

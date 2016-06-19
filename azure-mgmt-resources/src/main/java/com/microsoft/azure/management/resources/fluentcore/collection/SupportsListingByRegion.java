@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.resources.fluentcore.collection;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
 import java.io.IOException;
@@ -28,7 +29,7 @@ public interface SupportsListingByRegion<T> {
      * @throws CloudException exceptions thrown from the cloud.
      * @throws IOException exceptions thrown from serialization/deserialization.
      */
-    List<T> listByRegion(Region region) throws CloudException, IOException;
+    PagedList<T> listByRegion(Region region) throws CloudException, IOException;
 
     /**
      * List all the resources of the specified type in the specified region.
@@ -37,5 +38,5 @@ public interface SupportsListingByRegion<T> {
      * @throws CloudException exceptions thrown from the cloud.
      * @throws IOException exceptions thrown from serialization/deserialization.
      */
-    List<T> listByRegion(String regionName) throws CloudException, IOException;
+    PagedList<T> listByRegion(String regionName) throws CloudException, IOException;
 }
