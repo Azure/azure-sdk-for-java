@@ -15,7 +15,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.WrappersImpl;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * The implementation for {@link Publishers}.

@@ -6,8 +6,6 @@
 package com.microsoft.azure.management.compute;
 
 import java.io.IOException;
-import java.util.List;
-
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
