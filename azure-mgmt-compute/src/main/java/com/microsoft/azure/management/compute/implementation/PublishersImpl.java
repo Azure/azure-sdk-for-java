@@ -11,7 +11,7 @@ import com.microsoft.azure.management.compute.Publishers;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImageResourceInner;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImagesInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.WrappersImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.List;
  * The implementation for {@link VirtualMachineImagePublishers}.
  */
 class PublishersImpl
-        extends WrappersImpl<Publisher, PublisherImpl, VirtualMachineImageResourceInner>
+        extends ReadableWrappersImpl<Publisher, PublisherImpl, VirtualMachineImageResourceInner>
         implements Publishers {
 
     private final VirtualMachineImagesInner innerCollection;
@@ -32,12 +32,6 @@ class PublishersImpl
     @Override
     public List<Publisher> listByRegion(Region region) throws CloudException, IOException {
         return listByRegion(region.toString());
-    }
-
-    @Override
-    protected PublisherImpl wrapModel(String name) {
-        // Not supported
-        return null;
     }
 
     @Override
