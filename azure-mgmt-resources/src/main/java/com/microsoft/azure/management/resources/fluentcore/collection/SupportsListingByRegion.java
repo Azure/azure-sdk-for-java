@@ -11,7 +11,6 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Provides access to listing Azure resources of a specific type based on their region.
