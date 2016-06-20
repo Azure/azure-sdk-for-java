@@ -9,7 +9,6 @@ import java.util.function.*;
 import java.util.logging.Logger;
 
 import com.microsoft.azure.eventhubs.*;
-import com.microsoft.azure.eventhubs.sendrecv.ReceiveTest;
 import com.microsoft.azure.servicebus.*;
 
 /**

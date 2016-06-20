@@ -49,7 +49,7 @@ public class Sender1MsgOnLinkFlowHandler extends ServerTraceHandler
 						int length = msg.encode(bytes,  0,  4 * 1024);
 						
 						byte[] tag = String.valueOf(1).getBytes();
-						Delivery delivery = sender.delivery(tag);
+						sender.delivery(tag);
 						sender.send(bytes, 0, length);
 						
 						sender.advance();

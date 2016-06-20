@@ -7,15 +7,11 @@ package com.microsoft.azure.servicebus.amqp;
 import java.util.Locale;
 import java.util.logging.Level;
 
-import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Receiver;
-import org.apache.qpid.proton.message.Message;
-
-import com.microsoft.azure.servicebus.ClientConstants;
 
 
 // ServiceBus <-> ProtonReactor interaction 

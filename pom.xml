@@ -55,6 +55,7 @@
 	
 	 <modules> 
 	    <module>azure-eventhubs</module>
+	    <module>azure-eventhubs-eph</module>
 	    <module>azure-eventhubs-extensions</module>
 	    <module>azure-eventhubs-samples</module>
 	 </modules>

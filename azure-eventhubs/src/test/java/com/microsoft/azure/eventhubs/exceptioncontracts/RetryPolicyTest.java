@@ -7,7 +7,6 @@ import java.util.logging.Level;
 
 import org.junit.*;
 
-import com.microsoft.azure.eventhubs.*;
 import com.microsoft.azure.eventhubs.lib.*;
 import com.microsoft.azure.servicebus.*;
 

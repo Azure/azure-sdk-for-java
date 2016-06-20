@@ -11,7 +11,6 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.*;
 
-import com.microsoft.azure.eventhubs.EventData.SystemProperties;
 import com.microsoft.azure.servicebus.*;
 
 /**

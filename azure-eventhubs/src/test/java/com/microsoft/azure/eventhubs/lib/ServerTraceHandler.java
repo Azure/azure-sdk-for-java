@@ -5,14 +5,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.qpid.proton.Proton;
-import org.apache.qpid.proton.amqp.messaging.*;
 import org.apache.qpid.proton.engine.*;
-import org.apache.qpid.proton.engine.Sasl.SaslOutcome;
 import org.apache.qpid.proton.engine.SslDomain.Mode;
-import org.apache.qpid.proton.message.*;
 import org.apache.qpid.proton.reactor.Handshaker;
-
-import com.microsoft.azure.servicebus.*;
 
 /**
  * Traces all server events if enabled. used for debugging
