@@ -12,7 +12,7 @@ import com.microsoft.azure.management.compute.Offers;
 import com.microsoft.azure.management.compute.Publisher;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImageResourceInner;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImagesInner;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.WrappersImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
 import java.io.IOException;
 
@@ -20,7 +20,7 @@ import java.io.IOException;
  * The implementation for {@link VirtualMachineImagePublishers}.
  */
 class OffersImpl
-        extends WrappersImpl<Offer, OfferImpl, VirtualMachineImageResourceInner>
+        extends ReadableWrappersImpl<Offer, OfferImpl, VirtualMachineImageResourceInner>
         implements Offers {
 
     private final VirtualMachineImagesInner innerCollection;
@@ -29,13 +29,6 @@ class OffersImpl
     OffersImpl(VirtualMachineImagesInner innerCollection, Publisher publisher) {
         this.innerCollection = innerCollection;
         this.publisher = publisher;
-    }
-
-
-    @Override
-    protected OfferImpl wrapModel(String name) {
-        // Not supported
-        return null;
     }
 
     @Override

@@ -11,7 +11,7 @@ import com.microsoft.azure.management.compute.VirtualMachineSizes;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeInner;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizesInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.WrappersImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.List;
  * The implementation for {@link VirtualMachineSizes}.
  */
 class VirtualMachineSizesImpl
-        extends WrappersImpl<VirtualMachineSize, VirtualMachineSizeImpl, VirtualMachineSizeInner>
+        extends ReadableWrappersImpl<VirtualMachineSize, VirtualMachineSizeImpl, VirtualMachineSizeInner>
         implements VirtualMachineSizes {
     private final VirtualMachineSizesInner innerCollection;
 
@@ -31,12 +31,6 @@ class VirtualMachineSizesImpl
     @Override
     public List<VirtualMachineSize> listByRegion(Region region) throws CloudException, IOException {
         return listByRegion(region.toString());
-    }
-
-    @Override
-    protected VirtualMachineSizeImpl wrapModel(String name) {
-        // Not supported
-        return null;
     }
 
     @Override

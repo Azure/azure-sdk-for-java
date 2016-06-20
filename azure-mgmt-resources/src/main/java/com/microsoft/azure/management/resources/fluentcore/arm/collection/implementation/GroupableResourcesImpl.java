@@ -28,7 +28,7 @@ public abstract class GroupableResourcesImpl<
         ImplT extends T,
         InnerT extends Resource,
         InnerCollectionT>
-    extends WrappersImpl<T, ImplT, InnerT>
+    extends CreatableWrappersImpl<T, ImplT, InnerT>
     implements
         SupportsGettingById<T>,
         SupportsGettingByGroup<T> {
