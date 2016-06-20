@@ -199,7 +199,7 @@ class NetworkInterfaceImpl
                 return (NicIpConfigurationImpl) nicIpConfiguration;
             }
         }
-        throw new RuntimeException("An Ip configuration with name'" + name + "' not found");
+        throw new RuntimeException("IP configuration '" + name + "' not found");
     }
 
     @Override
