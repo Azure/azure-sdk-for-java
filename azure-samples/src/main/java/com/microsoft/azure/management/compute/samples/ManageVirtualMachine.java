@@ -9,10 +9,12 @@ package com.microsoft.azure.management.compute.samples;
 
 import com.microsoft.azure.Azure;
 import com.microsoft.azure.management.compute.DataDisk;
+import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.implementation.api.CachingTypes;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeTypes;
+import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.samples.Utils;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -42,7 +44,8 @@ public final class ManageVirtualMachine {
      */
     public static void main(String[] args) {
 
-        final String vmName = Utils.createRandomName("vm");
+        final String windowsVMName = Utils.createRandomName("wVM");
+        final String linuxVMName = Utils.createRandomName("lVM");
         final String rgName = Utils.createRandomName("rgCOMV");
         final String userName = "tirekicker";
         final String password = "12NewPA$$w0rd!";
@@ -74,7 +77,7 @@ public final class ManageVirtualMachine {
 
                 Date t1 = new Date();
 
-                VirtualMachine vm = azure.virtualMachines().define(vmName)
+                VirtualMachine windowsVM = azure.virtualMachines().define(windowsVMName)
                         .withRegion(Region.US_EAST)
                         .withNewGroup(rgName)
                         .withNewPrimaryNetwork("10.0.0.0/28")
@@ -87,72 +90,72 @@ public final class ManageVirtualMachine {
                         .create();
 
                 Date t2 = new Date();
-                System.out.println("Created VM: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + vm.id());
+                System.out.println("Created VM: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + windowsVM.id());
                 // Print virtual machine details
-                Utils.print(vm);
+                Utils.print(windowsVM);
 
 
                 //=============================================================
                 // Update - Tag the virtual machine
 
-                vm.update()
+                windowsVM.update()
                         .withTag("who-rocks", "java")
                         .withTag("where", "on azure")
                         .apply();
 
-                System.out.println("Tagged VM: " + vm.id());
+                System.out.println("Tagged VM: " + windowsVM.id());
 
 
                 //=============================================================
                 // Update - Attach data disks
 
-                vm.update()
+                windowsVM.update()
                         .withNewDataDisk(10)
                         .defineNewDataDisk(dataDiskName)
-                            .withSizeInGB(20)
-                            .withCaching(CachingTypes.READ_WRITE)
+                        .withSizeInGB(20)
+                        .withCaching(CachingTypes.READ_WRITE)
                         .attach()
                         .apply();
 
-                System.out.println("Attached a new data disk" + dataDiskName + " to VM" + vm.id());
-                Utils.print(vm);
+                System.out.println("Attached a new data disk" + dataDiskName + " to VM" + windowsVM.id());
+                Utils.print(windowsVM);
 
 
                 //=============================================================
                 // Update - detach data disk
 
-                vm.update()
+                windowsVM.update()
                         .withoutDataDisk(dataDiskName)
                         .apply();
 
-                System.out.println("Detached data disk " + dataDiskName + " from VM " + vm.id());
+                System.out.println("Detached data disk " + dataDiskName + " from VM " + windowsVM.id());
 
 
                 //=============================================================
                 // Update - Resize (expand) the data disk
                 // First, deallocate teh virtual machine and then proceed with resize
 
-                System.out.println("De-allocating VM: " + vm.id());
+                System.out.println("De-allocating VM: " + windowsVM.id());
 
-                vm.deallocate();
+                windowsVM.deallocate();
 
-                System.out.println("De-allocated VM: " + vm.id());
+                System.out.println("De-allocated VM: " + windowsVM.id());
 
-                DataDisk dataDisk = vm.dataDisks().get(0);
+                DataDisk dataDisk = windowsVM.dataDisks().get(0);
 
-                vm.update()
+                windowsVM.update()
                         .updateDataDisk(dataDisk.name())
-                            .withSizeInGB(30)
+                        .withSizeInGB(30)
                         .set()
                         .apply();
 
-                System.out.println("Expanded VM " + vm.id() + "'s data disk to 30GB");
+                System.out.println("Expanded VM " + windowsVM.id() + "'s data disk to 30GB");
 
 
                 //=============================================================
                 // Update - Expand the OS drive size by 10 GB
 
-                int osDiskSizeInGb = vm.osDiskSize();
+                int osDiskSizeInGb = windowsVM.osDiskSize();
                 if (osDiskSizeInGb == 0) {
                     // Server is not returning the OS Disk size, possible bug in server
                     System.out.println("Server is not returning the OS disk size, possible bug in the server?");
@@ -160,51 +163,71 @@ public final class ManageVirtualMachine {
                     osDiskSizeInGb = 256;
                 }
 
-                vm.update()
+                windowsVM.update()
                         .withOsDiskSizeInGb(osDiskSizeInGb + 10)
                         .apply();
 
-                System.out.println("Expanded VM " + vm.id() + "'s OS disk to " + (osDiskSizeInGb + 10));
+                System.out.println("Expanded VM " + windowsVM.id() + "'s OS disk to " + (osDiskSizeInGb + 10));
 
 
                 //=============================================================
                 // Start the virtual machine
 
-                System.out.println("Starting VM " + vm.id());
+                System.out.println("Starting VM " + windowsVM.id());
 
-                vm.start();
+                windowsVM.start();
 
-                System.out.println("Started VM: " + vm.id() + "; state = " + vm.powerState());
+                System.out.println("Started VM: " + windowsVM.id() + "; state = " + windowsVM.powerState());
 
 
                 //=============================================================
                 // Restart the virtual machine
 
-                System.out.println("Restarting VM: " + vm.id());
+                System.out.println("Restarting VM: " + windowsVM.id());
 
-                vm.restart();
+                windowsVM.restart();
 
-                System.out.println("Restarted VM: " + vm.id() + "; state = " + vm.powerState());
+                System.out.println("Restarted VM: " + windowsVM.id() + "; state = " + windowsVM.powerState());
 
 
                 //=============================================================
                 // Stop (powerOff) the virtual machine
 
-                System.out.println("Powering OFF VM: " + vm.id());
+                System.out.println("Powering OFF VM: " + windowsVM.id());
 
-                vm.powerOff();
+                windowsVM.powerOff();
 
-                System.out.println("Powered OFF VM: " + vm.id() + "; state = " + vm.powerState());
+                System.out.println("Powered OFF VM: " + windowsVM.id() + "; state = " + windowsVM.powerState());
+
+                // Get the network where Windows VM is hosted
+                Network network = windowsVM.primaryNetworkInterface().primaryNetwork();
 
 
                 //=============================================================
-                // TODO Create a Linux VM
+                // Create a Linux VM in the same virtual network
 
+                System.out.println("Creating a Linux VM in the network");
+
+                VirtualMachine linuxVM = azure.virtualMachines().define(linuxVMName)
+                        .withRegion(Region.US_EAST)
+                        .withExistingGroup(rgName)
+                        .withExistingPrimaryNetwork(network)
+                        .withSubnet(network.subnets().get(0).name())
+                        .withPrimaryPrivateIpAddressDynamic()
+                        .withoutPrimaryPublicIpAddress()
+                        .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                        .withRootUserName(userName)
+                        .withPassword(password)
+                        .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                        .create();
+
+                System.out.println("Created a Linux VM (in the same virtual network): " + linuxVM.id());
+                Utils.print(linuxVM);
 
                 //=============================================================
                 // List virtual machines in the resource group
 
-                String resourceGroupName = vm.resourceGroupName();
+                String resourceGroupName = windowsVM.resourceGroupName();
 
                 System.out.println("Printing list of VMs =======");
 
@@ -215,11 +238,11 @@ public final class ManageVirtualMachine {
 
                 //=============================================================
                 // Delete the virtual machine
-                System.out.println("Deleting VM: " + vm.id());
+                System.out.println("Deleting VM: " + windowsVM.id());
 
-                azure.virtualMachines().delete(vm.id());
+                azure.virtualMachines().delete(windowsVM.id());
 
-                System.out.println("Deleted VM: " + vm.id());
+                System.out.println("Deleted VM: " + windowsVM.id());
 
             } catch (Exception f) {
                 System.out.println(f.getMessage());
