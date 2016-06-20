@@ -17,7 +17,7 @@ import com.microsoft.azure.management.resources.implementation.api.TenantsInner;
 import java.io.IOException;
 
 /**
- * Implementation for Tenants and its nested interfaces.
+ * Implementation for {@link Tenants}.
  */
 final class TenantsImpl
         implements Tenants {

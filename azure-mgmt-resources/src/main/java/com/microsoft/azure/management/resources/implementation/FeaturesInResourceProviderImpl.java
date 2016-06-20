@@ -17,7 +17,7 @@ import com.microsoft.azure.management.resources.implementation.api.FeaturesInner
 import java.io.IOException;
 
 /**
- * The implementation of Features.InResourceProvider and its parent interfaces.
+ * The implementation of {@link Features.InResourceProvider}.
  */
 final class FeaturesInResourceProviderImpl
         implements Features.InResourceProvider {

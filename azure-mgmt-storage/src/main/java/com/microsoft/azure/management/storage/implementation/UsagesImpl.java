@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The implementation of Usage and its parent interfaces.
+ * The implementation of {@link Usages}.
  */
 class UsagesImpl
         implements Usages {

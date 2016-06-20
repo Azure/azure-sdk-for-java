@@ -112,8 +112,8 @@ public final class ManageVirtualMachine {
                 windowsVM.update()
                         .withNewDataDisk(10)
                         .defineNewDataDisk(dataDiskName)
-                            .withSizeInGB(20)
-                            .withCaching(CachingTypes.READ_WRITE)
+                        .withSizeInGB(20)
+                        .withCaching(CachingTypes.READ_WRITE)
                         .attach()
                         .apply();
 
@@ -145,7 +145,7 @@ public final class ManageVirtualMachine {
 
                 windowsVM.update()
                         .updateDataDisk(dataDisk.name())
-                            .withSizeInGB(30)
+                        .withSizeInGB(30)
                         .set()
                         .apply();
 
@@ -155,8 +155,8 @@ public final class ManageVirtualMachine {
                 //=============================================================
                 // Update - Expand the OS drive size by 10 GB
 
-                Integer osDiskSizeInGb = windowsVM.osDiskSize();
-                if (osDiskSizeInGb == null) {
+                int osDiskSizeInGb = windowsVM.osDiskSize();
+                if (osDiskSizeInGb == 0) {
                     // Server is not returning the OS Disk size, possible bug in server
                     System.out.println("Server is not returning the OS disk size, possible bug in the server?");
                     System.out.println("Assuming that the OS disk size is 256 GB");

@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.implementation.api.TargetResourc
 import org.joda.time.DateTime;
 
 /**
- * The implementation of DeploymentOperation and its parent interfaces.
+ * The implementation of {@link DeploymentOperation}.
  */
 final class DeploymentOperationImpl extends
         IndexableRefreshableWrapperImpl<DeploymentOperation, DeploymentOperationInner>

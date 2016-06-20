@@ -18,8 +18,7 @@ import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.ServiceResponse;
 
 /**
- * Implementation of the PublicIPAddress interface.
- * (Internal use only)
+ *  Implementation for {@link PublicIpAddress} and its create and update interfaces.
  */
 class PublicIpAddressImpl
     extends GroupableResourceImpl<PublicIpAddress, PublicIPAddressInner, PublicIpAddressImpl>

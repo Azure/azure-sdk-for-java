@@ -18,7 +18,7 @@ import com.microsoft.azure.management.resources.implementation.api.DeploymentOpe
 import java.io.IOException;
 
 /**
- * The implementation of DeploymentOperations and its parent interfaces.
+ * The implementation of {@link DeploymentOperations}.
  */
 final class DeploymentOperationsImpl
         implements DeploymentOperations {

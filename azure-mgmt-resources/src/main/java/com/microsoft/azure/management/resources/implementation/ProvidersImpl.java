@@ -17,7 +17,7 @@ import com.microsoft.azure.management.resources.implementation.api.ProvidersInne
 import java.io.IOException;
 
 /**
- * The implementation for Providers and its parent interfaces.
+ * The implementation for {@link Providers}.
  */
 final class ProvidersImpl
         implements Providers {

@@ -11,7 +11,7 @@ import com.microsoft.azure.management.network.implementation.api.SecurityRuleInn
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
 /**
- * Implementation of the NetworkSecurityRule interface.
+ *  Implementation for {@link NetworkSecurityRule} and its create and update interfaces.
  */
 class NetworkSecurityRuleImpl
     extends ChildResourceImpl<SecurityRuleInner, NetworkSecurityGroupImpl>

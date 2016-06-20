@@ -23,8 +23,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Implementation of the GenericResouces interface.
- * (Internal use only)
+ * Implementation of the {@link GenericResources}.
  */
 final class GenericResourcesImpl
     extends GroupableResourcesImpl<GenericResource, GenericResourceImpl, GenericResourceInner, ResourcesInner>

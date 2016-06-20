@@ -11,7 +11,7 @@ import com.microsoft.azure.management.compute.implementation.api.VirtualMachineI
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
 /**
- * The implementation for {@link VirtualMachineImage.Publisher}.
+ * The implementation for {@link Publisher}.
  */
 class PublisherImpl
         implements Publisher {

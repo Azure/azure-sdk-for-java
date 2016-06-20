@@ -34,7 +34,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * The type representing Azure network interface.
+ *  Implementation for {@link NetworkInterface} and its create and update interfaces.
  */
 class NetworkInterfaceImpl
         extends GroupableResourceImpl<NetworkInterface, NetworkInterfaceInner, NetworkInterfaceImpl>
