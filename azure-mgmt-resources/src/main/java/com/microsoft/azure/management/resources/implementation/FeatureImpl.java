@@ -11,7 +11,7 @@ import com.microsoft.azure.management.resources.Feature;
 import com.microsoft.azure.management.resources.implementation.api.FeatureResultInner;
 
 /**
- * The implementation of Feature and its parent interfaces.
+ * The implementation of {@link Feature}.
  */
 final class FeatureImpl extends
         IndexableWrapperImpl<FeatureResultInner>

@@ -152,8 +152,8 @@ public final class ManageVirtualMachine {
                 //=============================================================
                 // Update - Expand the OS drive size by 10 GB
 
-                Integer osDiskSizeInGb = vm.osDiskSize();
-                if (osDiskSizeInGb == null) {
+                int osDiskSizeInGb = vm.osDiskSize();
+                if (osDiskSizeInGb == 0) {
                     // Server is not returning the OS Disk size, possible bug in server
                     System.out.println("Server is not returning the OS disk size, possible bug in the server?");
                     System.out.println("Assuming that the OS disk size is 256 GB");

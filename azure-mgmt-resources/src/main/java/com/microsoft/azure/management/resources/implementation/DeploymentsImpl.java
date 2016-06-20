@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The implementation for Deployments and its parent interfaces.
+ * The implementation for {@link Deployments}.
  */
 final class DeploymentsImpl
     implements Deployments {

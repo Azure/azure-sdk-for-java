@@ -17,7 +17,7 @@ import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 
 /**
- * The implementation for GenericResource and its nested interfaces.
+ * The implementation for {@link GenericResource} and it's nested interfaces.
  */
 final class GenericResourceImpl
     extends GroupableResourceImpl<GenericResource, GenericResourceInner, GenericResourceImpl>

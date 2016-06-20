@@ -20,8 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Implementation of the NetworkSecurityGroups interface.
- * (Internal use only)
+ *  Implementation for {@link NetworkSecurityGroups}.
  */
 class NetworkSecurityGroupsImpl
         extends GroupableResourcesImpl<NetworkSecurityGroup, NetworkSecurityGroupImpl, NetworkSecurityGroupInner, NetworkSecurityGroupsInner>

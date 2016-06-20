@@ -65,7 +65,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * The type representing Azure virtual machine.
+ * The implementation for {@link VirtualMachine} and it's create and update interfaces.
  */
 class VirtualMachineImpl
         extends GroupableResourceImpl<VirtualMachine, VirtualMachineInner, VirtualMachineImpl>
@@ -731,8 +731,8 @@ class VirtualMachineImpl
     }
 
     @Override
-    public Integer osDiskSize() {
-        return inner().storageProfile().osDisk().diskSizeGB();
+    public int osDiskSize() {
+        return Utils.toPrimitiveInt(inner().storageProfile().osDisk().diskSizeGB());
     }
 
     @Override

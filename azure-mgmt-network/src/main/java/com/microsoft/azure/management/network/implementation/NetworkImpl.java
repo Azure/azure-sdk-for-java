@@ -24,8 +24,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- * Internal virtual network implementation of the fluent interface.
- * (Internal use only)
+ * Implementation for {@link Network} and it's create and update interfaces.
  */
 class NetworkImpl
     extends GroupableResourceImpl<Network, VirtualNetworkInner, NetworkImpl>

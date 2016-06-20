@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Represents an Ip configuration of a network interface.
+ *  Implementation for {@link NicIpConfiguration} and it's create and update interfaces.
  */
 class NicIpConfigurationImpl
         extends ChildResourceImpl<NetworkInterfaceIPConfiguration, NetworkInterfaceImpl>

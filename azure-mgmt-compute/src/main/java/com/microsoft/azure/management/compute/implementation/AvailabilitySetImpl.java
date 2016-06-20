@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * The implementation for {@link AvailabilitySet} and its create and update interfaces.
+ * The implementation for {@link AvailabilitySet} and it's create and update interfaces.
  */
 class AvailabilitySetImpl
     extends
@@ -43,12 +43,12 @@ class AvailabilitySetImpl
 
     @Override
     public int updateDomainCount() {
-        return this.inner().platformUpdateDomainCount();
+        return Utils.toPrimitiveInt(this.inner().platformUpdateDomainCount());
     }
 
     @Override
     public int faultDomainCount() {
-        return this.inner().platformFaultDomainCount();
+        return Utils.toPrimitiveInt(this.inner().platformFaultDomainCount());
     }
 
     @Override

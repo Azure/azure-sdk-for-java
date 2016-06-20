@@ -11,7 +11,7 @@ import com.microsoft.azure.management.storage.implementation.api.CheckNameAvaila
 import com.microsoft.azure.management.storage.implementation.api.Reason;
 
 /**
- * The CheckNameAvailability operation response.
+ * The {@link com.microsoft.azure.management.storage.StorageAccounts#checkNameAvailability} action result.
  */
 public class CheckNameAvailabilityResult {
     private CheckNameAvailabilityResultInner inner;

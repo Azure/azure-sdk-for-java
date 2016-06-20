@@ -1,12 +1,13 @@
 package com.microsoft.azure.management.storage.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.storage.Usage;
 import com.microsoft.azure.management.storage.implementation.api.UsageName;
 import com.microsoft.azure.management.storage.implementation.api.UsageUnit;
 
 /**
- * The implementation of Usage and its parent interfaces.
+ * The implementation of {@link Usage}.
  */
 class UsageImpl extends WrapperImpl<com.microsoft.azure.management.storage.implementation.api.Usage> implements Usage {
     UsageImpl(com.microsoft.azure.management.storage.implementation.api.Usage innerObject) {
@@ -20,12 +21,12 @@ class UsageImpl extends WrapperImpl<com.microsoft.azure.management.storage.imple
 
     @Override
     public int currentValue() {
-        return inner().currentValue();
+        return  Utils.toPrimitiveInt(inner().currentValue());
     }
 
     @Override
     public int limit() {
-        return inner().limit();
+        return Utils.toPrimitiveInt(inner().limit());
     }
 
     @Override

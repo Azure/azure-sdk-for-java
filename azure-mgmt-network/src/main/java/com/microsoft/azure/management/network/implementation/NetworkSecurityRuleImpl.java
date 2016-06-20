@@ -9,9 +9,10 @@ import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
 import com.microsoft.azure.management.network.implementation.api.SecurityRuleInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 
 /**
- * Implementation of the NetworkSecurityRule interface.
+ *  Implementation for {@link NetworkSecurityRule} and it's create and update interfaces.
  */
 class NetworkSecurityRuleImpl
     extends ChildResourceImpl<SecurityRuleInner, NetworkSecurityGroupImpl>
@@ -67,7 +68,7 @@ class NetworkSecurityRuleImpl
 
     @Override
     public int priority() {
-        return this.inner().priority();
+        return Utils.toPrimitiveInt(this.inner().priority());
     }
 
     // Fluent setters

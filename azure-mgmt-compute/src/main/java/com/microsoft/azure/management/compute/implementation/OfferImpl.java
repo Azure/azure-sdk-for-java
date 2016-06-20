@@ -7,7 +7,7 @@ import com.microsoft.azure.management.compute.implementation.api.VirtualMachineI
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
 /**
- * The implementation for {@link VirtualMachineImage.Offer}.
+ * The implementation for {@link Offer}.
  */
 class OfferImpl implements Offer {
     private final Publisher publisher;

@@ -38,6 +38,19 @@ public final class Utils {
     }
 
     /**
+     * Converts an object integer to a primitive int.
+     *
+     * @param value the <tt>Integer</tt> value
+     * @return 0 if the given Integer value is null else the primitive value
+     */
+    public static int toPrimitiveInt(Integer value) {
+        if (value == null) {
+            return 0;
+        }
+        return value;
+    }
+
+    /**
      * Creates a void callback from a callback that returns another type of
      * instance. This is useful for internal async handoffs where returned
      * resource is stored elsewhere.

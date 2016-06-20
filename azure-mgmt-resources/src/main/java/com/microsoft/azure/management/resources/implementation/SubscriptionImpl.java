@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The implementation of Subscription and its nested interfaces.
+ * The implementation of {@link Subscription}.
  */
 final class SubscriptionImpl extends
         IndexableWrapperImpl<SubscriptionInner>
