@@ -50,6 +50,15 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                 .withoutRule("rule1")
                 .withTag("tag1", "value1")
                 .withTag("tag2", "value2")
+                .defineRule("rule3")
+                    .allowInbound()
+                    .fromAnyAddress()
+                    .fromAnyPort()
+                    .toAnyAddress()
+                    .toAnyPort()
+                    .withProtocol(Protocol.UDP)
+                    .attach()
+                .withoutRule("rule1")
                 .apply();
         Assert.assertTrue(resource.tags().containsKey("tag1"));
         return resource;

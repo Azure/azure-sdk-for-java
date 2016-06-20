@@ -17,7 +17,8 @@ class NetworkSecurityRuleImpl
     extends ChildResourceImpl<SecurityRuleInner, NetworkSecurityGroupImpl>
     implements
         NetworkSecurityRule,
-        NetworkSecurityRule.Definitions<NetworkSecurityGroup.DefinitionCreatable> {
+        NetworkSecurityRule.Definitions<NetworkSecurityGroup.DefinitionCreatable>,
+        NetworkSecurityRule.UpdateDefinitions<NetworkSecurityGroup.Update> {
 
     protected NetworkSecurityRuleImpl(String name, SecurityRuleInner inner, NetworkSecurityGroupImpl parent) {
         super(name, inner, parent);

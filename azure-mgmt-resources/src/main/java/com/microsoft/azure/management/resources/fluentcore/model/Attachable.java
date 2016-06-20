@@ -17,4 +17,22 @@ public interface Attachable<ParentT> {
      * @return the next stage of the parent object's definition
      */
     ParentT attach();
+
+    /**
+     * The final stage of the child object definition, as which it can be attached to the parent
+     * as part of the parent's definition, using {@link InDefinition#attach()}.
+     * @param <ParentT> the parent definition {@link InDefinition#attach()} returns to
+     */
+    interface InDefinition<ParentT> {
+        ParentT attach();
+    }
+
+    /**
+     * The final stage of the child object definition, as which it can be attached to the parent
+     * as part of the parent's update, using {@link InUpdate#attach()}.
+     * @param <ParentT> the parent definition {@link InUpdate#attach()} returns to
+     */
+    interface InUpdate<ParentT> {
+        ParentT attach();
+    }
 }
