@@ -83,7 +83,7 @@ public interface NetworkSecurityGroup extends
          * @param name the name for the new security rule
          * @return the first stage of the security rule definition
          */
-        NetworkSecurityRule.Definition.Blank<DefinitionCreatable> defineRule(String name);
+        NetworkSecurityRule.Definables.Blank<DefinitionCreatable> defineRule(String name);
     }
 
     /**
@@ -91,7 +91,8 @@ public interface NetworkSecurityGroup extends
      */
     interface UpdateWithRule {
         Update withoutRule(String name);
-        NetworkSecurityRule.UpdateDefinition.Blank<Update> defineRule(String name);
+        NetworkSecurityRule.UpdateDefinables.Blank<Update> defineRule(String name);
+        NetworkSecurityRule.Update updateRule(String name);
     }
 
     /**

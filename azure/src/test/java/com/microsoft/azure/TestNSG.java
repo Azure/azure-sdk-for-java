@@ -21,8 +21,11 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
     @Override
     public NetworkSecurityGroup createResource(NetworkSecurityGroups nsgs) throws Exception {
         final String newName = "nsg" + this.testId;
-        return nsgs.define(newName)
-                .withRegion(Region.US_WEST)
+        Region region = Region.US_WEST;
+
+        // Create
+        NetworkSecurityGroup nsg = nsgs.define(newName)
+                .withRegion(region)
                 .withNewGroup()
                 .defineRule("rule1")
                     .allowOutbound()
@@ -42,6 +45,12 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                     .withPriority(200)
                     .attach()
                 .create();
+
+        // Verify
+        Assert.assertTrue(nsg.region() == region.toString());
+        Assert.assertTrue(nsg.securityRules().size() == 2);
+
+        return nsg;
     }
 
     @Override
@@ -59,6 +68,12 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                     .withProtocol(Protocol.UDP)
                     .attach()
                 .withoutRule("rule1")
+                .updateRule("rule2")
+                    .denyInbound()
+                    .fromAddress("100.0.0.0/29")
+                    .fromPort(88)
+                    .withPriority(300)
+                    .set()
                 .apply();
         Assert.assertTrue(resource.tags().containsKey("tag1"));
         return resource;
