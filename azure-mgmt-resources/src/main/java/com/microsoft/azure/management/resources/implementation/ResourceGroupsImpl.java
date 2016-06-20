@@ -18,7 +18,7 @@ import com.microsoft.azure.management.resources.implementation.api.ResourceGroup
 import java.io.IOException;
 
 /**
- * The implementation for {@link ResourceGroups} and it's parent interfaces.
+ * The implementation for {@link ResourceGroups} and its parent interfaces.
  */
 final class ResourceGroupsImpl
         extends CreatableWrappersImpl<ResourceGroup, ResourceGroupImpl, ResourceGroupInner>

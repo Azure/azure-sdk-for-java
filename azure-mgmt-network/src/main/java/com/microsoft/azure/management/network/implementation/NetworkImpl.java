@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- * Implementation for {@link Network} and it's create and update interfaces.
+ * Implementation for {@link Network} and its create and update interfaces.
  */
 class NetworkImpl
     extends GroupableResourceImpl<Network, VirtualNetworkInner, NetworkImpl>

@@ -6,7 +6,6 @@ import com.microsoft.azure.management.compute.implementation.api.CachingTypes;
 import com.microsoft.azure.management.compute.implementation.api.DiskCreateOptionTypes;
 import com.microsoft.azure.management.compute.implementation.api.VirtualHardDisk;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.storage.StorageAccount;
 
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * The implementation for {@link DataDisk} and it's create and update interfaces.
+ * The implementation for {@link DataDisk} and its create and update interfaces.
  */
 class DataDiskImpl
     extends ChildResourceImpl<com.microsoft.azure.management.compute.implementation.api.DataDisk, VirtualMachine>
@@ -67,7 +66,7 @@ class DataDiskImpl
 
     @Override
     public int size() {
-        return Utils.toPrimitiveInt(this.inner().diskSizeGB());
+        return this.inner().diskSizeGB();
     }
 
     @Override

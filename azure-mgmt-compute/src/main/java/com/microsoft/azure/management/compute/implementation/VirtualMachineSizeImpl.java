@@ -7,7 +7,6 @@ package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.management.compute.VirtualMachineSize;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeInner;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 
 /**
  * The implementation for {@link VirtualMachineSize}.
@@ -26,26 +25,26 @@ class VirtualMachineSizeImpl implements VirtualMachineSize {
 
     @Override
     public int numberOfCores() {
-        return Utils.toPrimitiveInt(innerModel.numberOfCores());
+        return innerModel.numberOfCores();
     }
 
     @Override
     public int osDiskSizeInMB() {
-        return Utils.toPrimitiveInt(innerModel.osDiskSizeInMB());
+        return innerModel.osDiskSizeInMB();
     }
 
     @Override
     public int resourceDiskSizeInMB() {
-        return Utils.toPrimitiveInt(innerModel.resourceDiskSizeInMB());
+        return innerModel.resourceDiskSizeInMB();
     }
 
     @Override
     public int memoryInMB() {
-        return Utils.toPrimitiveInt(innerModel.memoryInMB());
+        return innerModel.memoryInMB();
     }
 
     @Override
     public int maxDataDiskCount() {
-        return Utils.toPrimitiveInt(innerModel.maxDataDiskCount());
+        return innerModel.maxDataDiskCount();
     }
 }

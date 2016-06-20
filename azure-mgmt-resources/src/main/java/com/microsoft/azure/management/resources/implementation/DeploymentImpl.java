@@ -39,7 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The implementation of {@link Deployment} and it's nested interfaces.
+ * The implementation of {@link Deployment} and its nested interfaces.
  */
 final class DeploymentImpl extends
         CreatableUpdatableImpl<Deployment, DeploymentExtendedInner, DeploymentImpl>

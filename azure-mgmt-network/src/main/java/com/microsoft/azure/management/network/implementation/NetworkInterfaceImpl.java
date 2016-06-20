@@ -34,7 +34,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- *  Implementation for {@link NetworkInterface} and it's create and update interfaces.
+ *  Implementation for {@link NetworkInterface} and its create and update interfaces.
  */
 class NetworkInterfaceImpl
         extends GroupableResourceImpl<NetworkInterface, NetworkInterfaceInner, NetworkInterfaceImpl>

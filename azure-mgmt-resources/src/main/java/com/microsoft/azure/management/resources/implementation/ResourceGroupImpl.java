@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * The implementation for {@link ResourceGroup} and it's create and update interfaces.
+ * The implementation for {@link ResourceGroup} and its create and update interfaces.
  */
 class ResourceGroupImpl extends
         CreatableUpdatableImpl<ResourceGroup, ResourceGroupInner, ResourceGroupImpl>

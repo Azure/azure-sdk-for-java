@@ -18,7 +18,7 @@ import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.ServiceResponse;
 
 /**
- *  Implementation for {@link PublicIpAddress} and it's create and update interfaces.
+ *  Implementation for {@link PublicIpAddress} and its create and update interfaces.
  */
 class PublicIpAddressImpl
     extends GroupableResourceImpl<PublicIpAddress, PublicIPAddressInner, PublicIpAddressImpl>
@@ -105,7 +105,7 @@ class PublicIpAddressImpl
 
     @Override
     public int idleTimeoutInMinutes() {
-        return Utils.toPrimitiveInt(this.inner().idleTimeoutInMinutes());
+        return this.inner().idleTimeoutInMinutes();
     }
 
     @Override

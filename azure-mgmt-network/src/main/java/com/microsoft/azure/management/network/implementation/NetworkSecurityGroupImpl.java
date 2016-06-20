@@ -23,7 +23,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- *  Implementation for {@link NetworkSecurityGroup} and it's create and update interfaces.
+ *  Implementation for {@link NetworkSecurityGroup} and its create and update interfaces.
  */
 class NetworkSecurityGroupImpl
     extends GroupableResourceImpl<NetworkSecurityGroup, NetworkSecurityGroupInner, NetworkSecurityGroupImpl>
