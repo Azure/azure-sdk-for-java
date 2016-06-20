@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * An instance of this class provides access to a resource group in Azure.
+ * The implementation for {@link ResourceGroup} and its create and update interfaces.
  */
 class ResourceGroupImpl extends
         CreatableUpdatableImpl<ResourceGroup, ResourceGroupInner, ResourceGroupImpl>

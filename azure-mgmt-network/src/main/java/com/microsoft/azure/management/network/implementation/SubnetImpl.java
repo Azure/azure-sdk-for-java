@@ -11,8 +11,7 @@ import com.microsoft.azure.management.network.implementation.api.SubnetInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
 /**
- * Implementation of the Subnet interface.
- * (Internal use only)
+ *  Implementation for {@link Subnet} and its create and update interfaces.
  */
 class SubnetImpl
     extends ChildResourceImpl<SubnetInner, NetworkImpl>

@@ -11,7 +11,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.implementation.
 import com.microsoft.azure.management.resources.implementation.api.LocationInner;
 
 /**
- * The implementation of Location and its parent interfaces.
+ * The implementation of {@link Location}.
  */
 final class LocationImpl extends
         IndexableWrapperImpl<LocationInner>

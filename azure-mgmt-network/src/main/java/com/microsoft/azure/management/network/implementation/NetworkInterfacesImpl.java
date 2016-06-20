@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * The type representing Azure network interfaces.
+ *  Implementation for {@link NetworkInterfaces}.
  */
 class NetworkInterfacesImpl
         extends GroupableResourcesImpl<NetworkInterface, NetworkInterfaceImpl, NetworkInterfaceInner, NetworkInterfacesInner>

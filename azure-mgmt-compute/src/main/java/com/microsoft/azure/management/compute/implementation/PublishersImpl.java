@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The implementation for {@link VirtualMachineImagePublishers}.
+ * The implementation for {@link Publishers}.
  */
 class PublishersImpl
         extends ReadableWrappersImpl<Publisher, PublisherImpl, VirtualMachineImageResourceInner>

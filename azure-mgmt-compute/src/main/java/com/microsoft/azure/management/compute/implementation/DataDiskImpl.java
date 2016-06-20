@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Represents data disk of a virtual machine.
+ * The implementation for {@link DataDisk} and its create and update interfaces.
  */
 class DataDiskImpl
     extends ChildResourceImpl<com.microsoft.azure.management.compute.implementation.api.DataDisk, VirtualMachine>

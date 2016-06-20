@@ -19,8 +19,7 @@ import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import java.io.IOException;
 
 /**
- * Implementation of the PublicIpAddresses interface.
- * (Internal use only)
+ *  Implementation for {@link PublicIpAddresses}.
  */
 class PublicIpAddressesImpl
         extends GroupableResourcesImpl<PublicIpAddress, PublicIpAddressImpl, PublicIPAddressInner, PublicIPAddressesInner>

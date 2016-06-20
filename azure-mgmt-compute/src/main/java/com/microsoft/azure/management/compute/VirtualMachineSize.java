@@ -17,25 +17,25 @@ public interface VirtualMachineSize {
     /**
      * @return the Number of cores supported by a VM size
      */
-    Integer numberOfCores();
+    int numberOfCores();
 
     /**
      * @return the OS disk size allowed by a VM size
      */
-    Integer osDiskSizeInMB();
+    int osDiskSizeInMB();
 
     /**
      * @return resource disk size allowed by a VM size
      */
-    Integer resourceDiskSizeInMB();
+    int resourceDiskSizeInMB();
 
     /**
      * @return the memory size supported by a VM size
      */
-    Integer memoryInMB();
+    int memoryInMB();
 
     /**
      * @return the maximum number of data disks allowed by a VM size
      */
-    Integer maxDataDiskCount();
+    int maxDataDiskCount();
 }

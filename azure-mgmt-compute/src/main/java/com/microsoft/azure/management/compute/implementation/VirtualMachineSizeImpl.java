@@ -24,27 +24,27 @@ class VirtualMachineSizeImpl implements VirtualMachineSize {
     }
 
     @Override
-    public Integer numberOfCores() {
+    public int numberOfCores() {
         return innerModel.numberOfCores();
     }
 
     @Override
-    public Integer osDiskSizeInMB() {
+    public int osDiskSizeInMB() {
         return innerModel.osDiskSizeInMB();
     }
 
     @Override
-    public Integer resourceDiskSizeInMB() {
+    public int resourceDiskSizeInMB() {
         return innerModel.resourceDiskSizeInMB();
     }
 
     @Override
-    public Integer memoryInMB() {
+    public int memoryInMB() {
         return innerModel.memoryInMB();
     }
 
     @Override
-    public Integer maxDataDiskCount() {
+    public int maxDataDiskCount() {
         return innerModel.maxDataDiskCount();
     }
 }

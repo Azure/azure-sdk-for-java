@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The implementation for {@link VirtualMachineImage.Sku}.
+ * The implementation for {@link Sku}.
  */
 class SkuImpl
         implements Sku {
