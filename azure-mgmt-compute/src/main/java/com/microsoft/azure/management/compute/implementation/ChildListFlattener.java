@@ -13,15 +13,15 @@ import java.util.List;
  * {@link ChildListFlattener} that can take a paged list of parents and flatten their child lists
  * as a single lazy paged list.
  *
- * @param <T> the type of parent paged list item
- * @param <U> the type of child paged list item
+ * @param <ParentT> the type of parent paged list item
+ * @param <ChildT> the type of child paged list item
  */
-public final class ChildListFlattener<T, U> {
+final class ChildListFlattener<ParentT, ChildT> {
     protected final String switchToCousin = "switchToCousin";
-    protected Iterator<T> parentItr;
-    protected PagedList<U> currentChildList;
-    protected PagedList<U> cousinList;
-    private final ChildListLoader<T, U> childListLoader;
+    protected Iterator<ParentT> parentItr;
+    protected PagedList<ChildT> currentChildList;
+    protected PagedList<ChildT> cousinList;
+    private final ChildListLoader<ParentT, ChildT> childListLoader;
 
     /**
      * Interface that will be implemented by the consumer of {@link ChildListFlattener}.
@@ -50,7 +50,7 @@ public final class ChildListFlattener<T, U> {
      * @param parentList a paged list of parents
      * @param childListLoader {@link ChildListLoader} for fetching child paged list associated any parent
      */
-    public ChildListFlattener(PagedList<T> parentList, ChildListLoader<T, U> childListLoader) {
+    ChildListFlattener(PagedList<ParentT> parentList, ChildListLoader<ParentT, ChildT> childListLoader) {
         this.parentItr = parentList.iterator();
         this.childListLoader = childListLoader;
     }
@@ -62,7 +62,7 @@ public final class ChildListFlattener<T, U> {
      * @throws CloudException exceptions thrown from the cloud
      * @throws IOException exceptions thrown from serialization/deserialization
      */
-    public PagedList<U> flatten() throws CloudException, IOException {
+    public PagedList<ChildT> flatten() throws CloudException, IOException {
         this.currentChildList = nextChildList();
         if (this.currentChildList == null) {
             return emptyPagedList();
@@ -74,9 +74,9 @@ public final class ChildListFlattener<T, U> {
         // call nextPage and iteration stops, if cousin presents then 'childListPage' method replace
         // this null with a marker indicating there is more pages.
         setCousin();
-        return new PagedList<U>(childListPage(currentChildList.currentPage())) {
+        return new PagedList<ChildT>(childListPage(currentChildList.currentPage())) {
             @Override
-            public Page<U> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ChildT> nextPage(String nextPageLink) throws RestException, IOException {
                 if (nextPageLink.equalsIgnoreCase(switchToCousin)) {
                     // Reached end of current child paged list, make next child list(cousin) as current
                     // paged list and return it's first page.
@@ -124,9 +124,9 @@ public final class ChildListFlattener<T, U> {
      * @throws CloudException exceptions thrown from the cloud
      * @throws IOException exceptions thrown from serialization/deserialization
      */
-    private PagedList<U> nextChildList() throws CloudException, IOException {
+    private PagedList<ChildT> nextChildList() throws CloudException, IOException {
         while (parentItr.hasNext()) {
-            PagedList<U> nextChildList = childListLoader.loadList(parentItr.next());
+            PagedList<ChildT> nextChildList = childListLoader.loadList(parentItr.next());
             if (nextChildList.iterator().hasNext()) {
                 return nextChildList;
             }
@@ -143,8 +143,8 @@ public final class ChildListFlattener<T, U> {
      * @param page the page
      * @return page with next-link updated if there is a cousin
      */
-    private Page<U> childListPage(final Page<U> page) {
-        return new Page<U>() {
+    private Page<ChildT> childListPage(final Page<ChildT> page) {
+        return new Page<ChildT>() {
             @Override
             public String getNextPageLink() {
                 if (page.getNextPageLink() != null) {
@@ -161,7 +161,7 @@ public final class ChildListFlattener<T, U> {
             }
 
             @Override
-            public List<U> getItems() {
+            public List<ChildT> getItems() {
                 return page.getItems();
             }
         };
@@ -170,10 +170,10 @@ public final class ChildListFlattener<T, U> {
     /**
      * @return an empty paged list
      */
-    private PagedList<U> emptyPagedList() {
-        return new PagedList<U>() {
+    private PagedList<ChildT> emptyPagedList() {
+        return new PagedList<ChildT>() {
             @Override
-            public Page<U> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ChildT> nextPage(String nextPageLink) throws RestException, IOException {
                 return null;
             }
         };
