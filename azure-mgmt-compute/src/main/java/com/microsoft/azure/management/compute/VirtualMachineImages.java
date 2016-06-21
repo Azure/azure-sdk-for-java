@@ -6,9 +6,8 @@
 package com.microsoft.azure.management.compute;
 
 import java.io.IOException;
-import java.util.List;
-
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingByRegion;
 
@@ -31,7 +30,7 @@ public interface VirtualMachineImages extends
      * @throws CloudException exceptions thrown from the cloud
      * @throws IOException exceptions thrown from serialization/deserialization
      */
-    List<VirtualMachineImage> listByRegion(String regionName) throws CloudException, IOException;
+    PagedList<VirtualMachineImage> listByRegion(String regionName) throws CloudException, IOException;
 
     /**
      * Lists all the virtual machine images available in a given region.
@@ -42,5 +41,5 @@ public interface VirtualMachineImages extends
      * @throws CloudException exceptions thrown from the cloud
      * @throws IOException exceptions thrown from serialization/deserialization
      */
-    List<VirtualMachineImage> listByRegion(Region region) throws CloudException, IOException;
+    PagedList<VirtualMachineImage> listByRegion(Region region) throws CloudException, IOException;
 }

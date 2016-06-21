@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.Offer;
 import com.microsoft.azure.management.compute.Publisher;
 import com.microsoft.azure.management.compute.Publishers;
@@ -9,11 +10,7 @@ import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachineImages;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImagesInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * The implementation for {@link VirtualMachineImages}.
@@ -27,21 +24,39 @@ class VirtualMachineImagesImpl
     }
 
     @Override
-    public List<VirtualMachineImage> listByRegion(Region location) throws CloudException, IOException {
+    public PagedList<VirtualMachineImage> listByRegion(Region location) throws CloudException, IOException {
         return listByRegion(location.toString());
     }
 
     @Override
-    public List<VirtualMachineImage> listByRegion(String regionName) throws CloudException, IOException {
-        List<VirtualMachineImage> images = new ArrayList<>();
-        for (Publisher publisher : this.publishers().listByRegion(regionName)) {
-            for (Offer offer : publisher.offers().list()) {
-                for (Sku sku : offer.skus().list()) {
-                    images.addAll(sku.listImages());
-                }
-            }
-        }
-        return Collections.unmodifiableList(images);
+    public PagedList<VirtualMachineImage> listByRegion(String regionName) throws CloudException, IOException {
+        PagedList<Publisher> publishers = this.publishers().listByRegion(regionName);
+
+        PagedList<Offer> offers =
+                new ChildListFlattener<>(publishers, new ChildListFlattener.ChildListLoader<Publisher, Offer>() {
+                    @Override
+                    public PagedList<Offer> loadList(Publisher publisher) throws CloudException, IOException  {
+                        return publisher.offers().list();
+                    }
+                }).flatten();
+
+        PagedList<Sku> skus =
+                new ChildListFlattener<>(offers, new ChildListFlattener.ChildListLoader<Offer, Sku>() {
+                    @Override
+                    public PagedList<Sku> loadList(Offer offer) throws CloudException, IOException  {
+                        return offer.skus().list();
+                    }
+                }).flatten();
+
+        PagedList<VirtualMachineImage> images =
+                new ChildListFlattener<>(skus, new ChildListFlattener.ChildListLoader<Sku, VirtualMachineImage>() {
+                    @Override
+                    public PagedList<VirtualMachineImage> loadList(Sku sku) throws CloudException, IOException  {
+                        return sku.images().list();
+                    }
+                }).flatten();
+
+        return images;
     }
 
     @Override

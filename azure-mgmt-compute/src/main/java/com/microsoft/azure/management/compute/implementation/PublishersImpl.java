@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.Publisher;
 import com.microsoft.azure.management.compute.Publishers;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImageResourceInner;
@@ -14,7 +15,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * The implementation for {@link Publishers}.
@@ -30,7 +30,7 @@ class PublishersImpl
     }
 
     @Override
-    public List<Publisher> listByRegion(Region region) throws CloudException, IOException {
+    public PagedList<Publisher> listByRegion(Region region) throws CloudException, IOException {
         return listByRegion(region.toString());
     }
 
@@ -40,7 +40,7 @@ class PublishersImpl
     }
 
     @Override
-    public List<Publisher> listByRegion(String regionName) throws CloudException, IOException {
+    public PagedList<Publisher> listByRegion(String regionName) throws CloudException, IOException {
         return wrapList(innerCollection.listPublishers(regionName).getBody());
     }
 }
