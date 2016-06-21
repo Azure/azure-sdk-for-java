@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure;
 
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
@@ -37,7 +43,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
 
         // Prepare the virtual network definition [shared by primary and secondary network interfaces]
         final String vnetName = "vnet" + this.testId;
-        Network.DefinitionCreatable networkCreatable = this.networks
+        Network.DefinitionStages.WithCreate networkCreatable = this.networks
                 .define(vnetName)
                 .withRegion(Region.US_EAST)
                 .withNewGroup(resourceGroupCreatable)
@@ -54,6 +60,15 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
                 // .withNewPrimaryPublicIpAddress(secondaryPublicIpCreatable);
                 // [Secondary NIC cannot have PublicIp - Only primary network interface can reference a public IP address]
 
+        // Prepare the secondary network interface definition
+        final String secondaryNicName2 = "nic2" + this.testId;
+        NetworkInterface.DefinitionCreatable secondaryNetworkInterfaceCreatable2 = this.networkInterfaces
+                .define(secondaryNicName2)
+                .withRegion(Region.US_EAST)
+                .withNewGroup(resourceGroupCreatable)
+                .withNewPrimaryNetwork(networkCreatable)
+                .withPrimaryPrivateIpAddressStatic("10.0.0.6");
+
         // Create Virtual Machine
         final String vmName = "vm" + this.testId;
         final String primaryPipName = "pip" + vmName;
@@ -68,6 +83,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
                 .withPassword("12NewPA$$w0rd!")
                 .withSize(VirtualMachineSizeTypes.STANDARD_A9)
                 .withNewSecondaryNetworkInterface(secondaryNetworkInterfaceCreatable)
+                .withNewSecondaryNetworkInterface(secondaryNetworkInterfaceCreatable2)
                 .create();
 
         Assert.assertTrue(virtualMachine.networkInterfaceIds().size() == 2);
