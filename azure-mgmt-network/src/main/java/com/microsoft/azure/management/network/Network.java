@@ -40,9 +40,9 @@ public interface Network extends
     List<String> dnsServerIPs();
 
     /**
-     * @return list of subnets of this virtual network
+     * @return subnets of this virtual network
      */
-    List<Subnet> subnets();
+    Subnets subnets();
 
     /**
      * The entirety of the virtual network definition.
@@ -102,7 +102,7 @@ public interface Network extends
 
         /**
          * The stage of the virtual network definition which contains all the minimum required inputs for
-         * the resource to be created (via {@link DefinitionCreatable#create()}), but also allows
+         * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified, except for adding subnets.
          * <p>
          * Subnets can be added only right after the address space is explicitly specified
@@ -139,7 +139,7 @@ public interface Network extends
 
         /**
          * The stage of the public IP definition which contains all the minimum required inputs for
-         * the resource to be created (via {@link DefinitionCreatable#create()}), but also allows
+         * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified, including adding subnets.
          */
         interface WithCreateAndSubnet extends

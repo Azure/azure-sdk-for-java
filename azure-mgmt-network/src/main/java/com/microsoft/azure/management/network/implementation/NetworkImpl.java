@@ -149,8 +149,8 @@ class NetworkImpl
     }
 
     @Override
-    public List<Subnet> subnets() {
-        return Collections.unmodifiableList(this.subnets);
+    public SubnetsImpl subnets() {
+        return new SubnetsImpl(this);
     }
 
     @Override

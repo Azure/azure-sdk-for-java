@@ -57,9 +57,13 @@ public class TestNetwork extends TestTemplate<Network, Networks> {
                 .append("\n\tDNS server IPs: ").append(resource.dnsServerIPs());
 
         // Output subnets
-        for (Subnet subnet : resource.subnets()) {
-            info.append("\n\tSubnet: ").append(subnet.name())
-                .append("\n\t\tAddress prefix: ").append(subnet.addressPrefix());
+        try {
+            for (Subnet subnet : resource.subnets().list()) {
+                info.append("\n\tSubnet: ").append(subnet.name())
+                    .append("\n\t\tAddress prefix: ").append(subnet.addressPrefix());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         System.out.println(info.toString());

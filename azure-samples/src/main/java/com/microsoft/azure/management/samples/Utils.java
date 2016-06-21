@@ -7,6 +7,7 @@
 
 package com.microsoft.azure.management.samples;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.implementation.api.DataDisk;
@@ -19,7 +20,7 @@ import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.api.StorageAccountKey;
 
-
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
@@ -148,8 +149,10 @@ public final class Utils {
     /**
      * Print network info.
      * @param resource a network
+     * @throws IOException IO errors
+     * @throws CloudException Cloud errors
      */
-    public static void print(Network resource) {
+    public static void print(Network resource) throws CloudException, IOException {
         StringBuilder info = new StringBuilder();
         info.append("Network: ").append(resource.id())
                 .append("Name: ").append(resource.name())
@@ -160,7 +163,7 @@ public final class Utils {
                 .append("\n\tDNS server IPs: ").append(resource.dnsServerIPs());
 
         // Output subnets
-        for (Subnet subnet : resource.subnets()) {
+        for (Subnet subnet : resource.subnets().list()) {
             info.append("\n\tSubnet: ").append(subnet.name())
                     .append("\n\t\tAddress prefix: ").append(subnet.addressPrefix());
         }
