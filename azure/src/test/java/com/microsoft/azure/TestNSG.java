@@ -47,7 +47,7 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                 .create();
 
         // Verify
-        Assert.assertTrue(nsg.region() == region.toString());
+        Assert.assertTrue(nsg.region().equalsIgnoreCase(region.toString()));
         Assert.assertTrue(nsg.securityRules().size() == 2);
 
         return nsg;
