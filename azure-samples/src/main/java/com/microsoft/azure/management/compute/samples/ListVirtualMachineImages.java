@@ -80,7 +80,7 @@ public final class ListVirtualMachineImages {
 
                     for (Offer offer : chosenPublisher.offers().list()) {
                         for (Sku sku: offer.skus().list()) {
-                            for (VirtualMachineImage image : sku.listImages()) {
+                            for (VirtualMachineImage image : sku.images().list()) {
                                 System.out.println("Image - " + chosenPublisher.name() + "/"
                                         + offer.name() + "/"
                                         + sku.name() + "/" + image.version());

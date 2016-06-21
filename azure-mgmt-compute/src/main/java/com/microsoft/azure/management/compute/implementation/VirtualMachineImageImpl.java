@@ -6,7 +6,6 @@ import com.microsoft.azure.management.compute.implementation.api.ImageReference;
 import com.microsoft.azure.management.compute.implementation.api.OSDiskImage;
 import com.microsoft.azure.management.compute.implementation.api.PurchasePlan;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImageInner;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImagesInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 
@@ -21,7 +20,7 @@ class VirtualMachineImageImpl
     private final Region location;
     private ImageReference imageReference;
 
-    VirtualMachineImageImpl(Region location, String publisher, String offer, String sku, String version, VirtualMachineImagesInner client) {
+    VirtualMachineImageImpl(Region location, String publisher, String offer, String sku, String version) {
         super(null, null);
         this.location = location;
         this.imageReference = new ImageReference();
@@ -31,7 +30,7 @@ class VirtualMachineImageImpl
         this.imageReference.withVersion(version);
     }
 
-    VirtualMachineImageImpl(Region location, String publisher, String offer, String sku, String version, VirtualMachineImageInner innerModel, VirtualMachineImagesInner client) {
+    VirtualMachineImageImpl(Region location, String publisher, String offer, String sku, String version, VirtualMachineImageInner innerModel) {
         super(innerModel.id(), innerModel);
         this.location = location;
         this.imageReference = new ImageReference();
