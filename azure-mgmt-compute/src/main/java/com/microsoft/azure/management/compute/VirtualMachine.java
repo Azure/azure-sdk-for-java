@@ -259,9 +259,9 @@ public interface VirtualMachine extends
      */
     DiagnosticsProfile diagnosticsProfile();
 
-   /**
-    * @return the power state of the virtual machine
-    */
+    /**
+     * @return the power state of the virtual machine
+     */
     PowerState powerState();
 
     /**
@@ -372,7 +372,7 @@ public interface VirtualMachine extends
          * @param creatable a creatable definition for a new public IP
          * @return the next stage of the virtual machine definition
          */
-         DefinitionWithOS withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionCreatable creatable);
+        DefinitionWithOS withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionCreatable creatable);
 
         /**
          * Creates a new public IP address in the same region and group as the resource, with the specified DNS label
@@ -498,7 +498,8 @@ public interface VirtualMachine extends
         /**
          * Specifies the specialized operating system disk to be attached to the virtual machine.
          *
-         * @param osDiskUrl the url to the OS disk in the Azure Storage account
+         * @param osDiskUrl osDiskUrl the url to the OS disk in the Azure Storage account
+         * @param osType the OS type
          * @return the next stage of the Windows virtual machine definition
          */
         DefinitionCreatable withOsDisk(String osDiskUrl, OperatingSystemTypes osType);
@@ -538,7 +539,7 @@ public interface VirtualMachine extends
     interface DefinitionLinuxCreatable extends DefinitionCreatable {
         /**
          * Specifies the SSH public key.
-         * <p/>
+         * <p>
          * each call to this method adds the given public key to the list of VM's public keys.
          *
          * @param publicKey the SSH public key in PEM format.
@@ -570,15 +571,17 @@ public interface VirtualMachine extends
         /**
          * Specifies the time-zone.
          *
+         * @param timeZone the timezone
          * @return the stage representing creatable Windows VM definition
          */
         DefinitionWindowsCreatable withTimeZone(String timeZone);
 
         /**
          * Specifies the WINRM listener.
-         * <p/>
-         * Each call to this method adds the given listener to the list of VM's WinRM listeners.
+         * <p>
+         * Each call to this method adds the given listener to the list of VM's WinRM listeners
          *
+         * @param listener the WinRmListener
          * @return the stage representing creatable Windows VM definition
          */
         DefinitionWindowsCreatable withWinRm(WinRMListener listener);
