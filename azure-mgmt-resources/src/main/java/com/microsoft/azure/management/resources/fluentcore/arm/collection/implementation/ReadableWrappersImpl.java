@@ -15,20 +15,20 @@ import com.microsoft.azure.management.resources.implementation.api.PageImpl;
 import com.microsoft.rest.RestException;
 
 /**
- * Base class for wrapper collections.
+ * Base class for readable wrapper collections, i.e. those whose models can only be read, not created.
  * (Internal use only)
  * @param <T> the individual resource type returned
  * @param <ImplT> the individual resource implementation
  * @param <InnerT> the wrapper inner type
  */
-public abstract class WrappersImpl<
+public abstract class ReadableWrappersImpl<
         T,
         ImplT extends T,
         InnerT> {
 
     private final PagedListConverter<InnerT, T> converter;
 
-    protected WrappersImpl() {
+    protected ReadableWrappersImpl() {
         this.converter = new PagedListConverter<InnerT, T>() {
             @Override
             public T typeConvert(InnerT inner) {
@@ -36,8 +36,6 @@ public abstract class WrappersImpl<
             }
         };
     }
-
-    protected abstract ImplT wrapModel(String name);
 
     protected abstract ImplT wrapModel(InnerT inner);
 

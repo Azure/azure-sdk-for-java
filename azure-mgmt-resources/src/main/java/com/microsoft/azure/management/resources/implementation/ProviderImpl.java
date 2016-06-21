@@ -14,7 +14,7 @@ import com.microsoft.azure.management.resources.implementation.api.ProviderResou
 import java.util.List;
 
 /**
- * The implementation of Provider and its parent interfaces.
+ * The implementation of {@link Provider}.
  */
 final class ProviderImpl extends
         IndexableWrapperImpl<ProviderInner>

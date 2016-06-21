@@ -15,16 +15,6 @@ import com.microsoft.rest.ServiceResponse;
  */
 public final class Utils {
     /**
-     * Generate a random ID from a prefix.
-     *
-     * @param prefix the prefix for the random value
-     * @return a random value with the given prefix
-     */
-    public static String randomId(String prefix) {
-        return prefix + String.valueOf(System.currentTimeMillis() % 100000L);
-    }
-
-    /**
      * Converts an object Boolean to a primitive boolean.
      *
      * @param value the <tt>Boolean</tt> value

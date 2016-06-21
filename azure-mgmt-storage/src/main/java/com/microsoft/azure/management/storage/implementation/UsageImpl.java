@@ -6,7 +6,7 @@ import com.microsoft.azure.management.storage.implementation.api.UsageName;
 import com.microsoft.azure.management.storage.implementation.api.UsageUnit;
 
 /**
- * The implementation of Usage and its parent interfaces.
+ * The implementation of {@link Usage}.
  */
 class UsageImpl extends WrapperImpl<com.microsoft.azure.management.storage.implementation.api.Usage> implements Usage {
     UsageImpl(com.microsoft.azure.management.storage.implementation.api.Usage innerObject) {
@@ -20,7 +20,7 @@ class UsageImpl extends WrapperImpl<com.microsoft.azure.management.storage.imple
 
     @Override
     public int currentValue() {
-        return inner().currentValue();
+        return  inner().currentValue();
     }
 
     @Override

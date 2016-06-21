@@ -162,7 +162,7 @@ public interface VirtualMachine extends
     /**
      * @return the size of the operating system disk in GB
      */
-    Integer osDiskSize();
+    int osDiskSize();
 
     /**
      * @return the list of data disks attached to this virtual machine

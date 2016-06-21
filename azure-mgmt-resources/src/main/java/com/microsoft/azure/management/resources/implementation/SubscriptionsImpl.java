@@ -17,7 +17,7 @@ import com.microsoft.azure.management.resources.implementation.api.Subscriptions
 import java.io.IOException;
 
 /**
- * The implementation of Subscriptions and its nested interfaces.
+ * The implementation of {@link Subscriptions}.
  */
 final class SubscriptionsImpl
         implements Subscriptions {

@@ -10,7 +10,7 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupsInner;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
@@ -18,9 +18,10 @@ import com.microsoft.azure.management.resources.implementation.api.ResourceGroup
 import java.io.IOException;
 
 /**
- * The implementation for ResourceGroups and its parent interfaces.
+ * The implementation for {@link ResourceGroups} and its parent interfaces.
  */
 final class ResourceGroupsImpl
+        extends CreatableWrappersImpl<ResourceGroup, ResourceGroupImpl, ResourceGroupInner>
         implements ResourceGroups {
     private final ResourceGroupsInner client;
     private final ResourceManagementClientImpl serviceClient;
@@ -37,18 +38,12 @@ final class ResourceGroupsImpl
 
     @Override
     public PagedList<ResourceGroup> list() throws CloudException, IOException {
-        PagedListConverter<ResourceGroupInner, ResourceGroup> converter = new PagedListConverter<ResourceGroupInner, ResourceGroup>() {
-            @Override
-            public ResourceGroup typeConvert(ResourceGroupInner resourceGroupInner) {
-                return createFluentModel(resourceGroupInner);
-            }
-        };
-        return converter.convert(client.list().getBody());
+        return wrapList(client.list().getBody());
     }
 
     @Override
     public ResourceGroupImpl getByName(String name) throws CloudException, IOException {
-        return createFluentModel(client.get(name).getBody());
+        return wrapModel(client.get(name).getBody());
     }
 
     @Override
@@ -58,7 +53,7 @@ final class ResourceGroupsImpl
 
     @Override
     public ResourceGroupImpl define(String name) {
-        return createFluentModel(name);
+        return wrapModel(name);
     }
 
     @Override
@@ -66,13 +61,15 @@ final class ResourceGroupsImpl
         return client.checkExistence(name).getBody();
     }
 
-    private ResourceGroupImpl createFluentModel(String name) {
+    @Override
+    protected ResourceGroupImpl wrapModel(String name) {
         return new ResourceGroupImpl(
                 new ResourceGroupInner().withName(name),
                 serviceClient);
     }
 
-    private ResourceGroupImpl createFluentModel(ResourceGroupInner resourceGroupInner) {
-        return new ResourceGroupImpl(resourceGroupInner, serviceClient);
+    @Override
+    protected ResourceGroupImpl wrapModel(ResourceGroupInner inner) {
+        return new ResourceGroupImpl(inner, serviceClient);
     }
 }

@@ -16,7 +16,7 @@ import com.microsoft.azure.management.resources.implementation.api.FeatureResult
 import java.io.IOException;
 
 /**
- * The implementation of Features and its parent interfaces.
+ * The implementation of {@link Features}.
  */
 final class FeaturesImpl
         implements Features {

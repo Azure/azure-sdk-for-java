@@ -11,7 +11,7 @@ import com.microsoft.azure.management.resources.Tenant;
 import com.microsoft.azure.management.resources.implementation.api.TenantIdDescriptionInner;
 
 /**
- * Implementation for Tenant and its nested interfaces.
+ * Implementation for {@link Tenant}.
  */
 final class TenantImpl extends
         IndexableWrapperImpl<TenantIdDescriptionInner>

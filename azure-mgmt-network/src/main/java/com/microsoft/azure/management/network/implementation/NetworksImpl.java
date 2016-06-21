@@ -22,8 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Implementation of the Networks interface.
- * (Internal use only)
+ *  Implementation for {@link Networks}.
  */
 class NetworksImpl
         extends GroupableResourcesImpl<Network, NetworkImpl, VirtualNetworkInner, VirtualNetworksInner>

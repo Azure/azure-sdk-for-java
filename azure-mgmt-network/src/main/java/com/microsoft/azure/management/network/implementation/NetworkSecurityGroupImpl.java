@@ -23,8 +23,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Implementation of the NetworkSecurityGroup interface.
- * (Internal use only)
+ *  Implementation for {@link NetworkSecurityGroup} and its create and update interfaces.
  */
 class NetworkSecurityGroupImpl
     extends GroupableResourceImpl<NetworkSecurityGroup, NetworkSecurityGroupInner, NetworkSecurityGroupImpl>
@@ -63,6 +62,24 @@ class NetworkSecurityGroupImpl
     }
 
     // Verbs
+
+    @Override
+    public NetworkSecurityRuleImpl updateRule(String name) {
+        for (NetworkSecurityRule r : this.rules) {
+            if (r.name().equalsIgnoreCase(name)) {
+                return (NetworkSecurityRuleImpl) r;
+            }
+        }
+        throw new RuntimeException("Network security rule '" + name + "' not found");
+    }
+
+    @Override
+    public NetworkSecurityRuleImpl defineRule(String name) {
+        SecurityRuleInner inner = new SecurityRuleInner();
+        inner.withName(name);
+        inner.withPriority(100); // Must be at least 100
+        return new NetworkSecurityRuleImpl(name, inner, this);
+    }
 
     @Override
     public NetworkSecurityGroupImpl refresh() throws Exception {
@@ -110,14 +127,6 @@ class NetworkSecurityGroupImpl
 
 
     // Setters (fluent)
-
-    @Override
-    public NetworkSecurityRuleImpl defineRule(String name) {
-        SecurityRuleInner inner = new SecurityRuleInner();
-        inner.withName(name);
-        inner.withPriority(100); // Must be at least 100
-        return new NetworkSecurityRuleImpl(name, inner, this);
-    }
 
     @Override
     public Update withoutRule(String name) {

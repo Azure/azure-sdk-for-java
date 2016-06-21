@@ -11,13 +11,15 @@ import com.microsoft.azure.management.network.implementation.api.SecurityRuleInn
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
 /**
- * Implementation of the NetworkSecurityRule interface.
+ *  Implementation for {@link NetworkSecurityRule} and its create and update interfaces.
  */
 class NetworkSecurityRuleImpl
     extends ChildResourceImpl<SecurityRuleInner, NetworkSecurityGroupImpl>
     implements
         NetworkSecurityRule,
-        NetworkSecurityRule.Definitions<NetworkSecurityGroup.DefinitionCreatable> {
+        NetworkSecurityRule.Definition<NetworkSecurityGroup.DefinitionCreatable>,
+        NetworkSecurityRule.UpdateDefinition<NetworkSecurityGroup.Update>,
+        NetworkSecurityRule.Update {
 
     protected NetworkSecurityRuleImpl(String name, SecurityRuleInner inner, NetworkSecurityGroupImpl parent) {
         super(name, inner, parent);
@@ -200,6 +202,11 @@ class NetworkSecurityRuleImpl
     @Override
     public NetworkSecurityGroupImpl attach() {
         this.parent().inner().securityRules().add(this.inner());
+        return this.parent();
+    }
+
+    @Override
+    public NetworkSecurityGroupImpl set() throws Exception {
         return this.parent();
     }
 }

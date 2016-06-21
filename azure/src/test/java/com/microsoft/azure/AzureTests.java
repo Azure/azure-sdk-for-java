@@ -186,7 +186,9 @@ public class AzureTests {
 
     @Test
     public void listResourceGroups() throws Exception {
-        Assert.assertTrue(0 < azure.resourceGroups().list().size());
+        int groupCount = azure2.resourceGroups().list().size();
+        System.out.println(String.format("Group count: %s", groupCount));
+        Assert.assertTrue(0 < groupCount);
     }
 
     @Test

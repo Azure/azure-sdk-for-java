@@ -34,7 +34,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * The type representing Azure network interface.
+ *  Implementation for {@link NetworkInterface} and its create and update interfaces.
  */
 class NetworkInterfaceImpl
         extends GroupableResourceImpl<NetworkInterface, NetworkInterfaceInner, NetworkInterfaceImpl>
@@ -199,7 +199,7 @@ class NetworkInterfaceImpl
                 return (NicIpConfigurationImpl) nicIpConfiguration;
             }
         }
-        throw new RuntimeException("An Ip configuration with name'" + name + "' not found");
+        throw new RuntimeException("IP configuration '" + name + "' not found");
     }
 
     @Override
