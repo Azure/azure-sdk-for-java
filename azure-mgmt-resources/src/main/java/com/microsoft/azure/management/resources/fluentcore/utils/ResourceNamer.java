@@ -7,8 +7,6 @@ import java.util.UUID;
  */
 public class ResourceNamer {
     private final String randName;
-    private final long modulus = 100000L;
-    private final int moduloLen = 5;
 
     /**
      * Creates ResourceNamer.
@@ -27,39 +25,33 @@ public class ResourceNamer {
      * @return the random name
      */
     public String randomName(String prefix, int maxLen) {
-        if (prefix.length() >= maxLen) {
-            throw new IllegalArgumentException("prefix length (" + prefix.length() + ") cannot be more than " + maxLen);
+        int minRandomnessLength = 5;
+        if (maxLen <= minRandomnessLength) {
+            return randomString(maxLen);
         }
 
-        long milli = System.currentTimeMillis();
-        if (maxLen <= moduloLen) {
-            return String.valueOf(milli % maxLen);
+        if (maxLen <= prefix.length() + minRandomnessLength) {
+            return randomString(maxLen);
         }
 
-        long modulo = (milli % this.modulus);
-        // Try prefix and randName together
-        if (prefix.length() + this.moduloLen + this.randName.length() <= maxLen) {
-            return prefix + modulo + this.randName;
+        String minRandomString = String.valueOf(System.currentTimeMillis() % 100000L);
+        if (maxLen <= prefix.length() + randName.length() + minRandomnessLength) {
+            String str = prefix + minRandomString;
+            return str + randomString((maxLen - str.length()) / 2);
         }
 
-        // We cannot use prefix and randName try prefix
-        String name = prefix + modulo;
-        if (name.length() + 4 <= maxLen) {
-            return name + UUID.randomUUID()
+        String str = prefix + randName + minRandomString;
+        return str + randomString((maxLen - str.length()) / 2);
+    }
+
+    private String randomString(int length) {
+        String str = "";
+        while (str.length() < length) {
+            str += UUID.randomUUID()
                     .toString()
-                    .replace("-", "").substring(0, 3);
-        } else if (name.length() <= maxLen) {
-            return name;
+                    .replace("-", "")
+                    .substring(0, Math.min(32, length));
         }
-
-        // We cannot use prefix, use complete random string
-        name = UUID.randomUUID()
-                .toString()
-                .replace("-", "");
-        if (name.length() <= maxLen) {
-            return name;
-        }
-
-        return name.substring(0, maxLen - moduloLen - 1) + (modulo);
+        return str;
     }
 }
