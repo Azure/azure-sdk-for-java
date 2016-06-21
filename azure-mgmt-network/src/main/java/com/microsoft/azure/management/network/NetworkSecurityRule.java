@@ -171,20 +171,20 @@ public interface NetworkSecurityRule extends
      * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
      */
     interface Definition<ParentT> extends
-        Definables.Blank<ParentT>,
-        Definables.WithAttach<ParentT>,
-        Definables.WithDirectionAccess<ParentT>,
-        Definables.WithSourceAddress<ParentT>,
-        Definables.WithSourcePort<ParentT>,
-        Definables.WithDestinationAddress<ParentT>,
-        Definables.WithDestinationPort<ParentT>,
-        Definables.WithProtocol<ParentT> {
+        DefinitionStages.Blank<ParentT>,
+        DefinitionStages.WithAttach<ParentT>,
+        DefinitionStages.WithDirectionAccess<ParentT>,
+        DefinitionStages.WithSourceAddress<ParentT>,
+        DefinitionStages.WithSourcePort<ParentT>,
+        DefinitionStages.WithDestinationAddress<ParentT>,
+        DefinitionStages.WithDestinationPort<ParentT>,
+        DefinitionStages.WithProtocol<ParentT> {
     }
 
     /**
      * Grouping of security rule definition stages applicable as part of a network security group creation.
      */
-    interface Definables {
+    interface DefinitionStages {
         /**
          * The first stage of a security rule definition.
          * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
@@ -363,20 +363,20 @@ public interface NetworkSecurityRule extends
      * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
      */
     interface UpdateDefinition<ParentT> extends
-        UpdateDefinables.Blank<ParentT>,
-        UpdateDefinables.WithDirectionAccess<ParentT>,
-        UpdateDefinables.WithSourceAddress<ParentT>,
-        UpdateDefinables.WithSourcePort<ParentT>,
-        UpdateDefinables.WithDestinationAddress<ParentT>,
-        UpdateDefinables.WithDestinationPort<ParentT>,
-        UpdateDefinables.WithProtocol<ParentT>,
-        UpdateDefinables.WithAttach<ParentT> {
+        UpdateDefinitionStages.Blank<ParentT>,
+        UpdateDefinitionStages.WithDirectionAccess<ParentT>,
+        UpdateDefinitionStages.WithSourceAddress<ParentT>,
+        UpdateDefinitionStages.WithSourcePort<ParentT>,
+        UpdateDefinitionStages.WithDestinationAddress<ParentT>,
+        UpdateDefinitionStages.WithDestinationPort<ParentT>,
+        UpdateDefinitionStages.WithProtocol<ParentT>,
+        UpdateDefinitionStages.WithAttach<ParentT> {
     }
 
     /**
      * Grouping of security rule definition stages applicable as part of a network security group update.
      */
-    interface UpdateDefinables {
+    interface UpdateDefinitionStages {
         /**
          * The first stage of a security rule description as part of an update of a networking security group.
          * @param <ParentT> the return type of the final {@link UpdateDefinitionAttachable#attach()}
@@ -555,12 +555,12 @@ public interface NetworkSecurityRule extends
      * The entirety of a security rule update as part of a network security group update.
      */
     interface Update extends
-        Updatables.WithDirectionAccess,
-        Updatables.WithSourceAddress,
-        Updatables.WithSourcePort,
-        Updatables.WithDestinationAddress,
-        Updatables.WithDestinationPort,
-        Updatables.WithProtocol,
+        UpdateStages.WithDirectionAccess,
+        UpdateStages.WithSourceAddress,
+        UpdateStages.WithSourcePort,
+        UpdateStages.WithDestinationAddress,
+        UpdateStages.WithDestinationPort,
+        UpdateStages.WithProtocol,
         Settable<NetworkSecurityGroup.Update> {
 
         /**
@@ -582,7 +582,7 @@ public interface NetworkSecurityRule extends
     /**
      * Grouping of security rule update stages.
      */
-    interface Updatables {
+    interface UpdateStages {
         /**
          * The stage of the network rule description allowing the direction and the access type to be specified.
          */

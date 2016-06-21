@@ -292,7 +292,7 @@ public interface NetworkInterface extends
          * @param creatable a creatable definition for a new network security group
          * @return the next stage of the network interface definition
          */
-        DefinitionCreatable withNewNetworkSecurityGroup(NetworkSecurityGroup.DefinitionCreatable creatable);
+        DefinitionCreatable withNewNetworkSecurityGroup(NetworkSecurityGroup.DefinitionStages.WithCreate creatable);
 
         /**
          * Associates an existing network security group with the network interface.
@@ -479,7 +479,7 @@ public interface NetworkInterface extends
          * @param creatable a creatable definition for a new network security group
          * @return the next stage of the network interface update
          */
-        Update withNewNetworkSecurityGroup(NetworkSecurityGroup.DefinitionCreatable creatable);
+        Update withNewNetworkSecurityGroup(NetworkSecurityGroup.DefinitionStages.WithCreate creatable);
 
         /**
          * Associates an existing network security group with the network interface.

@@ -29,7 +29,7 @@ class NetworkSecurityGroupImpl
     extends GroupableResourceImpl<NetworkSecurityGroup, NetworkSecurityGroupInner, NetworkSecurityGroupImpl>
     implements
         NetworkSecurityGroup,
-        NetworkSecurityGroup.Definitions,
+        NetworkSecurityGroup.Definition,
         NetworkSecurityGroup.Update {
 
     private final NetworkSecurityGroupsInner client;
