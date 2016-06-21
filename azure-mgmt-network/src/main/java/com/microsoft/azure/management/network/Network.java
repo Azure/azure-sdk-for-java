@@ -106,7 +106,7 @@ public interface Network extends
          * for any other optional settings to be specified, except for adding subnets.
          * <p>
          * Subnets can be added only right after the address space is explicitly specified
-         * (see {@link DefinitionWithAddressSpace#withAddressSpace(String)).
+         * (see {@link WithCreate#withAddressSpace(String)}).
          */
         interface WithCreate extends
             Creatable<Network>,
