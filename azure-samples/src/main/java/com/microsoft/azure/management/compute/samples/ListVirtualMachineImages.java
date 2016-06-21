@@ -18,7 +18,7 @@ import java.io.File;
 import java.util.List;
 
 /**
- * List all virtual machine publishers and
+ * List all virtual machine image publishers and
  * list all virtual machine images published by Canonical, Red Hat and
  * SUSE by browsing through locations, publishers, offers, SKUs and images.
  */
@@ -45,7 +45,7 @@ public final class ListVirtualMachineImages {
 
 
             //=================================================================
-            // List all virtual machine publishers and
+            // List all virtual machine image publishers and
             // list all virtual machine images
             // published by Canonical, Red Hat and SUSE
             // by browsing through locations, publishers, offers, SKUs and images
@@ -57,7 +57,8 @@ public final class ListVirtualMachineImages {
 
             Publisher chosenPublisher;
 
-            System.out.println("Printing list of publishers and images published by \nCanonical, Red Hat and Suse");
+            System.out.println("Printing list of publishers and images published by \n"
+                    + "Canonical, Red Hat and Suse for the US East data center");
             System.out.println("=======================================================");
             System.out.println("\n");
 
