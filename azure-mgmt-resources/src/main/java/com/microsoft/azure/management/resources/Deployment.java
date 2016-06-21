@@ -284,7 +284,7 @@ public interface Deployment extends
          * Specifies the parameters as a JSON string.
          *
          * @param parametersJson the JSON string
-         * @return the next stage of the deployment updateurn
+         * @return the next stage of the deployment update
          * @throws IOException exception thrown from serialization/deserialization
          */
         Update withParameters(String parametersJson) throws IOException;

@@ -137,7 +137,7 @@ public interface Network extends
      * the resource to be created (via {@link DefinitionCreatable#create()}), but also allows
      * for any other optional settings to be specified, except for adding subnets.
      * <p>
-     * Subnet can be added only right after the address space is explicitly specified
+     * A subnet can be added only right after the address space is explicitly specified
      * see {@link DefinitionCreatable#withAddressSpace }
      */
     interface DefinitionCreatable extends

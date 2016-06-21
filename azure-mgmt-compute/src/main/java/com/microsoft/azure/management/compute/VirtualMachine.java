@@ -540,7 +540,7 @@ public interface VirtualMachine extends
         /**
          * Specifies the SSH public key.
          * <p>
-         * each call to this method adds the given public key to the list of VM's public keys.
+         * Each call to this method adds the given public key to the list of VM's public keys.
          *
          * @param publicKey the SSH public key in PEM format.
          * @return the stage representing creatable Linux VM definition
@@ -579,7 +579,7 @@ public interface VirtualMachine extends
         /**
          * Specifies the WINRM listener.
          * <p>
-         * Each call to this method adds the given listener to the list of VM's WinRM listeners
+         * Each call to this method adds the given listener to the list of VM's WinRM listeners.
          *
          * @param listener the WinRmListener
          * @return the stage representing creatable Windows VM definition
