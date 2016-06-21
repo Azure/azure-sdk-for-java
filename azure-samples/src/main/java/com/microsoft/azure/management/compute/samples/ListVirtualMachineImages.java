@@ -57,8 +57,9 @@ public final class ListVirtualMachineImages {
 
             Publisher chosenPublisher;
 
-            System.out.println("Printing list of publishers and images published by \n"
-                    + "Canonical, Red Hat and Suse for the US East data center");
+            System.out.println("US East data center: printing list of \n"
+                    + "a) Publishers and\n"
+                    + "b) Images published by Canonical, Red Hat and Suse");
             System.out.println("=======================================================");
             System.out.println("\n");
 
