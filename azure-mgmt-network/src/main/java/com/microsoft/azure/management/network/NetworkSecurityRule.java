@@ -129,6 +129,11 @@ public interface NetworkSecurityRule extends
     Protocol protocol();
 
     /**
+     * @return the user-defined description of the security rule
+     */
+    String description();
+
+    /**
      * @return the type of access the rule enforces
      */
     Access access();
@@ -341,9 +346,16 @@ public interface NetworkSecurityRule extends
              * <p>
              * Security rules are applied in the order of their assigned priority.
              * @param priority the priority number in the range 100 to 4096
-             * @return the next stage of the update
+             * @return the next stage
              */
             WithAttach<ParentT> withPriority(int priority);
+
+            /**
+             * Specifies a description for this security rule.
+             * @param description the text description to associate with this security rule
+             * @return the next stage
+             */
+            WithAttach<ParentT> withDescription(String description);
         }
     }
 
@@ -529,6 +541,13 @@ public interface NetworkSecurityRule extends
              * @return the next stage of the update
              */
             WithAttach<ParentT> withPriority(int priority);
+
+            /**
+             * Specifies a description for this security rule.
+             * @param descrtiption a text description to associate with the security rule
+             * @return the next stage
+             */
+            WithAttach<ParentT> withDescription(String descrtiption);
         }
     }
 
@@ -545,13 +564,19 @@ public interface NetworkSecurityRule extends
         Settable<NetworkSecurityGroup.Update> {
 
         /**
-         * Specifies the priority to assign to this rule.
+         * Specifies the priority to assign to this security rule.
          * <p>
          * Security rules are applied in the order of their assigned priority.
          * @param priority the priority number in the range 100 to 4096
          * @return the next stage of the update
          */
         Update withPriority(int priority);
+
+        /** Specifies a description for this security rule.
+         * @param description a text description to associate with this security rule
+         * @return the next stage
+         */
+        Update withDescription(String description);
     }
 
     /**

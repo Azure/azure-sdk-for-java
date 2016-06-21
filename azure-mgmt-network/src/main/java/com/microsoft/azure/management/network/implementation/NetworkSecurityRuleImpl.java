@@ -183,6 +183,11 @@ class NetworkSecurityRuleImpl
         return this;
     }
 
+    @Override
+    public NetworkSecurityRuleImpl withDescription(String description) {
+        this.inner().withDescription(description);
+        return this;
+    }
 
     // Helpers
 
@@ -208,5 +213,10 @@ class NetworkSecurityRuleImpl
     @Override
     public NetworkSecurityGroupImpl set() throws Exception {
         return this.parent();
+    }
+
+    @Override
+    public String description() {
+        return this.inner().description();
     }
 }
