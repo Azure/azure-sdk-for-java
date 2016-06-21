@@ -44,6 +44,18 @@ public final class ListVirtualMachineImages {
                     .withDefaultSubscription();
 
 
+            List<VirtualMachineImage> images = azure.virtualMachineImages().listByRegion(Region.US_EAST);
+
+            for (VirtualMachineImage image: images) {
+                System.out.println(image.publisherName() + "/"
+                        + image.offer()
+                        + "/"
+                        + image.sku() + "/"
+                        + image.version());
+            }
+
+            System.out.println("\n\n\n\n\n");
+
             //=================================================================
             // List all virtual machine image publishers and
             // list all virtual machine images
