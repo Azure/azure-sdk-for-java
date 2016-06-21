@@ -302,7 +302,7 @@ public interface VirtualMachine extends
          * @param creatable a creatable definition for a new virtual network
          * @return the next stage of the virtual machine definition
          */
-        DefinitionWithPrivateIp withNewPrimaryNetwork(Network.DefinitionCreatable creatable);
+        DefinitionWithPrivateIp withNewPrimaryNetwork(Network.DefinitionStages.WithCreate creatable);
 
         /**
          * Creates a new virtual network to associate with the virtual machine's primary network interface.

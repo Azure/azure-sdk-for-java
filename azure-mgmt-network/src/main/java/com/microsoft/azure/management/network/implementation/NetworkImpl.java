@@ -30,7 +30,7 @@ class NetworkImpl
     extends GroupableResourceImpl<Network, VirtualNetworkInner, NetworkImpl>
     implements
         Network,
-        Network.Definitions,
+        Network.Definition,
         Network.Update {
 
     private final VirtualNetworksInner client;

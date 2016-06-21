@@ -103,7 +103,7 @@ class NetworkInterfaceImpl
      **************************************************/
 
     @Override
-    public NetworkInterfaceImpl withNewPrimaryNetwork(Network.DefinitionCreatable creatable) {
+    public NetworkInterfaceImpl withNewPrimaryNetwork(Network.DefinitionStages.WithCreate creatable) {
         this.primaryIpConfiguration().withNewNetwork(creatable);
         return this;
     }

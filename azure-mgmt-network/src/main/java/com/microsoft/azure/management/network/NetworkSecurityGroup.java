@@ -5,7 +5,6 @@
  */
 package com.microsoft.azure.management.network;
 
-
 import java.util.List;
 
 import com.microsoft.azure.management.network.implementation.api.NetworkSecurityGroupInner;

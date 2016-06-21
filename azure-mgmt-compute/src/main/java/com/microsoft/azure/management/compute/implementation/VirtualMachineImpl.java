@@ -234,7 +234,7 @@ class VirtualMachineImpl
 
     // Fluent methods for defining virtual network association for the new primary network interface
     @Override
-    public VirtualMachineImpl withNewPrimaryNetwork(Network.DefinitionCreatable creatable) {
+    public VirtualMachineImpl withNewPrimaryNetwork(Network.DefinitionStages.WithCreate creatable) {
         this.nicDefinitionWithPrivateIp = this.preparePrimaryNetworkInterface(this.namer.randomName("nic", 20))
                 .withNewPrimaryNetwork(creatable);
         return this;
