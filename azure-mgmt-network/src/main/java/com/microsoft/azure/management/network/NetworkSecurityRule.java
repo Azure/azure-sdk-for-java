@@ -168,7 +168,7 @@ public interface NetworkSecurityRule extends
 
     /**
      * The entirety of a network security rule definition.
-     * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
+     * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
@@ -379,7 +379,7 @@ public interface NetworkSecurityRule extends
     interface UpdateDefinitionStages {
         /**
          * The first stage of a security rule description as part of an update of a networking security group.
-         * @param <ParentT> the return type of the final {@link UpdateDefinitionAttachable#attach()}
+         * @param <ParentT> the return type of the final {@link Attachable#attach()}
          */
         interface Blank<ParentT> extends WithDirectionAccess<ParentT> {
         }
@@ -416,7 +416,7 @@ public interface NetworkSecurityRule extends
 
         /**
          * The stage of the network rule definition allowing the source address to be specified.
-         * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
+         * @param <ParentT> the return type of the final {@link Attachable#attach()}
          */
         interface WithSourceAddress<ParentT> {
             /**
@@ -435,7 +435,7 @@ public interface NetworkSecurityRule extends
 
         /**
          * The stage of the network rule definition allowing the source port(s) to be specified.
-         * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
+         * @param <ParentT> the return type of the final {@link Attachable#attach()}
          */
         interface WithSourcePort<ParentT> {
             /**
@@ -462,7 +462,7 @@ public interface NetworkSecurityRule extends
 
         /**
          * The stage of the network rule definition allowing the destination address to be specified.
-         * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
+         * @param <ParentT> the return type of the final {@link Attachable#attach()}
          */
         interface WithDestinationAddress<ParentT> {
             /**
@@ -481,7 +481,7 @@ public interface NetworkSecurityRule extends
 
         /**
          * The stage of the network rule definition allowing the destination port(s) to be specified.
-         * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
+         * @param <ParentT> the return type of the final {@link Attachable#attach()}
          */
         interface WithDestinationPort<ParentT> {
             /**
@@ -508,7 +508,7 @@ public interface NetworkSecurityRule extends
 
         /**
          * The stage of the security rule definition allowing the protocol that the rule applies to to be specified.
-         * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
+         * @param <ParentT> the return type of the final {@link Attachable#attach()}
          */
         interface WithProtocol<ParentT> {
             /**
