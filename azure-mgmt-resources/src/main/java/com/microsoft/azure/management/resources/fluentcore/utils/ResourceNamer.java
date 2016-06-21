@@ -18,10 +18,10 @@ public class ResourceNamer {
     }
 
     /**
-     * Gets a random randName.
+     * Gets a random name.
      *
      * @param prefix the prefix to be used if possible
-     * @param maxLen the max length for the randName
+     * @param maxLen the max length for the random generated name
      * @return the random name
      */
     public String randomName(String prefix, int maxLen) {
@@ -53,5 +53,17 @@ public class ResourceNamer {
                     .substring(0, Math.min(32, length));
         }
         return str;
+    }
+
+    /**
+     * Gets a random name.
+     *
+     * @param prefix the prefix to be used if possible
+     * @param maxLen the maximum length for the random generated name
+     * @return the random name
+     */
+    public static String randomResourceName(String prefix, int maxLen) {
+        ResourceNamer namer = new ResourceNamer("");
+        return namer.randomName(prefix, maxLen);
     }
 }
