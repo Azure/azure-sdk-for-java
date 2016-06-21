@@ -14,7 +14,7 @@ public class ResourceNamer {
      * @param name the randName
      */
     public ResourceNamer(String name) {
-        this.randName = name + UUID.randomUUID().toString().replace("-", "").substring(0, 3);
+        this.randName = name.toLowerCase() + UUID.randomUUID().toString().replace("-", "").substring(0, 3).toLowerCase();
     }
 
     /**
@@ -25,6 +25,7 @@ public class ResourceNamer {
      * @return the random name
      */
     public String randomName(String prefix, int maxLen) {
+        prefix = prefix.toLowerCase();
         int minRandomnessLength = 5;
         if (maxLen <= minRandomnessLength) {
             return randomString(maxLen);
@@ -50,7 +51,7 @@ public class ResourceNamer {
             str += UUID.randomUUID()
                     .toString()
                     .replace("-", "")
-                    .substring(0, Math.min(32, length));
+                    .substring(0, Math.min(32, length)).toLowerCase();
         }
         return str;
     }
