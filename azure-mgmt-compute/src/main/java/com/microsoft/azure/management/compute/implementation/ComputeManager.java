@@ -98,7 +98,8 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
         if (availabilitySets == null) {
             availabilitySets = new AvailabilitySetsImpl(
                     super.innerManagementClient.availabilitySets(),
-                    this.resourceManager());
+                    this.resourceManager(),
+                    this);
         }
         return availabilitySets;
     }

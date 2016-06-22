@@ -23,7 +23,7 @@ public abstract class Manager<T, InnerT> {
         this.resourceManager = ResourceManager.authenticate(restClient).withSubscription(subscriptionId);
         this.innerManagementClient = innerManagementClient;
     }
-    
+
     protected ResourceManager resourceManager() {
         return this.resourceManager;
     }

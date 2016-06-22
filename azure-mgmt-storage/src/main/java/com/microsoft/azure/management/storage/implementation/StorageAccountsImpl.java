@@ -23,11 +23,19 @@ import java.io.IOException;
  * The implementation of StorageAccounts and its parent interfaces.
  */
 class StorageAccountsImpl
-        extends GroupableResourcesImpl<StorageAccount, StorageAccountImpl, StorageAccountInner, StorageAccountsInner>
+        extends GroupableResourcesImpl<
+            StorageAccount,
+            StorageAccountImpl,
+            StorageAccountInner,
+            StorageAccountsInner,
+            StorageManager>
         implements StorageAccounts {
 
-    StorageAccountsImpl(final StorageAccountsInner client, final ResourceManager resourceManager) {
-        super(resourceManager, client);
+    StorageAccountsImpl(
+            final StorageAccountsInner client,
+            final ResourceManager resourceManager,
+            final StorageManager storageManager) {
+        super(resourceManager, client, storageManager);
     }
 
     @Override
@@ -73,7 +81,8 @@ class StorageAccountsImpl
                 name,
                 new StorageAccountInner(),
                 this.innerCollection,
-                this.resourceManager);
+                this.resourceManager,
+                super.myManager);
     }
 
     @Override
@@ -82,6 +91,7 @@ class StorageAccountsImpl
                 storageAccountInner.name(),
                 storageAccountInner,
                 this.innerCollection,
-                this.resourceManager);
+                this.resourceManager,
+                super.myManager);
     }
 }

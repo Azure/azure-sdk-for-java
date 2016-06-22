@@ -28,21 +28,26 @@ import java.util.TreeMap;
  * Implementation for {@link Network} and its create and update interfaces.
  */
 class NetworkImpl
-    extends GroupableResourceImpl<Network, VirtualNetworkInner, NetworkImpl>
+    extends GroupableResourceImpl<
+        Network,
+        VirtualNetworkInner,
+        NetworkImpl,
+        NetworkManager>
     implements
         Network,
         Network.Definition,
         Network.Update {
 
-    private final VirtualNetworksInner client;
+    private final VirtualNetworksInner innerCollection;
     private TreeMap<String, Subnet> subnets;
 
     NetworkImpl(String name,
-            VirtualNetworkInner innerModel,
-            final VirtualNetworksInner client,
-            final ResourceManager resourceManager) {
-        super(name, innerModel, resourceManager);
-        this.client = client;
+            final VirtualNetworkInner innerModel,
+            final VirtualNetworksInner innerCollection,
+            final ResourceManager resourceManager,
+            final NetworkManager networkManager) {
+        super(name, innerModel, resourceManager, networkManager);
+        this.innerCollection = innerCollection;
         initializeSubnetsFromInner();
     }
 
@@ -59,7 +64,7 @@ class NetworkImpl
     @Override
     public NetworkImpl refresh() throws Exception {
         ServiceResponse<VirtualNetworkInner> response =
-            this.client.get(this.resourceGroupName(), this.name());
+            this.innerCollection.get(this.resourceGroupName(), this.name());
         this.setInner(response.getBody());
         initializeSubnetsFromInner();
         return this;
@@ -169,7 +174,7 @@ class NetworkImpl
         }
 
         ServiceResponse<VirtualNetworkInner> response =
-                this.client.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
+                this.innerCollection.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
         this.setInner(response.getBody());
         initializeSubnetsFromInner();
     }
@@ -188,7 +193,7 @@ class NetworkImpl
             }
         }
 
-        return this.client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
+        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
                 Utils.fromVoidCallback(this, new ServiceCallback<Void>() {
                     @Override
                     public void failure(Throwable t) {

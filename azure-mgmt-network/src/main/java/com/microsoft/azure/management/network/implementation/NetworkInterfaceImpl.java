@@ -37,14 +37,17 @@ import java.util.List;
  *  Implementation for {@link NetworkInterface} and its create and update interfaces.
  */
 class NetworkInterfaceImpl
-        extends GroupableResourceImpl<NetworkInterface, NetworkInterfaceInner, NetworkInterfaceImpl>
+        extends GroupableResourceImpl<
+            NetworkInterface,
+            NetworkInterfaceInner,
+            NetworkInterfaceImpl,
+            NetworkManager>
         implements
         NetworkInterface,
         NetworkInterface.Definitions,
         NetworkInterface.Update {
     // Clients
     private final NetworkInterfacesInner client;
-    private final NetworkManager networkManager;
     // the name of the network interface
     private final String nicName;
     // used to generate unique name for any dependency resources
@@ -67,9 +70,8 @@ class NetworkInterfaceImpl
                          final NetworkInterfacesInner client,
                          final NetworkManager networkManager,
                          final ResourceManager resourceManager) {
-        super(name, innerModel, resourceManager);
+        super(name, innerModel, resourceManager, networkManager);
         this.client = client;
-        this.networkManager = networkManager;
         this.nicName = name;
         this.namer = new ResourceNamer(this.nicName);
         initializeNicIpConfigurations();
@@ -326,7 +328,7 @@ class NetworkInterfaceImpl
     public NetworkSecurityGroup networkSecurityGroup() throws CloudException, IOException {
         if (this.networkSecurityGroup == null && this.networkSecurityGroupId() != null) {
             String id = this.networkSecurityGroupId();
-            this.networkSecurityGroup = this.networkManager
+            this.networkSecurityGroup = super.myManager
                     .networkSecurityGroups()
                     .getByGroup(ResourceUtils.groupFromResourceId(id),
                     ResourceUtils.nameFromResourceId(id));
@@ -427,7 +429,7 @@ class NetworkInterfaceImpl
             NicIpConfigurationImpl  nicIpConfiguration = new NicIpConfigurationImpl(ipConfig.name(),
                     ipConfig,
                     this,
-                    this.networkManager,
+                    super.myManager,
                     false);
             this.nicIpConfigurations.add(nicIpConfiguration);
         }
@@ -443,7 +445,7 @@ class NetworkInterfaceImpl
         NicIpConfigurationImpl nicIpConfiguration = NicIpConfigurationImpl.prepareNicIpConfiguration(
                 name,
                 this,
-                this.networkManager
+                super.myManager
         );
         this.nicIpConfigurations.add(nicIpConfiguration);
         return nicIpConfiguration;
