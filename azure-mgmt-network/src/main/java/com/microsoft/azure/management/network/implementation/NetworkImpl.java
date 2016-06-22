@@ -80,17 +80,23 @@ class NetworkImpl
         return createAsync(callback);
     }
 
+    // Helpers
+
+    NetworkImpl withSubnet(SubnetImpl subnet) {
+        this.inner().subnets().add(subnet.inner());
+        this.subnets.put(subnet.name(), subnet);
+        return this;
+    }
+
+    NetworkManager myManager() {
+        return super.myManager;
+    }
+
     // Setters (fluent)
 
     @Override
     public NetworkImpl withDnsServer(String ipAddress) {
         this.inner().dhcpOptions().dnsServers().add(ipAddress);
-        return this;
-    }
-
-    NetworkImpl withSubnet(SubnetImpl subnet) {
-        this.inner().subnets().add(subnet.inner());
-        this.subnets.put(subnet.name(), subnet);
         return this;
     }
 

@@ -71,7 +71,7 @@ public final class ManageNetworkInterface {
                 // Create a virtual machine with multiple network interfaces
 
                 // Define a virtual network for the VMs in this availability set
-                Network.DefinitionCreatable network = azure.networks()
+                Network.DefinitionStages.WithCreate network = azure.networks()
                         .define(vnetName)
                         .withRegion(Region.US_EAST)
                         .withNewGroup(rgName)
