@@ -81,7 +81,7 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
         //
         // After the creation of each resource in the creatableTaskGroup owned by the user chosen Creatable (#1), each
         // sub-creatableTaskGroup of the created resource will be marked back as preparer. Hence user can again call
-        // Update on any of these resources [which is nothing but equivalent to calling create gain]
+        // Update on any of these resources [which is nothing but equivalent to calling create again]
         //
         if (creatableTaskGroup.isPreparer()) {
             creatableTaskGroup.prepare();
