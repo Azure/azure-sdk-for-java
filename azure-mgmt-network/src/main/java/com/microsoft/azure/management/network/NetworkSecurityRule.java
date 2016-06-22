@@ -187,14 +187,14 @@ public interface NetworkSecurityRule extends
     interface DefinitionStages {
         /**
          * The first stage of a security rule definition.
-         * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface Blank<ParentT> extends WithDirectionAccess<ParentT> {
         }
 
         /**
          * The stage of the security rule definition allowing the protocol that the rule applies to to be specified.
-         * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithProtocol<ParentT> {
             /**
@@ -213,7 +213,7 @@ public interface NetworkSecurityRule extends
 
         /**
          * The stage of the network rule definition allowing the destination port(s) to be specified.
-         * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithDestinationPort<ParentT> {
             /**
@@ -240,7 +240,7 @@ public interface NetworkSecurityRule extends
 
         /**
          * The stage of the network rule definition allowing the destination address to be specified.
-         * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithDestinationAddress<ParentT> {
             /**
@@ -259,7 +259,7 @@ public interface NetworkSecurityRule extends
 
         /**
          * The stage of the network rule definition allowing the source port(s) to be specified.
-         * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithSourcePort<ParentT> {
             /**
@@ -286,7 +286,7 @@ public interface NetworkSecurityRule extends
 
         /**
          * The stage of the network rule definition allowing the source address to be specified.
-         * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithSourceAddress<ParentT> {
             /**
@@ -305,7 +305,7 @@ public interface NetworkSecurityRule extends
 
         /**
          * The stage of the network rule definition allowing the direction and the access type to be specified.
-         * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithDirectionAccess<ParentT> {
             /**
@@ -360,7 +360,7 @@ public interface NetworkSecurityRule extends
     }
 
     /** The entirety of a network security rule definition as part of a network security group update.
-     * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
+     * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
     interface UpdateDefinition<ParentT> extends
         UpdateDefinitionStages.Blank<ParentT>,
@@ -386,7 +386,7 @@ public interface NetworkSecurityRule extends
 
         /**
          * The stage of the network rule description allowing the direction and the access type to be specified.
-         * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithDirectionAccess<ParentT> {
             /**
@@ -416,7 +416,7 @@ public interface NetworkSecurityRule extends
 
         /**
          * The stage of the network rule definition allowing the source address to be specified.
-         * @param <ParentT> the return type of the final {@link Attachable#attach()}
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithSourceAddress<ParentT> {
             /**
@@ -435,7 +435,7 @@ public interface NetworkSecurityRule extends
 
         /**
          * The stage of the network rule definition allowing the source port(s) to be specified.
-         * @param <ParentT> the return type of the final {@link Attachable#attach()}
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithSourcePort<ParentT> {
             /**
@@ -462,7 +462,7 @@ public interface NetworkSecurityRule extends
 
         /**
          * The stage of the network rule definition allowing the destination address to be specified.
-         * @param <ParentT> the return type of the final {@link Attachable#attach()}
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithDestinationAddress<ParentT> {
             /**
@@ -481,7 +481,7 @@ public interface NetworkSecurityRule extends
 
         /**
          * The stage of the network rule definition allowing the destination port(s) to be specified.
-         * @param <ParentT> the return type of the final {@link Attachable#attach()}
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithDestinationPort<ParentT> {
             /**
@@ -508,7 +508,7 @@ public interface NetworkSecurityRule extends
 
         /**
          * The stage of the security rule definition allowing the protocol that the rule applies to to be specified.
-         * @param <ParentT> the return type of the final {@link Attachable#attach()}
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithProtocol<ParentT> {
             /**
