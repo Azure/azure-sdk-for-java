@@ -158,6 +158,7 @@ public interface Deployment extends
          *
          * @param templateJson the JSON string
          * @return the next stage of the deployment definition
+         * @throws IOException exception thrown from serialization/deserialization
          */
         DefinitionWithParameters withTemplate(String templateJson) throws IOException;
 
@@ -185,9 +186,9 @@ public interface Deployment extends
 
         /**
          * Specifies the parameters as a JSON string.
-         *
          * @param parametersJson the JSON string
          * @return the next stage of the deployment definition
+         * @throws IOException exception thrown from serialization/deserialization
          */
         DefinitionWithMode withParameters(String parametersJson) throws IOException;
 
@@ -253,6 +254,7 @@ public interface Deployment extends
          *
          * @param templateJson the JSON string
          * @return the next stage of the deployment update
+         * @throws IOException exception thrown from serialization/deserialization
          */
         Update withTemplate(String templateJson) throws IOException;
 
@@ -283,6 +285,7 @@ public interface Deployment extends
          *
          * @param parametersJson the JSON string
          * @return the next stage of the deployment update
+         * @throws IOException exception thrown from serialization/deserialization
          */
         Update withParameters(String parametersJson) throws IOException;
 

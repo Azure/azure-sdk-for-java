@@ -340,6 +340,7 @@ public interface NetworkInterface extends
         /**
          * Starts definition of a secondary Ip configuration.
          *
+         * @param name name for the Ip configuration
          * @return the first stage of a secondary Ip configuration definition
          */
         NicIpConfiguration.DefinitionBlank<DefinitionCreatable> defineSecondaryIpConfiguration(String name);
@@ -499,6 +500,7 @@ public interface NetworkInterface extends
         /**
          * Starts definition of a secondary Ip configuration.
          *
+         * @param name name for the Ip configuration
          * @return the first stage of a secondary Ip configuration definition
          */
         NicIpConfiguration.DefinitionBlank<NetworkInterface.Update> defineSecondaryIpConfiguration(String name);
@@ -506,6 +508,7 @@ public interface NetworkInterface extends
         /**
          * Starts update of an Ip configuration.
          *
+         * @param name name of the Ip configuration
          * @return the first stage of an Ip configuration update
          */
         NicIpConfiguration.Update<NetworkInterface.Update> updateIpConfiguration(String name);

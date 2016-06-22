@@ -214,6 +214,7 @@ public interface GenericResource extends
         /**
          * Specifies the API version of the resource provider.
          *
+         * @param apiVersion the API version
          * @return the next stage of the generic resource update
          */
         Update withApiVersion(String apiVersion);
