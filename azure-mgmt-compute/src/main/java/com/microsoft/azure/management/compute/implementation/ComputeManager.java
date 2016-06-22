@@ -16,12 +16,10 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 /**
  * Entry point to Azure compute resource management.
  */
-public final class ComputeManager extends Manager<ComputeManager> {
+public final class ComputeManager extends Manager<ComputeManager, ComputeManagementClientImpl> {
     // The service managers
     private StorageManager storageManager;
     private NetworkManager networkManager;
-    // The sdk clients
-    private ComputeManagementClientImpl computeManagementClient;
     // The collections
     private AvailabilitySets availabilitySets;
     private VirtualMachines virtualMachines;
@@ -85,9 +83,10 @@ public final class ComputeManager extends Manager<ComputeManager> {
     }
 
     private ComputeManager(RestClient restClient, String subscriptionId) {
-        super(restClient, subscriptionId);
-        computeManagementClient = new ComputeManagementClientImpl(restClient);
-        computeManagementClient.withSubscriptionId(subscriptionId);
+        super(
+                restClient,
+                subscriptionId,
+                new ComputeManagementClientImpl(restClient).withSubscriptionId(subscriptionId));
         storageManager = StorageManager.authenticate(restClient, subscriptionId);
         networkManager = NetworkManager.authenticate(restClient, subscriptionId);
     }
@@ -98,7 +97,7 @@ public final class ComputeManager extends Manager<ComputeManager> {
     public AvailabilitySets availabilitySets() {
         if (availabilitySets == null) {
             availabilitySets = new AvailabilitySetsImpl(
-                    computeManagementClient.availabilitySets(),
+                    super.innerManagementClient.availabilitySets(),
                     this.resourceManager());
         }
         return availabilitySets;
@@ -109,8 +108,8 @@ public final class ComputeManager extends Manager<ComputeManager> {
      */
     public VirtualMachines virtualMachines() {
         if (virtualMachines == null) {
-            virtualMachines = new VirtualMachinesImpl(computeManagementClient.virtualMachines(),
-                    computeManagementClient.virtualMachineSizes(),
+            virtualMachines = new VirtualMachinesImpl(super.innerManagementClient.virtualMachines(),
+                    super.innerManagementClient.virtualMachineSizes(),
                     this,
                     this.resourceManager(),
                     storageManager,
@@ -124,7 +123,7 @@ public final class ComputeManager extends Manager<ComputeManager> {
      */
     public VirtualMachineImages virtualMachineImages() {
         if (virtualMachineImages == null) {
-            virtualMachineImages = new VirtualMachineImagesImpl(computeManagementClient.virtualMachineImages());
+            virtualMachineImages = new VirtualMachineImagesImpl(super.innerManagementClient.virtualMachineImages());
         }
         return virtualMachineImages;
     }

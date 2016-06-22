@@ -20,8 +20,7 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 /**
  * Entry point to Azure network management.
  */
-public final class NetworkManager extends Manager<NetworkManager> {
-    private final NetworkManagementClientImpl networkManagementClient;
+public final class NetworkManager extends Manager<NetworkManager, NetworkManagementClientImpl> {
 
     // Collections
     private PublicIpAddresses publicIpAddresses;
@@ -90,9 +89,10 @@ public final class NetworkManager extends Manager<NetworkManager> {
     }
 
     private NetworkManager(RestClient restClient, String subscriptionId) {
-        super(restClient, subscriptionId);
-        networkManagementClient = new NetworkManagementClientImpl(restClient);
-        networkManagementClient.withSubscriptionId(subscriptionId);
+        super(
+                restClient,
+                subscriptionId,
+                new NetworkManagementClientImpl(restClient).withSubscriptionId(subscriptionId));
     }
 
     /**
@@ -101,7 +101,7 @@ public final class NetworkManager extends Manager<NetworkManager> {
     public Networks networks() {
         if (this.networks == null) {
             this.networks = new NetworksImpl(
-                    this.networkManagementClient.virtualNetworks(),
+                    super.innerManagementClient,
                     super.resourceManager());
         }
         return this.networks;
@@ -113,7 +113,7 @@ public final class NetworkManager extends Manager<NetworkManager> {
     public NetworkSecurityGroups networkSecurityGroups() {
         if (this.networkSecurityGroups == null) {
             this.networkSecurityGroups = new NetworkSecurityGroupsImpl(
-                    this.networkManagementClient.networkSecurityGroups(),
+                    super.innerManagementClient.networkSecurityGroups(),
                     super.resourceManager());
         }
         return this.networkSecurityGroups;
@@ -125,7 +125,7 @@ public final class NetworkManager extends Manager<NetworkManager> {
     public PublicIpAddresses publicIpAddresses() {
         if (this.publicIpAddresses == null) {
             this.publicIpAddresses = new PublicIpAddressesImpl(
-                    this.networkManagementClient.publicIPAddresses(),
+                    super.innerManagementClient.publicIPAddresses(),
                     super.resourceManager());
         }
         return this.publicIpAddresses;
@@ -137,7 +137,7 @@ public final class NetworkManager extends Manager<NetworkManager> {
     public NetworkInterfaces networkInterfaces() {
         if (networkInterfaces == null) {
             this.networkInterfaces = new NetworkInterfacesImpl(
-                this.networkManagementClient.networkInterfaces(),
+                super.innerManagementClient.networkInterfaces(),
                 this,
                 super.resourceManager()
             );

@@ -19,9 +19,7 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 /**
  * Entry point to Azure storage resource management.
  */
-public final class StorageManager extends Manager<StorageManager> {
-    private final StorageManagementClientImpl storageManagementClient;
-
+public final class StorageManager extends Manager<StorageManager, StorageManagementClientImpl> {
     // Collections
     private StorageAccounts storageAccounts;
     private Usages storageUsages;
@@ -83,10 +81,11 @@ public final class StorageManager extends Manager<StorageManager> {
     }
 
     private StorageManager(RestClient restClient, String subscriptionId) {
-        super(restClient, subscriptionId);
-        storageManagementClient = new StorageManagementClientImpl(restClient);
-        storageManagementClient.withSubscriptionId(subscriptionId);
-    }
+        super(
+                restClient,
+                subscriptionId,
+                new StorageManagementClientImpl(restClient).withSubscriptionId(subscriptionId));
+        }
 
     /**
      * @return the storage account management API entry point
@@ -94,7 +93,7 @@ public final class StorageManager extends Manager<StorageManager> {
     public StorageAccounts storageAccounts() {
         if (storageAccounts == null) {
             storageAccounts = new StorageAccountsImpl(
-                    storageManagementClient.storageAccounts(),
+                    super.innerManagementClient.storageAccounts(),
                     super.resourceManager());
         }
         return storageAccounts;
@@ -105,7 +104,7 @@ public final class StorageManager extends Manager<StorageManager> {
      */
     public Usages usages() {
         if (storageUsages == null) {
-            storageUsages = new UsagesImpl(storageManagementClient);
+            storageUsages = new UsagesImpl(super.innerManagementClient);
         }
         return storageUsages;
     }
