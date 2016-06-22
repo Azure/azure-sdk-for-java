@@ -62,7 +62,7 @@ public class Checkpoint
 	 * Set the offset. Should be paired with setSequenceNumber since the two values are
 	 * connected in the Event Hub.
 	 * 
-	 * @param newOffset
+	 * @param newOffset the new offset to be persisted.
 	 */
 	public void setOffset(String newOffset)
 	{
@@ -72,7 +72,7 @@ public class Checkpoint
 	/**
 	 * Return the offset.
 	 * 
-	 * @return
+	 * @return the current offset string value.
 	 */
 	public String getOffset()
 	{
@@ -83,7 +83,7 @@ public class Checkpoint
 	 * Set the sequence number. Should be paired with setOffset since the two values are
 	 * connected in the Event Hub.
 	 * 
-	 * @param newSequenceNumber
+	 * @param newSequenceNumber the new sequence number to be persisted.
 	 */
 	public void setSequenceNumber(long newSequenceNumber)
 	{
@@ -93,7 +93,7 @@ public class Checkpoint
 	/**
 	 * Get the sequence number.
 	 * 
-	 * @return
+	 * @return the current sequence number.
 	 */
 	public long getSequenceNumber()
 	{
@@ -103,7 +103,7 @@ public class Checkpoint
 	/**
 	 * Get the partition id. There is no corresponding setter because the partition id is immutable.
 	 * 
-	 * @return
+	 * @return get the current partition id that the processing is associated with.
 	 */
 	public String getPartitionId()
 	{

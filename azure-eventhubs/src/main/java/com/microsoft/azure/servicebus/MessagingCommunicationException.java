@@ -12,7 +12,7 @@ package com.microsoft.azure.servicebus;
  * <li> Check for any firewall settings that can block amqp ports
  * <li> Check for any general network connectivity issues, as well as network latency.
  * </ul>
- * <remark>For detail guideline on how to handle service bus exceptions please refer to http://go.microsoft.com/fwlink/?LinkId=761101</remark>
+ * @see <a href="http://go.microsoft.com/fwlink/?LinkId=761101">http://go.microsoft.com/fwlink/?LinkId=761101</a>
  */
 public class MessagingCommunicationException extends ServiceBusException
 {

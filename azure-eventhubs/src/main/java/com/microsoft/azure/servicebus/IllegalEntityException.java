@@ -10,7 +10,8 @@ package com.microsoft.azure.servicebus;
  * <li> When the entity user attempted to connect does not exist
  * <li> The entity user wants to connect is disabled
  * </ul>
- * <remark>For detail guideline on how to handle service bus exceptions please refer to http://go.microsoft.com/fwlink/?LinkId=761101</remark>
+ * 
+ * @see <a href="http://go.microsoft.com/fwlink/?LinkId=761101">http://go.microsoft.com/fwlink/?LinkId=761101</a>
  */
 public class IllegalEntityException extends ServiceBusException 
 {

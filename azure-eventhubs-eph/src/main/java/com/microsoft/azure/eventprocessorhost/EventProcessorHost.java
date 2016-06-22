@@ -220,12 +220,11 @@ public final class EventProcessorHost
      * <pre>
      * class EventProcessor implements IEventProcessor { ... }
      * EventProcessorHost host = new EventProcessorHost(...);
-     * Future<?> foo = host.registerEventProcessor(EventProcessor.class);
+     * Future foo = host.registerEventProcessor(EventProcessor.class);
      * </pre>
      *  
      * @param eventProcessorType	Class that implements IEventProcessor.
      * @return						Future that does not complete until the processor host shuts down.
-     * @throws Exception 
      */
     public <T extends IEventProcessor> Future<?> registerEventProcessor(Class<T> eventProcessorType) throws Exception
     {
@@ -243,7 +242,6 @@ public final class EventProcessorHost
      * @param eventProcessorType	Class that implements IEventProcessor.
      * @param processorOptions		Options for the processor host and event processor(s).
      * @return						Future that does not complete until the processor host shuts down.
-     * @throws Exception 
      */
     public <T extends IEventProcessor> Future<?> registerEventProcessor(Class<T> eventProcessorType, EventProcessorOptions processorOptions) throws Exception
     {
@@ -264,7 +262,6 @@ public final class EventProcessorHost
      * 
      * @param factory	User-supplied event processor factory object.
      * @return			Future that does not complete until the processor host shuts down.
-     * @throws Exception 
      */
     public Future<?> registerEventProcessorFactory(IEventProcessorFactory<?> factory) throws Exception
     {
@@ -279,7 +276,6 @@ public final class EventProcessorHost
      * @param factory			User-supplied event processor factory object.			
      * @param processorOptions	Options for the processor host and event processor(s).
      * @return					Future that does not complete until the processor host shuts down.
-     * @throws Exception 
      */
     public Future<?> registerEventProcessorFactory(IEventProcessorFactory<?> factory, EventProcessorOptions processorOptions) throws Exception
     {

@@ -291,6 +291,12 @@ public final class PartitionReceiver extends ClientEntity
 		});
 	}
 
+	/**
+	 * Register a receive handler that will be called when an event is available. A 
+	 * {@link PartitionReceiveHandler} is a handler that allows user to specify a callback
+	 * for event processing and error handling in a receive pump model. 
+	 * @param receiveHandler An implementation of {@link PartitionReceiveHandler}
+	 */
 	public void setReceiveHandler(final PartitionReceiveHandler receiveHandler)
 	{
 		synchronized (this.receiveHandlerSync)

@@ -15,4 +15,5 @@
      <url>scm:git:https://github.com/Azure/azure-event-hubs</url> 
   </scm>
 
+  <description>libraries and extensions built on Microsoft Azure Event Hubs</description>
 </project>

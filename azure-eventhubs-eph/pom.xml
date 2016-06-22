@@ -33,4 +33,5 @@
     </dependency>
   </dependencies>
 
+  <description>libraries and extensions built on Microsoft Azure Event Hubs</description>
 </project>

@@ -8,7 +8,7 @@ package com.microsoft.azure.servicebus;
  * this exception is thrown when user attempts to send a event data or brokered message that has exceeded the 
  * allowed payload size as defined by the service. Note that in a batch send scenario the limit can include possible 
  * batch overhead.
- * <remark>For detail guideline on how to handle service bus exceptions please refer to http://go.microsoft.com/fwlink/?LinkId=761101</remark>
+ * @see <a href="http://go.microsoft.com/fwlink/?LinkId=761101">http://go.microsoft.com/fwlink/?LinkId=761101</a>
  */
 public class PayloadSizeExceededException extends ServiceBusException
 {
