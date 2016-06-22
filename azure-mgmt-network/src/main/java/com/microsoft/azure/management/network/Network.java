@@ -40,9 +40,12 @@ public interface Network extends
     List<String> dnsServerIPs();
 
     /**
-     * @return subnets of this virtual network
+     * @return subnets of this virtual network as a map indexed by subnet name
+     *
+     * <p>Note that when a virtual network is created with no subnets explicitly defined, a default subnet is
+     * automatically created with the name "subnet1".
      */
-    Subnets subnets();
+    Map<String, Subnet> subnets();
 
     /**
      * The entirety of the virtual network definition.

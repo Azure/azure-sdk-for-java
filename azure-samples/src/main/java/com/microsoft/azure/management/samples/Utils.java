@@ -163,7 +163,7 @@ public final class Utils {
                 .append("\n\tDNS server IPs: ").append(resource.dnsServerIPs());
 
         // Output subnets
-        for (Subnet subnet : resource.subnets().list()) {
+        for (Subnet subnet : resource.subnets().values()) {
             info.append("\n\tSubnet: ").append(subnet.name())
                     .append("\n\t\tAddress prefix: ").append(subnet.addressPrefix());
         }

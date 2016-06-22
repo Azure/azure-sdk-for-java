@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 /**
  * Implementation for {@link Network} and its create and update interfaces.
@@ -34,7 +35,7 @@ class NetworkImpl
         Network.Update {
 
     private final VirtualNetworksInner client;
-    private List<Subnet> subnets;
+    private TreeMap<String, Subnet> subnets;
 
     NetworkImpl(String name,
             VirtualNetworkInner innerModel,
@@ -46,10 +47,10 @@ class NetworkImpl
     }
 
     private void initializeSubnetsFromInner() {
-        this.subnets = new ArrayList<>();
+        this.subnets = new TreeMap<>();
         for (SubnetInner subnetInner : this.inner().subnets()) {
             SubnetImpl subnet = new SubnetImpl(subnetInner.name(), subnetInner, this);
-            this.subnets.add(subnet);
+            this.subnets.put(subnetInner.name(), subnet);
         }
     }
 
@@ -82,6 +83,12 @@ class NetworkImpl
         return this;
     }
 
+    NetworkImpl withSubnet(SubnetImpl subnet) {
+        this.inner().subnets().add(subnet.inner());
+        this.subnets.put(subnet.name(), subnet);
+        return this;
+    }
+
     @Override
     public NetworkImpl withSubnet(String name, String cidr) {
         return this.defineSubnet(name)
@@ -103,13 +110,7 @@ class NetworkImpl
     @Override
     public NetworkImpl withoutSubnet(String name) {
         // Remove from cache
-        List<Subnet> s = this.subnets;
-        for (int i = 0; i < s.size(); i++) {
-            if (s.get(i).name().equalsIgnoreCase(name)) {
-                s.remove(i);
-                break;
-            }
-        }
+        this.subnets.remove(name);
 
         // Remove from inner
         List<SubnetInner> innerSubnets = this.inner().subnets();
@@ -149,8 +150,8 @@ class NetworkImpl
     }
 
     @Override
-    public SubnetsImpl subnets() {
-        return new SubnetsImpl(this);
+    public Map<String, Subnet> subnets() {
+        return Collections.unmodifiableMap(this.subnets);
     }
 
     @Override

@@ -46,7 +46,6 @@ class SubnetImpl
 
     @Override
     public NetworkImpl attach() {
-        this.parent().inner().subnets().add(this.inner());
-        return this.parent();
+        return this.parent().withSubnet(this);
     }
 }

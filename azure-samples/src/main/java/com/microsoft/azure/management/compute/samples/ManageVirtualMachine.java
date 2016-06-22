@@ -212,7 +212,7 @@ public final class ManageVirtualMachine {
                         .withRegion(Region.US_EAST)
                         .withExistingGroup(rgName)
                         .withExistingPrimaryNetwork(network)
-                        .withSubnet(network.subnets().list().get(0).name())
+                        .withSubnet("subnet1") // Referencing the default subnet name when no name specified at creation
                         .withPrimaryPrivateIpAddressDynamic()
                         .withoutPrimaryPublicIpAddress()
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
