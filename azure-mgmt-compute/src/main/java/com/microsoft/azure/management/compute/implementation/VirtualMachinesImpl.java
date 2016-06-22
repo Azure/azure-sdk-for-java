@@ -151,7 +151,7 @@ class VirtualMachinesImpl
         inner.withStorageProfile(new StorageProfile()
             .withOsDisk(new OSDisk())
             .withDataDisks(new ArrayList<DataDisk>()));
-        inner.withOsProfile(new OSProfile().withComputerName(name));
+        inner.withOsProfile(new OSProfile());
         inner.withHardwareProfile(new HardwareProfile());
         inner.withNetworkProfile(new NetworkProfile()
                 .withNetworkInterfaces(new ArrayList<NetworkInterfaceReference>()));
