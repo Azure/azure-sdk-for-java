@@ -23,11 +23,19 @@ import java.util.ArrayList;
  *  Implementation for {@link NetworkSecurityGroups}.
  */
 class NetworkSecurityGroupsImpl
-        extends GroupableResourcesImpl<NetworkSecurityGroup, NetworkSecurityGroupImpl, NetworkSecurityGroupInner, NetworkSecurityGroupsInner>
+        extends GroupableResourcesImpl<
+            NetworkSecurityGroup,
+            NetworkSecurityGroupImpl,
+            NetworkSecurityGroupInner,
+            NetworkSecurityGroupsInner,
+            NetworkManager>
         implements NetworkSecurityGroups {
 
-    NetworkSecurityGroupsImpl(final NetworkSecurityGroupsInner client, final ResourceManager resourceManager) {
-        super(resourceManager, client);
+    NetworkSecurityGroupsImpl(
+            final NetworkSecurityGroupsInner innerCollection,
+            final ResourceManager resourceManager,
+            final NetworkManager networkManager) {
+        super(resourceManager, innerCollection, networkManager);
     }
 
     @Override
@@ -75,11 +83,21 @@ class NetworkSecurityGroupsImpl
             inner.withDefaultSecurityRules(new ArrayList<SecurityRuleInner>());
         }
 
-        return new NetworkSecurityGroupImpl(name, inner, this.innerCollection, this.resourceManager);
+        return new NetworkSecurityGroupImpl(
+                name,
+                inner,
+                this.innerCollection,
+                this.resourceManager,
+                super.myManager);
     }
 
     @Override
     protected NetworkSecurityGroupImpl wrapModel(NetworkSecurityGroupInner inner) {
-        return new NetworkSecurityGroupImpl(inner.name(), inner, this.innerCollection, this.resourceManager);
+        return new NetworkSecurityGroupImpl(
+                inner.name(),
+                inner,
+                this.innerCollection,
+                this.resourceManager,
+                this.myManager);
     }
 }

@@ -87,7 +87,7 @@ public final class ManageAvailabilitySet {
                 //=============================================================
                 // Define a virtual network for the VMs in this availability set
 
-                Network.DefinitionCreatable network = azure.networks()
+                Network.DefinitionStages.WithCreate network = azure.networks()
                         .define(vnetName)
                         .withRegion(Region.US_EAST)
                         .withExistingGroup(rgName)

@@ -26,22 +26,28 @@ import java.util.List;
  *  Implementation for {@link NetworkSecurityGroup} and its create and update interfaces.
  */
 class NetworkSecurityGroupImpl
-    extends GroupableResourceImpl<NetworkSecurityGroup, NetworkSecurityGroupInner, NetworkSecurityGroupImpl>
+    extends GroupableResourceImpl<
+        NetworkSecurityGroup,
+        NetworkSecurityGroupInner,
+        NetworkSecurityGroupImpl,
+        NetworkManager>
     implements
         NetworkSecurityGroup,
-        NetworkSecurityGroup.Definitions,
+        NetworkSecurityGroup.Definition,
         NetworkSecurityGroup.Update {
 
-    private final NetworkSecurityGroupsInner client;
+    private final NetworkSecurityGroupsInner innerCollection;
     private List<NetworkSecurityRule> rules;
     private List<NetworkSecurityRule> defaultRules;
 
-    NetworkSecurityGroupImpl(String name,
-            NetworkSecurityGroupInner innerModel,
-            final NetworkSecurityGroupsInner client,
-            final ResourceManager resourceManager) {
-        super(name, innerModel, resourceManager);
-        this.client = client;
+    NetworkSecurityGroupImpl(
+            final String name,
+            final NetworkSecurityGroupInner innerModel,
+            final NetworkSecurityGroupsInner innerCollection,
+            final ResourceManager resourceManager,
+            final NetworkManager networkManager) {
+        super(name, innerModel, resourceManager, networkManager);
+        this.innerCollection = innerCollection;
         initializeRulesFromInner();
     }
 
@@ -84,7 +90,7 @@ class NetworkSecurityGroupImpl
     @Override
     public NetworkSecurityGroupImpl refresh() throws Exception {
         ServiceResponse<NetworkSecurityGroupInner> response =
-            this.client.get(this.resourceGroupName(), this.name());
+            this.innerCollection.get(this.resourceGroupName(), this.name());
         this.setInner(response.getBody());
         initializeRulesFromInner();
         return this;
@@ -103,14 +109,14 @@ class NetworkSecurityGroupImpl
     @Override
     protected void createResource() throws Exception {
         ServiceResponse<NetworkSecurityGroupInner> response =
-                this.client.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
+                this.innerCollection.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
         this.setInner(response.getBody());
         initializeRulesFromInner();
     }
 
     @Override
     protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
-        return this.client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
+        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
                 Utils.fromVoidCallback(this, new ServiceCallback<Void>() {
                     @Override
                     public void failure(Throwable t) {

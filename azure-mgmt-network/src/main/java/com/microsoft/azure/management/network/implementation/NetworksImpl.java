@@ -11,6 +11,7 @@ import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.implementation.api.AddressSpace;
 import com.microsoft.azure.management.network.implementation.api.DhcpOptions;
+import com.microsoft.azure.management.network.implementation.api.NetworkManagementClientImpl;
 import com.microsoft.azure.management.network.implementation.api.SubnetInner;
 import com.microsoft.azure.management.network.implementation.api.VirtualNetworkInner;
 import com.microsoft.azure.management.network.implementation.api.VirtualNetworksInner;
@@ -25,11 +26,19 @@ import java.util.ArrayList;
  *  Implementation for {@link Networks}.
  */
 class NetworksImpl
-        extends GroupableResourcesImpl<Network, NetworkImpl, VirtualNetworkInner, VirtualNetworksInner>
+        extends GroupableResourcesImpl<
+            Network,
+            NetworkImpl,
+            VirtualNetworkInner,
+            VirtualNetworksInner,
+            NetworkManager>
         implements Networks {
 
-    NetworksImpl(final VirtualNetworksInner client, final ResourceManager resourceManager) {
-        super(resourceManager, client);
+    NetworksImpl(
+            final NetworkManagementClientImpl networkClient,
+            final ResourceManager resourceManager,
+            final NetworkManager networkManager) {
+        super(resourceManager, networkClient.virtualNetworks(), networkManager);
     }
 
     @Override
@@ -95,11 +104,21 @@ class NetworksImpl
             dhcp.withDnsServers(new ArrayList<String>());
         }
 
-        return new NetworkImpl(name, inner, this.innerCollection, this.resourceManager);
+        return new NetworkImpl(
+                name,
+                inner,
+                this.innerCollection,
+                this.resourceManager,
+                super.myManager);
     }
 
     @Override
     protected NetworkImpl wrapModel(VirtualNetworkInner inner) {
-        return new NetworkImpl(inner.name(), inner, this.innerCollection, this.resourceManager);
+        return new NetworkImpl(
+                inner.name(),
+                inner,
+                this.innerCollection,
+                this.resourceManager,
+                this.myManager);
     }
 }

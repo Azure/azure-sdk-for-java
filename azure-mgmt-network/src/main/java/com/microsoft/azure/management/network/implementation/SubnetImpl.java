@@ -5,8 +5,13 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import java.io.IOException;
+
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.network.Network;
+import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.Subnet;
+import com.microsoft.azure.management.network.implementation.api.NetworkSecurityGroupInner;
 import com.microsoft.azure.management.network.implementation.api.SubnetInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
@@ -17,7 +22,7 @@ class SubnetImpl
     extends ChildResourceImpl<SubnetInner, NetworkImpl>
     implements
         Subnet,
-        Subnet.Definition<Network.DefinitionCreatableWithSubnet> {
+        Subnet.Definition<Network.DefinitionStages.WithCreateAndSubnet> {
 
     protected SubnetImpl(String name, SubnetInner inner, NetworkImpl parent) {
         super(name, inner, parent);
@@ -34,6 +39,16 @@ class SubnetImpl
         return this.inner().name();
     }
 
+    @Override
+    public NetworkSecurityGroup networkSecurityGroup() throws CloudException, IllegalArgumentException, IOException {
+        NetworkSecurityGroupInner nsgInner = this.inner().networkSecurityGroup();
+        if (nsgInner == null) {
+            return null;
+        } else {
+            return this.parent().myManager().networkSecurityGroups().getById(nsgInner.id());
+        }
+    }
+
     // Fluent setters
 
     @Override
@@ -46,7 +61,6 @@ class SubnetImpl
 
     @Override
     public NetworkImpl attach() {
-        this.parent().inner().subnets().add(this.inner());
-        return this.parent();
+        return this.parent().withSubnet(this);
     }
 }

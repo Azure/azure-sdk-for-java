@@ -164,7 +164,7 @@ public interface NetworkInterface extends
          * @param creatable a creatable definition for a new virtual network
          * @return the next stage of the network interface definition
          */
-        DefinitionWithPrivateIp withNewPrimaryNetwork(Network.DefinitionCreatable creatable);
+        DefinitionWithPrivateIp withNewPrimaryNetwork(Network.DefinitionStages.WithCreate creatable);
 
         /**
          * Creates a new virtual network to associate with the network interface's primary Ip configuration.
@@ -292,7 +292,7 @@ public interface NetworkInterface extends
          * @param creatable a creatable definition for a new network security group
          * @return the next stage of the network interface definition
          */
-        DefinitionCreatable withNewNetworkSecurityGroup(NetworkSecurityGroup.DefinitionCreatable creatable);
+        DefinitionCreatable withNewNetworkSecurityGroup(NetworkSecurityGroup.DefinitionStages.WithCreate creatable);
 
         /**
          * Associates an existing network security group with the network interface.
@@ -480,7 +480,7 @@ public interface NetworkInterface extends
          * @param creatable a creatable definition for a new network security group
          * @return the next stage of the network interface update
          */
-        Update withNewNetworkSecurityGroup(NetworkSecurityGroup.DefinitionCreatable creatable);
+        Update withNewNetworkSecurityGroup(NetworkSecurityGroup.DefinitionStages.WithCreate creatable);
 
         /**
          * Associates an existing network security group with the network interface.

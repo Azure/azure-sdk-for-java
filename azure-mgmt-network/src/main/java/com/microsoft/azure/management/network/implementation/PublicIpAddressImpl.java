@@ -21,7 +21,11 @@ import com.microsoft.rest.ServiceResponse;
  *  Implementation for {@link PublicIpAddress} and its create and update interfaces.
  */
 class PublicIpAddressImpl
-    extends GroupableResourceImpl<PublicIpAddress, PublicIPAddressInner, PublicIpAddressImpl>
+    extends GroupableResourceImpl<
+        PublicIpAddress,
+        PublicIPAddressInner,
+        PublicIpAddressImpl,
+        NetworkManager>
     implements
         PublicIpAddress,
         PublicIpAddress.Definitions,
@@ -32,8 +36,9 @@ class PublicIpAddressImpl
     PublicIpAddressImpl(String name,
             PublicIPAddressInner innerModel,
             final PublicIPAddressesInner client,
-            final ResourceManager resourceManager) {
-        super(name, innerModel, resourceManager);
+            final ResourceManager resourceManager,
+            final NetworkManager networkManager) {
+        super(name, innerModel, resourceManager, networkManager);
         this.client = client;
     }
 
@@ -109,8 +114,8 @@ class PublicIpAddressImpl
     }
 
     @Override
-    public String ipAllocationMethod() {
-        return this.inner().publicIPAllocationMethod();
+    public IpAllocationMethod ipAllocationMethod() {
+        return IpAllocationMethod.fromString(this.inner().publicIPAllocationMethod());
     }
 
     @Override
