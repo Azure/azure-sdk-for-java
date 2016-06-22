@@ -14,6 +14,7 @@ import com.microsoft.azure.management.compute.implementation.api.VirtualMachineS
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkInterfaces;
+import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.samples.Utils;
@@ -58,7 +59,7 @@ public final class ManageNetworkInterface {
 
             Azure azure = Azure
                     .configure()
-                    .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
+                    .withLogLevel(HttpLoggingInterceptor.Level.BODY)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 
@@ -70,17 +71,23 @@ public final class ManageNetworkInterface {
                 //============================================================
                 // Create a virtual machine with multiple network interfaces
 
-                // Define a virtual network for the VMs in this availability set
+                // Define a resource group for holding all the resources
+                ResourceGroup.DefinitionCreatable resourceGroup = azure.resourceGroups()
+                        .define(rgName)
+                        .withRegion(Region.US_EAST);
+
+                // Define a virtual network for the NiCs
                 Network.DefinitionCreatable network = azure.networks()
                         .define(vnetName)
                         .withRegion(Region.US_EAST)
-                        .withNewGroup(rgName)
-                        .withAddressSpace("10.0.0.0/28");
+                        .withNewGroup(resourceGroup)
+                        .withAddressSpace("10.0.0.0/28")
+                        .withSubnet("subnet1", "10.0.0.0/28");
 
                 System.out.println("Creating multiple network interfaces");
                 NetworkInterface networkInterface1 = azure.networkInterfaces().define(networkInterfaceName1)
                         .withRegion(Region.US_EAST)
-                        .withExistingGroup(rgName)
+                        .withNewGroup(resourceGroup)
                         .withNewPrimaryNetwork(network)
                         .withPrimaryPrivateIpAddressDynamic()
                         .withNewPrimaryPublicIpAddress(publicIpAddressLeafDNS1)
