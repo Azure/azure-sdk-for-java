@@ -85,9 +85,9 @@ public abstract class TaskGroupBase<T>
     }
 
     /**
-     * executes the root task in this group.
+     * Executes the root task in this group.
      * <p>
-     * this method will be invoked when all the task dependencies of the root task are finished
+     * This method will be invoked when all the task dependencies of the root task are finished
      * executing, at this point root task can be executed by consuming the result of tasks it
      * depends on.
      *
@@ -97,9 +97,9 @@ public abstract class TaskGroupBase<T>
     public abstract void executeRootTask(TaskItem<T> task) throws Exception;
 
     /**
-     * executes the root task in this group asynchronously.
+     * Executes the root task in this group asynchronously.
      * <p>
-     * this method will be invoked when all the task dependencies of the root task are finished
+     * This method will be invoked when all the task dependencies of the root task are finished
      * executing, at this point root task can be executed by consuming the result of tasks it
      * depends on.
      *

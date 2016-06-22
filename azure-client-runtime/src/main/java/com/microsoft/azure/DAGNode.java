@@ -40,7 +40,7 @@ public class DAGNode<T> extends Node<T> {
     }
 
     /**
-     * mark the node identified by the given key as dependent of this node.
+     * Mark the node identified by the given key as dependent of this node.
      *
      * @param key the id of the dependent node
      */
@@ -56,7 +56,7 @@ public class DAGNode<T> extends Node<T> {
     }
 
     /**
-     * mark the node identified by the given key as this node's dependency.
+     * Mark the node identified by the given key as this node's dependency.
      *
      * @param dependencyKey the id of the dependency node
      */
@@ -88,7 +88,7 @@ public class DAGNode<T> extends Node<T> {
     }
 
     /**
-     * initialize the node so that traversal can be performed on the parent DAG.
+     * Initialize the node so that traversal can be performed on the parent DAG.
      */
     public void initialize() {
         this.toBeResolved = this.dependencyKeys().size();
