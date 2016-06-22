@@ -43,11 +43,12 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                     .toPortRange(22, 25)
                     .withAnyProtocol()
                     .withPriority(200)
+                    .withDescription("foo!!")
                     .attach()
                 .create();
 
         // Verify
-        Assert.assertTrue(nsg.region() == region.toString());
+        Assert.assertTrue(nsg.region().equalsIgnoreCase(region.toString()));
         Assert.assertTrue(nsg.securityRules().size() == 2);
 
         return nsg;
@@ -73,6 +74,7 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                     .fromAddress("100.0.0.0/29")
                     .fromPort(88)
                     .withPriority(300)
+                    .withDescription("bar!!!")
                     .set()
                 .apply();
         Assert.assertTrue(resource.tags().containsKey("tag1"));
@@ -98,7 +100,8 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                 .append("\n\t\tTo address: ").append(rule.destinationAddressPrefix())
                 .append("\n\t\tTo port: ").append(rule.destinationPortRange())
                 .append("\n\t\tProtocol: ").append(rule.protocol())
-                .append("\n\t\tPriority: ").append(rule.priority());
+                .append("\n\t\tPriority: ").append(rule.priority())
+                .append("\n\t\tDescription: ").append(rule.description());
         }
 
         info.append("\n\tNICs: ").append(resource.networkInterfaceIds());

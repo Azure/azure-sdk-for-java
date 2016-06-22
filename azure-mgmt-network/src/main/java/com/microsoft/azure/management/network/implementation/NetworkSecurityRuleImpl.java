@@ -17,7 +17,7 @@ class NetworkSecurityRuleImpl
     extends ChildResourceImpl<SecurityRuleInner, NetworkSecurityGroupImpl>
     implements
         NetworkSecurityRule,
-        NetworkSecurityRule.Definition<NetworkSecurityGroup.DefinitionCreatable>,
+        NetworkSecurityRule.Definition<NetworkSecurityGroup.DefinitionStages.WithCreate>,
         NetworkSecurityRule.UpdateDefinition<NetworkSecurityGroup.Update>,
         NetworkSecurityRule.Update {
 
@@ -183,6 +183,11 @@ class NetworkSecurityRuleImpl
         return this;
     }
 
+    @Override
+    public NetworkSecurityRuleImpl withDescription(String description) {
+        this.inner().withDescription(description);
+        return this;
+    }
 
     // Helpers
 
@@ -208,5 +213,10 @@ class NetworkSecurityRuleImpl
     @Override
     public NetworkSecurityGroupImpl set() throws Exception {
         return this.parent();
+    }
+
+    @Override
+    public String description() {
+        return this.inner().description();
     }
 }

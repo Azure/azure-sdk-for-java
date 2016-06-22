@@ -18,23 +18,31 @@ import com.microsoft.azure.management.resources.implementation.ResourceManager;
  * @param <FluentModelT> The fluent model type
  * @param <InnerModelT> Azure inner resource class type
  * @param <FluentModelImplT> the implementation type of the fluent model type
+ * @param <ManagerT> the service manager type
  */
 public abstract class GroupableResourceImpl<
         FluentModelT,
         InnerModelT extends com.microsoft.azure.Resource,
-        FluentModelImplT extends GroupableResourceImpl<FluentModelT, InnerModelT, FluentModelImplT>>
+        FluentModelImplT extends GroupableResourceImpl<FluentModelT, InnerModelT, FluentModelImplT, ManagerT>,
+        ManagerT>
         extends
             ResourceImpl<FluentModelT, InnerModelT, FluentModelImplT>
         implements
             GroupableResource {
 
-    private final ResourceManager resourceManager;
+    protected final ResourceManager resourceManager;
+    protected final ManagerT myManager;
     protected ResourceGroup.DefinitionCreatable newGroup;
     private String groupName;
 
-    protected GroupableResourceImpl(String key, InnerModelT innerObject, ResourceManager resourceManager) {
+    protected GroupableResourceImpl(
+            String key,
+            InnerModelT innerObject,
+            ResourceManager resourceManager,
+            ManagerT manager) {
         super(key, innerObject);
         this.resourceManager = resourceManager;
+        this.myManager = manager;
     }
 
     /*******************************************

@@ -20,7 +20,11 @@ import com.microsoft.rest.ServiceCallback;
  * The implementation for {@link GenericResource} and its nested interfaces.
  */
 final class GenericResourceImpl
-    extends GroupableResourceImpl<GenericResource, GenericResourceInner, GenericResourceImpl>
+    extends GroupableResourceImpl<
+        GenericResource,
+        GenericResourceInner,
+        GenericResourceImpl,
+        ResourceManager>
     implements
         GenericResource,
         GenericResource.DefinitionBlank,
@@ -44,7 +48,7 @@ final class GenericResourceImpl
                         ResourcesInner client,
                         final ResourceManagementClientImpl serviceClient,
                         final ResourceManager resourceManager) {
-        super(key, innerModel, resourceManager);
+        super(key, innerModel, resourceManager, resourceManager);
         this.client = client;
     }
 

@@ -19,17 +19,19 @@ import java.util.ArrayList;
  *  Implementation for {@link NetworkInterfaces}.
  */
 class NetworkInterfacesImpl
-        extends GroupableResourcesImpl<NetworkInterface, NetworkInterfaceImpl, NetworkInterfaceInner, NetworkInterfacesInner>
+        extends GroupableResourcesImpl<
+            NetworkInterface,
+            NetworkInterfaceImpl,
+            NetworkInterfaceInner,
+            NetworkInterfacesInner,
+            NetworkManager>
         implements NetworkInterfaces {
-
-    private final NetworkManager networkManager;
 
     NetworkInterfacesImpl(
             final NetworkInterfacesInner client,
-            final NetworkManager networkManager,
-            final ResourceManager resourceManager) {
-        super(resourceManager, client);
-        this.networkManager = networkManager;
+            final ResourceManager resourceManager,
+            final NetworkManager networkManager) {
+        super(resourceManager, client, networkManager);
     }
 
     @Override
@@ -70,7 +72,7 @@ class NetworkInterfacesImpl
         return new NetworkInterfaceImpl(name,
                 inner,
                 this.innerCollection,
-                this.networkManager,
+                super.myManager,
                 this.resourceManager);
     }
 
@@ -79,7 +81,7 @@ class NetworkInterfacesImpl
         return new NetworkInterfaceImpl(inner.name(),
                 inner,
                 this.innerCollection,
-                this.networkManager,
+                super.myManager,
                 this.resourceManager);
     }
 }

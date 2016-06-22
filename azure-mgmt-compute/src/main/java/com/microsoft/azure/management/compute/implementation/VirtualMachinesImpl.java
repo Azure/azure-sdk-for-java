@@ -37,9 +37,13 @@ import java.util.ArrayList;
  * The implementation for {@link VirtualMachines}.
  */
 class VirtualMachinesImpl
-        extends GroupableResourcesImpl<VirtualMachine, VirtualMachineImpl, VirtualMachineInner, VirtualMachinesInner>
+        extends GroupableResourcesImpl<
+            VirtualMachine,
+            VirtualMachineImpl,
+            VirtualMachineInner,
+            VirtualMachinesInner,
+            ComputeManager>
         implements VirtualMachines {
-    private final ComputeManager computeManager;
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
     private final VirtualMachineSizesImpl vmSizes;
@@ -50,8 +54,7 @@ class VirtualMachinesImpl
                         ResourceManager resourceManager,
                         StorageManager storageManager,
                         NetworkManager networkManager) {
-        super(resourceManager, client);
-        this.computeManager = computeManager;
+        super(resourceManager, client, computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;
         this.vmSizes = new VirtualMachineSizesImpl(virtualMachineSizesClient);
@@ -155,7 +158,7 @@ class VirtualMachinesImpl
         return new VirtualMachineImpl(name,
             inner,
             this.innerCollection,
-            this.computeManager,
+            super.myManager,
             this.resourceManager,
             this.storageManager,
             this.networkManager);
@@ -166,7 +169,7 @@ class VirtualMachinesImpl
         return new VirtualMachineImpl(virtualMachineInner.name(),
                 virtualMachineInner,
                 this.innerCollection,
-                this.computeManager,
+                super.myManager,
                 this.resourceManager,
                 this.storageManager,
                 this.networkManager);

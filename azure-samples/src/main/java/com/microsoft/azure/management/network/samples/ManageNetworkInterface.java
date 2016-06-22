@@ -77,7 +77,7 @@ public final class ManageNetworkInterface {
                         .withRegion(Region.US_EAST);
 
                 // Define a virtual network for the NiCs
-                Network.DefinitionCreatable network = azure.networks()
+                Network.DefinitionStages.WithCreate network = azure.networks()
                         .define(vnetName)
                         .withRegion(Region.US_EAST)
                         .withNewGroup(resourceGroup)
