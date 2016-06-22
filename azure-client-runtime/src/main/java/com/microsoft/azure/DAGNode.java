@@ -72,7 +72,7 @@ public class DAGNode<T> extends Node<T> {
     }
 
     /**
-     * Mark or un-mark this node as being preparer.
+     * Mark or un-mark this node as preparer.
      *
      * @param isPreparer <tt>true</tt> if this node needs to be marked as preparer, <tt>false</tt> otherwise.
      */
