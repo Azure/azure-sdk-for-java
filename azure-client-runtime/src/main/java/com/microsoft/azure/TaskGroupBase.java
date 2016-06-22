@@ -35,8 +35,8 @@ public abstract class TaskGroupBase<T>
     }
 
     @Override
-    public boolean isRoot() {
-        return !dag.hasParent();
+    public boolean isPreparer() {
+        return dag.isPreparer();
     }
 
     @Override
@@ -46,7 +46,7 @@ public abstract class TaskGroupBase<T>
 
     @Override
     public void prepare() {
-        if (isRoot()) {
+        if (isPreparer()) {
             dag.prepare();
         }
     }
@@ -61,11 +61,7 @@ public abstract class TaskGroupBase<T>
         if (dag.isRootNode(nextNode)) {
             executeRootTask(nextNode.data());
         } else {
-            // TaskGroupBase::execute will be called both in update and create
-            // scenarios, so run the task only if it not not executed already.
-            if (nextNode.data().result() == null) {
-                nextNode.data().execute(this, nextNode);
-            }
+            nextNode.data().execute(this, nextNode);
         }
     }
 
@@ -79,13 +75,7 @@ public abstract class TaskGroupBase<T>
         if (dag.isRootNode(nextNode)) {
             return executeRootTaskAsync(nextNode.data(), callback);
         } else {
-            // TaskGroupBase::execute will be called both in update and create
-            // scenarios, so run the task only if it not not executed already.
-            if (nextNode.data().result() == null) {
-                return nextNode.data().executeAsync(this, nextNode, callback);
-            } else {
-                return null;
-            }
+            return nextNode.data().executeAsync(this, nextNode, callback);
         }
     }
 

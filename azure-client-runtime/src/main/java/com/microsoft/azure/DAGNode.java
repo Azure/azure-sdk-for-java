@@ -8,6 +8,7 @@
 package com.microsoft.azure;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -18,6 +19,7 @@ import java.util.List;
 public class DAGNode<T> extends Node<T> {
     private List<String> dependentKeys;
     private int toBeResolved;
+    private boolean isPreparer;
 
     /**
      * Creates a DAG node.
@@ -34,7 +36,7 @@ public class DAGNode<T> extends Node<T> {
      * @return a list of keys of nodes in {@link DAGraph} those are dependents on this node
      */
     List<String> dependentKeys() {
-        return this.dependentKeys;
+        return Collections.unmodifiableList(this.dependentKeys);
     }
 
     /**
@@ -70,10 +72,27 @@ public class DAGNode<T> extends Node<T> {
     }
 
     /**
-     * prepare the node for traversal.
+     * Mark or un-mark this node as being preparer.
+     *
+     * @param isPreparer <tt>true</tt> if this node needs to be marked as preparer, <tt>false</tt> otherwise.
      */
-    public void prepare() {
+    public void setPreparer(boolean isPreparer) {
+        this.isPreparer = isPreparer;
+    }
+
+    /**
+     * @return <tt>true</tt> if this node is marked as preparer
+     */
+    public boolean isPreparer() {
+        return isPreparer;
+    }
+
+    /**
+     * initialize the node so that traversal can be performed on the parent DAG.
+     */
+    public void initialize() {
         this.toBeResolved = this.dependencyKeys().size();
+        this.dependentKeys.clear();
     }
 
     /**
