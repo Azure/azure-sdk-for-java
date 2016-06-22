@@ -33,7 +33,7 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
     }
 
     /**
-     * add a creatable resource dependency for this resource.
+     * Add a creatable resource dependency for this resource.
      *
      * @param creatableResource the creatable dependency.
      */
@@ -58,6 +58,7 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
 
     /**
      * Default implementation of create().
+     *
      * @return the created resource
      * @throws Exception when anything goes wrong
      */
@@ -116,7 +117,7 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
     protected abstract void createResource() throws Exception;
 
     /**
-     * Creates this resource. asynchronously
+     * Creates this resource asynchronously.
      *
      * @throws Exception when anything goes wrong
      */

@@ -64,7 +64,7 @@ public class DAGraph<T, U extends DAGNode<T>> extends Graph<T, U> {
     /**
      * Merge this DAG with another DAG.
      * <p>
-     * this will mark this DAG as a child DAG, the dependencies of nodes in this DAG will be merged
+     * This will mark this DAG as a child DAG, the dependencies of nodes in this DAG will be merged
      * with (copied to) the parent DAG
      *
      * @param parent the parent DAG
@@ -86,11 +86,11 @@ public class DAGraph<T, U extends DAGNode<T>> extends Graph<T, U> {
      */
     public void prepare() {
         if (isPreparer()) {
-            for (Map.Entry<String, U> entry : graph.entrySet()) {
+            for (U node : graph.values()) {
                 // Prepare each node for traversal
-                entry.getValue().initialize();
+                node.initialize();
                 // Mark other sub-DAGs are non-preparer
-                entry.getValue().setPreparer(false);
+                node.setPreparer(false);
             }
             initializeDependentKeys();
             initializeQueue();
@@ -101,7 +101,7 @@ public class DAGraph<T, U extends DAGNode<T>> extends Graph<T, U> {
      * Gets next node in the DAG which has no dependency or all of it's dependencies are resolved and
      * ready to be consumed.
      * <p>
-     * null will be returned when all the nodes are explored
+     * Null will be returned when all the nodes are explored
      *
      * @return next node
      */
@@ -139,7 +139,7 @@ public class DAGraph<T, U extends DAGNode<T>> extends Graph<T, U> {
     /**
      * Initializes dependents of all nodes.
      * <p>
-     * the DAG will be explored in DFS order and all node's dependents will be identified,
+     * The DAG will be explored in DFS order and all node's dependents will be identified,
      * this prepares the DAG for traversal using getNext method, each call to getNext returns next node
      * in the DAG with no dependencies.
      */
