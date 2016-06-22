@@ -934,6 +934,17 @@ class VirtualMachineImpl
         if (osDisk.name() == null) {
             withOsDiskName(this.vmName + "-os-disk");
         }
+
+        if (this.inner().osProfile().computerName() == null) {
+            // VM name cannot contain only numeric values and cannot exceed 15 chars
+            if (vmName.matches("[0-9]+")) {
+                this.inner().osProfile().withComputerName(ResourceNamer.randomResourceName("vm", 15));
+            } else if (vmName.length() <= 15) {
+                this.inner().osProfile().withComputerName(vmName);
+            } else {
+                this.inner().osProfile().withComputerName(ResourceNamer.randomResourceName("vm", 15));
+            }
+        }
     }
 
     private void setHardwareProfileDefaults() {
