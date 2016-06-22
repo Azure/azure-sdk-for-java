@@ -100,7 +100,7 @@ public interface NicIpConfiguration extends
          * @param creatable a creatable definition for a new virtual network
          * @return the next stage of the Ip configuration definition
          */
-        DefinitionWithPrivateIp<ParentT> withNewNetwork(Network.DefinitionCreatable creatable);
+        DefinitionWithPrivateIp<ParentT> withNewNetwork(Network.DefinitionStages.WithCreate creatable);
 
         /**
          * Creates a new virtual network to associate with the Ip configuration.

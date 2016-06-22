@@ -5,7 +5,6 @@
  */
 package com.microsoft.azure.management.network;
 
-
 import java.util.List;
 
 import com.microsoft.azure.management.network.implementation.api.NetworkSecurityGroupInner;
@@ -51,59 +50,70 @@ public interface NetworkSecurityGroup extends
     /**
      * The entirety of the network security group definition.
      */
-    interface Definitions extends
-        DefinitionBlank,
-        DefinitionWithGroup,
-        DefinitionCreatable {
+    interface Definition extends
+        DefinitionStages.Blank,
+        DefinitionStages.WithGroup,
+        DefinitionStages.WithRule,
+        DefinitionStages.WithCreate {
     }
 
     /**
-     * The first stage of the definition.
+     * Grouping of network security group definition stages.
      */
-    interface DefinitionBlank
-        extends GroupableResource.DefinitionWithRegion<DefinitionWithGroup> {
-    }
-
-    /**
-     * The stage of the definition allowing to specify the resource group.
-     */
-    interface DefinitionWithGroup
-        extends GroupableResource.DefinitionWithGroup<DefinitionCreatable> {
-    }
-
-    /**
-     * The stage of the definition allowing to define a new security rule.
-     * <p>
-     * When the security rule definition is complete enough, use {@link Attachable#attach()} to attach it to
-     * this network security group.
-     */
-    interface DefinitionWithRule {
+    interface DefinitionStages {
         /**
-         * Starts the definition of a new security rule.
-         * @param name the name for the new security rule
-         * @return the first stage of the security rule definition
+         * The first stage of the definition.
          */
-        NetworkSecurityRule.Definables.Blank<DefinitionCreatable> defineRule(String name);
+        interface Blank
+            extends GroupableResource.DefinitionWithRegion<WithGroup> {
+        }
+
+        /**
+         * The stage allowing to specify the resource group.
+         */
+        interface WithGroup
+            extends GroupableResource.DefinitionWithGroup<WithCreate> {
+        }
+
+        /**
+         * The stage allowing to define a new security rule.
+         * <p>
+         * When the security rule description is complete enough, use {@link Attachable#attach()} to attach it to
+         * this network security group.
+         */
+        interface WithRule {
+            /**
+             * Starts the definition of a new security rule.
+             * @param name the name for the new security rule
+             * @return the first stage of the security rule definition
+             */
+            NetworkSecurityRule.DefinitionStages.Blank<WithCreate> defineRule(String name);
+        }
+
+        /**
+         * The stage of the definition which contains all the minimum required inputs for
+         * the resource to be created (via {@link WithCreate#create()}), but also allows
+         * for any other optional settings to be specified.
+         */
+        interface WithCreate extends
+            Creatable<NetworkSecurityGroup>,
+            Resource.DefinitionWithTags<WithCreate>,
+            DefinitionStages.WithRule {
+        }
     }
 
     /**
-     * The stage of the resource definition allowing to add or remove security rules.
+     * Grouping of network security group update stages.
      */
-    interface UpdateWithRule {
-        Update withoutRule(String name);
-        NetworkSecurityRule.UpdateDefinables.Blank<Update> defineRule(String name);
-        NetworkSecurityRule.Update updateRule(String name);
-    }
-
-    /**
-     * The stage of the definition which contains all the minimum required inputs for
-     * the resource to be created (via {@link DefinitionCreatable#create()}), but also allows
-     * for any other optional settings to be specified.
-     */
-    interface DefinitionCreatable extends
-        Creatable<NetworkSecurityGroup>,
-        Resource.DefinitionWithTags<DefinitionCreatable>,
-        DefinitionWithRule {
+    interface UpdateStages {
+        /**
+         * The stage of the resource definition allowing to add or remove security rules.
+         */
+        interface WithRule {
+            Update withoutRule(String name);
+            NetworkSecurityRule.UpdateDefinitionStages.Blank<Update> defineRule(String name);
+            NetworkSecurityRule.Update updateRule(String name);
+        }
     }
 
     /**
@@ -115,6 +125,6 @@ public interface NetworkSecurityGroup extends
     interface Update extends
         Appliable<NetworkSecurityGroup>,
         Resource.UpdateWithTags<Update>,
-        UpdateWithRule {
+        UpdateStages.WithRule {
     }
 }

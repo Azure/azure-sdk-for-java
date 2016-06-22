@@ -12,7 +12,6 @@ import com.microsoft.azure.management.resources.GenericResources;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import com.microsoft.azure.management.resources.implementation.api.ResourceGroupsInner;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourcesInner;
 import com.microsoft.azure.management.resources.GenericResource;
@@ -26,21 +25,24 @@ import java.util.List;
  * Implementation of the {@link GenericResources}.
  */
 final class GenericResourcesImpl
-    extends GroupableResourcesImpl<GenericResource, GenericResourceImpl, GenericResourceInner, ResourcesInner>
+    extends GroupableResourcesImpl<
+        GenericResource,
+        GenericResourceImpl,
+        GenericResourceInner,
+        ResourcesInner,
+        ResourceManager>
     implements GenericResources {
 
     private final ResourceManagementClientImpl serviceClient;
-    private final ResourceGroupsInner resourceGroupsInner;
 
     GenericResourcesImpl(ResourceManagementClientImpl serviceClient, ResourceManager resourceManager) {
-        super(resourceManager, serviceClient.resources());
+        super(resourceManager, serviceClient.resources(), resourceManager);
         this.serviceClient = serviceClient;
-        this.resourceGroupsInner = serviceClient.resourceGroups();
     }
 
     @Override
     public PagedList<GenericResource> listByGroup(String groupName) throws CloudException, IOException {
-        return wrapList(resourceGroupsInner.listResources(groupName).getBody());
+        return wrapList(this.serviceClient.resourceGroups().listResources(groupName).getBody());
     }
 
     @Override

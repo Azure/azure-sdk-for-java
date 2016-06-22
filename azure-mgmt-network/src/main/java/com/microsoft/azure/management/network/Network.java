@@ -40,143 +40,151 @@ public interface Network extends
     List<String> dnsServerIPs();
 
     /**
-     * @return list of subnets of this virtual network
+     * @return subnets of this virtual network as a map indexed by subnet name
+     *
+     * <p>Note that when a virtual network is created with no subnets explicitly defined, a default subnet is
+     * automatically created with the name "subnet1".
      */
-    List<Subnet> subnets();
-
-    /**************************************************************
-     * Fluent interfaces for provisioning
-     **************************************************************/
+    Map<String, Subnet> subnets();
 
     /**
      * The entirety of the virtual network definition.
      */
-    interface Definitions extends
-        DefinitionBlank,
-        DefinitionWithGroup,
-        DefinitionWithSubnet,
-        DefinitionCreatable,
-        DefinitionCreatableWithSubnet {
+    interface Definition extends
+        DefinitionStages.Blank,
+        DefinitionStages.WithGroup,
+        DefinitionStages.WithSubnet,
+        DefinitionStages.WithCreate,
+        DefinitionStages.WithCreateAndSubnet {
     }
 
     /**
-     * The first stage of a virtual network definition.
+     * Grouping of virtual network definition stages.
      */
-    interface DefinitionBlank
-        extends GroupableResource.DefinitionWithRegion<DefinitionWithGroup> {
+    interface DefinitionStages {
+        /**
+         * The first stage of a virtual network definition.
+         */
+        interface Blank
+            extends GroupableResource.DefinitionWithRegion<WithGroup> {
+        }
+
+        /**
+         * The stage of the virtual network definition allowing to specify the resource group.
+         */
+        interface WithGroup
+            extends GroupableResource.DefinitionWithGroup<DefinitionStages.WithCreate> {
+        }
+
+        /**
+         * The stage of the virtual network definition allowing to add subnets.
+         */
+        interface WithSubnet {
+            /**
+             * Explicitly adds a subnet to the virtual network.
+             * <p>
+             * If no subnets are explicitly specified, a default subnet called "subnet1" covering the
+             * entire first address space will be created.
+             * <p>
+             * Note this method's effect is additive, i.e. each time it is used, a new subnet is added to the network.
+             * @param name the name to assign to the subnet
+             * @param cidr the address space of the subnet, within the address space of the network, using the CIDR notation
+             * @return the next stage of the virtual network definition
+             */
+            DefinitionStages.WithCreateAndSubnet withSubnet(String name, String cidr);
+
+            /**
+             * Explicitly defines subnets in the virtual network based on the provided map.
+             * @param nameCidrPairs a {@link Map} of CIDR addresses for the subnets, indexed by the name of each subnet to be defined
+             * @return the next stage of the virtual network definition
+             */
+            DefinitionStages.WithCreateAndSubnet withSubnets(Map<String, String> nameCidrPairs);
+
+            Subnet.DefinitionBlank<WithCreateAndSubnet> defineSubnet(String name);
+        }
+
+        /**
+         * The stage of the virtual network definition which contains all the minimum required inputs for
+         * the resource to be created (via {@link WithCreate#create()}), but also allows
+         * for any other optional settings to be specified, except for adding subnets.
+         * <p>
+         * Subnets can be added only right after the address space is explicitly specified
+         * (see {@link WithCreate#withAddressSpace(String)}).
+         */
+        interface WithCreate extends
+            Creatable<Network>,
+            Resource.DefinitionWithTags<WithCreate> {
+
+            /**
+             * Specifies the IP address of an existing DNS server to associate with the virtual network.
+             * <p>
+             * Note this method's effect is additive, i.e. each time it is used, a new dns server is added
+             * to the network.
+             * @param ipAddress the IP address of the DNS server
+             * @return the next stage of the virtual network definition
+             */
+            WithCreate withDnsServer(String ipAddress);
+
+            /**
+             * Explicitly adds an address space to the virtual network.
+             * <p>
+             * If no address spaces are explicitly specified, a default address space with the CIDR "10.0.0.0/16" will be
+             * assigned to the virtual network.
+             * <p>
+             * Note that this method's effect is additive, i.e. each time it is used, a new address space is added to the network.
+             * This method does not check for conflicts or overlaps with other address spaces. If there is a conflict,
+             * a cloud exception may be thrown at the time the network is created.
+             * @param cidr the CIDR representation of the address space
+             * @return the next stage of the virtual network definition
+             */
+            WithCreateAndSubnet withAddressSpace(String cidr);
+        }
+
+        /**
+         * The stage of the public IP definition which contains all the minimum required inputs for
+         * the resource to be created (via {@link WithCreate#create()}), but also allows
+         * for any other optional settings to be specified, including adding subnets.
+         */
+        interface WithCreateAndSubnet extends
+            DefinitionStages.WithCreate,
+            DefinitionStages.WithSubnet {
+        }
     }
 
     /**
-     * The stage of the virtual network definition allowing to specify the resource group.
+     * Grouping of virtual network update stages.
      */
-    interface DefinitionWithGroup
-        extends GroupableResource.DefinitionWithGroup<DefinitionCreatable> {
-    }
-
-    /**
-     * The stage of the virtual network definition allowing to add subnets.
-     */
-    interface DefinitionWithSubnet {
+    interface UpdateStages {
         /**
-         * Explicitly adds a subnet to the virtual network.
-         * <p>
-         * If no subnets are explicitly specified, a default subnet called "subnet1" covering the
-         * entire first address space will be created.
-         * <p>
-         * Note this method's effect is additive, i.e. each time it is used, a new subnet is added to the network.
-         * @param name the name to assign to the subnet
-         * @param cidr the address space of the subnet, within the address space of the network, using the CIDR notation
-         * @return the next stage of the virtual network definition
+         * The stage of the virtual network update allowing to add or remove subnets.
          */
-        DefinitionCreatableWithSubnet withSubnet(String name, String cidr);
+        interface WithSubnet {
+            /**
+             * Explicitly adds a subnet to the virtual network.
+             * <p>
+             * Note this method's effect is additive, i.e. each time it is used, a new subnet is added to the network.
+             * @param name the name to assign to the subnet
+             * @param cidr the address space of the subnet, within the address space of the network, using the CIDR notation
+             * @return the next stage of the virtual network update
+             */
+            Update withSubnet(String name, String cidr);
 
-        /**
-         * Explicitly defines subnets in the virtual network based on the provided map.
-         * @param nameCidrPairs a {@link Map} of CIDR addresses for the subnets, indexed by the name of each subnet to be defined
-         * @return the next stage of the virtual network definition
-         */
-        DefinitionCreatableWithSubnet withSubnets(Map<String, String> nameCidrPairs);
+            /**
+             * Explicitly defines all the subnets in the virtual network based on the provided map.
+             * <p>
+             * This replaces any previously existing subnets.
+             * @param nameCidrPairs a {@link Map} of CIDR addresses for the subnets, indexed by the name of each subnet to be added
+             * @return the next stage of the virtual network update
+             */
+            Update withSubnets(Map<String, String> nameCidrPairs);
 
-        Subnet.DefinitionBlank<DefinitionCreatableWithSubnet> defineSubnet(String name);
-    }
-
-
-    /**
-     * The stage of the virtual network update allowing to add or remove subnets.
-     */
-    interface UpdateWithSubnet {
-        /**
-         * Explicitly adds a subnet to the virtual network.
-         * <p>
-         * Note this method's effect is additive, i.e. each time it is used, a new subnet is added to the network.
-         * @param name the name to assign to the subnet
-         * @param cidr the address space of the subnet, within the address space of the network, using the CIDR notation
-         * @return the next stage of the virtual network update
-         */
-        Update withSubnet(String name, String cidr);
-
-        /**
-         * Explicitly defines all the subnets in the virtual network based on the provided map.
-         * <p>
-         * This replaces any previously existing subnets.
-         * @param nameCidrPairs a {@link Map} of CIDR addresses for the subnets, indexed by the name of each subnet to be added
-         * @return the next stage of the virtual network update
-         */
-        Update withSubnets(Map<String, String> nameCidrPairs);
-
-        /**
-         * Removes a subnet from the virtual network.
-         * @param name name of the subnet to remove
-         * @return the next stage of the virtual network update
-         */
-        Update withoutSubnet(String name);
-    }
-
-    /**
-     * The stage of the virtual network definition which contains all the minimum required inputs for
-     * the resource to be created (via {@link DefinitionCreatable#create()}), but also allows
-     * for any other optional settings to be specified, except for adding subnets.
-     * <p>
-     * A subnet can be added only right after the address space is explicitly specified
-     * see {@link DefinitionCreatable#withAddressSpace }
-     */
-    interface DefinitionCreatable extends
-        Creatable<Network>,
-        Resource.DefinitionWithTags<DefinitionCreatable> {
-
-        /**
-         * Specifies the IP address of an existing DNS server to associate with the virtual network.
-         * <p>
-         * Note this method's effect is additive, i.e. each time it is used, a new dns server is added
-         * to the network.
-         * @param ipAddress the IP address of the DNS server
-         * @return the next stage of the virtual network definition
-         */
-        DefinitionCreatable withDnsServer(String ipAddress);
-
-        /**
-         * Explicitly adds an address space to the virtual network.
-         * <p>
-         * If no address spaces are explicitly specified, a default address space with the CIDR "10.0.0.0/16" will be
-         * assigned to the virtual network.
-         * <p>
-         * Note that this method's effect is additive, i.e. each time it is used, a new address space is added to the network.
-         * This method does not check for conflicts or overlaps with other address spaces. If there is a conflict,
-         * a cloud exception may be thrown at the time the network is created.
-         * @param cidr the CIDR representation of the address space
-         * @return the next stage of the virtual network definition
-         */
-        DefinitionCreatableWithSubnet withAddressSpace(String cidr);
-    }
-
-    /**
-     * The stage of the public IP definition which contains all the minimum required inputs for
-     * the resource to be created (via {@link DefinitionCreatable#create()}), but also allows
-     * for any other optional settings to be specified, including adding subnets.
-     */
-    interface DefinitionCreatableWithSubnet extends
-        DefinitionCreatable,
-        DefinitionWithSubnet {
+            /**
+             * Removes a subnet from the virtual network.
+             * @param name name of the subnet to remove
+             * @return the next stage of the virtual network update
+             */
+            Update withoutSubnet(String name);
+        }
     }
 
     /**
@@ -188,7 +196,7 @@ public interface Network extends
     interface Update extends
         Appliable<Network>,
         Resource.UpdateWithTags<Update>,
-        UpdateWithSubnet {
+        UpdateStages.WithSubnet {
 
         /**
          * Specifies the IP address of the DNS server to associate with the virtual network.

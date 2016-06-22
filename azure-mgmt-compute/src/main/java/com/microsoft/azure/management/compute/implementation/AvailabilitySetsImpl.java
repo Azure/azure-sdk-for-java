@@ -25,13 +25,19 @@ import java.util.List;
  * The implementation for {@link AvailabilitySets}.
  */
 class AvailabilitySetsImpl
-    extends GroupableResourcesImpl<AvailabilitySet, AvailabilitySetImpl, AvailabilitySetInner, AvailabilitySetsInner>
+    extends GroupableResourcesImpl<
+        AvailabilitySet,
+        AvailabilitySetImpl,
+        AvailabilitySetInner,
+        AvailabilitySetsInner,
+        ComputeManager>
     implements AvailabilitySets {
 
     AvailabilitySetsImpl(
             final AvailabilitySetsInner client,
-            final ResourceManager resourceManager) {
-        super(resourceManager, client);
+            final ResourceManager resourceManager,
+            final ComputeManager computeManager) {
+        super(resourceManager, client, computeManager);
     }
 
     @Override
@@ -79,7 +85,8 @@ class AvailabilitySetsImpl
         return new AvailabilitySetImpl(name,
                 new AvailabilitySetInner(),
                 this.innerCollection,
-                this.resourceManager);
+                this.resourceManager,
+                super.myManager);
     }
 
     @Override
@@ -87,6 +94,7 @@ class AvailabilitySetsImpl
         return new AvailabilitySetImpl(availabilitySetInner.name(),
                 availabilitySetInner,
                 this.innerCollection,
-                this.resourceManager);
+                this.resourceManager,
+                this.myManager);
     }
 }
