@@ -80,7 +80,7 @@ public final class ManageNetworkInterface {
                 System.out.println("Creating multiple network interfaces");
                 NetworkInterface networkInterface1 = azure.networkInterfaces().define(networkInterfaceName1)
                         .withRegion(Region.US_EAST)
-                        .withNewGroup(rgName)
+                        .withExistingGroup(rgName)
                         .withNewPrimaryNetwork(network)
                         .withPrimaryPrivateIpAddressDynamic()
                         .withNewPrimaryPublicIpAddress(publicIpAddressLeafDNS1)
