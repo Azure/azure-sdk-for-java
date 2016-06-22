@@ -100,10 +100,8 @@ public class DAGraph<T, U extends DAGNode<T>> extends Graph<T, U> {
     /**
      * Gets next node in the DAG which has no dependency or all of it's dependencies are resolved and
      * ready to be consumed.
-     * <p>
-     * Null will be returned when all the nodes are explored
      *
-     * @return next node
+     * @return next node or null if all the nodes have been explored
      */
     public U getNext() {
         return graph.get(queue.poll());
