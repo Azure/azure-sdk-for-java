@@ -33,7 +33,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
                 .updateIpConfiguration("primary-nic-config") // Updating the primary ip configuration
                     .withPrivateIpAddressDynamic() // Equivalent to ..update().withPrimaryPrivateIpAddressDynamic()
                     .withoutPublicIpAddress()      // Equivalent to ..update().withoutPrimaryPublicIpAddress()
-                    .set()
+                    .parent()
                 .withTag("tag1", "value1")
                 .withTag("tag2", "value2")
                 .apply();

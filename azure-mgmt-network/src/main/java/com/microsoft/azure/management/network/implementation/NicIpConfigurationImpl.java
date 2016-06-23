@@ -115,11 +115,6 @@ class NicIpConfigurationImpl
     }
 
     @Override
-    public NetworkInterface set() {
-        return parent();
-    }
-
-    @Override
     public NicIpConfigurationImpl withNewNetwork(Network.DefinitionStages.WithCreate creatable) {
         this.creatableVirtualNetworkKey = creatable.key();
         this.parent().addToCreatableDependencies(creatable);

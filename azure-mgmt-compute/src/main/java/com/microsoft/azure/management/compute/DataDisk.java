@@ -171,7 +171,7 @@ public interface DataDisk extends
      * The template for a data disk update operation, containing all the settings that
      * can be modified.
      *
-     * @param <ParentT> the return type of the final {@link Settable#set()}
+     * @param <ParentT> the return type of the final {@link Settable#parent()}
      */
     interface Update<ParentT> extends
             Settable<ParentT> {

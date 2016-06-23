@@ -45,7 +45,7 @@ public class TestNetwork extends TestTemplate<Network, Networks> {
                 .withoutSubnet("subnetA")
                 .updateSubnet("subnetB")
                     .withAddressPrefix("141.25.0.8/29")
-                    .set()
+                    .parent()
                 .apply();
         Assert.assertTrue(resource.tags().containsKey("tag1"));
 
