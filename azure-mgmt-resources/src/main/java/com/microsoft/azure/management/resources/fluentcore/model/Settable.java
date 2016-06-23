@@ -15,7 +15,6 @@ public interface Settable<ParentT> {
      * the actual parent resource update process in Azure is {@link Settable#set()}.
      *
      * @return the stage of  parent resource update
-     * @throws Exception exceptions thrown from Azure
      */
-    ParentT set() throws Exception;
+    ParentT set();
 }
