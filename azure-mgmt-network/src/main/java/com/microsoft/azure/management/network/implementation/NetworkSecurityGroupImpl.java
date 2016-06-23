@@ -15,7 +15,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.ServiceResponse;
 
 import java.util.ArrayList;
@@ -44,9 +43,8 @@ class NetworkSecurityGroupImpl
             final String name,
             final NetworkSecurityGroupInner innerModel,
             final NetworkSecurityGroupsInner innerCollection,
-            final ResourceManager resourceManager,
             final NetworkManager networkManager) {
-        super(name, innerModel, resourceManager, networkManager);
+        super(name, innerModel, networkManager);
         this.innerCollection = innerCollection;
         initializeRulesFromInner();
     }

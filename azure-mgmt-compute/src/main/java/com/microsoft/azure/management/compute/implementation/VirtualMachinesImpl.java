@@ -26,7 +26,6 @@ import com.microsoft.azure.management.compute.implementation.api.VirtualMachineC
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import com.microsoft.rest.ServiceResponse;
 
@@ -51,10 +50,9 @@ class VirtualMachinesImpl
     VirtualMachinesImpl(VirtualMachinesInner client,
                         VirtualMachineSizesInner virtualMachineSizesClient,
                         ComputeManager computeManager,
-                        ResourceManager resourceManager,
                         StorageManager storageManager,
                         NetworkManager networkManager) {
-        super(resourceManager, client, computeManager);
+        super(client, computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;
         this.vmSizes = new VirtualMachineSizesImpl(virtualMachineSizesClient);
@@ -159,7 +157,6 @@ class VirtualMachinesImpl
             inner,
             this.innerCollection,
             super.myManager,
-            this.resourceManager,
             this.storageManager,
             this.networkManager);
     }
@@ -170,7 +167,6 @@ class VirtualMachinesImpl
                 virtualMachineInner,
                 this.innerCollection,
                 super.myManager,
-                this.resourceManager,
                 this.storageManager,
                 this.networkManager);
     }

@@ -14,7 +14,6 @@ import com.microsoft.azure.management.network.implementation.api.NetworkSecurity
 import com.microsoft.azure.management.network.implementation.api.SecurityRuleInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import com.microsoft.azure.management.resources.implementation.ResourceManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,9 +32,8 @@ class NetworkSecurityGroupsImpl
 
     NetworkSecurityGroupsImpl(
             final NetworkSecurityGroupsInner innerCollection,
-            final ResourceManager resourceManager,
             final NetworkManager networkManager) {
-        super(resourceManager, innerCollection, networkManager);
+        super(innerCollection, networkManager);
     }
 
     @Override
@@ -87,7 +85,6 @@ class NetworkSecurityGroupsImpl
                 name,
                 inner,
                 this.innerCollection,
-                this.resourceManager,
                 super.myManager);
     }
 
@@ -97,7 +94,6 @@ class NetworkSecurityGroupsImpl
                 inner.name(),
                 inner,
                 this.innerCollection,
-                this.resourceManager,
                 this.myManager);
     }
 }

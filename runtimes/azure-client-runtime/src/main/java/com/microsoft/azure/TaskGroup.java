@@ -28,11 +28,6 @@ public interface TaskGroup<T, U extends TaskItem<T>> {
     DAGraph<U, DAGNode<U>> dag();
 
     /**
-     * @return <tt>true</tt> if this is a root (parent) task group composing other task groups.
-     */
-    boolean isRoot();
-
-    /**
      * Merges this task group with parent task group.
      * <p>
      * once merged, calling execute in the parent group will executes the task in this
@@ -41,6 +36,12 @@ public interface TaskGroup<T, U extends TaskItem<T>> {
      * @param parentTaskGroup task group
      */
     void merge(TaskGroup<T, U> parentTaskGroup);
+
+    /**
+     * @return <tt>true</tt> if the group is responsible for preparing execution of original task in
+     * this group and all tasks belong other task group it composes.
+     */
+    boolean isPreparer();
 
     /**
      * Prepare the graph for execution.

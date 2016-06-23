@@ -10,7 +10,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.implementation.api.SkuName;
@@ -33,9 +32,8 @@ class StorageAccountsImpl
 
     StorageAccountsImpl(
             final StorageAccountsInner client,
-            final ResourceManager resourceManager,
             final StorageManager storageManager) {
-        super(resourceManager, client, storageManager);
+        super(client, storageManager);
     }
 
     @Override
@@ -81,7 +79,6 @@ class StorageAccountsImpl
                 name,
                 new StorageAccountInner(),
                 this.innerCollection,
-                this.resourceManager,
                 super.myManager);
     }
 
@@ -91,7 +88,6 @@ class StorageAccountsImpl
                 storageAccountInner.name(),
                 storageAccountInner,
                 this.innerCollection,
-                this.resourceManager,
                 super.myManager);
     }
 }

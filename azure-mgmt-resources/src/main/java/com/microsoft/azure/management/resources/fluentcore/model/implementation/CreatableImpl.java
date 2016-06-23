@@ -33,33 +33,7 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
     }
 
     /**
-     * create this resource and creatable resources it depends on.
-     * <p>
-     * dependency resources will be created only if this is the root group otherwise
-     * it creates the main resource.
-     *
-     * @throws Exception the exception
-     */
-    protected void creatablesCreate() throws Exception {
-        if (creatableTaskGroup.isRoot()) {
-            creatableTaskGroup.prepare();
-            creatableTaskGroup.execute();
-        } else {
-            createResource();
-        }
-    }
-
-    protected ServiceCall creatablesCreateAsync(ServiceCallback<Void> callback) {
-        if (creatableTaskGroup.isRoot()) {
-            creatableTaskGroup.prepare();
-            return creatableTaskGroup.executeAsync(callback);
-        } else {
-            return createResourceAsync(callback);
-        }
-    }
-
-    /**
-     * add a creatable resource dependency for this resource.
+     * Add a creatable resource dependency for this resource.
      *
      * @param creatableResource the creatable dependency.
      */
@@ -84,12 +58,33 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
 
     /**
      * Default implementation of create().
+     *
      * @return the created resource
      * @throws Exception when anything goes wrong
      */
     @SuppressWarnings("unchecked")
     public FluentModelImplT create() throws Exception {
-        if (creatableTaskGroup.isRoot()) {
+        // This method get's called in two ways:
+        // 1. User explicitly call Creatable::create requesting creation of the resource.
+        // 2. Gets called as a part of creating dependent resources for the resource user requested to create in #1.
+        //
+        // The creatableTaskGroup of the 'Creatable' on which user called 'create' (#1) is known as the preparer.
+        // Preparer is the one responsible for preparing the underlying DAG for traversal.
+        //
+        // Initially creatableTaskGroup of all creatables as preparer, but as soon as user calls Create in one of
+        // them (say A::Create) all other creatables that A depends on will be marked as non-preparer.
+        //
+        // This achieve two goals:
+        //
+        // a. When #2 happens we know group is already prepared and all left is to create the currently requested resource.
+        // b. User can call 'Create' on any of the creatables not just the ROOT creatable. [ROOT is the one who does not
+        //    have any dependent]
+        //
+        // After the creation of each resource in the creatableTaskGroup owned by the user chosen Creatable (#1), each
+        // sub-creatableTaskGroup of the created resource will be marked back as preparer. Hence user can again call
+        // Update on any of these resources [which is nothing but equivalent to calling create again]
+        //
+        if (creatableTaskGroup.isPreparer()) {
             creatableTaskGroup.prepare();
             creatableTaskGroup.execute();
         } else {
@@ -106,7 +101,7 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
      */
     @SuppressWarnings("unchecked")
     public ServiceCall createAsync(ServiceCallback<FluentModelT> callback) {
-        if (creatableTaskGroup.isRoot()) {
+        if (creatableTaskGroup.isPreparer()) {
             creatableTaskGroup.prepare();
             return creatableTaskGroup.executeAsync(Utils.toVoidCallback((FluentModelT) this, callback));
         } else {
@@ -117,9 +112,14 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
     /**
      * Creates this resource.
      *
-     * @throws Exception the exception
+     * @throws Exception when anything goes wrong
      */
     protected abstract void createResource() throws Exception;
 
+    /**
+     * Creates this resource asynchronously.
+     *
+     * @throws Exception when anything goes wrong
+     */
     protected abstract ServiceCall createResourceAsync(ServiceCallback<Void> callback);
 }
