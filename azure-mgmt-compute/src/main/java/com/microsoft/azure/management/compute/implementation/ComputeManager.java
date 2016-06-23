@@ -98,7 +98,6 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
         if (availabilitySets == null) {
             availabilitySets = new AvailabilitySetsImpl(
                     super.innerManagementClient.availabilitySets(),
-                    this.resourceManager(),
                     this);
         }
         return availabilitySets;
@@ -112,7 +111,6 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
             virtualMachines = new VirtualMachinesImpl(super.innerManagementClient.virtualMachines(),
                     super.innerManagementClient.virtualMachineSizes(),
                     this,
-                    this.resourceManager(),
                     storageManager,
                     networkManager);
         }

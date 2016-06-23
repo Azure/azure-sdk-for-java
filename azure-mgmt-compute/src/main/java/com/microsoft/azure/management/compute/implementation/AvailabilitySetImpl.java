@@ -14,7 +14,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.ServiceResponse;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,9 +41,8 @@ class AvailabilitySetImpl
 
     AvailabilitySetImpl(String name, AvailabilitySetInner innerModel,
                                final AvailabilitySetsInner client,
-                               final ResourceManager resourceManager,
                                final ComputeManager computeManager) {
-        super(name, innerModel, resourceManager, computeManager);
+        super(name, innerModel, computeManager);
         this.client = client;
     }
 

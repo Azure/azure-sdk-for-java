@@ -36,7 +36,7 @@ final class GenericResourcesImpl
     private final ResourceManagementClientImpl serviceClient;
 
     GenericResourcesImpl(ResourceManagementClientImpl serviceClient, ResourceManager resourceManager) {
-        super(resourceManager, serviceClient.resources(), resourceManager);
+        super(serviceClient.resources(), resourceManager);
         this.serviceClient = serviceClient;
     }
 
@@ -52,7 +52,7 @@ final class GenericResourcesImpl
                 new GenericResourceInner(),
                 this.innerCollection,
                 serviceClient,
-                this.resourceManager);
+                super.myManager);
     }
 
     @Override
@@ -74,7 +74,7 @@ final class GenericResourcesImpl
                 inner,
                 this.innerCollection,
                 serviceClient,
-                this.resourceManager);
+                this.myManager);
 
         return resource.withExistingGroup(resourceGroupName)
                 .withProviderNamespace(resourceProviderNamespace)
@@ -114,7 +114,7 @@ final class GenericResourcesImpl
                 new GenericResourceInner(),
                 this.innerCollection,
                 this.serviceClient,
-                this.resourceManager)
+                this.myManager)
                 .withExistingGroup(ResourceUtils.groupFromResourceId(id))
                 .withProviderNamespace(ResourceUtils.resourceProviderFromResourceId(id))
                 .withResourceType(ResourceUtils.resourceTypeFromResourceId(id))
@@ -128,7 +128,7 @@ final class GenericResourcesImpl
                 inner,
                 this.innerCollection,
                 this.serviceClient,
-                this.resourceManager)
+                this.myManager)
                 .withExistingGroup(ResourceUtils.groupFromResourceId(inner.id()))
                 .withProviderNamespace(ResourceUtils.resourceProviderFromResourceId(inner.id()))
                 .withResourceType(ResourceUtils.resourceTypeFromResourceId(inner.id()))

@@ -14,7 +14,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.ServiceResponse;
 
 import java.util.ArrayList;
@@ -44,9 +43,8 @@ class NetworkImpl
     NetworkImpl(String name,
             final VirtualNetworkInner innerModel,
             final VirtualNetworksInner innerCollection,
-            final ResourceManager resourceManager,
             final NetworkManager networkManager) {
-        super(name, innerModel, resourceManager, networkManager);
+        super(name, innerModel, networkManager);
         this.innerCollection = innerCollection;
         initializeSubnetsFromInner();
     }
@@ -165,8 +163,7 @@ class NetworkImpl
         return Collections.unmodifiableMap(this.subnets);
     }
 
-    @Override
-    protected void createResource() throws Exception {
+    private void ensureCreationPrerequisites() {
         // Ensure address spaces
         if (this.addressSpaces().size() == 0) {
             this.withAddressSpace("10.0.0.0/16");
@@ -178,6 +175,11 @@ class NetworkImpl
                 this.withSubnet("subnet1", this.addressSpaces().get(0));
             }
         }
+    }
+
+    @Override
+    protected void createResource() throws Exception {
+        ensureCreationPrerequisites();
 
         ServiceResponse<VirtualNetworkInner> response =
                 this.innerCollection.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
@@ -187,17 +189,7 @@ class NetworkImpl
 
     @Override
     protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
-        // Ensure address spaces
-        if (this.addressSpaces().size() == 0) {
-            this.withAddressSpace("10.0.0.0/16");
-        }
-
-        if (isInCreateMode()) {
-            // Create a subnet as needed, covering the entire first address space
-            if (this.inner().subnets().size() == 0) {
-                this.withSubnet("subnet1", this.addressSpaces().get(0));
-            }
-        }
+        ensureCreationPrerequisites();
 
         return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
                 Utils.fromVoidCallback(this, new ServiceCallback<Void>() {

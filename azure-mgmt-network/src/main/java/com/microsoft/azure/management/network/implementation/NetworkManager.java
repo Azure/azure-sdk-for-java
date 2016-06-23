@@ -102,7 +102,6 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
         if (this.networks == null) {
             this.networks = new NetworksImpl(
                     super.innerManagementClient,
-                    super.resourceManager(),
                     this);
         }
         return this.networks;
@@ -115,7 +114,6 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
         if (this.networkSecurityGroups == null) {
             this.networkSecurityGroups = new NetworkSecurityGroupsImpl(
                     super.innerManagementClient.networkSecurityGroups(),
-                    super.resourceManager(),
                     this);
         }
         return this.networkSecurityGroups;
@@ -128,7 +126,6 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
         if (this.publicIpAddresses == null) {
             this.publicIpAddresses = new PublicIpAddressesImpl(
                     super.innerManagementClient.publicIPAddresses(),
-                    super.resourceManager(),
                     this);
         }
         return this.publicIpAddresses;
@@ -141,7 +138,6 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
         if (networkInterfaces == null) {
             this.networkInterfaces = new NetworkInterfacesImpl(
                 super.innerManagementClient.networkInterfaces(),
-                super.resourceManager(),
                 this);
         }
         return this.networkInterfaces;
