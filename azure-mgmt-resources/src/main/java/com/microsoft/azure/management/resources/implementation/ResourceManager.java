@@ -149,7 +149,8 @@ public final class ResourceManager extends ManagerBase {
     }
 
     private ResourceManager(RestClient restClient, String subscriptionId) {
-        super(restClient, subscriptionId);
+        super(null, subscriptionId);
+        super.setResourceManager(this);
         this.resourceManagementClient = new ResourceManagementClientImpl(restClient);
         this.resourceManagementClient.withSubscriptionId(subscriptionId);
         this.featureClient = new FeatureClientImpl(restClient);
