@@ -57,7 +57,7 @@ public interface DataDisk extends
      * 'attach' - if an existing vhd was usd to back the data disk
      * 'empty' - if the disk was created as an empty disk
      *  when disk is created using 'fromImage' option, a copy of user image vhd will be created first
-     *  and it will be used as the vhd to back the data disk
+     *  and it will be used as the vhd to back the data disk.
      *
      * @return disk create option
      */
@@ -74,7 +74,7 @@ public interface DataDisk extends
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface Blank<ParentT>
-                extends DefinitionWithDataDisk<ParentT> {
+                extends WithDataDisk<ParentT> {
         }
 
         /**
@@ -82,7 +82,7 @@ public interface DataDisk extends
          *
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface DefinitionWithDataDisk<ParentT>
+        interface WithDataDisk<ParentT>
                 extends AttachNewDataDisk<ParentT>, AttachExistingDataDisk<ParentT> {
         }
 
@@ -98,7 +98,7 @@ public interface DataDisk extends
              * @param sizeInGB the disk size in GB
              * @return the stage representing optional additional settings for the attachable data disk
              */
-            DefinitionWithStoreAt<ParentT> withSizeInGB(Integer sizeInGB);
+            WithStoreAt<ParentT> withSizeInGB(Integer sizeInGB);
         }
 
         /**
@@ -106,7 +106,7 @@ public interface DataDisk extends
          *
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface DefinitionWithStoreAt<ParentT> extends WithAttach<ParentT>  {
+        interface WithStoreAt<ParentT> extends WithAttach<ParentT>  {
             /**
              * Specifies where the VHD associated with the new blank data disk needs to be stored.
              *
@@ -167,7 +167,7 @@ public interface DataDisk extends
     interface Definition<ParentT> extends
             DefinitionStages.Blank<ParentT>,
             DefinitionStages.WithAttach<ParentT>,
-            DefinitionStages.DefinitionWithStoreAt<ParentT> {
+            DefinitionStages.WithStoreAt<ParentT> {
     }
 
     /**
@@ -179,7 +179,7 @@ public interface DataDisk extends
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface Blank<ParentT>
-                extends DefinitionWithDataDisk<ParentT> {
+                extends WithDataDisk<ParentT> {
         }
 
         /**
@@ -187,7 +187,7 @@ public interface DataDisk extends
          *
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface DefinitionWithDataDisk<ParentT>
+        interface WithDataDisk<ParentT>
                 extends AttachNewDataDisk<ParentT>, AttachExistingDataDisk<ParentT> {
         }
 
@@ -203,7 +203,7 @@ public interface DataDisk extends
              * @param sizeInGB the disk size in GB
              * @return the stage representing optional additional settings for the attachable data disk
              */
-            DefinitionWithStoreAt<ParentT> withSizeInGB(Integer sizeInGB);
+            WithStoreAt<ParentT> withSizeInGB(Integer sizeInGB);
         }
 
         /**
@@ -211,7 +211,7 @@ public interface DataDisk extends
          *
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface DefinitionWithStoreAt<ParentT> extends WithAttach<ParentT>  {
+        interface WithStoreAt<ParentT> extends WithAttach<ParentT>  {
             /**
              * Specifies where the VHD associated with the new blank data disk needs to be stored.
              *
@@ -271,7 +271,7 @@ public interface DataDisk extends
     interface UpdateDefinition<ParentT>  extends
             UpdateDefinitionStages.Blank<ParentT>,
             UpdateDefinitionStages.WithAttach<ParentT>,
-            UpdateDefinitionStages.DefinitionWithStoreAt<ParentT> {
+            UpdateDefinitionStages.WithStoreAt<ParentT> {
     }
 
     /**

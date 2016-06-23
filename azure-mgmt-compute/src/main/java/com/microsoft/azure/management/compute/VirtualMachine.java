@@ -62,7 +62,7 @@ public interface VirtualMachine extends
     /**
      * Power off (stop) the virtual machine.
      * <p>
-     * You will be billed for the compute resources that this Virtual Machine uses
+     * You will be billed for the compute resources that this Virtual Machine uses.
      *
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -122,7 +122,7 @@ public interface VirtualMachine extends
     /**
      * Refreshes the virtual machine instance view to sync with Azure.
      * <p>
-     * this will caches the instance view which can be later retrieved using {@link VirtualMachine#instanceView()}
+     * this will caches the instance view which can be later retrieved using {@link VirtualMachine#instanceView()}.
      *
      * @return the refreshed instance view
      * @throws CloudException thrown for an invalid response from the service
@@ -171,7 +171,7 @@ public interface VirtualMachine extends
     /**
      * Gets the primary network interface of this virtual machine.
      * <p>
-     * note that this method makes a rest API call to fetch the network interface
+     * note that this method makes a rest API call to fetch the network interface.
      *
      * @return the primary network interface associated with this network interface.
      * @throws CloudException exceptions thrown from the cloud.
@@ -182,7 +182,7 @@ public interface VirtualMachine extends
     /**
      * Gets the public IP address associated with this virtual machine's primary network interface.
      * <p>
-     * note that this method makes a rest API call to fetch the resource
+     * note that this method makes a rest API call to fetch the resource.
      *
      * @return the public IP of the primary network interface
      * @throws CloudException exceptions thrown from the cloud.
@@ -266,7 +266,7 @@ public interface VirtualMachine extends
     /**
      * Get the virtual machine instance view.
      * <p>
-     * this method returns the cached instance view, to refresh the cache call {@link VirtualMachine#refreshInstanceView()}
+     * this method returns the cached instance view, to refresh the cache call {@link VirtualMachine#refreshInstanceView()}.
      *
      * @return the virtual machine instance view
      * @throws CloudException exceptions thrown from the cloud.
@@ -400,7 +400,7 @@ public interface VirtualMachine extends
              * Creates a new public IP address in the same region and group as the resource, with the specified DNS label
              * and associate it with the virtual machine's primary network interface.
              * <p>
-             * the internal name for the public IP address will be derived from the DNS label
+             * the internal name for the public IP address will be derived from the DNS label.
              *
              * @param leafDnsLabel the leaf domain label
              * @return the next stage of the virtual machine definition
