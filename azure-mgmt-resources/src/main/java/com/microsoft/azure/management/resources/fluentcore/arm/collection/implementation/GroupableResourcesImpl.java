@@ -22,12 +22,14 @@ import com.microsoft.azure.management.resources.implementation.ResourceManager;
  * @param <ImplT> the individual resource implementation
  * @param <InnerT> the wrapper inner type
  * @param <InnerCollectionT> the inner type of the collection object
+ * @param <ManagerT> the manager type for this resource provider type
  */
 public abstract class GroupableResourcesImpl<
         T extends GroupableResource,
         ImplT extends T,
         InnerT extends Resource,
-        InnerCollectionT>
+        InnerCollectionT,
+        ManagerT>
     extends CreatableWrappersImpl<T, ImplT, InnerT>
     implements
         SupportsGettingById<T>,
@@ -35,12 +37,14 @@ public abstract class GroupableResourcesImpl<
 
     protected final ResourceManager resourceManager;
     protected final InnerCollectionT innerCollection;
-
+    protected final ManagerT myManager;
     protected GroupableResourcesImpl(
             ResourceManager resourceManager,
-            InnerCollectionT innerCollection) {
+            InnerCollectionT innerCollection,
+            ManagerT manager) {
         this.resourceManager = resourceManager;
         this.innerCollection = innerCollection;
+        this.myManager = manager;
     }
 
     @Override

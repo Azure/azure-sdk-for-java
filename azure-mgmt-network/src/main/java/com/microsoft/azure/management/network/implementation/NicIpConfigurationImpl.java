@@ -120,7 +120,7 @@ class NicIpConfigurationImpl
     }
 
     @Override
-    public NicIpConfigurationImpl withNewNetwork(Network.DefinitionCreatable creatable) {
+    public NicIpConfigurationImpl withNewNetwork(Network.DefinitionStages.WithCreate creatable) {
         this.creatableVirtualNetworkKey = creatable.key();
         this.parent().addToCreatableDependencies(creatable);
         return this;
@@ -128,11 +128,11 @@ class NicIpConfigurationImpl
 
     @Override
     public NicIpConfigurationImpl withNewNetwork(String name, String addressSpaceCidr) {
-        Network.DefinitionWithGroup definitionWithGroup = this.networkManager.networks()
+        Network.DefinitionStages.WithGroup definitionWithGroup = this.networkManager.networks()
                 .define(name)
                 .withRegion(this.parent().region());
 
-        Network.DefinitionCreatable definitionAfterGroup;
+        Network.DefinitionStages.WithCreate definitionAfterGroup;
         if (this.parent().newGroup() != null) {
             definitionAfterGroup = definitionWithGroup.withNewGroup(this.parent().newGroup());
         } else {

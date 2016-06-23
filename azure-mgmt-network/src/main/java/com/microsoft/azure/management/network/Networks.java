@@ -18,7 +18,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
  * Entry point to virtual network management API in Azure.
  */
 public interface Networks extends
-    SupportsCreating<Network.DefinitionBlank>,
+    SupportsCreating<Network.DefinitionStages.Blank>,
     SupportsListing<Network>,
     SupportsListingByGroup<Network>,
     SupportsGettingByGroup<Network>,

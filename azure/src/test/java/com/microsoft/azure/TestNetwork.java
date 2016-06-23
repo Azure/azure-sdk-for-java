@@ -8,6 +8,7 @@ package com.microsoft.azure;
 import org.junit.Assert;
 
 import com.microsoft.azure.management.network.Network;
+import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -57,9 +58,23 @@ public class TestNetwork extends TestTemplate<Network, Networks> {
                 .append("\n\tDNS server IPs: ").append(resource.dnsServerIPs());
 
         // Output subnets
-        for (Subnet subnet : resource.subnets()) {
+        for (Subnet subnet : resource.subnets().values()) {
             info.append("\n\tSubnet: ").append(subnet.name())
-                .append("\n\t\tAddress prefix: ").append(subnet.addressPrefix());
+                .append("\n\t\tAddress prefix: ").append(subnet.addressPrefix())
+                .append("\n\tAssociated NSG: ");
+
+            NetworkSecurityGroup nsg;
+            try {
+                nsg = subnet.networkSecurityGroup();
+            } catch (Exception e) {
+                nsg = null;
+            }
+
+            if (null == nsg) {
+                info.append("(None)");
+            } else {
+                info.append(nsg.id());
+            }
         }
 
         System.out.println(info.toString());

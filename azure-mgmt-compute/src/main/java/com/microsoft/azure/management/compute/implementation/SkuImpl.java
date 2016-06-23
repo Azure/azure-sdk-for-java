@@ -12,7 +12,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
  */
 class SkuImpl
         implements Sku {
-    private final VirtualMachineImagesInner client;
     private final Offer offer;
     private final String skuName;
     private final VirtualMachineImagesInSku imagesInSku;
@@ -20,7 +19,6 @@ class SkuImpl
     SkuImpl(Offer offer, String skuName, VirtualMachineImagesInner client) {
         this.offer = offer;
         this.skuName = skuName;
-        this.client = client;
         this.imagesInSku = new VirtualMachineImagesInSkuImpl(this, client);
     }
 

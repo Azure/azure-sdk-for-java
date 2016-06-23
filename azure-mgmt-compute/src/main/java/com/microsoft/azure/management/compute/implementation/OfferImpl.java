@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 class OfferImpl implements Offer {
     private final Publisher publisher;
     private final String offerName;
-    private final Skus skus;
+    private final SkusImpl skus;
 
     OfferImpl(Publisher publisher, String offer, VirtualMachineImagesInner client) {
         this.publisher = publisher;

@@ -22,11 +22,19 @@ import java.io.IOException;
  *  Implementation for {@link PublicIpAddresses}.
  */
 class PublicIpAddressesImpl
-        extends GroupableResourcesImpl<PublicIpAddress, PublicIpAddressImpl, PublicIPAddressInner, PublicIPAddressesInner>
+        extends GroupableResourcesImpl<
+            PublicIpAddress,
+            PublicIpAddressImpl,
+            PublicIPAddressInner,
+            PublicIPAddressesInner,
+            NetworkManager>
         implements PublicIpAddresses {
 
-    PublicIpAddressesImpl(final PublicIPAddressesInner client, final ResourceManager resourceManager) {
-        super(resourceManager, client);
+    PublicIpAddressesImpl(
+            final PublicIPAddressesInner client,
+            final ResourceManager resourceManager,
+            final NetworkManager networkManager) {
+        super(resourceManager, client, networkManager);
     }
 
     @Override
@@ -69,11 +77,21 @@ class PublicIpAddressesImpl
             inner.withDnsSettings(new PublicIPAddressDnsSettings());
         }
 
-        return new PublicIpAddressImpl(name, inner, this.innerCollection, this.resourceManager);
+        return new PublicIpAddressImpl(
+                name,
+                inner,
+                this.innerCollection,
+                this.resourceManager,
+                this.myManager);
     }
 
     @Override
     protected PublicIpAddressImpl wrapModel(PublicIPAddressInner inner) {
-        return new PublicIpAddressImpl(inner.id(), inner, this.innerCollection, this.resourceManager);
+        return new PublicIpAddressImpl(
+                inner.id(),
+                inner,
+                this.innerCollection,
+                this.resourceManager,
+                this.myManager);
     }
 }

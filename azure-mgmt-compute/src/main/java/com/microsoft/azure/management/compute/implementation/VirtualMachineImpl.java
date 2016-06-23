@@ -68,14 +68,17 @@ import java.util.UUID;
  * The implementation for {@link VirtualMachine} and its create and update interfaces.
  */
 class VirtualMachineImpl
-        extends GroupableResourceImpl<VirtualMachine, VirtualMachineInner, VirtualMachineImpl>
+        extends GroupableResourceImpl<
+            VirtualMachine,
+            VirtualMachineInner,
+            VirtualMachineImpl,
+            ComputeManager>
         implements
         VirtualMachine,
         VirtualMachine.Definitions,
         VirtualMachine.Update {
     // Clients
     private final VirtualMachinesInner client;
-    private final ComputeManager computeManager;
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
     // the name of the virtual machine
@@ -122,9 +125,8 @@ class VirtualMachineImpl
                        final ResourceManager resourceManager,
                        final StorageManager storageManager,
                        final NetworkManager networkManager) {
-        super(name, innerModel, resourceManager);
+        super(name, innerModel, resourceManager, computeManager);
         this.client = client;
-        this.computeManager = computeManager;
         this.storageManager = storageManager;
         this.networkManager = networkManager;
         this.vmName = name;
@@ -234,7 +236,7 @@ class VirtualMachineImpl
 
     // Fluent methods for defining virtual network association for the new primary network interface
     @Override
-    public VirtualMachineImpl withNewPrimaryNetwork(Network.DefinitionCreatable creatable) {
+    public VirtualMachineImpl withNewPrimaryNetwork(Network.DefinitionStages.WithCreate creatable) {
         this.nicDefinitionWithPrivateIp = this.preparePrimaryNetworkInterface(this.namer.randomName("nic", 20))
                 .withNewPrimaryNetwork(creatable);
         return this;
@@ -618,7 +620,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withNewAvailabilitySet(String name) {
-        return withNewAvailabilitySet(this.computeManager.availabilitySets().define(name)
+        return withNewAvailabilitySet(super.myManager.availabilitySets().define(name)
                 .withRegion(region())
                 .withExistingGroup(this.resourceGroupName())
         );
@@ -931,6 +933,17 @@ class VirtualMachineImpl
 
         if (osDisk.name() == null) {
             withOsDiskName(this.vmName + "-os-disk");
+        }
+
+        if (this.inner().osProfile().computerName() == null) {
+            // VM name cannot contain only numeric values and cannot exceed 15 chars
+            if (vmName.matches("[0-9]+")) {
+                this.inner().osProfile().withComputerName(ResourceNamer.randomResourceName("vm", 15));
+            } else if (vmName.length() <= 15) {
+                this.inner().osProfile().withComputerName(vmName);
+            } else {
+                this.inner().osProfile().withComputerName(ResourceNamer.randomResourceName("vm", 15));
+            }
         }
     }
 

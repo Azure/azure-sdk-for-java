@@ -21,7 +21,14 @@ public interface Subnet extends
      * @return the address space prefix, in CIDR notation, assigned to this subnet
      */
     String addressPrefix();
-    //TODO: String networkSecurityGroup();
+
+    /**
+     * @return the network security group associated with this subnet
+     * <p>
+     * Note that this method will result in a call to Azure each time it is invoked.
+     * @throws Exception if there are problems retrieving the associated network security group
+     */
+    NetworkSecurityGroup networkSecurityGroup() throws Exception;
 
     /**
      * The entirety of a Subnet definition.

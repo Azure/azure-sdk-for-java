@@ -36,7 +36,11 @@ import java.util.List;
  * Implementation for StorageAccount and its parent interfaces.
  */
 class StorageAccountImpl
-        extends GroupableResourceImpl<StorageAccount, StorageAccountInner, StorageAccountImpl>
+        extends GroupableResourceImpl<
+            StorageAccount,
+            StorageAccountInner,
+            StorageAccountImpl,
+            StorageManager>
         implements
         StorageAccount,
         StorageAccount.Definitions,
@@ -54,8 +58,9 @@ class StorageAccountImpl
     StorageAccountImpl(String name,
                               StorageAccountInner innerModel,
                               final StorageAccountsInner client,
-                              final ResourceManager resourceManager) {
-        super(name, innerModel, resourceManager);
+                              final ResourceManager resourceManager,
+                              final StorageManager storageManager) {
+        super(name, innerModel, resourceManager, storageManager);
         this.name = name;
         this.createParameters = new StorageAccountCreateParametersInner();
         this.client = client;

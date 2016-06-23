@@ -25,19 +25,26 @@ import java.util.List;
  */
 class AvailabilitySetImpl
     extends
-        GroupableResourceImpl<AvailabilitySet, AvailabilitySetInner, AvailabilitySetImpl>
+        GroupableResourceImpl<
+            AvailabilitySet,
+            AvailabilitySetInner,
+            AvailabilitySetImpl,
+            ComputeManager>
     implements
         AvailabilitySet,
         AvailabilitySet.Definitions,
         AvailabilitySet.Update {
+
     private List<String> idOfVMsInSet;
+
     // The client to make AvailabilitySet Management API calls
     private final AvailabilitySetsInner client;
 
     AvailabilitySetImpl(String name, AvailabilitySetInner innerModel,
                                final AvailabilitySetsInner client,
-                               final ResourceManager resourceManager) {
-        super(name, innerModel, resourceManager);
+                               final ResourceManager resourceManager,
+                               final ComputeManager computeManager) {
+        super(name, innerModel, resourceManager, computeManager);
         this.client = client;
     }
 
