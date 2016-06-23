@@ -16,19 +16,15 @@ import java.util.UUID;
  * The implementation for {@link DataDisk} and its create and update interfaces.
  */
 class DataDiskImpl
-    extends ChildResourceImpl<com.microsoft.azure.management.compute.implementation.api.DataDisk, VirtualMachine>
+    extends ChildResourceImpl<com.microsoft.azure.management.compute.implementation.api.DataDisk, VirtualMachineImpl>
     implements DataDisk,
     DataDisk.Definitions,
     DataDisk.Update {
-    // flag indicating whether data disk in create or update mode
-    private final boolean isInCreateMode; // Future: will be used when we support update
 
     protected DataDiskImpl(String name,
-                           com.microsoft.azure.management.compute.implementation.api.DataDisk dataDiskInner,
-                           VirtualMachineImpl virtualMachine,
-                           final boolean isInCreateMode) {
-        super(name, dataDiskInner, virtualMachine);
-        this.isInCreateMode = isInCreateMode;
+                           com.microsoft.azure.management.compute.implementation.api.DataDisk inner,
+                           VirtualMachineImpl parent) {
+        super(name, inner, parent);
     }
 
     protected static DataDiskImpl prepareDataDisk(String name, DiskCreateOptionTypes createOption, VirtualMachineImpl parent) {
@@ -39,7 +35,7 @@ class DataDiskImpl
         dataDiskInner.withCreateOption(createOption);
         dataDiskInner.withVhd(null);
         parent.inner().storageProfile().dataDisks().add(dataDiskInner);
-        return new DataDiskImpl(name, dataDiskInner, parent, true);
+        return new DataDiskImpl(name, dataDiskInner, parent);
     }
 
     protected static DataDiskImpl createNewDataDisk(int sizeInGB, VirtualMachineImpl parent) {
@@ -58,6 +54,8 @@ class DataDiskImpl
         dataDiskImpl.inner().withVhd(diskVhd);
         return dataDiskImpl;
     }
+
+    // Getters
 
     @Override
     public String name() {
@@ -97,6 +95,8 @@ class DataDiskImpl
         return this.inner().createOption();
     }
 
+    // Fluent setters
+
     @Override
     public DataDiskImpl from(String storageAccountName, String containerName, String vhdName) {
         this.inner().withVhd(new VirtualHardDisk());
@@ -134,6 +134,8 @@ class DataDiskImpl
         return this;
     }
 
+    // Verbs
+
     @Override
     public VirtualMachine attach() {
         return this.parent();
@@ -143,6 +145,8 @@ class DataDiskImpl
     public VirtualMachine set() {
         return this.parent();
     }
+
+    // Helpers
 
     protected static void setDataDisksDefaults(List<DataDisk> dataDisks, String namePrefix) {
         List<Integer> usedLuns = new ArrayList<>();
