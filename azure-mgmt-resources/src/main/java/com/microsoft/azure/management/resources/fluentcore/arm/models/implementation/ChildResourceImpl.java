@@ -27,7 +27,10 @@ public abstract class ChildResourceImpl<InnerT, ParentImplT>
         this.parent = parent;
     }
 
-    protected ParentImplT parent() {
+    /**
+     * @return parent resource for this child resource
+     */
+    public ParentImplT parent() {
         return this.parent;
     }
 

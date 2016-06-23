@@ -139,11 +139,6 @@ class DataDiskImpl
         return this.parent();
     }
 
-    @Override
-    public VirtualMachine set() {
-        return this.parent();
-    }
-
     protected static void setDataDisksDefaults(List<DataDisk> dataDisks, String namePrefix) {
         List<Integer> usedLuns = new ArrayList<>();
         for (DataDisk dataDisk : dataDisks) {

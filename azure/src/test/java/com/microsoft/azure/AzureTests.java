@@ -33,7 +33,7 @@ public class AzureTests {
             AzureEnvironment.AZURE);
     private static final String SUBSCRIPTION_ID = System.getenv("arm.subscriptionid");
     private Subscriptions subscriptions;
-    private Azure azure, azure2;
+    private Azure azure;
 
     public static void main(String[] args) throws IOException, CloudException {
         final File credFile = new File("my.azureauth");
@@ -60,15 +60,13 @@ public class AzureTests {
                 .authenticate(CREDENTIALS);
 
         subscriptions = azureAuthed.subscriptions();
-        azure = azureAuthed.withSubscription(SUBSCRIPTION_ID);
-
-        // Authenticate based on file
+        // Try to authenticate based on file if present
         File authFile = new File("my.azureauth");
         if (authFile.exists()) {
-            this.azure2 = Azure.authenticate(new File("my.azureauth"))
+            this.azure = Azure.authenticate(new File("my.azureauth"))
                     .withDefaultSubscription();
         } else {
-            this.azure2 = azure;
+            azure = azureAuthed.withSubscription(SUBSCRIPTION_ID);
         }
     }
 
@@ -77,9 +75,9 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testGenericResources() throws Exception {
-        azure2.genericResources().listByGroup("sdkpriv");
-        GenericResource resourceByGroup = azure2.genericResources().getByGroup("sdkpriv", "sdkpriv");
-        GenericResource resourceById = azure2.genericResources().getById(resourceByGroup.id());
+        azure.genericResources().listByGroup("sdkpriv");
+        GenericResource resourceByGroup = azure.genericResources().getByGroup("sdkpriv", "sdkpriv");
+        GenericResource resourceById = azure.genericResources().getById(resourceByGroup.id());
         Assert.assertTrue(resourceById.id().equalsIgnoreCase(resourceByGroup.id()));
     }
 
@@ -89,7 +87,7 @@ public class AzureTests {
      * @throws CloudException
      */
     @Test public void testVMImages() throws CloudException, IOException {
-        List<Publisher> publishers = azure2.virtualMachineImages().publishers().listByRegion(Region.US_WEST);
+        List<Publisher> publishers = azure.virtualMachineImages().publishers().listByRegion(Region.US_WEST);
         Assert.assertTrue(publishers.size() > 0);
         for (Publisher p : publishers) {
             System.out.println(String.format("Publisher name: %s, region: %s", p.name(), p.region()));
@@ -100,7 +98,7 @@ public class AzureTests {
                 }
             }
         }
-        List<VirtualMachineImage> images = azure2.virtualMachineImages().listByRegion(Region.US_WEST);
+        List<VirtualMachineImage> images = azure.virtualMachineImages().listByRegion(Region.US_WEST);
         Assert.assertTrue(images.size() > 0);
     }
 
@@ -109,7 +107,7 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testNetworkSecurityGroups() throws Exception {
-        new TestNSG().runTest(azure2.networkSecurityGroups(), azure2.resourceGroups());
+        new TestNSG().runTest(azure.networkSecurityGroups(), azure.resourceGroups());
     }
 
     /**
@@ -117,7 +115,7 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testPublicIpAddresses() throws Exception {
-        new TestPublicIpAddress().runTest(azure2.publicIpAddresses(), azure2.resourceGroups());
+        new TestPublicIpAddress().runTest(azure.publicIpAddresses(), azure.resourceGroups());
     }
 
     /**
@@ -125,7 +123,7 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testAvailabilitySets() throws Exception {
-        new TestAvailabilitySet().runTest(azure2.availabilitySets(), azure2.resourceGroups());
+        new TestAvailabilitySet().runTest(azure.availabilitySets(), azure.resourceGroups());
     }
 
     /**
@@ -133,7 +131,7 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testNetworks() throws Exception {
-        new TestNetwork().runTest(azure2.networks(), azure2.resourceGroups());
+        new TestNetwork().runTest(azure.networks(), azure.resourceGroups());
     }
 
     /**
@@ -141,13 +139,13 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testNetworkInterfaces() throws Exception {
-        new TestNetworkInterface().runTest(azure2.networkInterfaces(), azure2.resourceGroups());
+        new TestNetworkInterface().runTest(azure.networkInterfaces(), azure.resourceGroups());
     }
 
     @Test public void testVirtualMachines() throws Exception {
         // Future: This method needs to have a better specific name since we are going to include unit test for
         // different vm scenarios.
-        new TestVirtualMachine().runTest(azure2.virtualMachines(), azure2.resourceGroups());
+        new TestVirtualMachine().runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 
     /**
@@ -163,10 +161,10 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testVirtualMachineNics() throws Exception {
-        new TestVirtualMachineNics(azure2.resourceGroups(),
-                    azure2.networks(),
-                    azure2.networkInterfaces())
-                .runTest(azure2.virtualMachines(), azure2.resourceGroups());
+        new TestVirtualMachineNics(azure.resourceGroups(),
+                    azure.networks(),
+                    azure.networkInterfaces())
+                .runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 
     @Test public void testVirtualMachineSSh() throws Exception {
@@ -176,7 +174,7 @@ public class AzureTests {
 
     @Test public void testVirtualMachineSizes() throws Exception {
         new TestVirtualMachineSizes()
-                .runTest(azure2.virtualMachines(), azure2.resourceGroups());
+                .runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 
     @Test
@@ -186,7 +184,7 @@ public class AzureTests {
 
     @Test
     public void listResourceGroups() throws Exception {
-        int groupCount = azure2.resourceGroups().list().size();
+        int groupCount = azure.resourceGroups().list().size();
         System.out.println(String.format("Group count: %s", groupCount));
         Assert.assertTrue(0 < groupCount);
     }
