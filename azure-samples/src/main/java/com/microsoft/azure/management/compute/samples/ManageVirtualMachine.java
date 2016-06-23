@@ -245,18 +245,23 @@ public final class ManageVirtualMachine {
                 System.out.println("Deleted VM: " + windowsVM.id());
 
             } catch (Exception f) {
+
                 System.out.println(f.getMessage());
                 f.printStackTrace();
+
             } finally {
-                if (azure.resourceGroups().getByName(rgName) != null) {
+
+                try {
                     System.out.println("Deleting Resource Group: " + rgName);
                     azure.resourceGroups().delete(rgName);
                     System.out.println("Deleted Resource Group: " + rgName);
-                } else {
+                } catch (NullPointerException npe) {
                     System.out.println("Did not create any resources in Azure. No clean up is necessary");
+                } catch (Exception g) {
+                    g.printStackTrace();
                 }
-            }
 
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

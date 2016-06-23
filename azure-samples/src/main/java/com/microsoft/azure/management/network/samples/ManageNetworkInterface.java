@@ -8,13 +8,12 @@
 package com.microsoft.azure.management.network.samples;
 
 import com.microsoft.azure.Azure;
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
-import com.microsoft.azure.management.network.NetworkInterfaces;
-import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.samples.Utils;
@@ -26,7 +25,7 @@ import java.util.Date;
 /**
  * Azure Network sample for managing network interfaces -
  *  - Create a virtual machine with multiple network interfaces
- *  - Configure multiple network interfaces
+ *  - Configure a network interface
  *  - List network interfaces
  *  - Delete a network interface.
  */
@@ -42,10 +41,12 @@ public final class ManageNetworkInterface {
         final String vnetName = ResourceNamer.randomResourceName("vnet", 24);
         final String networkInterfaceName1 = ResourceNamer.randomResourceName("nic1", 24);
         final String networkInterfaceName2 = ResourceNamer.randomResourceName("nic2", 24);
+        final String networkInterfaceName3 = ResourceNamer.randomResourceName("nic3", 24);
         final String publicIpAddressLeafDNS1 = ResourceNamer.randomResourceName("pip1", 24);
         final String publicIpAddressLeafDNS2 = ResourceNamer.randomResourceName("pip2", 24);
 
-        final String vmName = ResourceNamer.randomResourceName("vm", 24);
+        // TODO adjust the length of vm name from 8 to 24
+        final String vmName = ResourceNamer.randomResourceName("vm", 8);
         final String rgName = ResourceNamer.randomResourceName("rgNEMI", 24);
         final String userName = "tirekicker";
         final String password = "12NewPA$$w0rd!";
@@ -59,7 +60,7 @@ public final class ManageNetworkInterface {
 
             Azure azure = Azure
                     .configure()
-                    .withLogLevel(HttpLoggingInterceptor.Level.BODY)
+                    .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 
@@ -71,41 +72,69 @@ public final class ManageNetworkInterface {
                 //============================================================
                 // Create a virtual machine with multiple network interfaces
 
-                // Define a resource group for holding all the resources
-                ResourceGroup.DefinitionCreatable resourceGroup = azure.resourceGroups()
-                        .define(rgName)
-                        .withRegion(Region.US_EAST);
+                // Define a virtual network for the VMs in this availability set
 
-                // Define a virtual network for the NiCs
-                Network.DefinitionStages.WithCreate network = azure.networks()
+                System.out.println("Creating a virtual network ...");
+
+                Network network = azure.networks()
                         .define(vnetName)
                         .withRegion(Region.US_EAST)
-                        .withNewGroup(resourceGroup)
-                        .withAddressSpace("10.0.0.0/28")
-                        .withSubnet("subnet1", "10.0.0.0/28");
+                        .withNewGroup(rgName)
+                        .withAddressSpace("172.16.0.0/16")
+                        .defineSubnet("Front-end")
+                            .withAddressPrefix("172.16.1.0/24")
+                            .attach()
+                        .defineSubnet("Mid-tier")
+                            .withAddressPrefix("172.16.2.0/24")
+                            .attach()
+                        .defineSubnet("Back-end")
+                            .withAddressPrefix("172.16.3.0/24")
+                            .attach()
+                        .create();
+
+                System.out.println("Created a virtual network: " + network.id());
+                Utils.print(network);
 
                 System.out.println("Creating multiple network interfaces");
+                System.out.println("Creating network interface 1");
+
                 NetworkInterface networkInterface1 = azure.networkInterfaces().define(networkInterfaceName1)
                         .withRegion(Region.US_EAST)
-                        .withNewGroup(resourceGroup)
-                        .withNewPrimaryNetwork(network)
+                        .withExistingGroup(rgName)
+                        .withExistingPrimaryNetwork(network)
+                        .withSubnet("Front-end")
                         .withPrimaryPrivateIpAddressDynamic()
                         .withNewPrimaryPublicIpAddress(publicIpAddressLeafDNS1)
                         .withIpForwarding()
                         .create();
 
+                System.out.println("Created network interface 1");
+                Utils.print(networkInterface1);
+                System.out.println("Creating network interface 2");
+
                 NetworkInterface networkInterface2 = azure.networkInterfaces().define(networkInterfaceName2)
                         .withRegion(Region.US_EAST)
                         .withExistingGroup(rgName)
-                        .withNewPrimaryNetwork(network)
+                        .withExistingPrimaryNetwork(network)
+                        .withSubnet("Mid-tier")
                         .withPrimaryPrivateIpAddressDynamic()
-                        .withNewPrimaryPublicIpAddress(publicIpAddressLeafDNS2)
-                        .withIpForwarding()
                         .create();
 
-                System.out.println("Created 2 network interfaces:");
-                Utils.print(networkInterface1);
+                System.out.println("Created network interface 2");
                 Utils.print(networkInterface2);
+
+                System.out.println("Creating network interface 3");
+
+                NetworkInterface networkInterface3 = azure.networkInterfaces().define(networkInterfaceName3)
+                        .withRegion(Region.US_EAST)
+                        .withExistingGroup(rgName)
+                        .withExistingPrimaryNetwork(network)
+                        .withSubnet("Back-end")
+                        .withPrimaryPrivateIpAddressDynamic()
+                        .create();
+
+                System.out.println("Created network interface 3");
+                Utils.print(networkInterface3);
 
 
                 //=============================================================
@@ -123,6 +152,8 @@ public final class ManageNetworkInterface {
                         .withAdminUserName(userName)
                         .withPassword(password)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                        .withExistingSecondaryNetworkInterface(networkInterface2)
+                        .withExistingSecondaryNetworkInterface(networkInterface3)
                         .create();
 
                 Date t2 = new Date();
@@ -131,22 +162,12 @@ public final class ManageNetworkInterface {
                 // Print virtual machine details
                 Utils.print(vm);
 
-                // add a secondary network interface
-                System.out.println("Adding a secondary network interface");
-                vm.update()
-                        .withExistingSecondaryNetworkInterface(networkInterface2)
-                        .apply();
-
-                System.out.println("Added a secondary network interface");
-                // Print virtual machine details
-                Utils.print(vm);
-
 
                 // ===========================================================
-                // Configure multiple network interfaces
+                // Configure a network interface
                 System.out.println("Updating the first network interface");
                 networkInterface1.update()
-                        .withAzureDnsServer()
+                        .withNewPrimaryPublicIpAddress(publicIpAddressLeafDNS2)
                         .apply();
 
                 System.out.println("Updated the first network interface");
@@ -157,9 +178,9 @@ public final class ManageNetworkInterface {
                 //============================================================
                 // List network interfaces
 
-                System.out.println("Walking through network inter4faces");
-                NetworkInterfaces networkInterfaces = azure.networkInterfaces();
-                for (NetworkInterface networkinterface : networkInterfaces.list()) {
+                System.out.println("Walking through network inter4faces in resource group: " + rgName);
+                PagedList<NetworkInterface> networkInterfaces = azure.networkInterfaces().listByGroup(rgName);
+                for (NetworkInterface networkinterface : networkInterfaces) {
                     Utils.print(networkinterface);
                 }
 
@@ -168,15 +189,24 @@ public final class ManageNetworkInterface {
                 // Delete a network interface
 
                 System.out.println("Deleting a network interface: " + networkInterface2.id());
+                System.out.println("First, deleting the vm");
+                azure.virtualMachines().delete(vm.id());
+                System.out.println("Second, deleting the network interface");
                 azure.networkInterfaces().delete(networkInterface2.id());
                 System.out.println("Deleted network interface");
 
+                System.out.println("============================================================");
                 System.out.println("Remaining network interfaces are ...");
-                networkInterfaces = azure.networkInterfaces();
-                for (NetworkInterface networkinterface : networkInterfaces.list()) {
+                networkInterfaces = azure.networkInterfaces().listByGroup(rgName);
+                for (NetworkInterface networkinterface : networkInterfaces) {
                     Utils.print(networkinterface);
                 }
             } catch (Exception f) {
+
+                System.out.println(f.getMessage());
+                f.printStackTrace();
+
+            } finally {
 
                 try {
                     System.out.println("Deleting Resource Group: " + rgName);
@@ -188,8 +218,6 @@ public final class ManageNetworkInterface {
                     g.printStackTrace();
                 }
 
-                System.out.println(f.getMessage());
-                f.printStackTrace();
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
