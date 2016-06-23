@@ -112,9 +112,9 @@ public final class ManageVirtualMachine {
                 windowsVM.update()
                         .withNewDataDisk(10)
                         .defineNewDataDisk(dataDiskName)
-                        .withSizeInGB(20)
-                        .withCaching(CachingTypes.READ_WRITE)
-                        .attach()
+                            .withSizeInGB(20)
+                            .withCaching(CachingTypes.READ_WRITE)
+                            .attach()
                         .apply();
 
                 System.out.println("Attached a new data disk" + dataDiskName + " to VM" + windowsVM.id());
@@ -144,9 +144,9 @@ public final class ManageVirtualMachine {
                 DataDisk dataDisk = windowsVM.dataDisks().get(0);
 
                 windowsVM.update()
-                        .updateDataDisk(dataDisk.name())
-                        .withSizeInGB(30)
-                        .set()
+                            .updateDataDisk(dataDisk.name())
+                            .withSizeInGB(30)
+                            .parent()
                         .apply();
 
                 System.out.println("Expanded VM " + windowsVM.id() + "'s data disk to 30GB");
