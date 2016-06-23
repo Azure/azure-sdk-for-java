@@ -100,7 +100,7 @@ public interface Network extends
              */
             DefinitionStages.WithCreateAndSubnet withSubnets(Map<String, String> nameCidrPairs);
 
-            Subnet.DefinitionBlank<WithCreateAndSubnet> defineSubnet(String name);
+            Subnet.DefinitionStages.Blank<WithCreateAndSubnet> defineSubnet(String name);
         }
 
         /**

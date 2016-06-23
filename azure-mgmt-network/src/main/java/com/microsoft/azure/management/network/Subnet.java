@@ -31,29 +31,33 @@ public interface Subnet extends
     NetworkSecurityGroup networkSecurityGroup() throws Exception;
 
     /**
-     * The entirety of a Subnet definition.
-     * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
+     * Grouping of subnet definition stages.
+     */
+    interface DefinitionStages {
+        /**
+         * The first stage of the subnet definition.
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
+        interface Blank<ParentT> {
+            WithAttach<ParentT> withAddressPrefix(String cidr);
+        }
+
+        /** The final stage of the subnet definition.
+         * <p>
+         * At this stage, any remaining optional settings can be specified, or the subnet definition
+         * can be attached to the parent virtual network definition using {@link WithAttach#attach()}.
+         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         */
+        interface WithAttach<ParentT> extends
+            Attachable<ParentT> {
+        }
+    }
+
+    /** The entirety of a Subnet definition.
+     * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
      */
     interface Definition<ParentT> extends
-        DefinitionBlank<ParentT>,
-        DefinitionAttachable<ParentT> {
-    }
-
-    /**
-     * The first stage of the subnet definition.
-     * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
-     */
-    interface DefinitionBlank<ParentT> {
-        DefinitionAttachable<ParentT> withAddressPrefix(String cidr);
-    }
-
-    /** The final stage of the subnet definition.
-     * <p>
-     * At this stage, any remaining optional settings can be specified, or the subnet definition
-     * can be attached to the parent virtual network definition using {@link DefinitionAttachable#attach()}.
-     * @param <ParentT> the return type of {@link DefinitionAttachable#attach()}
-     */
-    interface DefinitionAttachable<ParentT> extends
-        Attachable<ParentT> { //TODO: WithNSG
+        DefinitionStages.Blank<ParentT>,
+        DefinitionStages.WithAttach<ParentT> {
     }
 }
