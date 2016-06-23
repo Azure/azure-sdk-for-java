@@ -74,7 +74,7 @@ class VirtualMachineImpl
             ComputeManager>
         implements
         VirtualMachine,
-        VirtualMachine.Definitions,
+        VirtualMachine.Definition,
         VirtualMachine.Update {
     // Clients
     private final VirtualMachinesInner client;
@@ -1181,7 +1181,7 @@ class VirtualMachineImpl
         }
         this.dataDisks = new ArrayList<>();
         for (com.microsoft.azure.management.compute.implementation.api.DataDisk dataDiskInner : this.storageProfile().dataDisks()) {
-            this.dataDisks().add(new DataDiskImpl(dataDiskInner.name(), dataDiskInner, this, false));
+            this.dataDisks().add(new DataDiskImpl(dataDiskInner.name(), dataDiskInner, this));
         }
     }
 

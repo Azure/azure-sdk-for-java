@@ -16,9 +16,13 @@ import java.util.UUID;
  * The implementation for {@link DataDisk} and its create and update interfaces.
  */
 class DataDiskImpl
-    extends ChildResourceImpl<com.microsoft.azure.management.compute.implementation.api.DataDisk, VirtualMachineImpl>
-    implements DataDisk,
-    DataDisk.Definitions,
+    extends ChildResourceImpl<
+        com.microsoft.azure.management.compute.implementation.api.DataDisk,
+        VirtualMachineImpl>
+    implements
+    DataDisk,
+    DataDisk.Definition<VirtualMachine.DefinitionStages.WithCreate>,
+    DataDisk.UpdateDefinition<VirtualMachine.Update>,
     DataDisk.Update {
 
     protected DataDiskImpl(String name,
@@ -137,12 +141,12 @@ class DataDiskImpl
     // Verbs
 
     @Override
-    public VirtualMachine attach() {
+    public VirtualMachineImpl attach() {
         return this.parent();
     }
 
     @Override
-    public VirtualMachine set() {
+    public VirtualMachineImpl set() {
         return this.parent();
     }
 
