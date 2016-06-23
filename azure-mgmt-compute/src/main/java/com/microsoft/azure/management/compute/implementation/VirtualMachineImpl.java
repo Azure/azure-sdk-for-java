@@ -140,10 +140,7 @@ class VirtualMachineImpl
         initializeDataDisks();
     }
 
-    /**************************************************
-     * .
-     * Verbs
-     **************************************************/
+    // Verbs
 
     @Override
     public VirtualMachine refresh() throws Exception {
@@ -543,30 +540,22 @@ class VirtualMachineImpl
 
     @Override
     public DataDiskImpl defineNewDataDisk(String name) {
-        DataDiskImpl dataDisk = DataDiskImpl.prepareDataDisk(name, DiskCreateOptionTypes.EMPTY, this);
-        this.dataDisks().add(dataDisk);
-        return dataDisk;
+        return DataDiskImpl.prepareDataDisk(name, DiskCreateOptionTypes.EMPTY, this);
     }
 
     @Override
     public DataDiskImpl defineExistingDataDisk(String name) {
-        DataDiskImpl dataDisk = DataDiskImpl.prepareDataDisk(name, DiskCreateOptionTypes.ATTACH, this);
-        this.dataDisks().add(dataDisk);
-        return dataDisk;
+        return DataDiskImpl.prepareDataDisk(name, DiskCreateOptionTypes.ATTACH, this);
     }
 
     @Override
     public VirtualMachineImpl withNewDataDisk(Integer sizeInGB) {
-        DataDiskImpl dataDisk = DataDiskImpl.createNewDataDisk(sizeInGB, this);
-        this.dataDisks().add(dataDisk);
-        return this;
+        return withDataDisk(DataDiskImpl.createNewDataDisk(sizeInGB, this));
     }
 
     @Override
     public VirtualMachineImpl withExistingDataDisk(String storageAccountName, String containerName, String vhdName) {
-        DataDiskImpl dataDisk = DataDiskImpl.createFromExistingDisk(storageAccountName, containerName, vhdName, this);
-        this.dataDisks().add(dataDisk);
-        return this;
+        return withDataDisk(DataDiskImpl.createFromExistingDisk(storageAccountName, containerName, vhdName, this));
     }
 
     // Virtual machine optional storage account fluent methods
@@ -901,9 +890,17 @@ class VirtualMachineImpl
         return call;
     }
 
-    /**************************************************.
-     * Helper methods
-     **************************************************/
+    // Helpers
+
+    VirtualMachineImpl withDataDisk(DataDiskImpl dataDisk) {
+        this.inner()
+                .storageProfile()
+                .dataDisks()
+                .add(dataDisk.inner());
+        this.dataDisks
+                .add(dataDisk);
+        return this;
+    }
 
     private void setOSDiskAndOSProfileDefaults() {
         if (!isInCreateMode()) {

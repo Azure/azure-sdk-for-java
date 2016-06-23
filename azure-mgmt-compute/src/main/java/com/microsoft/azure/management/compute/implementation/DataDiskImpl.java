@@ -38,7 +38,6 @@ class DataDiskImpl
         dataDiskInner.withName(name);
         dataDiskInner.withCreateOption(createOption);
         dataDiskInner.withVhd(null);
-        parent.inner().storageProfile().dataDisks().add(dataDiskInner);
         return new DataDiskImpl(name, dataDiskInner, parent);
     }
 
@@ -142,7 +141,7 @@ class DataDiskImpl
 
     @Override
     public VirtualMachineImpl attach() {
-        return this.parent();
+        return this.parent().withDataDisk(this);
     }
 
     protected static void setDataDisksDefaults(List<DataDisk> dataDisks, String namePrefix) {
