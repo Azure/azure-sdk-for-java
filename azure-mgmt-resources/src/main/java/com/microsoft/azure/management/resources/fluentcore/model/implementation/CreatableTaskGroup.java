@@ -54,8 +54,8 @@ public class CreatableTaskGroup extends TaskGroupBase<Resource> {
     /**
      * Gets a resource created by a creatable task in this group.
      * <p>
-     * this method can null if the resource has not yet created that happens if the responsible task is not
-     * yet selected for execution or it's it progress
+     * This method can return null if the resource has not yet created that happens if the responsible task
+     * is not yet selected for execution or it's it progress
      *
      * @param key the resource id
      * @return the created resource

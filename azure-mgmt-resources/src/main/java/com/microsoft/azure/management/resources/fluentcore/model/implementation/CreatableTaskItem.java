@@ -33,7 +33,12 @@ public class CreatableTaskItem implements TaskItem<Resource> {
 
     @Override
     public void execute(TaskGroup<Resource, TaskItem<Resource>> taskGroup, DAGNode<TaskItem<Resource>> node) throws Exception {
-        this.created = this.creatable.create();
+        if (this.created == null) {
+            // execute will be called both in update and create scenarios,
+            // so run the task only if it not not executed already.
+            this.created = this.creatable.create();
+        }
+
         taskGroup.dag().reportedCompleted(node);
         taskGroup.execute();
     }
