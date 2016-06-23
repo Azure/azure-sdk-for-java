@@ -110,8 +110,25 @@ public interface NetworkSecurityGroup extends
          * The stage of the resource definition allowing to add or remove security rules.
          */
         interface WithRule {
+            /**
+             * Removes an existing security rule.
+             * @param name the name of the security rule to remove
+             * @return the next stage of the network security group description
+             */
             Update withoutRule(String name);
+
+            /**
+             * Begins the definition of a new security rule to be added to this network security group.
+             * @param name the name of the new security rule
+             * @return the first stage of the new security rule definition
+             */
             NetworkSecurityRule.UpdateDefinitionStages.Blank<Update> defineRule(String name);
+
+            /**
+             * Begins the description of an update of an existing security rule of this network security group.
+             * @param name the name of an existing security rule
+             * @return the first stage of the security rule update description
+             */
             NetworkSecurityRule.Update updateRule(String name);
         }
     }

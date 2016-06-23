@@ -211,7 +211,7 @@ class NetworkSecurityRuleImpl
     }
 
     @Override
-    public NetworkSecurityGroupImpl set() throws Exception {
+    public NetworkSecurityGroupImpl set() {
         return this.parent();
     }
 

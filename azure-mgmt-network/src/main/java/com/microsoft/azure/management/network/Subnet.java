@@ -8,6 +8,7 @@ package com.microsoft.azure.management.network;
 import com.microsoft.azure.management.network.implementation.api.SubnetInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
+import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
 /**
@@ -38,7 +39,19 @@ public interface Subnet extends
          * The first stage of the subnet definition.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface Blank<ParentT> {
+        interface Blank<ParentT> extends WithAddressPrefix<ParentT> {
+        }
+
+        /**
+         * The stage of the subnet definition allowing to specify the address space for the subnet.
+         * @param <ParentT> the parent type
+         */
+        interface WithAddressPrefix<ParentT> {
+            /**
+             * Specifies the IP address space of the subnet, within the address space of the network.
+             * @param cidr the IP address space prefix using the CIDR notation
+             * @return the next stage of the subnet definition
+             */
             WithAttach<ParentT> withAddressPrefix(String cidr);
         }
 
@@ -48,8 +61,7 @@ public interface Subnet extends
          * can be attached to the parent virtual network definition using {@link WithAttach#attach()}.
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
-        interface WithAttach<ParentT> extends
-            Attachable<ParentT> {
+        interface WithAttach<ParentT> extends Attachable<ParentT> {
         }
     }
 
@@ -58,6 +70,32 @@ public interface Subnet extends
      */
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
+        DefinitionStages.WithAddressPrefix<ParentT>,
         DefinitionStages.WithAttach<ParentT> {
+    }
+
+    /**
+     * Grouping of subnet update stages.
+     */
+    interface UpdateStages {
+        /**
+         * The stage of the subnet definition allowing to specify the address space for the subnet.
+         */
+        interface WithAddressPrefix {
+            /**
+             * Specifies the IP address space of the subnet, within the address space of the network.
+             * @param cidr the IP address space prefix using the CIDR notation
+             * @return the next stage
+             */
+            Update withAddressPrefix(String cidr);
+        }
+    }
+
+    /**
+     * The entirety of a subnet update as part of a network update.
+     */
+    interface Update extends
+        UpdateStages.WithAddressPrefix,
+        Settable<Network.Update> {
     }
 }

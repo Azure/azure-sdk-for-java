@@ -205,4 +205,9 @@ class NetworkImpl
                     }
                 }));
     }
+
+    @Override
+    public SubnetImpl updateSubnet(String name) {
+        return (SubnetImpl) this.subnets.get(name);
+    }
 }

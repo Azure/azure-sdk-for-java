@@ -22,7 +22,8 @@ class SubnetImpl
     extends ChildResourceImpl<SubnetInner, NetworkImpl>
     implements
         Subnet,
-        Subnet.Definition<Network.DefinitionStages.WithCreateAndSubnet> {
+        Subnet.Definition<Network.DefinitionStages.WithCreateAndSubnet>,
+        Subnet.Update {
 
     protected SubnetImpl(String name, SubnetInner inner, NetworkImpl parent) {
         super(name, inner, parent);
@@ -62,5 +63,10 @@ class SubnetImpl
     @Override
     public NetworkImpl attach() {
         return this.parent().withSubnet(this);
+    }
+
+    @Override
+    public NetworkImpl set() {
+        return this.parent();
     }
 }
