@@ -48,7 +48,7 @@ final class GenericResourceImpl
                         ResourcesInner client,
                         final ResourceManagementClientImpl serviceClient,
                         final ResourceManager resourceManager) {
-        super(key, innerModel, resourceManager, resourceManager);
+        super(key, innerModel, resourceManager);
         this.client = client;
     }
 

@@ -50,7 +50,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.resources.implementation.api.PageImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
@@ -122,10 +121,9 @@ class VirtualMachineImpl
                        VirtualMachineInner innerModel,
                        VirtualMachinesInner client,
                        final ComputeManager computeManager,
-                       final ResourceManager resourceManager,
                        final StorageManager storageManager,
                        final NetworkManager networkManager) {
-        super(name, innerModel, resourceManager, computeManager);
+        super(name, innerModel, computeManager);
         this.client = client;
         this.storageManager = storageManager;
         this.networkManager = networkManager;

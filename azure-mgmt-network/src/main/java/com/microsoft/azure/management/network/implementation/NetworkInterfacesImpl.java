@@ -10,7 +10,6 @@ import com.microsoft.azure.management.network.implementation.api.NetworkInterfac
 import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceDnsSettings;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import com.microsoft.azure.management.resources.implementation.ResourceManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,9 +28,8 @@ class NetworkInterfacesImpl
 
     NetworkInterfacesImpl(
             final NetworkInterfacesInner client,
-            final ResourceManager resourceManager,
             final NetworkManager networkManager) {
-        super(resourceManager, client, networkManager);
+        super(client, networkManager);
     }
 
     @Override
@@ -72,8 +70,7 @@ class NetworkInterfacesImpl
         return new NetworkInterfaceImpl(name,
                 inner,
                 this.innerCollection,
-                super.myManager,
-                this.resourceManager);
+                super.myManager);
     }
 
     @Override
@@ -81,7 +78,6 @@ class NetworkInterfacesImpl
         return new NetworkInterfaceImpl(inner.name(),
                 inner,
                 this.innerCollection,
-                super.myManager,
-                this.resourceManager);
+                super.myManager);
     }
 }

@@ -14,7 +14,6 @@ import com.microsoft.azure.management.compute.implementation.api.AvailabilitySet
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
-import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceResponse;
 
@@ -35,14 +34,13 @@ class AvailabilitySetsImpl
 
     AvailabilitySetsImpl(
             final AvailabilitySetsInner client,
-            final ResourceManager resourceManager,
             final ComputeManager computeManager) {
-        super(resourceManager, client, computeManager);
+        super(client, computeManager);
     }
 
     @Override
     public PagedList<AvailabilitySet> list() throws CloudException, IOException {
-        return new GroupPagedList<AvailabilitySet>(this.resourceManager.resourceGroups().list()) {
+        return new GroupPagedList<AvailabilitySet>(this.myManager.resourceManager().resourceGroups().list()) {
             @Override
             public List<AvailabilitySet> listNextGroup(String resourceGroupName) throws RestException, IOException {
                 return wrapList(innerCollection.list(resourceGroupName).getBody());
@@ -85,7 +83,6 @@ class AvailabilitySetsImpl
         return new AvailabilitySetImpl(name,
                 new AvailabilitySetInner(),
                 this.innerCollection,
-                this.resourceManager,
                 super.myManager);
     }
 
@@ -94,7 +91,6 @@ class AvailabilitySetsImpl
         return new AvailabilitySetImpl(availabilitySetInner.name(),
                 availabilitySetInner,
                 this.innerCollection,
-                this.resourceManager,
                 this.myManager);
     }
 }

@@ -12,8 +12,8 @@ import com.microsoft.azure.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
+import com.microsoft.azure.management.resources.fluentcore.arm.implementation.ManagerBase;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
-import com.microsoft.azure.management.resources.implementation.ResourceManager;
 
 /**
  * Base class for resource collection classes.
@@ -29,20 +29,17 @@ public abstract class GroupableResourcesImpl<
         ImplT extends T,
         InnerT extends Resource,
         InnerCollectionT,
-        ManagerT>
+        ManagerT extends ManagerBase>
     extends CreatableWrappersImpl<T, ImplT, InnerT>
     implements
         SupportsGettingById<T>,
         SupportsGettingByGroup<T> {
 
-    protected final ResourceManager resourceManager;
     protected final InnerCollectionT innerCollection;
     protected final ManagerT myManager;
     protected GroupableResourcesImpl(
-            ResourceManager resourceManager,
             InnerCollectionT innerCollection,
             ManagerT manager) {
-        this.resourceManager = resourceManager;
         this.innerCollection = innerCollection;
         this.myManager = manager;
     }

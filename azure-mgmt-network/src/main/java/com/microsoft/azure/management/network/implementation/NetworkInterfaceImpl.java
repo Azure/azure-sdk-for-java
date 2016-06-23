@@ -25,7 +25,6 @@ import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
@@ -68,9 +67,8 @@ class NetworkInterfaceImpl
     NetworkInterfaceImpl(String name,
                          NetworkInterfaceInner innerModel,
                          final NetworkInterfacesInner client,
-                         final NetworkManager networkManager,
-                         final ResourceManager resourceManager) {
-        super(name, innerModel, resourceManager, networkManager);
+                         final NetworkManager networkManager) {
+        super(name, innerModel, networkManager);
         this.client = client;
         this.nicName = name;
         this.namer = new ResourceNamer(this.nicName);

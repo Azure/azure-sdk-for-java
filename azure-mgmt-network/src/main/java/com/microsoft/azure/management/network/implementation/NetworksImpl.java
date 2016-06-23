@@ -17,7 +17,6 @@ import com.microsoft.azure.management.network.implementation.api.VirtualNetworkI
 import com.microsoft.azure.management.network.implementation.api.VirtualNetworksInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import com.microsoft.azure.management.resources.implementation.ResourceManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,9 +35,8 @@ class NetworksImpl
 
     NetworksImpl(
             final NetworkManagementClientImpl networkClient,
-            final ResourceManager resourceManager,
             final NetworkManager networkManager) {
-        super(resourceManager, networkClient.virtualNetworks(), networkManager);
+        super(networkClient.virtualNetworks(), networkManager);
     }
 
     @Override
@@ -108,7 +106,6 @@ class NetworksImpl
                 name,
                 inner,
                 this.innerCollection,
-                this.resourceManager,
                 super.myManager);
     }
 
@@ -118,7 +115,6 @@ class NetworksImpl
                 inner.name(),
                 inner,
                 this.innerCollection,
-                this.resourceManager,
                 this.myManager);
     }
 }

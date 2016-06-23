@@ -14,7 +14,6 @@ import com.microsoft.azure.management.network.implementation.api.PublicIPAddress
 import com.microsoft.azure.management.network.implementation.api.PublicIPAddressesInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import com.microsoft.azure.management.resources.implementation.ResourceManager;
 
 import java.io.IOException;
 
@@ -32,9 +31,8 @@ class PublicIpAddressesImpl
 
     PublicIpAddressesImpl(
             final PublicIPAddressesInner client,
-            final ResourceManager resourceManager,
             final NetworkManager networkManager) {
-        super(resourceManager, client, networkManager);
+        super(client, networkManager);
     }
 
     @Override
@@ -81,7 +79,6 @@ class PublicIpAddressesImpl
                 name,
                 inner,
                 this.innerCollection,
-                this.resourceManager,
                 this.myManager);
     }
 
@@ -91,7 +88,6 @@ class PublicIpAddressesImpl
                 inner.id(),
                 inner,
                 this.innerCollection,
-                this.resourceManager,
                 this.myManager);
     }
 }
