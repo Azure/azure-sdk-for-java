@@ -35,8 +35,8 @@ public abstract class TaskGroupBase<T>
     }
 
     @Override
-    public boolean isRoot() {
-        return !dag.hasParent();
+    public boolean isPreparer() {
+        return dag.isPreparer();
     }
 
     @Override
@@ -46,7 +46,7 @@ public abstract class TaskGroupBase<T>
 
     @Override
     public void prepare() {
-        if (isRoot()) {
+        if (isPreparer()) {
             dag.prepare();
         }
     }
@@ -61,11 +61,7 @@ public abstract class TaskGroupBase<T>
         if (dag.isRootNode(nextNode)) {
             executeRootTask(nextNode.data());
         } else {
-            // TaskGroupBase::execute will be called both in update and create
-            // scenarios, so run the task only if it not not executed already.
-            if (nextNode.data().result() == null) {
-                nextNode.data().execute(this, nextNode);
-            }
+            nextNode.data().execute(this, nextNode);
         }
     }
 
@@ -79,13 +75,7 @@ public abstract class TaskGroupBase<T>
         if (dag.isRootNode(nextNode)) {
             return executeRootTaskAsync(nextNode.data(), callback);
         } else {
-            // TaskGroupBase::execute will be called both in update and create
-            // scenarios, so run the task only if it not not executed already.
-            if (nextNode.data().result() == null) {
-                return nextNode.data().executeAsync(this, nextNode, callback);
-            } else {
-                return null;
-            }
+            return nextNode.data().executeAsync(this, nextNode, callback);
         }
     }
 
@@ -95,9 +85,9 @@ public abstract class TaskGroupBase<T>
     }
 
     /**
-     * executes the root task in this group.
+     * Executes the root task in this group.
      * <p>
-     * this method will be invoked when all the task dependencies of the root task are finished
+     * This method will be invoked when all the task dependencies of the root task are finished
      * executing, at this point root task can be executed by consuming the result of tasks it
      * depends on.
      *
@@ -107,9 +97,9 @@ public abstract class TaskGroupBase<T>
     public abstract void executeRootTask(TaskItem<T> task) throws Exception;
 
     /**
-     * executes the root task in this group asynchronously.
+     * Executes the root task in this group asynchronously.
      * <p>
-     * this method will be invoked when all the task dependencies of the root task are finished
+     * This method will be invoked when all the task dependencies of the root task are finished
      * executing, at this point root task can be executed by consuming the result of tasks it
      * depends on.
      *
