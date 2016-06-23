@@ -23,11 +23,11 @@ import java.io.File;
 import java.util.Date;
 
 /**
- * <p>Azure Network sample for managing network interfaces -</p>
- * <p> - Create a virtual machine with multiple network interfaces</p>
- * <p> - Configure a network interface</p>
- * <p> - List network interfaces</p>
- * <p> - Delete a network interface.</p>
+ * Azure Network sample for managing network interfaces -
+ *  - Create a virtual machine with multiple network interfaces
+ *  - Configure a network interface
+ *  - List network interfaces
+ *  - Delete a network interface.
  */
 
 public final class ManageNetworkInterface {
