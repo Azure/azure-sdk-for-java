@@ -21,8 +21,11 @@ public class TestNetwork extends TestTemplate<Network, Networks> {
     @Override
     public Network createResource(Networks networks) throws Exception {
         final String newName = "net" + this.testId;
+        Region region = Region.US_WEST;
+
+        // Create a network
         return networks.define(newName)
-                .withRegion(Region.US_WEST)
+                .withRegion(region)
                 .withNewGroup()
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnetA", "10.0.0.0/29")
@@ -40,6 +43,9 @@ public class TestNetwork extends TestTemplate<Network, Networks> {
                 .withAddressSpace("141.25.0.0/16")
                 .withSubnet("subnetC", "141.25.0.0/29")
                 .withoutSubnet("subnetA")
+                .updateSubnet("subnetB")
+                    .withAddressPrefix("141.25.0.8/29")
+                    .set()
                 .apply();
         Assert.assertTrue(resource.tags().containsKey("tag1"));
 
