@@ -100,6 +100,13 @@ public interface Network extends
              */
             DefinitionStages.WithCreateAndSubnet withSubnets(Map<String, String> nameCidrPairs);
 
+            /**
+             * Begins the definition of a new subnet to add to the virtual network.
+             * <p>
+             * The definition must be completed with a call to {@link Subnet.DefinitionStages.WithAttach#attach()}
+             * @param name the name of the subnet
+             * @return the first stage of the new subnet definition
+             */
             Subnet.DefinitionStages.Blank<WithCreateAndSubnet> defineSubnet(String name);
         }
 
@@ -184,6 +191,13 @@ public interface Network extends
              * @return the next stage of the virtual network update
              */
             Update withoutSubnet(String name);
+
+            /**
+             * Begins the description of an update of an existing subnet of this network.
+             * @param name the name of an existing subnet
+             * @return the first stage of the subnet update description
+             */
+            Subnet.Update updateSubnet(String name);
         }
     }
 
