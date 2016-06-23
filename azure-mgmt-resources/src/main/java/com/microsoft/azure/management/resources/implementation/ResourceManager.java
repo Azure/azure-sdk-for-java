@@ -16,6 +16,7 @@ import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.Tenants;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.implementation.ManagerBase;
 import com.microsoft.azure.management.resources.implementation.api.FeatureClientImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.implementation.api.SubscriptionClientImpl;
@@ -25,7 +26,7 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 /**
  * Entry point to Azure resource management.
  */
-public final class ResourceManager {
+public final class ResourceManager extends ManagerBase {
     // The sdk clients
     private final ResourceManagementClientImpl resourceManagementClient;
     private final FeatureClientImpl featureClient;
@@ -148,6 +149,7 @@ public final class ResourceManager {
     }
 
     private ResourceManager(RestClient restClient, String subscriptionId) {
+        super(restClient, subscriptionId);
         this.resourceManagementClient = new ResourceManagementClientImpl(restClient);
         this.resourceManagementClient.withSubscriptionId(subscriptionId);
         this.featureClient = new FeatureClientImpl(restClient);
