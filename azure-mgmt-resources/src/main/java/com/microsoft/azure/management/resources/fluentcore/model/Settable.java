@@ -4,7 +4,7 @@ package com.microsoft.azure.management.resources.fluentcore.model;
  * The base interface for all template interfaces for child resources that support
  * update operations.
  *
- * @param <ParentT> the parent definition {@link Settable#set()} returns to
+ * @param <ParentT> the parent definition {@link Settable#parent()} returns to
  */
 public interface Settable<ParentT> {
     /**
@@ -12,9 +12,9 @@ public interface Settable<ParentT> {
      * <p>
      * This is the beginning of the builder pattern used to update child resources
      * The final method completing the update and continue
-     * the actual parent resource update process in Azure is {@link Settable#set()}.
+     * the actual parent resource update process in Azure is {@link Settable#parent()}.
      *
      * @return the stage of  parent resource update
      */
-    ParentT set();
+    ParentT parent();
 }

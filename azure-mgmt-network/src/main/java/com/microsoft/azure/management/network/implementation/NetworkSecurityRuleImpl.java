@@ -211,11 +211,6 @@ class NetworkSecurityRuleImpl
     }
 
     @Override
-    public NetworkSecurityGroupImpl set() {
-        return this.parent();
-    }
-
-    @Override
     public String description() {
         return this.inner().description();
     }

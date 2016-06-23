@@ -75,7 +75,7 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                     .fromPort(88)
                     .withPriority(300)
                     .withDescription("bar!!!")
-                    .set()
+                    .parent()
                 .apply();
         Assert.assertTrue(resource.tags().containsKey("tag1"));
         return resource;
