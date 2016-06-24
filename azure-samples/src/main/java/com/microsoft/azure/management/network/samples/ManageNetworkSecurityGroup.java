@@ -205,6 +205,7 @@ public final class ManageNetworkSecurityGroup {
                         .withExistingPrimaryNetwork(network)
                         .withSubnet("Back-end")
                         .withPrimaryPrivateIpAddressDynamic()
+                        .withoutPrimaryPublicIpAddress()
                         .withExistingNetworkSecurityGroup(backEndNSG)
                         .create();
 

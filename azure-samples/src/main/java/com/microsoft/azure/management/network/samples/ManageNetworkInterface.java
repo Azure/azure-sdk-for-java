@@ -118,6 +118,7 @@ public final class ManageNetworkInterface {
                         .withExistingPrimaryNetwork(network)
                         .withSubnet("Mid-tier")
                         .withPrimaryPrivateIpAddressDynamic()
+                        .withoutPrimaryPublicIpAddress()
                         .create();
 
                 System.out.println("Created network interface 2");
@@ -131,6 +132,7 @@ public final class ManageNetworkInterface {
                         .withExistingPrimaryNetwork(network)
                         .withSubnet("Back-end")
                         .withPrimaryPrivateIpAddressDynamic()
+                        .withoutPrimaryPublicIpAddress()
                         .create();
 
                 System.out.println("Created network interface 3");
