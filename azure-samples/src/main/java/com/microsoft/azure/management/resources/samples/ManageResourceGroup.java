@@ -7,12 +7,20 @@
 
 package com.microsoft.azure.management.resources.samples;
 
+import java.io.File;
+
+import com.microsoft.azure.Azure;
+import com.microsoft.azure.management.resources.ResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.samples.Utils;
+
+import okhttp3.logging.HttpLoggingInterceptor;
+
 /**
  * Azure Resource sample for managing resource groups -
  *  - Create a resource group
  *  - Update a resource group
  *  - Create another resource group
- *  - Export an ARM template
  *  - List resource groups
  *  - Delete a resource group.
  */
@@ -26,23 +34,102 @@ public final class ManageResourceGroup {
     public static void main(String[] args) {
 
         try {
+            final String rgName = Utils.createRandomName("rgRSMA");
+            final String rgName2 = Utils.createRandomName("rgRSMA");
+            final String resourceTagName = Utils.createRandomName("rgRSTN");
+            final String resourceTagValue = Utils.createRandomName("rgRSTV");
 
-            // Create a resource group
+            try {
 
-            // Update a resource group
+                //=================================================================
+                // Authenticate
 
-            // Create another resource group
+                final File credFile = new File("my.azureauth");
 
-            // Export an ARM template
+                Azure azure = Azure
+                        .configure()
+                        .withLogLevel(HttpLoggingInterceptor.Level.NONE)
+                        .authenticate(credFile)
+                        .withDefaultSubscription();
 
-            // List resource groups
+                try {
+                	
+                    //=============================================================
+                    // Create resource group.
+    	            
+                	System.out.println("Creating a resource group with name: " + rgName);	
+    	            
+                	ResourceGroup resourceGroup = azure.resourceGroups().define(rgName)
+    	            	.withRegion(Region.US_WEST)
+    	            	.create();
 
-            // Delete a resource group
+    	            System.out.println("Created a resource group with name: " + rgName);	
+    	            
+                    //=============================================================
+                    // Update the resource group.
+    	            
+    	            System.out.println("Updating the resource group with name: " + rgName);
+    	            
+    	            resourceGroup.update()
+    	            	.withTag(resourceTagName, resourceTagValue)
+    	            	.apply();
+    	            
+                	System.out.println("Updated the resource group with name: " + rgName);	
+    	            
+                    //=============================================================
+                    // Create another resource group.
+    	            
+                	System.out.println("Creating another resource group with name: " + rgName2);	
+    	            
+                	ResourceGroup resourceGroup2 = azure.resourceGroups().define(rgName)
+    	            	.withRegion(Region.US_WEST)
+    	            	.create();
 
+    	            System.out.println("Created another resource group with name: " + rgName2);	
+    	            
+                    //=============================================================
+                    // List resource groups.
+
+                	System.out.println("Listing all resource groups");	
+    	            
+                	for(ResourceGroup rGroup : azure.resourceGroups().list()) {
+    		            System.out.println("Resource group: " + rGroup.name());
+    	            }
+    	            
+                	//=============================================================
+                    // Delete a resource group.
+
+                	System.out.println("Deleting resource group: " + resourceGroup2.id());
+                	
+    	            azure.resourceGroups().delete(resourceGroup2.id());
+                	
+    	            System.out.println("Deleted resource group: " + resourceGroup2.id());	
+    	
+    	        } catch (Exception f) {
+    	
+    	            System.out.println(f.getMessage());
+    	            f.printStackTrace();
+    	
+    	        } finally {
+    	
+    	            try {
+    	                System.out.println("Deleting Resource Group: " + rgName);
+    	                azure.resourceGroups().delete(rgName);
+    	                System.out.println("Deleted Resource Group: " + rgName);
+    	            } catch (NullPointerException npe) {
+    	                System.out.println("Did not create any resources in Azure. No clean up is necessary");
+    	            } catch (Exception g) {
+    	                g.printStackTrace();
+    	            }
+    	
+    	        }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+            }
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
-
     }
 
     private ManageResourceGroup() {
