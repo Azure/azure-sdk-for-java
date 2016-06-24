@@ -185,15 +185,11 @@ public final class ManageNetworkSecurityGroup {
                         .withPrimaryPrivateIpAddressDynamic()
                         .withNewPrimaryPublicIpAddress(publicIpAddressLeafDNS1)
                         .withIpForwarding()
+                        .withExistingNetworkSecurityGroup(frontEndNSG)
                         .create();
 
                 System.out.println("Created network interface for the front end");
 
-                System.out.println("Applying front end network security group to network interface 1");
-                networkInterface1.update()
-                        .withExistingNetworkSecurityGroup(frontEndNSG)
-                        .apply();
-                System.out.println("Applied front end network security group to network interface 1");
                 Utils.print(networkInterface1);
 
 
@@ -209,15 +205,9 @@ public final class ManageNetworkSecurityGroup {
                         .withExistingPrimaryNetwork(network)
                         .withSubnet("Back-end")
                         .withPrimaryPrivateIpAddressDynamic()
+                        .withExistingNetworkSecurityGroup(backEndNSG)
                         .create();
 
-                System.out.println("Created network interface for the back end");
-
-                System.out.println("Applying back end network security group to network interface 2");
-                networkInterface2.update()
-                        .withExistingNetworkSecurityGroup(backEndNSG)
-                        .apply();
-                System.out.println("Applied back end network security group to network interface 2");
                 Utils.print(networkInterface2);
 
 

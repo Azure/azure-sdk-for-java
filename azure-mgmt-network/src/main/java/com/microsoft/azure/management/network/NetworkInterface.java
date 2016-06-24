@@ -310,7 +310,8 @@ public interface NetworkInterface extends
      */
     interface DefinitionCreatable extends
             Creatable<NetworkInterface>,
-            Resource.DefinitionWithTags<NetworkInterface.DefinitionCreatable> {
+            Resource.DefinitionWithTags<NetworkInterface.DefinitionCreatable>,
+            DefinitionWithNetworkSecurityGroup {
         /**
          * Enable IP forwarding in the network interface.
          *
