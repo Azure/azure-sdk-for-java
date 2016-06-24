@@ -26,7 +26,7 @@ public class SubnetInner extends SubResource {
      * Gets or sets the reference of the NetworkSecurityGroup resource.
      */
     @JsonProperty(value = "properties.networkSecurityGroup")
-    private NetworkSecurityGroupInner networkSecurityGroup;
+    private SubResource networkSecurityGroup;
 
     /**
      * Gets or sets the reference of the RouteTable resource.
@@ -84,7 +84,7 @@ public class SubnetInner extends SubResource {
      *
      * @return the networkSecurityGroup value
      */
-    public NetworkSecurityGroupInner networkSecurityGroup() {
+    public SubResource networkSecurityGroup() {
         return this.networkSecurityGroup;
     }
 
@@ -94,7 +94,7 @@ public class SubnetInner extends SubResource {
      * @param networkSecurityGroup the networkSecurityGroup value to set
      * @return the SubnetInner object itself.
      */
-    public SubnetInner withNetworkSecurityGroup(NetworkSecurityGroupInner networkSecurityGroup) {
+    public SubnetInner withNetworkSecurityGroup(SubResource networkSecurityGroup) {
         this.networkSecurityGroup = networkSecurityGroup;
         return this;
     }
