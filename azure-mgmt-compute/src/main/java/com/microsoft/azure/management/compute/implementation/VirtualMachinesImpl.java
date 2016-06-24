@@ -86,7 +86,7 @@ class VirtualMachinesImpl
     }
 
     @Override
-    public VirtualMachine.DefinitionBlank define(String name) {
+    public VirtualMachine.DefinitionStages.Blank define(String name) {
         return wrapModel(name);
     }
 

@@ -19,7 +19,7 @@ public interface VirtualMachines extends
         SupportsListingByGroup<VirtualMachine>,
         SupportsGettingByGroup<VirtualMachine>,
         SupportsGettingById<VirtualMachine>,
-        SupportsCreating<VirtualMachine.DefinitionBlank>,
+        SupportsCreating<VirtualMachine.DefinitionStages.Blank>,
         SupportsDeleting,
         SupportsDeletingByGroup {
 

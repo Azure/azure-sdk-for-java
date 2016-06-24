@@ -14,9 +14,7 @@ public interface DataDisk extends
         Wrapper<com.microsoft.azure.management.compute.implementation.api.DataDisk>,
         ChildResource {
 
-    /***********************************************************
-     * Getters
-     ***********************************************************/
+    // getters
 
     /**
      * @return the size of this data disk in GB
@@ -43,7 +41,7 @@ public interface DataDisk extends
     CachingTypes cachingType();
 
     /**
-     * uri to the source virtual hard disk user image from which this disk was created.
+     * Uri to the source virtual hard disk user image from which this disk was created.
      * <p>
      * null will be returned if this disk is not based on an image
      *
@@ -59,129 +57,234 @@ public interface DataDisk extends
      * 'attach' - if an existing vhd was usd to back the data disk
      * 'empty' - if the disk was created as an empty disk
      *  when disk is created using 'fromImage' option, a copy of user image vhd will be created first
-     *  and it will be used as the vhd to back the data disk
+     *  and it will be used as the vhd to back the data disk.
      *
      * @return disk create option
      */
     DiskCreateOptionTypes createOption();
 
-    /**************************************************************
-     * Fluent interfaces for builder pattern
-     **************************************************************/
+    // fluent (setters)
 
     /**
-     * Container interface for all the definitions.
-     *
-     * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
+     * Grouping of data disk definition stages applicable as part of a virtual machine creation.
      */
-    interface Definitions<ParentT> extends
-            DataDisk.DefinitionAttachNewDataDisk<ParentT>,
-            DataDisk.DefinitionAttachExistingDataDisk<ParentT>,
-            DataDisk.DefinitionWithStoreAt<ParentT>,
-            DataDisk.DefinitionWithOptionalConfiguration<ParentT>,
-            DataDisk.DefinitionAttachable<ParentT> {
-    }
-
-    /**
-     * The first stage of new data disk configuration.
-     *
-     * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
-     */
-    interface DefinitionAttachNewDataDisk<ParentT> {
+    interface DefinitionStages {
         /**
-         * Specifies the initial disk size in GB for new blank data disk.
-         *
-         * @param sizeInGB the disk size in GB
-         * @return the stage representing optional additional settings for the attachable data disk
+         * The first stage of a  data disk definition.
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        DefinitionWithStoreAt<ParentT> withSizeInGB(Integer sizeInGB);
-    }
-
-    /**
-     * The first stage of attaching an existing disk as data disk and configuring it.
-     *
-     * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
-     */
-    interface DefinitionAttachExistingDataDisk<ParentT> {
-        /**
-         * Specifies an existing VHD that needs to be attached to the virtual machine as data disk.
-         *
-         * @param storageAccountName the storage account name
-         * @param containerName the name of the container holding the VHD file
-         * @param vhdName the name for the VHD file
-         * @return the stage representing optional additional settings for the attachable data disk
-         */
-        DefinitionAttachable<ParentT> from(String storageAccountName, String containerName, String vhdName);
-    }
-
-    /**
-     * The stage of the data disk configuration allowing to specify location to store the VHD.
-     *
-     * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
-     */
-    interface DefinitionWithStoreAt<ParentT> extends DefinitionAttachable<ParentT>  {
-        /**
-         * Specifies where the VHD associated with the new blank data disk needs to be stored.
-         *
-         * @param storageAccountName the storage account name
-         * @param containerName the name of the container to hold the new VHD file
-         * @param vhdName the name for the new VHD file
-         * @return the stage representing optional additional configurations for the data disk
-         */
-        DefinitionAttachable<ParentT> storeAt(String storageAccountName, String containerName, String vhdName);
-    }
-
-    /**
-     * The stage of the data disk configuration allowing to specify optionals common for new and
-     * attachable existing data disks.
-     *
-     * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
-     */
-    interface DefinitionWithOptionalConfiguration<ParentT> {
-        /**
-         * Specifies the logical unit number for the data disk.
-         *
-         * @param lun the logical unit number
-         * @return the next stage of data disk configuration
-         */
-        DefinitionAttachable<ParentT> withLun(Integer lun);
+        interface Blank<ParentT>
+                extends WithDataDisk<ParentT> {
+        }
 
         /**
-         * Specifies the caching type for the data disk.
+         * The stage allowing to choose configuring new or existing data disk.
          *
-         * @param cachingType the disk caching type. Possible values include: 'None', 'ReadOnly', 'ReadWrite'
-         * @return the next stage of data disk configuration
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        DefinitionAttachable<ParentT> withCaching(CachingTypes cachingType);
+        interface WithDataDisk<ParentT>
+                extends AttachNewDataDisk<ParentT>, AttachExistingDataDisk<ParentT> {
+        }
+
+        /**
+         * The first stage of new data disk configuration.
+         *
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
+        interface AttachNewDataDisk<ParentT> {
+            /**
+             * Specifies the initial disk size in GB for new blank data disk.
+             *
+             * @param sizeInGB the disk size in GB
+             * @return the stage representing optional additional settings for the attachable data disk
+             */
+            WithStoreAt<ParentT> withSizeInGB(Integer sizeInGB);
+        }
+
+        /**
+         * The stage of the new data disk configuration allowing to specify location to store the VHD.
+         *
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
+        interface WithStoreAt<ParentT> extends WithAttach<ParentT>  {
+            /**
+             * Specifies where the VHD associated with the new blank data disk needs to be stored.
+             *
+             * @param storageAccountName the storage account name
+             * @param containerName the name of the container to hold the new VHD file
+             * @param vhdName the name for the new VHD file
+             * @return the stage representing optional additional configurations for the data disk
+             */
+            WithAttach<ParentT> storeAt(String storageAccountName, String containerName, String vhdName);
+        }
+
+        /**
+         * The first stage of attaching an existing disk as data disk and configuring it.
+         *
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
+        interface AttachExistingDataDisk<ParentT> {
+            /**
+             * Specifies an existing VHD that needs to be attached to the virtual machine as data disk.
+             *
+             * @param storageAccountName the storage account name
+             * @param containerName the name of the container holding the VHD file
+             * @param vhdName the name for the VHD file
+             * @return the stage representing optional additional settings for the attachable data disk
+             */
+            WithAttach<ParentT> from(String storageAccountName, String containerName, String vhdName);
+        }
+
+        /** The final stage of the data disk definition.
+         * <p>
+         * At this stage, any remaining optional settings can be specified, or the data disk definition
+         * can be attached to the parent virtual machine definition using {@link WithAttach#attach()}.
+         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         */
+        interface WithAttach<ParentT> extends Attachable.InUpdate<ParentT> {
+            /**
+             * Specifies the logical unit number for the data disk.
+             *
+             * @param lun the logical unit number
+             * @return the next stage of data disk definition
+             */
+            WithAttach<ParentT> withLun(Integer lun);
+
+            /**
+             * Specifies the caching type for the data disk.
+             *
+             * @param cachingType the disk caching type. Possible values include: 'None', 'ReadOnly', 'ReadWrite'
+             * @return the next stage of data disk definition
+             */
+            WithAttach<ParentT> withCaching(CachingTypes cachingType);
+        }
     }
 
     /**
-     * The stage of the data disk definition which contains all the minimum required inputs for the resource to be
-     * attached (via {@link Attachable#attach()}), but also allows for any other optional settings to be
-     * specified.
-     *
-     * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
+     * The entirety of a data disk definition.
+     * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
-    interface DefinitionAttachable<ParentT>  extends
-            Attachable<ParentT>, DefinitionWithOptionalConfiguration<ParentT> {
-
+    interface Definition<ParentT> extends
+            DefinitionStages.Blank<ParentT>,
+            DefinitionStages.WithAttach<ParentT>,
+            DefinitionStages.WithStoreAt<ParentT> {
     }
 
     /**
-     * The template for a data disk update operation, containing all the settings that
-     * can be modified.
-     *
-     * @param <ParentT> the return type of the final {@link Settable#parent()}
+     * Grouping of data disk definition stages applicable as part of a virtual machine update.
      */
-    interface Update<ParentT> extends
-            Settable<ParentT> {
+    interface UpdateDefinitionStages {
+        /**
+         * The first stage of a  data disk definition.
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
+        interface Blank<ParentT>
+                extends WithDataDisk<ParentT> {
+        }
+
+        /**
+         * The stage allowing to choose configuring new or existing data disk.
+         *
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
+        interface WithDataDisk<ParentT>
+                extends AttachNewDataDisk<ParentT>, AttachExistingDataDisk<ParentT> {
+        }
+
+        /**
+         * The first stage of new data disk configuration.
+         *
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
+        interface AttachNewDataDisk<ParentT> {
+            /**
+             * Specifies the initial disk size in GB for new blank data disk.
+             *
+             * @param sizeInGB the disk size in GB
+             * @return the stage representing optional additional settings for the attachable data disk
+             */
+            WithStoreAt<ParentT> withSizeInGB(Integer sizeInGB);
+        }
+
+        /**
+         * The stage of the new data disk configuration allowing to specify location to store the VHD.
+         *
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
+        interface WithStoreAt<ParentT> extends WithAttach<ParentT>  {
+            /**
+             * Specifies where the VHD associated with the new blank data disk needs to be stored.
+             *
+             * @param storageAccountName the storage account name
+             * @param containerName the name of the container to hold the new VHD file
+             * @param vhdName the name for the new VHD file
+             * @return the stage representing optional additional configurations for the data disk
+             */
+            WithAttach<ParentT> storeAt(String storageAccountName, String containerName, String vhdName);
+        }
+
+        /**
+         * The first stage of attaching an existing disk as data disk and configuring it.
+         *
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
+        interface AttachExistingDataDisk<ParentT> {
+            /**
+             * Specifies an existing VHD that needs to be attached to the virtual machine as data disk.
+             *
+             * @param storageAccountName the storage account name
+             * @param containerName the name of the container holding the VHD file
+             * @param vhdName the name for the VHD file
+             * @return the stage representing optional additional settings for the attachable data disk
+             */
+            WithAttach<ParentT> from(String storageAccountName, String containerName, String vhdName);
+        }
+
+        /** The final stage of the data disk definition.
+         * <p>
+         * At this stage, any remaining optional settings can be specified, or the data disk definition
+         * can be attached to the parent virtual machine definition using {@link WithAttach#attach()}.
+         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         */
+        interface WithAttach<ParentT> extends Attachable.InDefinition<ParentT> {
+            /**
+             * Specifies the logical unit number for the data disk.
+             *
+             * @param lun the logical unit number
+             * @return the next stage of data disk definition
+             */
+            WithAttach<ParentT> withLun(Integer lun);
+
+            /**
+             * Specifies the caching type for the data disk.
+             *
+             * @param cachingType the disk caching type. Possible values include: 'None', 'ReadOnly', 'ReadWrite'
+             * @return the next stage of data disk definition
+             */
+            WithAttach<ParentT> withCaching(CachingTypes cachingType);
+        }
+    }
+
+    /** The entirety of a data disk definition as part of a virtual machine update.
+     * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
+     */
+    interface UpdateDefinition<ParentT>  extends
+            UpdateDefinitionStages.Blank<ParentT>,
+            UpdateDefinitionStages.WithAttach<ParentT>,
+            UpdateDefinitionStages.WithStoreAt<ParentT> {
+    }
+
+    /**
+     * Grouping of data disk update stages.
+     */
+    interface UpdateStages {
         /**
          * Specifies the new size in GB for data disk.
          *
          * @param sizeInGB the disk size in GB
          * @return the next stage of data disk update
          */
-        Update<ParentT> withSizeInGB(Integer sizeInGB);
+        Update withSizeInGB(Integer sizeInGB);
 
         /**
          * Specifies the new logical unit number for the data disk.
@@ -189,7 +292,7 @@ public interface DataDisk extends
          * @param lun the logical unit number
          * @return the next stage of data disk update
          */
-        Update<ParentT> withLun(Integer lun);
+        Update withLun(Integer lun);
 
         /**
          * Specifies the new caching type for the data disk.
@@ -197,6 +300,14 @@ public interface DataDisk extends
          * @param cachingType the disk caching type. Possible values include: 'None', 'ReadOnly', 'ReadWrite'
          * @return the next stage of data disk update
          */
-        Update<ParentT> withCaching(CachingTypes cachingType);
+        Update withCaching(CachingTypes cachingType);
+    }
+
+    /**
+     * The entirety of a data disk update as part of a virtual machine update.
+     */
+    interface Update extends
+            UpdateStages,
+            Settable<VirtualMachine.Update> {
     }
 }
