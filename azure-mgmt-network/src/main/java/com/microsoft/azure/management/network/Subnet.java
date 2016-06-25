@@ -82,7 +82,7 @@ public interface Subnet extends
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithAttach<ParentT> extends
-            Attachable<ParentT>,
+            Attachable.InDefinition<ParentT>,
             WithNetworkSecurityGroup<ParentT> {
         }
     }
@@ -140,5 +140,71 @@ public interface Subnet extends
         UpdateStages.WithAddressPrefix,
         UpdateStages.WithNetworkSecurityGroup,
         Settable<Network.Update> {
+    }
+
+    /**
+     * Grouping of subnet definition stages applicable as part of a virtual network update.
+     */
+    interface UpdateDefinitionStages {
+        /**
+         * The first stage of the subnet definition.
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
+        interface Blank<ParentT> extends WithAddressPrefix<ParentT> {
+        }
+
+        /**
+         * The stage of the subnet definition allowing to specify the address space for the subnet.
+         * @param <ParentT> the parent type
+         */
+        interface WithAddressPrefix<ParentT> {
+            /**
+             * Specifies the IP address space of the subnet, within the address space of the network.
+             * @param cidr the IP address space prefix using the CIDR notation
+             * @return the next stage of the subnet definition
+             */
+            WithAttach<ParentT> withAddressPrefix(String cidr);
+        }
+
+        /**
+         * The stage of the subnet definition allowing to specify the network security group to assign to the subnet.
+         * @param <ParentT> the parent type
+         */
+        interface WithNetworkSecurityGroup<ParentT> {
+            /**
+             * Assigns an existing network security group to this subnet.
+             * @param resourceId the resource ID of the network security group
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withExistingNetworkSecurityGroup(String resourceId);
+
+            /**
+             * Assigns an existing network security group to this subnet.
+             * @param nsg the network security group to assign
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withExistingNetworkSecurityGroup(NetworkSecurityGroup nsg);
+        }
+
+        /** The final stage of the subnet definition.
+         * <p>
+         * At this stage, any remaining optional settings can be specified, or the subnet definition
+         * can be attached to the parent virtual network definition using {@link WithAttach#attach()}.
+         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         */
+        interface WithAttach<ParentT> extends
+            Attachable.InUpdate<ParentT>,
+            WithNetworkSecurityGroup<ParentT> {
+        }
+    }
+
+    /** The entirety of a subnet definition as part of a virtual network update.
+     * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
+     */
+    interface UpdateDefinition<ParentT> extends
+       UpdateDefinitionStages.Blank<ParentT>,
+       UpdateDefinitionStages.WithAddressPrefix<ParentT>,
+       UpdateDefinitionStages.WithNetworkSecurityGroup<ParentT>,
+       UpdateDefinitionStages.WithAttach<ParentT> {
     }
 }

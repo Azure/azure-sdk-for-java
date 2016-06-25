@@ -66,6 +66,10 @@ public class TestNetwork extends TestTemplate<Network, Networks> {
                     .withAddressPrefix("141.25.0.8/29")
                     .withExistingNetworkSecurityGroup(nsg)
                     .parent()
+                .defineSubnet("subnetD")
+                    .withAddressPrefix("141.25.0.16/29")
+                    .withExistingNetworkSecurityGroup(nsg)
+                    .attach()
                 .apply();
         Assert.assertTrue(resource.tags().containsKey("tag1"));
 

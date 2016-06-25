@@ -198,6 +198,13 @@ public interface Network extends
              * @return the first stage of the subnet update description
              */
             Subnet.Update updateSubnet(String name);
+
+            /**
+             * Begins the definition of a new subnet to be added to this virtual network.
+             * @param name the name of the new subnet
+             * @return the first stage of the new subnet definition
+             */
+            Subnet.UpdateDefinitionStages.Blank<Update> defineSubnet(String name);
         }
     }
 

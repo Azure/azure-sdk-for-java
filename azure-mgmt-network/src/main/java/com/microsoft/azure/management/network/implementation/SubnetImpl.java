@@ -23,6 +23,7 @@ class SubnetImpl
     implements
         Subnet,
         Subnet.Definition<Network.DefinitionStages.WithCreateAndSubnet>,
+        Subnet.UpdateDefinition<Network.Update>,
         Subnet.Update {
 
     protected SubnetImpl(String name, SubnetInner inner, NetworkImpl parent) {
