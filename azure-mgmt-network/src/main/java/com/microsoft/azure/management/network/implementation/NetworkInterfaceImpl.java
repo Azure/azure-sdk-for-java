@@ -127,7 +127,7 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public NetworkInterfaceImpl withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionCreatable creatable) {
+    public NetworkInterfaceImpl withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionStages.WithCreate creatable) {
         this.primaryIpConfiguration().withNewPublicIpAddress(creatable);
         return this;
     }

@@ -394,7 +394,7 @@ public interface VirtualMachine extends
              * @param creatable a creatable definition for a new public IP
              * @return the next stage of the virtual machine definition
              */
-            WithOS withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionCreatable creatable);
+            WithOS withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionStages.WithCreate creatable);
 
             /**
              * Creates a new public IP address in the same region and group as the resource, with the specified DNS label
@@ -784,7 +784,7 @@ public interface VirtualMachine extends
             WithCreate withNewStorageAccount(String name);
 
             /**
-             * Specifies definition of a not-yet-created {@link StorageAccount.DefinitionCreatable} storage account
+             * Specifies definition of a not-yet-created {@link com.microsoft.azure.management.storage.StorageAccount.DefinitionCreatable} storage account
              * to put the VM's OS and data disk VHD in.
              * <p>
              * Only the OS disk based on marketplace image will be stored in the new storage account,

@@ -97,196 +97,214 @@ public interface PublicIpAddress extends
     /**
      * Container interface for all the definitions.
      */
-    interface Definitions extends
-        DefinitionBlank,
-        DefinitionWithGroup,
-        DefinitionWithIpAddress,
-        DefinitionWithLeafDomainLabel,
-        DefinitionCreatable {
+    interface Definition extends
+        DefinitionStages.Blank,
+        DefinitionStages.WithGroup,
+        DefinitionStages.WithIpAddress,
+        DefinitionStages.WithLeafDomainLabel,
+        DefinitionStages.WithReverseFQDN,
+        DefinitionStages.WithIdleTimeout,
+        DefinitionStages.WithCreate {
     }
 
     /**
-     * The first stage of a public IP address definition.
+     * Grouping of public IP address definition stages.
      */
-    interface DefinitionBlank
-        extends GroupableResource.DefinitionWithRegion<DefinitionWithGroup> {
+    interface DefinitionStages {
+        /**
+         * The first stage of a public IP address definition.
+         */
+        interface Blank
+            extends GroupableResource.DefinitionWithRegion<WithGroup> {
+        }
+
+        /**
+         * The stage of the public IP address definition allowing to specify the resource group.
+         */
+        interface WithGroup
+            extends GroupableResource.DefinitionWithGroup<WithCreate> {
+        }
+
+        /**
+         * A public IP address definition allowing to set the IP allocation method (static or dynamic).
+         */
+        interface WithIpAddress {
+            /**
+             * Enables static IP address allocation.
+             * <p>
+             * Use {@link PublicIpAddress#ipAddress()} after the public IP address is created to obtain the
+             * actual IP address allocated for this resource by Azure
+             *
+             * @return the next stage of the public IP address definition
+             */
+            WithCreate withStaticIp();
+
+            /**
+             * Enables dynamic IP address allocation.
+             *
+             * @return the next stage of the public IP address definition
+             */
+            WithCreate withDynamicIp();
+        }
+
+        /**
+         * A public IP address definition allowing to specify the leaf domain label, if any.
+         */
+        interface WithLeafDomainLabel {
+            /**
+             * Specifies the leaf domain label to associate with this public IP address.
+             * <p>
+             * The fully qualified domain name (FQDN)
+             * will be constructed automatically by appending the rest of the domain to this label.
+             * @param dnsName the leaf domain label to use. This must follow the required naming convention for leaf domain names.
+             * @return the next stage of the public IP address definition
+             */
+            WithCreate withLeafDomainLabel(String dnsName);
+
+            /**
+             * Ensures that no leaf domain label will be used.
+             * <p>
+             * This means that this public IP address will not be associated with a domain name.
+             * @return the next stage of the public IP address definition
+             */
+            WithCreate withoutLeafDomainLabel();
+        }
+
+        /**
+         * A public IP address definition allowing the reverse FQDN to be specified.
+         */
+        interface WithReverseFQDN {
+            /**
+             * Specifies the reverse FQDN to assign to this public IP address.
+             * <p>
+             *
+             * @param reverseFQDN the reverse FQDN to assign
+             * @return the next stage of the resource definition
+             */
+            WithCreate withReverseFqdn(String reverseFQDN);
+
+            /**
+             * Ensures that no reverse FQDN will be used.
+             * @return the next stage of the resource definition
+             */
+            WithCreate withoutReverseFqdn();
+        }
+
+        /**
+         * A public IP address definition allowing the idle timeout to be specified.
+         */
+        interface WithIdleTimeout {
+            /**
+             * Specifies the timeout (in minutes) for an idle connection.
+             *
+             * @param minutes the length of the time out in minutes
+             * @return the next stage of the resource definition
+             */
+            WithCreate withIdleTimeoutInMinutes(int minutes);
+        }
+
+        /**
+         * The stage of the public IP definition which contains all the minimum required inputs for
+         * the resource to be created (via {@link WithCreate#create()}), but also allows
+         * for any other optional settings to be specified.
+         */
+        interface WithCreate extends
+            Creatable<PublicIpAddress>,
+            DefinitionStages.WithLeafDomainLabel,
+            DefinitionStages.WithIpAddress,
+            DefinitionStages.WithReverseFQDN,
+            DefinitionStages.WithIdleTimeout,
+            Resource.DefinitionWithTags<WithCreate> {
+        }
     }
 
     /**
-     * The stage of the public IP address definition allowing to specify the resource group.
-     */
-    interface DefinitionWithGroup
-        extends GroupableResource.DefinitionWithGroup<DefinitionCreatable> {
-    }
-
-    /**
-     * A public IP address definition allowing to set the IP allocation method (static or dynamic).
-     */
-    interface DefinitionWithIpAddress {
-        /**
-         * Enables static IP address allocation.
-         * <p>
-         * Use {@link PublicIpAddress#ipAddress()} after the public IP address is created to obtain the
-         * actual IP address allocated for this resource by Azure
-         *
-         * @return the next stage of the public IP address definition
-         */
-        DefinitionCreatable withStaticIp();
-
-        /**
-         * Enables dynamic IP address allocation.
-         *
-         * @return the next stage of the public IP address definition
-         */
-        DefinitionCreatable withDynamicIp();
-    }
-
-
-    /**
-     * A public IP address update allowing to change the IP allocation method (static or dynamic).
-     */
-    interface UpdateWithIpAddress {
-        /**
-         * Enables static IP address allocation.
-         * <p>
-         * Use {@link PublicIpAddress#ipAddress()} after the public IP address is updated to
-         * obtain the actual IP address allocated for this resource by Azure
-         *
-         * @return the next stage of the resource update
-         */
-        Update withStaticIp();
-
-        /**
-         * Enables dynamic IP address allocation.
-         *
-         * @return the next stage of the resource update
-         */
-        Update withDynamicIp();
-    }
-
-
-    /**
-     * A public IP address definition allowing to specify the leaf domain label, if any.
-     */
-    interface DefinitionWithLeafDomainLabel {
-        /**
-         * Specifies the leaf domain label to associate with this public IP address.
-         * <p>
-         * The fully qualified domain name (FQDN)
-         * will be constructed automatically by appending the rest of the domain to this label.
-         * @param dnsName the leaf domain label to use. This must follow the required naming convention for leaf domain names.
-         * @return the next stage of the public IP address definition
-         */
-        DefinitionCreatable withLeafDomainLabel(String dnsName);
-
-        /**
-         * Ensures that no leaf domain label will be used.
-         * <p>
-         * This means that this public IP address will not be associated with a domain name.
-         * @return the next stage of the public IP address definition
-         */
-        DefinitionCreatable withoutLeafDomainLabel();
-    }
-
-
-    /**
-     * A public IP address update allowing to change the leaf domain label, if any.
-     */
-    interface UpdateWithLeafDomainLabel {
-        /**
-         * Specifies the leaf domain label to associate with this public IP address.
-         * <p>
-         * The fully qualified domain name (FQDN)
-         * will be constructed automatically by appending the rest of the domain to this label.
-         * @param dnsName the leaf domain label to use. This must follow the required naming convention for leaf domain names.
-         * @return the next stage of the resource update
-         */
-        Update withLeafDomainLabel(String dnsName);
-
-        /**
-         * Ensures that no leaf domain label will be used.
-         * <p>
-         * This means that this public IP address will not be associated with a domain name.
-         * @return the next stage of the resource update
-         */
-        Update withoutLeafDomainLabel();
-    }
-
-    /**
-     * A public IP address definition allowing the reverse FQDN to be specified.
-     *
-     * @param <T> the type of the inherited definition interface
-     */
-    interface DefinitionWithReverseFQDN<T> {
-        /**
-         * Specifies the reverse FQDN to assign to this public IP address.
-         * <p>
-         *
-         * @param reverseFQDN the reverse FQDN to assign
-         * @return the next stage of the resource definition
-         */
-        T withReverseFqdn(String reverseFQDN);
-
-        /**
-         * Ensures that no reverse FQDN will be used.
-         * @return the next stage of the resource definition
-         */
-        T withoutReverseFqdn();
-    }
-
-    /**
-     * A public IP address update allowing the reverse FQDN to be specified.
-     */
-    interface UpdateWithReverseFQDN {
-        /**
-         * Specifies the reverse FQDN to assign to this public IP address.
-         *
-         * @param reverseFQDN the reverse FQDN to assign
-         * @return the next stage of the resource update
-         */
-        Update withReverseFqdn(String reverseFQDN);
-
-        /**
-         * Ensures that no reverse FQDN will be used.
-         *
-         * @return The next stage of the resource update
-         */
-        Update withoutReverseFqdn();
-    }
-
-    /**
-     * The stage of the public IP definition which contains all the minimum required inputs for
-     * the resource to be created (via {@link DefinitionCreatable#create()}), but also allows
-     * for any other optional settings to be specified.
-     */
-    interface DefinitionCreatable extends
-        Creatable<PublicIpAddress>,
-        DefinitionWithLeafDomainLabel,
-        DefinitionWithIpAddress,
-        DefinitionWithReverseFQDN<DefinitionCreatable>,
-        Resource.DefinitionWithTags<DefinitionCreatable> {
-
-        /**
-         * Specifies the timeout (in minutes) for an idle connection.
-         *
-         * @param minutes the length of the time out in minutes
-         * @return the next stage of the resource definition
-         */
-        DefinitionCreatable withIdleTimeoutInMinutes(int minutes);
-    }
-
-    /**
-     * The template for a public IP address update operation, containing all the settings that
-     * can be modified.
+     * Container interface for all the updates.
      * <p>
-     * Call {@link Update#apply()} to apply the changes to the resource in Azure.
+     * Use {@link Update#apply()} to apply the changes to the resource in Azure.
      */
     interface Update extends
         Appliable<PublicIpAddress>,
-        UpdateWithIpAddress,
-        UpdateWithLeafDomainLabel,
-        UpdateWithReverseFQDN,
+        UpdateStages.WithIpAddress,
+        UpdateStages.WithLeafDomainLabel,
+        UpdateStages.WithReverseFQDN,
+        UpdateStages.WithIdleTimout,
         Resource.UpdateWithTags<Update> {
+    }
+
+    /**
+     * Grouping of public IP address update stages.
+     */
+    interface UpdateStages {
+        /**
+         * A public IP address update allowing to change the IP allocation method (static or dynamic).
+         */
+        interface WithIpAddress {
+            /**
+             * Enables static IP address allocation.
+             * <p>
+             * Use {@link PublicIpAddress#ipAddress()} after the public IP address is updated to
+             * obtain the actual IP address allocated for this resource by Azure
+             *
+             * @return the next stage of the resource update
+             */
+            Update withStaticIp();
+
+            /**
+             * Enables dynamic IP address allocation.
+             *
+             * @return the next stage of the resource update
+             */
+            Update withDynamicIp();
+        }
+
+        /**
+         * A public IP address update allowing to change the leaf domain label, if any.
+         */
+        interface WithLeafDomainLabel {
+            /**
+             * Specifies the leaf domain label to associate with this public IP address.
+             * <p>
+             * The fully qualified domain name (FQDN)
+             * will be constructed automatically by appending the rest of the domain to this label.
+             * @param dnsName the leaf domain label to use. This must follow the required naming convention for leaf domain names.
+             * @return the next stage of the resource update
+             */
+            Update withLeafDomainLabel(String dnsName);
+
+            /**
+             * Ensures that no leaf domain label will be used.
+             * <p>
+             * This means that this public IP address will not be associated with a domain name.
+             * @return the next stage of the resource update
+             */
+            Update withoutLeafDomainLabel();
+        }
+
+        /**
+         * A public IP address update allowing the reverse FQDN to be changed.
+         */
+        interface WithReverseFQDN {
+            /**
+             * Specifies the reverse FQDN to assign to this public IP address.
+             *
+             * @param reverseFQDN the reverse FQDN to assign
+             * @return the next stage of the resource update
+             */
+            Update withReverseFqdn(String reverseFQDN);
+
+            /**
+             * Ensures that no reverse FQDN will be used.
+             *
+             * @return The next stage of the resource update
+             */
+            Update withoutReverseFqdn();
+        }
+
+        /**
+         * A public IP address update allowing the idle timeout to be changed.
+         */
+        interface WithIdleTimout {
             /**
              * Specifies the timeout (in minutes) for an idle connection.
              *
@@ -294,5 +312,6 @@ public interface PublicIpAddress extends
              * @return the next stage of the resource update
              */
             Update withIdleTimeoutInMinutes(int minutes);
+        }
     }
 }

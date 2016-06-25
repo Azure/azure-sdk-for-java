@@ -19,7 +19,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
  */
 public interface PublicIpAddresses extends
     SupportsListing<PublicIpAddress>,
-    SupportsCreating<PublicIpAddress.DefinitionBlank>,
+    SupportsCreating<PublicIpAddress.DefinitionStages.Blank>,
     SupportsDeleting,
     SupportsListingByGroup<PublicIpAddress>,
     SupportsGettingByGroup<PublicIpAddress>,
