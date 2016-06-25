@@ -61,6 +61,7 @@ public interface Subnet extends
          */
         interface WithNetworkSecurityGroup<ParentT> {
             WithAttach<ParentT> withExistingNetworkSecurityGroup(String resourceId);
+            WithAttach<ParentT> withExistingNetworkSecurityGroup(NetworkSecurityGroup nsg);
         }
 
         /** The final stage of the subnet definition.

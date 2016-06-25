@@ -44,7 +44,7 @@ public class TestNetwork extends TestTemplate<Network, Networks> {
                 .withSubnet("subnetA", "10.0.0.0/29")
                 .defineSubnet("subnetB")
                     .withAddressPrefix("10.0.0.8/29")
-                    .withExistingNetworkSecurityGroup(nsg.id())
+                    .withExistingNetworkSecurityGroup(nsg)
                     .attach()
                 .create();
     }

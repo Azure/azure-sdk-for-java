@@ -76,4 +76,9 @@ class SubnetImpl
     public NetworkImpl attach() {
         return this.parent().withSubnet(this);
     }
+
+    @Override
+    public WithAttach<WithCreateAndSubnet> withExistingNetworkSecurityGroup(NetworkSecurityGroup nsg) {
+        return withExistingNetworkSecurityGroup(nsg.id());
+    }
 }
