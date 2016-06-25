@@ -10,10 +10,8 @@ import java.io.IOException;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.Network;
-import com.microsoft.azure.management.network.Network.DefinitionStages.WithCreateAndSubnet;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.Subnet;
-import com.microsoft.azure.management.network.Subnet.DefinitionStages.WithAttach;
 import com.microsoft.azure.management.network.implementation.api.SubnetInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
@@ -55,7 +53,7 @@ class SubnetImpl
     // Fluent setters
 
     @Override
-    public WithAttach<WithCreateAndSubnet> withExistingNetworkSecurityGroup(String resourceId) {
+    public SubnetImpl withExistingNetworkSecurityGroup(String resourceId) {
         // Workaround for REST API's expectation of an object rather than string ID - should be fixed in Swagger specs or REST
         SubResource reference = new SubResource();
         reference.withId(resourceId);
@@ -78,7 +76,7 @@ class SubnetImpl
     }
 
     @Override
-    public WithAttach<WithCreateAndSubnet> withExistingNetworkSecurityGroup(NetworkSecurityGroup nsg) {
+    public SubnetImpl withExistingNetworkSecurityGroup(NetworkSecurityGroup nsg) {
         return withExistingNetworkSecurityGroup(nsg.id());
     }
 }

@@ -60,7 +60,18 @@ public interface Subnet extends
          * @param <ParentT> the parent type
          */
         interface WithNetworkSecurityGroup<ParentT> {
+            /**
+             * Assigns an existing network security group to this subnet.
+             * @param resourceId the resource ID of the network security group
+             * @return the next stage of the definition
+             */
             WithAttach<ParentT> withExistingNetworkSecurityGroup(String resourceId);
+
+            /**
+             * Assigns an existing network security group to this subnet.
+             * @param nsg the network security group to assign
+             * @return the next stage of the definition
+             */
             WithAttach<ParentT> withExistingNetworkSecurityGroup(NetworkSecurityGroup nsg);
         }
 
@@ -91,7 +102,7 @@ public interface Subnet extends
      */
     interface UpdateStages {
         /**
-         * The stage of the subnet definition allowing to specify the address space for the subnet.
+         * The stage of the subnet update allowing to change the address space for the subnet.
          */
         interface WithAddressPrefix {
             /**
@@ -101,6 +112,25 @@ public interface Subnet extends
              */
             Update withAddressPrefix(String cidr);
         }
+
+        /**
+         * The stage of the subnet update allowing to change the network security group to assign to the subnet.
+         */
+        interface WithNetworkSecurityGroup {
+            /**
+             * Assigns an existing network security group to this subnet.
+             * @param resourceId the resource ID of the network security group
+             * @return the next stage of the update
+             */
+            Update withExistingNetworkSecurityGroup(String resourceId);
+
+            /**
+             * Assigns an existing network security group to this subnet.
+             * @param nsg the network security group to assign
+             * @return the next stage of the update
+             */
+            Update withExistingNetworkSecurityGroup(NetworkSecurityGroup nsg);
+        }
     }
 
     /**
@@ -108,6 +138,7 @@ public interface Subnet extends
      */
     interface Update extends
         UpdateStages.WithAddressPrefix,
+        UpdateStages.WithNetworkSecurityGroup,
         Settable<Network.Update> {
     }
 }

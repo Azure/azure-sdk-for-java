@@ -51,6 +51,11 @@ public class TestNetwork extends TestTemplate<Network, Networks> {
 
     @Override
     public Network updateResource(Network resource) throws Exception {
+        NetworkSecurityGroup nsg = nsgs.define("nsgB" + this.testId)
+                .withRegion(resource.region())
+                .withExistingGroup(resource.resourceGroupName())
+                .create();
+
         resource =  resource.update()
                 .withTag("tag1", "value1")
                 .withTag("tag2", "value2")
@@ -59,6 +64,7 @@ public class TestNetwork extends TestTemplate<Network, Networks> {
                 .withoutSubnet("subnetA")
                 .updateSubnet("subnetB")
                     .withAddressPrefix("141.25.0.8/29")
+                    .withExistingNetworkSecurityGroup(nsg)
                     .parent()
                 .apply();
         Assert.assertTrue(resource.tags().containsKey("tag1"));
@@ -93,7 +99,7 @@ public class TestNetwork extends TestTemplate<Network, Networks> {
             if (null == nsg) {
                 info.append("(None)");
             } else {
-                info.append(nsg.id());
+                info.append(nsg.resourceGroupName() + "/" + nsg.name());
             }
         }
 
