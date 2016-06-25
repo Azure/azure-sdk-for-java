@@ -23,6 +23,7 @@ class SubnetImpl
     implements
         Subnet,
         Subnet.Definition<Network.DefinitionStages.WithCreateAndSubnet>,
+        Subnet.UpdateDefinition<Network.Update>,
         Subnet.Update {
 
     protected SubnetImpl(String name, SubnetInner inner, NetworkImpl parent) {
@@ -53,6 +54,16 @@ class SubnetImpl
     // Fluent setters
 
     @Override
+    public SubnetImpl withExistingNetworkSecurityGroup(String resourceId) {
+        // Workaround for REST API's expectation of an object rather than string ID - should be fixed in Swagger specs or REST
+        SubResource reference = new SubResource();
+        reference.withId(resourceId);
+
+        this.inner().withNetworkSecurityGroup(reference);
+        return this;
+    }
+
+    @Override
     public SubnetImpl withAddressPrefix(String cidr) {
         this.inner().withAddressPrefix(cidr);
         return this;
@@ -63,5 +74,10 @@ class SubnetImpl
     @Override
     public NetworkImpl attach() {
         return this.parent().withSubnet(this);
+    }
+
+    @Override
+    public SubnetImpl withExistingNetworkSecurityGroup(NetworkSecurityGroup nsg) {
+        return withExistingNetworkSecurityGroup(nsg.id());
     }
 }

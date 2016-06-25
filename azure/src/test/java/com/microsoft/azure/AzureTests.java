@@ -131,7 +131,7 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testNetworks() throws Exception {
-        new TestNetwork().runTest(azure.networks(), azure.resourceGroups());
+        new TestNetwork(azure.networkSecurityGroups()).runTest(azure.networks(), azure.resourceGroups());
     }
 
     /**
