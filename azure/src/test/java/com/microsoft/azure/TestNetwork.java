@@ -9,6 +9,7 @@ import org.junit.Assert;
 
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
+import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -18,19 +19,32 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
  */
 public class TestNetwork extends TestTemplate<Network, Networks> {
 
+    private final NetworkSecurityGroups nsgs;
+    TestNetwork(NetworkSecurityGroups nsgs) {
+        this.nsgs = nsgs;
+    }
+
     @Override
     public Network createResource(Networks networks) throws Exception {
         final String newName = "net" + this.testId;
         Region region = Region.US_WEST;
+        String groupName = "rg" + this.testId;
+
+        // Create an NSG
+        NetworkSecurityGroup nsg = nsgs.define("nsg" + this.testId)
+                .withRegion(region)
+                .withNewGroup(groupName)
+                .create();
 
         // Create a network
         return networks.define(newName)
                 .withRegion(region)
-                .withNewGroup()
+                .withNewGroup(groupName)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnetA", "10.0.0.0/29")
                 .defineSubnet("subnetB")
                     .withAddressPrefix("10.0.0.8/29")
+                    .withExistingNetworkSecurityGroup(nsg.id())
                     .attach()
                 .create();
     }

@@ -55,13 +55,23 @@ public interface Subnet extends
             WithAttach<ParentT> withAddressPrefix(String cidr);
         }
 
+        /**
+         * The stage of the subnet definition allowing to specify the network security group to assign to the subnet.
+         * @param <ParentT> the parent type
+         */
+        interface WithNetworkSecurityGroup<ParentT> {
+            WithAttach<ParentT> withExistingNetworkSecurityGroup(String resourceId);
+        }
+
         /** The final stage of the subnet definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the subnet definition
          * can be attached to the parent virtual network definition using {@link WithAttach#attach()}.
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
-        interface WithAttach<ParentT> extends Attachable<ParentT> {
+        interface WithAttach<ParentT> extends
+            Attachable<ParentT>,
+            WithNetworkSecurityGroup<ParentT> {
         }
     }
 
@@ -71,6 +81,7 @@ public interface Subnet extends
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
         DefinitionStages.WithAddressPrefix<ParentT>,
+        DefinitionStages.WithNetworkSecurityGroup<ParentT>,
         DefinitionStages.WithAttach<ParentT> {
     }
 
