@@ -113,7 +113,7 @@ class VirtualMachineImpl
     // Intermediate state of network interface definition to which subnet can be associated
     private NetworkInterface.DefinitionStages.WithPrimaryNetworkSubnet nicDefinitionWithSubnet;
     // Intermediate state of network interface definition to which public IP can be associated
-    private NetworkInterface.DefinitionStages.WithPrimaryPublicIpAddress nicDefinitionWithPublicIp;
+    private NetworkInterface.DefinitionStages.WithCreate nicDefinitionWithCreate;
     // Virtual machine size converter
     private final PagedListConverter<VirtualMachineSizeInner, VirtualMachineSize> virtualMachineSizeConverter;
 
@@ -262,14 +262,14 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withPrimaryPrivateIpAddressDynamic() {
-        this.nicDefinitionWithPublicIp = this.nicDefinitionWithPrivateIp
+        this.nicDefinitionWithCreate = this.nicDefinitionWithPrivateIp
                 .withPrimaryPrivateIpAddressDynamic();
         return this;
     }
 
     @Override
     public VirtualMachineImpl withPrimaryPrivateIpAddressStatic(String staticPrivateIpAddress) {
-        this.nicDefinitionWithPublicIp = this.nicDefinitionWithPrivateIp
+        this.nicDefinitionWithCreate = this.nicDefinitionWithPrivateIp
                 .withPrimaryPrivateIpAddressStatic(staticPrivateIpAddress);
         return this;
     }
@@ -278,7 +278,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionCreatable creatable) {
-        NetworkInterface.DefinitionStages.WithCreate nicCreatable = this.nicDefinitionWithPublicIp
+        NetworkInterface.DefinitionStages.WithCreate nicCreatable = this.nicDefinitionWithCreate
                 .withNewPrimaryPublicIpAddress(creatable);
         this.addCreatableDependency(nicCreatable);
         return this;
@@ -286,7 +286,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withNewPrimaryPublicIpAddress(String leafDnsLabel) {
-        NetworkInterface.DefinitionStages.WithCreate nicCreatable = this.nicDefinitionWithPublicIp
+        NetworkInterface.DefinitionStages.WithCreate nicCreatable = this.nicDefinitionWithCreate
                 .withNewPrimaryPublicIpAddress(leafDnsLabel);
         this.creatablePrimaryNetworkInterfaceKey = nicCreatable.key();
         this.addCreatableDependency(nicCreatable);
@@ -295,7 +295,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withExistingPrimaryPublicIpAddress(PublicIpAddress publicIpAddress) {
-        NetworkInterface.DefinitionStages.WithCreate nicCreatable = this.nicDefinitionWithPublicIp
+        NetworkInterface.DefinitionStages.WithCreate nicCreatable = this.nicDefinitionWithCreate
                 .withExistingPrimaryPublicIpAddress(publicIpAddress);
         this.creatablePrimaryNetworkInterfaceKey = nicCreatable.key();
         this.addCreatableDependency(nicCreatable);
@@ -304,9 +304,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withoutPrimaryPublicIpAddress() {
-        NetworkInterface.DefinitionStages.WithCreate nicCreatable = this.nicDefinitionWithPublicIp
-                .withoutPrimaryPublicIpAddress();
-
+        NetworkInterface.DefinitionStages.WithCreate nicCreatable = this.nicDefinitionWithCreate;
         this.creatablePrimaryNetworkInterfaceKey = nicCreatable.key();
         this.addCreatableDependency(nicCreatable);
         return this;

@@ -166,8 +166,10 @@ class NicIpConfigurationImpl
 
     @Override
     public NicIpConfigurationImpl withNewPublicIpAddress(PublicIpAddress.DefinitionCreatable creatable) {
-        this.creatablePublicIpKey = creatable.key();
-        this.parent().addToCreatableDependencies(creatable);
+        if (this.creatablePublicIpKey == null) {
+            this.creatablePublicIpKey = creatable.key();
+            this.parent().addToCreatableDependencies(creatable);
+        }
         return this;
     }
 

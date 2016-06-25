@@ -56,8 +56,8 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
                 .withRegion(Region.US_EAST)
                 .withNewGroup(resourceGroupCreatable)
                 .withNewPrimaryNetwork(networkCreatable)
-                .withPrimaryPrivateIpAddressStatic("10.0.0.5")
-                .withoutPrimaryPublicIpAddress();
+                .withPrimaryPrivateIpAddressStatic("10.0.0.5");
+                // .withNewPrimaryPublicIpAddress();
                 // [Secondary NIC cannot have PublicIp - Only primary network interface can reference a public IP address]
 
         // Prepare the secondary network interface definition
@@ -67,8 +67,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
                 .withRegion(Region.US_EAST)
                 .withNewGroup(resourceGroupCreatable)
                 .withNewPrimaryNetwork(networkCreatable)
-                .withPrimaryPrivateIpAddressStatic("10.0.0.6")
-                .withoutPrimaryPublicIpAddress();
+                .withPrimaryPrivateIpAddressStatic("10.0.0.6");
 
         // Create Virtual Machine
         final String vmName = "vm" + this.testId;

@@ -138,7 +138,6 @@ public interface NetworkInterface extends
             DefinitionStages.WithPrimaryNetwork,
             DefinitionStages.WithPrimaryNetworkSubnet,
             DefinitionStages.WithPrimaryPrivateIp,
-            DefinitionStages.WithPrimaryPublicIpAddress,
             DefinitionStages.WithCreate {
     }
 
@@ -232,7 +231,7 @@ public interface NetworkInterface extends
              *
              * @return the next stage of network interface definition
              */
-            WithPrimaryPublicIpAddress withPrimaryPrivateIpAddressDynamic();
+            WithCreate withPrimaryPrivateIpAddressDynamic();
 
             /**
              * Assigns the specified static private IP address within the specified existing virtual network
@@ -242,7 +241,7 @@ public interface NetworkInterface extends
              *                               the network interface
              * @return the next stage of network interface definition
              */
-            WithPrimaryPublicIpAddress withPrimaryPrivateIpAddressStatic(String staticPrivateIpAddress);
+            WithCreate withPrimaryPrivateIpAddressStatic(String staticPrivateIpAddress);
         }
 
         /**
@@ -279,13 +278,6 @@ public interface NetworkInterface extends
              * @return the next stage of the network interface definition
              */
             WithCreate withNewPrimaryPublicIpAddress(String leafDnsLabel);
-
-            /**
-             * Specifies that not to configure public Ip address for the network interface's primary Ip configuration.
-             *
-             * @return the next stage of the network interface update
-             */
-            WithCreate withoutPrimaryPublicIpAddress();
 
             /**
              * Associates an existing public Ip address with the network interface's primary Ip configuration.
@@ -338,6 +330,7 @@ public interface NetworkInterface extends
         interface WithCreate extends
                 Creatable<NetworkInterface>,
                 Resource.DefinitionWithTags<WithCreate>,
+                WithPrimaryPublicIpAddress,
                 WithNetworkSecurityGroup,
                 WithSecondaryIpConfiguration {
             /**

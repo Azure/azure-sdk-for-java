@@ -75,9 +75,8 @@ public interface NicIpConfiguration extends
         DefinitionStages.Blank<ParentT>,
         DefinitionStages.WithAttach<ParentT>,
         DefinitionStages.WithNetwork<ParentT>,
-        DefinitionStages.WithPrivateIp<ParentT>,
         DefinitionStages.WithSubnet<ParentT>,
-        DefinitionStages.WithPublicIpAddress<ParentT> {
+        DefinitionStages.WithPrivateIp<ParentT> {
     }
 
     /**
@@ -241,7 +240,7 @@ public interface NicIpConfiguration extends
          */
         interface WithAttach<ParentT>
                 extends
-                Attachable.InUpdate<ParentT>,
+                Attachable.InDefinition<ParentT>,
                 WithPublicIpAddress<ParentT> {
         }
     }
@@ -416,7 +415,7 @@ public interface NicIpConfiguration extends
          */
         interface WithAttach<ParentT>
                 extends
-                Attachable.InDefinition<ParentT>,
+                Attachable.InUpdate<ParentT>,
                 WithPublicIpAddress<ParentT> {
         }
     }
