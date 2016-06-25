@@ -312,6 +312,9 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 					}
 				},
 				this.operationTimeout, TimerType.OneTimeRun);
+			} else if(this.connection == null || this.connection.getRemoteState() == EndpointState.CLOSED)
+			{
+				this.closeTask.complete(null);
 			}
 		}		
 
