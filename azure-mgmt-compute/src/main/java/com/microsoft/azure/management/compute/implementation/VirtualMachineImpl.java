@@ -596,7 +596,7 @@ class VirtualMachineImpl
     //
 
     @Override
-    public VirtualMachineImpl withNewAvailabilitySet(AvailabilitySet.DefinitionCreatable creatable) {
+    public VirtualMachineImpl withNewAvailabilitySet(AvailabilitySet.DefinitionStages.WithCreate creatable) {
         // This method's effect is NOT additive.
         if (this.creatableAvailabilitySetKey == null) {
             this.creatableAvailabilitySetKey = creatable.key();
