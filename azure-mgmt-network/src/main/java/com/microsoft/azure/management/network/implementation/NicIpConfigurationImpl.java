@@ -125,7 +125,7 @@ class NicIpConfigurationImpl
     public NicIpConfigurationImpl withNewNetwork(String name, String addressSpaceCidr) {
         Network.DefinitionStages.WithGroup definitionWithGroup = this.networkManager.networks()
                 .define(name)
-                .withRegion(this.parent().region());
+                .withRegion(this.parent().regionName());
 
         Network.DefinitionStages.WithCreate definitionAfterGroup;
         if (this.parent().newGroup() != null) {
@@ -162,7 +162,7 @@ class NicIpConfigurationImpl
     }
 
     @Override
-    public NicIpConfigurationImpl withNewPublicIpAddress(PublicIpAddress.DefinitionCreatable creatable) {
+    public NicIpConfigurationImpl withNewPublicIpAddress(PublicIpAddress.DefinitionStages.WithCreate creatable) {
         this.creatablePublicIpKey = creatable.key();
         this.parent().addToCreatableDependencies(creatable);
         return this;
@@ -212,12 +212,12 @@ class NicIpConfigurationImpl
      * @param leafDnsLabel the domain name label
      * @return {@link PublicIpAddress.DefinitionCreatable}
      */
-    private PublicIpAddress.DefinitionCreatable prepareCreatablePublicIp(String name, String leafDnsLabel) {
-        PublicIpAddress.DefinitionWithGroup definitionWithGroup = this.networkManager.publicIpAddresses()
+    private PublicIpAddress.DefinitionStages.WithCreate prepareCreatablePublicIp(String name, String leafDnsLabel) {
+        PublicIpAddress.DefinitionStages.WithGroup definitionWithGroup = this.networkManager.publicIpAddresses()
                     .define(name)
-                    .withRegion(this.parent().region());
+                    .withRegion(this.parent().regionName());
 
-        PublicIpAddress.DefinitionCreatable definitionAfterGroup;
+        PublicIpAddress.DefinitionStages.WithCreate definitionAfterGroup;
         if (this.parent().newGroup() != null) {
             definitionAfterGroup = definitionWithGroup.withNewGroup(this.parent().newGroup());
         } else {

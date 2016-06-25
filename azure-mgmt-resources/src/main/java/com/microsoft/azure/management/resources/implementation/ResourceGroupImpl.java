@@ -59,8 +59,13 @@ class ResourceGroupImpl extends
     }
 
     @Override
-    public String region() {
+    public String regionName() {
         return this.inner().location();
+    }
+
+    @Override
+    public Region region() {
+        return Region.fromName(this.regionName());
     }
 
     @Override

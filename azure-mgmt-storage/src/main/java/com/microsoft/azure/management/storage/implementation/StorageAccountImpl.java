@@ -200,7 +200,7 @@ class StorageAccountImpl
 
     @Override
     protected void createResource() throws Exception {
-        createParameters.withLocation(this.region());
+        createParameters.withLocation(this.regionName());
         createParameters.withTags(this.inner().getTags());
         this.client.create(this.resourceGroupName(), this.name(), createParameters);
         // create response does not seems including the endpoints so fetching it again.
@@ -213,7 +213,7 @@ class StorageAccountImpl
 
     @Override
     protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
-        createParameters.withLocation(this.region());
+        createParameters.withLocation(this.regionName());
         createParameters.withTags(this.inner().getTags());
         final StorageAccountImpl self = this;
         return this.client.createAsync(this.resourceGroupName(), this.name(), createParameters,

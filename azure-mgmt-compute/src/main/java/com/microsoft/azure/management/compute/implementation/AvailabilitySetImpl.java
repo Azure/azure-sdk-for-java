@@ -31,7 +31,7 @@ class AvailabilitySetImpl
             ComputeManager>
     implements
         AvailabilitySet,
-        AvailabilitySet.Definitions,
+        AvailabilitySet.Definition,
         AvailabilitySet.Update {
 
     private List<String> idOfVMsInSet;

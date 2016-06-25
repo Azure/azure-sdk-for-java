@@ -277,7 +277,7 @@ class VirtualMachineImpl
     // Fluent methods for defining public Ip association for the new primary network interface
 
     @Override
-    public VirtualMachineImpl withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionCreatable creatable) {
+    public VirtualMachineImpl withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionStages.WithCreate creatable) {
         NetworkInterface.DefinitionCreatable nicCreatable = this.nicDefinitionWithPublicIp
                 .withNewPrimaryPublicIpAddress(creatable);
         this.addCreatableDependency(nicCreatable);
@@ -576,7 +576,7 @@ class VirtualMachineImpl
         StorageAccount.DefinitionWithGroup definitionWithGroup = this.storageManager
                 .storageAccounts()
                 .define(name)
-                .withRegion(this.region());
+                .withRegion(this.regionName());
         StorageAccount.DefinitionCreatable definitionAfterGroup;
         if (this.newGroup != null) {
             definitionAfterGroup = definitionWithGroup.withNewGroup(this.newGroup);
@@ -596,7 +596,7 @@ class VirtualMachineImpl
     //
 
     @Override
-    public VirtualMachineImpl withNewAvailabilitySet(AvailabilitySet.DefinitionCreatable creatable) {
+    public VirtualMachineImpl withNewAvailabilitySet(AvailabilitySet.DefinitionStages.WithCreate creatable) {
         // This method's effect is NOT additive.
         if (this.creatableAvailabilitySetKey == null) {
             this.creatableAvailabilitySetKey = creatable.key();
@@ -608,7 +608,7 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl withNewAvailabilitySet(String name) {
         return withNewAvailabilitySet(super.myManager.availabilitySets().define(name)
-                .withRegion(region())
+                .withRegion(regionName())
                 .withExistingGroup(this.resourceGroupName())
         );
     }
@@ -963,7 +963,7 @@ class VirtualMachineImpl
                 || dataDisksRequiresImplicitStorageAccountCreation()) {
             storageAccount = this.storageManager.storageAccounts()
                     .define(this.namer.randomName("stg", 24))
-                    .withRegion(this.region())
+                    .withRegion(this.regionName())
                     .withExistingGroup(this.resourceGroupName())
                     .create();
         }
@@ -1024,7 +1024,7 @@ class VirtualMachineImpl
                 || dataDisksRequiresImplicitStorageAccountCreation()) {
             this.storageManager.storageAccounts()
                     .define(this.namer.randomName("stg", 24))
-                    .withRegion(this.region())
+                    .withRegion(this.regionName())
                     .withExistingGroup(this.resourceGroupName())
                     .createAsync(new ServiceCallback<StorageAccount>() {
                         @Override
@@ -1158,7 +1158,7 @@ class VirtualMachineImpl
         NetworkInterface.DefinitionWithGroup definitionWithGroup = this.networkManager
                 .networkInterfaces()
                 .define(name)
-                .withRegion(this.region());
+                .withRegion(this.regionName());
         NetworkInterface.DefinitionWithNetwork definitionWithNetwork;
         if (this.newGroup != null) {
             definitionWithNetwork = definitionWithGroup.withNewGroup(this.newGroup);
@@ -1185,7 +1185,7 @@ class VirtualMachineImpl
     private NetworkInterface.DefinitionWithNetwork preparePrimaryNetworkInterface(String name) {
         NetworkInterface.DefinitionWithGroup definitionWithGroup = this.networkManager.networkInterfaces()
                 .define(name)
-                .withRegion(this.region());
+                .withRegion(this.regionName());
         NetworkInterface.DefinitionWithNetwork definitionAfterGroup;
         if (this.newGroup != null) {
             definitionAfterGroup = definitionWithGroup.withNewGroup(this.newGroup);
