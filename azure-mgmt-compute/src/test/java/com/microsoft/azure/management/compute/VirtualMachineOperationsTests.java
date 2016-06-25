@@ -51,11 +51,11 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
             }
         }
         Assert.assertNotNull(foundedVM);
-        Assert.assertEquals(LOCATION, foundedVM.region());
+        Assert.assertEquals(LOCATION, foundedVM.regionName());
         // Get
         foundedVM = computeManager.virtualMachines().getByGroup(RG_NAME, VMNAME);
         Assert.assertNotNull(foundedVM);
-        Assert.assertEquals(LOCATION, foundedVM.region());
+        Assert.assertEquals(LOCATION, foundedVM.regionName());
 
         // Fetch instance view
         PowerState powerState = foundedVM.powerState();
