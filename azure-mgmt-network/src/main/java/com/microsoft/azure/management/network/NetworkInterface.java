@@ -52,7 +52,7 @@ public interface NetworkInterface extends
     /**
      * Gets the fully qualified domain name of this network interface.
      * <p>
-     * A network interface receives Fqdn as a part of assigning it to a virtual machine.
+     * A network interface receives FQDN as a part of assigning it to a virtual machine.
      *
      * @return the qualified domain name
      */
