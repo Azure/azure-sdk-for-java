@@ -399,10 +399,10 @@ class NetworkInterfaceImpl
         if (isInCreateMode()) {
             this.nicPrimaryIpConfiguration = prepareNewNicIpConfiguration("primary-nic-config");
         } else {
-            // Currently Azure supports only one Ip configuration and that is the primary
+            // Currently Azure supports only one IP configuration and that is the primary
             // hence we pick the first one here.
-            // when Azure support multiple Ip configurations then there will be a flag in
-            // the IpConfiguration or a property in the network interface to identify the
+            // when Azure support multiple IP configurations then there will be a flag in
+            // the IPConfiguration or a property in the network interface to identify the
             // primary so below logic will be changed.
             this.nicPrimaryIpConfiguration = (NicIpConfigurationImpl) this.nicIpConfigurations.get(0);
         }
@@ -439,7 +439,7 @@ class NetworkInterfaceImpl
     }
 
     /**
-     * Gets a new Ip configuration child resource {@link NicIpConfiguration} wrapping {@link NetworkInterfaceIPConfiguration}.
+     * Gets a new IP configuration child resource {@link NicIpConfiguration} wrapping {@link NetworkInterfaceIPConfiguration}.
      *
      * @param name the name for the new ip configuration
      * @return {@link NicIpConfiguration}

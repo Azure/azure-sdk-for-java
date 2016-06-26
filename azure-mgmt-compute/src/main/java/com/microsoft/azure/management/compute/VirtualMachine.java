@@ -416,7 +416,7 @@ public interface VirtualMachine extends
             WithOS withExistingPrimaryPublicIpAddress(PublicIpAddress publicIpAddress);
 
             /**
-             * Specifies that no public Ip needs to be associated with virtual machine.
+             * Specifies that no public IP needs to be associated with virtual machine.
              *
              * @return the next stage of the virtual machine definition
              */

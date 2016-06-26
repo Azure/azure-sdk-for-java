@@ -258,7 +258,7 @@ class VirtualMachineImpl
         return this;
     }
 
-    // Fluent methods for defining private Ip association for the new primary network interface
+    // Fluent methods for defining private IP association for the new primary network interface
 
     @Override
     public VirtualMachineImpl withPrimaryPrivateIpAddressDynamic() {
@@ -274,7 +274,7 @@ class VirtualMachineImpl
         return this;
     }
 
-    // Fluent methods for defining public Ip association for the new primary network interface
+    // Fluent methods for defining public IP association for the new primary network interface
 
     @Override
     public VirtualMachineImpl withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionStages.WithCreate creatable) {

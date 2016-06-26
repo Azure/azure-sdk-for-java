@@ -28,7 +28,7 @@ class NicIpConfigurationImpl
         NicIpConfiguration.Update {
     // Clients
     private final NetworkManager networkManager;
-    // flag indicating whether Ip configuration is in create or update mode
+    // flag indicating whether IP configuration is in create or update mode
     private final boolean isInCreateMode;
     // unique key of a creatable virtual network to be associated with the ip configuration
     private String creatableVirtualNetworkKey;
@@ -232,9 +232,9 @@ class NicIpConfigurationImpl
     }
 
     /**
-     * Gets the subnet to associate with the Ip configuration.
+     * Gets the subnet to associate with the IP configuration.
      * <p>
-     * this method will never return null as subnet is required for a Ip configuration, in case of
+     * this method will never return null as subnet is required for a IP configuration, in case of
      * update mode if user didn't choose to change the subnet then existing subnet will be returned.
      * Updating the nic subnet has a restriction, the new subnet must reside in the same virtual network
      * as the current one.
@@ -272,7 +272,7 @@ class NicIpConfigurationImpl
 
     /**
      * Get the SubResource instance representing a public IP that needs to be associated with the
-     * Ip configuration.
+     * IP configuration.
      * <p>
      * null will be returned if withoutPublicIP() is specified in the update fluent chain or user did't
      * opt for public IP in create fluent chain. In case of update chain, if withoutPublicIP(..) is
