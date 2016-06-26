@@ -4,6 +4,7 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceIPConfiguration;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
@@ -105,7 +106,7 @@ public interface NicIpConfiguration extends
              * @param creatable a creatable definition for a new virtual network
              * @return the next stage of the network interface IP configuration definition
              */
-            WithPrivateIp<ParentT> withNewNetwork(Network.DefinitionStages.WithCreate creatable);
+            WithPrivateIp<ParentT> withNewNetwork(Creatable<Network> creatable);
 
             /**
              * Creates a new virtual network to associate with the network interface IP configuration.
@@ -280,7 +281,7 @@ public interface NicIpConfiguration extends
              * @param creatable a creatable definition for a new virtual network
              * @return the next stage of the network interface IP configuration definition
              */
-            WithPrivateIp<ParentT> withNewNetwork(Network.DefinitionStages.WithCreate creatable);
+            WithPrivateIp<ParentT> withNewNetwork(Creatable<Network> creatable);
 
             /**
              * Creates a new virtual network to associate with the network interface IP configuration.

@@ -324,7 +324,7 @@ public interface VirtualMachine extends
              * @param creatable a creatable definition for a new virtual network
              * @return the next stage of the virtual machine definition
              */
-            WithPrivateIp withNewPrimaryNetwork(Network.DefinitionStages.WithCreate creatable);
+            WithPrivateIp withNewPrimaryNetwork(Creatable<Network> creatable);
 
             /**
              * Creates a new virtual network to associate with the virtual machine's primary network interface.
@@ -745,7 +745,7 @@ public interface VirtualMachine extends
             WithCreate withNewAvailabilitySet(String name);
 
             /**
-             * Specifies definition of a not-yet-created {@link AvailabilitySet.DefinitionStages.WithCreate} availability set
+             * Specifies definition of a not-yet-created availability set definition
              * to associate the virtual machine with.
              * <p>
              * Adding virtual machines running your application to an availability set ensures that during
@@ -754,7 +754,7 @@ public interface VirtualMachine extends
              * @param creatable the availability set in creatable stage
              * @return the stage representing creatable VM definition
              */
-            WithCreate withNewAvailabilitySet(AvailabilitySet.DefinitionStages.WithCreate creatable);
+            WithCreate withNewAvailabilitySet(Creatable<AvailabilitySet> creatable);
 
             /**
              * Specifies an existing {@link AvailabilitySet} availability set to to associate the virtual machine with.

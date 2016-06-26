@@ -171,7 +171,7 @@ public interface NetworkInterface extends
              * @param creatable a creatable definition for a new virtual network
              * @return the next stage of the network interface definition
              */
-            WithPrimaryPrivateIp withNewPrimaryNetwork(Network.DefinitionStages.WithCreate creatable);
+            WithPrimaryPrivateIp withNewPrimaryNetwork(Creatable<Network> creatable);
 
             /**
              * Creates a new virtual network to associate with the network interface's primary IP configuration.
