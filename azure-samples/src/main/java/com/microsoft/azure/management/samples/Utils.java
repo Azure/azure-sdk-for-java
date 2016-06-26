@@ -166,6 +166,10 @@ public final class Utils {
         for (Subnet subnet : resource.subnets().values()) {
             info.append("\n\tSubnet: ").append(subnet.name())
                     .append("\n\t\tAddress prefix: ").append(subnet.addressPrefix());
+            NetworkSecurityGroup subnetNsg = subnet.networkSecurityGroup();
+            if (subnetNsg != null) {
+                info.append("\n\t\tNetwork security group: ").append(subnetNsg.id());
+            }
         }
 
         System.out.println(info.toString());
