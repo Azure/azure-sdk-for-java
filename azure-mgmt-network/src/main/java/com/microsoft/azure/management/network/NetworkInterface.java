@@ -45,7 +45,7 @@ public interface NetworkInterface extends
 
     /**
      *
-     * @return the Internal Dns name assigned to this network interface
+     * @return the Internal DNS name assigned to this network interface
      */
     String internalDnsNameLabel();
 
@@ -352,9 +352,9 @@ public interface NetworkInterface extends
             WithCreate withDnsServer(String ipAddress);
 
             /**
-             * Specifies the internal Dns name label for the network interface.
+             * Specifies the internal DNS name label for the network interface.
              *
-             * @param dnsNameLabel the internal Dns name label
+             * @param dnsNameLabel the internal DNS name label
              * @return the next stage of the network interface definition
              */
             WithCreate withInternalDnsNameLabel(String dnsNameLabel);
@@ -507,32 +507,32 @@ public interface NetworkInterface extends
         }
 
         /**
-         * The stage of the network interface update allowing to specify Dns servers.
+         * The stage of the network interface update allowing to specify DNS servers.
          */
         interface WithDnsServer {
             /**
-             * Specifies the IP address of the custom Dns server to associate with the network interface.
+             * Specifies the IP address of the custom DNS server to associate with the network interface.
              * <p>
              * Note this method's effect is additive, i.e. each time it is used, the new dns server is
              * added to the network interface.
              *
-             * @param ipAddress the IP address of the Dns server
+             * @param ipAddress the IP address of the DNS server
              * @return the next stage of the network interface update
              */
             Update withDnsServer(String ipAddress);
 
             /**
-             * Removes a Dns server associated with the network interface.
+             * Removes a DNS server associated with the network interface.
              *
-             * @param ipAddress the IP address of the Dns server
+             * @param ipAddress the IP address of the DNS server
              * @return the next stage of the network interface update
              */
             Update withoutDnsServer(String ipAddress);
 
             /**
-             * Specifies to use the default Azure Dns server for the network interface.
+             * Specifies to use the default Azure DNS server for the network interface.
              * <p>
-             * Using azure Dns server will remove any custom Dns server associated with this network interface.
+             * Using azure DNS server will remove any custom DNS server associated with this network interface.
              *
              * @return the next stage of the network interface update
              */
