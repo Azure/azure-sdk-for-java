@@ -564,7 +564,7 @@ class VirtualMachineImpl
     //
 
     @Override
-    public VirtualMachineImpl withNewStorageAccount(StorageAccount.DefinitionStages.WithCreate creatable) {
+    public VirtualMachineImpl withNewStorageAccount(Creatable<StorageAccount> creatable) {
         // This method's effect is NOT additive.
         if (this.creatableStorageAccountKey == null) {
             this.creatableStorageAccountKey = creatable.key();
@@ -579,7 +579,7 @@ class VirtualMachineImpl
                 .storageAccounts()
                 .define(name)
                 .withRegion(this.regionName());
-        StorageAccount.DefinitionStages.WithCreate definitionAfterGroup;
+        Creatable<StorageAccount> definitionAfterGroup;
         if (this.newGroup != null) {
             definitionAfterGroup = definitionWithGroup.withNewGroup(this.newGroup);
         } else {

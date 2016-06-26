@@ -793,7 +793,7 @@ public interface VirtualMachine extends
              * @param creatable the storage account in creatable stage
              * @return the stage representing creatable VM definition
              */
-            WithCreate withNewStorageAccount(StorageAccount.DefinitionStages.WithCreate creatable);
+            WithCreate withNewStorageAccount(Creatable<StorageAccount> creatable);
 
             /**
              * Specifies an existing {@link StorageAccount} storage account to put the VM's OS and data disk VHD in.
