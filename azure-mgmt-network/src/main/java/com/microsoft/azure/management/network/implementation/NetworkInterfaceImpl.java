@@ -170,7 +170,7 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public NetworkInterfaceImpl withNewNetworkSecurityGroup(NetworkSecurityGroup.DefinitionStages.WithCreate creatable) {
+    public NetworkInterfaceImpl withNewNetworkSecurityGroup(Creatable<NetworkSecurityGroup> creatable) {
         if (this.creatableNetworkSecurityGroupKey == null) {
             this.creatableNetworkSecurityGroupKey = creatable.key();
             this.addCreatableDependency(creatable);
