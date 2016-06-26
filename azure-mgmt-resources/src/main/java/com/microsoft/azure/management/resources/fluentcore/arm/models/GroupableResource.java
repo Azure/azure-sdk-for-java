@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.models;
 
 import com.microsoft.azure.management.resources.ResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
 /**
  * Base interface for resources in resource groups.
@@ -60,6 +61,6 @@ public interface GroupableResource extends Resource {
          * @param groupDefinition a creatable definition for a new resource group
          * @return the next stage of the resource definition
          */
-        T withNewGroup(ResourceGroup.DefinitionCreatable groupDefinition);
+        T withNewGroup(Creatable<ResourceGroup> groupDefinition);
     }
 }

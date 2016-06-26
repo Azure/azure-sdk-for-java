@@ -18,6 +18,8 @@ import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+
 import org.junit.Assert;
 
 public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, VirtualMachines> {
@@ -37,7 +39,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
         // Prepare the resource group definition
         final String rgName = "rg" + this.testId;
-        ResourceGroup.DefinitionCreatable resourceGroupCreatable = this.resourceGroups
+        Creatable<ResourceGroup> resourceGroupCreatable = this.resourceGroups
                 .define(rgName)
                 .withRegion(Region.US_EAST);
 
@@ -51,7 +53,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
 
         // Prepare the secondary network interface definition
         final String secondaryNicName = "nic" + this.testId;
-        NetworkInterface.DefinitionStages.WithCreate secondaryNetworkInterfaceCreatable = this.networkInterfaces
+        Creatable<NetworkInterface> secondaryNetworkInterfaceCreatable = this.networkInterfaces
                 .define(secondaryNicName)
                 .withRegion(Region.US_EAST)
                 .withNewGroup(resourceGroupCreatable)
@@ -62,7 +64,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
 
         // Prepare the secondary network interface definition
         final String secondaryNicName2 = "nic2" + this.testId;
-        NetworkInterface.DefinitionStages.WithCreate secondaryNetworkInterfaceCreatable2 = this.networkInterfaces
+        Creatable<NetworkInterface> secondaryNetworkInterfaceCreatable2 = this.networkInterfaces
                 .define(secondaryNicName2)
                 .withRegion(Region.US_EAST)
                 .withNewGroup(resourceGroupCreatable)

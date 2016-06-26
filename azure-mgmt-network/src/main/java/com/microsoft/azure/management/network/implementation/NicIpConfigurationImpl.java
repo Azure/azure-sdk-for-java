@@ -11,6 +11,7 @@ import com.microsoft.azure.management.network.implementation.api.PublicIPAddress
 import com.microsoft.azure.management.network.implementation.api.SubnetInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
 import java.io.IOException;
 import java.util.List;
@@ -118,7 +119,7 @@ class NicIpConfigurationImpl
     }
 
     @Override
-    public NicIpConfigurationImpl withNewNetwork(Network.DefinitionStages.WithCreate creatable) {
+    public NicIpConfigurationImpl withNewNetwork(Creatable<Network> creatable) {
         this.creatableVirtualNetworkKey = creatable.key();
         this.parent().addToCreatableDependencies(creatable);
         return this;
@@ -165,7 +166,7 @@ class NicIpConfigurationImpl
     }
 
     @Override
-    public NicIpConfigurationImpl withNewPublicIpAddress(PublicIpAddress.DefinitionStages.WithCreate creatable) {
+    public NicIpConfigurationImpl withNewPublicIpAddress(Creatable<PublicIpAddress> creatable) {
         if (this.creatablePublicIpKey == null) {
             this.creatablePublicIpKey = creatable.key();
             this.parent().addToCreatableDependencies(creatable);
@@ -210,14 +211,8 @@ class NicIpConfigurationImpl
         }
     }
 
-    /**
-     * Creates a {@link PublicIpAddress.DefinitionCreatable} with the give name and DNS label.
-     *
-     * @param name the public IP name
-     * @param leafDnsLabel the domain name label
-     * @return {@link PublicIpAddress.DefinitionCreatable}
-     */
-    private PublicIpAddress.DefinitionStages.WithCreate prepareCreatablePublicIp(String name, String leafDnsLabel) {
+    // Creates a creatable public IP address definition with the given name and DNS label.
+    private Creatable<PublicIpAddress> prepareCreatablePublicIp(String name, String leafDnsLabel) {
         PublicIpAddress.DefinitionStages.WithGroup definitionWithGroup = this.networkManager.publicIpAddresses()
                     .define(name)
                     .withRegion(this.parent().regionName());
