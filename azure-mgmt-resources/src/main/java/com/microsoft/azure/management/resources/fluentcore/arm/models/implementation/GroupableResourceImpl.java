@@ -10,6 +10,7 @@ import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.ManagerBase;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
 /**
  * The implementation for {@link GroupableResource}.
@@ -31,7 +32,7 @@ public abstract class GroupableResourceImpl<
             GroupableResource {
 
     protected final ManagerT myManager;
-    protected ResourceGroup.DefinitionCreatable newGroup;
+    protected Creatable<ResourceGroup> newGroup;
     private String groupName;
 
     protected GroupableResourceImpl(
@@ -88,7 +89,7 @@ public abstract class GroupableResourceImpl<
      * @return the next stage of the resource definition
      */
     @SuppressWarnings("unchecked")
-    public final FluentModelImplT withNewGroup(ResourceGroup.DefinitionCreatable creatable) {
+    public final FluentModelImplT withNewGroup(Creatable<ResourceGroup> creatable) {
         this.groupName = creatable.key();
         this.newGroup = creatable;
         addCreatableDependency(creatable);

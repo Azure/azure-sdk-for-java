@@ -469,7 +469,7 @@ class NetworkInterfaceImpl
         return super.createdResource(key);
     }
 
-    ResourceGroup.DefinitionCreatable newGroup() {
+    Creatable<ResourceGroup> newGroup() {
         return this.newGroup;
     }
 }

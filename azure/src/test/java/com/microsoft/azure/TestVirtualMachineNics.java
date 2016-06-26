@@ -39,7 +39,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
         // Prepare the resource group definition
         final String rgName = "rg" + this.testId;
-        ResourceGroup.DefinitionCreatable resourceGroupCreatable = this.resourceGroups
+        Creatable<ResourceGroup> resourceGroupCreatable = this.resourceGroups
                 .define(rgName)
                 .withRegion(Region.US_EAST);
 
