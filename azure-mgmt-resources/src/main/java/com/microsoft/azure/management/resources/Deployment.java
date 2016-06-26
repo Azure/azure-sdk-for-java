@@ -246,78 +246,83 @@ public interface Deployment extends
     }
 
     /**
-     * A deployment update allowing to change the deployment mode.
+     * Grouping of all the deployment updates stages.
      */
-    interface UpdateWithDeploymentMode {
+    interface UpdateStages {
         /**
-         * Specifies the deployment mode.
-         *
-         * @param mode the mode of the deployment
-         * @return the next stage of the deployment update
+         * A deployment update allowing to change the deployment mode.
          */
-        Update withMode(DeploymentMode mode);
-    }
-
-    /**
-     * A deployment update allowing to change the template.
-     */
-    interface UpdateWithTemplate {
-        /**
-         * Specifies the template as a Java object.
-         *
-         * @param template the Java object
-         * @return the next stage of the deployment update
-         */
-        Update withTemplate(Object template);
+        interface WithMode {
+            /**
+             * Specifies the deployment mode.
+             *
+             * @param mode the mode of the deployment
+             * @return the next stage of the deployment update
+             */
+            Update withMode(DeploymentMode mode);
+        }
 
         /**
-         * Specifies the template as a JSON string.
-         *
-         * @param templateJson the JSON string
-         * @return the next stage of the deployment update
-         * @throws IOException exception thrown from serialization/deserialization
+         * A deployment update allowing to change the template.
          */
-        Update withTemplate(String templateJson) throws IOException;
+        interface WithTemplate {
+            /**
+             * Specifies the template as a Java object.
+             *
+             * @param template the Java object
+             * @return the next stage of the deployment update
+             */
+            Update withTemplate(Object template);
+
+            /**
+             * Specifies the template as a JSON string.
+             *
+             * @param templateJson the JSON string
+             * @return the next stage of the deployment update
+             * @throws IOException exception thrown from serialization/deserialization
+             */
+            Update withTemplate(String templateJson) throws IOException;
+
+            /**
+             * Specifies the template as a URL.
+             *
+             * @param uri the location of the remote template file
+             * @param contentVersion the version of the template file
+             * @return the next stage of the deployment update
+             */
+            Update withTemplateLink(String uri, String contentVersion);
+        }
 
         /**
-         * Specifies the template as a URL.
-         *
-         * @param uri the location of the remote template file
-         * @param contentVersion the version of the template file
-         * @return the next stage of the deployment update
+         * A deployment update allowing to change the parameters.
          */
-        Update withTemplateLink(String uri, String contentVersion);
-    }
+        interface WithParameters {
+            /**
+             * Specifies the parameters as a Java object.
+             *
+             * @param parameters the Java object
+             * @return the next stage of the deployment update
+             */
+            Update withParameters(Object parameters);
 
-    /**
-     * A deployment update allowing to change the parameters.
-     */
-    interface UpdateWithParameters {
-        /**
-         * Specifies the parameters as a Java object.
-         *
-         * @param parameters the Java object
-         * @return the next stage of the deployment update
-         */
-        Update withParameters(Object parameters);
+            /**
+             * Specifies the parameters as a JSON string.
+             *
+             * @param parametersJson the JSON string
+             * @return the next stage of the deployment update
+             * @throws IOException exception thrown from serialization/deserialization
+             */
+            Update withParameters(String parametersJson) throws IOException;
 
-        /**
-         * Specifies the parameters as a JSON string.
-         *
-         * @param parametersJson the JSON string
-         * @return the next stage of the deployment update
-         * @throws IOException exception thrown from serialization/deserialization
-         */
-        Update withParameters(String parametersJson) throws IOException;
-
-        /**
-         * Specifies the parameters as a URL.
-         *
-         * @param uri the location of the remote parameters file
-         * @param contentVersion the version of the parameters file
-         * @return the next stage of the deployment update
-         */
-        Update withParametersLink(String uri, String contentVersion);
+            /**
+             * Specifies the parameters as a URL.
+             *
+             * @param uri the location of the remote parameters file
+             * @param contentVersion the version of the parameters file
+             * @return the next stage of the deployment update
+             */
+            Update withParametersLink(String uri, String contentVersion);
+        }
     }
 
     /**
@@ -328,8 +333,8 @@ public interface Deployment extends
      */
     interface Update extends
             Appliable<Deployment>,
-            UpdateWithTemplate,
-            UpdateWithParameters,
-            UpdateWithDeploymentMode {
+            UpdateStages.WithTemplate,
+            UpdateStages.WithParameters,
+            UpdateStages.WithMode {
     }
 }
