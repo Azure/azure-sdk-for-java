@@ -156,7 +156,7 @@ public interface NetworkInterface extends
          * The stage of the network interface definition allowing to specify the resource group.
          */
         interface WithGroup
-                extends GroupableResource.DefinitionWithGroup<WithPrimaryNetwork> {
+                extends GroupableResource.DefinitionStages.WithGroup<WithPrimaryNetwork> {
         }
 
         /**

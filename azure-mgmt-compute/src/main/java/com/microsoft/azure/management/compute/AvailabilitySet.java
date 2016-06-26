@@ -86,7 +86,7 @@ public interface AvailabilitySet extends
         /**
          * The stage of the availability set definition allowing to specify the resource group.
          */
-        interface WithGroup extends GroupableResource.DefinitionWithGroup<WithCreate> {
+        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithCreate> {
         }
 
         /**

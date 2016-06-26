@@ -45,11 +45,7 @@ final class DeploymentImpl extends
         CreatableUpdatableImpl<Deployment, DeploymentExtendedInner, DeploymentImpl>
         implements
         Deployment,
-        Deployment.DefinitionBlank,
-        Deployment.DefinitionWithTemplate,
-        Deployment.DefinitionWithParameters,
-        Deployment.DefinitionWithMode,
-        Deployment.DefinitionCreatable,
+        Deployment.Definition,
         Deployment.Update {
 
     private final DeploymentsInner client;
@@ -188,16 +184,32 @@ final class DeploymentImpl extends
         return new DeploymentExportResultImpl(inner);
     }
 
+    // Withers
+
     @Override
-    public DefinitionWithTemplate withNewResourceGroup(String resourceGroupName, Region region) {
+    public DeploymentImpl withNewGroup(String resourceGroupName, Region region) {
         this.creatableResourceGroup = this.resourceManager.resourceGroups().define(resourceGroupName).withRegion(region);
         this.resourceGroupName = resourceGroupName;
         return this;
     }
 
     @Override
-    public DefinitionWithTemplate withExistingResourceGroup(String resourceGroupName) {
+    public DeploymentImpl withNewGroup(Creatable<ResourceGroup> resourceGroupDefinition) {
+        this.resourceGroupName = resourceGroupDefinition.key();
+        addCreatableDependency(resourceGroupDefinition);
+        return this;
+
+    }
+
+    @Override
+    public DeploymentImpl withExistingGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
+        return this;
+    }
+
+    @Override
+    public DeploymentImpl withExistingGroup(ResourceGroup resourceGroup) {
+        this.resourceGroupName = resourceGroup.name();
         return this;
     }
 
@@ -261,7 +273,7 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public Deployment beginCreate() throws Exception {         //  FLUENT: implementation of ResourceGroup.DefinitionCreatable.Creatable<ResourceGroup>
+    public DeploymentImpl beginCreate() throws Exception {
         DeploymentInner inner = new DeploymentInner()
                 .withProperties(new DeploymentProperties());
         inner.properties().withMode(mode());
@@ -274,7 +286,7 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public DeploymentImpl create() throws Exception {         //  FLUENT: implementation of ResourceGroup.DefinitionCreatable.Creatable<ResourceGroup>
+    public DeploymentImpl create() throws Exception {
         if (this.creatableResourceGroup != null) {
             this.creatableResourceGroup.create();
         }
