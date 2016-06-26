@@ -166,7 +166,7 @@ class NicIpConfigurationImpl
     }
 
     @Override
-    public NicIpConfigurationImpl withNewPublicIpAddress(PublicIpAddress.DefinitionStages.WithCreate creatable) {
+    public NicIpConfigurationImpl withNewPublicIpAddress(Creatable<PublicIpAddress> creatable) {
         if (this.creatablePublicIpKey == null) {
             this.creatablePublicIpKey = creatable.key();
             this.parent().addToCreatableDependencies(creatable);

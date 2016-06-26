@@ -278,7 +278,7 @@ class VirtualMachineImpl
     // Fluent methods for defining public IP association for the new primary network interface
 
     @Override
-    public VirtualMachineImpl withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionStages.WithCreate creatable) {
+    public VirtualMachineImpl withNewPrimaryPublicIpAddress(Creatable<PublicIpAddress> creatable) {
         NetworkInterface.DefinitionStages.WithCreate nicCreatable = this.nicDefinitionWithCreate
                 .withNewPrimaryPublicIpAddress(creatable);
         this.addCreatableDependency(nicCreatable);

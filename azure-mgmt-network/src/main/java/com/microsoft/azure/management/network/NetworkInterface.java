@@ -256,7 +256,7 @@ public interface NetworkInterface extends
              * @param creatable a creatable definition for a new public IP
              * @return the next stage of the network interface definition
              */
-            WithCreate withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionStages.WithCreate creatable);
+            WithCreate withNewPrimaryPublicIpAddress(Creatable<PublicIpAddress> creatable);
 
             /**
              * Creates a new public IP address in the same region and group as the resource and associate it
@@ -417,7 +417,7 @@ public interface NetworkInterface extends
              * @param creatable a creatable definition for a new public IP
              * @return the next stage of the network interface update
              */
-            Update withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionStages.WithCreate creatable);
+            Update withNewPrimaryPublicIpAddress(Creatable<PublicIpAddress> creatable);
 
             /**
              * Creates a new public IP address in the same region and group as the resource and associate it

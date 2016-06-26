@@ -394,7 +394,7 @@ public interface VirtualMachine extends
              * @param creatable a creatable definition for a new public IP
              * @return the next stage of the virtual machine definition
              */
-            WithOS withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionStages.WithCreate creatable);
+            WithOS withNewPrimaryPublicIpAddress(Creatable<PublicIpAddress> creatable);
 
             /**
              * Creates a new public IP address in the same region and group as the resource, with the specified DNS label

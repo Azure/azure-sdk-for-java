@@ -197,7 +197,7 @@ public interface NicIpConfiguration extends
              * @param creatable a creatable definition for a new public IP
              * @return the next stage of the network interface IP configuration definition
              */
-            WithAttach<ParentT> withNewPublicIpAddress(PublicIpAddress.DefinitionStages.WithCreate creatable);
+            WithAttach<ParentT> withNewPublicIpAddress(Creatable<PublicIpAddress> creatable);
 
             /**
              * Creates a new public IP address in the same region and group as the resource and associate it
@@ -372,7 +372,7 @@ public interface NicIpConfiguration extends
              * @param creatable a creatable definition for a new public IP
              * @return the next stage of the network interface IP configuration definition
              */
-            WithAttach<ParentT> withNewPublicIpAddress(PublicIpAddress.DefinitionStages.WithCreate creatable);
+            WithAttach<ParentT> withNewPublicIpAddress(Creatable<PublicIpAddress> creatable);
 
             /**
              * Creates a new public IP address in the same region and group as the resource and associate it
@@ -483,7 +483,7 @@ public interface NicIpConfiguration extends
              * @param creatable a creatable definition for a new public IP
              * @return the next stage of the network interface IP configuration update
              */
-            Update withNewPublicIpAddress(PublicIpAddress.DefinitionStages.WithCreate creatable);
+            Update withNewPublicIpAddress(Creatable<PublicIpAddress> creatable);
 
             /**
              * Creates a new public IP address in the same region and group as the resource and associate it
