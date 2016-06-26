@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
  * Entry point to network interface management.
  */
 public interface NetworkInterfaces  extends
-        SupportsCreating<NetworkInterface.DefinitionBlank>,
+        SupportsCreating<NetworkInterface.DefinitionStages.Blank>,
         SupportsListing<NetworkInterface>,
         SupportsListingByGroup<NetworkInterface>,
         SupportsGettingByGroup<NetworkInterface>,

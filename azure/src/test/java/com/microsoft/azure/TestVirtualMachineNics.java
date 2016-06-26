@@ -51,18 +51,18 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
 
         // Prepare the secondary network interface definition
         final String secondaryNicName = "nic" + this.testId;
-        NetworkInterface.DefinitionCreatable secondaryNetworkInterfaceCreatable = this.networkInterfaces
+        NetworkInterface.DefinitionStages.WithCreate secondaryNetworkInterfaceCreatable = this.networkInterfaces
                 .define(secondaryNicName)
                 .withRegion(Region.US_EAST)
                 .withNewGroup(resourceGroupCreatable)
                 .withNewPrimaryNetwork(networkCreatable)
                 .withPrimaryPrivateIpAddressStatic("10.0.0.5");
-                // .withNewPrimaryPublicIpAddress(secondaryPublicIpCreatable);
+                // .withNewPrimaryPublicIpAddress();
                 // [Secondary NIC cannot have PublicIp - Only primary network interface can reference a public IP address]
 
         // Prepare the secondary network interface definition
         final String secondaryNicName2 = "nic2" + this.testId;
-        NetworkInterface.DefinitionCreatable secondaryNetworkInterfaceCreatable2 = this.networkInterfaces
+        NetworkInterface.DefinitionStages.WithCreate secondaryNetworkInterfaceCreatable2 = this.networkInterfaces
                 .define(secondaryNicName2)
                 .withRegion(Region.US_EAST)
                 .withNewGroup(resourceGroupCreatable)

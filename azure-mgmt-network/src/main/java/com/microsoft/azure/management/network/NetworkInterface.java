@@ -27,9 +27,9 @@ public interface NetworkInterface extends
         Refreshable<NetworkInterface>,
         Wrapper<NetworkInterfaceInner>,
         Updatable<NetworkInterface.Update> {
-
+    // Getters
     /**
-     * @return <tt>true</tt> if IP forwarding is enabled in this network interface
+     * @return <tt>true</tt> if Ip forwarding is enabled in this network interface
      */
     boolean isIpForwardingEnabled();
 
@@ -39,36 +39,36 @@ public interface NetworkInterface extends
     boolean isPrimary();
 
     /**
-     * @return the MAC Address of the network interface
+     * @return the Mac Address of the network interface
      */
     String macAddress();
 
     /**
      *
-     * @return the Internal DNS name assigned to this network interface
+     * @return the Internal Dns name assigned to this network interface
      */
     String internalDnsNameLabel();
 
     /**
      * Gets the fully qualified domain name of this network interface.
      * <p>
-     * a network interface receives FQDN as a part of assigning it to a virtual machine
+     * A network interface receives Fqdn as a part of assigning it to a virtual machine.
      *
      * @return the qualified domain name
      */
     String internalFqdn();
 
     /**
-     * @return IP addresses this network interface's DNS servers
+     * @return Ip addresses of this network interface's DNS servers
      */
     List<String> dnsServers();
 
     /**
-     * Gets the public IP address associated with this network interface.
+     * Gets the public Ip address associated with this network interface.
      * <p>
-     * note that this method makes a rest API call to fetch the public IP
+     * This method makes a rest API call to fetch the public Ip.
      *
-     * @return the public IP associated with this network interface
+     * @return the public Ip associated with this network interface
      * @throws CloudException exceptions thrown from the cloud.
      * @throws IOException exceptions thrown from serialization/deserialization.
      */
@@ -82,7 +82,7 @@ public interface NetworkInterface extends
     /**
      * Gets the virtual network associated this network interface's primary Ip configuration.
      * <p>
-     * note that this method makes a rest API call to fetch the public IP
+     * This method makes a rest API call to fetch the virtual network.
      *
      * @return the virtual network associated with this network interface.
      * @throws CloudException exceptions thrown from the cloud.
@@ -91,16 +91,17 @@ public interface NetworkInterface extends
     Network primaryNetwork() throws CloudException, IOException;
 
     /**
-     * Gets the private IP address allocated to this network interface's primary Ip configuration.
+     * Gets the private Ip address allocated to this network interface's primary Ip configuration.
      * <p>
-     * the private IP will be within the virtual network subnet of this network interface.
+     * The private Ip will be within the virtual network subnet of this network interface.
      *
-     * @return the private IP addresses
+     * @return the private Ip addresses
      */
     String primaryPrivateIp();
 
     /**
-     * @return the private IP allocation method (Dynamic, Static) of this network interface's primary Ip configuration.
+     * @return the private Ip allocation method (Dynamic, Static) of this network interface's
+     * primary Ip configuration.
      */
     String primaryPrivateIpAllocationMethod();
 
@@ -110,14 +111,15 @@ public interface NetworkInterface extends
     List<NicIpConfiguration> ipConfigurations();
 
     /**
-     * @return the resource id of the network security group associated with this network interface.
+     * @return the network security group resource id or null if there is no network security group
+     * associated with this network interface.
      */
     String networkSecurityGroupId();
 
     /**
      * Gets the network security group associated this network interface.
      * <p>
-     * note that this method makes a rest API call to fetch the Network Security Group resource
+     * This method makes a rest API call to fetch the Network Security Group resource.
      *
      * @return the network security group associated with this network interface.
      * @throws CloudException exceptions thrown from the cloud.
@@ -125,393 +127,455 @@ public interface NetworkInterface extends
      */
     NetworkSecurityGroup networkSecurityGroup() throws CloudException, IOException;
 
+    // Setters (fluent)
+
     /**
-     * Container interface for all the definitions.
+     * The entirety of the network interface definition.
      */
-    interface Definitions extends
-            NetworkInterface.DefinitionBlank,
-            NetworkInterface.DefinitionWithGroup,
-            NetworkInterface.DefinitionWithNetwork,
-            NetworkInterface.DefinitionWithSubnet,
-            NetworkInterface.DefinitionWithPrivateIp,
-            NetworkInterface.DefinitionWithPublicIpAddress,
-            NetworkInterface.DefinitionWithNetworkSecurityGroup,
-            NetworkInterface.DefinitionCreatable {
+    interface Definition extends
+            DefinitionStages.Blank,
+            DefinitionStages.WithGroup,
+            DefinitionStages.WithPrimaryNetwork,
+            DefinitionStages.WithPrimaryNetworkSubnet,
+            DefinitionStages.WithPrimaryPrivateIp,
+            DefinitionStages.WithCreate {
     }
 
     /**
-     * The first stage of the network interface.
+     * Grouping of network interface definition stages.
      */
-    interface DefinitionBlank
-            extends GroupableResource.DefinitionWithRegion<NetworkInterface.DefinitionWithGroup> {
+    interface DefinitionStages {
+        /**
+         * The first stage of the network interface.
+         */
+        interface Blank
+                extends GroupableResource.DefinitionWithRegion<WithGroup> {
+        }
+
+        /**
+         * The stage of the network interface definition allowing to specify the resource group.
+         */
+        interface WithGroup
+                extends GroupableResource.DefinitionWithGroup<WithPrimaryNetwork> {
+        }
+
+        /**
+         * The stage of the network interface definition allowing to specify the virtual network for
+         * primary Ip configuration.
+         */
+        interface WithPrimaryNetwork {
+            /**
+             * Create a new virtual network to associate with the network interface's primary Ip configuration,
+             * based on the provided definition.
+             *
+             * @param creatable a creatable definition for a new virtual network
+             * @return the next stage of the network interface definition
+             */
+            WithPrimaryPrivateIp withNewPrimaryNetwork(Network.DefinitionStages.WithCreate creatable);
+
+            /**
+             * Creates a new virtual network to associate with the network interface's primary Ip configuration.
+             * <p>
+             * The virtual network will be created in the same resource group and region as of network interface,
+             * it will be created with the specified address space and a default subnet covering the entirety of
+             * the network IP address space.
+             *
+             * @param name the name of the new virtual network
+             * @param addressSpace the address space for rhe virtual network
+             * @return the next stage of the network interface definition
+             */
+            WithPrimaryPrivateIp withNewPrimaryNetwork(String name, String addressSpace);
+
+            /**
+             * Creates a new virtual network to associate with the network interface's primary Ip configuration.
+             * <p>
+             * The virtual network will be created in the same resource group and region as of network interface,
+             * it will be created with the specified address space and a default subnet covering the entirety of
+             * the network IP address space.
+             *
+             * @param addressSpace the address space for the virtual network
+             * @return the next stage of the network interface definition
+             */
+            WithPrimaryPrivateIp withNewPrimaryNetwork(String addressSpace);
+
+            /**
+             * Associate an existing virtual network with the network interface's primary Ip configuration.
+             *
+             * @param network an existing virtual network
+             * @return the next stage of the network interface definition
+             */
+            WithPrimaryNetworkSubnet withExistingPrimaryNetwork(Network network);
+        }
+
+        /**
+         * The stage of the network interface definition allowing to specify subnet.
+         */
+        interface WithPrimaryNetworkSubnet {
+            /**
+             * Associate a subnet with the network interface's primary Ip configuration.
+             *
+             * @param name the subnet name
+             * @return the next stage of the network interface definition
+             */
+            WithPrimaryPrivateIp withSubnet(String name);
+        }
+
+        /**
+         * The stage of the network interface definition allowing to specify private Ip address within
+         * a virtual network subnet.
+         */
+        interface WithPrimaryPrivateIp {
+            /**
+             * Enables dynamic private IP address allocation within the specified existing virtual network
+             * subnet for the network interface's primary Ip configuration.
+             *
+             * @return the next stage of network interface definition
+             */
+            WithCreate withPrimaryPrivateIpAddressDynamic();
+
+            /**
+             * Assigns the specified static private IP address within the specified existing virtual network
+             * subnet to the network interface's primary Ip configuration.
+             *
+             * @param staticPrivateIpAddress the static IP address within the specified subnet to assign to
+             *                               the network interface
+             * @return the next stage of network interface definition
+             */
+            WithCreate withPrimaryPrivateIpAddressStatic(String staticPrivateIpAddress);
+        }
+
+        /**
+         * The stage of the network interface definition allowing to associate public Ip address with it's primary
+         * Ip configuration.
+         */
+        interface WithPrimaryPublicIpAddress {
+            /**
+             * Create a new public Ip address to associate with network interface's primary Ip configuration, based on
+             * the provided definition.
+             *
+             * @param creatable a creatable definition for a new public IP
+             * @return the next stage of the network interface definition
+             */
+            WithCreate withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionStages.WithCreate creatable);
+
+            /**
+             * Creates a new public Ip address in the same region and group as the resource and associate it
+             * with the network interface's primary Ip configuration.
+             * <p>
+             * the internal name and DNS label for the public IP address will be derived from the network interface name
+             *
+             * @return the next stage of the network interface definition
+             */
+            WithCreate withNewPrimaryPublicIpAddress();
+
+            /**
+             * Creates a new public Ip address in the same region and group as the resource, with the specified DNS label
+             * and associate it with the network interface's primary Ip configuration.
+             * <p>
+             * the internal name for the public IP address will be derived from the DNS label
+             *
+             * @param leafDnsLabel the leaf domain label
+             * @return the next stage of the network interface definition
+             */
+            WithCreate withNewPrimaryPublicIpAddress(String leafDnsLabel);
+
+            /**
+             * Associates an existing public Ip address with the network interface's primary Ip configuration.
+             *
+             * @param publicIpAddress an existing public IP address
+             * @return the next stage of the network interface definition
+             */
+            WithCreate withExistingPrimaryPublicIpAddress(PublicIpAddress publicIpAddress);
+        }
+
+        /**
+         * The stage of the network interface definition allowing to associate a network security group.
+         */
+        interface WithNetworkSecurityGroup {
+            /**
+             * Create a new network security group to associate with network interface, based on the provided definition.
+             *
+             * @param creatable a creatable definition for a new network security group
+             * @return the next stage of the network interface definition
+             */
+            WithCreate withNewNetworkSecurityGroup(NetworkSecurityGroup.DefinitionStages.WithCreate creatable);
+
+            /**
+             * Associates an existing network security group with the network interface.
+             *
+             * @param networkSecurityGroup an existing network security group
+             * @return the next stage of the network interface definition
+             */
+            WithCreate withExistingNetworkSecurityGroup(NetworkSecurityGroup networkSecurityGroup);
+        }
+
+        /**
+         * The stage of the network interface definition allowing to associate a secondary Ip configurations.
+         */
+        interface WithSecondaryIpConfiguration {
+            /**
+             * Starts definition of a secondary Ip configuration.
+             *
+             * @param name name for the Ip configuration
+             * @return the first stage of a secondary Ip configuration definition
+             */
+            NicIpConfiguration.DefinitionStages.Blank<WithCreate> defineSecondaryIpConfiguration(String name);
+        }
+
+        /**
+         * The stage of the network interface definition which contains all the minimum required inputs for
+         * the resource to be created (via {@link WithCreate#create()}), but also allows
+         * for any other optional settings to be specified.
+         */
+        interface WithCreate extends
+                Creatable<NetworkInterface>,
+                Resource.DefinitionWithTags<WithCreate>,
+                WithPrimaryPublicIpAddress,
+                WithNetworkSecurityGroup,
+                WithSecondaryIpConfiguration {
+            /**
+             * Enable Ip forwarding in the network interface.
+             *
+             * @return the next stage of the network interface definition
+             */
+            WithCreate withIpForwarding();
+
+            /**
+             * Specifies the Ip address of the custom DNS server to associate with the network interface.
+             * <p>
+             * Note this method's effect is additive, i.e. each time it is used, the new dns server is
+             * added to the network interface.
+             *
+             * @param ipAddress the IP address of the DNS server
+             * @return the next stage of the network interface definition
+             */
+            WithCreate withDnsServer(String ipAddress);
+
+            /**
+             * Specifies the internal Dns name label for the network interface.
+             *
+             * @param dnsNameLabel the internal Dns name label
+             * @return the next stage of the network interface definition
+             */
+            WithCreate withInternalDnsNameLabel(String dnsNameLabel);
+        }
     }
 
     /**
-     * The stage of the network interface definition allowing to specify the resource group.
+     * Grouping of network interface update stages.
      */
-    interface DefinitionWithGroup
-            extends GroupableResource.DefinitionWithGroup<NetworkInterface.DefinitionWithNetwork> {
+    interface UpdateStages {
+        /**
+         * The stage of the network interface update allowing to specify subnet.
+         */
+        interface WithPrimaryNetworkSubnet {
+            /**
+             * Associate a subnet with the network interface.
+             *
+             * @param name the subnet name
+             * @return the next stage of the network interface update
+             */
+            Update withSubnet(String name);
+        }
+
+        /**
+         * The stage of the network interface update allowing to specify private Ip address within
+         * a virtual network subnet.
+         */
+        interface WithPrimaryPrivateIp {
+            /**
+             * Enables dynamic private IP address allocation within the specified existing virtual network
+             * subnet for the network interface's primary Ip configuration.
+             *
+             * @return the next stage of network interface update
+             */
+            Update withPrimaryPrivateIpAddressDynamic();
+
+            /**
+             * Assigns the specified static private IP address within the specified existing virtual network
+             * subnet to the network interface's primary Ip configuration.
+             *
+             * @param staticPrivateIpAddress the static IP address within the specified subnet to assign to
+             *                               the primary Ip configuration
+             * @return the next stage of network interface update
+             */
+            Update withPrimaryPrivateIpAddressStatic(String staticPrivateIpAddress);
+        }
+
+        /**
+         * The stage of the network interface update allowing to associate public Ip address with it's primary
+         * Ip configuration.
+         */
+        interface WithPrimaryPublicIpAddress {
+            /**
+             * Create a new public IP address to associate the network interface's primary Ip configuration,
+             * based on the provided definition.
+             * <p>
+             * if there is public IP associated with the primary Ip configuration then that will be removed in
+             * favour of this
+             *
+             * @param creatable a creatable definition for a new public IP
+             * @return the next stage of the network interface update
+             */
+            Update withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionStages.WithCreate creatable);
+
+            /**
+             * Creates a new public Ip address in the same region and group as the resource and associate it
+             * with the network interface's primary Ip configuration.
+             * <p>
+             * the internal name and DNS label for the public IP address will be derived from the network interface name,
+             * if there is an existing public IP association then that will be removed in favour of this
+             *
+             * @return the next stage of the network interface update
+             */
+            Update withNewPrimaryPublicIpAddress();
+
+            /**
+             * Creates a new public Ip address in the same region and group as the resource, with the specified DNS label
+             * and associate it with the network interface's primary Ip configuration.
+             * <p>
+             * the internal name for the public IP address will be derived from the DNS label, if there is an existing
+             * public IP association then that will be removed in favour of this
+             *
+             * @param leafDnsLabel the leaf domain label
+             * @return the next stage of the network interface update
+             */
+            Update withNewPrimaryPublicIpAddress(String leafDnsLabel);
+
+            /**
+             * Specifies that remove any public Ip associated with the network interface's primary Ip configuration.
+             *
+             * @return the next stage of the network interface update
+             */
+            Update withoutPrimaryPublicIpAddress();
+
+            /**
+             * Associates an existing public Ip address with the network interface's primary Ip configuration.
+             * if there is an existing public IP association then that will be removed in favour of this
+             *
+             * @param publicIpAddress an existing public IP address
+             * @return the next stage of the network interface update
+             */
+            Update withExistingPrimaryPublicIpAddress(PublicIpAddress publicIpAddress);
+        }
+
+        /**
+         * The stage of the network interface update allowing to associate network security group.
+         */
+        interface WithNetworkSecurityGroup {
+            /**
+             * Create a new network security group to associate with network interface, based on the provided definition.
+             *
+             * @param creatable a creatable definition for a new network security group
+             * @return the next stage of the network interface update
+             */
+            Update withNewNetworkSecurityGroup(NetworkSecurityGroup.DefinitionStages.WithCreate creatable);
+
+            /**
+             * Associates an existing network security group with the network interface.
+             *
+             * @param networkSecurityGroup an existing network security group
+             * @return the next stage of the network interface update
+             */
+            Update withExistingNetworkSecurityGroup(NetworkSecurityGroup networkSecurityGroup);
+
+            /**
+             * Specifies that remove any network security group associated with the network interface.
+             *
+             * @return the next stage of the network interface update
+             */
+            Update withoutNetworkSecurityGroup();
+        }
+
+        /**
+         * The stage of the network interface update allowing to enable or disable Ip forwarding.
+         */
+        interface WithIpForwarding {
+            /**
+             * Enable IP forwarding in the network interface.
+             *
+             * @return the next stage of the network interface update
+             */
+            Update withIpForwarding();
+
+            /**
+             * Disable IP forwarding in the network interface.
+             *
+             * @return the next stage of the network interface update
+             */
+            Update withoutIpForwarding();
+        }
+
+        /**
+         * The stage of the network interface update allowing to specify Dns servers.
+         */
+        interface WithDnsServer {
+            /**
+             * Specifies the IP address of the custom Dns server to associate with the network interface.
+             * <p>
+             * Note this method's effect is additive, i.e. each time it is used, the new dns server is
+             * added to the network interface.
+             *
+             * @param ipAddress the Ip address of the Dns server
+             * @return the next stage of the network interface update
+             */
+            Update withDnsServer(String ipAddress);
+
+            /**
+             * Removes a Dns server associated with the network interface.
+             *
+             * @param ipAddress the Ip address of the Dns server
+             * @return the next stage of the network interface update
+             */
+            Update withoutDnsServer(String ipAddress);
+
+            /**
+             * Specifies to use the default Azure Dns server for the network interface.
+             * <p>
+             * Using azure Dns server will remove any custom Dns server associated with this network interface.
+             *
+             * @return the next stage of the network interface update
+             */
+            Update withAzureDnsServer();
+        }
+
+        /**
+         * The stage of the network interface update allowing to configure Ip configuration.
+         */
+        interface WithIpConfiguration {
+            /**
+             * Starts definition of a secondary Ip configuration.
+             *
+             * @param name name for the Ip configuration
+             * @return the first stage of a secondary Ip configuration definition
+             */
+            NicIpConfiguration.UpdateDefinitionStages.Blank<NetworkInterface.Update> defineSecondaryIpConfiguration(String name);
+
+            /**
+             * Starts update of an Ip configuration.
+             *
+             * @param name name of the Ip configuration
+             * @return the first stage of an Ip configuration update
+             */
+            NicIpConfiguration.Update updateIpConfiguration(String name);
+        }
     }
 
     /**
-     * The stage of the network interface definition allowing to specify the virtual network for primary Ip configuration.
-     */
-    interface DefinitionWithNetwork {
-        /**
-         * Create a new virtual network to associate with the network interface's primary Ip configuration, based on
-         * the provided definition.
-         *
-         * @param creatable a creatable definition for a new virtual network
-         * @return the next stage of the network interface definition
-         */
-        DefinitionWithPrivateIp withNewPrimaryNetwork(Network.DefinitionStages.WithCreate creatable);
-
-        /**
-         * Creates a new virtual network to associate with the network interface's primary Ip configuration.
-         * <p>
-         * the virtual network will be created in the same resource group and region as of network interface,
-         * it will be created with the specified address space and a default subnet covering the entirety of
-         * the network IP address space.
-         *
-         * @param name the name of the new virtual network
-         * @param addressSpace the address space for rhe virtual network
-         * @return the next stage of the network interface definition
-         */
-        DefinitionWithPrivateIp withNewPrimaryNetwork(String name, String addressSpace);
-
-        /**
-         * Creates a new virtual network to associate with the network interface's primary Ip configuration.
-         * <p>
-         * the virtual network will be created in the same resource group and region as of network interface,
-         * it will be created with the specified address space and a default subnet covering the entirety of
-         * the network IP address space.
-         *
-         * @param addressSpace the address space for the virtual network
-         * @return the next stage of the network interface definition
-         */
-        DefinitionWithPrivateIp withNewPrimaryNetwork(String addressSpace);
-
-        /**
-         * Associate an existing virtual network with the network interface's primary Ip configuration.
-         *
-         * @param network an existing virtual network
-         * @return the next stage of the network interface definition
-         */
-        DefinitionWithSubnet withExistingPrimaryNetwork(Network network);
-    }
-
-    /**
-     * The stage of the network interface definition allowing to specify subnet.
-     */
-    interface DefinitionWithSubnet {
-        /**
-         * Associate a subnet with the network interface's primary Ip configuration.
-         *
-         * @param name the subnet name
-         * @return the next stage of the network interface definition
-         */
-        DefinitionWithPrivateIp withSubnet(String name);
-    }
-
-    /**
-     * The stage of the network interface definition allowing to specify private IP address within
-     * a virtual network subnet.
-     */
-    interface DefinitionWithPrivateIp {
-        /**
-         * Enables dynamic private IP address allocation within the specified existing virtual network
-         * subnet for the network interface's primary Ip configuration.
-         *
-         * @return the next stage of network interface definition
-         */
-        DefinitionWithPublicIpAddress withPrimaryPrivateIpAddressDynamic();
-
-        /**
-         * Assigns the specified static private IP address within the specified existing virtual network
-         * subnet to the network interface's primary Ip configuration.
-         *
-         * @param staticPrivateIpAddress the static IP address within the specified subnet to assign to
-         *                               the network interface
-         * @return the next stage of network interface definition
-         */
-        DefinitionWithPublicIpAddress withPrimaryPrivateIpAddressStatic(String staticPrivateIpAddress);
-    }
-
-    /**
-     * The stage of the network interface definition allowing to associate public IP address with it's primary
-     * Ip configuration.
-     */
-    interface DefinitionWithPublicIpAddress extends
-            DefinitionCreatable {
-        /**
-         * Create a new public IP address to associate with network interface's primary Ip configuration, based on
-         * the provided definition.
-         *
-         * @param creatable a creatable definition for a new public IP
-         * @return the next stage of the network interface definition
-         */
-        DefinitionCreatable withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionStages.WithCreate creatable);
-
-        /**
-         * Creates a new public IP address in the same region and group as the resource and associate it
-         * with the network interface's primary Ip configuration.
-         * <p>
-         * the internal name and DNS label for the public IP address will be derived from the network interface name
-         *
-         * @return the next stage of the network interface definition
-         */
-        DefinitionCreatable withNewPrimaryPublicIpAddress();
-
-        /**
-         * Creates a new public IP address in the same region and group as the resource, with the specified DNS label
-         * and associate it with the network interface's primary Ip configuration.
-         * <p>
-         * the internal name for the public IP address will be derived from the DNS label
-         *
-         * @param leafDnsLabel the leaf domain label
-         * @return the next stage of the network interface definition
-         */
-        DefinitionCreatable withNewPrimaryPublicIpAddress(String leafDnsLabel);
-
-        /**
-         * Associates an existing public IP address with the network interface's primary Ip configuration.
-         *
-         * @param publicIpAddress an existing public IP address
-         * @return the next stage of the network interface definition
-         */
-        DefinitionCreatable withExistingPrimaryPublicIpAddress(PublicIpAddress publicIpAddress);
-    }
-
-    /**
-     * The stage of the network interface definition allowing to associate a network security group.
-     */
-    interface DefinitionWithNetworkSecurityGroup {
-        /**
-         * Create a new network security group to associate with network interface, based on the provided definition.
-         *
-         * @param creatable a creatable definition for a new network security group
-         * @return the next stage of the network interface definition
-         */
-        DefinitionCreatable withNewNetworkSecurityGroup(NetworkSecurityGroup.DefinitionStages.WithCreate creatable);
-
-        /**
-         * Associates an existing network security group with the network interface.
-         *
-         * @param networkSecurityGroup an existing network security group
-         * @return the next stage of the network interface definition
-         */
-        DefinitionCreatable withExistingNetworkSecurityGroup(NetworkSecurityGroup networkSecurityGroup);
-    }
-
-    /**
-     * The stage of the network interface definition which contains all the minimum required inputs for
-     * the resource to be created (via {@link DefinitionCreatable#create()}), but also allows
-     * for any other optional settings to be specified.
-     */
-    interface DefinitionCreatable extends
-            Creatable<NetworkInterface>,
-            Resource.DefinitionWithTags<NetworkInterface.DefinitionCreatable>,
-            DefinitionWithNetworkSecurityGroup {
-        /**
-         * Enable IP forwarding in the network interface.
-         *
-         * @return the next stage of the network interface definition
-         */
-        DefinitionCreatable withIpForwarding();
-
-        /**
-         * Specifies the IP address of the custom DNS server to associate with the network interface.
-         * <p>
-         * Note this method's effect is additive, i.e. each time it is used, the new dns server is
-         * added to the network interface.
-         *
-         * @param ipAddress the IP address of the DNS server
-         * @return the next stage of the network interface definition
-         */
-        DefinitionCreatable withDnsServer(String ipAddress);
-
-        /**
-         * Specifies the internal DNS name label for the network interface.
-         *
-         * @param dnsNameLabel the internal DNS name label
-         * @return the next stage of the network interface definition
-         */
-        DefinitionCreatable withInternalDnsNameLabel(String dnsNameLabel);
-
-        /**
-         * Starts definition of a secondary Ip configuration.
-         *
-         * @param name name for the Ip configuration
-         * @return the first stage of a secondary Ip configuration definition
-         */
-        NicIpConfiguration.DefinitionBlank<DefinitionCreatable> defineSecondaryIpConfiguration(String name);
-    }
-
-    /**
-     * The template for a network interface update operation, containing all the settings that
+     * The template for an update operation, containing all the settings that
      * can be modified.
      * <p>
      * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
     interface Update extends
             Appliable<NetworkInterface>,
-            Resource.UpdateWithTags<Update> {
-        /**
-         * Associate a subnet with the network interface.
-         *
-         * @param name the subnet name
-         * @return the next stage of the network interface update
-         */
-        Update withSubnet(String name);
-
-        /**
-         * Enables dynamic private IP address allocation within the specified existing virtual network
-         * subnet for the network interface's primary Ip configuration.
-         *
-         * @return the next stage of network interface update
-         */
-        Update withPrimaryPrivateIpAddressDynamic();
-
-        /**
-         * Assigns the specified static private IP address within the specified existing virtual network
-         * subnet to the network interface's primary Ip configuration.
-         *
-         * @param staticPrivateIpAddress the static IP address within the specified subnet to assign to
-         *                               the primary Ip configuration
-         * @return the next stage of network interface update
-         */
-        Update withPrimaryPrivateIpAddressStatic(String staticPrivateIpAddress);
-
-        /**
-         * Enable IP forwarding in the network interface.
-         *
-         * @return the next stage of the network interface update
-         */
-        Update withIpForwarding();
-
-        /**
-         * Disable IP forwarding in the network interface.
-         *
-         * @return the next stage of the network interface update
-         */
-        Update withoutIpForwarding();
-
-        /**
-         * Specifies the IP address of the custom DNS server to associate with the network interface.
-         * <p>
-         * Note this method's effect is additive, i.e. each time it is used, the new dns server is
-         * added to the network interface.
-         *
-         * @param ipAddress the IP address of the DNS server
-         * @return the next stage of the network interface update
-         */
-        Update withDnsServer(String ipAddress);
-
-        /**
-         * Removes a DNS server associated with the network interface.
-         *
-         * @param ipAddress the IP address of the DNS server
-         * @return the next stage of the network interface update
-         */
-        Update withoutDnsServer(String ipAddress);
-
-        /**
-         * Specifies to use the default Azure DNS server for the network interface.
-         * <p>
-         * Using azure DNS server will remove any custom DNS server associated with this network interface.
-         *
-         * @return the next stage of the network interface update
-         */
-        Update withAzureDnsServer();
-
-        /**
-         * Create a new public IP address to associate the network interface's primary Ip configuration,
-         * based on the provided definition.
-         * <p>
-         * if there is public IP associated with the primary Ip configuration then that will be removed in
-         * favour of this
-         *
-         * @param creatable a creatable definition for a new public IP
-         * @return the next stage of the network interface update
-         */
-        Update withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionStages.WithCreate creatable);
-
-        /**
-         * Creates a new public IP address in the same region and group as the resource and associate it
-         * with the network interface's primary Ip configuration.
-         * <p>
-         * the internal name and DNS label for the public IP address will be derived from the network interface name,
-         * if there is an existing public IP association then that will be removed in favour of this
-         *
-         * @return the next stage of the network interface update
-         */
-        Update withNewPrimaryPublicIpAddress();
-
-        /**
-         * Creates a new public IP address in the same region and group as the resource, with the specified DNS label
-         * and associate it with the network interface's primary Ip configuration.
-         * <p>
-         * the internal name for the public IP address will be derived from the DNS label, if there is an existing
-         * public IP association then that will be removed in favour of this
-         *
-         * @param leafDnsLabel the leaf domain label
-         * @return the next stage of the network interface update
-         */
-        Update withNewPrimaryPublicIpAddress(String leafDnsLabel);
-
-        /**
-         * Specifies that remove any public IP associated with the network interface's primary Ip configuration.
-         *
-         * @return the next stage of the network interface update
-         */
-        Update withoutPrimaryPublicIpAddress();
-
-        /**
-         * Associates an existing public IP address with the network interface's primary Ip configuration.
-         * if there is an existing public IP association then that will be removed in favour of this
-         *
-         * @param publicIpAddress an existing public IP address
-         * @return the next stage of the network interface update
-         */
-        Update withExistingPrimaryPublicIpAddress(PublicIpAddress publicIpAddress);
-
-        /**
-         * Create a new network security group to associate with network interface, based on the provided definition.
-         *
-         * @param creatable a creatable definition for a new network security group
-         * @return the next stage of the network interface update
-         */
-        Update withNewNetworkSecurityGroup(NetworkSecurityGroup.DefinitionStages.WithCreate creatable);
-
-        /**
-         * Associates an existing network security group with the network interface.
-         *
-         * @param networkSecurityGroup an existing network security group
-         * @return the next stage of the network interface update
-         */
-        Update withExistingNetworkSecurityGroup(NetworkSecurityGroup networkSecurityGroup);
-
-        /**
-         * Specifies that remove any network security group associated with the network interface.
-         *
-         * @return the next stage of the network interface update
-         */
-        Update withoutNetworkSecurityGroup();
-
-        /**
-         * Starts definition of a secondary Ip configuration.
-         *
-         * @param name name for the Ip configuration
-         * @return the first stage of a secondary Ip configuration definition
-         */
-        NicIpConfiguration.DefinitionBlank<NetworkInterface.Update> defineSecondaryIpConfiguration(String name);
-
-        /**
-         * Starts update of an Ip configuration.
-         *
-         * @param name name of the Ip configuration
-         * @return the first stage of an Ip configuration update
-         */
-        NicIpConfiguration.Update<NetworkInterface.Update> updateIpConfiguration(String name);
+           Resource.UpdateWithTags<Update>,
+            UpdateStages.WithPrimaryNetworkSubnet,
+            UpdateStages.WithPrimaryPrivateIp,
+            UpdateStages.WithPrimaryPublicIpAddress,
+            UpdateStages.WithNetworkSecurityGroup,
+            UpdateStages.WithIpForwarding,
+            UpdateStages.WithDnsServer,
+            UpdateStages.WithIpConfiguration {
     }
 }

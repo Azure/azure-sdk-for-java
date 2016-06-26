@@ -43,7 +43,7 @@ class NetworkInterfaceImpl
             NetworkManager>
         implements
         NetworkInterface,
-        NetworkInterface.Definitions,
+        NetworkInterface.Definition,
         NetworkInterface.Update {
     // Clients
     private final NetworkInterfacesInner client;
