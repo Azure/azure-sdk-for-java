@@ -5,11 +5,14 @@
  */
 package com.microsoft.azure.management.network;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.network.implementation.api.SubnetInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+
+import java.io.IOException;
 
 /**
  * An immutable client-side representation of a subnet of a virtual network.
@@ -27,9 +30,11 @@ public interface Subnet extends
      * @return the network security group associated with this subnet
      * <p>
      * Note that this method will result in a call to Azure each time it is invoked.
-     * @throws Exception if there are problems retrieving the associated network security group
+     * @throws CloudException exceptions thrown from the cloud
+     * @throws IOException exceptions thrown from serialization/deserialization
+     * @throws IllegalArgumentException exceptions thrown when something is wrong with the input parameters
      */
-    NetworkSecurityGroup networkSecurityGroup() throws Exception;
+    NetworkSecurityGroup networkSecurityGroup() throws CloudException, IllegalArgumentException, IOException;
 
     /**
      * Grouping of subnet definition stages.
