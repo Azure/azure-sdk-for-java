@@ -84,6 +84,7 @@ class NetworkInterfaceImpl
         ServiceResponse<NetworkInterfaceInner> response =
                 this.client.get(this.resourceGroupName(), this.name());
         this.setInner(response.getBody());
+        clearCachedRelatedResources();
         initializeNicIpConfigurations();
         return this;
     }
@@ -358,6 +359,7 @@ class NetworkInterfaceImpl
                 this.nicName,
                 this.inner());
         this.setInner(response.getBody());
+        clearCachedRelatedResources();
         initializeNicIpConfigurations();
     }
 
@@ -376,6 +378,7 @@ class NetworkInterfaceImpl
                     @Override
                     public void success(ServiceResponse<Void> result) {
                         initializeNicIpConfigurations();
+                        clearCachedRelatedResources();
                         callback.success(result);
                     }
                 }));
@@ -449,6 +452,13 @@ class NetworkInterfaceImpl
         );
         this.nicIpConfigurations.add(nicIpConfiguration);
         return nicIpConfiguration;
+    }
+
+    private void clearCachedRelatedResources() {
+        this.primaryPublicIp = null;
+        this.primaryNetwork = null;
+        this.networkSecurityGroup = null;
+        this.nicPrimaryIpConfiguration = null;
     }
 
     void addToCreatableDependencies(Creatable<?> creatableResource) {

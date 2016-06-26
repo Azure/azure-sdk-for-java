@@ -147,7 +147,7 @@ class VirtualMachineImpl
         ServiceResponse<VirtualMachineInner> response =
                 this.client.get(this.resourceGroupName(), this.name());
         this.setInner(response.getBody());
-        this.virtualMachineInstanceView = null;
+        clearCachedRelatedResources();
         initializeDataDisks();
         return this;
     }
@@ -851,6 +851,7 @@ class VirtualMachineImpl
 
         ServiceResponse<VirtualMachineInner> serviceResponse = this.client.createOrUpdate(this.resourceGroupName(), this.vmName, this.inner());
         this.setInner(serviceResponse.getBody());
+        clearCachedRelatedResources();
         initializeDataDisks();
     }
 
@@ -882,6 +883,7 @@ class VirtualMachineImpl
 
                             @Override
                             public void success(ServiceResponse<Void> result) {
+                                clearCachedRelatedResources();
                                 initializeDataDisks();
                                 callback.success(result);
                             }
@@ -1207,5 +1209,11 @@ class VirtualMachineImpl
             throw new RuntimeException(ex);
         }
         return null;
+    }
+
+    private void clearCachedRelatedResources() {
+        this.primaryNetworkInterface = null;
+        this.primaryPublicIpAddress = null;
+        this.virtualMachineInstanceView = null;
     }
 }
