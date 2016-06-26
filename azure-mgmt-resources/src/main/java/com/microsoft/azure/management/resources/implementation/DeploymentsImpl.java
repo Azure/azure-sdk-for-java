@@ -93,7 +93,7 @@ final class DeploymentsImpl
     }
 
     @Override
-    public Deployment.DefinitionBlank define(String name) {
+    public DeploymentImpl define(String name) {
         return createFluentModel(name);
     }
 

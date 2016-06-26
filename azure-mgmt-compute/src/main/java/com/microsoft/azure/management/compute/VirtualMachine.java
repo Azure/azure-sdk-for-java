@@ -309,7 +309,7 @@ public interface VirtualMachine extends
         /**
          * The stage of the virtual machine definition allowing to specify the resource group.
          */
-        interface WithGroup extends GroupableResource.DefinitionWithGroup<WithNetwork> {
+        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithNetwork> {
         }
 
         /**

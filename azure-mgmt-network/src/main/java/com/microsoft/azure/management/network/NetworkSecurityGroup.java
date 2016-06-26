@@ -71,7 +71,7 @@ public interface NetworkSecurityGroup extends
          * The stage allowing to specify the resource group.
          */
         interface WithGroup
-            extends GroupableResource.DefinitionWithGroup<WithCreate> {
+            extends GroupableResource.DefinitionStages.WithGroup<WithCreate> {
         }
 
         /**

@@ -8,6 +8,7 @@ package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
@@ -120,183 +121,208 @@ public interface Deployment extends
     DeploymentExportResult exportTemplate() throws CloudException, IOException;
 
     /**
-     * A deployment definition allowing resource group to be specified.
+     * Container interface for all the deployment definitions.
      */
-    interface DefinitionBlank {
-        /**
-         * Creates a new resource group for the deployment.
-         *
-         * @param resourceGroupName the name of the resource group
-         * @param region the region for the resource group
-         * @return the next stage of the deployment definition
-         */
-        DefinitionWithTemplate withNewResourceGroup(String resourceGroupName, Region region);
-
-        /**
-         * Specifies the name of an existing resource group for the deployment.
-         *
-         * @param resourceGroupName the name of the resource group
-         * @return the next stage of the deployment definition
-         */
-        DefinitionWithTemplate withExistingResourceGroup(String resourceGroupName);
+    interface Definition extends
+        DefinitionStages.Blank,
+        DefinitionStages.WithGroup,
+        DefinitionStages.WithTemplate,
+        DefinitionStages.WithParameters,
+        DefinitionStages.WithMode,
+        DefinitionStages.WithCreate {
     }
 
     /**
-     * A deployment definition allowing template to be specified.
+     * Grouping of all the deployment definition stages.
      */
-    interface DefinitionWithTemplate {
+    interface DefinitionStages {
         /**
-         * Specifies the template as a Java object.
-         *
-         * @param template the Java object
-         * @return the next stage of the deployment definition
+         * The first stage of deployment definition.
          */
-        DefinitionWithParameters withTemplate(Object template);
+        interface Blank extends DefinitionStages.WithGroup {
+        }
 
         /**
-         * Specifies the template as a JSON string.
-         *
-         * @param templateJson the JSON string
-         * @return the next stage of the deployment definition
-         * @throws IOException exception thrown from serialization/deserialization
+         * A deployment definition allowing resource group to be specified.
          */
-        DefinitionWithParameters withTemplate(String templateJson) throws IOException;
+        interface WithGroup extends GroupableResource.DefinitionStages.WithExistingGroup<WithTemplate> {
+            /**
+             * Creates a new resource group to put the deployment in.
+             * @param name the name of the new group
+             * @param region the region to create the resource group in
+             * @return the next stage of the deployment definition
+             */
+            WithTemplate withNewGroup(String name, Region region);
+
+            /**
+             * Creates a new resource group to put the resource in, based on the definition specified.
+             * @param groupDefinition a creatable definition for a new resource group
+             * @return the next stage of the deployment definition
+             */
+            WithTemplate withNewGroup(Creatable<ResourceGroup> groupDefinition);
+        }
 
         /**
-         * Specifies the template as a URL.
-         *
-         * @param uri the location of the remote template file
-         * @param contentVersion the version of the template file
-         * @return the next stage of the deployment definition
+         * A deployment definition allowing the template to be specified.
          */
-        DefinitionWithParameters withTemplateLink(String uri, String contentVersion);
+        interface WithTemplate {
+            /**
+             * Specifies the template as a Java object.
+             *
+             * @param template the Java object
+             * @return the next stage of the deployment definition
+             */
+            WithParameters withTemplate(Object template);
+
+            /**
+             * Specifies the template as a JSON string.
+             *
+             * @param templateJson the JSON string
+             * @return the next stage of the deployment definition
+             * @throws IOException exception thrown from serialization/deserialization
+             */
+            WithParameters withTemplate(String templateJson) throws IOException;
+
+            /**
+             * Specifies the template as a URL.
+             *
+             * @param uri the location of the remote template file
+             * @param contentVersion the version of the template file
+             * @return the next stage of the deployment definition
+             */
+            WithParameters withTemplateLink(String uri, String contentVersion);
+        }
+
+        /**
+         * A deployment definition allowing the parameters to be specified.
+         */
+        interface WithParameters {
+            /**
+             * Specifies the parameters as a Java object.
+             *
+             * @param parameters the Java object
+             * @return the next stage of the deployment definition
+             */
+            WithMode withParameters(Object parameters);
+
+            /**
+             * Specifies the parameters as a JSON string.
+             * @param parametersJson the JSON string
+             * @return the next stage of the deployment definition
+             * @throws IOException exception thrown from serialization/deserialization
+             */
+            WithMode withParameters(String parametersJson) throws IOException;
+
+            /**
+             * Specifies the parameters as a URL.
+             *
+             * @param uri the location of the remote parameters file
+             * @param contentVersion the version of the parameters file
+             * @return the next stage of the deployment definition
+             */
+            WithMode withParametersLink(String uri, String contentVersion);
+        }
+
+        /**
+         * A deployment definition allowing the deployment mode to be specified.
+         */
+        interface WithMode {
+            /**
+             * Specifies the deployment mode.
+             *
+             * @param mode the mode of the deployment
+             * @return the next stage of the deployment definition
+             */
+            WithCreate withMode(DeploymentMode mode);
+        }
+
+        /**
+         * A deployment definition with sufficient inputs to create a new
+         * deployment in the cloud, but exposing additional optional inputs to specify.
+         */
+        interface WithCreate extends Creatable<Deployment> {
+            Deployment beginCreate() throws Exception;
+        }
     }
 
     /**
-     * A deployment definition allowing parameters to be specified.
+     * Grouping of all the deployment updates stages.
      */
-    interface DefinitionWithParameters {
+    interface UpdateStages {
         /**
-         * Specifies the parameters as a Java object.
-         *
-         * @param parameters the Java object
-         * @return the next stage of the deployment definition
+         * A deployment update allowing to change the deployment mode.
          */
-        DefinitionWithMode withParameters(Object parameters);
+        interface WithMode {
+            /**
+             * Specifies the deployment mode.
+             *
+             * @param mode the mode of the deployment
+             * @return the next stage of the deployment update
+             */
+            Update withMode(DeploymentMode mode);
+        }
 
         /**
-         * Specifies the parameters as a JSON string.
-         * @param parametersJson the JSON string
-         * @return the next stage of the deployment definition
-         * @throws IOException exception thrown from serialization/deserialization
+         * A deployment update allowing to change the template.
          */
-        DefinitionWithMode withParameters(String parametersJson) throws IOException;
+        interface WithTemplate {
+            /**
+             * Specifies the template as a Java object.
+             *
+             * @param template the Java object
+             * @return the next stage of the deployment update
+             */
+            Update withTemplate(Object template);
+
+            /**
+             * Specifies the template as a JSON string.
+             *
+             * @param templateJson the JSON string
+             * @return the next stage of the deployment update
+             * @throws IOException exception thrown from serialization/deserialization
+             */
+            Update withTemplate(String templateJson) throws IOException;
+
+            /**
+             * Specifies the template as a URL.
+             *
+             * @param uri the location of the remote template file
+             * @param contentVersion the version of the template file
+             * @return the next stage of the deployment update
+             */
+            Update withTemplateLink(String uri, String contentVersion);
+        }
 
         /**
-         * Specifies the parameters as a URL.
-         *
-         * @param uri the location of the remote parameters file
-         * @param contentVersion the version of the parameters file
-         * @return the next stage of the deployment definition
+         * A deployment update allowing to change the parameters.
          */
-        DefinitionWithMode withParametersLink(String uri, String contentVersion);
-    }
+        interface WithParameters {
+            /**
+             * Specifies the parameters as a Java object.
+             *
+             * @param parameters the Java object
+             * @return the next stage of the deployment update
+             */
+            Update withParameters(Object parameters);
 
-    /**
-     * A deployment definition allowing deployment mode to be specified.
-     */
-    interface DefinitionWithMode {
-        /**
-         * Specifies the deployment mode.
-         *
-         * @param mode the mode of the deployment
-         * @return the next stage of the deployment definition
-         */
-        DefinitionCreatable withMode(DeploymentMode mode);
-    }
+            /**
+             * Specifies the parameters as a JSON string.
+             *
+             * @param parametersJson the JSON string
+             * @return the next stage of the deployment update
+             * @throws IOException exception thrown from serialization/deserialization
+             */
+            Update withParameters(String parametersJson) throws IOException;
 
-    /**
-     * A deployment definition with sufficient inputs to create a new
-     * deployment in the cloud, but exposing additional optional inputs to
-     * specify.
-     */
-    interface DefinitionCreatable extends Creatable<Deployment> {
-        Deployment beginCreate() throws Exception;
-    }
-
-    /**
-     * A deployment update allowing to change the deployment mode.
-     */
-    interface UpdateWithDeploymentMode {
-        /**
-         * Specifies the deployment mode.
-         *
-         * @param mode the mode of the deployment
-         * @return the next stage of the deployment update
-         */
-        Update withMode(DeploymentMode mode);
-    }
-
-    /**
-     * A deployment update allowing to change the template.
-     */
-    interface UpdateWithTemplate {
-        /**
-         * Specifies the template as a Java object.
-         *
-         * @param template the Java object
-         * @return the next stage of the deployment update
-         */
-        Update withTemplate(Object template);
-
-        /**
-         * Specifies the template as a JSON string.
-         *
-         * @param templateJson the JSON string
-         * @return the next stage of the deployment update
-         * @throws IOException exception thrown from serialization/deserialization
-         */
-        Update withTemplate(String templateJson) throws IOException;
-
-        /**
-         * Specifies the template as a URL.
-         *
-         * @param uri the location of the remote template file
-         * @param contentVersion the version of the template file
-         * @return the next stage of the deployment update
-         */
-        Update withTemplateLink(String uri, String contentVersion);
-    }
-
-    /**
-     * A deployment update allowing to change the parameters.
-     */
-    interface UpdateWithParameters {
-        /**
-         * Specifies the parameters as a Java object.
-         *
-         * @param parameters the Java object
-         * @return the next stage of the deployment update
-         */
-        Update withParameters(Object parameters);
-
-        /**
-         * Specifies the parameters as a JSON string.
-         *
-         * @param parametersJson the JSON string
-         * @return the next stage of the deployment update
-         * @throws IOException exception thrown from serialization/deserialization
-         */
-        Update withParameters(String parametersJson) throws IOException;
-
-        /**
-         * Specifies the parameters as a URL.
-         *
-         * @param uri the location of the remote parameters file
-         * @param contentVersion the version of the parameters file
-         * @return the next stage of the deployment update
-         */
-        Update withParametersLink(String uri, String contentVersion);
+            /**
+             * Specifies the parameters as a URL.
+             *
+             * @param uri the location of the remote parameters file
+             * @param contentVersion the version of the parameters file
+             * @return the next stage of the deployment update
+             */
+            Update withParametersLink(String uri, String contentVersion);
+        }
     }
 
     /**
@@ -307,8 +333,8 @@ public interface Deployment extends
      */
     interface Update extends
             Appliable<Deployment>,
-            UpdateWithTemplate,
-            UpdateWithParameters,
-            UpdateWithDeploymentMode {
+            UpdateStages.WithTemplate,
+            UpdateStages.WithParameters,
+            UpdateStages.WithMode {
     }
 }

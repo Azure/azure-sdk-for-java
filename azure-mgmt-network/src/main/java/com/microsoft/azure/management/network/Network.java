@@ -73,7 +73,7 @@ public interface Network extends
          * The stage of the virtual network definition allowing to specify the resource group.
          */
         interface WithGroup
-            extends GroupableResource.DefinitionWithGroup<DefinitionStages.WithCreate> {
+            extends GroupableResource.DefinitionStages.WithGroup<DefinitionStages.WithCreate> {
         }
 
         /**

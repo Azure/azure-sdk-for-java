@@ -63,7 +63,7 @@ public interface GenericResource extends
     /**
      * A generic resource definition allowing resource group to be specified.
      */
-    interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionWithResourceType> {
+    interface DefinitionWithGroup extends GroupableResource.DefinitionStages.WithGroup<DefinitionWithResourceType> {
     }
 
     /**
