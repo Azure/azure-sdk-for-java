@@ -19,9 +19,12 @@ import java.util.List;
  *  Implementation for {@link NicIpConfiguration} and its create and update interfaces.
  */
 class NicIpConfigurationImpl
-        extends ChildResourceImpl<NetworkInterfaceIPConfiguration, NetworkInterfaceImpl>
-        implements NicIpConfiguration,
-        NicIpConfiguration.Definitions,
+        extends
+        ChildResourceImpl<NetworkInterfaceIPConfiguration, NetworkInterfaceImpl>
+        implements
+        NicIpConfiguration,
+        NicIpConfiguration.Definition<NetworkInterface.DefinitionStages.WithCreate>,
+        NicIpConfiguration.UpdateDefinition<NetworkInterface.Update>,
         NicIpConfiguration.Update {
     // Clients
     private final NetworkManager networkManager;
@@ -110,7 +113,7 @@ class NicIpConfigurationImpl
     }
 
     @Override
-    public NetworkInterface attach() {
+    public NetworkInterfaceImpl attach() {
         return parent();
     }
 
@@ -163,8 +166,10 @@ class NicIpConfigurationImpl
 
     @Override
     public NicIpConfigurationImpl withNewPublicIpAddress(PublicIpAddress.DefinitionCreatable creatable) {
-        this.creatablePublicIpKey = creatable.key();
-        this.parent().addToCreatableDependencies(creatable);
+        if (this.creatablePublicIpKey == null) {
+            this.creatablePublicIpKey = creatable.key();
+            this.parent().addToCreatableDependencies(creatable);
+        }
         return this;
     }
 

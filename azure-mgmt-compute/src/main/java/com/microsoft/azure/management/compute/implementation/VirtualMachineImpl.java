@@ -109,11 +109,11 @@ class VirtualMachineImpl
     // The data disks associated with the virtual machine
     private List<DataDisk> dataDisks;
     // Intermediate state of network interface definition to which private IP can be associated
-    private NetworkInterface.DefinitionWithPrivateIp nicDefinitionWithPrivateIp;
+    private NetworkInterface.DefinitionStages.WithPrimaryPrivateIp nicDefinitionWithPrivateIp;
     // Intermediate state of network interface definition to which subnet can be associated
-    private NetworkInterface.DefinitionWithSubnet nicDefinitionWithSubnet;
+    private NetworkInterface.DefinitionStages.WithPrimaryNetworkSubnet nicDefinitionWithSubnet;
     // Intermediate state of network interface definition to which public IP can be associated
-    private NetworkInterface.DefinitionWithPublicIpAddress nicDefinitionWithPublicIp;
+    private NetworkInterface.DefinitionStages.WithCreate nicDefinitionWithCreate;
     // Virtual machine size converter
     private final PagedListConverter<VirtualMachineSizeInner, VirtualMachineSize> virtualMachineSizeConverter;
 
@@ -262,14 +262,14 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withPrimaryPrivateIpAddressDynamic() {
-        this.nicDefinitionWithPublicIp = this.nicDefinitionWithPrivateIp
+        this.nicDefinitionWithCreate = this.nicDefinitionWithPrivateIp
                 .withPrimaryPrivateIpAddressDynamic();
         return this;
     }
 
     @Override
     public VirtualMachineImpl withPrimaryPrivateIpAddressStatic(String staticPrivateIpAddress) {
-        this.nicDefinitionWithPublicIp = this.nicDefinitionWithPrivateIp
+        this.nicDefinitionWithCreate = this.nicDefinitionWithPrivateIp
                 .withPrimaryPrivateIpAddressStatic(staticPrivateIpAddress);
         return this;
     }
@@ -278,7 +278,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionCreatable creatable) {
-        NetworkInterface.DefinitionCreatable nicCreatable = this.nicDefinitionWithPublicIp
+        NetworkInterface.DefinitionStages.WithCreate nicCreatable = this.nicDefinitionWithCreate
                 .withNewPrimaryPublicIpAddress(creatable);
         this.addCreatableDependency(nicCreatable);
         return this;
@@ -286,7 +286,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withNewPrimaryPublicIpAddress(String leafDnsLabel) {
-        NetworkInterface.DefinitionCreatable nicCreatable = this.nicDefinitionWithPublicIp
+        NetworkInterface.DefinitionStages.WithCreate nicCreatable = this.nicDefinitionWithCreate
                 .withNewPrimaryPublicIpAddress(leafDnsLabel);
         this.creatablePrimaryNetworkInterfaceKey = nicCreatable.key();
         this.addCreatableDependency(nicCreatable);
@@ -295,7 +295,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withExistingPrimaryPublicIpAddress(PublicIpAddress publicIpAddress) {
-        NetworkInterface.DefinitionCreatable nicCreatable = this.nicDefinitionWithPublicIp
+        NetworkInterface.DefinitionStages.WithCreate nicCreatable = this.nicDefinitionWithCreate
                 .withExistingPrimaryPublicIpAddress(publicIpAddress);
         this.creatablePrimaryNetworkInterfaceKey = nicCreatable.key();
         this.addCreatableDependency(nicCreatable);
@@ -304,22 +304,23 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withoutPrimaryPublicIpAddress() {
-        this.creatablePrimaryNetworkInterfaceKey = this.nicDefinitionWithPublicIp.key();
-        this.addCreatableDependency(this.nicDefinitionWithPublicIp);
+        NetworkInterface.DefinitionStages.WithCreate nicCreatable = this.nicDefinitionWithCreate;
+        this.creatablePrimaryNetworkInterfaceKey = nicCreatable.key();
+        this.addCreatableDependency(nicCreatable);
         return this;
     }
 
     // Virtual machine primary network interface specific fluent methods
     //
     @Override
-    public VirtualMachineImpl withNewPrimaryNetworkInterface(NetworkInterface.DefinitionCreatable creatable) {
+    public VirtualMachineImpl withNewPrimaryNetworkInterface(NetworkInterface.DefinitionStages.WithCreate creatable) {
         this.creatablePrimaryNetworkInterfaceKey = creatable.key();
         this.addCreatableDependency(creatable);
         return this;
     }
 
     public VirtualMachineImpl withNewPrimaryNetworkInterface(String name, String publicDnsNameLabel) {
-        NetworkInterface.DefinitionCreatable definitionCreatable = prepareNetworkInterface(name)
+        NetworkInterface.DefinitionStages.WithCreate definitionCreatable = prepareNetworkInterface(name)
                 .withNewPrimaryPublicIpAddress(publicDnsNameLabel);
         return withNewPrimaryNetworkInterface(definitionCreatable);
     }
@@ -620,7 +621,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withNewSecondaryNetworkInterface(NetworkInterface.DefinitionCreatable creatable) {
+    public VirtualMachineImpl withNewSecondaryNetworkInterface(NetworkInterface.DefinitionStages.WithCreate creatable) {
         this.creatableSecondaryNetworkInterfaceKeys.add(creatable.key());
         this.addCreatableDependency(creatable);
         return this;
@@ -1154,12 +1155,12 @@ class VirtualMachineImpl
         return "{storage-base-url}" + containerName + "/" + blobName;
     }
 
-    private NetworkInterface.DefinitionWithPublicIpAddress prepareNetworkInterface(String name) {
-        NetworkInterface.DefinitionWithGroup definitionWithGroup = this.networkManager
+    private NetworkInterface.DefinitionStages.WithPrimaryPublicIpAddress prepareNetworkInterface(String name) {
+        NetworkInterface.DefinitionStages.WithGroup definitionWithGroup = this.networkManager
                 .networkInterfaces()
                 .define(name)
                 .withRegion(this.region());
-        NetworkInterface.DefinitionWithNetwork definitionWithNetwork;
+        NetworkInterface.DefinitionStages.WithPrimaryNetwork definitionWithNetwork;
         if (this.newGroup != null) {
             definitionWithNetwork = definitionWithGroup.withNewGroup(this.newGroup);
         } else {
@@ -1182,11 +1183,11 @@ class VirtualMachineImpl
         }
     }
 
-    private NetworkInterface.DefinitionWithNetwork preparePrimaryNetworkInterface(String name) {
-        NetworkInterface.DefinitionWithGroup definitionWithGroup = this.networkManager.networkInterfaces()
+    private NetworkInterface.DefinitionStages.WithPrimaryNetwork preparePrimaryNetworkInterface(String name) {
+        NetworkInterface.DefinitionStages.WithGroup definitionWithGroup = this.networkManager.networkInterfaces()
                 .define(name)
                 .withRegion(this.region());
-        NetworkInterface.DefinitionWithNetwork definitionAfterGroup;
+        NetworkInterface.DefinitionStages.WithPrimaryNetwork definitionAfterGroup;
         if (this.newGroup != null) {
             definitionAfterGroup = definitionWithGroup.withNewGroup(this.newGroup);
         } else {
