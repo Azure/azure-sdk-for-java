@@ -434,7 +434,7 @@ public interface VirtualMachine extends
              * @param creatable a creatable definition for a new network interface
              * @return The next stage of the virtual machine definition
              */
-            WithOS withNewPrimaryNetworkInterface(NetworkInterface.DefinitionStages.WithCreate creatable);
+            WithOS withNewPrimaryNetworkInterface(Creatable<NetworkInterface> creatable);
 
             /**
              * Associate an existing network interface as the virtual machine with as it's primary network interface.
@@ -822,7 +822,7 @@ public interface VirtualMachine extends
              * @param creatable a creatable definition for a new network interface
              * @return the stage representing creatable VM definition
              */
-            WithCreate withNewSecondaryNetworkInterface(NetworkInterface.DefinitionStages.WithCreate creatable);
+            WithCreate withNewSecondaryNetworkInterface(Creatable<NetworkInterface> creatable);
 
             /**
              * Associate an existing network interface with the virtual machine.
@@ -939,7 +939,7 @@ public interface VirtualMachine extends
              * @param creatable a creatable definition for a new network interface
              * @return the stage representing creatable VM definition
              */
-            Update withNewSecondaryNetworkInterface(NetworkInterface.DefinitionStages.WithCreate creatable);
+            Update withNewSecondaryNetworkInterface(Creatable<NetworkInterface> creatable);
 
             /**
              * Associate an existing network interface with the virtual machine.

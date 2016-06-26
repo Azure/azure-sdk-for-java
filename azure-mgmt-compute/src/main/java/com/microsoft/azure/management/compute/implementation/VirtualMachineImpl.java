@@ -279,7 +279,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withNewPrimaryPublicIpAddress(Creatable<PublicIpAddress> creatable) {
-        NetworkInterface.DefinitionStages.WithCreate nicCreatable = this.nicDefinitionWithCreate
+        Creatable<NetworkInterface> nicCreatable = this.nicDefinitionWithCreate
                 .withNewPrimaryPublicIpAddress(creatable);
         this.addCreatableDependency(nicCreatable);
         return this;
@@ -287,7 +287,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withNewPrimaryPublicIpAddress(String leafDnsLabel) {
-        NetworkInterface.DefinitionStages.WithCreate nicCreatable = this.nicDefinitionWithCreate
+        Creatable<NetworkInterface> nicCreatable = this.nicDefinitionWithCreate
                 .withNewPrimaryPublicIpAddress(leafDnsLabel);
         this.creatablePrimaryNetworkInterfaceKey = nicCreatable.key();
         this.addCreatableDependency(nicCreatable);
@@ -296,7 +296,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withExistingPrimaryPublicIpAddress(PublicIpAddress publicIpAddress) {
-        NetworkInterface.DefinitionStages.WithCreate nicCreatable = this.nicDefinitionWithCreate
+        Creatable<NetworkInterface> nicCreatable = this.nicDefinitionWithCreate
                 .withExistingPrimaryPublicIpAddress(publicIpAddress);
         this.creatablePrimaryNetworkInterfaceKey = nicCreatable.key();
         this.addCreatableDependency(nicCreatable);
@@ -305,7 +305,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withoutPrimaryPublicIpAddress() {
-        NetworkInterface.DefinitionStages.WithCreate nicCreatable = this.nicDefinitionWithCreate;
+        Creatable<NetworkInterface> nicCreatable = this.nicDefinitionWithCreate;
         this.creatablePrimaryNetworkInterfaceKey = nicCreatable.key();
         this.addCreatableDependency(nicCreatable);
         return this;
@@ -314,14 +314,14 @@ class VirtualMachineImpl
     // Virtual machine primary network interface specific fluent methods
     //
     @Override
-    public VirtualMachineImpl withNewPrimaryNetworkInterface(NetworkInterface.DefinitionStages.WithCreate creatable) {
+    public VirtualMachineImpl withNewPrimaryNetworkInterface(Creatable<NetworkInterface> creatable) {
         this.creatablePrimaryNetworkInterfaceKey = creatable.key();
         this.addCreatableDependency(creatable);
         return this;
     }
 
     public VirtualMachineImpl withNewPrimaryNetworkInterface(String name, String publicDnsNameLabel) {
-        NetworkInterface.DefinitionStages.WithCreate definitionCreatable = prepareNetworkInterface(name)
+        Creatable<NetworkInterface> definitionCreatable = prepareNetworkInterface(name)
                 .withNewPrimaryPublicIpAddress(publicDnsNameLabel);
         return withNewPrimaryNetworkInterface(definitionCreatable);
     }
@@ -622,7 +622,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withNewSecondaryNetworkInterface(NetworkInterface.DefinitionStages.WithCreate creatable) {
+    public VirtualMachineImpl withNewSecondaryNetworkInterface(Creatable<NetworkInterface> creatable) {
         this.creatableSecondaryNetworkInterfaceKeys.add(creatable.key());
         this.addCreatableDependency(creatable);
         return this;
