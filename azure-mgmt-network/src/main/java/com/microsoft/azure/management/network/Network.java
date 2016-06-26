@@ -206,6 +206,38 @@ public interface Network extends
              */
             Subnet.UpdateDefinitionStages.Blank<Update> defineSubnet(String name);
         }
+
+        /**
+         * The stage of the virtual network update allowing to specify the DNS server.
+         */
+        interface WithDnsServer {
+            /**
+             * Specifies the IP address of the DNS server to associate with the virtual network.
+             * <p>
+             * Note this method's effect is additive, i.e. each time it is used, a new DNS server is
+             * added to the network
+             * @param ipAddress the IP address of the DNS server
+             * @return the next stage of the virtual network update
+             */
+            Update withDnsServer(String ipAddress);
+        }
+
+        /**
+         * The stage of the virtual network update allowing to specify the address space.
+         */
+        interface WithAddressSpace {
+            /**
+             * Explicitly adds an address space to the virtual network.
+             * <p>
+             * Note this method's effect is additive, i.e. each time it is used, a new address space is added to the network.
+             * <p>
+             * This method does not check for conflicts or overlaps with other address spaces. If there is a conflict,
+             * a cloud exception may be thrown after the update is applied.
+             * @param cidr the CIDR representation of the address space
+             * @return the next stage of the virtual network update
+             */
+            Update withAddressSpace(String cidr);
+        }
     }
 
     /**
@@ -217,28 +249,8 @@ public interface Network extends
     interface Update extends
         Appliable<Network>,
         Resource.UpdateWithTags<Update>,
-        UpdateStages.WithSubnet {
-
-        /**
-         * Specifies the IP address of the DNS server to associate with the virtual network.
-         * <p>
-         * Note this method's effect is additive, i.e. each time it is used, a new dns server is
-         * added to the network
-         * @param ipAddress the IP address of the DNS server
-         * @return the next stage of the virtual network update
-         */
-        Update withDnsServer(String ipAddress);
-
-        /**
-         * Explicitly adds an address space to the virtual network.
-         * <p>
-         * Note this method's effect is additive, i.e. each time it is used, a new address space is added to the network.
-         * <p>
-         * This method does not check for conflicts or overlaps with other address spaces. If there is a conflict,
-         * a cloud exception may be thrown after the update is applied.
-         * @param cidr the CIDR representation of the address space
-         * @return the next stage of the virtual network update
-         */
-        Update withAddressSpace(String cidr);
+        UpdateStages.WithSubnet,
+        UpdateStages.WithDnsServer,
+        UpdateStages.WithAddressSpace {
     }
 }

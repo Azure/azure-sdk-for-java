@@ -784,16 +784,16 @@ public interface VirtualMachine extends
             WithCreate withNewStorageAccount(String name);
 
             /**
-             * Specifies definition of a not-yet-created {@link com.microsoft.azure.management.storage.StorageAccount.DefinitionCreatable} storage account
-             * to put the VM's OS and data disk VHD in.
+             * Specifies definition of a not-yet-created storage account definition
+             * to put the VM's OS and data disk VHDs in.
              * <p>
-             * Only the OS disk based on marketplace image will be stored in the new storage account,
-             * an OS disk based on user image will be stored in the same storage account as user image.
+             * Only the OS disk based on marketplace image will be stored in the new storage account.
+             * An OS disk based on user image will be stored in the same storage account as user image.
              *
              * @param creatable the storage account in creatable stage
              * @return the stage representing creatable VM definition
              */
-            WithCreate withNewStorageAccount(StorageAccount.DefinitionCreatable creatable);
+            WithCreate withNewStorageAccount(StorageAccount.DefinitionStages.WithCreate creatable);
 
             /**
              * Specifies an existing {@link StorageAccount} storage account to put the VM's OS and data disk VHD in.

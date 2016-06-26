@@ -144,208 +144,230 @@ public interface StorageAccount extends
     /**
      * Container interface for all the definitions that need to be implemented.
      */
-    interface Definitions extends
-        DefinitionBlank,
-        DefinitionWithGroup,
-        DefinitionCreatable,
-        DefinitionCreatableWithAccessTier {
+    interface Definition extends
+        DefinitionStages.Blank,
+        DefinitionStages.WithGroup,
+        DefinitionStages.WithCreate,
+        DefinitionStages.WithCreateAndAccessTier {
     }
 
     /**
-     * A storage account definition allowing location to be set.
+     * Grouping of all the storage account definition stages.
      */
-    interface DefinitionBlank extends GroupableResource.DefinitionWithRegion<DefinitionWithGroup> {
+    interface DefinitionStages {
+        /**
+         * The first stage of the storage account definition.
+         */
+        interface Blank extends GroupableResource.DefinitionWithRegion<WithGroup> {
+        }
+
+        /**
+         * A storage account definition allowing resource group to be set.
+         */
+        interface WithGroup extends GroupableResource.DefinitionWithGroup<WithCreate> {
+        }
+
+        /**
+         * A storage account definition allowing the sku to be set.
+         */
+        interface WithSku {
+            /**
+             * Specifies the sku of the storage account. This used to be called
+             * account types.
+             *
+             * @param skuName the sku
+             * @return the next stage of storage account definition
+             */
+            WithCreate withSku(SkuName skuName);
+        }
+
+        /**
+         * A storage account definition specifying the account kind to be blob.
+         */
+        interface WithBlobStorageAccountKind {
+            /**
+             * Specifies the storage account kind to be "BlobStorage". The access
+             * tier is defaulted to be "Hot".
+             *
+             * @return the next stage of storage account definition
+             */
+            WithCreateAndAccessTier withBlobStorageAccountKind();
+        }
+
+        /**
+         * A storage account definition selecting the general purpose account kind.
+         */
+        interface WithGeneralPurposeAccountKind {
+            /**
+             * Specifies the storage account kind to be "Storage", the kind for
+             * general purposes.
+             *
+             * @return the next stage of storage account definition
+             */
+            WithCreate withGeneralPurposeAccountKind();
+            }
+
+        /**
+         * A storage account definition specifying encryption setting.
+         */
+        interface WithEncryption {
+            /**
+             * Specifies the encryption settings on the account. The default
+             * setting is unencrypted.
+             *
+             * @param encryption the encryption setting
+             * @return the nest stage of storage account definition
+             */
+            WithCreate withEncryption(Encryption encryption);
+        }
+
+        /**
+         * A storage account definition specifying a custom domain to associate with the account.
+         */
+        interface WithCustomDomain {
+            /**
+             * Specifies the user domain assigned to the storage account.
+             *
+             * @param customDomain the user domain assigned to the storage account
+             * @return the next stage of storage account definition
+             */
+            WithCreate withCustomDomain(CustomDomain customDomain);
+
+            /**
+             * Specifies the user domain assigned to the storage account.
+             *
+             * @param name the custom domain name, which is the CNAME source
+             * @return the next stage of storage account definition
+             */
+            WithCreate withCustomDomain(String name);
+
+            /**
+             * Specifies the user domain assigned to the storage account.
+             *
+             * @param name the custom domain name, which is the CNAME source
+             * @param useSubDomain whether indirect CName validation is enabled
+             * @return the next stage of storage account definition
+             */
+            WithCreate withCustomDomain(String name, boolean useSubDomain);
+        }
+
+        /**
+         * A storage account definition with sufficient inputs to create a new
+         * storage account in the cloud, but exposing additional optional inputs to
+         * specify.
+         */
+        interface WithCreate extends
+            Creatable<StorageAccount>,
+            DefinitionStages.WithSku,
+            DefinitionStages.WithBlobStorageAccountKind,
+            DefinitionStages.WithGeneralPurposeAccountKind,
+            DefinitionStages.WithEncryption,
+            DefinitionStages.WithCustomDomain {
+        }
+
+        /**
+         * A storage account definition allowing access tier to be set.
+         */
+        interface WithCreateAndAccessTier extends DefinitionStages.WithCreate {
+            /**
+             * Specifies the access tier used for billing.
+             * <p>
+             * Access tier cannot be changed more than once every 7 days (168 hours).
+             * Access tier cannot be set for StandardLRS, StandardGRS, StandardRAGRS,
+             * or PremiumLRS account types.
+             *
+             * @param accessTier the access tier value
+             * @return the next stage of storage account definition
+             */
+            DefinitionStages.WithCreate withAccessTier(AccessTier accessTier);
+        }
     }
 
     /**
-     * A storage account definition allowing resource group to be set.
+     * Grouping of all the storage account update stages.
      */
-    interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionCreatable> {
-    }
-
-    /**
-     * A storage account definition with sufficient inputs to create a new
-     * storage account in the cloud, but exposing additional optional inputs to
-     * specify.
-     */
-    interface DefinitionCreatable extends Creatable<StorageAccount> {
+    interface UpdateStages {
         /**
-         * Specifies the sku of the storage account. This used to be called
-         * account types. Possible values include: 'Standard_LRS',
-         * 'Standard_ZRS', 'Standard_GRS', 'Standard_RAGRS', 'Premium_LRS'.
-         *
-         * @param skuName the sku
-         * @return the next stage of storage account definition
+         * A storage account update stage allowing to change the parameters.
          */
-        DefinitionCreatable withSku(SkuName skuName);
+        interface WithSku {
+            /**
+             * Specifies the sku of the storage account. This used to be called
+             * account types.             *
+             * @param skuName the sku
+             * @return the next stage of storage account update
+             */
+            Update withSku(SkuName skuName);
+        }
 
         /**
-         * Specifies the storage account kind to be "BlobStorage". The access
-         * tier is defaulted to be "Hot".
-         *
-         * @return the next stage of storage account definition
+         * A storage account update stage allowing to change the parameters.
          */
-        DefinitionCreatableWithAccessTier withBlobStorageAccountKind();
+        interface WithCustomDomain {
+            /**
+             * Specifies the user domain assigned to the storage account.
+             *
+             * @param customDomain the user domain assigned to the storage account
+             * @return the next stage of storage account update
+             */
+            Update withCustomDomain(CustomDomain customDomain);
+
+            /**
+             * Specifies the user domain assigned to the storage account.
+             *
+             * @param name the custom domain name, which is the CNAME source
+             * @return the next stage of storage account update
+             */
+            Update withCustomDomain(String name);
+
+            /**
+             * Specifies the user domain assigned to the storage account.
+             *
+             * @param name the custom domain name, which is the CNAME source
+             * @param useSubDomain whether indirect CName validation is enabled
+             * @return the next stage of storage account update
+             */
+            Update withCustomDomain(String name, boolean useSubDomain);
+
+            /**
+             * Clears the existing user domain assigned to the storage account.
+             *
+             * @return the next stage of storage account update
+             */
+            Update withoutCustomDomain();
+        }
 
         /**
-         * Specifies the storage account kind to be "Storage", the kind for
-         * general purposes.
-         *
-         * @return the next stage of storage account definition
+         * A storage account update allowing encryption to be specified.
          */
-        DefinitionCreatable withGeneralPurposeAccountKind();
+        interface WithEncryption {
+            /**
+             * Specifies the encryption setting on the account.
+             * <p>
+             * The default setting is unencrypted.
+             *
+             * @param encryption the encryption setting
+             * @return the nest stage of storage account update
+             */
+            Update withEncryption(Encryption encryption);
+        }
 
         /**
-         * Specifies the encryption settings on the account. The default
-         * setting is unencrypted.
-         *
-         * @param encryption the encryption setting
-         * @return the nest stage of storage account definition
+         * A blob storage account update stage allowing access tier to be specified.
          */
-        DefinitionCreatable withEncryption(Encryption encryption);
-
-        /**
-         * Specifies the user domain assigned to the storage account. Name is the CNAME source.
-         * Only one custom domain is supported per storage account at this time.
-         * To clear the existing custom domain, use an empty string for the
-         * custom domain name property.
-         *
-         * @param customDomain the user domain assigned to the storage account
-         * @return the next stage of storage account update
-         */
-        DefinitionCreatable withCustomDomain(CustomDomain customDomain);
-
-        /**
-         * Specifies the user domain assigned to the storage account. Name is the CNAME source.
-         * Only one custom domain is supported per storage account at this time.
-         * To clear the existing custom domain, use an empty string for the
-         * custom domain name property.
-         *
-         * @param name the custom domain name, which is the CNAME source
-         * @return the next stage of storage account update
-         */
-        DefinitionCreatable withCustomDomain(String name);
-
-        /**
-         * Specifies the user domain assigned to the storage account. Name is the CNAME source.
-         * Only one custom domain is supported per storage account at this time.
-         * To clear the existing custom domain, use an empty string for the
-         * custom domain name property.
-         *
-         * @param name the custom domain name, which is the CNAME source
-         * @param useSubDomain whether indirect CName validation is enabled
-         * @return the next stage of storage account update
-         */
-        DefinitionCreatable withCustomDomain(String name, boolean useSubDomain);
-    }
-
-    /**
-     * A storage account definition allowing access tier to be set.
-     */
-    interface DefinitionCreatableWithAccessTier extends DefinitionCreatable {
-        /**
-         * Specifies the access tier used for billing.
-         * <p>
-         * Access tier cannot be changed more than once every 7 days (168 hours).
-         * Access tier cannot be set for StandardLRS, StandardGRS, StandardRAGRS,
-         * or PremiumLRS account types. Possible values include: 'Hot', 'Cool'.
-         *
-         * @param accessTier the access tier value
-         * @return the next stage of storage account definition
-         */
-        DefinitionCreatable withAccessTier(AccessTier accessTier);
-    }
-
-    /**
-     * A storage account update allowing to change the parameters.
-     */
-    interface UpdateWithSku {
-        /**
-         * Specifies the sku of the storage account. This used to be called
-         * account types. Possible values include: 'Standard_LRS',
-         * 'Standard_ZRS', 'Standard_GRS', 'Standard_RAGRS', 'Premium_LRS'.
-         *
-         * @param skuName the sku
-         * @return the next stage of storage account update
-         */
-        Update withSku(SkuName skuName);
-    }
-
-    /**
-     * A storageaccount update allowing to change the parameters.
-     */
-    interface UpdateWithCustomDomain {
-        /**
-         * Specifies the user domain assigned to the storage account. Name is the CNAME source.
-         * Only one custom domain is supported per storage account at this time.
-         * To clear the existing custom domain, use an empty string for the
-         * custom domain name property.
-         *
-         * @param customDomain the user domain assigned to the storage account
-         * @return the next stage of storage account update
-         */
-        Update withCustomDomain(CustomDomain customDomain);
-
-        /**
-         * Specifies the user domain assigned to the storage account. Name is the CNAME source.
-         * Only one custom domain is supported per storage account at this time.
-         * To clear the existing custom domain, use an empty string for the
-         * custom domain name property.
-         *
-         * @param name the custom domain name, which is the CNAME source
-         * @return the next stage of storage account update
-         */
-        Update withCustomDomain(String name);
-
-        /**
-         * Specifies the user domain assigned to the storage account. Name is the CNAME source.
-         * Only one custom domain is supported per storage account at this time.
-         * To clear the existing custom domain, use an empty string for the
-         * custom domain name property.
-         *
-         * @param name the custom domain name, which is the CNAME source
-         * @param useSubDomain whether indirect CName validation is enabled
-         * @return the next stage of storage account update
-         */
-        Update withCustomDomain(String name, boolean useSubDomain);
-
-        /**
-         * Clears the existing user domain assigned to the storage account.
-         *
-         * @return the next stage of storage account update
-         */
-        Update withoutCustomDomain();
-    }
-
-    /**
-     * A storage account update allowing encryption to be specified.
-     */
-    interface UpdateWithEncryption {
-        /**
-         * Specifies the encryption settings on the account. The default
-         * setting is unencrypted.
-         *
-         * @param encryption the encryption setting
-         * @return the nest stage of storage account update
-         */
-        Update withEncryption(Encryption encryption);
-    }
-
-    /**
-     * A blob storage account update allowing access tier to be specified.
-     */
-    interface UpdateWithAccessTier {
-        /**
-         * Specifies the access tier used for billing.
-         * <p>
-         * Access tier cannot be changed more than once every 7 days (168 hours).
-         * Access tier cannot be set for StandardLRS, StandardGRS, StandardRAGRS,
-         * or PremiumLRS account types. Possible values include: 'Hot', 'Cool'.
-         *
-         * @param accessTier the access tier value
-         * @return the next stage of storage account update
-         */
-        Update withAccessTier(AccessTier accessTier);
+        interface WithAccessTier {
+            /**
+             * Specifies the access tier used for billing.
+             * <p>
+             * Access tier cannot be changed more than once every 7 days (168 hours).
+             * Access tier cannot be set for StandardLRS, StandardGRS, StandardRAGRS,
+             * or PremiumLRS account types.
+             *
+             * @param accessTier the access tier value
+             * @return the next stage of storage account update
+             */
+            Update withAccessTier(AccessTier accessTier);
+        }
     }
 
     /**
@@ -353,10 +375,10 @@ public interface StorageAccount extends
      */
     interface Update extends
             Appliable<StorageAccount>,
-            UpdateWithSku,
-            UpdateWithCustomDomain,
-            UpdateWithEncryption,
-            UpdateWithAccessTier,
+            UpdateStages.WithSku,
+            UpdateStages.WithCustomDomain,
+            UpdateStages.WithEncryption,
+            UpdateStages.WithAccessTier,
             Resource.UpdateWithTags<Update> {
     }
 }

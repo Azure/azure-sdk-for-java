@@ -53,7 +53,6 @@ public interface NetworkSecurityGroup extends
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
-        DefinitionStages.WithRule,
         DefinitionStages.WithCreate {
     }
 

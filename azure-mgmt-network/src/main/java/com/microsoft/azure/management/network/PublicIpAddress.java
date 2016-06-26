@@ -100,10 +100,6 @@ public interface PublicIpAddress extends
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
-        DefinitionStages.WithIpAddress,
-        DefinitionStages.WithLeafDomainLabel,
-        DefinitionStages.WithReverseFQDN,
-        DefinitionStages.WithIdleTimeout,
         DefinitionStages.WithCreate {
     }
 

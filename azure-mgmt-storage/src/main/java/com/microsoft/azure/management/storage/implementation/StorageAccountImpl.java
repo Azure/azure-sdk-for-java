@@ -42,7 +42,7 @@ class StorageAccountImpl
             StorageManager>
         implements
         StorageAccount,
-        StorageAccount.Definitions,
+        StorageAccount.Definition,
         StorageAccount.Update {
 
     private PublicEndpoints publicEndpoints;
