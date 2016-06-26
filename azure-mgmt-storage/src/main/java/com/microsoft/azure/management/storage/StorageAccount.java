@@ -39,10 +39,6 @@ public interface StorageAccount extends
         Updatable<StorageAccount.Update>,
         Wrapper<StorageAccountInner> {
 
-    /***********************************************************
-     * Getters
-     ***********************************************************/
-
     /**
      * @return the status indicating whether the primary and secondary location of
      * the storage account is available or unavailable. Possible values include:
