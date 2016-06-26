@@ -23,7 +23,7 @@ import java.io.IOException;
  */
 public interface StorageAccounts extends
         SupportsListing<StorageAccount>,
-        SupportsCreating<StorageAccount.DefinitionBlank>,
+        SupportsCreating<StorageAccount.DefinitionStages.Blank>,
         SupportsDeleting,
         SupportsListingByGroup<StorageAccount>,
         SupportsGettingByGroup<StorageAccount>,

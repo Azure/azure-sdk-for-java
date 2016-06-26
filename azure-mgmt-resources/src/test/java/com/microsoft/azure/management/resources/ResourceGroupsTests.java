@@ -35,7 +35,7 @@ public class ResourceGroupsTests extends ResourceManagerTestBase {
         Assert.assertNotNull(groupResult);
         Assert.assertEquals("finance", groupResult.tags().get("department"));
         Assert.assertEquals("tagvalue", groupResult.tags().get("tagname"));
-        Assert.assertEquals(location, groupResult.region());
+        Assert.assertEquals(location, groupResult.regionName());
         // Get
         ResourceGroup getGroup = resourceGroups.getByName(rgName);
         Assert.assertNotNull(getGroup);
@@ -45,7 +45,7 @@ public class ResourceGroupsTests extends ResourceManagerTestBase {
                 .withTag("tag1", "value1")
                 .apply();
         Assert.assertEquals("value1", updatedGroup.tags().get("tag1"));
-        Assert.assertEquals(location, getGroup.region());
+        Assert.assertEquals(location, getGroup.regionName());
         // Delete
         resourceGroups.delete(rgName);
         Assert.assertFalse(resourceGroups.checkExistence(rgName));

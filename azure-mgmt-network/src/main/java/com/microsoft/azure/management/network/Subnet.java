@@ -93,7 +93,6 @@ public interface Subnet extends
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
         DefinitionStages.WithAddressPrefix<ParentT>,
-        DefinitionStages.WithNetworkSecurityGroup<ParentT>,
         DefinitionStages.WithAttach<ParentT> {
     }
 

@@ -3,6 +3,7 @@ package com.microsoft.azure.management.resources;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
 import com.microsoft.azure.management.resources.implementation.api.PageImpl;
 import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
@@ -123,7 +124,12 @@ public class GroupPagedListTests {
             }
 
             @Override
-            public String region() {
+            public String regionName() {
+                return null;
+            }
+
+            @Override
+            public Region region() {
                 return null;
             }
 

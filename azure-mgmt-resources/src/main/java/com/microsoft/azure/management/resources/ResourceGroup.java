@@ -40,11 +40,6 @@ public interface ResourceGroup extends
     String provisioningState();
 
     /**
-     * @return the region of the resource group
-     */
-    String region();
-
-    /**
      * @return the tags attached to the resource group
      */
     Map<String, String> tags();

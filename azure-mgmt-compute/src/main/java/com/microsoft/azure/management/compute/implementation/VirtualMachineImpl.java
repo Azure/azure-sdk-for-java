@@ -258,7 +258,7 @@ class VirtualMachineImpl
         return this;
     }
 
-    // Fluent methods for defining private Ip association for the new primary network interface
+    // Fluent methods for defining private IP association for the new primary network interface
 
     @Override
     public VirtualMachineImpl withPrimaryPrivateIpAddressDynamic() {
@@ -274,10 +274,10 @@ class VirtualMachineImpl
         return this;
     }
 
-    // Fluent methods for defining public Ip association for the new primary network interface
+    // Fluent methods for defining public IP association for the new primary network interface
 
     @Override
-    public VirtualMachineImpl withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionCreatable creatable) {
+    public VirtualMachineImpl withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionStages.WithCreate creatable) {
         NetworkInterface.DefinitionStages.WithCreate nicCreatable = this.nicDefinitionWithCreate
                 .withNewPrimaryPublicIpAddress(creatable);
         this.addCreatableDependency(nicCreatable);
@@ -563,7 +563,7 @@ class VirtualMachineImpl
     //
 
     @Override
-    public VirtualMachineImpl withNewStorageAccount(StorageAccount.DefinitionCreatable creatable) {
+    public VirtualMachineImpl withNewStorageAccount(StorageAccount.DefinitionStages.WithCreate creatable) {
         // This method's effect is NOT additive.
         if (this.creatableStorageAccountKey == null) {
             this.creatableStorageAccountKey = creatable.key();
@@ -574,11 +574,11 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withNewStorageAccount(String name) {
-        StorageAccount.DefinitionWithGroup definitionWithGroup = this.storageManager
+        StorageAccount.DefinitionStages.WithGroup definitionWithGroup = this.storageManager
                 .storageAccounts()
                 .define(name)
-                .withRegion(this.region());
-        StorageAccount.DefinitionCreatable definitionAfterGroup;
+                .withRegion(this.regionName());
+        StorageAccount.DefinitionStages.WithCreate definitionAfterGroup;
         if (this.newGroup != null) {
             definitionAfterGroup = definitionWithGroup.withNewGroup(this.newGroup);
         } else {
@@ -597,7 +597,7 @@ class VirtualMachineImpl
     //
 
     @Override
-    public VirtualMachineImpl withNewAvailabilitySet(AvailabilitySet.DefinitionCreatable creatable) {
+    public VirtualMachineImpl withNewAvailabilitySet(AvailabilitySet.DefinitionStages.WithCreate creatable) {
         // This method's effect is NOT additive.
         if (this.creatableAvailabilitySetKey == null) {
             this.creatableAvailabilitySetKey = creatable.key();
@@ -609,7 +609,7 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl withNewAvailabilitySet(String name) {
         return withNewAvailabilitySet(super.myManager.availabilitySets().define(name)
-                .withRegion(region())
+                .withRegion(this.regionName())
                 .withExistingGroup(this.resourceGroupName())
         );
     }
@@ -966,7 +966,7 @@ class VirtualMachineImpl
                 || dataDisksRequiresImplicitStorageAccountCreation()) {
             storageAccount = this.storageManager.storageAccounts()
                     .define(this.namer.randomName("stg", 24))
-                    .withRegion(this.region())
+                    .withRegion(this.regionName())
                     .withExistingGroup(this.resourceGroupName())
                     .create();
         }
@@ -1027,7 +1027,7 @@ class VirtualMachineImpl
                 || dataDisksRequiresImplicitStorageAccountCreation()) {
             this.storageManager.storageAccounts()
                     .define(this.namer.randomName("stg", 24))
-                    .withRegion(this.region())
+                    .withRegion(this.regionName())
                     .withExistingGroup(this.resourceGroupName())
                     .createAsync(new ServiceCallback<StorageAccount>() {
                         @Override
@@ -1161,7 +1161,7 @@ class VirtualMachineImpl
         NetworkInterface.DefinitionStages.WithGroup definitionWithGroup = this.networkManager
                 .networkInterfaces()
                 .define(name)
-                .withRegion(this.region());
+                .withRegion(this.regionName());
         NetworkInterface.DefinitionStages.WithPrimaryNetwork definitionWithNetwork;
         if (this.newGroup != null) {
             definitionWithNetwork = definitionWithGroup.withNewGroup(this.newGroup);
@@ -1188,7 +1188,7 @@ class VirtualMachineImpl
     private NetworkInterface.DefinitionStages.WithPrimaryNetwork preparePrimaryNetworkInterface(String name) {
         NetworkInterface.DefinitionStages.WithGroup definitionWithGroup = this.networkManager.networkInterfaces()
                 .define(name)
-                .withRegion(this.region());
+                .withRegion(this.regionName());
         NetworkInterface.DefinitionStages.WithPrimaryNetwork definitionAfterGroup;
         if (this.newGroup != null) {
             definitionAfterGroup = definitionWithGroup.withNewGroup(this.newGroup);

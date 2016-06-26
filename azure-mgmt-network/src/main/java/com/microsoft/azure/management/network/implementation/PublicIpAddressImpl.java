@@ -27,7 +27,7 @@ class PublicIpAddressImpl
         NetworkManager>
     implements
         PublicIpAddress,
-        PublicIpAddress.Definitions,
+        PublicIpAddress.Definition,
         PublicIpAddress.Update {
 
     private final PublicIPAddressesInner client;

@@ -394,7 +394,7 @@ public interface VirtualMachine extends
              * @param creatable a creatable definition for a new public IP
              * @return the next stage of the virtual machine definition
              */
-            WithOS withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionCreatable creatable);
+            WithOS withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionStages.WithCreate creatable);
 
             /**
              * Creates a new public IP address in the same region and group as the resource, with the specified DNS label
@@ -416,7 +416,7 @@ public interface VirtualMachine extends
             WithOS withExistingPrimaryPublicIpAddress(PublicIpAddress publicIpAddress);
 
             /**
-             * Specifies that no public Ip needs to be associated with virtual machine.
+             * Specifies that no public IP needs to be associated with virtual machine.
              *
              * @return the next stage of the virtual machine definition
              */
@@ -745,7 +745,7 @@ public interface VirtualMachine extends
             WithCreate withNewAvailabilitySet(String name);
 
             /**
-             * Specifies definition of a not-yet-created {@link AvailabilitySet.DefinitionCreatable} availability set
+             * Specifies definition of a not-yet-created {@link AvailabilitySet.DefinitionStages.WithCreate} availability set
              * to associate the virtual machine with.
              * <p>
              * Adding virtual machines running your application to an availability set ensures that during
@@ -754,7 +754,7 @@ public interface VirtualMachine extends
              * @param creatable the availability set in creatable stage
              * @return the stage representing creatable VM definition
              */
-            WithCreate withNewAvailabilitySet(AvailabilitySet.DefinitionCreatable creatable);
+            WithCreate withNewAvailabilitySet(AvailabilitySet.DefinitionStages.WithCreate creatable);
 
             /**
              * Specifies an existing {@link AvailabilitySet} availability set to to associate the virtual machine with.
@@ -784,16 +784,16 @@ public interface VirtualMachine extends
             WithCreate withNewStorageAccount(String name);
 
             /**
-             * Specifies definition of a not-yet-created {@link StorageAccount.DefinitionCreatable} storage account
-             * to put the VM's OS and data disk VHD in.
+             * Specifies definition of a not-yet-created storage account definition
+             * to put the VM's OS and data disk VHDs in.
              * <p>
-             * Only the OS disk based on marketplace image will be stored in the new storage account,
-             * an OS disk based on user image will be stored in the same storage account as user image.
+             * Only the OS disk based on marketplace image will be stored in the new storage account.
+             * An OS disk based on user image will be stored in the same storage account as user image.
              *
              * @param creatable the storage account in creatable stage
              * @return the stage representing creatable VM definition
              */
-            WithCreate withNewStorageAccount(StorageAccount.DefinitionCreatable creatable);
+            WithCreate withNewStorageAccount(StorageAccount.DefinitionStages.WithCreate creatable);
 
             /**
              * Specifies an existing {@link StorageAccount} storage account to put the VM's OS and data disk VHD in.
