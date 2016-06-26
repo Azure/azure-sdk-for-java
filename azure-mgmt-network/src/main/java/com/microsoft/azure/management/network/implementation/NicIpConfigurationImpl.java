@@ -211,14 +211,8 @@ class NicIpConfigurationImpl
         }
     }
 
-    /**
-     * Creates a {@link PublicIpAddress.DefinitionCreatable} with the give name and DNS label.
-     *
-     * @param name the public IP name
-     * @param leafDnsLabel the domain name label
-     * @return {@link PublicIpAddress.DefinitionCreatable}
-     */
-    private PublicIpAddress.DefinitionStages.WithCreate prepareCreatablePublicIp(String name, String leafDnsLabel) {
+    // Creates a creatable public IP address definition with the given name and DNS label.
+    private Creatable<PublicIpAddress> prepareCreatablePublicIp(String name, String leafDnsLabel) {
         PublicIpAddress.DefinitionStages.WithGroup definitionWithGroup = this.networkManager.publicIpAddresses()
                     .define(name)
                     .withRegion(this.parent().regionName());
