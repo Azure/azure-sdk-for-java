@@ -63,9 +63,9 @@ public final class ManageIPAddress {
                 //============================================================
                 // Assign a public IP address for a VM during its creation
 
-                // Define a public Ip address to be used during VM creation time
+                // Define a public IP address to be used during VM creation time
 
-                System.out.println("Creating a public Ip address...");
+                System.out.println("Creating a public IP address...");
 
                 PublicIpAddress publicIpAddress = azure.publicIpAddresses()
                         .define(publicIpAddressName1)
@@ -73,10 +73,10 @@ public final class ManageIPAddress {
                         .withNewGroup(rgName)
                         .withLeafDomainLabel(publicIpAddressLeafDNS1)
                         .create();
-                // Print public Ip address details
+                // Print public IP address details
                 Utils.print(publicIpAddress);
 
-                // Use the pre-created public Ip for the new VM
+                // Use the pre-created public IP for the new VM
 
                 System.out.println("Creating a Windows VM");
 
@@ -101,26 +101,26 @@ public final class ManageIPAddress {
                 Utils.print(vm);
 
                 //============================================================
-                // Gets the public Ip address associated with the VM's primary NIC
+                // Gets the public IP address associated with the VM's primary NIC
 
-                System.out.println("Reading public Ip address associated with the VM's primary NIC [After create]");
-                // Print the public Ip address details
+                System.out.println("Reading public IP address associated with the VM's primary NIC [After create]");
+                // Print the public IP address details
                 Utils.print(vm.primaryPublicIpAddress());
 
                 //============================================================
                 // Assign a new public IP address for the VM
 
-                // Define a new public Ip address
+                // Define a new public IP address
 
-                PublicIpAddress.DefinitionCreatable publicIpAddress2Creatable = azure.publicIpAddresses()
+                PublicIpAddress.DefinitionStages.WithCreate publicIpAddress2Creatable = azure.publicIpAddresses()
                         .define(publicIpAddressName2)
                         .withRegion(Region.US_EAST)
                         .withNewGroup(rgName)
                         .withLeafDomainLabel(publicIpAddressLeafDNS2);
 
-                // Update VM's primary NIC to use the new public Ip address
+                // Update VM's primary NIC to use the new public IP address
 
-                System.out.println("Updating the VM's primary NIC with new public Ip address");
+                System.out.println("Updating the VM's primary NIC with new public IP address");
 
                 NetworkInterface primaryNetworkInterface = vm.primaryNetworkInterface();
                 primaryNetworkInterface
@@ -129,15 +129,15 @@ public final class ManageIPAddress {
                         .apply();
 
                 //============================================================
-                // Gets the updated public Ip address associated with the VM
+                // Gets the updated public IP address associated with the VM
 
                 // Get the associated public IP address for a virtual machine
-                System.out.println("Reading public Ip address associated with the VM's primary NIC [After Update]");
+                System.out.println("Reading public IP address associated with the VM's primary NIC [After Update]");
                 vm.refresh();
                 Utils.print(vm.primaryPublicIpAddress());
 
                 //============================================================
-                // Remove public Ip associated with the VM
+                // Remove public IP associated with the VM
 
                 vm.refresh();
                 primaryNetworkInterface = vm.primaryNetworkInterface();
@@ -148,7 +148,7 @@ public final class ManageIPAddress {
 
                 //============================================================
                 // Delete the public ip
-                System.out.println("Deleting the public Ip address");
+                System.out.println("Deleting the public IP address");
                 azure.publicIpAddresses().delete(publicIpAddress.id());
             } catch (Exception e) {
                 System.err.println(e.getMessage());
