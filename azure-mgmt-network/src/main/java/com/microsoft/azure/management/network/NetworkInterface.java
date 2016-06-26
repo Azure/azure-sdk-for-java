@@ -39,7 +39,7 @@ public interface NetworkInterface extends
     boolean isPrimary();
 
     /**
-     * @return the Mac Address of the network interface
+     * @return the MAC Address of the network interface
      */
     String macAddress();
 
