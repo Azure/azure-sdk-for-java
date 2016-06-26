@@ -14,6 +14,7 @@ import com.microsoft.azure.management.compute.implementation.api.VirtualMachineS
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.samples.Utils;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -112,7 +113,7 @@ public final class ManageIPAddress {
 
                 // Define a new public IP address
 
-                PublicIpAddress.DefinitionStages.WithCreate publicIpAddress2Creatable = azure.publicIpAddresses()
+                Creatable<PublicIpAddress> publicIpAddress2Creatable = azure.publicIpAddresses()
                         .define(publicIpAddressName2)
                         .withRegion(Region.US_EAST)
                         .withNewGroup(rgName)

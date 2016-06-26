@@ -171,7 +171,7 @@ public interface NetworkInterface extends
              * @param creatable a creatable definition for a new virtual network
              * @return the next stage of the network interface definition
              */
-            WithPrimaryPrivateIp withNewPrimaryNetwork(Network.DefinitionStages.WithCreate creatable);
+            WithPrimaryPrivateIp withNewPrimaryNetwork(Creatable<Network> creatable);
 
             /**
              * Creates a new virtual network to associate with the network interface's primary IP configuration.
@@ -256,7 +256,7 @@ public interface NetworkInterface extends
              * @param creatable a creatable definition for a new public IP
              * @return the next stage of the network interface definition
              */
-            WithCreate withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionStages.WithCreate creatable);
+            WithCreate withNewPrimaryPublicIpAddress(Creatable<PublicIpAddress> creatable);
 
             /**
              * Creates a new public IP address in the same region and group as the resource and associate it
@@ -298,7 +298,7 @@ public interface NetworkInterface extends
              * @param creatable a creatable definition for a new network security group
              * @return the next stage of the network interface definition
              */
-            WithCreate withNewNetworkSecurityGroup(NetworkSecurityGroup.DefinitionStages.WithCreate creatable);
+            WithCreate withNewNetworkSecurityGroup(Creatable<NetworkSecurityGroup> creatable);
 
             /**
              * Associates an existing network security group with the network interface.
@@ -417,7 +417,7 @@ public interface NetworkInterface extends
              * @param creatable a creatable definition for a new public IP
              * @return the next stage of the network interface update
              */
-            Update withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionStages.WithCreate creatable);
+            Update withNewPrimaryPublicIpAddress(Creatable<PublicIpAddress> creatable);
 
             /**
              * Creates a new public IP address in the same region and group as the resource and associate it
@@ -469,7 +469,7 @@ public interface NetworkInterface extends
              * @param creatable a creatable definition for a new network security group
              * @return the next stage of the network interface update
              */
-            Update withNewNetworkSecurityGroup(NetworkSecurityGroup.DefinitionStages.WithCreate creatable);
+            Update withNewNetworkSecurityGroup(Creatable<NetworkSecurityGroup> creatable);
 
             /**
              * Associates an existing network security group with the network interface.

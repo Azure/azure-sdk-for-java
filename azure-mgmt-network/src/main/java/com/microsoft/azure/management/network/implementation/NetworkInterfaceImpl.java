@@ -104,7 +104,7 @@ class NetworkInterfaceImpl
      **************************************************/
 
     @Override
-    public NetworkInterfaceImpl withNewPrimaryNetwork(Network.DefinitionStages.WithCreate creatable) {
+    public NetworkInterfaceImpl withNewPrimaryNetwork(Creatable<Network> creatable) {
         this.primaryIpConfiguration().withNewNetwork(creatable);
         return this;
     }
@@ -128,7 +128,7 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public NetworkInterfaceImpl withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionStages.WithCreate creatable) {
+    public NetworkInterfaceImpl withNewPrimaryPublicIpAddress(Creatable<PublicIpAddress> creatable) {
         this.primaryIpConfiguration().withNewPublicIpAddress(creatable);
         return this;
     }
@@ -170,7 +170,7 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public NetworkInterfaceImpl withNewNetworkSecurityGroup(NetworkSecurityGroup.DefinitionStages.WithCreate creatable) {
+    public NetworkInterfaceImpl withNewNetworkSecurityGroup(Creatable<NetworkSecurityGroup> creatable) {
         if (this.creatableNetworkSecurityGroupKey == null) {
             this.creatableNetworkSecurityGroupKey = creatable.key();
             this.addCreatableDependency(creatable);
@@ -469,7 +469,7 @@ class NetworkInterfaceImpl
         return super.createdResource(key);
     }
 
-    ResourceGroup.DefinitionCreatable newGroup() {
+    Creatable<ResourceGroup> newGroup() {
         return this.newGroup;
     }
 }

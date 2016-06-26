@@ -324,7 +324,7 @@ public interface VirtualMachine extends
              * @param creatable a creatable definition for a new virtual network
              * @return the next stage of the virtual machine definition
              */
-            WithPrivateIp withNewPrimaryNetwork(Network.DefinitionStages.WithCreate creatable);
+            WithPrivateIp withNewPrimaryNetwork(Creatable<Network> creatable);
 
             /**
              * Creates a new virtual network to associate with the virtual machine's primary network interface.
@@ -394,7 +394,7 @@ public interface VirtualMachine extends
              * @param creatable a creatable definition for a new public IP
              * @return the next stage of the virtual machine definition
              */
-            WithOS withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionStages.WithCreate creatable);
+            WithOS withNewPrimaryPublicIpAddress(Creatable<PublicIpAddress> creatable);
 
             /**
              * Creates a new public IP address in the same region and group as the resource, with the specified DNS label
@@ -434,7 +434,7 @@ public interface VirtualMachine extends
              * @param creatable a creatable definition for a new network interface
              * @return The next stage of the virtual machine definition
              */
-            WithOS withNewPrimaryNetworkInterface(NetworkInterface.DefinitionStages.WithCreate creatable);
+            WithOS withNewPrimaryNetworkInterface(Creatable<NetworkInterface> creatable);
 
             /**
              * Associate an existing network interface as the virtual machine with as it's primary network interface.
@@ -745,7 +745,7 @@ public interface VirtualMachine extends
             WithCreate withNewAvailabilitySet(String name);
 
             /**
-             * Specifies definition of a not-yet-created {@link AvailabilitySet.DefinitionStages.WithCreate} availability set
+             * Specifies definition of a not-yet-created availability set definition
              * to associate the virtual machine with.
              * <p>
              * Adding virtual machines running your application to an availability set ensures that during
@@ -754,7 +754,7 @@ public interface VirtualMachine extends
              * @param creatable the availability set in creatable stage
              * @return the stage representing creatable VM definition
              */
-            WithCreate withNewAvailabilitySet(AvailabilitySet.DefinitionStages.WithCreate creatable);
+            WithCreate withNewAvailabilitySet(Creatable<AvailabilitySet> creatable);
 
             /**
              * Specifies an existing {@link AvailabilitySet} availability set to to associate the virtual machine with.
@@ -793,7 +793,7 @@ public interface VirtualMachine extends
              * @param creatable the storage account in creatable stage
              * @return the stage representing creatable VM definition
              */
-            WithCreate withNewStorageAccount(StorageAccount.DefinitionStages.WithCreate creatable);
+            WithCreate withNewStorageAccount(Creatable<StorageAccount> creatable);
 
             /**
              * Specifies an existing {@link StorageAccount} storage account to put the VM's OS and data disk VHD in.
@@ -822,7 +822,7 @@ public interface VirtualMachine extends
              * @param creatable a creatable definition for a new network interface
              * @return the stage representing creatable VM definition
              */
-            WithCreate withNewSecondaryNetworkInterface(NetworkInterface.DefinitionStages.WithCreate creatable);
+            WithCreate withNewSecondaryNetworkInterface(Creatable<NetworkInterface> creatable);
 
             /**
              * Associate an existing network interface with the virtual machine.
@@ -939,7 +939,7 @@ public interface VirtualMachine extends
              * @param creatable a creatable definition for a new network interface
              * @return the stage representing creatable VM definition
              */
-            Update withNewSecondaryNetworkInterface(NetworkInterface.DefinitionStages.WithCreate creatable);
+            Update withNewSecondaryNetworkInterface(Creatable<NetworkInterface> creatable);
 
             /**
              * Associate an existing network interface with the virtual machine.
