@@ -10,9 +10,11 @@ import com.microsoft.azure.management.compute.Offer;
 import com.microsoft.azure.management.compute.Publisher;
 import com.microsoft.azure.management.compute.Sku;
 import com.microsoft.azure.management.compute.VirtualMachineImage;
+import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.GenericResource;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.implementation.api.DeploymentMode;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.api.SkuName;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
@@ -69,6 +71,30 @@ public class AzureTests {
             azure = azureAuthed.withSubscription(SUBSCRIPTION_ID);
         }
     }
+
+    /**
+     * Tests ARM template deployments
+     * @throws IOException
+     * @throws CloudException
+     */
+    @Test public void testDeployments() throws Exception {
+        String testId = String.valueOf(System.currentTimeMillis());
+        List<Deployment> deployments = azure.deployments().list();
+        System.out.println("Deployments: " + deployments.size());
+        Deployment deployment = azure.deployments()
+            .define("depl" + testId)
+            .withNewGroup("rg" + testId, Region.US_WEST)
+            .withTemplateLink(
+                    "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vnet-two-subnets/azuredeploy.json",
+                    "1.0.0.0")
+            .withParametersLink(
+                    "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vnet-two-subnets/azuredeploy.parameters.json",
+                    "1.0.0.0")
+            .withMode(DeploymentMode.COMPLETE)
+            .create();
+        System.out.println("Create deployment: " + deployment.correlationId());
+    }
+
 
     /**
      * Tests basic generic resources retrieval
