@@ -118,7 +118,7 @@ public interface PublicIpAddress extends
          * The stage of the public IP address definition allowing to specify the resource group.
          */
         interface WithGroup
-            extends GroupableResource.DefinitionWithGroup<WithCreate> {
+            extends GroupableResource.DefinitionStages.WithGroup<WithCreate> {
         }
 
         /**

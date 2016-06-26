@@ -160,7 +160,7 @@ public interface StorageAccount extends
         /**
          * A storage account definition allowing resource group to be set.
          */
-        interface WithGroup extends GroupableResource.DefinitionWithGroup<WithCreate> {
+        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithCreate> {
         }
 
         /**

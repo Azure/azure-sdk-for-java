@@ -45,7 +45,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
         // Create
         resourceClient.deployments()
                 .define(dp1)
-                .withExistingResourceGroup(rgName)
+                .withExistingGroup(rgName)
                 .withTemplateLink(templateUri, contentVersion)
                 .withParametersLink(parametersUri, contentVersion)
                 .withMode(DeploymentMode.COMPLETE)
@@ -82,7 +82,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
         // Begin create
         resourceClient.deployments()
                 .define(dp2)
-                .withExistingResourceGroup(rgName)
+                .withExistingGroup(rgName)
                 .withTemplateLink(templateUri, contentVersion)
                 .withParametersLink(parametersUri, contentVersion)
                 .withMode(DeploymentMode.COMPLETE)
@@ -101,7 +101,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
         // Begin create
         resourceClient.deployments()
                 .define(dp3)
-                .withExistingResourceGroup(rgName)
+                .withExistingGroup(rgName)
                 .withTemplateLink(templateUri, contentVersion)
                 .withParametersLink(parametersUri, contentVersion)
                 .withMode(DeploymentMode.COMPLETE)
