@@ -18,7 +18,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
         final String newName = "nic" + this.testId;
         return networkInterfaces.define(newName)
                 .withRegion(Region.US_EAST)
-                .withNewGroup()
+                .withNewResourceGroup()
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIpAddressDynamic()
                 .withNewPrimaryPublicIpAddress("pipdns" + this.testId)

@@ -68,7 +68,7 @@ public final class ManageVirtualNetwork {
                 Network virtualNetwork1 = azure.networks()
                         .define(vnetName1)
                         .withRegion(Region.US_EAST)
-                        .withNewGroup(rgName)
+                        .withNewResourceGroup(rgName)
                         .create();
 
                 // Print the virtual network details
@@ -84,7 +84,7 @@ public final class ManageVirtualNetwork {
                 NetworkSecurityGroup backEndSubnetNsg = azure.networkSecurityGroups()
                         .define(vnet2BackEndSubnetNsgName)
                         .withRegion(Region.US_EAST)
-                        .withExistingGroup(rgName)
+                        .withExistingResourceGroup(rgName)
                         .defineRule("DenyInternetInComing")
                             .denyInbound()
                             .fromAddress("INTERNET")
@@ -110,7 +110,7 @@ public final class ManageVirtualNetwork {
                 Network virtualNetwork2 = azure.networks()
                         .define(vnetName2)
                         .withRegion(Region.US_EAST)
-                        .withExistingGroup(rgName)
+                        .withExistingResourceGroup(rgName)
                         .withAddressSpace("192.168.0.0/16")
                         .withSubnet(vnet2FrontEndSubnetName, "192.168.1.0/24")
                         .defineSubnet(vnet2BackEndSubnetName)
@@ -132,7 +132,7 @@ public final class ManageVirtualNetwork {
                 NetworkSecurityGroup frontEndSubnetNsg = azure.networkSecurityGroups()
                         .define(vnet2FrontEndSubnetNsgName)
                         .withRegion(Region.US_EAST)
-                        .withExistingGroup(rgName)
+                        .withExistingResourceGroup(rgName)
                         .defineRule("AllowHttpInComing")
                             .allowInbound()
                             .fromAddress("INTERNET")

@@ -83,7 +83,7 @@ public class AzureTests {
         System.out.println("Deployments: " + deployments.size());
         Deployment deployment = azure.deployments()
             .define("depl" + testId)
-            .withNewGroup("rg" + testId, Region.US_WEST)
+            .withNewResourceGroup("rg" + testId, Region.US_WEST)
             .withTemplateLink(
                     "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vnet-two-subnets/azuredeploy.json",
                     "1.0.0.0")
@@ -92,7 +92,7 @@ public class AzureTests {
                     "1.0.0.0")
             .withMode(DeploymentMode.COMPLETE)
             .create();
-        System.out.println("Create deployment: " + deployment.correlationId());
+        System.out.println("Created deployment: " + deployment.correlationId());
     }
 
 
@@ -224,7 +224,7 @@ public class AzureTests {
     public void createStorageAccount() throws Exception {
         StorageAccount storageAccount = azure.storageAccounts().define("my-stg1")
                 .withRegion(Region.ASIA_EAST)
-                .withNewGroup()
+                .withNewResourceGroup()
                 .withSku(SkuName.PREMIUM_LRS)
                 .create();
 
