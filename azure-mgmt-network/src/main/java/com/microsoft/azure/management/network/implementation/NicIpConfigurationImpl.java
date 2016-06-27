@@ -59,7 +59,6 @@ class NicIpConfigurationImpl
                                                                       final NetworkManager networkManager) {
         NetworkInterfaceIPConfiguration ipConfigurationInner = new NetworkInterfaceIPConfiguration();
         ipConfigurationInner.withName(name);
-        parent.inner().ipConfigurations().add(ipConfigurationInner);
         return new NicIpConfigurationImpl(name,
                 ipConfigurationInner,
                 parent,
@@ -115,7 +114,7 @@ class NicIpConfigurationImpl
 
     @Override
     public NetworkInterfaceImpl attach() {
-        return parent();
+        return parent().withIpConfiguration(this);
     }
 
     @Override
