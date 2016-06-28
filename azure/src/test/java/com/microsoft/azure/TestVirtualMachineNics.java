@@ -48,7 +48,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
         Network.DefinitionStages.WithCreate networkCreatable = this.networks
                 .define(vnetName)
                 .withRegion(Region.US_EAST)
-                .withNewGroup(resourceGroupCreatable)
+                .withNewResourceGroup(resourceGroupCreatable)
                 .withAddressSpace("10.0.0.0/28");
 
         // Prepare the secondary network interface definition
@@ -56,7 +56,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
         Creatable<NetworkInterface> secondaryNetworkInterfaceCreatable = this.networkInterfaces
                 .define(secondaryNicName)
                 .withRegion(Region.US_EAST)
-                .withNewGroup(resourceGroupCreatable)
+                .withNewResourceGroup(resourceGroupCreatable)
                 .withNewPrimaryNetwork(networkCreatable)
                 .withPrimaryPrivateIpAddressStatic("10.0.0.5");
                 // .withNewPrimaryPublicIpAddress();
@@ -67,7 +67,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
         Creatable<NetworkInterface> secondaryNetworkInterfaceCreatable2 = this.networkInterfaces
                 .define(secondaryNicName2)
                 .withRegion(Region.US_EAST)
-                .withNewGroup(resourceGroupCreatable)
+                .withNewResourceGroup(resourceGroupCreatable)
                 .withNewPrimaryNetwork(networkCreatable)
                 .withPrimaryPrivateIpAddressStatic("10.0.0.6");
 
@@ -76,7 +76,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
         final String primaryPipName = "pip" + vmName;
         VirtualMachine virtualMachine = virtualMachines.define(vmName)
                 .withRegion(Region.US_EAST)
-                .withNewGroup(resourceGroupCreatable)
+                .withNewResourceGroup(resourceGroupCreatable)
                 .withNewPrimaryNetwork(networkCreatable)
                 .withPrimaryPrivateIpAddressStatic("10.0.0.4")
                 .withNewPrimaryPublicIpAddress(primaryPipName)

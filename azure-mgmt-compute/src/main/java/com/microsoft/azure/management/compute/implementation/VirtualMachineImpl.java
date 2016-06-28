@@ -584,9 +584,9 @@ class VirtualMachineImpl
                 .withRegion(this.regionName());
         Creatable<StorageAccount> definitionAfterGroup;
         if (this.newGroup != null) {
-            definitionAfterGroup = definitionWithGroup.withNewGroup(this.newGroup);
+            definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.newGroup);
         } else {
-            definitionAfterGroup = definitionWithGroup.withExistingGroup(this.resourceGroupName());
+            definitionAfterGroup = definitionWithGroup.withExistingResourceGroup(this.resourceGroupName());
         }
         return withNewStorageAccount(definitionAfterGroup);
     }
@@ -614,7 +614,7 @@ class VirtualMachineImpl
     public VirtualMachineImpl withNewAvailabilitySet(String name) {
         return withNewAvailabilitySet(super.myManager.availabilitySets().define(name)
                 .withRegion(this.regionName())
-                .withExistingGroup(this.resourceGroupName())
+                .withExistingResourceGroup(this.resourceGroupName())
         );
     }
 
@@ -972,7 +972,7 @@ class VirtualMachineImpl
             storageAccount = this.storageManager.storageAccounts()
                     .define(this.namer.randomName("stg", 24))
                     .withRegion(this.regionName())
-                    .withExistingGroup(this.resourceGroupName())
+                    .withExistingResourceGroup(this.resourceGroupName())
                     .create();
         }
 
@@ -1033,7 +1033,7 @@ class VirtualMachineImpl
             this.storageManager.storageAccounts()
                     .define(this.namer.randomName("stg", 24))
                     .withRegion(this.regionName())
-                    .withExistingGroup(this.resourceGroupName())
+                    .withExistingResourceGroup(this.resourceGroupName())
                     .createAsync(new ServiceCallback<StorageAccount>() {
                         @Override
                         public void failure(Throwable t) {
@@ -1169,9 +1169,9 @@ class VirtualMachineImpl
                 .withRegion(this.regionName());
         NetworkInterface.DefinitionStages.WithPrimaryNetwork definitionWithNetwork;
         if (this.newGroup != null) {
-            definitionWithNetwork = definitionWithGroup.withNewGroup(this.newGroup);
+            definitionWithNetwork = definitionWithGroup.withNewResourceGroup(this.newGroup);
         } else {
-            definitionWithNetwork = definitionWithGroup.withExistingGroup(this.resourceGroupName());
+            definitionWithNetwork = definitionWithGroup.withExistingResourceGroup(this.resourceGroupName());
         }
         return definitionWithNetwork
                 .withNewPrimaryNetwork("vnet" + name)
@@ -1196,9 +1196,9 @@ class VirtualMachineImpl
                 .withRegion(this.regionName());
         NetworkInterface.DefinitionStages.WithPrimaryNetwork definitionAfterGroup;
         if (this.newGroup != null) {
-            definitionAfterGroup = definitionWithGroup.withNewGroup(this.newGroup);
+            definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.newGroup);
         } else {
-            definitionAfterGroup = definitionWithGroup.withExistingGroup(this.resourceGroupName());
+            definitionAfterGroup = definitionWithGroup.withExistingResourceGroup(this.resourceGroupName());
         }
         return definitionAfterGroup;
     }

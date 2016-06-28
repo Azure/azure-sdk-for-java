@@ -61,7 +61,7 @@ public final class ManageStorageAccount {
 
                 StorageAccount storageAccount = azure.storageAccounts().define(storageAccountName)
                         .withRegion(Region.US_EAST)
-                        .withNewGroup(rgName)
+                        .withNewResourceGroup(rgName)
                         .create();
 
                 System.out.println("Created a Storage Account:");
@@ -91,7 +91,7 @@ public final class ManageStorageAccount {
 
                 StorageAccount storageAccount2 = azure.storageAccounts().define(storageAccountName2)
                         .withRegion(Region.US_EAST)
-                        .withNewGroup(rgName)
+                        .withNewResourceGroup(rgName)
                         .create();
 
                 System.out.println("Created a Storage Account:");

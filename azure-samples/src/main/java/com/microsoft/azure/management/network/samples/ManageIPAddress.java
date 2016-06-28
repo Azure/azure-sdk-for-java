@@ -71,7 +71,7 @@ public final class ManageIPAddress {
                 PublicIpAddress publicIpAddress = azure.publicIpAddresses()
                         .define(publicIpAddressName1)
                         .withRegion(Region.US_EAST)
-                        .withNewGroup(rgName)
+                        .withNewResourceGroup(rgName)
                         .withLeafDomainLabel(publicIpAddressLeafDNS1)
                         .create();
                 // Print public IP address details
@@ -85,7 +85,7 @@ public final class ManageIPAddress {
 
                 VirtualMachine vm = azure.virtualMachines().define(vmName)
                         .withRegion(Region.US_EAST)
-                        .withExistingGroup(rgName)
+                        .withExistingResourceGroup(rgName)
                         .withNewPrimaryNetwork("10.0.0.0/28")
                         .withPrimaryPrivateIpAddressDynamic()
                         .withExistingPrimaryPublicIpAddress(publicIpAddress)
@@ -116,7 +116,7 @@ public final class ManageIPAddress {
                 Creatable<PublicIpAddress> publicIpAddress2Creatable = azure.publicIpAddresses()
                         .define(publicIpAddressName2)
                         .withRegion(Region.US_EAST)
-                        .withNewGroup(rgName)
+                        .withNewResourceGroup(rgName)
                         .withLeafDomainLabel(publicIpAddressLeafDNS2);
 
                 // Update VM's primary NIC to use the new public IP address
