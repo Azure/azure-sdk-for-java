@@ -80,7 +80,7 @@ public final class ManageIPAddress {
                 // Print public IP address details
                 Utils.print(publicIpAddress);
 
-                // Use the assigned public IP for the new VM
+                // Use the pre-created public IP for the new VM
 
                 System.out.println("Creating a Windows VM");
 
