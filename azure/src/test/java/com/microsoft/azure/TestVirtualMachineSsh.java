@@ -51,6 +51,9 @@ public class TestVirtualMachineSsh extends TestTemplate<VirtualMachine, VirtualM
         }finally {
             if(session != null) {session.disconnect();}
         }
+
+        Assert.assertNotNull(vm.inner().osProfile().linuxConfiguration().ssh());
+        Assert.assertTrue(vm.inner().osProfile().linuxConfiguration().ssh().publicKeys().size() > 0);
         return vm;
     }
 
