@@ -10,7 +10,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.management.resources.DeploymentExportResult;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
-import com.microsoft.azure.management.resources.implementation.api.DeploymentExportResultInner;
 
 /**
  * Implementation for {@link DeploymentExportResult}.

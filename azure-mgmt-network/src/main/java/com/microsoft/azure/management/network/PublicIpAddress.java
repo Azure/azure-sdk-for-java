@@ -5,7 +5,7 @@
  */
 package com.microsoft.azure.management.network;
 
-import com.microsoft.azure.management.network.implementation.api.PublicIPAddressInner;
+import com.microsoft.azure.management.network.implementation.PublicIPAddressInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -27,8 +27,8 @@ public interface PublicIpAddress extends
      * IP allocation methods.
      */
     enum IpAllocationMethod {
-        STATIC(com.microsoft.azure.management.network.implementation.api.IPAllocationMethod.STATIC),
-        DYNAMIC(com.microsoft.azure.management.network.implementation.api.IPAllocationMethod.DYNAMIC);
+        STATIC(IPAllocationMethod.STATIC),
+        DYNAMIC(IPAllocationMethod.DYNAMIC);
 
         private final String name;
         IpAllocationMethod(String name) {

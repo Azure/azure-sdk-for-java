@@ -5,10 +5,7 @@
  */
 package com.microsoft.azure.management.network;
 
-import com.microsoft.azure.management.network.implementation.api.SecurityRuleAccess;
-import com.microsoft.azure.management.network.implementation.api.SecurityRuleDirection;
-import com.microsoft.azure.management.network.implementation.api.SecurityRuleInner;
-import com.microsoft.azure.management.network.implementation.api.SecurityRuleProtocol;
+import com.microsoft.azure.management.network.implementation.SecurityRuleInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;

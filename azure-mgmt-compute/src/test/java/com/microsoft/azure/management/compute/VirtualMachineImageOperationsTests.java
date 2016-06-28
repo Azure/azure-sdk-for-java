@@ -1,7 +1,6 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.compute.implementation.api.DataDiskImage;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -36,11 +35,11 @@ public class VirtualMachineImageOperationsTests extends ComputeManagementTestBas
         }
         Assert.assertTrue(count == maxListing);
 
-        List<Publisher> publishers =
+        List<VirtualMachinePublisher> publishers =
                 computeManager.virtualMachineImages().publishers().listByRegion(Region.US_EAST);
 
-        Publisher canonicalPublisher = null;
-        for (Publisher publisher : publishers) {
+        VirtualMachinePublisher canonicalPublisher = null;
+        for (VirtualMachinePublisher publisher : publishers) {
             if (publisher.name().equalsIgnoreCase("Canonical")) {
                 canonicalPublisher = publisher;
                 break;
@@ -49,8 +48,8 @@ public class VirtualMachineImageOperationsTests extends ComputeManagementTestBas
 
         Assert.assertNotNull(canonicalPublisher);
         VirtualMachineImage firstVMImage = null;
-        for (Offer offer : canonicalPublisher.offers().list()) {
-            for (Sku sku: offer.skus().list()) {
+        for (VirtualMachineOffer offer : canonicalPublisher.offers().list()) {
+            for (VirtualMachineSku sku: offer.skus().list()) {
                 for (VirtualMachineImage image : sku.images().list()) {
                     firstVMImage = image;
                     break;

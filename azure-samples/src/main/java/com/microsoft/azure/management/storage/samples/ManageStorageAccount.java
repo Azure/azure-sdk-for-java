@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccounts;
-import com.microsoft.azure.management.storage.implementation.api.StorageAccountKey;
+import com.microsoft.azure.management.storage.StorageAccountKey;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 import java.io.File;

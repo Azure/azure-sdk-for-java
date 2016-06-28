@@ -19,7 +19,7 @@ public interface VirtualMachineImages extends
     /**
      * @return entry point to virtual machine image publishers
      */
-    Publishers publishers();
+    VirtualMachinePublishers publishers();
 
     /**
      * Lists all the virtual machine images available in a given region.

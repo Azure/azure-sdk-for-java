@@ -24,7 +24,7 @@ public class UsageOperationsTests extends StorageManagementTestBase {
 
     @Test
     public void canGetUsages() throws Exception {
-        List<Usage> usages = storageManager.usages().list();
+        List<StorageUsage> usages = storageManager.usages().list();
         System.out.println(usages.size());
     }
 }

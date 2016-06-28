@@ -11,36 +11,31 @@ import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.PowerState;
 import com.microsoft.azure.management.compute.VirtualMachine;
+import com.microsoft.azure.management.compute.VirtualMachineDataDisk;
 import com.microsoft.azure.management.compute.VirtualMachineSize;
-import com.microsoft.azure.management.compute.implementation.api.InstanceViewStatus;
-import com.microsoft.azure.management.compute.implementation.api.InstanceViewTypes;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineInner;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeInner;
-import com.microsoft.azure.management.compute.implementation.api.Plan;
-import com.microsoft.azure.management.compute.implementation.api.HardwareProfile;
-import com.microsoft.azure.management.compute.implementation.api.StorageProfile;
-import com.microsoft.azure.management.compute.implementation.api.OSProfile;
-import com.microsoft.azure.management.compute.implementation.api.DiagnosticsProfile;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineInstanceView;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineExtensionInner;
-import com.microsoft.azure.management.compute.implementation.api.OperatingSystemTypes;
-import com.microsoft.azure.management.compute.implementation.api.ImageReference;
-import com.microsoft.azure.management.compute.implementation.api.WinRMListener;
-import com.microsoft.azure.management.compute.implementation.api.CachingTypes;
-import com.microsoft.azure.management.compute.implementation.api.DiskEncryptionSettings;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeTypes;
-import com.microsoft.azure.management.compute.implementation.api.VirtualHardDisk;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachinesInner;
-import com.microsoft.azure.management.compute.implementation.api.OSDisk;
-import com.microsoft.azure.management.compute.implementation.api.DiskCreateOptionTypes;
-import com.microsoft.azure.management.compute.implementation.api.LinuxConfiguration;
-import com.microsoft.azure.management.compute.implementation.api.WindowsConfiguration;
-import com.microsoft.azure.management.compute.implementation.api.WinRMConfiguration;
-import com.microsoft.azure.management.compute.implementation.api.SshConfiguration;
-import com.microsoft.azure.management.compute.implementation.api.SshPublicKey;
-import com.microsoft.azure.management.compute.implementation.api.NetworkInterfaceReference;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineCaptureParametersInner;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineCaptureResultInner;
+import com.microsoft.azure.management.compute.InstanceViewStatus;
+import com.microsoft.azure.management.compute.InstanceViewTypes;
+import com.microsoft.azure.management.compute.Plan;
+import com.microsoft.azure.management.compute.HardwareProfile;
+import com.microsoft.azure.management.compute.StorageProfile;
+import com.microsoft.azure.management.compute.OSProfile;
+import com.microsoft.azure.management.compute.DiagnosticsProfile;
+import com.microsoft.azure.management.compute.VirtualMachineInstanceView;
+import com.microsoft.azure.management.compute.OperatingSystemTypes;
+import com.microsoft.azure.management.compute.ImageReference;
+import com.microsoft.azure.management.compute.WinRMListener;
+import com.microsoft.azure.management.compute.CachingTypes;
+import com.microsoft.azure.management.compute.DiskEncryptionSettings;
+import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
+import com.microsoft.azure.management.compute.VirtualHardDisk;
+import com.microsoft.azure.management.compute.OSDisk;
+import com.microsoft.azure.management.compute.DiskCreateOptionTypes;
+import com.microsoft.azure.management.compute.LinuxConfiguration;
+import com.microsoft.azure.management.compute.WindowsConfiguration;
+import com.microsoft.azure.management.compute.WinRMConfiguration;
+import com.microsoft.azure.management.compute.SshConfiguration;
+import com.microsoft.azure.management.compute.SshPublicKey;
+import com.microsoft.azure.management.compute.NetworkInterfaceReference;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.PublicIpAddress;
@@ -51,7 +46,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import com.microsoft.azure.management.resources.implementation.api.PageImpl;
+import com.microsoft.azure.management.resources.implementation.PageImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import com.microsoft.rest.RestException;
@@ -109,7 +104,7 @@ class VirtualMachineImpl
     private VirtualMachineInstanceView virtualMachineInstanceView;
     private boolean isMarketplaceLinuxImage;
     // The data disks associated with the virtual machine
-    private List<DataDisk> dataDisks;
+    private List<VirtualMachineDataDisk> dataDisks;
     // Intermediate state of network interface definition to which private IP can be associated
     private NetworkInterface.DefinitionStages.WithPrimaryPrivateIp nicDefinitionWithPrivateIp;
     // Intermediate state of network interface definition to which subnet can be associated
@@ -642,7 +637,7 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl withoutDataDisk(String name) {
         int idx = -1;
-        for (DataDisk dataDisk : this.dataDisks) {
+        for (VirtualMachineDataDisk dataDisk : this.dataDisks) {
             idx++;
             if (dataDisk.name().equalsIgnoreCase(name)) {
                 this.dataDisks.remove(idx);
@@ -656,7 +651,7 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl withoutDataDisk(int lun) {
         int idx = -1;
-        for (DataDisk dataDisk : this.dataDisks) {
+        for (VirtualMachineDataDisk dataDisk : this.dataDisks) {
             idx++;
             if (dataDisk.lun() == lun) {
                 this.dataDisks.remove(idx);
@@ -669,7 +664,7 @@ class VirtualMachineImpl
 
     @Override
     public DataDiskImpl updateDataDisk(String name) {
-        for (DataDisk dataDisk : this.dataDisks) {
+        for (VirtualMachineDataDisk dataDisk : this.dataDisks) {
             if (dataDisk.name().equalsIgnoreCase(name)) {
                 return (DataDiskImpl) dataDisk;
             }
@@ -735,7 +730,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public List<DataDisk> dataDisks() {
+    public List<VirtualMachineDataDisk> dataDisks() {
         return this.dataDisks;
     }
 
@@ -1123,7 +1118,7 @@ class VirtualMachineImpl
         }
 
         boolean hasEmptyVhd = false;
-        for (DataDisk dataDisk : this.dataDisks) {
+        for (VirtualMachineDataDisk dataDisk : this.dataDisks) {
             if (dataDisk.createOption() == DiskCreateOptionTypes.EMPTY) {
                 if (dataDisk.inner().vhd() == null) {
                     hasEmptyVhd = true;
@@ -1139,7 +1134,7 @@ class VirtualMachineImpl
         if (hasEmptyVhd) {
             // In update mode, if any of the data disk has vhd uri set then use same container
             // to store this disk, no need to create a storage account implicitly.
-            for (DataDisk dataDisk : this.dataDisks) {
+            for (VirtualMachineDataDisk dataDisk : this.dataDisks) {
                 if (dataDisk.createOption() == DiskCreateOptionTypes.ATTACH && dataDisk.inner().vhd() != null) {
                     return false;
                 }
@@ -1182,10 +1177,10 @@ class VirtualMachineImpl
         if (this.inner().storageProfile().dataDisks() == null) {
             this.inner()
                     .storageProfile()
-                    .withDataDisks(new ArrayList<com.microsoft.azure.management.compute.implementation.api.DataDisk>());
+                    .withDataDisks(new ArrayList<DataDisk>());
         }
         this.dataDisks = new ArrayList<>();
-        for (com.microsoft.azure.management.compute.implementation.api.DataDisk dataDiskInner : this.storageProfile().dataDisks()) {
+        for (DataDisk dataDiskInner : this.storageProfile().dataDisks()) {
             this.dataDisks().add(new DataDiskImpl(dataDiskInner.name(), dataDiskInner, this));
         }
     }

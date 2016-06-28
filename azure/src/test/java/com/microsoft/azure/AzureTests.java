@@ -6,17 +6,18 @@
 package com.microsoft.azure;
 
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
-import com.microsoft.azure.management.compute.Offer;
-import com.microsoft.azure.management.compute.Publisher;
+import com.microsoft.azure.management.compute.VirtualMachineOffer;
+import com.microsoft.azure.management.compute.VirtualMachinePublisher;
 import com.microsoft.azure.management.compute.Sku;
 import com.microsoft.azure.management.compute.VirtualMachineImage;
+import com.microsoft.azure.management.compute.VirtualMachineSku;
 import com.microsoft.azure.management.resources.Deployment;
+import com.microsoft.azure.management.resources.DeploymentMode;
 import com.microsoft.azure.management.resources.GenericResource;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.implementation.api.DeploymentMode;
+import com.microsoft.azure.management.storage.SkuName;
 import com.microsoft.azure.management.storage.StorageAccount;
-import com.microsoft.azure.management.storage.implementation.api.SkuName;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import okhttp3.logging.HttpLoggingInterceptor.Level;
 import org.junit.Assert;
@@ -116,13 +117,13 @@ public class AzureTests {
      * @throws CloudException
      */
     @Test public void testVMImages() throws CloudException, IOException {
-        List<Publisher> publishers = azure.virtualMachineImages().publishers().listByRegion(Region.US_WEST);
+        List<VirtualMachinePublisher> publishers = azure.virtualMachineImages().publishers().listByRegion(Region.US_WEST);
         Assert.assertTrue(publishers.size() > 0);
-        for (Publisher p : publishers) {
+        for (VirtualMachinePublisher p : publishers) {
             System.out.println(String.format("Publisher name: %s, region: %s", p.name(), p.region()));
-            for (Offer o : p.offers().list()) {
+            for (VirtualMachineOffer o : p.offers().list()) {
                 System.out.println(String.format("\tOffer name: %s", o.name()));
-                for (Sku s : o.skus().list()) {
+                for (VirtualMachineSku s : o.skus().list()) {
                     System.out.println(String.format("\t\tSku name: %s", s.name()));
                 }
             }

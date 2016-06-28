@@ -9,9 +9,7 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddresses;
-import com.microsoft.azure.management.network.implementation.api.PublicIPAddressDnsSettings;
-import com.microsoft.azure.management.network.implementation.api.PublicIPAddressInner;
-import com.microsoft.azure.management.network.implementation.api.PublicIPAddressesInner;
+import com.microsoft.azure.management.network.PublicIPAddressDnsSettings;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 

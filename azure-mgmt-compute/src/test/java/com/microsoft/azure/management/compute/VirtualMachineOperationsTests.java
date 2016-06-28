@@ -1,8 +1,5 @@
 package com.microsoft.azure.management.compute;
 
-import com.microsoft.azure.management.compute.implementation.api.CachingTypes;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineInstanceView;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeTypes;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -10,9 +7,9 @@ import org.junit.Test;
 import java.util.List;
 
 public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
-    private static String RG_NAME = "javacsmrg";
-    private static String LOCATION = "southcentralus";
-    private static String VMNAME = "javavm";
+    private static final String RG_NAME = "javacsmrg";
+    private static final String LOCATION = "southcentralus";
+    private static final String VMNAME = "javavm";
 
     @BeforeClass
     public static void setup() throws Exception {

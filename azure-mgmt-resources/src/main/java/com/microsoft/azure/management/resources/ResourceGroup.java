@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
-import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
+import com.microsoft.azure.management.resources.implementation.ResourceGroupInner;
 
 import java.io.IOException;
 import java.util.Map;

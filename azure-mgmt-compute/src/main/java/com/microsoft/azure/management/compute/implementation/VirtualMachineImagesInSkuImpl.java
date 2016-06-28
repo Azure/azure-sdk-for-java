@@ -3,11 +3,9 @@ package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.compute.Sku;
 import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachineImagesInSku;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImageResourceInner;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImagesInner;
+import com.microsoft.azure.management.compute.VirtualMachineSku;
 import com.microsoft.rest.RestException;
 
 import java.io.IOException;
@@ -20,9 +18,9 @@ import java.util.List;
 class VirtualMachineImagesInSkuImpl implements VirtualMachineImagesInSku {
 
     private final VirtualMachineImagesInner innerCollection;
-    private final Sku sku;
+    private final VirtualMachineSku sku;
 
-    VirtualMachineImagesInSkuImpl(Sku sku, VirtualMachineImagesInner innerCollection) {
+    VirtualMachineImagesInSkuImpl(VirtualMachineSku sku, VirtualMachineImagesInner innerCollection) {
         this.sku = sku;
         this.innerCollection = innerCollection;
     }

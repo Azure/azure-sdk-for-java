@@ -12,11 +12,7 @@ import com.microsoft.azure.management.resources.GenericResources;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
-import com.microsoft.azure.management.resources.implementation.api.ResourcesInner;
 import com.microsoft.azure.management.resources.GenericResource;
-import com.microsoft.azure.management.resources.implementation.api.GenericResourceInner;
-import com.microsoft.azure.management.resources.implementation.api.ResourcesMoveInfoInner;
 
 import java.io.IOException;
 import java.util.List;

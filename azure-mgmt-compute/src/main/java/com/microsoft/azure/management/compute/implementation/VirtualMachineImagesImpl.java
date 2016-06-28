@@ -2,13 +2,12 @@ package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.compute.Offer;
-import com.microsoft.azure.management.compute.Publisher;
-import com.microsoft.azure.management.compute.Publishers;
-import com.microsoft.azure.management.compute.Sku;
+import com.microsoft.azure.management.compute.VirtualMachineOffer;
+import com.microsoft.azure.management.compute.VirtualMachinePublisher;
+import com.microsoft.azure.management.compute.VirtualMachinePublishers;
 import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachineImages;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImagesInner;
+import com.microsoft.azure.management.compute.VirtualMachineSku;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import java.io.IOException;
 
@@ -17,10 +16,10 @@ import java.io.IOException;
  */
 class VirtualMachineImagesImpl
         implements VirtualMachineImages {
-    private final Publishers publishers;
+    private final VirtualMachinePublishers publishers;
 
     VirtualMachineImagesImpl(VirtualMachineImagesInner client) {
-        this.publishers = new PublishersImpl(client);
+        this.publishers = new VirtualMachinePublishersImpl(client);
     }
 
     @Override
@@ -30,28 +29,28 @@ class VirtualMachineImagesImpl
 
     @Override
     public PagedList<VirtualMachineImage> listByRegion(String regionName) throws CloudException, IOException {
-        PagedList<Publisher> publishers = this.publishers().listByRegion(regionName);
+        PagedList<VirtualMachinePublisher> publishers = this.publishers().listByRegion(regionName);
 
-        PagedList<Offer> offers =
-                new ChildListFlattener<>(publishers, new ChildListFlattener.ChildListLoader<Publisher, Offer>() {
+        PagedList<VirtualMachineOffer> offers =
+                new ChildListFlattener<>(publishers, new ChildListFlattener.ChildListLoader<VirtualMachinePublisher, VirtualMachineOffer>() {
                     @Override
-                    public PagedList<Offer> loadList(Publisher publisher) throws CloudException, IOException  {
+                    public PagedList<VirtualMachineOffer> loadList(VirtualMachinePublisher publisher) throws CloudException, IOException  {
                         return publisher.offers().list();
                     }
                 }).flatten();
 
-        PagedList<Sku> skus =
-                new ChildListFlattener<>(offers, new ChildListFlattener.ChildListLoader<Offer, Sku>() {
+        PagedList<VirtualMachineSku> skus =
+                new ChildListFlattener<>(offers, new ChildListFlattener.ChildListLoader<VirtualMachineOffer, VirtualMachineSku>() {
                     @Override
-                    public PagedList<Sku> loadList(Offer offer) throws CloudException, IOException  {
+                    public PagedList<VirtualMachineSku> loadList(VirtualMachineOffer offer) throws CloudException, IOException  {
                         return offer.skus().list();
                     }
                 }).flatten();
 
         PagedList<VirtualMachineImage> images =
-                new ChildListFlattener<>(skus, new ChildListFlattener.ChildListLoader<Sku, VirtualMachineImage>() {
+                new ChildListFlattener<>(skus, new ChildListFlattener.ChildListLoader<VirtualMachineSku, VirtualMachineImage>() {
                     @Override
-                    public PagedList<VirtualMachineImage> loadList(Sku sku) throws CloudException, IOException  {
+                    public PagedList<VirtualMachineImage> loadList(VirtualMachineSku sku) throws CloudException, IOException  {
                         return sku.images().list();
                     }
                 }).flatten();
@@ -60,7 +59,7 @@ class VirtualMachineImagesImpl
     }
 
     @Override
-    public Publishers publishers() {
+    public VirtualMachinePublishers publishers() {
         return this.publishers;
     }
 

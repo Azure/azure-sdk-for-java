@@ -6,7 +6,7 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.network.implementation.api.SubnetInner;
+import com.microsoft.azure.management.network.implementation.SubnetInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
