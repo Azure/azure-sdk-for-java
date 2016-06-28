@@ -8,12 +8,12 @@
 
 package com.microsoft.azure.management.network;
 
-import java.util.List;
-import com.microsoft.azure.management.network.implementation.SubnetInner;
-import com.microsoft.azure.management.network.implementation.PublicIPAddressInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.network.implementation.SubnetInner;
+import com.microsoft.rest.serializer.JsonFlatten;
+
+import java.util.List;
 
 /**
  * IPConfiguration in a NetworkInterface.
