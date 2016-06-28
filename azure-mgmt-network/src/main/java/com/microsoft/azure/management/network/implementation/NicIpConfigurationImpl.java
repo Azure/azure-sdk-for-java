@@ -132,9 +132,9 @@ class NicIpConfigurationImpl
 
         Network.DefinitionStages.WithCreate definitionAfterGroup;
         if (this.parent().newGroup() != null) {
-            definitionAfterGroup = definitionWithGroup.withNewGroup(this.parent().newGroup());
+            definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.parent().newGroup());
         } else {
-            definitionAfterGroup = definitionWithGroup.withExistingGroup(this.parent().resourceGroupName());
+            definitionAfterGroup = definitionWithGroup.withExistingResourceGroup(this.parent().resourceGroupName());
         }
         return withNewNetwork(definitionAfterGroup.withAddressSpace(addressSpaceCidr));
     }
@@ -218,9 +218,9 @@ class NicIpConfigurationImpl
 
         PublicIpAddress.DefinitionStages.WithCreate definitionAfterGroup;
         if (this.parent().newGroup() != null) {
-            definitionAfterGroup = definitionWithGroup.withNewGroup(this.parent().newGroup());
+            definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.parent().newGroup());
         } else {
-            definitionAfterGroup = definitionWithGroup.withExistingGroup(this.parent().resourceGroupName());
+            definitionAfterGroup = definitionWithGroup.withExistingResourceGroup(this.parent().resourceGroupName());
         }
         return definitionAfterGroup.withLeafDomainLabel(leafDnsLabel);
     }

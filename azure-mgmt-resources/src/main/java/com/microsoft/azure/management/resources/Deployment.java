@@ -145,21 +145,21 @@ public interface Deployment extends
         /**
          * A deployment definition allowing resource group to be specified.
          */
-        interface WithGroup extends GroupableResource.DefinitionStages.WithExistingGroup<WithTemplate> {
+        interface WithGroup extends GroupableResource.DefinitionStages.WithExistingResourceGroup<WithTemplate> {
             /**
              * Creates a new resource group to put the deployment in.
              * @param name the name of the new group
              * @param region the region to create the resource group in
              * @return the next stage of the deployment definition
              */
-            WithTemplate withNewGroup(String name, Region region);
+            WithTemplate withNewResourceGroup(String name, Region region);
 
             /**
              * Creates a new resource group to put the resource in, based on the definition specified.
              * @param groupDefinition a creatable definition for a new resource group
              * @return the next stage of the deployment definition
              */
-            WithTemplate withNewGroup(Creatable<ResourceGroup> groupDefinition);
+            WithTemplate withNewResourceGroup(Creatable<ResourceGroup> groupDefinition);
         }
 
         /**

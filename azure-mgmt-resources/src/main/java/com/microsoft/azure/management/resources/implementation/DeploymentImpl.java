@@ -187,14 +187,14 @@ final class DeploymentImpl extends
     // Withers
 
     @Override
-    public DeploymentImpl withNewGroup(String resourceGroupName, Region region) {
+    public DeploymentImpl withNewResourceGroup(String resourceGroupName, Region region) {
         this.creatableResourceGroup = this.resourceManager.resourceGroups().define(resourceGroupName).withRegion(region);
         this.resourceGroupName = resourceGroupName;
         return this;
     }
 
     @Override
-    public DeploymentImpl withNewGroup(Creatable<ResourceGroup> resourceGroupDefinition) {
+    public DeploymentImpl withNewResourceGroup(Creatable<ResourceGroup> resourceGroupDefinition) {
         this.resourceGroupName = resourceGroupDefinition.key();
         addCreatableDependency(resourceGroupDefinition);
         return this;
@@ -202,13 +202,13 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public DeploymentImpl withExistingGroup(String resourceGroupName) {
+    public DeploymentImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
     }
 
     @Override
-    public DeploymentImpl withExistingGroup(ResourceGroup resourceGroup) {
+    public DeploymentImpl withExistingResourceGroup(ResourceGroup resourceGroup) {
         this.resourceGroupName = resourceGroup.name();
         return this;
     }

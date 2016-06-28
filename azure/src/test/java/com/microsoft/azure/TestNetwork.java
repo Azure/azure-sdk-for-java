@@ -33,13 +33,13 @@ public class TestNetwork extends TestTemplate<Network, Networks> {
         // Create an NSG
         NetworkSecurityGroup nsg = nsgs.define("nsg" + this.testId)
                 .withRegion(region)
-                .withNewGroup(groupName)
+                .withNewResourceGroup(groupName)
                 .create();
 
         // Create a network
         return networks.define(newName)
                 .withRegion(region)
-                .withNewGroup(groupName)
+                .withNewResourceGroup(groupName)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnetA", "10.0.0.0/29")
                 .defineSubnet("subnetB")
@@ -53,7 +53,7 @@ public class TestNetwork extends TestTemplate<Network, Networks> {
     public Network updateResource(Network resource) throws Exception {
         NetworkSecurityGroup nsg = nsgs.define("nsgB" + this.testId)
                 .withRegion(resource.region())
-                .withExistingGroup(resource.resourceGroupName())
+                .withExistingResourceGroup(resource.resourceGroupName())
                 .create();
 
         resource =  resource.update()
