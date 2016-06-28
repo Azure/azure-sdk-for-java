@@ -232,7 +232,7 @@ public final class ManageVirtualNetwork {
                 //============================================================
                 // Create a virtual network with default address-space and one default subnet
 
-                System.out.println("Creating virtual network #1...");
+                System.out.println("Creating virtual network #2...");
 
                 Network virtualNetwork2 = azure.networks()
                         .define(vnetName2)
