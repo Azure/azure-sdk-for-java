@@ -8,7 +8,7 @@ package com.microsoft.azure.management.datalake.store.uploader;
 import com.google.common.base.Stopwatch;
 import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccount;
 import com.microsoft.azure.management.datalake.store.implementation.DataLakeStoreFileSystemManagementClientImpl;
-import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
+import com.microsoft.azure.management.resources.implementation.ResourceGroupInner;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
