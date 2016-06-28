@@ -107,6 +107,7 @@ class VirtualMachineImpl
     private NetworkInterface primaryNetworkInterface;
     private PublicIpAddress primaryPublicIpAddress;
     private VirtualMachineInstanceView virtualMachineInstanceView;
+    private boolean isMarketplaceLinuxImage;
     // The data disks associated with the virtual machine
     private List<DataDisk> dataDisks;
     // Intermediate state of network interface definition to which private IP can be associated
@@ -129,6 +130,7 @@ class VirtualMachineImpl
         this.storageManager = storageManager;
         this.networkManager = networkManager;
         this.vmName = name;
+        this.isMarketplaceLinuxImage = false;
         this.namer = new ResourceNamer(this.vmName);
         this.creatableSecondaryNetworkInterfaceKeys = new ArrayList<>();
         this.existingSecondaryNetworkInterfacesToAssociate = new ArrayList<>();
@@ -388,6 +390,7 @@ class VirtualMachineImpl
         this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
         this.inner().storageProfile().withImageReference(imageReference);
         this.inner().osProfile().withLinuxConfiguration(new LinuxConfiguration());
+        this.isMarketplaceLinuxImage = true;
         return this;
     }
 
@@ -918,7 +921,8 @@ class VirtualMachineImpl
                 withOsDiskVhdLocation("vhds", this.vmName + "-os-disk-" + UUID.randomUUID().toString() + ".vhd");
             }
             OSProfile osProfile = this.inner().osProfile();
-            if (osDisk.osType() == OperatingSystemTypes.LINUX) {
+            if (osDisk.osType() == OperatingSystemTypes.LINUX || this.isMarketplaceLinuxImage) {
+                // linux image: User or marketplace linux image
                 if (osProfile.linuxConfiguration() == null) {
                     osProfile.withLinuxConfiguration(new LinuxConfiguration());
                 }
