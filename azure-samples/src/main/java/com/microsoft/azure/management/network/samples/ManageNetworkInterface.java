@@ -79,7 +79,7 @@ public final class ManageNetworkInterface {
                 Network network = azure.networks()
                         .define(vnetName)
                         .withRegion(Region.US_EAST)
-                        .withNewGroup(rgName)
+                        .withNewResourceGroup(rgName)
                         .withAddressSpace("172.16.0.0/16")
                         .defineSubnet("Front-end")
                             .withAddressPrefix("172.16.1.0/24")
@@ -100,7 +100,7 @@ public final class ManageNetworkInterface {
 
                 NetworkInterface networkInterface1 = azure.networkInterfaces().define(networkInterfaceName1)
                         .withRegion(Region.US_EAST)
-                        .withExistingGroup(rgName)
+                        .withExistingResourceGroup(rgName)
                         .withExistingPrimaryNetwork(network)
                         .withSubnet("Front-end")
                         .withPrimaryPrivateIpAddressDynamic()
@@ -114,7 +114,7 @@ public final class ManageNetworkInterface {
 
                 NetworkInterface networkInterface2 = azure.networkInterfaces().define(networkInterfaceName2)
                         .withRegion(Region.US_EAST)
-                        .withExistingGroup(rgName)
+                        .withExistingResourceGroup(rgName)
                         .withExistingPrimaryNetwork(network)
                         .withSubnet("Mid-tier")
                         .withPrimaryPrivateIpAddressDynamic()
@@ -127,7 +127,7 @@ public final class ManageNetworkInterface {
 
                 NetworkInterface networkInterface3 = azure.networkInterfaces().define(networkInterfaceName3)
                         .withRegion(Region.US_EAST)
-                        .withExistingGroup(rgName)
+                        .withExistingResourceGroup(rgName)
                         .withExistingPrimaryNetwork(network)
                         .withSubnet("Back-end")
                         .withPrimaryPrivateIpAddressDynamic()
@@ -146,7 +146,7 @@ public final class ManageNetworkInterface {
 
                 VirtualMachine vm = azure.virtualMachines().define(vmName)
                         .withRegion(Region.US_EAST)
-                        .withExistingGroup(rgName)
+                        .withExistingResourceGroup(rgName)
                         .withExistingPrimaryNetworkInterface(networkInterface1)
                         .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                         .withAdminUserName(userName)

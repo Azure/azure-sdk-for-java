@@ -79,7 +79,7 @@ public final class ManageVirtualMachine {
 
                 VirtualMachine windowsVM = azure.virtualMachines().define(windowsVMName)
                         .withRegion(Region.US_EAST)
-                        .withNewGroup(rgName)
+                        .withNewResourceGroup(rgName)
                         .withNewPrimaryNetwork("10.0.0.0/28")
                         .withPrimaryPrivateIpAddressDynamic()
                         .withoutPrimaryPublicIpAddress()
@@ -210,7 +210,7 @@ public final class ManageVirtualMachine {
 
                 VirtualMachine linuxVM = azure.virtualMachines().define(linuxVMName)
                         .withRegion(Region.US_EAST)
-                        .withExistingGroup(rgName)
+                        .withExistingResourceGroup(rgName)
                         .withExistingPrimaryNetwork(network)
                         .withSubnet("subnet1") // Referencing the default subnet name when no name specified at creation
                         .withPrimaryPrivateIpAddressDynamic()

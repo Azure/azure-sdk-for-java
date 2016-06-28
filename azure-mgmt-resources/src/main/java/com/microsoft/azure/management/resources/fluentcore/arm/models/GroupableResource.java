@@ -28,8 +28,8 @@ public interface GroupableResource extends Resource {
          * @param <T> the next stage of the resource definition
          */
         interface WithGroup<T> extends
-            WithExistingGroup<T>,
-            WithNewGroup<T> {
+            WithExistingResourceGroup<T>,
+            WithNewResourceGroup<T> {
         }
 
         /**
@@ -37,7 +37,7 @@ public interface GroupableResource extends Resource {
          *
          * @param <T> the next stage of the resource definition
          */
-        interface WithNewGroup<T> {
+        interface WithNewResourceGroup<T> {
             /**
              * Creates a new resource group to put the resource in.
              * <p>
@@ -45,7 +45,7 @@ public interface GroupableResource extends Resource {
              * @param name the name of the new group
              * @return the next stage of the resource definition
              */
-            T withNewGroup(String name);
+            T withNewResourceGroup(String name);
 
             /**
              * Creates a new resource group to put the resource in.
@@ -54,14 +54,14 @@ public interface GroupableResource extends Resource {
              * The group's name is automatically derived from the resource's name.
              * @return the next stage of the resource definition
              */
-            T withNewGroup();
+            T withNewResourceGroup();
 
             /**
              * Creates a new resource group to put the resource in, based on the definition specified.
              * @param groupDefinition a creatable definition for a new resource group
              * @return the next stage of the resource definition
              */
-            T withNewGroup(Creatable<ResourceGroup> groupDefinition);
+            T withNewResourceGroup(Creatable<ResourceGroup> groupDefinition);
         }
 
         /**
@@ -69,20 +69,20 @@ public interface GroupableResource extends Resource {
          *
          * @param <T> the next stage of the resource definition
          */
-        interface WithExistingGroup<T> {
+        interface WithExistingResourceGroup<T> {
             /**
              * Associates the resource with an existing resource group.
              * @param groupName the name of an existing resource group to put this resource in.
              * @return the next stage of the resource definition
              */
-            T withExistingGroup(String groupName);
+            T withExistingResourceGroup(String groupName);
 
             /**
              * Associates the resource with an existing resource group.
              * @param group an existing resource group to put the resource in
              * @return the next stage of the resource definition
              */
-            T withExistingGroup(ResourceGroup group);
+            T withExistingResourceGroup(ResourceGroup group);
         }
     }
 }

@@ -67,8 +67,8 @@ public abstract class GroupableResourceImpl<
      * @param groupName the name of the new group
      * @return the next stage of the resource definition
      */
-    public final FluentModelImplT withNewGroup(String groupName) {
-        return this.withNewGroup(
+    public final FluentModelImplT withNewResourceGroup(String groupName) {
+        return this.withNewResourceGroup(
                 this.myManager.resourceManager().resourceGroups().define(groupName).withRegion(this.regionName()));
     }
 
@@ -79,8 +79,8 @@ public abstract class GroupableResourceImpl<
      * The group's name is automatically derived from the resource's name.
      * @return the next stage of the resource definition
      */
-    public final FluentModelImplT withNewGroup() {
-        return this.withNewGroup(this.name() + "group");
+    public final FluentModelImplT withNewResourceGroup() {
+        return this.withNewResourceGroup(this.name() + "group");
     }
 
     /**
@@ -89,7 +89,7 @@ public abstract class GroupableResourceImpl<
      * @return the next stage of the resource definition
      */
     @SuppressWarnings("unchecked")
-    public final FluentModelImplT withNewGroup(Creatable<ResourceGroup> creatable) {
+    public final FluentModelImplT withNewResourceGroup(Creatable<ResourceGroup> creatable) {
         this.groupName = creatable.key();
         this.newGroup = creatable;
         addCreatableDependency(creatable);
@@ -102,7 +102,7 @@ public abstract class GroupableResourceImpl<
      * @return the next stage of the resource definition
      */
     @SuppressWarnings("unchecked")
-    public final FluentModelImplT withExistingGroup(String groupName) {
+    public final FluentModelImplT withExistingResourceGroup(String groupName) {
         this.groupName = groupName;
         return (FluentModelImplT) this;
     }
@@ -112,7 +112,7 @@ public abstract class GroupableResourceImpl<
      * @param group an existing resource group to put the resource in
      * @return the next stage of the resource definition
      */
-    public final FluentModelImplT withExistingGroup(ResourceGroup group) {
-        return this.withExistingGroup(group.name());
+    public final FluentModelImplT withExistingResourceGroup(ResourceGroup group) {
+        return this.withExistingResourceGroup(group.name());
     }
 }

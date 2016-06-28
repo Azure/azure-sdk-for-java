@@ -30,7 +30,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
         VirtualMachine vm = computeManager.virtualMachines()
                 .define(VMNAME)
                 .withRegion(LOCATION)
-                .withNewGroup(RG_NAME)
+                .withNewResourceGroup(RG_NAME)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIpAddressDynamic()
                 .withoutPrimaryPublicIpAddress()

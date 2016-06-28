@@ -44,7 +44,7 @@ public class GenericResourcesTests extends ResourceManagerTestBase {
         // Create
         GenericResource resource = genericResources.define(resourceName)
                 .withRegion(Region.US_SOUTH_CENTRAL)
-                .withExistingGroup(rgName)
+                .withExistingResourceGroup(rgName)
                 .withResourceType("sites")
                 .withProviderNamespace("Microsoft.Web")
                 .withParentResource("")

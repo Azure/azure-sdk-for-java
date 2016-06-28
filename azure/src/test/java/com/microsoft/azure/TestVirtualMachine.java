@@ -30,7 +30,7 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
         final VirtualMachine[] vms = new VirtualMachine[1];
         virtualMachines.define(vmName)
                 .withRegion(Region.US_EAST)
-                .withNewGroup()
+                .withNewResourceGroup()
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIpAddressDynamic()
                 .withoutPrimaryPublicIpAddress()

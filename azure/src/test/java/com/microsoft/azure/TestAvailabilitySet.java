@@ -18,7 +18,7 @@ public class TestAvailabilitySet extends TestTemplate<AvailabilitySet, Availabil
         final String newName = "as" + this.testId;
         AvailabilitySet aset = availabilitySets.define(newName)
                 .withRegion(Region.US_WEST)
-                .withNewGroup()
+                .withNewResourceGroup()
                 .withFaultDomainCount(2)
                 .withUpdateDomainCount(4)
                 .withTag("tag1", "value1")

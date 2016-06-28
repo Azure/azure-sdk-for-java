@@ -24,7 +24,7 @@ public class TestVirtualMachineSizes extends TestTemplate<VirtualMachine, Virtua
         final String vmName = "vm" + this.testId;
         VirtualMachine vm = virtualMachines.define(vmName)
                 .withRegion(Region.US_EAST)
-                .withNewGroup()
+                .withNewResourceGroup()
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIpAddressDynamic()
                 .withoutPrimaryPublicIpAddress()

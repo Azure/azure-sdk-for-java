@@ -26,7 +26,7 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
         // Create
         NetworkSecurityGroup nsg = nsgs.define(newName)
                 .withRegion(region)
-                .withNewGroup()
+                .withNewResourceGroup()
                 .defineRule("rule1")
                     .allowOutbound()
                     .fromAnyAddress()
