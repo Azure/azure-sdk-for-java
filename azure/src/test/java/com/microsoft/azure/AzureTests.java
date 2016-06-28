@@ -65,7 +65,10 @@ public class AzureTests {
         // Try to authenticate based on file if present
         File authFile = new File("my.azureauth");
         if (authFile.exists()) {
-            this.azure = Azure.authenticate(new File("my.azureauth"))
+            this.azure = Azure.configure()
+                    .withLogLevel(Level.BODY)
+                    .withUserAgent("AzureTests")
+                    .authenticate(new File("my.azureauth"))
                     .withDefaultSubscription();
         } else {
             azure = azureAuthed.withSubscription(SUBSCRIPTION_ID);
