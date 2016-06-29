@@ -1,18 +1,5 @@
 [![Build Status](https://travis-ci.org/Azure/azure-sdk-for-java.svg?style=flat-square&label=build)](https://travis-ci.org/Azure/azure-sdk-for-java)
 
-TODO
-- Intro
-- Code snippets [Asir]
-- Samples [Asir]
- 
-- Download MAVEN fragment [Jianghao]
-- Authentication -> AUTH.md [Martin]
-- Contributing Code [carry over]
-
-- More Information [Asir]
-- list of previous releases and corresponding branches [Jianghao]
-- Microsoft Disclaimers [DONE]
-
 #Azure Management Libraries for Java
 
 This README is based on the latest released preview version (1.0.0-beta2). If you are looking for other releases, see [More Information](#more-information)
@@ -60,10 +47,42 @@ You can update a virtual machine instance by using the `update() … apply()` me
 	    .attach()
 	    .apply();
 
+**Create a Network Security Group**
+
+You can create a network security group instance by using the `define() … create()` method chain.
+
+    NetworkSecurityGroup frontEndNSG = azure.networkSecurityGroups().define(frontEndNSGName)
+        .withRegion(Region.US_EAST)
+        .withNewResourceGroup(rgName)
+        .defineRule("ALLOW-SSH")
+            .allowInbound()
+            .fromAnyAddress()
+            .fromAnyPort()
+            .toAnyAddress()
+            .toPort(22)
+            .withProtocol(NetworkSecurityRule.Protocol.TCP)
+            .withPriority(100)
+            .withDescription("Allow SSH")
+            .attach()
+        .defineRule("ALLOW-HTTP")
+            .allowInbound()
+            .fromAnyAddress()
+            .fromAnyPort()
+            .toAnyAddress()
+            .toPort(80)
+            .withProtocol(NetworkSecurityRule.Protocol.TCP)
+            .withPriority(101)
+            .withDescription("Allow HTTP")
+            .attach()
+        .create();
+
 
 #Sample Code
 
 You can find plenty of sample code that illustrates management scenarios in Azure Compute, Storage, Network and Resource Manager … 
+
+
+> [Asir's note to editors] - will hyperlink as soon as these samples are visible
 
 - Manage virtual machine
 - Manage availability set
@@ -134,29 +153,15 @@ repositories {
 
     compile group: 'com.microsoft.azure', name: 'azure', version: '1.0.0-SNAPSHOTS'
 
-#Getting Started
-You will need Java v1.7+. If you would like to develop on the SDK, you will also need maven.
+#Pre-requisites
 
-## [EDIT THIS] Azure Resource Manager (ARM) Usage
-```java
-ResourceManagementClient client = new ResourceManagementClientImpl(
-    new ApplicationTokenCredentials("client-id", "tenant-id", "secret", null) // see Authentication
-);
-client.setSubscriptionId(System.getenv("subscription-id"));
-client.setLogLevel(HttpLoggingInterceptor.Level.BODY);
+- A Java Developer Kit (JDK), v 1.7 or later
+- Maven
+-Azure Service Principal - see [how to create authentication info](./AUTH.md).
 
-ResourceGroup group = new ResourceGroup();
-group.setLocation("West US");
-client.getResourceGroups().createOrUpdate("myresourcegroup", group);
-```
 
-### [EDIT THIS] Authentication [Martin]
-The first step to using the SDK is authentication and permissioning. For people unfamilar with Azure this may be one of the more difficult concepts. For a reference on setting up a service principal from the command line see [Authenticating a service principal with Azure Resource Manager](http://aka.ms/cli-service-principal) or [Unattended Authentication](http://aka.ms/auth-unattended). For a more robust explanation of authentication in Azure, see [Developer’s guide to auth with Azure Resource Manager API](http://aka.ms/arm-auth-dev-guide).
-
-After creating the service principal, you should have three pieces of information, a client id (GUID), client secret (string) and tenant id (GUID) or domain name (string). By feeding them into the `ApplicationTokenCredentials` and initialize the ARM client with it, you should be ready to go.
-
-## Need some help?
-If you encounter any bugs with the SDK please file an issue via [Issues](https://github.com/Azure/azure-sdk-for-java/issues) or checkout [StackOverflow for Azure Java SDK](http://stackoverflow.com/questions/tagged/azure-java-sdk).
+## Help
+If you encounter any bugs with these libraries, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java/issues) or checkout [StackOverflow for Azure Java SDK](http://stackoverflow.com/questions/tagged/azure-java-sdk).
 
 #Contribute Code
 
@@ -172,6 +177,10 @@ If you would like to become an active contributor to this project please follow 
 * [Javadoc](http://azure.github.io/azure-sdk-for-java)
 * [http://azure.com/java](http://azure.com/java)
 * If you don't have a Microsoft Azure subscription you can get a FREE trial account [here](http://go.microsoft.com/fwlink/?LinkId=330212)
+
+List of previous releases and corresponding repo branches:
+
+**[INSERT TABLE]**
 
 ---
 
