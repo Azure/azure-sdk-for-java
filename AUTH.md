@@ -9,12 +9,14 @@ There are several approaches possible. This document illustrates the simplest.
 
 In order for your application not to require its user to login manually, you can acquire the credentials for a given subscription using the Azure Active Directory *service principal* functionality. A service principal is analogous to a user account, but it is intended applications to authenticate themselves without human intervention.
 
-If you then save such service principal-based credentials as a file or in environment variables, this can simplify and speed up your coding process. (:warning: Note: exercise caution when saving credentials in a file. Anyone that gains access to that file will have the same access privileges to Azure as your application.)
+If you then save such service principal-based credentials as a file or in environment variables, this can simplify and speed up your coding process.
+
+>:warning: Note: exercise caution when saving credentials in a file. Anyone that gains access to that file will have the same access privileges to Azure as your application.
 
 You can create a service principal and give it access privileges for a given subscription using these steps:
 
 1. Log into [your Azure account](http://portal.azure.com).
-1. Select **Browse > Active Directory**.<br>
+1. Select **Browse > Active Directory**.<br/>
   ![Browse > Active Directory](/media/auth/browse-ad.png)
 1. Select the active directory (if you have more than one listed) that you want to register your app in.
 1. Click the **Applications** link.
