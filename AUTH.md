@@ -75,11 +75,11 @@ You can create a service principal and grant it access privileges for a given su
   <br/>![Generate client secret](/media/auth/keys.png)
 1. After a few seconds, you will see the generated key and a prompt for you to save it:
   <br/>![Save client secret](/media/auth/key-generated.png)
-1. Copy the shown key into your text file and prefix it with "`key=`", for example:
+1. Copy the shown key into your text file and prefix it with "`key=`", for example:<br/>
   `key=01234567890123456789abcdef01234567890abcdef0123456789abcdef02345`
 1. In the current URL shown in your browser, select the text between the word: "Directory/" and the next slash (/) and copy it.
   <br/>![Tenant ID](/media/auth/tenant-id.png)
-1. Paste the copied value into your text file and prefix it with "`tenant=`", for example:
+1. Paste the copied value into your text file and prefix it with "`tenant=`", for example:<br/>
   `tenant=abcdef01-1234-dcba-9876-abcdef012345`
 1. Assuming you are using public Azure cloud in the U.S., also add the following to your text file: (Note that this file follows the Java properties file format, so certain characters, such as colons, need to be escaped with a backslash)
   ```
