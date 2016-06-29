@@ -19,62 +19,68 @@ The `Azure` class is the simplest entry point for creating and interacting with 
 
 You can create a virtual machine instance by using the `define() … create()` method chain.
 
-    System.out.println("Creating a Linux VM");
-    
-    VirtualMachine linuxVM = azure.virtualMachines().define("myLinuxVM")
-    	.withRegion(Region.US_EAST)
-    	.withNewResourceGroup("myResourceGroup")
-    	.withNewPrimaryNetwork("10.0.0.0/28")
-    	.withPrimaryPrivateIpAddressDynamic()
-    	.withNewPrimaryPublicIpAddress("mylinuxvmdns")
-    	.withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-    	.withRootUserName("tirekicker")
-    	.withSsh(sshKey)
-    	.withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
-    	.create();
-    
-    System.out.println("Created a Linux VM: " + linuxVM.id());
+```java
+System.out.println("Creating a Linux VM");
+
+VirtualMachine linuxVM = azure.virtualMachines().define("myLinuxVM")
+	.withRegion(Region.US_EAST)
+	.withNewResourceGroup("myResourceGroup")
+	.withNewPrimaryNetwork("10.0.0.0/28")
+	.withPrimaryPrivateIpAddressDynamic()
+	.withNewPrimaryPublicIpAddress("mylinuxvmdns")
+	.withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+	.withRootUserName("tirekicker")
+	.withSsh(sshKey)
+	.withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+	.create();
+```
+
+System.out.println("Created a Linux VM: " + linuxVM.id());
 
 
 **Update a Virtual Machine**
 
 You can update a virtual machine instance by using the `update() … apply()` method chain.
 
-	linuxVM.update()
-	    .defineNewDataDisk(dataDiskName)
-	    .withSizeInGB(20)
-	    .withCaching(CachingTypes.READ_WRITE)
-	    .attach()
-	    .apply();
+```java
+linuxVM.update()
+    .defineNewDataDisk(dataDiskName)
+    .withSizeInGB(20)
+    .withCaching(CachingTypes.READ_WRITE)
+    .attach()
+    .apply();
+```
 
 **Create a Network Security Group**
 
 You can create a network security group instance by using the `define() … create()` method chain.
 
-    NetworkSecurityGroup frontEndNSG = azure.networkSecurityGroups().define(frontEndNSGName)
-        .withRegion(Region.US_EAST)
-        .withNewResourceGroup(rgName)
-        .defineRule("ALLOW-SSH")
-            .allowInbound()
-            .fromAnyAddress()
-            .fromAnyPort()
-            .toAnyAddress()
-            .toPort(22)
-            .withProtocol(NetworkSecurityRule.Protocol.TCP)
-            .withPriority(100)
-            .withDescription("Allow SSH")
-            .attach()
-        .defineRule("ALLOW-HTTP")
-            .allowInbound()
-            .fromAnyAddress()
-            .fromAnyPort()
-            .toAnyAddress()
-            .toPort(80)
-            .withProtocol(NetworkSecurityRule.Protocol.TCP)
-            .withPriority(101)
-            .withDescription("Allow HTTP")
-            .attach()
-        .create();
+```java
+NetworkSecurityGroup frontEndNSG = azure.networkSecurityGroups().define(frontEndNSGName)
+    .withRegion(Region.US_EAST)
+    .withNewResourceGroup(rgName)
+    .defineRule("ALLOW-SSH")
+        .allowInbound()
+        .fromAnyAddress()
+        .fromAnyPort()
+        .toAnyAddress()
+        .toPort(22)
+        .withProtocol(NetworkSecurityRule.Protocol.TCP)
+        .withPriority(100)
+        .withDescription("Allow SSH")
+        .attach()
+    .defineRule("ALLOW-HTTP")
+        .allowInbound()
+        .fromAnyAddress()
+        .fromAnyPort()
+        .toAnyAddress()
+        .toPort(80)
+        .withProtocol(NetworkSecurityRule.Protocol.TCP)
+        .withPriority(101)
+        .withDescription("Allow HTTP")
+        .attach()
+    .create();
+```
 
 
 #Sample Code
