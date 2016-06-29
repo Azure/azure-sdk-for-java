@@ -85,7 +85,7 @@ You can create a service principal and grant it access privileges for a given su
 ```
   managementURI=https\://management.core.windows.net/<br/>
   baseURL=https\://management.azure.com/</br>
-  authURL=https\://login.windows.net/<br/>
+  authURL=https\://login.windows.net/
 ```
 1. You need to grant the created service principal a permission to access the desired Azure subscription. Go to the [Azure portal](http://portal.azure.com) again.
 1. Click **Subscriptions** and select the subscription in the list that you want to enable your application to access.
