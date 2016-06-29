@@ -3,7 +3,50 @@
 To use the management APIs in the Azure Libraries for Java, as the first step, you need to 
 create an authenticated client.
 
-There are several approaches possible. This document illustrates the simplest.
+There are several approaches possible. This document illustrates a couple of the simpler ones.
+
+## Code
+
+### Using an authentication file
+
+> :warning: This is an experimental feature that may or may not be available in later releases, or the file format it relies on may change.
+
+To create an authenticated Azure client:
+
+```java
+Azure azure = Azure.authenticate(new File("my.azureauth"))
+	.withDefaultSubscription();
+```
+
+The authentication file uses the Java properties file format and must contain the following information (assuming you are using the U.S. public cloud):
+```
+subscription=########-####-####-####-############
+client=########-####-####-####-############
+key=XXXXXXXXXXXXXXXX
+tenant=########-####-####-####-############
+managementURI=https\://management.core.windows.net/
+baseURL=https\://management.azure.com/
+authURL=https\://login.windows.net/
+```
+
+This enable permanent, unattended authentication for your application (i.e. no interactive user login, no token management needed).
+The `client`, `key` and `tenant` are from your service principal registration. Too learn how to register such a service principal, see [Creating a Service Principal in Azure](#creating-a-service-principal-in-azure).
+
+### Using an ApplicationTokenCredentials object
+
+Similarly to the [file-based approach](#using-an-authentication-file), this method requires a [service principal registration](#creating-a-service-principal-in-azure), but instead of storing the required information in a local file, the required inputs can be supplied directly via an instance of the `ApplicationTokenCredentials` class:
+
+```
+ServiceClientCredentials credentials = new ApplicationTokenCredentials(
+            client,
+            tenant,
+            key,
+            AzureEnvironment.AZURE);
+Azure azure = Azure.authenticate(credentials)
+	.withSubscription(subscriptionId);
+```
+
+where `client`, `tenant`, `key` and `subscriptionId` are strings with the required pieces of informatoin about your service principal and subscription.
 
 ## Creating a Service Principal in Azure
 
@@ -45,8 +88,7 @@ You can create a service principal and give it access privileges for a given sub
   <br/>![Save client secret](/media/auth/key-generated.png)
 1. Copy the shown key into your text file and prefix it with "`key=`", for example:
   `key=01234567890123456789abcdef01234567890abcdef0123456789abcdef02345`
-1. In the current URL shown in your browser, select the text between the words: "Directory/" and "/RegisteredApp" and copy it.
-  <br/>![Tenant ID from URL](/media/auth/tenant-id.png)
+1. In the current URL shown in your browser, select the text between the word: "Directory/" and the next slash (/) and copy it.
 1. Paste the copied value into your text file and prefix it with "`tenant=`", for example:
   `tenant=abcdef01-1234-dcba-9876-abcdef012345`
 1. Assuming you are using public Azure cloud in the U.S., also add the following to your text file:
@@ -55,12 +97,17 @@ managementURI=https\://management.core.windows.net/
 baseURL=https\://management.azure.com/
 authURL=https\://login.windows.net/
 ```
-> Note that this file follows the Java properties file format, so certain characters need to be escaped with a backslash (\), for example: colons (\:) in URLs. 
+(:warning:)Note that this file follows the Java properties file format, so certain characters need to be escaped with a backslash (\), for example: colons (\:) in URLs.
 You can now save the file.
 1. You need to grant the created service principal a permission to access the desired Azure subscription. Go to the [Azure portal](http://portal.azure.com) again.
 1. Click **Subscriptions** and select the subscription in the list that you want to enable your application to access.
   <br/>![Subscriptions](/media/auth/subscriptions.png)
 1. Click **Users**, **Add**
   <br/>![Users](/media/auth/users.png)
+1. In the **Add Access** page, for the **Select a role** question, select **Owner** if you want to give your application the ability to modify resources in this subscription.
+  <br/>![Access](/media/auth/access.png)
+1. Click **Add Users**, then find and select your application using the name you provided earlier, and click **Select**.
+  <br/>![Add user](/media/auth/add-user.png)
 
-After creating the service principal, you should have three pieces of information, a client id (GUID), client secret (string) and tenant id (GUID) or domain name (string). By feeding them into the `ApplicationTokenCredentials` and initialize the ARM client with it, you should be ready to go.
+Now you have all the pieces to be able to authenticate your code without requiring an interactive login nor the need to manage access tokens.
+
