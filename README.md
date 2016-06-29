@@ -157,7 +157,7 @@ repositories {
 
 - A Java Developer Kit (JDK), v 1.7 or later
 - Maven
--Azure Service Principal - see [how to create authentication info](./AUTH.md).
+- Azure Service Principal - see [how to create authentication info](./AUTH.md).
 
 
 ## Help
