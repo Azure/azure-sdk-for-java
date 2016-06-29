@@ -79,9 +79,26 @@ You can find plenty of sample code that illustrates management scenarios in Azur
 
 # Download
 
-**Repository**
 
-To use 1.0.0-beta2 or snapshots builds for this repo, add the following repository info to your POM:
+**1.0.0-beta2**
+
+If you are using released builds from 1.0.0-beta2, add the following to your POM file:
+
+```xml
+<dependency>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure</artifactId>
+    <version>1.0.0-beta2</version>
+</dependency>
+```
+
+or Gradle:
+
+    compile group: 'com.microsoft.azure', name: 'azure', version: '1.0.0-beta2'
+
+**Snapshots builds for this repo**
+
+If you are using snapshots builds for this repo, add the following repository and dependency to your POM file:
 
 ```xml
   <repositories>
@@ -97,6 +114,15 @@ To use 1.0.0-beta2 or snapshots builds for this repo, add the following reposito
     </repository>
   </repositories>
 ```
+
+```xml
+<dependency>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure</artifactId>
+    <version>1.0.0-SNAPSHOTS</version>
+</dependency>
+```
+
 or Gradle:
 ```groovy
 repositories {
@@ -105,23 +131,8 @@ repositories {
 }
 ```
 
-**1.0.0-beta2**
 
-If you are using released builds from 1.0.0-beta2, add the following to your POM file:
-
-
-
-**Snapshots builds for this repo**
-
-
-> **Note**: If you are using snapshots builds from 1.0.0-beta2, please go to http://adxsnapshots.azurewebsites.net/ and find the exact version number. The latest 1.0.0-beta2 snapshot versions are
-- client-runtime: 1.0.0-20160513.000825-29
-- azure-client-runtime: 1.0.0-20160513.000812-28
-- azure-client-authentication: 1.0.0-20160513.000802-24
-
-To compile either this repo, you need snapshot builds in sonatype snapshots repository.  Add the following to your pom:
-
-
+    compile group: 'com.microsoft.azure', name: 'azure', version: '1.0.0-SNAPSHOTS'
 
 #Getting Started
 You will need Java v1.7+. If you would like to develop on the SDK, you will also need maven.
