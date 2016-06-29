@@ -87,6 +87,7 @@ You can find plenty of sample code that illustrates management scenarios in Azur
 - Manage virtual machine
 - Manage availability set
 - List virtual machine images
+- Manage storage accounts
 - Manage virtual network
 - Manage network interface
 - Manage network security group
