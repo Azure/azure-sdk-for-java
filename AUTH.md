@@ -69,18 +69,24 @@ You can create a service principal and grant it access privileges for a given su
   <br/>![Client ID and Keys](/media/auth/client-id.png)
 1. Create a new blank text file to put your credential information into, and save it as - for example - **"my.azureauth"**
 1. Copy the **client ID** value into your text file, typing "`client=`" in front of it, for example:
-  ```client=123456-abcd-1234-abcd-1234567890ab```
+  ```
+  client=123456-abcd-1234-abcd-1234567890ab
+  ```
 1. In the **Keys** section, select a duration.
 1. Click **Save** at the bottom of the page
   <br/>![Generate client secret](/media/auth/keys.png)
 1. After a few seconds, you will see the generated key and a prompt for you to save it:
   <br/>![Save client secret](/media/auth/key-generated.png)
 1. Copy the shown key into your text file and prefix it with "`key=`", for example:
-  ```key=01234567890123456789abcdef01234567890abcdef0123456789abcdef02345```
+  ```
+  key=01234567890123456789abcdef01234567890abcdef0123456789abcdef02345
+  ```
 1. In the current URL shown in your browser, select the text between the word: "Directory/" and the next slash (/) and copy it.
   <br/>![Tenant ID](/media/auth/tenant-id.png)
 1. Paste the copied value into your text file and prefix it with "`tenant=`", for example:
-  ```tenant=abcdef01-1234-dcba-9876-abcdef012345```
+  ```
+  tenant=abcdef01-1234-dcba-9876-abcdef012345
+  ```
 1. Assuming you are using public Azure cloud in the U.S., also add the following to your text file:
 ```
 managementURI=https\://management.core.windows.net/
