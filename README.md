@@ -31,25 +31,23 @@ The `Azure` class is the simplest entry point for creating and interacting with 
 **Create a Virtual Machine**
 
 You can create a virtual machine instance by using the `define() … create()` method chain.
-    //=============================================================
-    // Create a Linux VM
-    
+
     System.out.println("Creating a Linux VM");
     
     VirtualMachine linuxVM = azure.virtualMachines().define("myLinuxVM")
-	    .withRegion(Region.US_EAST)
-	    .withNewResourceGroup("myResourceGroup")
-	    .withNewPrimaryNetwork("10.0.0.0/28")
-	    .withPrimaryPrivateIpAddressDynamic()
-	    .withNewPrimaryPublicIpAddress("mylinuxvmdns")
-	    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-	    .withRootUserName("tirekicker")
-	    .withSsh(sshKey)
-	    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
-	    .create();
+    	.withRegion(Region.US_EAST)
+    	.withNewResourceGroup("myResourceGroup")
+    	.withNewPrimaryNetwork("10.0.0.0/28")
+    	.withPrimaryPrivateIpAddressDynamic()
+    	.withNewPrimaryPublicIpAddress("mylinuxvmdns")
+    	.withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+    	.withRootUserName("tirekicker")
+    	.withSsh(sshKey)
+    	.withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+    	.create();
     
     System.out.println("Created a Linux VM: " + linuxVM.id());
-    
+
 
 **Update a Virtual Machine**
 
