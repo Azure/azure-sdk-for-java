@@ -93,8 +93,7 @@ managementURI=https\://management.core.windows.net/
 baseURL=https\://management.azure.com/
 authURL=https\://login.windows.net/
 ```
-:warning: Note that this file follows the Java properties file format, so certain characters need to be escaped with a backslash (\\), for example: colons (\\:) in URLs.
-<br/>You can now save the file.
+Note that this file follows the Java properties file format, so certain characters need to be escaped with a backslash (\\), for example: colons (\\:) in URLs. You can now save the file.
 1. You need to grant the created service principal a permission to access the desired Azure subscription. Go to the [Azure portal](http://portal.azure.com) again.
 1. Click **Subscriptions** and select the subscription in the list that you want to enable your application to access.
   <br/>![Subscriptions](/media/auth/subscriptions.png)
