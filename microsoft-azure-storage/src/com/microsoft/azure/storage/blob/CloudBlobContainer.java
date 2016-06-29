@@ -926,7 +926,139 @@ public final class CloudBlobContainer {
 
         return new CloudBlobDirectory(address, directoryName, this.blobServiceClient, this);
     }
+    
+    
+    /**
+     * Gets a reference to a blob in this container. The blob must already exist on the service.
+     * 
+     * Unlike the other get*Reference methods, this method does a service request to retrieve the blob's metadata and 
+     * properties. The returned blob may be used directly as a CloudBlob or cast using either instanceof or 
+     * getProperties().getBlobType() to determine its subtype.
+     *
+     * @param blobName
+     *            A <code>String</code> that represents the name of the blob.
+     *
+     * @return A {@link CloudBlob} object that represents a reference to the specified blob.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     * @throws URISyntaxException
+     *             If the resource URI is invalid.
+     */
+    @DoesServiceRequest
+    public final CloudBlob getBlobReferenceFromServer(final String blobName) throws URISyntaxException, StorageException {
+        return this.getBlobReferenceFromServer(blobName, null, null, null, null);
+    }
 
+    /**
+     * Gets a reference to a blob in this container. The blob must already exist on the service.
+     * 
+     * Unlike the other get*Reference methods, this method does a service request to retrieve the blob's metadata and
+     * properties. The returned blob may be used directly as a CloudBlob or cast using either instanceof or
+     * getProperties().getBlobType() to determine its subtype.
+     * 
+     * @param blobName
+     *            A <code>String</code> that represents the name of the blob.
+     * @param snapshotID
+     *            A <code>String</code> that represents the snapshot ID of the blob.
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the blob.
+     * @param options
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudBlobClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @return A {@link CloudBlob} object that represents a reference to the specified blob.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     * @throws URISyntaxException
+     *             If the resource URI is invalid.
+     */
+    @DoesServiceRequest
+    public final CloudBlob getBlobReferenceFromServer(final String blobName, final String snapshotID,
+            AccessCondition accessCondition, BlobRequestOptions options, OperationContext opContext)
+            throws URISyntaxException, StorageException {
+        if (opContext == null) {
+            opContext = new OperationContext();
+        }
+        options = BlobRequestOptions.populateAndApplyDefaults(options, BlobType.UNSPECIFIED, this.blobServiceClient);
+        
+        StorageUri blobUri = PathUtility.appendPathToUri(this.getStorageUri(), blobName);
+        return ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
+                this.getBlobReferenceFromServerImpl(blobName, blobUri, snapshotID, accessCondition, options), options.getRetryPolicyFactory(), opContext);
+    }
+    
+    private StorageRequest<CloudBlobClient, CloudBlobContainer, CloudBlob> getBlobReferenceFromServerImpl(
+            final String blobName, final StorageUri blobUri, final String snapshotID, final AccessCondition accessCondition,
+            final BlobRequestOptions options) {
+        final StorageRequest<CloudBlobClient, CloudBlobContainer, CloudBlob> getRequest = new StorageRequest<CloudBlobClient, CloudBlobContainer, CloudBlob>(
+                options, this.getStorageUri()) {
+
+            @Override
+            public void setRequestLocationMode() {
+                this.setRequestLocationMode(RequestLocationMode.PRIMARY_OR_SECONDARY);
+            }
+
+            @Override
+            public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlobContainer container,
+                    OperationContext context) throws Exception {
+                StorageUri transformedblobUri = CloudBlobContainer.this.getServiceClient().getCredentials().transformUri(blobUri, context);                 
+                return BlobRequest.getBlobProperties(transformedblobUri.getUri(this.getCurrentLocation()), options, context, accessCondition, snapshotID);
+            }
+
+            @Override
+            public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
+                    throws Exception {
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, context);
+            }
+
+            @Override
+            public CloudBlob preProcessResponse(CloudBlobContainer container, CloudBlobClient client, OperationContext context)
+                    throws Exception {
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
+
+                // Set attributes
+                final BlobAttributes retrievedAttributes = BlobResponse.getBlobAttributes(this.getConnection(),
+                        blobUri, snapshotID);
+
+                CloudBlob blob;
+                switch (retrievedAttributes.getProperties().getBlobType()) {
+                    case APPEND_BLOB:
+                        blob = container.getAppendBlobReference(blobName, snapshotID);
+                        break;
+    
+                    case BLOCK_BLOB:
+                        blob = container.getBlockBlobReference(blobName, snapshotID);
+                        break;
+    
+                    case PAGE_BLOB:
+                        blob = container.getPageBlobReference(blobName, snapshotID);
+                        break;
+    
+                    default:
+                        throw new StorageException(StorageErrorCodeStrings.INCORRECT_BLOB_TYPE,
+                                SR.INVALID_RESPONSE_RECEIVED, Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
+                }
+
+                blob.properties = retrievedAttributes.getProperties();
+                blob.metadata = retrievedAttributes.getMetadata();
+
+                return blob;
+            }
+        };
+
+        return getRequest;
+    }    
+    
+    
     /**
      * Returns the metadata for the container. This value is initialized with the metadata from the queue by a call to
      * {@link #downloadAttributes}, and is set on the queue with a call to {@link #uploadMetadata}.

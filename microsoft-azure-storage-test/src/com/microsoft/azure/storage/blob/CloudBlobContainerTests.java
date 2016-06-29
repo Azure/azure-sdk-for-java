@@ -19,6 +19,7 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
+import java.security.InvalidKeyException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumSet;
@@ -41,6 +42,7 @@ import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.ResultContinuation;
 import com.microsoft.azure.storage.ResultSegment;
 import com.microsoft.azure.storage.SendingRequestEvent;
+import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
 import com.microsoft.azure.storage.StorageEvent;
 import com.microsoft.azure.storage.StorageException;
@@ -132,6 +134,86 @@ public class CloudBlobContainerTests {
                 .toString());
         assertEquals(container.getStorageUri().toString(), blockBlob.getParent().getContainer().getStorageUri()
                 .toString());
+    }
+
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class })
+    public void testCloudBlobContainerReferenceFromServer() throws StorageException, URISyntaxException, IOException {
+        this.container.create();
+
+        CloudBlob blob = BlobTestHelper.uploadNewBlob(this.container, BlobType.BLOCK_BLOB, null, 1024, null);
+        blob.getProperties().setContentType("application/octet-stream");
+        blob.getProperties().setLength(1024);
+
+        CloudBlob blobRef = this.container.getBlobReferenceFromServer(blob.getName());
+        BlobTestHelper.assertAreEqual(blob, blobRef);
+
+        blob = BlobTestHelper.uploadNewBlob(this.container, BlobType.PAGE_BLOB, null, 1024, null);
+        blob.getProperties().setContentType("application/octet-stream");
+        blob.getProperties().setLength(1024);
+
+        blobRef = this.container.getBlobReferenceFromServer(blob.getName());
+        BlobTestHelper.assertAreEqual(blob, blobRef);
+
+        blob = BlobTestHelper.uploadNewBlob(this.container, BlobType.APPEND_BLOB, null, 1024, null);
+        blob.getProperties().setContentType("application/octet-stream");
+        blob.getProperties().setLength(1024);
+
+        blobRef = this.container.getBlobReferenceFromServer(blob.getName());
+        BlobTestHelper.assertAreEqual(blob, blobRef);
+    }
+
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class })
+    public void testCloudBlobContainerReferenceFromServerSnapshot() throws StorageException, URISyntaxException,
+            IOException {
+        this.container.create();
+
+        CloudBlob blob = BlobTestHelper.uploadNewBlob(this.container, BlobType.BLOCK_BLOB, null, 1024, null);
+        CloudBlob snapshot = blob.createSnapshot();
+        snapshot.getProperties().setContentType("application/octet-stream");
+        snapshot.getProperties().setLength(1024);
+
+        CloudBlob blobRef = this.container.getBlobReferenceFromServer(snapshot.getName(), snapshot.getSnapshotID(),
+                null, null, null);
+        BlobTestHelper.assertAreEqual(snapshot, blobRef);
+    }
+
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class })
+    public void testCloudBlobContainerReferenceFromServerSAS() throws StorageException, URISyntaxException,
+            IOException, InvalidKeyException {
+        this.container.create();
+        CloudBlob blob = BlobTestHelper.uploadNewBlob(this.container, BlobType.BLOCK_BLOB, null, 1024, null);
+
+        SharedAccessBlobPolicy policy = new SharedAccessBlobPolicy();
+        Calendar now = Calendar.getInstance();
+        now.add(Calendar.MINUTE, 10);
+        policy.setSharedAccessExpiryTime(now.getTime());
+        policy.setPermissions(EnumSet.of(SharedAccessBlobPermissions.READ));
+        String token = this.container.generateSharedAccessSignature(policy, null);
+
+        CloudBlobContainer containerSAS = new CloudBlobContainer(this.container.getStorageUri(),
+                new StorageCredentialsSharedAccessSignature(token));
+        CloudBlob blobRef = containerSAS.getBlobReferenceFromServer(blob.getName());
+        assertEquals(blob.getClass(), blobRef.getClass());
+        assertEquals(blob.getUri(), blobRef.getUri());
+    }
+
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class })
+    public void testCloudBlobContainerReferenceFromServerMissingBlob() throws StorageException, URISyntaxException,
+            IOException {
+        this.container.create();
+
+        String blobName = BlobTestHelper.generateRandomBlobNameWithPrefix("missing");
+
+        try {
+            this.container.getBlobReferenceFromServer(blobName);
+            fail("Get reference from server should fail.");
+        } catch (StorageException ex) {
+            assertEquals(404, ex.getHttpStatusCode());
+        }
     }
 
     /**
