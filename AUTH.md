@@ -14,8 +14,8 @@ If you then save such service principal-based credentials as a file or in enviro
 You can create a service principal and give it access privileges for a given subscription using these steps:
 
 1. Log into [your Azure account](http://portal.azure.com).
-1. Select **Browse > Active Directory**.
-** ![Browse > Active Directory](/media/auth/browse-ad.png)
+1. Select **Browse > Active Directory**.<br>
+  ![Browse > Active Directory](/media/auth/browse-ad.png)
 1. Select the active directory (if you have more than one listed) that you want to register your app in.
 1. Click the **Applications** link.
 1. Click the **Add** button at the bottom of the page.
