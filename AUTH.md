@@ -82,7 +82,7 @@ You can create a service principal and grant it access privileges for a given su
 1. Paste the copied value into your text file and prefix it with "`tenant=`", for example:<br/>
   `tenant=abcdef01-1234-dcba-9876-abcdef012345`
 1. Assuming you are using public Azure cloud in the U.S., also add the following to your text file: (Note that this file follows the Java properties file format, so certain characters, such as colons, need to be escaped with a backslash)
-  ```
+  ```java
   managementURI=https\://management.core.windows.net/
   baseURL=https\://management.azure.com/
   authURL=https\://login.windows.net/
