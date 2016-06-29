@@ -138,7 +138,7 @@ If you are using snapshots builds for this repo, add the following repository an
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure</artifactId>
-    <version>1.0.0-SNAPSHOTS</version>
+    <version>1.0.0-SNAPSHOT</version>
 </dependency>
 ```
 
