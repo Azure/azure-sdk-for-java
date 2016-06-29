@@ -95,5 +95,5 @@ You can create a service principal and grant it access privileges for a given su
 1. Click **Add Users**, then find and select your application using the name you provided earlier, and click **Select**.
   <br/>![Add user](/media/auth/add-user.png)
 
-Now you have all the pieces to be able to authenticate your code without requiring an interactive login nor the need to manage access tokens.
+Now all the pieces are in place to enable authenticating your code without requiring an interactive login nor the need to manage access tokens.
 
