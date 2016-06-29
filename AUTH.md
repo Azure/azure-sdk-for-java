@@ -82,9 +82,9 @@ You can create a service principal and grant it access privileges for a given su
 1. Paste the copied value into your text file and prefix it with "`tenant=`", for example:<br/>
   `tenant=abcdef01-1234-dcba-9876-abcdef012345`
 1. Assuming you are using public Azure cloud in the U.S., also add the following to your text file: \(Note that this file follows the Java properties file format, so certain characters, such as colons, need to be escaped with a backslash\)<br/>
-  managementURI=https\://management.core.windows.net/<br/>
-  baseURL=https\://management.azure.com/</br>
-  authURL=https\://login.windows.net/
+    managementURI=https\://management.core.windows.net/<br/>
+    baseURL=https\://management.azure.com/</br>
+    authURL=https\://login.windows.net/
 1. You need to grant the created service principal a permission to access the desired Azure subscription. Go to the [Azure portal](http://portal.azure.com) again.
 1. Click **Subscriptions** and select the subscription in the list that you want to enable your application to access.
   <br/>![Subscriptions](/media/auth/subscriptions.png)
