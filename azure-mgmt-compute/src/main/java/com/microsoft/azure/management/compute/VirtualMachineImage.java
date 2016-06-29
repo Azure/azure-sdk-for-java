@@ -5,11 +5,7 @@
  */
 package com.microsoft.azure.management.compute;
 
-import com.microsoft.azure.management.compute.implementation.api.ImageReference;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineImageInner;
-import com.microsoft.azure.management.compute.implementation.api.PurchasePlan;
-import com.microsoft.azure.management.compute.implementation.api.OSDiskImage;
-import com.microsoft.azure.management.compute.implementation.api.DataDiskImage;
+import com.microsoft.azure.management.compute.implementation.VirtualMachineImageInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 

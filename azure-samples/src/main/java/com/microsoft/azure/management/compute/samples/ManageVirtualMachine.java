@@ -8,12 +8,12 @@
 package com.microsoft.azure.management.compute.samples;
 
 import com.microsoft.azure.Azure;
-import com.microsoft.azure.management.compute.DataDisk;
+import com.microsoft.azure.management.compute.CachingTypes;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
-import com.microsoft.azure.management.compute.implementation.api.CachingTypes;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeTypes;
+import com.microsoft.azure.management.compute.VirtualMachine;
+import com.microsoft.azure.management.compute.VirtualMachineDataDisk;
+import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.samples.Utils;
@@ -56,7 +56,7 @@ public final class ManageVirtualMachine {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File("my.azureauth");
+            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure
                     .configure()
@@ -141,7 +141,7 @@ public final class ManageVirtualMachine {
 
                 System.out.println("De-allocated VM: " + windowsVM.id());
 
-                DataDisk dataDisk = windowsVM.dataDisks().get(0);
+                VirtualMachineDataDisk dataDisk = windowsVM.dataDisks().get(0);
 
                 windowsVM.update()
                             .updateDataDisk(dataDisk.name())

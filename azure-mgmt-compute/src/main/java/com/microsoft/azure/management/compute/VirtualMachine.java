@@ -2,19 +2,8 @@ package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineInner;
-import com.microsoft.azure.management.compute.implementation.api.OperatingSystemTypes;
-import com.microsoft.azure.management.compute.implementation.api.CachingTypes;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineInstanceView;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineExtensionInner;
-import com.microsoft.azure.management.compute.implementation.api.Plan;
-import com.microsoft.azure.management.compute.implementation.api.StorageProfile;
-import com.microsoft.azure.management.compute.implementation.api.OSProfile;
-import com.microsoft.azure.management.compute.implementation.api.ImageReference;
-import com.microsoft.azure.management.compute.implementation.api.DiagnosticsProfile;
-import com.microsoft.azure.management.compute.implementation.api.WinRMListener;
-import com.microsoft.azure.management.compute.implementation.api.DiskEncryptionSettings;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeTypes;
+import com.microsoft.azure.management.compute.implementation.VirtualMachineInner;
+import com.microsoft.azure.management.compute.implementation.VirtualMachineExtensionInner;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.PublicIpAddress;
@@ -166,7 +155,7 @@ public interface VirtualMachine extends
     /**
      * @return the list of data disks attached to this virtual machine
      */
-    List<DataDisk> dataDisks();
+    List<VirtualMachineDataDisk> dataDisks();
 
     /**
      * Gets the primary network interface of this virtual machine.
@@ -717,7 +706,7 @@ public interface VirtualMachine extends
              * @param name the name for the data disk
              * @return the stage representing configuration for the data disk
              */
-            DataDisk.DefinitionStages.AttachNewDataDisk<WithCreate> defineNewDataDisk(String name);
+            VirtualMachineDataDisk.DefinitionStages.AttachNewDataDisk<WithCreate> defineNewDataDisk(String name);
 
             /**
              * Specifies an existing VHD that needs to be attached to the virtual machine as data disk along with
@@ -726,7 +715,7 @@ public interface VirtualMachine extends
              * @param name the name for the data disk
              * @return the stage representing configuration for the data disk
              */
-            DataDisk.DefinitionStages.AttachExistingDataDisk<WithCreate> defineExistingDataDisk(String name);
+            VirtualMachineDataDisk.DefinitionStages.AttachExistingDataDisk<WithCreate> defineExistingDataDisk(String name);
         }
 
         /**
@@ -886,7 +875,7 @@ public interface VirtualMachine extends
              * @param name the name for the data disk
              * @return the stage representing configuration for the data disk
              */
-            DataDisk.UpdateDefinitionStages.AttachNewDataDisk<Update> defineNewDataDisk(String name);
+            VirtualMachineDataDisk.UpdateDefinitionStages.AttachNewDataDisk<Update> defineNewDataDisk(String name);
 
             /**
              * Specifies an existing VHD that needs to be attached to the virtual machine as data disk along with
@@ -895,7 +884,7 @@ public interface VirtualMachine extends
              * @param name the name for the data disk
              * @return the stage representing configuration for the data disk
              */
-            DataDisk
+            VirtualMachineDataDisk
                     .UpdateDefinitionStages
                     .AttachExistingDataDisk<Update> defineExistingDataDisk(String name);
 
@@ -905,7 +894,7 @@ public interface VirtualMachine extends
              * @param name the name of the disk
              * @return the stage representing updating configuration for  data disk
              */
-            DataDisk.Update updateDataDisk(String name);
+            VirtualMachineDataDisk.Update updateDataDisk(String name);
 
             /**
              * Detaches a data disk with the given name from the virtual machine.

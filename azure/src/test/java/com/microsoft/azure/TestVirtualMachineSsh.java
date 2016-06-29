@@ -11,7 +11,7 @@ import com.jcraft.jsch.Session;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachines;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeTypes;
+import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import org.junit.Assert;
 
@@ -51,6 +51,9 @@ public class TestVirtualMachineSsh extends TestTemplate<VirtualMachine, VirtualM
         }finally {
             if(session != null) {session.disconnect();}
         }
+
+        Assert.assertNotNull(vm.inner().osProfile().linuxConfiguration().ssh());
+        Assert.assertTrue(vm.inner().osProfile().linuxConfiguration().ssh().publicKeys().size() > 0);
         return vm;
     }
 

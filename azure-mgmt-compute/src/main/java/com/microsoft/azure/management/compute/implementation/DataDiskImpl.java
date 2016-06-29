@@ -2,9 +2,10 @@ package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.management.compute.DataDisk;
 import com.microsoft.azure.management.compute.VirtualMachine;
-import com.microsoft.azure.management.compute.implementation.api.CachingTypes;
-import com.microsoft.azure.management.compute.implementation.api.DiskCreateOptionTypes;
-import com.microsoft.azure.management.compute.implementation.api.VirtualHardDisk;
+import com.microsoft.azure.management.compute.CachingTypes;
+import com.microsoft.azure.management.compute.DiskCreateOptionTypes;
+import com.microsoft.azure.management.compute.VirtualHardDisk;
+import com.microsoft.azure.management.compute.VirtualMachineDataDisk;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
 
@@ -16,24 +17,19 @@ import java.util.UUID;
  * The implementation for {@link DataDisk} and its create and update interfaces.
  */
 class DataDiskImpl
-    extends ChildResourceImpl<
-        com.microsoft.azure.management.compute.implementation.api.DataDisk,
-        VirtualMachineImpl>
+    extends ChildResourceImpl<DataDisk, VirtualMachineImpl>
     implements
-    DataDisk,
-    DataDisk.Definition<VirtualMachine.DefinitionStages.WithCreate>,
-    DataDisk.UpdateDefinition<VirtualMachine.Update>,
-    DataDisk.Update {
+        VirtualMachineDataDisk,
+        VirtualMachineDataDisk.Definition<VirtualMachine.DefinitionStages.WithCreate>,
+        VirtualMachineDataDisk.UpdateDefinition<VirtualMachine.Update>,
+        VirtualMachineDataDisk.Update {
 
-    protected DataDiskImpl(String name,
-                           com.microsoft.azure.management.compute.implementation.api.DataDisk inner,
-                           VirtualMachineImpl parent) {
+    protected DataDiskImpl(String name, DataDisk inner, VirtualMachineImpl parent) {
         super(name, inner, parent);
     }
 
     protected static DataDiskImpl prepareDataDisk(String name, DiskCreateOptionTypes createOption, VirtualMachineImpl parent) {
-        com.microsoft.azure.management.compute.implementation.api.DataDisk dataDiskInner
-                = new com.microsoft.azure.management.compute.implementation.api.DataDisk();
+        DataDisk dataDiskInner = new DataDisk();
         dataDiskInner.withLun(-1);
         dataDiskInner.withName(name);
         dataDiskInner.withCreateOption(createOption);
@@ -144,15 +140,15 @@ class DataDiskImpl
         return this.parent().withDataDisk(this);
     }
 
-    protected static void setDataDisksDefaults(List<DataDisk> dataDisks, String namePrefix) {
+    protected static void setDataDisksDefaults(List<VirtualMachineDataDisk> dataDisks, String namePrefix) {
         List<Integer> usedLuns = new ArrayList<>();
-        for (DataDisk dataDisk : dataDisks) {
+        for (VirtualMachineDataDisk dataDisk : dataDisks) {
             if (dataDisk.lun() != -1) {
                 usedLuns.add(dataDisk.lun());
             }
         }
 
-        for (DataDisk dataDisk : dataDisks) {
+        for (VirtualMachineDataDisk dataDisk : dataDisks) {
             if (dataDisk.lun() == -1) {
                 Integer i = 0;
                 while (usedLuns.contains(i)) {
@@ -172,8 +168,8 @@ class DataDiskImpl
         }
     }
 
-    protected static void ensureDisksVhdUri(List<DataDisk> dataDisks, StorageAccount storageAccount, String namePrefix) {
-        for (DataDisk dataDisk : dataDisks) {
+    protected static void ensureDisksVhdUri(List<VirtualMachineDataDisk> dataDisks, StorageAccount storageAccount, String namePrefix) {
+        for (VirtualMachineDataDisk dataDisk : dataDisks) {
             if (dataDisk.createOption() == DiskCreateOptionTypes.EMPTY) {
                 //New data disk requires Vhd Uri to be set
                 if (dataDisk.inner().vhd() == null) {
@@ -186,9 +182,9 @@ class DataDiskImpl
         }
     }
 
-    protected static void ensureDisksVhdUri(List<DataDisk> dataDisks, String namePrefix) {
+    protected static void ensureDisksVhdUri(List<VirtualMachineDataDisk> dataDisks, String namePrefix) {
         String containerUrl = null;
-        for (DataDisk dataDisk : dataDisks) {
+        for (VirtualMachineDataDisk dataDisk : dataDisks) {
             if (dataDisk.createOption() == DiskCreateOptionTypes.EMPTY && dataDisk.inner().vhd() != null) {
                 int idx = dataDisk.inner().vhd().uri().lastIndexOf('/');
                 containerUrl = dataDisk.inner().vhd().uri().substring(0, idx);
@@ -196,7 +192,7 @@ class DataDiskImpl
             }
         }
         if (containerUrl != null) {
-            for (DataDisk dataDisk : dataDisks) {
+            for (VirtualMachineDataDisk dataDisk : dataDisks) {
                 if (dataDisk.createOption() == DiskCreateOptionTypes.EMPTY) {
                     //New data disk requires Vhd Uri to be set
                     if (dataDisk.inner().vhd() == null) {

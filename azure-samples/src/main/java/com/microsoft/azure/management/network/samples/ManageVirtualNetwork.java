@@ -10,7 +10,7 @@ package com.microsoft.azure.management.network.samples;
 import com.microsoft.azure.Azure;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeTypes;
+import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
@@ -24,10 +24,10 @@ import java.util.Date;
 
 /**
  * Azure Network sample for managing virtual networks -
- *  - Create a virtual network
  *  - Create a virtual network with Subnets
  *  - Update a virtual network
  *  - Create virtual machines in the virtual network subnets
+ *  - Create another virtual network
  *  - List virtual networks
  *  - Delete a virtual network.
  */
@@ -41,10 +41,10 @@ public final class ManageVirtualNetwork {
     public static void main(String[] args) {
         final String vnetName1 = ResourceNamer.randomResourceName("vnet1", 20);
         final String vnetName2 = ResourceNamer.randomResourceName("vnet2", 20);
-        final String vnet2FrontEndSubnetName = "frontend";
-        final String vnet2BackEndSubnetName = "backend";
-        final String vnet2FrontEndSubnetNsgName = "frontendnsg";
-        final String vnet2BackEndSubnetNsgName = "backendnsg";
+        final String vnet1FrontEndSubnetName = "frontend";
+        final String vnet1BackEndSubnetName = "backend";
+        final String vnet1FrontEndSubnetNsgName = "frontendnsg";
+        final String vnet1BackEndSubnetNsgName = "backendnsg";
         final String frontEndVMName = ResourceNamer.randomResourceName("fevm", 24);
         final String backEndVMName = ResourceNamer.randomResourceName("bevm", 24);
         final String publicIpAddressLeafDNSForFrontEndVM = ResourceNamer.randomResourceName("pip1", 24);
@@ -58,7 +58,7 @@ public final class ManageVirtualNetwork {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File("my.azureauth");
+            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure
                     .configure()
@@ -70,20 +70,6 @@ public final class ManageVirtualNetwork {
             System.out.println("Selected subscription: " + azure.subscriptionId());
             try {
 
-                //============================================================
-                // Create a virtual network with default address-space and one default subnet
-
-                System.out.println("Creating virtual network #1...");
-
-                Network virtualNetwork1 = azure.networks()
-                        .define(vnetName1)
-                        .withRegion(Region.US_EAST)
-                        .withNewResourceGroup(rgName)
-                        .create();
-
-                System.out.println("Created a virtual network");
-                // Print the virtual network details
-                Utils.print(virtualNetwork1);
 
                 //============================================================
                 // Create a virtual network with specific address-space and two subnet
@@ -93,7 +79,7 @@ public final class ManageVirtualNetwork {
                 System.out.println("Creating a network security group for virtual network backend subnet...");
 
                 NetworkSecurityGroup backEndSubnetNsg = azure.networkSecurityGroups()
-                        .define(vnet2BackEndSubnetNsgName)
+                        .define(vnet1BackEndSubnetNsgName)
                         .withRegion(Region.US_EAST)
                         .withExistingResourceGroup(rgName)
                         .defineRule("DenyInternetInComing")
@@ -121,15 +107,15 @@ public final class ManageVirtualNetwork {
                 // Create the virtual network with frontend and backend subnets, with
                 // network security group rule applied to backend subnet]
 
-                System.out.println("Creating virtual network #2...");
+                System.out.println("Creating virtual network #1...");
 
-                Network virtualNetwork2 = azure.networks()
-                        .define(vnetName2)
+                Network virtualNetwork1 = azure.networks()
+                        .define(vnetName1)
                         .withRegion(Region.US_EAST)
                         .withExistingResourceGroup(rgName)
                         .withAddressSpace("192.168.0.0/16")
-                        .withSubnet(vnet2FrontEndSubnetName, "192.168.1.0/24")
-                        .defineSubnet(vnet2BackEndSubnetName)
+                        .withSubnet(vnet1FrontEndSubnetName, "192.168.1.0/24")
+                        .defineSubnet(vnet1BackEndSubnetName)
                             .withAddressPrefix("192.168.2.0/24")
                             .withExistingNetworkSecurityGroup(backEndSubnetNsg)
                             .attach()
@@ -137,7 +123,8 @@ public final class ManageVirtualNetwork {
 
                 System.out.println("Created a virtual network");
                 // Print the virtual network details
-                Utils.print(virtualNetwork2);
+                Utils.print(virtualNetwork1);
+
 
                 //============================================================
                 // Update a virtual network
@@ -147,7 +134,7 @@ public final class ManageVirtualNetwork {
                 System.out.println("Creating a network security group for virtual network backend subnet...");
 
                 NetworkSecurityGroup frontEndSubnetNsg = azure.networkSecurityGroups()
-                        .define(vnet2FrontEndSubnetNsgName)
+                        .define(vnet1FrontEndSubnetNsgName)
                         .withRegion(Region.US_EAST)
                         .withExistingResourceGroup(rgName)
                         .defineRule("AllowHttpInComing")
@@ -176,15 +163,16 @@ public final class ManageVirtualNetwork {
 
                 System.out.println("Associating network security group rule to frontend subnet");
 
-                virtualNetwork2.update()
-                        .updateSubnet(vnet2FrontEndSubnetName)
+                virtualNetwork1.update()
+                        .updateSubnet(vnet1FrontEndSubnetName)
                             .withExistingNetworkSecurityGroup(frontEndSubnetNsg)
                             .parent()
                         .apply();
 
                 System.out.println("Network security group rule associated with the frontend subnet");
                 // Print the virtual network details
-                Utils.print(virtualNetwork2);
+                Utils.print(virtualNetwork1);
+
 
                 //============================================================
                 // Create a virtual machine in each subnet
@@ -198,8 +186,8 @@ public final class ManageVirtualNetwork {
                 VirtualMachine frontEndVM = azure.virtualMachines().define(frontEndVMName)
                         .withRegion(Region.US_EAST)
                         .withExistingResourceGroup(rgName)
-                        .withExistingPrimaryNetwork(virtualNetwork2)
-                        .withSubnet(vnet2FrontEndSubnetName)
+                        .withExistingPrimaryNetwork(virtualNetwork1)
+                        .withSubnet(vnet1FrontEndSubnetName)
                         .withPrimaryPrivateIpAddressDynamic()
                         .withNewPrimaryPublicIpAddress(publicIpAddressLeafDNSForFrontEndVM)
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
@@ -224,8 +212,8 @@ public final class ManageVirtualNetwork {
                 VirtualMachine backEndVM = azure.virtualMachines().define(backEndVMName)
                         .withRegion(Region.US_EAST)
                         .withExistingResourceGroup(rgName)
-                        .withExistingPrimaryNetwork(virtualNetwork2)
-                        .withSubnet(vnet2BackEndSubnetName)
+                        .withExistingPrimaryNetwork(virtualNetwork1)
+                        .withSubnet(vnet1BackEndSubnetName)
                         .withPrimaryPrivateIpAddressDynamic()
                         .withoutPrimaryPublicIpAddress()
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
@@ -240,6 +228,23 @@ public final class ManageVirtualNetwork {
                 // Print virtual machine details
                 Utils.print(backEndVM);
 
+
+                //============================================================
+                // Create a virtual network with default address-space and one default subnet
+
+                System.out.println("Creating virtual network #2...");
+
+                Network virtualNetwork2 = azure.networks()
+                        .define(vnetName2)
+                        .withRegion(Region.US_EAST)
+                        .withNewResourceGroup(rgName)
+                        .create();
+
+                System.out.println("Created a virtual network");
+                // Print the virtual network details
+                Utils.print(virtualNetwork2);
+
+
                 //============================================================
                 // List virtual networks
 
@@ -247,10 +252,11 @@ public final class ManageVirtualNetwork {
                     Utils.print(virtualNetwork);
                 }
 
+
                 //============================================================
                 // Delete a virtual network
                 System.out.println("Deleting the virtual network");
-                azure.networks().delete(virtualNetwork1.id());
+                azure.networks().delete(virtualNetwork2.id());
                 System.out.println("Deleted the virtual network");
             } catch (Exception e) {
                 System.err.println(e.getMessage());

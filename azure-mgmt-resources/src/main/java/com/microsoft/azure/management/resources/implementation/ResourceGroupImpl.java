@@ -14,11 +14,6 @@ import com.microsoft.azure.management.resources.ResourceGroupExportTemplateOptio
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import com.microsoft.azure.management.resources.implementation.api.ExportTemplateRequestInner;
-import com.microsoft.azure.management.resources.implementation.api.ResourceGroupExportResultInner;
-import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
-import com.microsoft.azure.management.resources.implementation.api.ResourceGroupsInner;
-import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 

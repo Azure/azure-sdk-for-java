@@ -7,7 +7,7 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceInner;
+import com.microsoft.azure.management.network.implementation.NetworkInterfaceInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;

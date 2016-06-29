@@ -6,13 +6,11 @@
 package com.microsoft.azure.management.datalake.store.uploader;
 
 import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.azure.RestClient;
 import com.microsoft.azure.credentials.UserTokenCredentials;
 import com.microsoft.azure.management.datalake.store.implementation.DataLakeStoreAccountManagementClientImpl;
 import com.microsoft.azure.management.datalake.store.implementation.DataLakeStoreFileSystemManagementClientImpl;
-import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
-import com.microsoft.azure.serializer.AzureJacksonMapperAdapter;
-import com.microsoft.azure.RestClient;
-import com.microsoft.rest.serializer.JacksonMapperAdapter;
+import com.microsoft.azure.management.resources.implementation.ResourceManagementClientImpl;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;

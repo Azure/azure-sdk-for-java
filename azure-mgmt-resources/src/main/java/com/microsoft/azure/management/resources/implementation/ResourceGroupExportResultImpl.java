@@ -11,8 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.management.resources.DeploymentExportResult;
 import com.microsoft.azure.management.resources.ResourceGroupExportResult;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
-import com.microsoft.azure.management.resources.implementation.api.ResourceGroupExportResultInner;
-import com.microsoft.azure.management.resources.implementation.api.ResourceManagementErrorWithDetails;
+import com.microsoft.azure.management.resources.ResourceManagementErrorWithDetails;
 
 /**
  * Implementation for {@link DeploymentExportResult}.

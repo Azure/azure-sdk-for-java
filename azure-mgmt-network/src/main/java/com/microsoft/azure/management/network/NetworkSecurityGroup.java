@@ -7,7 +7,7 @@ package com.microsoft.azure.management.network;
 
 import java.util.List;
 
-import com.microsoft.azure.management.network.implementation.api.NetworkSecurityGroupInner;
+import com.microsoft.azure.management.network.implementation.NetworkSecurityGroupInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;

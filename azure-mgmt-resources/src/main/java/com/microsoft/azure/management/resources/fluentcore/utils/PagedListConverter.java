@@ -8,7 +8,7 @@ package com.microsoft.azure.management.resources.fluentcore.utils;
 
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.resources.implementation.api.PageImpl;
+import com.microsoft.azure.management.resources.implementation.PageImpl;
 import com.microsoft.rest.RestException;
 
 import java.io.IOException;
