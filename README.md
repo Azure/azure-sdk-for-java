@@ -1,13 +1,35 @@
 [![Build Status](https://travis-ci.org/Azure/azure-sdk-for-java.svg?style=flat-square&label=build)](https://travis-ci.org/Azure/azure-sdk-for-java)
+
+TODO
+- Intro
+- Code snippets [Asir]
+- Samples [Asir]
+ 
+- Download MAVEN fragment [Jianghao]
+- Authentication -> AUTH.md [Martin]
+- Contributing Code [carry over]
+
+- More Information [Asir]
+- list of previous releases and corresponding branches [Jianghao]
+- Microsoft Disclaimers [DONE]
+
 #Azure Management Libraries for Java
 
-This project provides a new, simplified Azure management libraries for Java. Our goal is to improve the developer experience by providing a higher-level, object-oriented API, optimized for readability and writability. 
+This is the Azure management libraries for Java. [Re work in-progress and how we will continue to tweak - ASIR]
 
-For documentation please see the [Javadoc](http://azure.github.io/azure-sdk-for-java). 
+This README is based on the latest released preview version (1.0.0-beta2). If you are looking for other releases ...
 
-For a list of libraries and how they are organized, please see the [Azure Management Libraries for Java Features Wiki page] (https://github.com/Azure/azure-sdk-for-java/wiki/Azure-SDK-for-Java-Features).
+[INSERT TABLE - Jianghao]
 
-#[EDIT THIS] Download
+[INSERT BLOG CONTENTS, including code snippets, and edit - ASIR]
+
+#List of libraries in
+
+
+
+#SAMPLES [ASIR]
+
+#[EDIT THIS] Download [Jianghao]
 **Notes:** If you are using snapshots builds from beta1 we recommend going to http://adxsnapshots.azurewebsites.net/ and find the exact version number. The latest beta1 snapshot versions are
 - client-runtime: 1.0.0-20160513.000825-29
 - azure-client-runtime: 1.0.0-20160513.000812-28
@@ -52,7 +74,7 @@ group.setLocation("West US");
 client.getResourceGroups().createOrUpdate("myresourcegroup", group);
 ```
 
-### [EDIT THIS] Authentication
+### [EDIT THIS] Authentication [Martin]
 The first step to using the SDK is authentication and permissioning. For people unfamilar with Azure this may be one of the more difficult concepts. For a reference on setting up a service principal from the command line see [Authenticating a service principal with Azure Resource Manager](http://aka.ms/cli-service-principal) or [Unattended Authentication](http://aka.ms/auth-unattended). For a more robust explanation of authentication in Azure, see [Developer’s guide to auth with Azure Resource Manager API](http://aka.ms/arm-auth-dev-guide).
 
 After creating the service principal, you should have three pieces of information, a client id (GUID), client secret (string) and tenant id (GUID) or domain name (string). By feeding them into the `ApplicationTokenCredentials` and initialize the ARM client with it, you should be ready to go.
