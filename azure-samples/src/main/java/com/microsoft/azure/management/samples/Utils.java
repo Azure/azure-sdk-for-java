@@ -10,7 +10,7 @@ package com.microsoft.azure.management.samples;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.VirtualMachine;
-import com.microsoft.azure.management.compute.implementation.api.DataDisk;
+import com.microsoft.azure.management.compute.DataDisk;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
@@ -18,7 +18,7 @@ import com.microsoft.azure.management.network.NetworkSecurityRule;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.storage.StorageAccount;
-import com.microsoft.azure.management.storage.implementation.api.StorageAccountKey;
+import com.microsoft.azure.management.storage.StorageAccountKey;
 
 import java.io.IOException;
 import java.util.Calendar;

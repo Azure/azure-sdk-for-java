@@ -11,8 +11,6 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Subscription;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-import com.microsoft.azure.management.resources.implementation.api.SubscriptionInner;
-import com.microsoft.azure.management.resources.implementation.api.SubscriptionsInner;
 
 import java.io.IOException;
 

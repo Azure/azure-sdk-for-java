@@ -4,10 +4,8 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkInterfaces;
-import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceInner;
-import com.microsoft.azure.management.network.implementation.api.NetworkInterfacesInner;
-import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceIPConfiguration;
-import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceDnsSettings;
+import com.microsoft.azure.management.network.NetworkInterfaceIPConfiguration;
+import com.microsoft.azure.management.network.NetworkInterfaceDnsSettings;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 

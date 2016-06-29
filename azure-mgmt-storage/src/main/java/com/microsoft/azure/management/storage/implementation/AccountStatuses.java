@@ -6,7 +6,7 @@
 
 package com.microsoft.azure.management.storage.implementation;
 
-import com.microsoft.azure.management.storage.implementation.api.AccountStatus;
+import com.microsoft.azure.management.storage.AccountStatus;
 
 /**
  * An instance of this class stores the availability of a storage account.

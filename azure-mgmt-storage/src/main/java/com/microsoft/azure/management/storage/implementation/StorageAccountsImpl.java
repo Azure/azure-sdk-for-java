@@ -10,11 +10,10 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.storage.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccounts;
-import com.microsoft.azure.management.storage.implementation.api.SkuName;
-import com.microsoft.azure.management.storage.implementation.api.StorageAccountInner;
-import com.microsoft.azure.management.storage.implementation.api.StorageAccountsInner;
+import com.microsoft.azure.management.storage.SkuName;
 
 import java.io.IOException;
 

@@ -11,8 +11,6 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Feature;
 import com.microsoft.azure.management.resources.Features;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-import com.microsoft.azure.management.resources.implementation.api.FeatureResultInner;
-import com.microsoft.azure.management.resources.implementation.api.FeaturesInner;
 
 import java.io.IOException;
 

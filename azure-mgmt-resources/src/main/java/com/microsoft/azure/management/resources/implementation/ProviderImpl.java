@@ -8,8 +8,7 @@ package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.management.resources.Provider;
-import com.microsoft.azure.management.resources.implementation.api.ProviderInner;
-import com.microsoft.azure.management.resources.implementation.api.ProviderResourceType;
+import com.microsoft.azure.management.resources.ProviderResourceType;
 
 import java.util.List;
 

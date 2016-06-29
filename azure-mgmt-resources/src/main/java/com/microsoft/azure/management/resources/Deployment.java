@@ -14,11 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
-import com.microsoft.azure.management.resources.implementation.api.Dependency;
-import com.microsoft.azure.management.resources.implementation.api.DeploymentExtendedInner;
-import com.microsoft.azure.management.resources.implementation.api.DeploymentMode;
-import com.microsoft.azure.management.resources.implementation.api.ParametersLink;
-import com.microsoft.azure.management.resources.implementation.api.TemplateLink;
+import com.microsoft.azure.management.resources.implementation.DeploymentExtendedInner;
 import org.joda.time.DateTime;
 
 import java.io.IOException;

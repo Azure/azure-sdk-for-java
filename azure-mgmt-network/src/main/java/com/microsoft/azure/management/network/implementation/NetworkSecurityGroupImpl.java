@@ -7,10 +7,6 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
-import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceInner;
-import com.microsoft.azure.management.network.implementation.api.NetworkSecurityGroupInner;
-import com.microsoft.azure.management.network.implementation.api.NetworkSecurityGroupsInner;
-import com.microsoft.azure.management.network.implementation.api.SecurityRuleInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;

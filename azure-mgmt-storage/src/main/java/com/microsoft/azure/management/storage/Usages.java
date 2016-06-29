@@ -11,5 +11,5 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 /**
  * Entry point for storage resource usage management API.
  */
-public interface Usages extends SupportsListing<Usage> {
+public interface Usages extends SupportsListing<StorageUsage> {
 }

@@ -8,7 +8,6 @@ package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.management.resources.Feature;
-import com.microsoft.azure.management.resources.implementation.api.FeatureResultInner;
 
 /**
  * The implementation of {@link Feature}.

@@ -8,7 +8,7 @@ package com.microsoft.azure.management.network;
 import java.util.List;
 import java.util.Map;
 
-import com.microsoft.azure.management.network.implementation.api.VirtualNetworkInner;
+import com.microsoft.azure.management.network.implementation.VirtualNetworkInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;

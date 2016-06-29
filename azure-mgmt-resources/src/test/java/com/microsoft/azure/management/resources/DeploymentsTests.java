@@ -2,7 +2,6 @@ package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.implementation.api.DeploymentMode;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;

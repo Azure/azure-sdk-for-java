@@ -9,12 +9,8 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Networks;
-import com.microsoft.azure.management.network.implementation.api.AddressSpace;
-import com.microsoft.azure.management.network.implementation.api.DhcpOptions;
-import com.microsoft.azure.management.network.implementation.api.NetworkManagementClientImpl;
-import com.microsoft.azure.management.network.implementation.api.SubnetInner;
-import com.microsoft.azure.management.network.implementation.api.VirtualNetworkInner;
-import com.microsoft.azure.management.network.implementation.api.VirtualNetworksInner;
+import com.microsoft.azure.management.network.AddressSpace;
+import com.microsoft.azure.management.network.DhcpOptions;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 

@@ -15,16 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.storage.implementation.AccountStatuses;
-import com.microsoft.azure.management.storage.implementation.PublicEndpoints;
-import com.microsoft.azure.management.storage.implementation.api.AccessTier;
-import com.microsoft.azure.management.storage.implementation.api.CustomDomain;
-import com.microsoft.azure.management.storage.implementation.api.Encryption;
-import com.microsoft.azure.management.storage.implementation.api.Kind;
-import com.microsoft.azure.management.storage.implementation.api.ProvisioningState;
-import com.microsoft.azure.management.storage.implementation.api.Sku;
-import com.microsoft.azure.management.storage.implementation.api.SkuName;
-import com.microsoft.azure.management.storage.implementation.api.StorageAccountInner;
-import com.microsoft.azure.management.storage.implementation.api.StorageAccountKey;
+import com.microsoft.azure.management.storage.implementation.StorageAccountInner;
 import org.joda.time.DateTime;
 
 import java.io.IOException;

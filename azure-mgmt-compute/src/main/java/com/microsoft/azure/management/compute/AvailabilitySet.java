@@ -5,8 +5,7 @@
  */
 package com.microsoft.azure.management.compute;
 
-import com.microsoft.azure.management.compute.implementation.api.AvailabilitySetInner;
-import com.microsoft.azure.management.compute.implementation.api.InstanceViewStatus;
+import com.microsoft.azure.management.compute.implementation.AvailabilitySetInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
