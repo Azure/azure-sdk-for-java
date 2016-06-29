@@ -15,7 +15,7 @@ TODO
 
 #Azure Management Libraries for Java
 
-This README is based on the latest released preview version (1.0.0-beta2). If you are looking for other releases, see [More Information](#learn-more)
+This README is based on the latest released preview version (1.0.0-beta2). If you are looking for other releases, see [More Information](#more-information)
 
 The Azure Management Libraries for Java is a higher-level, object-oriented API for managing Azure resources.
 
@@ -61,23 +61,28 @@ You can update a virtual machine instance by using the `update() … apply()` me
 	    .apply();
 
 
-[INSERT TABLE - Jianghao]
+#Sample Code
 
-[INSERT BLOG CONTENTS, including code snippets, and edit - ASIR]
+You can find plenty of sample code that illustrates management scenarios in Azure Compute, Storage, Network and Resource Manager … 
 
-#List of libraries in
+- Manage virtual machine
+- Manage availability set
+- List virtual machine images
+- Manage virtual network
+- Manage network interface
+- Manage network security group
+- Manage IP address
+- Manage resource groups
+- Manage resources
+- Deploy resources with ARM templates
+- Deploy resources with ARM templates (with progress)
 
+# Download
 
+**Repository**
 
-#SAMPLES [ASIR]
+To use 1.0.0-beta2 or snapshots builds for this repo, add the following repository info to your POM:
 
-#[EDIT THIS] Download [Jianghao]
-**Notes:** If you are using snapshots builds from beta1 we recommend going to http://adxsnapshots.azurewebsites.net/ and find the exact version number. The latest beta1 snapshot versions are
-- client-runtime: 1.0.0-20160513.000825-29
-- azure-client-runtime: 1.0.0-20160513.000812-28
-- azure-client-authentication: 1.0.0-20160513.000802-24
-
-To compile either this repo, you need snapshot builds in sonatype snapshots repository.  Add the following to your pom:
 ```xml
   <repositories>
     <repository>
@@ -99,6 +104,24 @@ repositories {
     ....
 }
 ```
+
+**1.0.0-beta2**
+
+If you are using released builds from 1.0.0-beta2, add the following to your POM file:
+
+
+
+**Snapshots builds for this repo**
+
+
+> **Note**: If you are using snapshots builds from 1.0.0-beta2, please go to http://adxsnapshots.azurewebsites.net/ and find the exact version number. The latest 1.0.0-beta2 snapshot versions are
+- client-runtime: 1.0.0-20160513.000825-29
+- azure-client-runtime: 1.0.0-20160513.000812-28
+- azure-client-authentication: 1.0.0-20160513.000802-24
+
+To compile either this repo, you need snapshot builds in sonatype snapshots repository.  Add the following to your pom:
+
+
 
 #Getting Started
 You will need Java v1.7+. If you would like to develop on the SDK, you will also need maven.
@@ -134,7 +157,7 @@ If you would like to become an active contributor to this project please follow 
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
-#Learn More
+#More Information
 * [Javadoc](http://azure.github.io/azure-sdk-for-java)
 * [http://azure.com/java](http://azure.com/java)
 * If you don't have a Microsoft Azure subscription you can get a FREE trial account [here](http://go.microsoft.com/fwlink/?LinkId=330212)
