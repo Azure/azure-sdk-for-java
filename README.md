@@ -15,9 +15,53 @@ TODO
 
 #Azure Management Libraries for Java
 
-This is the Azure management libraries for Java. [Re work in-progress and how we will continue to tweak - ASIR]
+This README is based on the latest released preview version (1.0.0-beta2). If you are looking for other releases, see [More Information](#learn-more)
 
-This README is based on the latest released preview version (1.0.0-beta2). If you are looking for other releases ...
+The Azure Management Libraries for Java is a higher-level, object-oriented API for managing Azure resources.
+
+
+> **1.0.0-beta2** is a developer preview that supports major parts of Azure Compute, Storage, Networking and Resource Manager. The next preview version of the Azure Management Libraries for Java is a work in-progress. We will be adding support for more Azure services and tweaking the API over the next few months.
+
+**Azure Authentication**
+
+The `Azure` class is the simplest entry point for creating and interacting with Azure resources.
+
+`Azure azure = Azure.authenticate(credFile).withDefaultSubscription();` 
+
+**Create a Virtual Machine**
+
+You can create a virtual machine instance by using the `define() … create()` method chain.
+    //=============================================================
+    // Create a Linux VM
+    
+    System.out.println("Creating a Linux VM");
+    
+    VirtualMachine linuxVM = azure.virtualMachines().define("myLinuxVM")
+	    .withRegion(Region.US_EAST)
+	    .withNewResourceGroup("myResourceGroup")
+	    .withNewPrimaryNetwork("10.0.0.0/28")
+	    .withPrimaryPrivateIpAddressDynamic()
+	    .withNewPrimaryPublicIpAddress("mylinuxvmdns")
+	    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+	    .withRootUserName("tirekicker")
+	    .withSsh(sshKey)
+	    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+	    .create();
+    
+    System.out.println("Created a Linux VM: " + linuxVM.id());
+    
+
+**Update a Virtual Machine**
+
+You can update a virtual machine instance by using the `update() … apply()` method chain.
+
+	linuxVM.update()
+	    .defineNewDataDisk(dataDiskName)
+	    .withSizeInGB(20)
+	    .withCaching(CachingTypes.READ_WRITE)
+	    .attach()
+	    .apply();
+
 
 [INSERT TABLE - Jianghao]
 
