@@ -11,7 +11,7 @@ import java.io.File;
 
 import com.microsoft.azure.Azure;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.samples.Utils;
+import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.storage.SkuName;
 import com.microsoft.azure.management.storage.StorageAccount;
 
@@ -35,9 +35,9 @@ public final class ManageResource {
      */
     public static void main(String[] args) {
 
-        final String rgName = Utils.createRandomName("rgRSMA");
-        final String resourceName1 = Utils.createRandomName("rn1");
-        final String resourceName2 = Utils.createRandomName("rn2");
+        final String rgName = ResourceNamer.randomResourceName("rrRSMA", 24);
+        final String resourceName1 = ResourceNamer.randomResourceName("rn1", 24);
+        final String resourceName2 = ResourceNamer.randomResourceName("rn2", 24);
 
         try {
 
@@ -45,7 +45,7 @@ public final class ManageResource {
             //=================================================================
             // Authenticate
 
-            final File credFile = new File("my.azureauth");
+            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure.configure()
                     .withLogLevel(HttpLoggingInterceptor.Level.NONE)
@@ -72,9 +72,9 @@ public final class ManageResource {
                 System.out.println("Creating a storage account with name: " + resourceName1);
 
                 StorageAccount storageAccount = azure.storageAccounts()
-                        .define(resourceName1)
-                        .withRegion(Region.US_WEST)
-                        .withExistingResourceGroup(rgName)
+                    .define(resourceName1)
+                    .withRegion(Region.US_WEST)
+                    .withExistingResourceGroup(rgName)
                         .create();
 
                 System.out.println("Storage account created: " + storageAccount.id());
@@ -98,7 +98,9 @@ public final class ManageResource {
                 System.out.println("Creating another storage account with name: " + resourceName2);
 
                 StorageAccount storageAccount2 = azure.storageAccounts().define(resourceName2)
-                        .withRegion(Region.US_WEST).withExistingResourceGroup(rgName).create();
+                    .withRegion(Region.US_WEST)
+                    .withExistingResourceGroup(rgName)
+                    .create();
 
                 System.out.println("Storage account created: " + storageAccount2.id());
 
@@ -116,12 +118,11 @@ public final class ManageResource {
                 //=============================================================
                 // Delete a storage accounts.
 
-                System.out.println("Deleting storage account: " + storageAccount2.id());
+                System.out.println("Deleting storage account: " + resourceName2);
 
-                azure.storageAccounts()
-                    .delete(storageAccount2.id());
+                azure.storageAccounts().delete(storageAccount2.id());
 
-                System.out.println("Deleted storage account: " + storageAccount2.id());
+                System.out.println("Deleted storage account: " + resourceName2);
 
             } catch (Exception f) {
 

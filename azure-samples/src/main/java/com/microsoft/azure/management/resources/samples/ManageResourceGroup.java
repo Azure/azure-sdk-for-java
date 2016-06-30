@@ -12,7 +12,7 @@ import java.io.File;
 import com.microsoft.azure.Azure;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.samples.Utils;
+import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 
 import okhttp3.logging.HttpLoggingInterceptor;
 
@@ -35,10 +35,10 @@ public final class ManageResourceGroup {
     public static void main(String[] args) {
 
         try {
-            final String rgName = Utils.createRandomName("rgRSMA");
-            final String rgName2 = Utils.createRandomName("rgRSMA");
-            final String resourceTagName = Utils.createRandomName("rgRSTN");
-            final String resourceTagValue = Utils.createRandomName("rgRSTV");
+            final String rgName = ResourceNamer.randomResourceName("rgRSMA", 24);
+            final String rgName2 = ResourceNamer.randomResourceName("rgRSMA", 24);
+            final String resourceTagName = ResourceNamer.randomResourceName("rgRSTN", 24);
+            final String resourceTagValue = ResourceNamer.randomResourceName("rgRSTV", 24);
 
             try {
 
@@ -46,7 +46,7 @@ public final class ManageResourceGroup {
                 //=================================================================
                 // Authenticate
 
-                final File credFile = new File("my.azureauth");
+                final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
                 Azure azure = Azure.configure()
                         .withLogLevel(HttpLoggingInterceptor.Level.NONE)
@@ -86,8 +86,10 @@ public final class ManageResourceGroup {
 
                     System.out.println("Creating another resource group with name: " + rgName2);
 
-                    ResourceGroup resourceGroup2 = azure.resourceGroups().define(rgName).withRegion(Region.US_WEST)
-                            .create();
+                    ResourceGroup resourceGroup2 = azure.resourceGroups()
+                        .define(rgName)
+                        .withRegion(Region.US_WEST)
+                        .create();
 
                     System.out.println("Created another resource group with name: " + rgName2);
 
@@ -105,12 +107,11 @@ public final class ManageResourceGroup {
                     //=============================================================
                     // Delete a resource group.
 
-                    System.out.println("Deleting resource group: " + resourceGroup2.id());
+                    System.out.println("Deleting resource group: " + rgName2);
 
-                    azure.resourceGroups()
-                        .delete(resourceGroup2.id());
+                    azure.resourceGroups().delete(rgName2);
 
-                    System.out.println("Deleted resource group: " + resourceGroup2.id());
+                    System.out.println("Deleted resource group: " + rgName2);
 
                 } catch (Exception f) {
 

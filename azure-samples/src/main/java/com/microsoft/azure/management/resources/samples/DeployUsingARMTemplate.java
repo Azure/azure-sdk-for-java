@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microsoft.azure.Azure;
 import com.microsoft.azure.management.resources.DeploymentMode;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.samples.Utils;
+import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 
 import okhttp3.logging.HttpLoggingInterceptor;
 
@@ -35,8 +35,8 @@ public final class DeployUsingARMTemplate {
      */
     public static void main(String[] args) {
         try {
-            final String rgName = Utils.createRandomName("rgDUARMT");
-            final String deploymentName = Utils.createRandomName("dpDUARMT");
+            final String rgName = ResourceNamer.randomResourceName("rgRSAT", 24);
+            final String deploymentName = ResourceNamer.randomResourceName("dpRSAT", 24);
 
             try {
 
@@ -44,7 +44,7 @@ public final class DeployUsingARMTemplate {
                 //=================================================================
                 // Authenticate
 
-                final File credFile = new File("my.azureauth");
+                final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
                 Azure azure = Azure.configure()
                         .withLogLevel(HttpLoggingInterceptor.Level.NONE)
@@ -110,8 +110,8 @@ public final class DeployUsingARMTemplate {
     }
 
     private static String getTemplate() throws IllegalAccessException, JsonProcessingException, IOException {
-        final String hostingPlanName = Utils.createRandomName("hp");
-        final String webappName = Utils.createRandomName("wn");
+        final String hostingPlanName = ResourceNamer.randomResourceName("hpRSAT", 24);
+        final String webappName = ResourceNamer.randomResourceName("wnRSAT", 24);
         final InputStream embeddedTemplate;
         embeddedTemplate = DeployUsingARMTemplate.class.getResourceAsStream("/templateValue.json");
 
