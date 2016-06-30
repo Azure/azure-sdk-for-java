@@ -83,9 +83,9 @@ You can create a service principal and grant it access privileges for a given su
   <br>`tenant=abcdef01-1234-dcba-9876-abcdef012345`
   <br>This represents the Active Directory instance you selected earlier.
 1. Assuming you are using the Azure worldwide public cloud, also add the following to your text file: \(Note that this file follows the Java properties file format, so certain characters, such as colons, need to be escaped with a backslash\)<br/>
-    managementURI=https\\://management.core.windows.net/<br/>
-    baseURL=https\\://management.azure.com/</br>
-    authURL=https\\://login.windows.net/<br/>
+    `managementURI=https\\://management.core.windows.net/`<br/>
+    `baseURL=https\\://management.azure.com/`</br>
+    `authURL=https\\://login.windows.net/`<br/>
   Make sure to escape the colons (:) with backslashes (\\).
 1. You need to grant the created service principal a permission to access the desired Azure subscription. Go to the [Azure portal](http://portal.azure.com) again.
 1. Click **Subscriptions** and select the subscription in the list that you want to enable your application to access.
@@ -94,7 +94,7 @@ You can create a service principal and grant it access privileges for a given su
   <br/>![Users](/media/auth/users.png)
 1. In the **Add Access** page, for the **Select a role** question, select **Owner** if you want to give your application the ability to modify resources in this subscription.
   <br/>![Access](/media/auth/access.png)
-1. Click **Add Users**, then find and select your application using the name you provided earlier, and click **Select**.
+1. Click **Add Users**, then find and select your application using the name you provided earlier, and click the **Select** button near the bottom of the page.
   <br/>![Add user](/media/auth/add-user.png)
 
 Now all the pieces are in place to enable authenticating your code without requiring an interactive login nor the need to manage access tokens.
