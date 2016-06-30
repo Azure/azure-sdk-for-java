@@ -12,11 +12,7 @@ import com.microsoft.azure.management.resources.GenericResources;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
-import com.microsoft.azure.management.resources.implementation.api.ResourcesInner;
 import com.microsoft.azure.management.resources.GenericResource;
-import com.microsoft.azure.management.resources.implementation.api.GenericResourceInner;
-import com.microsoft.azure.management.resources.implementation.api.ResourcesMoveInfoInner;
 
 import java.io.IOException;
 import java.util.List;
@@ -76,7 +72,7 @@ final class GenericResourcesImpl
                 serviceClient,
                 this.myManager);
 
-        return resource.withExistingGroup(resourceGroupName)
+        return resource.withExistingResourceGroup(resourceGroupName)
                 .withProviderNamespace(resourceProviderNamespace)
                 .withParentResource(parentResourcePath)
                 .withResourceType(resourceType)
@@ -115,7 +111,7 @@ final class GenericResourcesImpl
                 this.innerCollection,
                 this.serviceClient,
                 this.myManager)
-                .withExistingGroup(ResourceUtils.groupFromResourceId(id))
+                .withExistingResourceGroup(ResourceUtils.groupFromResourceId(id))
                 .withProviderNamespace(ResourceUtils.resourceProviderFromResourceId(id))
                 .withResourceType(ResourceUtils.resourceTypeFromResourceId(id))
                 .withParentResource(ResourceUtils.parentResourcePathFromResourceId(id));
@@ -129,7 +125,7 @@ final class GenericResourcesImpl
                 this.innerCollection,
                 this.serviceClient,
                 this.myManager)
-                .withExistingGroup(ResourceUtils.groupFromResourceId(inner.id()))
+                .withExistingResourceGroup(ResourceUtils.groupFromResourceId(inner.id()))
                 .withProviderNamespace(ResourceUtils.resourceProviderFromResourceId(inner.id()))
                 .withResourceType(ResourceUtils.resourceTypeFromResourceId(inner.id()))
                 .withParentResource(ResourceUtils.parentResourcePathFromResourceId(inner.id()));

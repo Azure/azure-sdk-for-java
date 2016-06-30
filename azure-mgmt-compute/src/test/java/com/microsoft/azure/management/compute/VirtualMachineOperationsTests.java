@@ -1,8 +1,5 @@
 package com.microsoft.azure.management.compute;
 
-import com.microsoft.azure.management.compute.implementation.api.CachingTypes;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineInstanceView;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeTypes;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -10,9 +7,9 @@ import org.junit.Test;
 import java.util.List;
 
 public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
-    private static String RG_NAME = "javacsmrg";
-    private static String LOCATION = "southcentralus";
-    private static String VMNAME = "javavm";
+    private static final String RG_NAME = "javacsmrg";
+    private static final String LOCATION = "southcentralus";
+    private static final String VMNAME = "javavm";
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -30,7 +27,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
         VirtualMachine vm = computeManager.virtualMachines()
                 .define(VMNAME)
                 .withRegion(LOCATION)
-                .withNewGroup(RG_NAME)
+                .withNewResourceGroup(RG_NAME)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIpAddressDynamic()
                 .withoutPrimaryPublicIpAddress()
@@ -51,11 +48,11 @@ public class VirtualMachineOperationsTests extends ComputeManagementTestBase {
             }
         }
         Assert.assertNotNull(foundedVM);
-        Assert.assertEquals(LOCATION, foundedVM.region());
+        Assert.assertEquals(LOCATION, foundedVM.regionName());
         // Get
         foundedVM = computeManager.virtualMachines().getByGroup(RG_NAME, VMNAME);
         Assert.assertNotNull(foundedVM);
-        Assert.assertEquals(LOCATION, foundedVM.region());
+        Assert.assertEquals(LOCATION, foundedVM.regionName());
 
         // Fetch instance view
         PowerState powerState = foundedVM.powerState();

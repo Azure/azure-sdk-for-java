@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccounts;
-import com.microsoft.azure.management.storage.implementation.api.StorageAccountKey;
+import com.microsoft.azure.management.storage.StorageAccountKey;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 import java.io.File;
@@ -41,7 +41,7 @@ public final class ManageStorageAccount {
 
         try {
 
-            final File credFile = new File("my.azureauth");
+            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure
                     .configure()
@@ -61,7 +61,7 @@ public final class ManageStorageAccount {
 
                 StorageAccount storageAccount = azure.storageAccounts().define(storageAccountName)
                         .withRegion(Region.US_EAST)
-                        .withNewGroup(rgName)
+                        .withNewResourceGroup(rgName)
                         .create();
 
                 System.out.println("Created a Storage Account:");
@@ -91,7 +91,7 @@ public final class ManageStorageAccount {
 
                 StorageAccount storageAccount2 = azure.storageAccounts().define(storageAccountName2)
                         .withRegion(Region.US_EAST)
-                        .withNewGroup(rgName)
+                        .withNewResourceGroup(rgName)
                         .create();
 
                 System.out.println("Created a Storage Account:");

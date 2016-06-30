@@ -26,14 +26,19 @@ public interface Resource extends Indexable {
     String type();
 
     /**
-     * @return the name of the reosurce
+     * @return the name of the resource
      */
     String name();
 
     /**
+     * @return the name of the region the resource is in
+     */
+    String regionName();
+
+    /**
      * @return the region the resource is in
      */
-    String region();
+    Region region();
 
     /**
      * @return the tags for the resource

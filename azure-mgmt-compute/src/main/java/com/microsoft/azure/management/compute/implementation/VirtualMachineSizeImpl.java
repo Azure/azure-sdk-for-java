@@ -6,7 +6,6 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.management.compute.VirtualMachineSize;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeInner;
 
 /**
  * The implementation for {@link VirtualMachineSize}.

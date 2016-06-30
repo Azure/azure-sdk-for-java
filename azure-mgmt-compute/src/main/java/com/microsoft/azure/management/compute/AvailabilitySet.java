@@ -5,8 +5,7 @@
  */
 package com.microsoft.azure.management.compute;
 
-import com.microsoft.azure.management.compute.implementation.api.AvailabilitySetInner;
-import com.microsoft.azure.management.compute.implementation.api.InstanceViewStatus;
+import com.microsoft.azure.management.compute.implementation.AvailabilitySetInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -67,45 +66,63 @@ public interface AvailabilitySet extends
     /**
      * Container interface for all the definitions.
      */
-    interface Definitions extends
-        DefinitionBlank,
-        DefinitionWithGroup,
-        DefinitionCreatable {
+    interface Definition extends
+        DefinitionStages.Blank,
+        DefinitionStages.WithGroup,
+        DefinitionStages.WithCreate {
     }
 
     /**
-     * The first stage of an availability set definition.
+     * Grouping of availability set definition stages.
      */
-    interface DefinitionBlank extends GroupableResource.DefinitionWithRegion<DefinitionWithGroup> {
-    }
-
-    /**
-     * The stage of the availability set definition allowing to specify the resource group.
-     */
-    interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionCreatable> {
-    }
-
-    /**
-     * The stage of an availability set definition which contains all the minimum required inputs for
-     * the resource to be created (via {@link DefinitionCreatable#create()}), but also allows
-     * for any other optional settings to be specified.
-     */
-    interface DefinitionCreatable extends
-        Creatable<AvailabilitySet>,
-        Resource.DefinitionWithTags<DefinitionCreatable> {
+    interface DefinitionStages {
         /**
-         * Specifies the update domain count for the availability set.
-         * @param updateDomainCount update domain count
-         * @return the next stage of the resource definition
+         * The first stage of an availability set definition.
          */
-        DefinitionCreatable withUpdateDomainCount(int updateDomainCount);
+        interface Blank extends GroupableResource.DefinitionWithRegion<WithGroup> {
+        }
 
         /**
-         * Specifies the fault domain count for the availability set.
-         * @param faultDomainCount fault domain count
-         * @return the next stage of the resource definition
+         * The stage of the availability set definition allowing to specify the resource group.
          */
-        DefinitionCreatable withFaultDomainCount(int faultDomainCount);
+        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithCreate> {
+        }
+
+        /**
+         * The stage of the availability set definition allowing to specify the update domain count.
+         */
+        interface WithUpdateDomainCount {
+            /**
+             * Specifies the update domain count for the availability set.
+             * @param updateDomainCount update domain count
+             * @return the next stage of the resource definition
+             */
+            WithCreate withUpdateDomainCount(int updateDomainCount);
+        }
+
+        /**
+         * The stage of the availability set definition allowing to specify the fault domain count.
+         */
+        interface WithFaultDomainCount {
+            /**
+             * Specifies the fault domain count for the availability set.
+             * @param faultDomainCount fault domain count
+             * @return the next stage of the resource definition
+             */
+            WithCreate withFaultDomainCount(int faultDomainCount);
+        }
+
+        /**
+         * The stage of an availability set definition which contains all the minimum required inputs for
+         * the resource to be created (via {@link WithCreate#create()}), but also allows
+         * for any other optional settings to be specified.
+         */
+        interface WithCreate extends
+            Creatable<AvailabilitySet>,
+            Resource.DefinitionWithTags<WithCreate>,
+            WithUpdateDomainCount,
+            WithFaultDomainCount {
+        }
     }
 
     /**

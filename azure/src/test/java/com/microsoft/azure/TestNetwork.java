@@ -9,6 +9,7 @@ import org.junit.Assert;
 
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
+import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -18,25 +19,43 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
  */
 public class TestNetwork extends TestTemplate<Network, Networks> {
 
+    private final NetworkSecurityGroups nsgs;
+    TestNetwork(NetworkSecurityGroups nsgs) {
+        this.nsgs = nsgs;
+    }
+
     @Override
     public Network createResource(Networks networks) throws Exception {
         final String newName = "net" + this.testId;
         Region region = Region.US_WEST;
+        String groupName = "rg" + this.testId;
+
+        // Create an NSG
+        NetworkSecurityGroup nsg = nsgs.define("nsg" + this.testId)
+                .withRegion(region)
+                .withNewResourceGroup(groupName)
+                .create();
 
         // Create a network
         return networks.define(newName)
                 .withRegion(region)
-                .withNewGroup()
+                .withNewResourceGroup(groupName)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnetA", "10.0.0.0/29")
                 .defineSubnet("subnetB")
                     .withAddressPrefix("10.0.0.8/29")
+                    .withExistingNetworkSecurityGroup(nsg)
                     .attach()
                 .create();
     }
 
     @Override
     public Network updateResource(Network resource) throws Exception {
+        NetworkSecurityGroup nsg = nsgs.define("nsgB" + this.testId)
+                .withRegion(resource.region())
+                .withExistingResourceGroup(resource.resourceGroupName())
+                .create();
+
         resource =  resource.update()
                 .withTag("tag1", "value1")
                 .withTag("tag2", "value2")
@@ -45,7 +64,12 @@ public class TestNetwork extends TestTemplate<Network, Networks> {
                 .withoutSubnet("subnetA")
                 .updateSubnet("subnetB")
                     .withAddressPrefix("141.25.0.8/29")
+                    .withExistingNetworkSecurityGroup(nsg)
                     .parent()
+                .defineSubnet("subnetD")
+                    .withAddressPrefix("141.25.0.16/29")
+                    .withExistingNetworkSecurityGroup(nsg)
+                    .attach()
                 .apply();
         Assert.assertTrue(resource.tags().containsKey("tag1"));
 
@@ -79,7 +103,7 @@ public class TestNetwork extends TestTemplate<Network, Networks> {
             if (null == nsg) {
                 info.append("(None)");
             } else {
-                info.append(nsg.id());
+                info.append(nsg.resourceGroupName() + "/" + nsg.name());
             }
         }
 

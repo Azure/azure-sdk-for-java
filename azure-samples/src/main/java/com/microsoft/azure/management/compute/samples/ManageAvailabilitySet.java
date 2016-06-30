@@ -12,7 +12,7 @@ import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeTypes;
+import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.samples.Utils;
@@ -54,7 +54,7 @@ public final class ManageAvailabilitySet {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File("my.azureauth");
+            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure
                     .configure()
@@ -74,7 +74,7 @@ public final class ManageAvailabilitySet {
 
                 AvailabilitySet availSet1 = azure.availabilitySets().define(availSetName1)
                         .withRegion(Region.US_EAST)
-                        .withNewGroup(rgName)
+                        .withNewResourceGroup(rgName)
                         .withFaultDomainCount(2)
                         .withUpdateDomainCount(4)
                         .withTag("cluster", "Windowslinux")
@@ -90,7 +90,7 @@ public final class ManageAvailabilitySet {
                 Network.DefinitionStages.WithCreate network = azure.networks()
                         .define(vnetName)
                         .withRegion(Region.US_EAST)
-                        .withExistingGroup(rgName)
+                        .withExistingResourceGroup(rgName)
                         .withAddressSpace("10.0.0.0/28");
 
 
@@ -101,7 +101,7 @@ public final class ManageAvailabilitySet {
 
                 VirtualMachine vm1 = azure.virtualMachines().define(vm1Name)
                         .withRegion(Region.US_EAST)
-                        .withExistingGroup(rgName)
+                        .withExistingResourceGroup(rgName)
                         .withNewPrimaryNetwork(network)
                         .withPrimaryPrivateIpAddressDynamic()
                         .withoutPrimaryPublicIpAddress()
@@ -124,7 +124,7 @@ public final class ManageAvailabilitySet {
 
                 VirtualMachine vm2 = azure.virtualMachines().define(vm2Name)
                         .withRegion(Region.US_EAST)
-                        .withExistingGroup(rgName)
+                        .withExistingResourceGroup(rgName)
                         .withNewPrimaryNetwork(network)
                         .withPrimaryPrivateIpAddressDynamic()
                         .withoutPrimaryPublicIpAddress()
@@ -158,7 +158,7 @@ public final class ManageAvailabilitySet {
 
                 AvailabilitySet availSet2 = azure.availabilitySets().define(availSetName2)
                         .withRegion(Region.US_EAST)
-                        .withExistingGroup(rgName)
+                        .withExistingResourceGroup(rgName)
                         .create();
 
                 System.out.println("Created second availability set: " + availSet2.id());

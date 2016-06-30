@@ -22,7 +22,7 @@ import java.io.IOException;
  * Entry point to template deployment in Azure.
  */
 public interface Deployments extends
-        SupportsCreating<Deployment.DefinitionBlank>,
+        SupportsCreating<Deployment.DefinitionStages.Blank>,
         SupportsListing<Deployment>,
         SupportsListingByGroup<Deployment>,
         SupportsGettingByName<Deployment>,

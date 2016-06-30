@@ -7,9 +7,6 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Subnet;
-import com.microsoft.azure.management.network.implementation.api.SubnetInner;
-import com.microsoft.azure.management.network.implementation.api.VirtualNetworkInner;
-import com.microsoft.azure.management.network.implementation.api.VirtualNetworksInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;

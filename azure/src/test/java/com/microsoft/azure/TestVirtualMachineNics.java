@@ -9,7 +9,7 @@ package com.microsoft.azure;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachines;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeTypes;
+import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkInterfaces;
@@ -18,6 +18,8 @@ import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+
 import org.junit.Assert;
 
 public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, VirtualMachines> {
@@ -37,7 +39,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
         // Prepare the resource group definition
         final String rgName = "rg" + this.testId;
-        ResourceGroup.DefinitionCreatable resourceGroupCreatable = this.resourceGroups
+        Creatable<ResourceGroup> resourceGroupCreatable = this.resourceGroups
                 .define(rgName)
                 .withRegion(Region.US_EAST);
 
@@ -46,26 +48,26 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
         Network.DefinitionStages.WithCreate networkCreatable = this.networks
                 .define(vnetName)
                 .withRegion(Region.US_EAST)
-                .withNewGroup(resourceGroupCreatable)
+                .withNewResourceGroup(resourceGroupCreatable)
                 .withAddressSpace("10.0.0.0/28");
 
         // Prepare the secondary network interface definition
         final String secondaryNicName = "nic" + this.testId;
-        NetworkInterface.DefinitionCreatable secondaryNetworkInterfaceCreatable = this.networkInterfaces
+        Creatable<NetworkInterface> secondaryNetworkInterfaceCreatable = this.networkInterfaces
                 .define(secondaryNicName)
                 .withRegion(Region.US_EAST)
-                .withNewGroup(resourceGroupCreatable)
+                .withNewResourceGroup(resourceGroupCreatable)
                 .withNewPrimaryNetwork(networkCreatable)
                 .withPrimaryPrivateIpAddressStatic("10.0.0.5");
-                // .withNewPrimaryPublicIpAddress(secondaryPublicIpCreatable);
+                // .withNewPrimaryPublicIpAddress();
                 // [Secondary NIC cannot have PublicIp - Only primary network interface can reference a public IP address]
 
         // Prepare the secondary network interface definition
         final String secondaryNicName2 = "nic2" + this.testId;
-        NetworkInterface.DefinitionCreatable secondaryNetworkInterfaceCreatable2 = this.networkInterfaces
+        Creatable<NetworkInterface> secondaryNetworkInterfaceCreatable2 = this.networkInterfaces
                 .define(secondaryNicName2)
                 .withRegion(Region.US_EAST)
-                .withNewGroup(resourceGroupCreatable)
+                .withNewResourceGroup(resourceGroupCreatable)
                 .withNewPrimaryNetwork(networkCreatable)
                 .withPrimaryPrivateIpAddressStatic("10.0.0.6");
 
@@ -74,7 +76,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
         final String primaryPipName = "pip" + vmName;
         VirtualMachine virtualMachine = virtualMachines.define(vmName)
                 .withRegion(Region.US_EAST)
-                .withNewGroup(resourceGroupCreatable)
+                .withNewResourceGroup(resourceGroupCreatable)
                 .withNewPrimaryNetwork(networkCreatable)
                 .withPrimaryPrivateIpAddressStatic("10.0.0.4")
                 .withNewPrimaryPublicIpAddress(primaryPipName)

@@ -2,19 +2,8 @@ package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineInner;
-import com.microsoft.azure.management.compute.implementation.api.OperatingSystemTypes;
-import com.microsoft.azure.management.compute.implementation.api.CachingTypes;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineInstanceView;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineExtensionInner;
-import com.microsoft.azure.management.compute.implementation.api.Plan;
-import com.microsoft.azure.management.compute.implementation.api.StorageProfile;
-import com.microsoft.azure.management.compute.implementation.api.OSProfile;
-import com.microsoft.azure.management.compute.implementation.api.ImageReference;
-import com.microsoft.azure.management.compute.implementation.api.DiagnosticsProfile;
-import com.microsoft.azure.management.compute.implementation.api.WinRMListener;
-import com.microsoft.azure.management.compute.implementation.api.DiskEncryptionSettings;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeTypes;
+import com.microsoft.azure.management.compute.implementation.VirtualMachineInner;
+import com.microsoft.azure.management.compute.implementation.VirtualMachineExtensionInner;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.PublicIpAddress;
@@ -166,7 +155,7 @@ public interface VirtualMachine extends
     /**
      * @return the list of data disks attached to this virtual machine
      */
-    List<DataDisk> dataDisks();
+    List<VirtualMachineDataDisk> dataDisks();
 
     /**
      * Gets the primary network interface of this virtual machine.
@@ -309,7 +298,7 @@ public interface VirtualMachine extends
         /**
          * The stage of the virtual machine definition allowing to specify the resource group.
          */
-        interface WithGroup extends GroupableResource.DefinitionWithGroup<WithNetwork> {
+        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithNetwork> {
         }
 
         /**
@@ -324,7 +313,7 @@ public interface VirtualMachine extends
              * @param creatable a creatable definition for a new virtual network
              * @return the next stage of the virtual machine definition
              */
-            WithPrivateIp withNewPrimaryNetwork(Network.DefinitionStages.WithCreate creatable);
+            WithPrivateIp withNewPrimaryNetwork(Creatable<Network> creatable);
 
             /**
              * Creates a new virtual network to associate with the virtual machine's primary network interface.
@@ -394,7 +383,7 @@ public interface VirtualMachine extends
              * @param creatable a creatable definition for a new public IP
              * @return the next stage of the virtual machine definition
              */
-            WithOS withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionCreatable creatable);
+            WithOS withNewPrimaryPublicIpAddress(Creatable<PublicIpAddress> creatable);
 
             /**
              * Creates a new public IP address in the same region and group as the resource, with the specified DNS label
@@ -416,7 +405,7 @@ public interface VirtualMachine extends
             WithOS withExistingPrimaryPublicIpAddress(PublicIpAddress publicIpAddress);
 
             /**
-             * Specifies that no public Ip needs to be associated with virtual machine.
+             * Specifies that no public IP needs to be associated with virtual machine.
              *
              * @return the next stage of the virtual machine definition
              */
@@ -434,7 +423,7 @@ public interface VirtualMachine extends
              * @param creatable a creatable definition for a new network interface
              * @return The next stage of the virtual machine definition
              */
-            WithOS withNewPrimaryNetworkInterface(NetworkInterface.DefinitionCreatable creatable);
+            WithOS withNewPrimaryNetworkInterface(Creatable<NetworkInterface> creatable);
 
             /**
              * Associate an existing network interface as the virtual machine with as it's primary network interface.
@@ -717,7 +706,7 @@ public interface VirtualMachine extends
              * @param name the name for the data disk
              * @return the stage representing configuration for the data disk
              */
-            DataDisk.DefinitionStages.AttachNewDataDisk<WithCreate> defineNewDataDisk(String name);
+            VirtualMachineDataDisk.DefinitionStages.AttachNewDataDisk<WithCreate> defineNewDataDisk(String name);
 
             /**
              * Specifies an existing VHD that needs to be attached to the virtual machine as data disk along with
@@ -726,7 +715,7 @@ public interface VirtualMachine extends
              * @param name the name for the data disk
              * @return the stage representing configuration for the data disk
              */
-            DataDisk.DefinitionStages.AttachExistingDataDisk<WithCreate> defineExistingDataDisk(String name);
+            VirtualMachineDataDisk.DefinitionStages.AttachExistingDataDisk<WithCreate> defineExistingDataDisk(String name);
         }
 
         /**
@@ -745,7 +734,7 @@ public interface VirtualMachine extends
             WithCreate withNewAvailabilitySet(String name);
 
             /**
-             * Specifies definition of a not-yet-created {@link AvailabilitySet.DefinitionCreatable} availability set
+             * Specifies definition of a not-yet-created availability set definition
              * to associate the virtual machine with.
              * <p>
              * Adding virtual machines running your application to an availability set ensures that during
@@ -754,7 +743,7 @@ public interface VirtualMachine extends
              * @param creatable the availability set in creatable stage
              * @return the stage representing creatable VM definition
              */
-            WithCreate withNewAvailabilitySet(AvailabilitySet.DefinitionCreatable creatable);
+            WithCreate withNewAvailabilitySet(Creatable<AvailabilitySet> creatable);
 
             /**
              * Specifies an existing {@link AvailabilitySet} availability set to to associate the virtual machine with.
@@ -784,16 +773,16 @@ public interface VirtualMachine extends
             WithCreate withNewStorageAccount(String name);
 
             /**
-             * Specifies definition of a not-yet-created {@link StorageAccount.DefinitionCreatable} storage account
-             * to put the VM's OS and data disk VHD in.
+             * Specifies definition of a not-yet-created storage account definition
+             * to put the VM's OS and data disk VHDs in.
              * <p>
-             * Only the OS disk based on marketplace image will be stored in the new storage account,
-             * an OS disk based on user image will be stored in the same storage account as user image.
+             * Only the OS disk based on marketplace image will be stored in the new storage account.
+             * An OS disk based on user image will be stored in the same storage account as user image.
              *
              * @param creatable the storage account in creatable stage
              * @return the stage representing creatable VM definition
              */
-            WithCreate withNewStorageAccount(StorageAccount.DefinitionCreatable creatable);
+            WithCreate withNewStorageAccount(Creatable<StorageAccount> creatable);
 
             /**
              * Specifies an existing {@link StorageAccount} storage account to put the VM's OS and data disk VHD in.
@@ -822,7 +811,7 @@ public interface VirtualMachine extends
              * @param creatable a creatable definition for a new network interface
              * @return the stage representing creatable VM definition
              */
-            WithCreate withNewSecondaryNetworkInterface(NetworkInterface.DefinitionCreatable creatable);
+            WithCreate withNewSecondaryNetworkInterface(Creatable<NetworkInterface> creatable);
 
             /**
              * Associate an existing network interface with the virtual machine.
@@ -886,7 +875,7 @@ public interface VirtualMachine extends
              * @param name the name for the data disk
              * @return the stage representing configuration for the data disk
              */
-            DataDisk.UpdateDefinitionStages.AttachNewDataDisk<Update> defineNewDataDisk(String name);
+            VirtualMachineDataDisk.UpdateDefinitionStages.AttachNewDataDisk<Update> defineNewDataDisk(String name);
 
             /**
              * Specifies an existing VHD that needs to be attached to the virtual machine as data disk along with
@@ -895,7 +884,7 @@ public interface VirtualMachine extends
              * @param name the name for the data disk
              * @return the stage representing configuration for the data disk
              */
-            DataDisk
+            VirtualMachineDataDisk
                     .UpdateDefinitionStages
                     .AttachExistingDataDisk<Update> defineExistingDataDisk(String name);
 
@@ -905,7 +894,7 @@ public interface VirtualMachine extends
              * @param name the name of the disk
              * @return the stage representing updating configuration for  data disk
              */
-            DataDisk.Update updateDataDisk(String name);
+            VirtualMachineDataDisk.Update updateDataDisk(String name);
 
             /**
              * Detaches a data disk with the given name from the virtual machine.
@@ -939,7 +928,7 @@ public interface VirtualMachine extends
              * @param creatable a creatable definition for a new network interface
              * @return the stage representing creatable VM definition
              */
-            Update withNewSecondaryNetworkInterface(NetworkInterface.DefinitionCreatable creatable);
+            Update withNewSecondaryNetworkInterface(Creatable<NetworkInterface> creatable);
 
             /**
              * Associate an existing network interface with the virtual machine.

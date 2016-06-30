@@ -7,7 +7,7 @@ package com.microsoft.azure.management.network;
 
 import java.util.List;
 
-import com.microsoft.azure.management.network.implementation.api.NetworkSecurityGroupInner;
+import com.microsoft.azure.management.network.implementation.NetworkSecurityGroupInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -53,7 +53,6 @@ public interface NetworkSecurityGroup extends
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
-        DefinitionStages.WithRule,
         DefinitionStages.WithCreate {
     }
 
@@ -72,7 +71,7 @@ public interface NetworkSecurityGroup extends
          * The stage allowing to specify the resource group.
          */
         interface WithGroup
-            extends GroupableResource.DefinitionWithGroup<WithCreate> {
+            extends GroupableResource.DefinitionStages.WithGroup<WithCreate> {
         }
 
         /**

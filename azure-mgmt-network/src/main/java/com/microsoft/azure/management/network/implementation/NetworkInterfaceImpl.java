@@ -13,9 +13,7 @@ import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NicIpConfiguration;
 import com.microsoft.azure.management.network.PublicIpAddress;
-import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceIPConfiguration;
-import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceInner;
-import com.microsoft.azure.management.network.implementation.api.NetworkInterfacesInner;
+import com.microsoft.azure.management.network.NetworkInterfaceIPConfiguration;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -43,7 +41,7 @@ class NetworkInterfaceImpl
             NetworkManager>
         implements
         NetworkInterface,
-        NetworkInterface.Definitions,
+        NetworkInterface.Definition,
         NetworkInterface.Update {
     // Clients
     private final NetworkInterfacesInner client;
@@ -75,15 +73,14 @@ class NetworkInterfaceImpl
         initializeNicIpConfigurations();
     }
 
-    /**************************************************.
-     * Verbs
-     **************************************************/
+    // Verbs
 
     @Override
     public NetworkInterface refresh() throws Exception {
         ServiceResponse<NetworkInterfaceInner> response =
                 this.client.get(this.resourceGroupName(), this.name());
         this.setInner(response.getBody());
+        clearCachedRelatedResources();
         initializeNicIpConfigurations();
         return this;
     }
@@ -98,12 +95,10 @@ class NetworkInterfaceImpl
         return createAsync(callback);
     }
 
-    /**************************************************.
-     * Setters
-     **************************************************/
+    // Setters (fluent)
 
     @Override
-    public NetworkInterfaceImpl withNewPrimaryNetwork(Network.DefinitionStages.WithCreate creatable) {
+    public NetworkInterfaceImpl withNewPrimaryNetwork(Creatable<Network> creatable) {
         this.primaryIpConfiguration().withNewNetwork(creatable);
         return this;
     }
@@ -127,7 +122,7 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public NetworkInterfaceImpl withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionCreatable creatable) {
+    public NetworkInterfaceImpl withNewPrimaryPublicIpAddress(Creatable<PublicIpAddress> creatable) {
         this.primaryIpConfiguration().withNewPublicIpAddress(creatable);
         return this;
     }
@@ -169,7 +164,7 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public NetworkInterfaceImpl withNewNetworkSecurityGroup(NetworkSecurityGroup.DefinitionStages.WithCreate creatable) {
+    public NetworkInterfaceImpl withNewNetworkSecurityGroup(Creatable<NetworkSecurityGroup> creatable) {
         if (this.creatableNetworkSecurityGroupKey == null) {
             this.creatableNetworkSecurityGroupKey = creatable.key();
             this.addCreatableDependency(creatable);
@@ -246,9 +241,7 @@ class NetworkInterfaceImpl
         return this;
     }
 
-    /**************************************************.
-     * Getters
-     **************************************************/
+    // Getters
 
     @Override
     public boolean isIpForwardingEnabled() {
@@ -358,6 +351,7 @@ class NetworkInterfaceImpl
                 this.nicName,
                 this.inner());
         this.setInner(response.getBody());
+        clearCachedRelatedResources();
         initializeNicIpConfigurations();
     }
 
@@ -375,6 +369,7 @@ class NetworkInterfaceImpl
 
                     @Override
                     public void success(ServiceResponse<Void> result) {
+                        clearCachedRelatedResources();
                         initializeNicIpConfigurations();
                         callback.success(result);
                     }
@@ -395,11 +390,12 @@ class NetworkInterfaceImpl
 
         if (isInCreateMode()) {
             this.nicPrimaryIpConfiguration = prepareNewNicIpConfiguration("primary-nic-config");
+            withIpConfiguration(this.nicPrimaryIpConfiguration);
         } else {
-            // Currently Azure supports only one Ip configuration and that is the primary
+            // Currently Azure supports only one IP configuration and that is the primary
             // hence we pick the first one here.
-            // when Azure support multiple Ip configurations then there will be a flag in
-            // the IpConfiguration or a property in the network interface to identify the
+            // when Azure support multiple IP configurations then there will be a flag in
+            // the IPConfiguration or a property in the network interface to identify the
             // primary so below logic will be changed.
             this.nicPrimaryIpConfiguration = (NicIpConfigurationImpl) this.nicIpConfigurations.get(0);
         }
@@ -436,7 +432,7 @@ class NetworkInterfaceImpl
     }
 
     /**
-     * Gets a new Ip configuration child resource {@link NicIpConfiguration} wrapping {@link NetworkInterfaceIPConfiguration}.
+     * Gets a new IP configuration child resource {@link NicIpConfiguration} wrapping {@link NetworkInterfaceIPConfiguration}.
      *
      * @param name the name for the new ip configuration
      * @return {@link NicIpConfiguration}
@@ -447,8 +443,20 @@ class NetworkInterfaceImpl
                 this,
                 super.myManager
         );
-        this.nicIpConfigurations.add(nicIpConfiguration);
         return nicIpConfiguration;
+    }
+
+    private void clearCachedRelatedResources() {
+        this.primaryPublicIp = null;
+        this.primaryNetwork = null;
+        this.networkSecurityGroup = null;
+        this.nicPrimaryIpConfiguration = null;
+    }
+
+    NetworkInterfaceImpl withIpConfiguration(NicIpConfigurationImpl nicIpConfiguration) {
+        this.nicIpConfigurations.add(nicIpConfiguration);
+        this.inner().ipConfigurations().add(nicIpConfiguration.inner());
+        return this;
     }
 
     void addToCreatableDependencies(Creatable<?> creatableResource) {
@@ -459,7 +467,7 @@ class NetworkInterfaceImpl
         return super.createdResource(key);
     }
 
-    ResourceGroup.DefinitionCreatable newGroup() {
+    Creatable<ResourceGroup> newGroup() {
         return this.newGroup;
     }
 }

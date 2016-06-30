@@ -8,10 +8,8 @@ package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
-import com.microsoft.azure.management.resources.implementation.api.DeploymentOperationsInner;
 import com.microsoft.azure.management.resources.DeploymentOperation;
-import com.microsoft.azure.management.resources.implementation.api.DeploymentOperationInner;
-import com.microsoft.azure.management.resources.implementation.api.TargetResource;
+import com.microsoft.azure.management.resources.TargetResource;
 import org.joda.time.DateTime;
 
 /**

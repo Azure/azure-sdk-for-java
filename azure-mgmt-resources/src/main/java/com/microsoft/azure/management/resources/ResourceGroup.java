@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
-import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
+import com.microsoft.azure.management.resources.implementation.ResourceGroupInner;
 
 import java.io.IOException;
 import java.util.Map;
@@ -38,11 +38,6 @@ public interface ResourceGroup extends
      * @return the provisioning state of the resource group
      */
     String provisioningState();
-
-    /**
-     * @return the region of the resource group
-     */
-    String region();
 
     /**
      * @return the tags attached to the resource group

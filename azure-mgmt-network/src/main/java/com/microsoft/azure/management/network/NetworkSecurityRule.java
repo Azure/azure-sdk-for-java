@@ -5,10 +5,7 @@
  */
 package com.microsoft.azure.management.network;
 
-import com.microsoft.azure.management.network.implementation.api.SecurityRuleAccess;
-import com.microsoft.azure.management.network.implementation.api.SecurityRuleDirection;
-import com.microsoft.azure.management.network.implementation.api.SecurityRuleInner;
-import com.microsoft.azure.management.network.implementation.api.SecurityRuleProtocol;
+import com.microsoft.azure.management.network.implementation.SecurityRuleInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
@@ -333,14 +330,11 @@ public interface NetworkSecurityRule extends
             WithSourceAddress<ParentT> denyOutbound();
         }
 
-        /** The final stage of the security rule definition.
-         * <p>
-         * At this stage, any remaining optional settings can be specified, or the security rule definition
-         * can be attached to the parent network security group definition using {@link WithAttach#attach()}.
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+        /**
+         * The stage of the network rule definition allowing the priority to be specified.
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface WithAttach<ParentT> extends Attachable.InDefinition<ParentT> {
-
+        interface WithPriority<ParentT> {
             /**
              * Specifies the priority to assign to this rule.
              * <p>
@@ -349,13 +343,31 @@ public interface NetworkSecurityRule extends
              * @return the next stage
              */
             WithAttach<ParentT> withPriority(int priority);
+        }
 
+        /**
+         * The stage of the network rule definition allowing the description to be specified.
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
+        interface WithDescription<ParentT> {
             /**
              * Specifies a description for this security rule.
              * @param description the text description to associate with this security rule
              * @return the next stage
              */
             WithAttach<ParentT> withDescription(String description);
+        }
+
+        /** The final stage of the security rule definition.
+         * <p>
+         * At this stage, any remaining optional settings can be specified, or the security rule definition
+         * can be attached to the parent network security group definition using {@link WithAttach#attach()}.
+         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         */
+        interface WithAttach<ParentT> extends
+            Attachable.InDefinition<ParentT>,
+            WithPriority<ParentT>,
+            WithDescription<ParentT> {
         }
     }
 

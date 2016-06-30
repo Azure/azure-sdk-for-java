@@ -9,20 +9,16 @@ package com.microsoft.azure.management.storage.implementation;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+import com.microsoft.azure.management.storage.PublicEndpoints;
 import com.microsoft.azure.management.storage.StorageAccount;
-import com.microsoft.azure.management.storage.implementation.api.AccessTier;
-import com.microsoft.azure.management.storage.implementation.api.CustomDomain;
-import com.microsoft.azure.management.storage.implementation.api.Encryption;
-import com.microsoft.azure.management.storage.implementation.api.Kind;
-import com.microsoft.azure.management.storage.implementation.api.ProvisioningState;
-import com.microsoft.azure.management.storage.implementation.api.Sku;
-import com.microsoft.azure.management.storage.implementation.api.SkuName;
-import com.microsoft.azure.management.storage.implementation.api.StorageAccountCreateParametersInner;
-import com.microsoft.azure.management.storage.implementation.api.StorageAccountInner;
-import com.microsoft.azure.management.storage.implementation.api.StorageAccountKey;
-import com.microsoft.azure.management.storage.implementation.api.StorageAccountListKeysResultInner;
-import com.microsoft.azure.management.storage.implementation.api.StorageAccountUpdateParametersInner;
-import com.microsoft.azure.management.storage.implementation.api.StorageAccountsInner;
+import com.microsoft.azure.management.storage.AccessTier;
+import com.microsoft.azure.management.storage.CustomDomain;
+import com.microsoft.azure.management.storage.Encryption;
+import com.microsoft.azure.management.storage.Kind;
+import com.microsoft.azure.management.storage.ProvisioningState;
+import com.microsoft.azure.management.storage.Sku;
+import com.microsoft.azure.management.storage.SkuName;
+import com.microsoft.azure.management.storage.StorageAccountKey;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -42,7 +38,7 @@ class StorageAccountImpl
             StorageManager>
         implements
         StorageAccount,
-        StorageAccount.Definitions,
+        StorageAccount.Definition,
         StorageAccount.Update {
 
     private PublicEndpoints publicEndpoints;
@@ -200,7 +196,7 @@ class StorageAccountImpl
 
     @Override
     protected void createResource() throws Exception {
-        createParameters.withLocation(this.region());
+        createParameters.withLocation(this.regionName());
         createParameters.withTags(this.inner().getTags());
         this.client.create(this.resourceGroupName(), this.name(), createParameters);
         // create response does not seems including the endpoints so fetching it again.
@@ -213,7 +209,7 @@ class StorageAccountImpl
 
     @Override
     protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
-        createParameters.withLocation(this.region());
+        createParameters.withLocation(this.regionName());
         createParameters.withTags(this.inner().getTags());
         final StorageAccountImpl self = this;
         return this.client.createAsync(this.resourceGroupName(), this.name(), createParameters,

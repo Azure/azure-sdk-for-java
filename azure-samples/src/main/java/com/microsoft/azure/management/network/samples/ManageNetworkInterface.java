@@ -11,7 +11,7 @@ import com.microsoft.azure.Azure;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeTypes;
+import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -56,7 +56,7 @@ public final class ManageNetworkInterface {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File("my.azureauth");
+            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure
                     .configure()
@@ -79,7 +79,7 @@ public final class ManageNetworkInterface {
                 Network network = azure.networks()
                         .define(vnetName)
                         .withRegion(Region.US_EAST)
-                        .withNewGroup(rgName)
+                        .withNewResourceGroup(rgName)
                         .withAddressSpace("172.16.0.0/16")
                         .defineSubnet("Front-end")
                             .withAddressPrefix("172.16.1.0/24")
@@ -100,7 +100,7 @@ public final class ManageNetworkInterface {
 
                 NetworkInterface networkInterface1 = azure.networkInterfaces().define(networkInterfaceName1)
                         .withRegion(Region.US_EAST)
-                        .withExistingGroup(rgName)
+                        .withExistingResourceGroup(rgName)
                         .withExistingPrimaryNetwork(network)
                         .withSubnet("Front-end")
                         .withPrimaryPrivateIpAddressDynamic()
@@ -114,7 +114,7 @@ public final class ManageNetworkInterface {
 
                 NetworkInterface networkInterface2 = azure.networkInterfaces().define(networkInterfaceName2)
                         .withRegion(Region.US_EAST)
-                        .withExistingGroup(rgName)
+                        .withExistingResourceGroup(rgName)
                         .withExistingPrimaryNetwork(network)
                         .withSubnet("Mid-tier")
                         .withPrimaryPrivateIpAddressDynamic()
@@ -127,7 +127,7 @@ public final class ManageNetworkInterface {
 
                 NetworkInterface networkInterface3 = azure.networkInterfaces().define(networkInterfaceName3)
                         .withRegion(Region.US_EAST)
-                        .withExistingGroup(rgName)
+                        .withExistingResourceGroup(rgName)
                         .withExistingPrimaryNetwork(network)
                         .withSubnet("Back-end")
                         .withPrimaryPrivateIpAddressDynamic()
@@ -146,7 +146,7 @@ public final class ManageNetworkInterface {
 
                 VirtualMachine vm = azure.virtualMachines().define(vmName)
                         .withRegion(Region.US_EAST)
-                        .withExistingGroup(rgName)
+                        .withExistingResourceGroup(rgName)
                         .withExistingPrimaryNetworkInterface(networkInterface1)
                         .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                         .withAdminUserName(userName)

@@ -9,8 +9,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.VirtualMachineSize;
 import com.microsoft.azure.management.compute.VirtualMachineSizes;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeInner;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizesInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 

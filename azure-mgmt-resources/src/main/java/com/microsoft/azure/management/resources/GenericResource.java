@@ -13,8 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
-import com.microsoft.azure.management.resources.implementation.api.GenericResourceInner;
-import com.microsoft.azure.management.resources.implementation.api.Plan;
+import com.microsoft.azure.management.resources.implementation.GenericResourceInner;
 
 /**
  * An immutable client-side representation of an Azure generic resource.
@@ -63,7 +62,7 @@ public interface GenericResource extends
     /**
      * A generic resource definition allowing resource group to be specified.
      */
-    interface DefinitionWithGroup extends GroupableResource.DefinitionWithGroup<DefinitionWithResourceType> {
+    interface DefinitionWithGroup extends GroupableResource.DefinitionStages.WithGroup<DefinitionWithResourceType> {
     }
 
     /**

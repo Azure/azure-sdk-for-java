@@ -8,7 +8,7 @@ package com.microsoft.azure.management.network;
 import java.util.List;
 import java.util.Map;
 
-import com.microsoft.azure.management.network.implementation.api.VirtualNetworkInner;
+import com.microsoft.azure.management.network.implementation.VirtualNetworkInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -73,7 +73,7 @@ public interface Network extends
          * The stage of the virtual network definition allowing to specify the resource group.
          */
         interface WithGroup
-            extends GroupableResource.DefinitionWithGroup<DefinitionStages.WithCreate> {
+            extends GroupableResource.DefinitionStages.WithGroup<DefinitionStages.WithCreate> {
         }
 
         /**
@@ -198,6 +198,45 @@ public interface Network extends
              * @return the first stage of the subnet update description
              */
             Subnet.Update updateSubnet(String name);
+
+            /**
+             * Begins the definition of a new subnet to be added to this virtual network.
+             * @param name the name of the new subnet
+             * @return the first stage of the new subnet definition
+             */
+            Subnet.UpdateDefinitionStages.Blank<Update> defineSubnet(String name);
+        }
+
+        /**
+         * The stage of the virtual network update allowing to specify the DNS server.
+         */
+        interface WithDnsServer {
+            /**
+             * Specifies the IP address of the DNS server to associate with the virtual network.
+             * <p>
+             * Note this method's effect is additive, i.e. each time it is used, a new DNS server is
+             * added to the network
+             * @param ipAddress the IP address of the DNS server
+             * @return the next stage of the virtual network update
+             */
+            Update withDnsServer(String ipAddress);
+        }
+
+        /**
+         * The stage of the virtual network update allowing to specify the address space.
+         */
+        interface WithAddressSpace {
+            /**
+             * Explicitly adds an address space to the virtual network.
+             * <p>
+             * Note this method's effect is additive, i.e. each time it is used, a new address space is added to the network.
+             * <p>
+             * This method does not check for conflicts or overlaps with other address spaces. If there is a conflict,
+             * a cloud exception may be thrown after the update is applied.
+             * @param cidr the CIDR representation of the address space
+             * @return the next stage of the virtual network update
+             */
+            Update withAddressSpace(String cidr);
         }
     }
 
@@ -210,28 +249,8 @@ public interface Network extends
     interface Update extends
         Appliable<Network>,
         Resource.UpdateWithTags<Update>,
-        UpdateStages.WithSubnet {
-
-        /**
-         * Specifies the IP address of the DNS server to associate with the virtual network.
-         * <p>
-         * Note this method's effect is additive, i.e. each time it is used, a new dns server is
-         * added to the network
-         * @param ipAddress the IP address of the DNS server
-         * @return the next stage of the virtual network update
-         */
-        Update withDnsServer(String ipAddress);
-
-        /**
-         * Explicitly adds an address space to the virtual network.
-         * <p>
-         * Note this method's effect is additive, i.e. each time it is used, a new address space is added to the network.
-         * <p>
-         * This method does not check for conflicts or overlaps with other address spaces. If there is a conflict,
-         * a cloud exception may be thrown after the update is applied.
-         * @param cidr the CIDR representation of the address space
-         * @return the next stage of the virtual network update
-         */
-        Update withAddressSpace(String cidr);
+        UpdateStages.WithSubnet,
+        UpdateStages.WithDnsServer,
+        UpdateStages.WithAddressSpace {
     }
 }

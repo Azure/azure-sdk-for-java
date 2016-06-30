@@ -26,7 +26,7 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
         // Create
         NetworkSecurityGroup nsg = nsgs.define(newName)
                 .withRegion(region)
-                .withNewGroup()
+                .withNewResourceGroup()
                 .defineRule("rule1")
                     .allowOutbound()
                     .fromAnyAddress()
@@ -48,7 +48,7 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                 .create();
 
         // Verify
-        Assert.assertTrue(nsg.region().equalsIgnoreCase(region.toString()));
+        Assert.assertTrue(nsg.region().equals(region));
         Assert.assertTrue(nsg.securityRules().size() == 2);
 
         return nsg;

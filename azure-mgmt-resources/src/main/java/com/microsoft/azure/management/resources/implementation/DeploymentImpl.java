@@ -17,18 +17,12 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.microsoft.azure.management.resources.implementation.api.Dependency;
-import com.microsoft.azure.management.resources.implementation.api.DeploymentExportResultInner;
-import com.microsoft.azure.management.resources.implementation.api.DeploymentExtendedInner;
-import com.microsoft.azure.management.resources.implementation.api.DeploymentInner;
-import com.microsoft.azure.management.resources.implementation.api.DeploymentMode;
-import com.microsoft.azure.management.resources.implementation.api.DeploymentOperationsInner;
-import com.microsoft.azure.management.resources.implementation.api.DeploymentProperties;
-import com.microsoft.azure.management.resources.implementation.api.DeploymentPropertiesExtended;
-import com.microsoft.azure.management.resources.implementation.api.DeploymentsInner;
-import com.microsoft.azure.management.resources.implementation.api.ParametersLink;
-import com.microsoft.azure.management.resources.implementation.api.ProviderInner;
-import com.microsoft.azure.management.resources.implementation.api.TemplateLink;
+import com.microsoft.azure.management.resources.Dependency;
+import com.microsoft.azure.management.resources.DeploymentMode;
+import com.microsoft.azure.management.resources.DeploymentProperties;
+import com.microsoft.azure.management.resources.DeploymentPropertiesExtended;
+import com.microsoft.azure.management.resources.ParametersLink;
+import com.microsoft.azure.management.resources.TemplateLink;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -45,11 +39,7 @@ final class DeploymentImpl extends
         CreatableUpdatableImpl<Deployment, DeploymentExtendedInner, DeploymentImpl>
         implements
         Deployment,
-        Deployment.DefinitionBlank,
-        Deployment.DefinitionWithTemplate,
-        Deployment.DefinitionWithParameters,
-        Deployment.DefinitionWithMode,
-        Deployment.DefinitionCreatable,
+        Deployment.Definition,
         Deployment.Update {
 
     private final DeploymentsInner client;
@@ -188,16 +178,32 @@ final class DeploymentImpl extends
         return new DeploymentExportResultImpl(inner);
     }
 
+    // Withers
+
     @Override
-    public DefinitionWithTemplate withNewResourceGroup(String resourceGroupName, Region region) {
+    public DeploymentImpl withNewResourceGroup(String resourceGroupName, Region region) {
         this.creatableResourceGroup = this.resourceManager.resourceGroups().define(resourceGroupName).withRegion(region);
         this.resourceGroupName = resourceGroupName;
         return this;
     }
 
     @Override
-    public DefinitionWithTemplate withExistingResourceGroup(String resourceGroupName) {
+    public DeploymentImpl withNewResourceGroup(Creatable<ResourceGroup> resourceGroupDefinition) {
+        this.resourceGroupName = resourceGroupDefinition.key();
+        addCreatableDependency(resourceGroupDefinition);
+        return this;
+
+    }
+
+    @Override
+    public DeploymentImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
+        return this;
+    }
+
+    @Override
+    public DeploymentImpl withExistingResourceGroup(ResourceGroup resourceGroup) {
+        this.resourceGroupName = resourceGroup.name();
         return this;
     }
 
@@ -261,7 +267,7 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public Deployment beginCreate() throws Exception {         //  FLUENT: implementation of ResourceGroup.DefinitionCreatable.Creatable<ResourceGroup>
+    public DeploymentImpl beginCreate() throws Exception {
         DeploymentInner inner = new DeploymentInner()
                 .withProperties(new DeploymentProperties());
         inner.properties().withMode(mode());
@@ -274,7 +280,7 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public DeploymentImpl create() throws Exception {         //  FLUENT: implementation of ResourceGroup.DefinitionCreatable.Creatable<ResourceGroup>
+    public DeploymentImpl create() throws Exception {
         if (this.creatableResourceGroup != null) {
             this.creatableResourceGroup.create();
         }

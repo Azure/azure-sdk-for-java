@@ -89,8 +89,10 @@ public class DAGraph<T, U extends DAGNode<T>> extends Graph<T, U> {
             for (U node : graph.values()) {
                 // Prepare each node for traversal
                 node.initialize();
-                // Mark other sub-DAGs are non-preparer
-                node.setPreparer(false);
+                if (!this.isRootNode(node)) {
+                    // Mark other sub-DAGs as non-preparer
+                    node.setPreparer(false);
+                }
             }
             initializeDependentKeys();
             initializeQueue();

@@ -11,8 +11,8 @@ import com.microsoft.azure.management.datalake.analytics.models.JobState;
 import com.microsoft.azure.management.datalake.analytics.models.JobType;
 import com.microsoft.azure.management.datalake.analytics.models.USqlJobProperties;
 import com.microsoft.azure.management.datalake.store.implementation.DataLakeStoreAccountManagementClientImpl;
-import com.microsoft.azure.management.resources.implementation.api.ResourceManagementClientImpl;
-import com.microsoft.azure.management.storage.implementation.api.StorageManagementClientImpl;
+import com.microsoft.azure.management.resources.implementation.ResourceManagementClientImpl;
+import com.microsoft.azure.management.storage.implementation.StorageManagementClientImpl;
 
 import com.microsoft.azure.RestClient;
 import org.junit.Assert;

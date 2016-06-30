@@ -11,46 +11,42 @@ import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.PowerState;
 import com.microsoft.azure.management.compute.VirtualMachine;
+import com.microsoft.azure.management.compute.VirtualMachineDataDisk;
 import com.microsoft.azure.management.compute.VirtualMachineSize;
-import com.microsoft.azure.management.compute.implementation.api.InstanceViewStatus;
-import com.microsoft.azure.management.compute.implementation.api.InstanceViewTypes;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineInner;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeInner;
-import com.microsoft.azure.management.compute.implementation.api.Plan;
-import com.microsoft.azure.management.compute.implementation.api.HardwareProfile;
-import com.microsoft.azure.management.compute.implementation.api.StorageProfile;
-import com.microsoft.azure.management.compute.implementation.api.OSProfile;
-import com.microsoft.azure.management.compute.implementation.api.DiagnosticsProfile;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineInstanceView;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineExtensionInner;
-import com.microsoft.azure.management.compute.implementation.api.OperatingSystemTypes;
-import com.microsoft.azure.management.compute.implementation.api.ImageReference;
-import com.microsoft.azure.management.compute.implementation.api.WinRMListener;
-import com.microsoft.azure.management.compute.implementation.api.CachingTypes;
-import com.microsoft.azure.management.compute.implementation.api.DiskEncryptionSettings;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeTypes;
-import com.microsoft.azure.management.compute.implementation.api.VirtualHardDisk;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachinesInner;
-import com.microsoft.azure.management.compute.implementation.api.OSDisk;
-import com.microsoft.azure.management.compute.implementation.api.DiskCreateOptionTypes;
-import com.microsoft.azure.management.compute.implementation.api.LinuxConfiguration;
-import com.microsoft.azure.management.compute.implementation.api.WindowsConfiguration;
-import com.microsoft.azure.management.compute.implementation.api.WinRMConfiguration;
-import com.microsoft.azure.management.compute.implementation.api.SshConfiguration;
-import com.microsoft.azure.management.compute.implementation.api.SshPublicKey;
-import com.microsoft.azure.management.compute.implementation.api.NetworkInterfaceReference;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineCaptureParametersInner;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineCaptureResultInner;
+import com.microsoft.azure.management.compute.InstanceViewStatus;
+import com.microsoft.azure.management.compute.InstanceViewTypes;
+import com.microsoft.azure.management.compute.Plan;
+import com.microsoft.azure.management.compute.HardwareProfile;
+import com.microsoft.azure.management.compute.StorageProfile;
+import com.microsoft.azure.management.compute.OSProfile;
+import com.microsoft.azure.management.compute.DiagnosticsProfile;
+import com.microsoft.azure.management.compute.VirtualMachineInstanceView;
+import com.microsoft.azure.management.compute.OperatingSystemTypes;
+import com.microsoft.azure.management.compute.ImageReference;
+import com.microsoft.azure.management.compute.WinRMListener;
+import com.microsoft.azure.management.compute.CachingTypes;
+import com.microsoft.azure.management.compute.DiskEncryptionSettings;
+import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
+import com.microsoft.azure.management.compute.VirtualHardDisk;
+import com.microsoft.azure.management.compute.OSDisk;
+import com.microsoft.azure.management.compute.DiskCreateOptionTypes;
+import com.microsoft.azure.management.compute.LinuxConfiguration;
+import com.microsoft.azure.management.compute.WindowsConfiguration;
+import com.microsoft.azure.management.compute.WinRMConfiguration;
+import com.microsoft.azure.management.compute.SshConfiguration;
+import com.microsoft.azure.management.compute.SshPublicKey;
+import com.microsoft.azure.management.compute.NetworkInterfaceReference;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import com.microsoft.azure.management.resources.implementation.api.PageImpl;
+import com.microsoft.azure.management.resources.implementation.PageImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import com.microsoft.rest.RestException;
@@ -106,14 +102,15 @@ class VirtualMachineImpl
     private NetworkInterface primaryNetworkInterface;
     private PublicIpAddress primaryPublicIpAddress;
     private VirtualMachineInstanceView virtualMachineInstanceView;
+    private boolean isMarketplaceLinuxImage;
     // The data disks associated with the virtual machine
-    private List<DataDisk> dataDisks;
+    private List<VirtualMachineDataDisk> dataDisks;
     // Intermediate state of network interface definition to which private IP can be associated
-    private NetworkInterface.DefinitionWithPrivateIp nicDefinitionWithPrivateIp;
+    private NetworkInterface.DefinitionStages.WithPrimaryPrivateIp nicDefinitionWithPrivateIp;
     // Intermediate state of network interface definition to which subnet can be associated
-    private NetworkInterface.DefinitionWithSubnet nicDefinitionWithSubnet;
+    private NetworkInterface.DefinitionStages.WithPrimaryNetworkSubnet nicDefinitionWithSubnet;
     // Intermediate state of network interface definition to which public IP can be associated
-    private NetworkInterface.DefinitionWithPublicIpAddress nicDefinitionWithPublicIp;
+    private NetworkInterface.DefinitionStages.WithCreate nicDefinitionWithCreate;
     // Virtual machine size converter
     private final PagedListConverter<VirtualMachineSizeInner, VirtualMachineSize> virtualMachineSizeConverter;
 
@@ -128,6 +125,7 @@ class VirtualMachineImpl
         this.storageManager = storageManager;
         this.networkManager = networkManager;
         this.vmName = name;
+        this.isMarketplaceLinuxImage = false;
         this.namer = new ResourceNamer(this.vmName);
         this.creatableSecondaryNetworkInterfaceKeys = new ArrayList<>();
         this.existingSecondaryNetworkInterfacesToAssociate = new ArrayList<>();
@@ -147,7 +145,7 @@ class VirtualMachineImpl
         ServiceResponse<VirtualMachineInner> response =
                 this.client.get(this.resourceGroupName(), this.name());
         this.setInner(response.getBody());
-        this.virtualMachineInstanceView = null;
+        clearCachedRelatedResources();
         initializeDataDisks();
         return this;
     }
@@ -231,7 +229,7 @@ class VirtualMachineImpl
 
     // Fluent methods for defining virtual network association for the new primary network interface
     @Override
-    public VirtualMachineImpl withNewPrimaryNetwork(Network.DefinitionStages.WithCreate creatable) {
+    public VirtualMachineImpl withNewPrimaryNetwork(Creatable<Network> creatable) {
         this.nicDefinitionWithPrivateIp = this.preparePrimaryNetworkInterface(this.namer.randomName("nic", 20))
                 .withNewPrimaryNetwork(creatable);
         return this;
@@ -258,27 +256,27 @@ class VirtualMachineImpl
         return this;
     }
 
-    // Fluent methods for defining private Ip association for the new primary network interface
+    // Fluent methods for defining private IP association for the new primary network interface
 
     @Override
     public VirtualMachineImpl withPrimaryPrivateIpAddressDynamic() {
-        this.nicDefinitionWithPublicIp = this.nicDefinitionWithPrivateIp
+        this.nicDefinitionWithCreate = this.nicDefinitionWithPrivateIp
                 .withPrimaryPrivateIpAddressDynamic();
         return this;
     }
 
     @Override
     public VirtualMachineImpl withPrimaryPrivateIpAddressStatic(String staticPrivateIpAddress) {
-        this.nicDefinitionWithPublicIp = this.nicDefinitionWithPrivateIp
+        this.nicDefinitionWithCreate = this.nicDefinitionWithPrivateIp
                 .withPrimaryPrivateIpAddressStatic(staticPrivateIpAddress);
         return this;
     }
 
-    // Fluent methods for defining public Ip association for the new primary network interface
+    // Fluent methods for defining public IP association for the new primary network interface
 
     @Override
-    public VirtualMachineImpl withNewPrimaryPublicIpAddress(PublicIpAddress.DefinitionCreatable creatable) {
-        NetworkInterface.DefinitionCreatable nicCreatable = this.nicDefinitionWithPublicIp
+    public VirtualMachineImpl withNewPrimaryPublicIpAddress(Creatable<PublicIpAddress> creatable) {
+        Creatable<NetworkInterface> nicCreatable = this.nicDefinitionWithCreate
                 .withNewPrimaryPublicIpAddress(creatable);
         this.addCreatableDependency(nicCreatable);
         return this;
@@ -286,7 +284,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withNewPrimaryPublicIpAddress(String leafDnsLabel) {
-        NetworkInterface.DefinitionCreatable nicCreatable = this.nicDefinitionWithPublicIp
+        Creatable<NetworkInterface> nicCreatable = this.nicDefinitionWithCreate
                 .withNewPrimaryPublicIpAddress(leafDnsLabel);
         this.creatablePrimaryNetworkInterfaceKey = nicCreatable.key();
         this.addCreatableDependency(nicCreatable);
@@ -295,7 +293,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withExistingPrimaryPublicIpAddress(PublicIpAddress publicIpAddress) {
-        NetworkInterface.DefinitionCreatable nicCreatable = this.nicDefinitionWithPublicIp
+        Creatable<NetworkInterface> nicCreatable = this.nicDefinitionWithCreate
                 .withExistingPrimaryPublicIpAddress(publicIpAddress);
         this.creatablePrimaryNetworkInterfaceKey = nicCreatable.key();
         this.addCreatableDependency(nicCreatable);
@@ -304,22 +302,23 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withoutPrimaryPublicIpAddress() {
-        this.creatablePrimaryNetworkInterfaceKey = this.nicDefinitionWithPublicIp.key();
-        this.addCreatableDependency(this.nicDefinitionWithPublicIp);
+        Creatable<NetworkInterface> nicCreatable = this.nicDefinitionWithCreate;
+        this.creatablePrimaryNetworkInterfaceKey = nicCreatable.key();
+        this.addCreatableDependency(nicCreatable);
         return this;
     }
 
     // Virtual machine primary network interface specific fluent methods
     //
     @Override
-    public VirtualMachineImpl withNewPrimaryNetworkInterface(NetworkInterface.DefinitionCreatable creatable) {
+    public VirtualMachineImpl withNewPrimaryNetworkInterface(Creatable<NetworkInterface> creatable) {
         this.creatablePrimaryNetworkInterfaceKey = creatable.key();
         this.addCreatableDependency(creatable);
         return this;
     }
 
     public VirtualMachineImpl withNewPrimaryNetworkInterface(String name, String publicDnsNameLabel) {
-        NetworkInterface.DefinitionCreatable definitionCreatable = prepareNetworkInterface(name)
+        Creatable<NetworkInterface> definitionCreatable = prepareNetworkInterface(name)
                 .withNewPrimaryPublicIpAddress(publicDnsNameLabel);
         return withNewPrimaryNetworkInterface(definitionCreatable);
     }
@@ -386,6 +385,7 @@ class VirtualMachineImpl
         this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
         this.inner().storageProfile().withImageReference(imageReference);
         this.inner().osProfile().withLinuxConfiguration(new LinuxConfiguration());
+        this.isMarketplaceLinuxImage = true;
         return this;
     }
 
@@ -562,7 +562,7 @@ class VirtualMachineImpl
     //
 
     @Override
-    public VirtualMachineImpl withNewStorageAccount(StorageAccount.DefinitionCreatable creatable) {
+    public VirtualMachineImpl withNewStorageAccount(Creatable<StorageAccount> creatable) {
         // This method's effect is NOT additive.
         if (this.creatableStorageAccountKey == null) {
             this.creatableStorageAccountKey = creatable.key();
@@ -573,15 +573,15 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withNewStorageAccount(String name) {
-        StorageAccount.DefinitionWithGroup definitionWithGroup = this.storageManager
+        StorageAccount.DefinitionStages.WithGroup definitionWithGroup = this.storageManager
                 .storageAccounts()
                 .define(name)
-                .withRegion(this.region());
-        StorageAccount.DefinitionCreatable definitionAfterGroup;
+                .withRegion(this.regionName());
+        Creatable<StorageAccount> definitionAfterGroup;
         if (this.newGroup != null) {
-            definitionAfterGroup = definitionWithGroup.withNewGroup(this.newGroup);
+            definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.newGroup);
         } else {
-            definitionAfterGroup = definitionWithGroup.withExistingGroup(this.resourceGroupName());
+            definitionAfterGroup = definitionWithGroup.withExistingResourceGroup(this.resourceGroupName());
         }
         return withNewStorageAccount(definitionAfterGroup);
     }
@@ -596,7 +596,7 @@ class VirtualMachineImpl
     //
 
     @Override
-    public VirtualMachineImpl withNewAvailabilitySet(AvailabilitySet.DefinitionCreatable creatable) {
+    public VirtualMachineImpl withNewAvailabilitySet(Creatable<AvailabilitySet> creatable) {
         // This method's effect is NOT additive.
         if (this.creatableAvailabilitySetKey == null) {
             this.creatableAvailabilitySetKey = creatable.key();
@@ -608,8 +608,8 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl withNewAvailabilitySet(String name) {
         return withNewAvailabilitySet(super.myManager.availabilitySets().define(name)
-                .withRegion(region())
-                .withExistingGroup(this.resourceGroupName())
+                .withRegion(this.regionName())
+                .withExistingResourceGroup(this.resourceGroupName())
         );
     }
 
@@ -620,7 +620,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withNewSecondaryNetworkInterface(NetworkInterface.DefinitionCreatable creatable) {
+    public VirtualMachineImpl withNewSecondaryNetworkInterface(Creatable<NetworkInterface> creatable) {
         this.creatableSecondaryNetworkInterfaceKeys.add(creatable.key());
         this.addCreatableDependency(creatable);
         return this;
@@ -637,7 +637,7 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl withoutDataDisk(String name) {
         int idx = -1;
-        for (DataDisk dataDisk : this.dataDisks) {
+        for (VirtualMachineDataDisk dataDisk : this.dataDisks) {
             idx++;
             if (dataDisk.name().equalsIgnoreCase(name)) {
                 this.dataDisks.remove(idx);
@@ -651,7 +651,7 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl withoutDataDisk(int lun) {
         int idx = -1;
-        for (DataDisk dataDisk : this.dataDisks) {
+        for (VirtualMachineDataDisk dataDisk : this.dataDisks) {
             idx++;
             if (dataDisk.lun() == lun) {
                 this.dataDisks.remove(idx);
@@ -664,7 +664,7 @@ class VirtualMachineImpl
 
     @Override
     public DataDiskImpl updateDataDisk(String name) {
-        for (DataDisk dataDisk : this.dataDisks) {
+        for (VirtualMachineDataDisk dataDisk : this.dataDisks) {
             if (dataDisk.name().equalsIgnoreCase(name)) {
                 return (DataDiskImpl) dataDisk;
             }
@@ -730,7 +730,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public List<DataDisk> dataDisks() {
+    public List<VirtualMachineDataDisk> dataDisks() {
         return this.dataDisks;
     }
 
@@ -850,6 +850,7 @@ class VirtualMachineImpl
 
         ServiceResponse<VirtualMachineInner> serviceResponse = this.client.createOrUpdate(this.resourceGroupName(), this.vmName, this.inner());
         this.setInner(serviceResponse.getBody());
+        clearCachedRelatedResources();
         initializeDataDisks();
     }
 
@@ -881,6 +882,7 @@ class VirtualMachineImpl
 
                             @Override
                             public void success(ServiceResponse<Void> result) {
+                                clearCachedRelatedResources();
                                 initializeDataDisks();
                                 callback.success(result);
                             }
@@ -914,7 +916,8 @@ class VirtualMachineImpl
                 withOsDiskVhdLocation("vhds", this.vmName + "-os-disk-" + UUID.randomUUID().toString() + ".vhd");
             }
             OSProfile osProfile = this.inner().osProfile();
-            if (osDisk.osType() == OperatingSystemTypes.LINUX) {
+            if (osDisk.osType() == OperatingSystemTypes.LINUX || this.isMarketplaceLinuxImage) {
+                // linux image: User or marketplace linux image
                 if (osProfile.linuxConfiguration() == null) {
                     osProfile.withLinuxConfiguration(new LinuxConfiguration());
                 }
@@ -963,8 +966,8 @@ class VirtualMachineImpl
                 || dataDisksRequiresImplicitStorageAccountCreation()) {
             storageAccount = this.storageManager.storageAccounts()
                     .define(this.namer.randomName("stg", 24))
-                    .withRegion(this.region())
-                    .withExistingGroup(this.resourceGroupName())
+                    .withRegion(this.regionName())
+                    .withExistingResourceGroup(this.resourceGroupName())
                     .create();
         }
 
@@ -1024,8 +1027,8 @@ class VirtualMachineImpl
                 || dataDisksRequiresImplicitStorageAccountCreation()) {
             this.storageManager.storageAccounts()
                     .define(this.namer.randomName("stg", 24))
-                    .withRegion(this.region())
-                    .withExistingGroup(this.resourceGroupName())
+                    .withRegion(this.regionName())
+                    .withExistingResourceGroup(this.resourceGroupName())
                     .createAsync(new ServiceCallback<StorageAccount>() {
                         @Override
                         public void failure(Throwable t) {
@@ -1115,7 +1118,7 @@ class VirtualMachineImpl
         }
 
         boolean hasEmptyVhd = false;
-        for (DataDisk dataDisk : this.dataDisks) {
+        for (VirtualMachineDataDisk dataDisk : this.dataDisks) {
             if (dataDisk.createOption() == DiskCreateOptionTypes.EMPTY) {
                 if (dataDisk.inner().vhd() == null) {
                     hasEmptyVhd = true;
@@ -1131,7 +1134,7 @@ class VirtualMachineImpl
         if (hasEmptyVhd) {
             // In update mode, if any of the data disk has vhd uri set then use same container
             // to store this disk, no need to create a storage account implicitly.
-            for (DataDisk dataDisk : this.dataDisks) {
+            for (VirtualMachineDataDisk dataDisk : this.dataDisks) {
                 if (dataDisk.createOption() == DiskCreateOptionTypes.ATTACH && dataDisk.inner().vhd() != null) {
                     return false;
                 }
@@ -1154,16 +1157,16 @@ class VirtualMachineImpl
         return "{storage-base-url}" + containerName + "/" + blobName;
     }
 
-    private NetworkInterface.DefinitionWithPublicIpAddress prepareNetworkInterface(String name) {
-        NetworkInterface.DefinitionWithGroup definitionWithGroup = this.networkManager
+    private NetworkInterface.DefinitionStages.WithPrimaryPublicIpAddress prepareNetworkInterface(String name) {
+        NetworkInterface.DefinitionStages.WithGroup definitionWithGroup = this.networkManager
                 .networkInterfaces()
                 .define(name)
-                .withRegion(this.region());
-        NetworkInterface.DefinitionWithNetwork definitionWithNetwork;
+                .withRegion(this.regionName());
+        NetworkInterface.DefinitionStages.WithPrimaryNetwork definitionWithNetwork;
         if (this.newGroup != null) {
-            definitionWithNetwork = definitionWithGroup.withNewGroup(this.newGroup);
+            definitionWithNetwork = definitionWithGroup.withNewResourceGroup(this.newGroup);
         } else {
-            definitionWithNetwork = definitionWithGroup.withExistingGroup(this.resourceGroupName());
+            definitionWithNetwork = definitionWithGroup.withExistingResourceGroup(this.resourceGroupName());
         }
         return definitionWithNetwork
                 .withNewPrimaryNetwork("vnet" + name)
@@ -1174,23 +1177,23 @@ class VirtualMachineImpl
         if (this.inner().storageProfile().dataDisks() == null) {
             this.inner()
                     .storageProfile()
-                    .withDataDisks(new ArrayList<com.microsoft.azure.management.compute.implementation.api.DataDisk>());
+                    .withDataDisks(new ArrayList<DataDisk>());
         }
         this.dataDisks = new ArrayList<>();
-        for (com.microsoft.azure.management.compute.implementation.api.DataDisk dataDiskInner : this.storageProfile().dataDisks()) {
+        for (DataDisk dataDiskInner : this.storageProfile().dataDisks()) {
             this.dataDisks().add(new DataDiskImpl(dataDiskInner.name(), dataDiskInner, this));
         }
     }
 
-    private NetworkInterface.DefinitionWithNetwork preparePrimaryNetworkInterface(String name) {
-        NetworkInterface.DefinitionWithGroup definitionWithGroup = this.networkManager.networkInterfaces()
+    private NetworkInterface.DefinitionStages.WithPrimaryNetwork preparePrimaryNetworkInterface(String name) {
+        NetworkInterface.DefinitionStages.WithGroup definitionWithGroup = this.networkManager.networkInterfaces()
                 .define(name)
-                .withRegion(this.region());
-        NetworkInterface.DefinitionWithNetwork definitionAfterGroup;
+                .withRegion(this.regionName());
+        NetworkInterface.DefinitionStages.WithPrimaryNetwork definitionAfterGroup;
         if (this.newGroup != null) {
-            definitionAfterGroup = definitionWithGroup.withNewGroup(this.newGroup);
+            definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.newGroup);
         } else {
-            definitionAfterGroup = definitionWithGroup.withExistingGroup(this.resourceGroupName());
+            definitionAfterGroup = definitionWithGroup.withExistingResourceGroup(this.resourceGroupName());
         }
         return definitionAfterGroup;
     }
@@ -1206,5 +1209,11 @@ class VirtualMachineImpl
             throw new RuntimeException(ex);
         }
         return null;
+    }
+
+    private void clearCachedRelatedResources() {
+        this.primaryNetworkInterface = null;
+        this.primaryPublicIpAddress = null;
+        this.virtualMachineInstanceView = null;
     }
 }

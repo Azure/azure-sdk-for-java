@@ -7,10 +7,10 @@
 package com.microsoft.azure.management.compute.samples;
 
 import com.microsoft.azure.Azure;
-import com.microsoft.azure.management.compute.Offer;
-import com.microsoft.azure.management.compute.Publisher;
-import com.microsoft.azure.management.compute.Sku;
+import com.microsoft.azure.management.compute.VirtualMachineOffer;
+import com.microsoft.azure.management.compute.VirtualMachinePublisher;
 import com.microsoft.azure.management.compute.VirtualMachineImage;
+import com.microsoft.azure.management.compute.VirtualMachineSku;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import okhttp3.logging.HttpLoggingInterceptor;
 
@@ -35,7 +35,7 @@ public final class ListVirtualMachineImages {
             //=================================================================
             // Authenticate
 
-            final File credFile = new File("my.azureauth");
+            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure
                     .configure()
@@ -50,12 +50,12 @@ public final class ListVirtualMachineImages {
             // published by Canonical, Red Hat and SUSE
             // by browsing through locations, publishers, offers, SKUs and images
 
-            List<Publisher> publishers = azure
+            List<VirtualMachinePublisher> publishers = azure
                     .virtualMachineImages()
                     .publishers()
                     .listByRegion(Region.US_EAST);
 
-            Publisher chosenPublisher;
+            VirtualMachinePublisher chosenPublisher;
 
             System.out.println("US East data center: printing list of \n"
                     + "a) Publishers and\n"
@@ -63,7 +63,7 @@ public final class ListVirtualMachineImages {
             System.out.println("=======================================================");
             System.out.println("\n");
 
-            for (Publisher publisher : publishers) {
+            for (VirtualMachinePublisher publisher : publishers) {
 
                 System.out.println("Publisher - " + publisher.name());
 
@@ -78,8 +78,8 @@ public final class ListVirtualMachineImages {
                     System.out.println("=======================================================");
                     System.out.println("Printing entries as publisher/offer/sku/image.version()");
 
-                    for (Offer offer : chosenPublisher.offers().list()) {
-                        for (Sku sku: offer.skus().list()) {
+                    for (VirtualMachineOffer offer : chosenPublisher.offers().list()) {
+                        for (VirtualMachineSku sku: offer.skus().list()) {
                             for (VirtualMachineImage image : sku.images().list()) {
                                 System.out.println("Image - " + chosenPublisher.name() + "/"
                                         + offer.name() + "/"

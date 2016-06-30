@@ -1,75 +1,60 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceIPConfiguration;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
 import java.io.IOException;
 
 /**
- * An Ip configuration in a network interface.
+ * An IP configuration in a network interface.
  */
 public interface NicIpConfiguration extends
         Wrapper<NetworkInterfaceIPConfiguration>,
         ChildResource {
+    // Getters
 
     /**
-     * Container interface for all the definitions.
+     * Gets the resource id of the public IP address associated with this IP configuration.
      *
-     * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
-     */
-    interface Definitions<ParentT> extends
-            NicIpConfiguration.DefinitionBlank<ParentT>,
-            NicIpConfiguration.DefinitionWithNetwork<ParentT>,
-            NicIpConfiguration.DefinitionWithPrivateIp<ParentT>,
-            NicIpConfiguration.DefinitionWithSubnet<ParentT>,
-            NicIpConfiguration.DefinitionWithPublicIpAddress<ParentT>,
-            NicIpConfiguration.DefinitionAttachable<ParentT> {
-    }
-
-    /**
-     * Gets the resource id of the public IP address associated with this Ip configuration.
-     * <p>
-     * returns null if there is no public IP associated
-     *
-     * @return public ip resource id
+     * @return public IP resource ID or null if there is no public IP associated
      */
     String publicIpAddressId();
 
     /**
-     * Gets the public IP address associated with this Ip configuration.
+     * Gets the public IP address associated with this IP configuration.
      * <p>
-     * note that this method makes a rest API call to fetch the public IP
+     * This method makes a rest API call to fetch the public IP.
      *
-     * @return the public IP associated with this Ip configuration.
+     * @return the public IP associated with this IP configuration or null if there is no public IP associated
      * @throws CloudException exceptions thrown from the cloud.
      * @throws IOException exceptions thrown from serialization/deserialization.
      */
     PublicIpAddress publicIpAddress() throws CloudException, IOException;
 
     /**
-     * @return the resource id of the virtual network subnet associated with this Ip configuration.
+     * @return the resource id of the virtual network subnet associated with this IP configuration.
      */
     String subnetId();
 
     /**
-     * Gets the virtual network associated with this Ip configuration.
+     * Gets the virtual network associated with this IP configuration.
      * <p>
-     * note that this method makes a rest API call to fetch the public IP
+     * This method makes a rest API call to fetch the public IP.
      *
-     * @return the virtual network associated with this this Ip configuration.
+     * @return the virtual network associated with this this IP configuration.
      * @throws CloudException exceptions thrown from the cloud.
      * @throws IOException exceptions thrown from serialization/deserialization.
      */
     Network network() throws CloudException, IOException;
 
     /**
-     * Gets the private IP address allocated to this Ip configuration.
+     * Gets the private IP address allocated to this IP configuration.
      * <p>
-     * the private IP will be within the virtual network subnet of this Ip configuration
+     * The private IP will be within the virtual network subnet of this IP configuration.
      *
      * @return the private IP addresses
      */
@@ -80,229 +65,454 @@ public interface NicIpConfiguration extends
      */
     String privateIpAllocationMethod();
 
-    /**
-     * The first stage of Ip configuration definition.
-     *
-     * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
-     */
-    interface DefinitionBlank<ParentT> extends DefinitionWithNetwork<ParentT> {
-    }
+    // Setters (fluent)
 
     /**
-     * The stage of the Ip configuration definition allowing to specify the virtual network.
-     *
-     * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
-     */
-    interface DefinitionWithNetwork<ParentT> {
-        /**
-         * Create a new virtual network to associate with the Ip configuration, based on the provided definition.
-         *
-         * @param creatable a creatable definition for a new virtual network
-         * @return the next stage of the Ip configuration definition
-         */
-        DefinitionWithPrivateIp<ParentT> withNewNetwork(Network.DefinitionStages.WithCreate creatable);
-
-        /**
-         * Creates a new virtual network to associate with the Ip configuration.
-         * <p>
-         * the virtual network will be created in the same resource group and region as of parent network interface,
-         * it will be created with the specified address space and a default subnet covering the entirety of the
-         * network IP address space.
-         *
-         * @param name the name of the new virtual network
-         * @param addressSpace the address space for rhe virtual network
-         * @return the next stage of the Ip configuration definition
-         */
-        DefinitionWithPrivateIp<ParentT> withNewNetwork(String name, String addressSpace);
-
-        /**
-         * Creates a new virtual network to associate with the Ip configuration.
-         * <p>
-         * the virtual network will be created in the same resource group and region as of parent network interface,
-         * it will be created with the specified address space and a default subnet covering the entirety of the
-         * network IP address space.
-         *
-         * @param addressSpace the address space for the virtual network
-         * @return the next stage of the Ip configuration definition
-         */
-        DefinitionWithPrivateIp<ParentT> withNewNetwork(String addressSpace);
-
-        /**
-         * Associate an existing virtual network with the Ip configuration.
-         *
-         * @param network an existing virtual network
-         * @return the next stage of the Ip configuration definition
-         */
-        DefinitionWithSubnet<ParentT> withExistingNetwork(Network network);
-    }
-
-    /**
-     * The stage of the Ip configuration definition allowing to specify private IP address within
-     * a virtual network subnet.
-     *
-     * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
-     */
-    interface DefinitionWithPrivateIp<ParentT> {
-        /**
-         * Enables dynamic private IP address allocation within the specified existing virtual network
-         * subnet for the Ip configuration.
-         *
-         * @return the next stage of Ip configuration definition
-         */
-        DefinitionAttachable<ParentT> withPrivateIpAddressDynamic();
-
-        /**
-         * Assigns the specified static private IP address within the specified existing virtual network
-         * subnet to the Ip configuration.
-         *
-         * @param staticPrivateIpAddress the static IP address within the specified subnet to assign to
-         *                               the network interface
-         * @return the next stage of Ip configuration definition
-         */
-        DefinitionAttachable<ParentT> withPrivateIpAddressStatic(String staticPrivateIpAddress);
-    }
-
-    /**
-     * The stage of the Ip configuration definition allowing to specify subnet.
-     *
-     * @param <ParentT> the next stage after setting the subnet
-     */
-    interface DefinitionWithSubnet<ParentT> {
-        /**
-         * Associate a subnet with the Ip configuration.
-         *
-         * @param name the subnet name
-         * @return the next stage of the Ip configuration definition
-         */
-        DefinitionWithPrivateIp<ParentT> withSubnet(String name);
-    }
-
-    /**
-     * The stage of the Ip configuration definition allowing to associate it with a public IP address.
-     *
-     * @param <ParentT> the return type of the final {@link DefinitionAttachable#attach()}
-     */
-    interface DefinitionWithPublicIpAddress<ParentT> {
-        /**
-         * Create a new public IP address to associate with the Ip configuration, based on the provided definition.
-         *
-         * @param creatable a creatable definition for a new public IP
-         * @return the next stage of the Ip configuration definition
-         */
-        DefinitionAttachable<ParentT> withNewPublicIpAddress(PublicIpAddress.DefinitionCreatable creatable);
-
-        /**
-         * Creates a new public IP address in the same region and group as the resource and associate it
-         * with with the Ip configuration.
-         * <p>
-         * the internal name and DNS label for the public IP address will be derived from the network interface name
-         *
-         * @return the next stage of the Ip configuration definition
-         */
-        DefinitionAttachable<ParentT> withNewPublicIpAddress();
-
-        /**
-         * Creates a new public IP address in the same region and group as the resource, with the specified DNS label
-         * and associate it with the Ip configuration.
-         * <p>
-         * the internal name for the public IP address will be derived from the DNS label
-         *
-         * @param leafDnsLabel the leaf domain label
-         * @return tthe next stage of the Ip configuration definition
-         */
-        DefinitionAttachable<ParentT> withNewPublicIpAddress(String leafDnsLabel);
-
-        /**
-         * Associates an existing public IP address with the Ip configuration.
-         *
-         * @param publicIpAddress an existing public IP address
-         * @return the next stage of the Ip configuration definition
-         */
-        DefinitionAttachable<ParentT> withExistingPublicIpAddress(PublicIpAddress publicIpAddress);
-    }
-
-    /**
-     * Attaches the Ip configuration to the parent network interface.
-     *
+     * The entirety of the network interface IP configuration definition.
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
-    interface DefinitionAttachable<ParentT> extends Attachable<ParentT>, DefinitionWithPublicIpAddress<ParentT> {
+    interface Definition<ParentT> extends
+        DefinitionStages.Blank<ParentT>,
+        DefinitionStages.WithAttach<ParentT>,
+        DefinitionStages.WithNetwork<ParentT>,
+        DefinitionStages.WithSubnet<ParentT>,
+        DefinitionStages.WithPrivateIp<ParentT> {
     }
 
     /**
-     * The template for a ip configuration update operation, containing all the settings that
-     * can be modified.
-     *
-     * @param <ParentT> the return type of the final {@link Settable#parent()}
+     * Grouping of network interface IP configuration definition stages applicable as part of a
+     * network interface update.
      */
-    interface Update<ParentT> extends
-            Settable<ParentT> {
+    interface DefinitionStages {
         /**
-         * Associate a subnet with the Ip configuration.
+         * The first stage of network interface IP configuration definition.
          *
-         * @param name the subnet name
-         * @return the next stage of the Ip configuration update
+         * @param <ParentT> the return type of the final {@link Attachable#attach()}
          */
-        Update<ParentT> withSubnet(String name);
+        interface Blank<ParentT> extends WithNetwork<ParentT> {
+        }
 
         /**
-         * Enables dynamic private IP address allocation within the specified existing virtual network
-         * subnet for Ip configuration.
+         * The stage of the network interface IP configuration definition allowing to specify the virtual network.
          *
-         * @return the next stage of the Ip configuration update
+         * @param <ParentT> the return type of the final {@link Attachable#attach()}
          */
-        Update<ParentT> withPrivateIpAddressDynamic();
+        interface WithNetwork<ParentT> {
+            /**
+             * Create a new virtual network to associate with the  network interface IP configuration,
+             * based on the provided definition.
+             *
+             * @param creatable a creatable definition for a new virtual network
+             * @return the next stage of the network interface IP configuration definition
+             */
+            WithPrivateIp<ParentT> withNewNetwork(Creatable<Network> creatable);
+
+            /**
+             * Creates a new virtual network to associate with the network interface IP configuration.
+             * <p>
+             * the virtual network will be created in the same resource group and region as of parent
+             * network interface, it will be created with the specified address space and a default subnet
+             * covering the entirety of the network IP address space.
+             *
+             * @param name the name of the new virtual network
+             * @param addressSpace the address space for rhe virtual network
+             * @return the next stage of the network interface IP configuration definition
+             */
+            WithPrivateIp<ParentT> withNewNetwork(String name, String addressSpace);
+
+            /**
+             * Creates a new virtual network to associate with the network interface IP configuration.
+             * <p>
+             * the virtual network will be created in the same resource group and region as of parent network interface,
+             * it will be created with the specified address space and a default subnet covering the entirety of the
+             * network IP address space.
+             *
+             * @param addressSpace the address space for the virtual network
+             * @return the next stage of the network interface IP configuration definition
+             */
+            WithPrivateIp<ParentT> withNewNetwork(String addressSpace);
+
+            /**
+             * Associate an existing virtual network with the network interface IP configuration.
+             *
+             * @param network an existing virtual network
+             * @return the next stage of the network interface IP configuration definition
+             */
+            WithSubnet<ParentT> withExistingNetwork(Network network);
+        }
 
         /**
-         * Assigns the specified static private IP address within the specified existing virtual network
-         * subnet to Ip configuration.
+         * The stage of the network interface IP configuration definition allowing to specify private IP address
+         * within a virtual network subnet.
          *
-         * @param staticPrivateIpAddress the static IP address within the specified subnet to assign to
-         *                               the  Ip configuration
-         * @return the next stage of the Ip configuration update
+         * @param <ParentT> the return type of the final {@link Attachable#attach()}
          */
-        Update<ParentT> withPrivateIpAddressStatic(String staticPrivateIpAddress);
+        interface WithPrivateIp<ParentT> {
+            /**
+             * Enables dynamic private IP address allocation within the specified existing virtual network
+             * subnet for the network interface IP configuration.
+             *
+             * @return the next stage of network interface IP configuration definition
+             */
+            WithAttach<ParentT> withPrivateIpAddressDynamic();
+
+            /**
+             * Assigns the specified static private IP address within the specified existing virtual network
+             * subnet to the network interface IP configuration.
+             *
+             * @param staticPrivateIpAddress the static IP address within the specified subnet to assign to
+             *                               the network interface
+             * @return the next stage of network interface IP configuration definition
+             */
+            WithAttach<ParentT> withPrivateIpAddressStatic(String staticPrivateIpAddress);
+        }
 
         /**
-         * Create a new public IP address to associate the Ip configuration with, based on the provided definition.
+         * The stage of the network interface IP configuration definition allowing to specify subnet.
          *
+         * @param <ParentT> the return type of the final {@link Attachable#attach()}
+         */
+        interface WithSubnet<ParentT> {
+            /**
+             * Associate a subnet with the network interface IP configuration.
+             *
+             * @param name the subnet name
+             * @return the next stage of the network interface IP configuration definition
+             */
+            WithPrivateIp<ParentT> withSubnet(String name);
+        }
+
+        /**
+         * The stage of the network interface IP configuration definition allowing to associate it with
+         * a public IP address.
+         *
+         * @param <ParentT> the return type of the final {@link Attachable#attach()}
+         */
+        interface WithPublicIpAddress<ParentT> {
+            /**
+             * Create a new public IP address to associate with the network interface IP configuration,
+             * based on the provided definition.
+             *
+             * @param creatable a creatable definition for a new public IP
+             * @return the next stage of the network interface IP configuration definition
+             */
+            WithAttach<ParentT> withNewPublicIpAddress(Creatable<PublicIpAddress> creatable);
+
+            /**
+             * Creates a new public IP address in the same region and group as the resource and associate it
+             * with with the network interface IP configuration.
+             * <p>
+             * The internal name and DNS label for the public IP address will be derived from the network interface name.
+             *
+             * @return the next stage of the network interface IP configuration definition
+             */
+            WithAttach<ParentT> withNewPublicIpAddress();
+
+            /**
+             * Creates a new public IP address in the same region and group as the resource, with the specified DNS label
+             * and associate it with the network interface IP configuration.
+             * <p>
+             * The internal name for the public IP address will be derived from the DNS label.
+             *
+             * @param leafDnsLabel the leaf domain label
+             * @return tthe next stage of the IP configuration definition
+             */
+            WithAttach<ParentT> withNewPublicIpAddress(String leafDnsLabel);
+
+            /**
+             * Associates an existing public IP address with the network interface IP configuration.
+             *
+             * @param publicIpAddress an existing public IP address
+             * @return the next stage of the IP configuration definition
+             */
+            WithAttach<ParentT> withExistingPublicIpAddress(PublicIpAddress publicIpAddress);
+        }
+
+        /**
+         * The final stage of network interface IP configuration.
          * <p>
-         * if there is public IP associated with the primary Ip configuration then that will be removed in
-         * favour of this
+         * At this stage, any remaining optional settings can be specified, or the network interface IP configuration
+         * definition can be attached to the parent network interface definition using {@link WithAttach#attach()}.
          *
-         * @param creatable a creatable definition for a new public IP
-         * @return the next stage of the Ip configuration update
+         * @param <ParentT> the return type of the final {@link Attachable#attach()}
          */
-        Update<ParentT> withNewPublicIpAddress(PublicIpAddress.DefinitionCreatable creatable);
+        interface WithAttach<ParentT>
+                extends
+                Attachable.InDefinition<ParentT>,
+                WithPublicIpAddress<ParentT> {
+        }
+    }
+
+    /** The entirety of a network interface IP configuration definition as part of a network interface update.
+     * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
+     */
+    interface UpdateDefinition<ParentT> extends
+            UpdateDefinitionStages.Blank<ParentT>,
+            UpdateDefinitionStages.WithAttach<ParentT>,
+            UpdateDefinitionStages.WithNetwork<ParentT>,
+            UpdateDefinitionStages.WithPrivateIp<ParentT>,
+            UpdateDefinitionStages.WithSubnet<ParentT>,
+            UpdateDefinitionStages.WithPublicIpAddress<ParentT> {
+    }
+
+    /**
+     * Grouping of network interface IP configuration definition stages.
+     */
+    interface UpdateDefinitionStages {
+        /**
+         * The first stage of network interface IP configuration definition.
+         *
+         * @param <ParentT> the return type of the final {@link Attachable#attach()}
+         */
+        interface Blank<ParentT> extends WithNetwork<ParentT> {
+        }
 
         /**
-         * Creates a new public IP address in the same region and group as the resource and associate it
-         * with the Ip configuration.
+         * The stage of the network interface IP configuration definition allowing to specify the virtual network.
+         *
+         * @param <ParentT> the return type of the final {@link Attachable#attach()}
+         */
+        interface WithNetwork<ParentT> {
+            /**
+             * Create a new virtual network to associate with the  network interface IP configuration,
+             * based on the provided definition.
+             *
+             * @param creatable a creatable definition for a new virtual network
+             * @return the next stage of the network interface IP configuration definition
+             */
+            WithPrivateIp<ParentT> withNewNetwork(Creatable<Network> creatable);
+
+            /**
+             * Creates a new virtual network to associate with the network interface IP configuration.
+             * <p>
+             * the virtual network will be created in the same resource group and region as of parent
+             * network interface, it will be created with the specified address space and a default subnet
+             * covering the entirety of the network IP address space.
+             *
+             * @param name the name of the new virtual network
+             * @param addressSpace the address space for rhe virtual network
+             * @return the next stage of the network interface IP configuration definition
+             */
+            WithPrivateIp<ParentT> withNewNetwork(String name, String addressSpace);
+
+            /**
+             * Creates a new virtual network to associate with the network interface IP configuration.
+             * <p>
+             * the virtual network will be created in the same resource group and region as of parent network interface,
+             * it will be created with the specified address space and a default subnet covering the entirety of the
+             * network IP address space.
+             *
+             * @param addressSpace the address space for the virtual network
+             * @return the next stage of the network interface IP configuration definition
+             */
+            WithPrivateIp<ParentT> withNewNetwork(String addressSpace);
+
+            /**
+             * Associate an existing virtual network with the network interface IP configuration.
+             *
+             * @param network an existing virtual network
+             * @return the next stage of the network interface IP configuration definition
+             */
+            WithSubnet<ParentT> withExistingNetwork(Network network);
+        }
+
+        /**
+         * The stage of the network interface IP configuration definition allowing to specify private IP address
+         * within a virtual network subnet.
+         *
+         * @param <ParentT> the return type of the final {@link Attachable#attach()}
+         */
+        interface WithPrivateIp<ParentT> {
+            /**
+             * Enables dynamic private IP address allocation within the specified existing virtual network
+             * subnet for the network interface IP configuration.
+             *
+             * @return the next stage of network interface IP configuration definition
+             */
+            WithAttach<ParentT> withPrivateIpAddressDynamic();
+
+            /**
+             * Assigns the specified static private IP address within the specified existing virtual network
+             * subnet to the network interface IP configuration.
+             *
+             * @param staticPrivateIpAddress the static IP address within the specified subnet to assign to
+             *                               the network interface
+             * @return the next stage of network interface IP configuration definition
+             */
+            WithAttach<ParentT> withPrivateIpAddressStatic(String staticPrivateIpAddress);
+        }
+
+        /**
+         * The stage of the network interface IP configuration definition allowing to specify subnet.
+         *
+         * @param <ParentT> the return type of the final {@link Attachable#attach()}
+         */
+        interface WithSubnet<ParentT> {
+            /**
+             * Associate a subnet with the network interface IP configuration.
+             *
+             * @param name the subnet name
+             * @return the next stage of the network interface IP configuration definition
+             */
+            WithPrivateIp<ParentT> withSubnet(String name);
+        }
+
+        /**
+         * The stage of the network interface IP configuration definition allowing to associate it with
+         * a public IP address.
+         *
+         * @param <ParentT> the return type of the final {@link Attachable#attach()}
+         */
+        interface WithPublicIpAddress<ParentT> {
+            /**
+             * Create a new public IP address to associate with the network interface IP configuration,
+             * based on the provided definition.
+             *
+             * @param creatable a creatable definition for a new public IP
+             * @return the next stage of the network interface IP configuration definition
+             */
+            WithAttach<ParentT> withNewPublicIpAddress(Creatable<PublicIpAddress> creatable);
+
+            /**
+             * Creates a new public IP address in the same region and group as the resource and associate it
+             * with with the network interface IP configuration.
+             * <p>
+             * The internal name and DNS label for the public IP address will be derived from the network interface name.
+             *
+             * @return the next stage of the network interface IP configuration definition
+             */
+            WithAttach<ParentT> withNewPublicIpAddress();
+
+            /**
+             * Creates a new public IP address in the same region and group as the resource, with the specified DNS label
+             * and associate it with the network interface IP configuration.
+             * <p>
+             * The internal name for the public IP address will be derived from the DNS label.
+             *
+             * @param leafDnsLabel the leaf domain label
+             * @return tthe next stage of the IP configuration definition
+             */
+            WithAttach<ParentT> withNewPublicIpAddress(String leafDnsLabel);
+
+            /**
+             * Associates an existing public IP address with the network interface IP configuration.
+             *
+             * @param publicIpAddress an existing public IP address
+             * @return the next stage of the IP configuration definition
+             */
+            WithAttach<ParentT> withExistingPublicIpAddress(PublicIpAddress publicIpAddress);
+        }
+
+        /**
+         * The final stage of network interface IP configuration.
          * <p>
-         * the internal name and DNS label for the public IP address will be derived from the network interface name,
-         * if there is an existing public IP association then that will be removed in favour of this
+         * At this stage, any remaining optional settings can be specified, or the network interface IP configuration
+         * definition can be attached to the parent network interface definition using {@link WithAttach#attach()}.
          *
-         * @return the next stage of the Ip configuration update
+         * @param <ParentT> the return type of the final {@link Attachable#attach()}
          */
-        Update<ParentT> withNewPublicIpAddress();
+        interface WithAttach<ParentT>
+                extends
+                Attachable.InUpdate<ParentT>,
+                WithPublicIpAddress<ParentT> {
+        }
+    }
+
+    /**
+     * The entirety of a network interface IP configuration update as part of a network interface update.
+     */
+    interface Update extends
+        Settable<NetworkInterface.Update>,
+        UpdateStages.WithSubnet,
+        UpdateStages.WithPrivateIp,
+        UpdateStages.WithPublicIpAddress {
+    }
+
+    /**
+     * Grouping of network interface IP configuration update stages.
+     */
+    interface UpdateStages {
+        /**
+         * The stage of the network interface IP configuration update allowing to specify subnet.
+         */
+        interface WithSubnet {
+            /**
+             * Associate a subnet with the network interface IP configuration.
+             *
+             * @param name the subnet name
+             * @return the next stage of the network interface IP configuration update
+             */
+            Update withSubnet(String name);
+        }
 
         /**
-         * Creates a new public IP address in the same region and group as the resource, with the specified DNS label
-         * and associate it with the Ip configuration.
-         * <p>
-         * the internal name for the public IP address will be derived from the DNS label, if there is an existing
-         * public IP association then that will be removed in favour of this
-         *
-         * @param leafDnsLabel the leaf domain label
-         * @return the next stage of the Ip configuration update
+         * The stage of the network interface IP configuration update allowing to specify private IP.
          */
-        Update<ParentT> withNewPublicIpAddress(String leafDnsLabel);
+        interface WithPrivateIp {
+            /**
+             * Enables dynamic private IP address allocation within the specified existing virtual network
+             * subnet to the network interface IP configuration.
+             *
+             * @return the next stage of the network interface IP configuration update
+             */
+            Update withPrivateIpAddressDynamic();
+
+            /**
+             * Assigns the specified static private IP address within the specified existing virtual network
+             * subnet to the network interface IP configuration.
+             *
+             * @param staticPrivateIpAddress the static IP address within the specified subnet to assign to
+             *                               the  IP configuration
+             * @return the next stage of the network interface IP configuration update
+             */
+            Update withPrivateIpAddressStatic(String staticPrivateIpAddress);
+        }
 
         /**
-         * Specifies that remove any public IP associated with the Ip configuration.
-         *
-         * @return the next stage of the Ip configuration update
+         * The stage of the network interface IP configuration update allowing to specify public IP address.
          */
-        Update<ParentT> withoutPublicIpAddress();
+        interface WithPublicIpAddress {
+            /**
+             * Create a new public IP address to associate the network interface IP configuration with,
+             * based on the provided definition.
+             * <p>
+             * If there is public IP associated with the IP configuration then that will be removed in
+             * favour of this.
+             *
+             * @param creatable a creatable definition for a new public IP
+             * @return the next stage of the network interface IP configuration update
+             */
+            Update withNewPublicIpAddress(Creatable<PublicIpAddress> creatable);
+
+            /**
+             * Creates a new public IP address in the same region and group as the resource and associate it
+             * with the IP configuration.
+             * <p>
+             * The internal name and DNS label for the public IP address will be derived from the network interface
+             * name, if there is an existing public IP association then that will be removed in favour of this.
+             *
+             * @return the next stage of the network interface IP configuration update
+             */
+            Update withNewPublicIpAddress();
+
+            /**
+             * Creates a new public IP address in the same region and group as the resource, with the specified DNS
+             * label and associate it with the IP configuration.
+             * <p>
+             * The internal name for the public IP address will be derived from the DNS label, if there is an existing
+             * public IP association then that will be removed in favour of this
+             *
+             * @param leafDnsLabel the leaf domain label
+             * @return the next stage of the network interface IP configuration update
+             */
+            Update withNewPublicIpAddress(String leafDnsLabel);
+
+            /**
+             * Specifies that remove any public IP associated with the IP configuration.
+             *
+             * @return the next stage of the network interface IP configuration update
+             */
+            Update withoutPublicIpAddress();
+        }
     }
 }

@@ -10,8 +10,7 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
-import com.microsoft.azure.management.resources.implementation.api.SubscriptionInner;
-import com.microsoft.azure.management.resources.implementation.api.SubscriptionPolicies;
+import com.microsoft.azure.management.resources.implementation.SubscriptionInner;
 
 import java.io.IOException;
 

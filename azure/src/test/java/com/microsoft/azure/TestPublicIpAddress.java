@@ -21,7 +21,7 @@ public class TestPublicIpAddress extends TestTemplate<PublicIpAddress, PublicIpA
         final String newPipName = "pip" + this.testId;
         PublicIpAddress pip = pips.define(newPipName)
                 .withRegion(Region.US_WEST)
-                .withNewGroup()
+                .withNewResourceGroup()
                 .withDynamicIp()
                 .withLeafDomainLabel(newPipName)
                 .withIdleTimeoutInMinutes(10)

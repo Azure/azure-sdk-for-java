@@ -16,7 +16,7 @@ public interface AvailabilitySets extends
         SupportsGettingByGroup<AvailabilitySet>,
         SupportsGettingById<AvailabilitySet>,
         SupportsListing<AvailabilitySet>,
-        SupportsCreating<AvailabilitySet.DefinitionBlank>,
+        SupportsCreating<AvailabilitySet.DefinitionStages.Blank>,
         SupportsDeleting,
         SupportsDeletingByGroup {
 }

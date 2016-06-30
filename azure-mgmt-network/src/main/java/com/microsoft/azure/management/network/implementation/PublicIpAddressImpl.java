@@ -6,10 +6,8 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.PublicIpAddress;
-import com.microsoft.azure.management.network.implementation.api.IPAllocationMethod;
-import com.microsoft.azure.management.network.implementation.api.PublicIPAddressDnsSettings;
-import com.microsoft.azure.management.network.implementation.api.PublicIPAddressInner;
-import com.microsoft.azure.management.network.implementation.api.PublicIPAddressesInner;
+import com.microsoft.azure.management.network.IPAllocationMethod;
+import com.microsoft.azure.management.network.PublicIPAddressDnsSettings;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;
@@ -27,7 +25,7 @@ class PublicIpAddressImpl
         NetworkManager>
     implements
         PublicIpAddress,
-        PublicIpAddress.Definitions,
+        PublicIpAddress.Definition,
         PublicIpAddress.Update {
 
     private final PublicIPAddressesInner client;

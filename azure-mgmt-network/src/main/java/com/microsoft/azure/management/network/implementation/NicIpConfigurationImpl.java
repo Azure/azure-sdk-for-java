@@ -6,11 +6,10 @@ import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NicIpConfiguration;
 import com.microsoft.azure.management.network.PublicIpAddress;
-import com.microsoft.azure.management.network.implementation.api.NetworkInterfaceIPConfiguration;
-import com.microsoft.azure.management.network.implementation.api.PublicIPAddressInner;
-import com.microsoft.azure.management.network.implementation.api.SubnetInner;
+import com.microsoft.azure.management.network.NetworkInterfaceIPConfiguration;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,13 +18,16 @@ import java.util.List;
  *  Implementation for {@link NicIpConfiguration} and its create and update interfaces.
  */
 class NicIpConfigurationImpl
-        extends ChildResourceImpl<NetworkInterfaceIPConfiguration, NetworkInterfaceImpl>
-        implements NicIpConfiguration,
-        NicIpConfiguration.Definitions,
+        extends
+        ChildResourceImpl<NetworkInterfaceIPConfiguration, NetworkInterfaceImpl>
+        implements
+        NicIpConfiguration,
+        NicIpConfiguration.Definition<NetworkInterface.DefinitionStages.WithCreate>,
+        NicIpConfiguration.UpdateDefinition<NetworkInterface.Update>,
         NicIpConfiguration.Update {
     // Clients
     private final NetworkManager networkManager;
-    // flag indicating whether Ip configuration is in create or update mode
+    // flag indicating whether IP configuration is in create or update mode
     private final boolean isInCreateMode;
     // unique key of a creatable virtual network to be associated with the ip configuration
     private String creatableVirtualNetworkKey;
@@ -55,7 +57,6 @@ class NicIpConfigurationImpl
                                                                       final NetworkManager networkManager) {
         NetworkInterfaceIPConfiguration ipConfigurationInner = new NetworkInterfaceIPConfiguration();
         ipConfigurationInner.withName(name);
-        parent.inner().ipConfigurations().add(ipConfigurationInner);
         return new NicIpConfigurationImpl(name,
                 ipConfigurationInner,
                 parent,
@@ -110,12 +111,12 @@ class NicIpConfigurationImpl
     }
 
     @Override
-    public NetworkInterface attach() {
-        return parent();
+    public NetworkInterfaceImpl attach() {
+        return parent().withIpConfiguration(this);
     }
 
     @Override
-    public NicIpConfigurationImpl withNewNetwork(Network.DefinitionStages.WithCreate creatable) {
+    public NicIpConfigurationImpl withNewNetwork(Creatable<Network> creatable) {
         this.creatableVirtualNetworkKey = creatable.key();
         this.parent().addToCreatableDependencies(creatable);
         return this;
@@ -125,13 +126,13 @@ class NicIpConfigurationImpl
     public NicIpConfigurationImpl withNewNetwork(String name, String addressSpaceCidr) {
         Network.DefinitionStages.WithGroup definitionWithGroup = this.networkManager.networks()
                 .define(name)
-                .withRegion(this.parent().region());
+                .withRegion(this.parent().regionName());
 
         Network.DefinitionStages.WithCreate definitionAfterGroup;
         if (this.parent().newGroup() != null) {
-            definitionAfterGroup = definitionWithGroup.withNewGroup(this.parent().newGroup());
+            definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.parent().newGroup());
         } else {
-            definitionAfterGroup = definitionWithGroup.withExistingGroup(this.parent().resourceGroupName());
+            definitionAfterGroup = definitionWithGroup.withExistingResourceGroup(this.parent().resourceGroupName());
         }
         return withNewNetwork(definitionAfterGroup.withAddressSpace(addressSpaceCidr));
     }
@@ -162,9 +163,11 @@ class NicIpConfigurationImpl
     }
 
     @Override
-    public NicIpConfigurationImpl withNewPublicIpAddress(PublicIpAddress.DefinitionCreatable creatable) {
-        this.creatablePublicIpKey = creatable.key();
-        this.parent().addToCreatableDependencies(creatable);
+    public NicIpConfigurationImpl withNewPublicIpAddress(Creatable<PublicIpAddress> creatable) {
+        if (this.creatablePublicIpKey == null) {
+            this.creatablePublicIpKey = creatable.key();
+            this.parent().addToCreatableDependencies(creatable);
+        }
         return this;
     }
 
@@ -205,31 +208,25 @@ class NicIpConfigurationImpl
         }
     }
 
-    /**
-     * Creates a {@link PublicIpAddress.DefinitionCreatable} with the give name and DNS label.
-     *
-     * @param name the public IP name
-     * @param leafDnsLabel the domain name label
-     * @return {@link PublicIpAddress.DefinitionCreatable}
-     */
-    private PublicIpAddress.DefinitionCreatable prepareCreatablePublicIp(String name, String leafDnsLabel) {
-        PublicIpAddress.DefinitionWithGroup definitionWithGroup = this.networkManager.publicIpAddresses()
+    // Creates a creatable public IP address definition with the given name and DNS label.
+    private Creatable<PublicIpAddress> prepareCreatablePublicIp(String name, String leafDnsLabel) {
+        PublicIpAddress.DefinitionStages.WithGroup definitionWithGroup = this.networkManager.publicIpAddresses()
                     .define(name)
-                    .withRegion(this.parent().region());
+                    .withRegion(this.parent().regionName());
 
-        PublicIpAddress.DefinitionCreatable definitionAfterGroup;
+        PublicIpAddress.DefinitionStages.WithCreate definitionAfterGroup;
         if (this.parent().newGroup() != null) {
-            definitionAfterGroup = definitionWithGroup.withNewGroup(this.parent().newGroup());
+            definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.parent().newGroup());
         } else {
-            definitionAfterGroup = definitionWithGroup.withExistingGroup(this.parent().resourceGroupName());
+            definitionAfterGroup = definitionWithGroup.withExistingResourceGroup(this.parent().resourceGroupName());
         }
         return definitionAfterGroup.withLeafDomainLabel(leafDnsLabel);
     }
 
     /**
-     * Gets the subnet to associate with the Ip configuration.
+     * Gets the subnet to associate with the IP configuration.
      * <p>
-     * this method will never return null as subnet is required for a Ip configuration, in case of
+     * this method will never return null as subnet is required for a IP configuration, in case of
      * update mode if user didn't choose to change the subnet then existing subnet will be returned.
      * Updating the nic subnet has a restriction, the new subnet must reside in the same virtual network
      * as the current one.
@@ -267,7 +264,7 @@ class NicIpConfigurationImpl
 
     /**
      * Get the SubResource instance representing a public IP that needs to be associated with the
-     * Ip configuration.
+     * IP configuration.
      * <p>
      * null will be returned if withoutPublicIP() is specified in the update fluent chain or user did't
      * opt for public IP in create fluent chain. In case of update chain, if withoutPublicIP(..) is

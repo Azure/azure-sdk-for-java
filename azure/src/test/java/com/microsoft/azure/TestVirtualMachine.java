@@ -10,7 +10,7 @@ import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachines;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeTypes;
+import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -30,7 +30,7 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
         final VirtualMachine[] vms = new VirtualMachine[1];
         virtualMachines.define(vmName)
                 .withRegion(Region.US_EAST)
-                .withNewGroup()
+                .withNewResourceGroup()
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIpAddressDynamic()
                 .withoutPrimaryPublicIpAddress()

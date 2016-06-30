@@ -8,10 +8,6 @@ package com.microsoft.azure.management.storage;
 
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.storage.implementation.CheckNameAvailabilityResult;
-import com.microsoft.azure.management.storage.implementation.api.AccessTier;
-import com.microsoft.azure.management.storage.implementation.api.SkuName;
-import com.microsoft.azure.management.storage.implementation.api.StorageAccountKey;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -46,7 +42,7 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
         StorageAccount storageAccount = storageManager.storageAccounts()
                 .define(SA_NAME)
                 .withRegion(Region.ASIA_EAST)
-                .withNewGroup(RG_NAME)
+                .withNewResourceGroup(RG_NAME)
                 .create();
         Assert.assertEquals(RG_NAME, storageAccount.resourceGroupName());
         Assert.assertEquals(SkuName.STANDARD_GRS, storageAccount.sku().name());

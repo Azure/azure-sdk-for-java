@@ -10,7 +10,7 @@ package com.microsoft.azure.management.network.samples;
 import com.microsoft.azure.Azure;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
-import com.microsoft.azure.management.compute.implementation.api.VirtualMachineSizeTypes;
+import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkInterface;
@@ -61,7 +61,7 @@ public final class ManageNetworkSecurityGroup {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File("my.azureauth");
+            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure
                     .configure()
@@ -81,7 +81,7 @@ public final class ManageNetworkSecurityGroup {
                 Network network = azure.networks()
                         .define(vnetName)
                         .withRegion(Region.US_EAST)
-                        .withNewGroup(rgName)
+                        .withNewResourceGroup(rgName)
                         .withAddressSpace("172.16.0.0/16")
                         .defineSubnet("Front-end")
                             .withAddressPrefix("172.16.1.0/24")
@@ -103,7 +103,7 @@ public final class ManageNetworkSecurityGroup {
                 System.out.println("Creating a security group for the front end - allows SSH and HTTP");
                 NetworkSecurityGroup frontEndNSG = azure.networkSecurityGroups().define(frontEndNSGName)
                         .withRegion(Region.US_EAST)
-                        .withNewGroup(rgName)
+                        .withNewResourceGroup(rgName)
                         .defineRule("ALLOW-SSH")
                             .allowInbound()
                             .fromAnyAddress()
@@ -141,7 +141,7 @@ public final class ManageNetworkSecurityGroup {
 
                 NetworkSecurityGroup backEndNSG = azure.networkSecurityGroups().define(backEndNSGName)
                         .withRegion(Region.US_EAST)
-                        .withExistingGroup(rgName)
+                        .withExistingResourceGroup(rgName)
                         .defineRule("ALLOW-SQL")
                             .allowInbound()
                             .fromAddress("172.16.1.0/24")
@@ -179,7 +179,7 @@ public final class ManageNetworkSecurityGroup {
 
                 NetworkInterface networkInterface1 = azure.networkInterfaces().define(networkInterfaceName1)
                         .withRegion(Region.US_EAST)
-                        .withExistingGroup(rgName)
+                        .withExistingResourceGroup(rgName)
                         .withExistingPrimaryNetwork(network)
                         .withSubnet("Front-end")
                         .withPrimaryPrivateIpAddressDynamic()
@@ -201,7 +201,7 @@ public final class ManageNetworkSecurityGroup {
 
                 NetworkInterface networkInterface2 = azure.networkInterfaces().define(networkInterfaceName2)
                         .withRegion(Region.US_EAST)
-                        .withExistingGroup(rgName)
+                        .withExistingResourceGroup(rgName)
                         .withExistingPrimaryNetwork(network)
                         .withSubnet("Back-end")
                         .withPrimaryPrivateIpAddressDynamic()
@@ -222,7 +222,7 @@ public final class ManageNetworkSecurityGroup {
 
                 VirtualMachine frontEndVM = azure.virtualMachines().define(frontEndVMName)
                         .withRegion(Region.US_EAST)
-                        .withExistingGroup(rgName)
+                        .withExistingResourceGroup(rgName)
                         .withExistingPrimaryNetworkInterface(networkInterface1)
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                         .withRootUserName(userName)
@@ -248,7 +248,7 @@ public final class ManageNetworkSecurityGroup {
 
                 VirtualMachine backEndVM = azure.virtualMachines().define(backEndVMName)
                         .withRegion(Region.US_EAST)
-                        .withExistingGroup(rgName)
+                        .withExistingResourceGroup(rgName)
                         .withExistingPrimaryNetworkInterface(networkInterface2)
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                         .withRootUserName(userName)

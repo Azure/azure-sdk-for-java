@@ -9,10 +9,10 @@ import com.microsoft.azure.management.datalake.analytics.models.DataLakeStoreAcc
 import com.microsoft.azure.management.datalake.analytics.models.StorageAccountInfo;
 import com.microsoft.azure.management.datalake.analytics.models.StorageAccountProperties;
 import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccount;
-import com.microsoft.azure.management.resources.implementation.api.ResourceGroupInner;
-import com.microsoft.azure.management.storage.implementation.api.Sku;
-import com.microsoft.azure.management.storage.implementation.api.SkuName;
-import com.microsoft.azure.management.storage.implementation.api.StorageAccountCreateParametersInner;
+import com.microsoft.azure.management.resources.implementation.ResourceGroupInner;
+import com.microsoft.azure.management.storage.Sku;
+import com.microsoft.azure.management.storage.SkuName;
+import com.microsoft.azure.management.storage.implementation.StorageAccountCreateParametersInner;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
