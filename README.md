@@ -88,20 +88,19 @@ NetworkSecurityGroup frontEndNSG = azure.networkSecurityGroups().define(frontEnd
 You can find plenty of sample code that illustrates management scenarios in Azure Compute, Storage, Network and Resource Manager … 
 
 
-> [Asir's note to editors] - will hyperlink as soon as these samples are visible
 
-- Manage virtual machine
-- Manage availability set
-- List virtual machine images
-- Manage storage accounts
-- Manage virtual network
-- Manage network interface
-- Manage network security group
-- Manage IP address
-- Manage resource groups
-- Manage resources
-- Deploy resources with ARM templates
-- Deploy resources with ARM templates (with progress)
+- [Manage virtual machine](https://github.com/Azure-Samples/compute-java-manage-vm)
+- [Manage availability set](https://github.com/Azure-Samples/compute-java-manage-availability-sets)
+- [List virtual machine images](https://github.com/Azure-Samples/compute-java-list-vm-images)
+- [Manage storage accounts](https://github.com/Azure-Samples/storage-java-manage-storage-accounts)
+- [Manage virtual network](https://github.com/Azure-Samples/network-java-manage-virtual-network)
+- [Manage network interface](https://github.com/Azure-Samples/network-java-manage-network-interface)
+- [Manage network security group](https://github.com/Azure-Samples/network-java-manage-network-security-group)
+- [Manage IP address](https://github.com/Azure-Samples/network-java-manage-ip-address)
+- [Manage resource groups](https://github.com/Azure-Samples/resources-java-manage-resource-group)
+- [Manage resources](https://github.com/Azure-Samples/resources-java-manage-resource)
+- [Deploy resources with ARM templates](https://github.com/Azure-Samples/resources-java-deploy-using-arm-template)
+- Deploy resources with ARM templates (with progress). Link will become available as soon as the sample is ready
 
 # Download
 
