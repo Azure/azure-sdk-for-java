@@ -27,7 +27,13 @@ public class SubscriptionsTests {
 
     @Test
     public void canListSubscriptions() throws Exception {
-       PagedList<Subscription> subscriptions = resourceManager.subscriptions().list();
+        PagedList<Subscription> subscriptions = resourceManager.subscriptions().list();
         Assert.assertTrue(subscriptions.size() > 0);
+    }
+
+    @Test
+    public void canListLocations() throws Exception {
+        PagedList<Location> locations = resourceManager.subscriptions().list().get(0).listLocations();
+        Assert.assertTrue(locations.size() > 0);
     }
 }
