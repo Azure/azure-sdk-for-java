@@ -88,20 +88,19 @@ NetworkSecurityGroup frontEndNSG = azure.networkSecurityGroups().define(frontEnd
 You can find plenty of sample code that illustrates management scenarios in Azure Compute, Storage, Network and Resource Manager … 
 
 
-> [Asir's note to editors] - will hyperlink as soon as these samples are visible
 
-- Manage virtual machine
-- Manage availability set
-- List virtual machine images
-- Manage storage accounts
-- Manage virtual network
-- Manage network interface
-- Manage network security group
-- Manage IP address
-- Manage resource groups
-- Manage resources
-- Deploy resources with ARM templates
-- Deploy resources with ARM templates (with progress)
+- [Manage virtual machine](https://github.com/Azure-Samples/compute-java-manage-vm)
+- [Manage availability set](https://github.com/Azure-Samples/compute-java-manage-availability-sets)
+- [List virtual machine images](https://github.com/Azure-Samples/compute-java-list-vm-images)
+- [Manage storage accounts](https://github.com/Azure-Samples/storage-java-manage-storage-accounts)
+- [Manage virtual network](https://github.com/Azure-Samples/network-java-manage-virtual-network)
+- [Manage network interface](https://github.com/Azure-Samples/network-java-manage-network-interface)
+- [Manage network security group](https://github.com/Azure-Samples/network-java-manage-network-security-group)
+- [Manage IP address](https://github.com/Azure-Samples/network-java-manage-ip-address)
+- [Manage resource groups](https://github.com/Azure-Samples/resources-java-manage-resource-group)
+- [Manage resources](https://github.com/Azure-Samples/resources-java-manage-resource)
+- [Deploy resources with ARM templates](https://github.com/Azure-Samples/resources-java-deploy-using-arm-template)
+- Deploy resources with ARM templates (with progress). Link will become available as soon as the sample is ready
 
 # Download
 
@@ -187,7 +186,12 @@ If you would like to become an active contributor to this project please follow 
 
 **Previous Releases and Corresponding Repo Branches**
 
-**[INSERT TABLE]**
+| Version           | SHA1                                                                                      | Remarks                                               |
+|-------------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------|
+| 1.0.0-beta1       | [1.0.0-beta1](https://github.com/Azure/azure-sdk-for-java/tree/1.0.0-beta1)               | Maintenance branch for AutoRest generated raw clients |
+| 1.0.0-beta1+fixes | [v1.0.0-beta1+fixes](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta1+fixes) | Stable build for AutoRest generated raw clients       |
+| 0.9.x-SNAPSHOTS   | [0.9](https://github.com/Azure/azure-sdk-for-java/tree/0.9)                               | Maintenance branch for service management libraries   |
+| 0.9.3             | [v0.9.3](https://github.com/Azure/azure-sdk-for-java/tree/v0.9.3)                         | Latest release for service management libraries       |
 
 ---
 
