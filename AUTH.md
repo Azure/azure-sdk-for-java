@@ -1,11 +1,11 @@
 #Authentication in Azure Management Libraries for Java
 
-To use the APIs in the Azure Management Libraries for Java, as the first step, you need to 
+To use the APIs in the Azure Management Libraries for Java, as the first step you need to 
 create an authenticated client. There are several possible approaches to authentication. This document illustrates a couple of the simpler ones.
 
 ## Using an authentication file
 
-> :warning: Note, file-based authentication is an experimental feature that may or may not be available in later releases, or the file format it relies on may change.
+> :warning: Note, file-based authentication is an experimental feature that may or may not be available in later releases. The file format it relies on is subject to change as well.
 
 To create an authenticated Azure client:
 
@@ -13,7 +13,7 @@ To create an authenticated Azure client:
 Azure azure = Azure.authenticate(new File("my.azureauth")).withDefaultSubscription();
 ```
 
-The authentication file uses the Java properties file format and must contain the following information (assuming you are using the Azure worldwide public cloud):
+The authentication file uses the Java properties file format and must contain the following information:
 ```
 subscription=########-####-####-####-############
 client=########-####-####-####-############
@@ -24,7 +24,7 @@ baseURL=https\://management.azure.com/
 authURL=https\://login.windows.net/
 ```
 
-This approach enables unattended authentication for your application (i.e. no interactive user login, no token management needed). The `client`, `key` and `tenant` are from your service principal registration. Too learn how to register such a service principal, see [Creating a Service Principal in Azure](#creating-a-service-principal-in-azure).
+This approach enables unattended authentication for your application (i.e. no interactive user login, no token management needed). The `client`, `key` and `tenant` are from [your service principal registration](#creating-a-service-principal-in-azure). The `subscription` represents the subscription ID you want to use as the default subscription. The remaining URIs and URLs represent the end points for the needed Azure services, and the example above assumes you are using the Azure worldwide cloud.
 
 ## Using `ApplicationTokenCredentials`
 
