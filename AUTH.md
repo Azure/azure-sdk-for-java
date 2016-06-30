@@ -35,7 +35,7 @@ ServiceClientCredentials credentials = new ApplicationTokenCredentials(client, t
 Azure azure = Azure.authenticate(credentials).withSubscription(subscriptionId);
 ```
 
-where `client`, `tenant`, `key` and `subscriptionId` are strings with the required pieces of informatoin about your service principal and subscription. The last parameter, `AzureEnvironment.AZURE` represents the Azure worldwide public cloud. You can use a different value out of the currently supported alternatives in the `AzureEnvironment` enum.
+where `client`, `tenant`, `key` and `subscriptionId` are strings with the required pieces of information about your service principal and subscription. The last parameter, `AzureEnvironment.AZURE` represents the Azure worldwide public cloud. You can use a different value out of the currently supported alternatives in the `AzureEnvironment` enum.
 
 ## Creating a Service Principal in Azure
 
