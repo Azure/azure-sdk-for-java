@@ -35,7 +35,7 @@ public final class ManageResource {
      */
     public static void main(String[] args) {
 
-        final String rgName = ResourceNamer.randomResourceName("rrRSMA", 24);
+        final String rgName = ResourceNamer.randomResourceName("rgRSMR", 24);
         final String resourceName1 = ResourceNamer.randomResourceName("rn1", 24);
         final String resourceName2 = ResourceNamer.randomResourceName("rn2", 24);
 
