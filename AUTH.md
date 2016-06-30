@@ -39,13 +39,13 @@ where `client`, `tenant`, `key` and `subscriptionId` are strings with the requir
 
 ## Creating a Service Principal in Azure
 
-In order for your application to log into your Azure subscription without requiring the user to login manually, you can take advantage of credentials based on the Azure Active Directory *service principal* functionality. A service principal is analogous to a user account, but it is intended applications to authenticate themselves without human intervention.
+In order for your application to log into your Azure subscription without requiring the user to log in manually, you can take advantage of credentials based on the Azure Active Directory *service principal* functionality. A service principal is analogous to a user account, but it is intended for applications to authenticate themselves without human intervention.
 
 If you save such service principal-based credentials as a file, or store them in environment variables, this can simplify and speed up your coding process.
 
 >:warning: Note: exercise caution when saving credentials in a file. Anyone that gains access to that file will have the same access privileges to Azure as your application. In general, file-based authentication is not recommended in production scenarios and should only be used as a quick shortcut to getting started in dev/test scenarios.
 
-You can create a service principal and grant it access privileges for a given subscription using these steps:
+You can create a service principal and grant it access privileges for a given subscription by following these steps:
 
 1. Log into [your Azure account](http://portal.azure.com).
 1. Select **Browse > Active Directory**.
@@ -54,11 +54,11 @@ You can create a service principal and grant it access privileges for a given su
 1. Click the **Applications** link.
 1. Click the **Add** button at the bottom of the page.
   <br/>![Select AD tenant > Applications > Add](/media/auth/add.png)
-1. Type in a name for your application. After your app is registered, it will be listed under that name in the active directory you have selected earlier. You will need to reference that name in a later step.
+1. Type in a name for your application. After your app is registered, it will be listed under that name in the Active Directory instance you have selected earlier. You will need to reference that name in a later step.
 1. Select the **Web application and/or web API** option, *regardless* of whether your application is actually going to run on the web or on a desktop computer, and click the arrow to go to the next step.
   <br/>![Name and Type](/media/auth/app.png)
 1. One the next screen, type in some URL in the **Sign-on URL**. If your application is not a web app, it does not matter what you type in here, as long as it is a syntactically correct URL format.
-1. Type in some **App ID URI**. This is just a unique identifier of your choice for your app in the proper URI format that needs to be unique in your selected Active Directory.
+1. Type in some **App ID URI**. This is just a unique identifier of your choice for your app in the proper URI format that needs to be unique in your selected Active Directory instance.
 1. Click the checkmark when done.<br>
   <br/>![Application properties](/media/auth/app-props.png)
 1. Wait for the task to complete. You may see a notification like the following in the meantime:
@@ -69,22 +69,24 @@ You can create a service principal and grant it access privileges for a given su
   <br/>![Client ID and Keys](/media/auth/client-id.png)
 1. Create a new blank text file to put your credential information into, and save it as - for example - **"my.azureauth"**
 1. Copy the **client ID** value into your text file, typing "`client=`" in front of it, for example:
-  `client=123456-abcd-1234-abcd-1234567890ab`
+  <br>`client=123456-abcd-1234-abcd-1234567890ab`
 1. In the **Keys** section, select a duration.
 1. Click **Save** at the bottom of the page
   <br/>![Generate client secret](/media/auth/keys.png)
 1. After a few seconds, you will see the generated key and a prompt for you to save it:
   <br/>![Save client secret](/media/auth/key-generated.png)
-1. Copy the shown key into your text file and prefix it with "`key=`", for example:<br/>
-  `key=01234567890123456789abcdef01234567890abcdef0123456789abcdef02345`
+1. Copy the shown key into your text file and prefix it with "`key=`", for example:
+  <br>`key=01234567890123456789abcdef01234567890abcdef0123456789abcdef02345`
 1. In the current URL shown in your browser, select the text between the word: "Directory/" and the next slash (/) and copy it.
   <br/>![Tenant ID](/media/auth/tenant-id.png)
-1. Paste the copied value into your text file and prefix it with "`tenant=`", for example:<br/>
-  `tenant=abcdef01-1234-dcba-9876-abcdef012345`
+1. Paste the copied value into your text file and prefix it with "`tenant=`", for example:
+  <br>`tenant=abcdef01-1234-dcba-9876-abcdef012345`
+  <br>This represents the Active Directory instance you selected earlier.
 1. Assuming you are using the Azure worldwide public cloud, also add the following to your text file: \(Note that this file follows the Java properties file format, so certain characters, such as colons, need to be escaped with a backslash\)<br/>
-    managementURI=https\://management.core.windows.net/<br/>
-    baseURL=https\://management.azure.com/</br>
-    authURL=https\://login.windows.net/
+    managementURI=https\\://management.core.windows.net/<br/>
+    baseURL=https\\://management.azure.com/</br>
+    authURL=https\\://login.windows.net/<br/>
+  Make sure to escape the colons (:) with backslashes (\\).
 1. You need to grant the created service principal a permission to access the desired Azure subscription. Go to the [Azure portal](http://portal.azure.com) again.
 1. Click **Subscriptions** and select the subscription in the list that you want to enable your application to access.
   <br/>![Subscriptions](/media/auth/subscriptions.png)
