@@ -13,7 +13,7 @@ To create an authenticated Azure client:
 Azure azure = Azure.authenticate(new File("my.azureauth")).withDefaultSubscription();
 ```
 
-The authentication file uses the Java properties file format and must contain the following information:
+The authentication file, referenced as "my.azureauth" in the example above, uses the Java properties file format and must contain the following information:
 ```
 subscription=########-####-####-####-############
 client=########-####-####-####-############
