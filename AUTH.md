@@ -1,11 +1,11 @@
-#Authentication in Azure Libraries for Java
+#Authentication in Azure Management Libraries for Java
 
-To use the management APIs in the Azure Libraries for Java, as the first step, you need to 
+To use the APIs in the Azure Management Libraries for Java, as the first step, you need to 
 create an authenticated client. There are several possible approaches to authentication. This document illustrates a couple of the simpler ones.
 
 ## Using an authentication file
 
-> :warning: Note, fiel-based authentication is an experimental feature that may or may not be available in later releases, or the file format it relies on may change.
+> :warning: Note, file-based authentication is an experimental feature that may or may not be available in later releases, or the file format it relies on may change.
 
 To create an authenticated Azure client:
 
