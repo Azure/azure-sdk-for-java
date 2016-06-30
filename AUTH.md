@@ -13,7 +13,7 @@ To create an authenticated Azure client:
 Azure azure = Azure.authenticate(new File("my.azureauth")).withDefaultSubscription();
 ```
 
-The authentication file uses the Java properties file format and must contain the following information (assuming you are using the U.S. public cloud):
+The authentication file uses the Java properties file format and must contain the following information (assuming you are using the Azure worldwide public cloud):
 ```
 subscription=########-####-####-####-############
 client=########-####-####-####-############
@@ -24,7 +24,7 @@ baseURL=https\://management.azure.com/
 authURL=https\://login.windows.net/
 ```
 
-This approach enables permanent, unattended authentication for your application (i.e. no interactive user login, no token management needed). The `client`, `key` and `tenant` are from your service principal registration. Too learn how to register such a service principal, see [Creating a Service Principal in Azure](#creating-a-service-principal-in-azure).
+This approach enables unattended authentication for your application (i.e. no interactive user login, no token management needed). The `client`, `key` and `tenant` are from your service principal registration. Too learn how to register such a service principal, see [Creating a Service Principal in Azure](#creating-a-service-principal-in-azure).
 
 ## Using `ApplicationTokenCredentials`
 
@@ -35,7 +35,7 @@ ServiceClientCredentials credentials = new ApplicationTokenCredentials(client, t
 Azure azure = Azure.authenticate(credentials).withSubscription(subscriptionId);
 ```
 
-where `client`, `tenant`, `key` and `subscriptionId` are strings with the required pieces of informatoin about your service principal and subscription. The last parameter, `AzureEnvironment.AZURE` represents Azure's U.S. public cloud. You can use a different value out of the currently supported alternatives in the `AzureEnvironment` enum.
+where `client`, `tenant`, `key` and `subscriptionId` are strings with the required pieces of informatoin about your service principal and subscription. The last parameter, `AzureEnvironment.AZURE` represents the Azure worldwide public cloud. You can use a different value out of the currently supported alternatives in the `AzureEnvironment` enum.
 
 ## Creating a Service Principal in Azure
 
@@ -81,7 +81,7 @@ You can create a service principal and grant it access privileges for a given su
   <br/>![Tenant ID](/media/auth/tenant-id.png)
 1. Paste the copied value into your text file and prefix it with "`tenant=`", for example:<br/>
   `tenant=abcdef01-1234-dcba-9876-abcdef012345`
-1. Assuming you are using public Azure cloud in the U.S., also add the following to your text file: \(Note that this file follows the Java properties file format, so certain characters, such as colons, need to be escaped with a backslash\)<br/>
+1. Assuming you are using the Azure worldwide public cloud, also add the following to your text file: \(Note that this file follows the Java properties file format, so certain characters, such as colons, need to be escaped with a backslash\)<br/>
     managementURI=https\://management.core.windows.net/<br/>
     baseURL=https\://management.azure.com/</br>
     authURL=https\://login.windows.net/
