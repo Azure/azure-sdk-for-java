@@ -16,8 +16,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microsoft.azure.Azure;
+import com.microsoft.azure.management.resources.DeploymentMode;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.implementation.api.DeploymentMode;
 import com.microsoft.azure.management.samples.Utils;
 
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -30,9 +30,8 @@ public final class DeployUsingARMTemplate {
 
     /**
      * Main entry point.
-     * 
-     * @param args
-     *            the parameters
+     *
+     * @param args the parameters
      */
     public static void main(String[] args) {
         try {
@@ -41,39 +40,47 @@ public final class DeployUsingARMTemplate {
 
             try {
 
-                // =================================================================
+
+                //=================================================================
                 // Authenticate
 
                 final File credFile = new File("my.azureauth");
 
-                Azure azure = Azure.configure().withLogLevel(HttpLoggingInterceptor.Level.NONE).authenticate(credFile)
+                Azure azure = Azure.configure()
+                        .withLogLevel(HttpLoggingInterceptor.Level.NONE)
+                        .authenticate(credFile)
                         .withDefaultSubscription();
 
                 try {
                     String templateJson = DeployUsingARMTemplate.getTemplate();
 
-                    // =============================================================
+
+                    //=============================================================
                     // Create resource group.
 
                     System.out.println("Creating a resource group with name: " + rgName);
 
-                    azure.resourceGroups().define(rgName).withRegion(Region.US_WEST).create();
+                    azure.resourceGroups().define(rgName)
+                        .withRegion(Region.US_WEST)
+                        .create();
 
                     System.out.println("Created a resource group with name: " + rgName);
 
-                    // =============================================================
+
+                    //=============================================================
                     // Create a deployment for an Azure App Service via an ARM
                     // template.
 
-                    System.out.println(
-                            "Starting a deployment for an Azure App Service via an ARM template: " + deploymentName);
+                    System.out.println("Starting a deployment for an Azure App Service: " + deploymentName);
 
-                    azure.deployments().define(deploymentName).withExistingResourceGroup(rgName)
-                            .withTemplate(templateJson).withParameters("{}").withMode(DeploymentMode.INCREMENTAL)
-                            .create();
+                    azure.deployments().define(deploymentName)
+                        .withExistingResourceGroup(rgName)
+                        .withTemplate(templateJson)
+                        .withParameters("{}")
+                        .withMode(DeploymentMode.INCREMENTAL)
+                        .create();
 
-                    System.out.println(
-                            "Started a deployment for an Azure App Service via ARM template: " + deploymentName);
+                    System.out.println("Started a deployment for an Azure App Service: " + deploymentName);
 
                 } catch (Exception f) {
 

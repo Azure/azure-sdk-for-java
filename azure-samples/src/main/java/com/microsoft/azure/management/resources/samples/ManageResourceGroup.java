@@ -17,18 +17,20 @@ import com.microsoft.azure.management.samples.Utils;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
- * Azure Resource sample for managing resource groups - - Create a resource
- * group - Update a resource group - Create another resource group - List
- * resource groups - Delete a resource group.
+ * Azure Resource sample for managing resource groups -
+ * - Create a resource group
+ * - Update a resource group
+ * - Create another resource group
+ * - List resource groups
+ * - Delete a resource group.
  */
 
 public final class ManageResourceGroup {
 
     /**
      * Main entry point.
-     * 
-     * @param args
-     *            the parameters
+     *
+     * @param args the parameters
      */
     public static void main(String[] args) {
 
@@ -40,36 +42,46 @@ public final class ManageResourceGroup {
 
             try {
 
-                // =================================================================
+
+                //=================================================================
                 // Authenticate
 
                 final File credFile = new File("my.azureauth");
 
-                Azure azure = Azure.configure().withLogLevel(HttpLoggingInterceptor.Level.NONE).authenticate(credFile)
+                Azure azure = Azure.configure()
+                        .withLogLevel(HttpLoggingInterceptor.Level.NONE)
+                        .authenticate(credFile)
                         .withDefaultSubscription();
 
                 try {
 
-                    // =============================================================
+
+                    //=============================================================
                     // Create resource group.
 
                     System.out.println("Creating a resource group with name: " + rgName);
 
-                    ResourceGroup resourceGroup = azure.resourceGroups().define(rgName).withRegion(Region.US_WEST)
+                    ResourceGroup resourceGroup = azure.resourceGroups()
+                            .define(rgName)
+                            .withRegion(Region.US_WEST)
                             .create();
 
                     System.out.println("Created a resource group with name: " + rgName);
 
-                    // =============================================================
+
+                    //=============================================================
                     // Update the resource group.
 
                     System.out.println("Updating the resource group with name: " + rgName);
 
-                    resourceGroup.update().withTag(resourceTagName, resourceTagValue).apply();
+                    resourceGroup.update()
+                        .withTag(resourceTagName, resourceTagValue)
+                        .apply();
 
                     System.out.println("Updated the resource group with name: " + rgName);
 
-                    // =============================================================
+
+                    //=============================================================
                     // Create another resource group.
 
                     System.out.println("Creating another resource group with name: " + rgName2);
@@ -79,7 +91,8 @@ public final class ManageResourceGroup {
 
                     System.out.println("Created another resource group with name: " + rgName2);
 
-                    // =============================================================
+
+                    //=============================================================
                     // List resource groups.
 
                     System.out.println("Listing all resource groups");
@@ -88,12 +101,14 @@ public final class ManageResourceGroup {
                         System.out.println("Resource group: " + rGroup.name());
                     }
 
-                    // =============================================================
+
+                    //=============================================================
                     // Delete a resource group.
 
                     System.out.println("Deleting resource group: " + resourceGroup2.id());
 
-                    azure.resourceGroups().delete(resourceGroup2.id());
+                    azure.resourceGroups()
+                        .delete(resourceGroup2.id());
 
                     System.out.println("Deleted resource group: " + resourceGroup2.id());
 
@@ -122,9 +137,5 @@ public final class ManageResourceGroup {
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
-    }
-
-    private ManageResourceGroup() {
-
     }
 }
