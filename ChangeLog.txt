@@ -1,4 +1,4 @@
-2016.07.05 Version 4.3.0
+2016.07.06 Version 4.3.0
  * Added support for server-side encryption.
  * Added support for getBlobReferenceFromServer methods on CloudBlobContainer to support retrieving a blob without knowing its type.
  * Fixed a bug in the retry policies where 300 status codes were being retried when they shouldn't be.
