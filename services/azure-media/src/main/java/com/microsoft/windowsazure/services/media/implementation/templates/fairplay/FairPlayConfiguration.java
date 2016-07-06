@@ -10,18 +10,18 @@ import com.microsoft.windowsazure.core.utils.Base64;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FairPlayConfiguration {
-	
+
     @JsonProperty("ASkId")
-	public String ASkId;
+    public String ASkId;
 	
     @JsonProperty("FairPlayPfxPasswordId")
-	public String FairPlayPfxPasswordId;
+    public String FairPlayPfxPasswordId;
 	
     @JsonProperty("FairPlayPfx")
-	public String FairPlayPfx;
+    public String FairPlayPfx;
 	
     @JsonProperty("ContentEncryptionIV")
-	public String ContentEncryptionIV;
+    public String ContentEncryptionIV;
 	
 	public static String createSerializedFairPlayOptionConfiguration(
 		  KeyStore keyStore, String pfxPassword, String pfxPasswordKeyId, String askId,
