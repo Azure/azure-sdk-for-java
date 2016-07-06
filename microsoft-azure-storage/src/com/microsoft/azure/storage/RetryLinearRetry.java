@@ -77,11 +77,14 @@ public final class RetryLinearRetry extends RetryPolicy implements RetryPolicyFa
         boolean secondaryNotFound = this.evaluateLastAttemptAndSecondaryNotFound(retryContext);
 
         if (retryContext.getCurrentRetryCount() < this.maximumAttempts) {
+            
+            // If this method is called after a successful response, it means
+            // we failed during the response body download. So, we should not
+            // check for success codes here.            
             int statusCode = retryContext.getLastRequestResult().getStatusCode();
-            if ((!secondaryNotFound && statusCode >= 400 && statusCode < 500)
+            if ((!secondaryNotFound && statusCode >= 300 && statusCode < 500 && statusCode != 408)
                     || statusCode == HttpURLConnection.HTTP_NOT_IMPLEMENTED
-                    || statusCode == HttpURLConnection.HTTP_VERSION
-                    || statusCode == Constants.HeaderConstants.HTTP_UNUSED_306) {
+                    || statusCode == HttpURLConnection.HTTP_VERSION) {
                 return null;
             }
 
