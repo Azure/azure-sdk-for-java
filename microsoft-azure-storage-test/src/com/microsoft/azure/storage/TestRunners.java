@@ -13,7 +13,8 @@ import com.microsoft.azure.storage.blob.CloudAppendBlobTests;
 import com.microsoft.azure.storage.blob.CloudBlobClientTests;
 import com.microsoft.azure.storage.blob.CloudBlobContainerTests;
 import com.microsoft.azure.storage.blob.CloudBlobDirectoryTests;
-import com.microsoft.azure.storage.blob.CloudBlobEncryptionTests;
+import com.microsoft.azure.storage.blob.CloudBlobClientEncryptionTests;
+import com.microsoft.azure.storage.blob.CloudBlobServerEncryptionTests;
 import com.microsoft.azure.storage.blob.CloudBlockBlobTests;
 import com.microsoft.azure.storage.blob.CloudPageBlobTests;
 import com.microsoft.azure.storage.blob.LeaseTests;
@@ -100,8 +101,8 @@ public class TestRunners {
 
     @RunWith(Suite.class)
     @SuiteClasses({ BlobOutputStreamTests.class, CloudBlobClientTests.class, CloudBlobContainerTests.class, 
-        CloudBlobDirectoryTests.class, CloudAppendBlobTests.class, CloudBlockBlobTests.class, CloudPageBlobTests.class,
-        CloudBlobEncryptionTests.class, LeaseTests.class, SasTests.class })
+            CloudBlobDirectoryTests.class, CloudAppendBlobTests.class, CloudBlockBlobTests.class, CloudPageBlobTests.class,
+            CloudBlobClientEncryptionTests.class, CloudBlobServerEncryptionTests.class, LeaseTests.class, SasTests.class })
     public static class BlobTestSuite {
     }
 
@@ -130,7 +131,8 @@ public class TestRunners {
     }
     
     @RunWith(Suite.class)
-    @SuiteClasses({ CloudBlobEncryptionTests.class, CloudQueueEncryptionTests.class, TableEncryptionTests.class })
+    @SuiteClasses({ CloudBlobClientEncryptionTests.class, CloudBlobServerEncryptionTests.class,
+            CloudQueueEncryptionTests.class, TableEncryptionTests.class })
     public static class EncryptionTestSuite {
     }
 
