@@ -2748,6 +2748,7 @@ public abstract class CloudBlob implements ListBlobItem {
                 }
 
                 blob.updateEtagAndLastModifiedFromResponse(this.getConnection());
+                this.getResult().setRequestServiceEncrypted(CloudBlob.isServerRequestEncrypted(this.getConnection()));
                 return null;
             }
         };
@@ -2896,5 +2897,9 @@ public abstract class CloudBlob implements ListBlobItem {
         }
 
         return parentName;
+    }
+    
+    protected static boolean isServerRequestEncrypted(HttpURLConnection connection) {
+        return Constants.TRUE.equals(connection.getHeaderField(Constants.HeaderConstants.SERVER_REQUEST_ENCRYPTED));
     }
 }

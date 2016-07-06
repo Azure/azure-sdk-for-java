@@ -303,6 +303,7 @@ public final class CloudAppendBlob extends CloudBlob {
                 }
 
                 blob.updateEtagAndLastModifiedFromResponse(this.getConnection());
+                this.getResult().setRequestServiceEncrypted(CloudBlob.isServerRequestEncrypted(this.getConnection()));
                 blob.getProperties().setLength(0);
                 return null;
             }
@@ -452,7 +453,8 @@ public final class CloudAppendBlob extends CloudBlob {
 
                 blob.updateEtagAndLastModifiedFromResponse(this.getConnection());
                 blob.updateCommittedBlockCountFromResponse(this.getConnection());
-                
+
+                this.getResult().setRequestServiceEncrypted(CloudBlob.isServerRequestEncrypted(this.getConnection()));
                 return appendOffset;
             }
 
