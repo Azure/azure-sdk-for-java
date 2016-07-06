@@ -26,25 +26,25 @@ public class FairPlayConfiguration {
 	public static String createSerializedFairPlayOptionConfiguration(
 		  KeyStore keyStore, String pfxPassword, String pfxPasswordKeyId, String askId,
 	      String contentIv)
-	{
-		try {
-			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-			keyStore.store(outputStream, pfxPassword.toCharArray());
-			String certString = Base64.encode(outputStream.toByteArray());
-			FairPlayConfiguration config = new FairPlayConfiguration();
-			config.ASkId = askId;
-			config.ContentEncryptionIV = contentIv;
-			config.FairPlayPfx = certString;
-			config.FairPlayPfxPasswordId = pfxPasswordKeyId;
-			ObjectMapper mapper = new ObjectMapper();
-			String configuration = mapper.writeValueAsString(config);
+    {
+        try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            keyStore.store(outputStream, pfxPassword.toCharArray());
+            String certString = Base64.encode(outputStream.toByteArray());
+            FairPlayConfiguration config = new FairPlayConfiguration();
+            config.ASkId = askId;
+            config.ContentEncryptionIV = contentIv;
+            config.FairPlayPfx = certString;
+            config.FairPlayPfxPasswordId = pfxPasswordKeyId;
+            ObjectMapper mapper = new ObjectMapper();
+            String configuration = mapper.writeValueAsString(config);
 
-			return configuration;
-		} catch(Throwable t){
-			throw new RuntimeException(t);
-		}
-	}
-	
+            return configuration;
+        } catch(Throwable t){
+            throw new RuntimeException(t);
+        }
+    }
+
 	final public static char[] hexArray = "0123456789ABCDEF".toCharArray();
 	public static String bytesToHex(byte[] bytes) {
 	    char[] hexChars = new char[bytes.length * 2];
