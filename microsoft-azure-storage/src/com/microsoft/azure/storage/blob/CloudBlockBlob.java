@@ -380,6 +380,7 @@ public final class CloudBlockBlob extends CloudBlob {
                     }
 
                     blob.updateEtagAndLastModifiedFromResponse(this.getConnection());
+                    this.getResult().setRequestServiceEncrypted(CloudBlob.isServerRequestEncrypted(this.getConnection()));
                     return null;
                 }
 
@@ -797,6 +798,7 @@ public final class CloudBlockBlob extends CloudBlob {
                 }
 
                 blob.updateEtagAndLastModifiedFromResponse(this.getConnection());
+                this.getResult().setRequestServiceEncrypted(CloudBlob.isServerRequestEncrypted(this.getConnection()));
                 return null;
             }
 
@@ -990,6 +992,7 @@ public final class CloudBlockBlob extends CloudBlob {
                     return null;
                 }
 
+                this.getResult().setRequestServiceEncrypted(CloudBlob.isServerRequestEncrypted(this.getConnection()));
                 return null;
             }
 

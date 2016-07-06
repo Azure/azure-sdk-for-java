@@ -58,18 +58,18 @@ import com.microsoft.azure.storage.TestRunners.DevStoreTests;
 import com.microsoft.azure.storage.core.SR;
 
 @Category({ CloudTests.class, DevFabricTests.class, DevStoreTests.class })
-public class CloudBlobEncryptionTests {
+public class CloudBlobClientEncryptionTests {
 
     protected CloudBlobContainer container;
 
     @Before
-    public void blockBlobTestMethodSetup() throws URISyntaxException, StorageException {
+    public void blobEncryptionTestMethodSetup() throws URISyntaxException, StorageException {
         this.container = BlobTestHelper.getRandomContainerReference();
         this.container.create();
     }
 
     @After
-    public void blockBlobTestMethodTearDown() throws StorageException {
+    public void blobEncryptionTestMethodTearDown() throws StorageException {
         this.container.deleteIfExists();
     }
     
