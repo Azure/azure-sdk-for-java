@@ -31,7 +31,7 @@ public class AccountOperations implements IInheritedBehaviors {
     private BatchClient _parentBatchClient;
 
     @Override
-    public Collection<BatchClientBehavior> getCustomBehaviors() {
+    public Collection<BatchClientBehavior> customBehaviors() {
         return _customBehaviors;
     }
 
@@ -50,11 +50,11 @@ public class AccountOperations implements IInheritedBehaviors {
 
     public List<NodeAgentSku> listNodeAgentSkus(DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         AccountListNodeAgentSkusOptions options = new AccountListNodeAgentSkusOptions();
-        BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
+        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<PagedList<NodeAgentSku>, AccountListNodeAgentSkusHeaders> response = this._parentBatchClient.getProtocolLayer().accounts().listNodeAgentSkus(options);
+        ServiceResponseWithHeaders<PagedList<NodeAgentSku>, AccountListNodeAgentSkusHeaders> response = this._parentBatchClient.protocolLayer().accounts().listNodeAgentSkus(options);
 
         return response.getBody();
     }

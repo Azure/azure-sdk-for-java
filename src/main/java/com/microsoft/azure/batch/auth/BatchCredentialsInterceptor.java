@@ -133,7 +133,7 @@ class BatchCredentialsInterceptor implements Interceptor {
         }
 
         signature = signature + "/"
-                + credentials.getAccountName().toLowerCase() + "/"
+                + credentials.accountName().toLowerCase() + "/"
                 + request.url().uri().getPath().replaceAll("^[/]+", "");
         // We temporary change client side auth code generator to bypass server
         // bug 4092533
@@ -159,8 +159,8 @@ class BatchCredentialsInterceptor implements Interceptor {
                 signature = signature + "\n" + entry.getValue();
             }
         }
-        String signedSignature = sign(credentials.getKeyValue(), signature);
-        String authorization = "SharedKey " + credentials.getAccountName()
+        String signedSignature = sign(credentials.keyValue(), signature);
+        String authorization = "SharedKey " + credentials.accountName()
                 + ":" + signedSignature;
         builder.header("Authorization", authorization);
 

@@ -10,7 +10,7 @@ import java.util.Collection;
 
 public interface IInheritedBehaviors {
 
-    Collection<BatchClientBehavior> getCustomBehaviors();
+    Collection<BatchClientBehavior> customBehaviors();
 
     void setCustomBehaviors(Collection<BatchClientBehavior> behaviors);
 

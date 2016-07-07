@@ -17,11 +17,11 @@ public class BatchSharedKeyCredentials extends BatchCredentials implements Servi
     private String keyValue;
 
 
-    public String getAccountName() {
+    public String accountName() {
         return accountName;
     }
 
-    public String getKeyValue() {
+    public String keyValue() {
         return keyValue;
     }
 
