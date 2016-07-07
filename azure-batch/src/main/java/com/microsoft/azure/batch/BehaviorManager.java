@@ -22,22 +22,22 @@ class BehaviorManager {
         this.baseBehaviors = new LinkedList<BatchClientBehavior>();
 
         if (null != baseBehaviors) {
-            this.getBaseBehaviors().addAll(baseBehaviors);
+            this.baseBehaviors().addAll(baseBehaviors);
         }
 
         this.perCallBehaviors = new LinkedList<BatchClientBehavior>();
 
         if (null != perCallBehaviors) {
             for (BatchClientBehavior bh : perCallBehaviors) {
-                this.getPerCallBehaviors().add(bh);
+                this.perCallBehaviors().add(bh);
             }
         }
     }
 
     Collection<BatchClientBehavior> getMasterListOfBehaviors() {
-        List<BatchClientBehavior> ml = new LinkedList<BatchClientBehavior>(this.getBaseBehaviors());
+        List<BatchClientBehavior> ml = new LinkedList<BatchClientBehavior>(this.baseBehaviors());
 
-        ml.addAll(this.getPerCallBehaviors());
+        ml.addAll(this.perCallBehaviors());
 
         return ml;
     }
@@ -52,11 +52,11 @@ class BehaviorManager {
 
     void appendDetailLevelToPerCallBehaviors(DetailLevel dl) {
         if (dl != null) {
-            this.getPerCallBehaviors().add(new DetailLevelInterceptor(dl));
+            this.perCallBehaviors().add(new DetailLevelInterceptor(dl));
         }
     }
 
-    public Collection<BatchClientBehavior> getBaseBehaviors() {
+    public Collection<BatchClientBehavior> baseBehaviors() {
         return baseBehaviors;
     }
 
@@ -64,7 +64,7 @@ class BehaviorManager {
         this.baseBehaviors = baseBehaviors;
     }
 
-    public Collection<BatchClientBehavior> getPerCallBehaviors() {
+    public Collection<BatchClientBehavior> perCallBehaviors() {
         return perCallBehaviors;
     }
 
