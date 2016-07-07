@@ -34,7 +34,7 @@ public class RampUpRule {
      * {Microsoft.Web.Hosting.Administration.RampUpRule.MinReroutePercentage}
      * or
      * {Microsoft.Web.Hosting.Administration.RampUpRule.MaxReroutePercentage}.
-     * Site metrics are checked every N minutes specificed in
+     * WebApp metrics are checked every N minutes specificed in
      * {Microsoft.Web.Hosting.Administration.RampUpRule.ChangeIntervalInMinutes}.
      * Custom decision algorithm can be provided in TiPCallback
      * site extension which Url can be specified in

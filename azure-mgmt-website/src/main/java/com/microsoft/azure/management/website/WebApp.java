@@ -18,12 +18,12 @@ import org.joda.time.DateTime;
 import java.util.List;
 
 /**
- * An immutable client-side representation of an Azure website.
+ * An immutable client-side representation of an Azure Web App.
  */
-public interface Site extends
+public interface WebApp extends
         GroupableResource,
-        Refreshable<Site>,
-        Updatable<Site.Update>,
+        Refreshable<WebApp>,
+        Updatable<WebApp.Update>,
         Wrapper<SiteInner> {
 
     /**
@@ -192,7 +192,7 @@ public interface Site extends
     String defaultHostName();
 
     /**************************************************************
-     * Fluent interfaces to provision a StorageAccount
+     * Fluent interfaces to provision a Web App
      **************************************************************/
 
     /**
@@ -236,7 +236,7 @@ public interface Site extends
          * specify.
          */
         interface WithCreate extends
-                Creatable<Site> {
+                Creatable<WebApp> {
         }
     }
 

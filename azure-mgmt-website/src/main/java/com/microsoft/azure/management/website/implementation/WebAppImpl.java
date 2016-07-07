@@ -8,11 +8,12 @@ package com.microsoft.azure.management.website.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+import com.microsoft.azure.management.website.AppServicePlan;
 import com.microsoft.azure.management.website.AppServicePricingTier;
 import com.microsoft.azure.management.website.CloningInfo;
 import com.microsoft.azure.management.website.HostNameSslState;
 import com.microsoft.azure.management.website.HostingEnvironmentProfile;
-import com.microsoft.azure.management.website.Site;
+import com.microsoft.azure.management.website.WebApp;
 import com.microsoft.azure.management.website.SiteAvailabilityState;
 import com.microsoft.azure.management.website.UsageState;
 import com.microsoft.rest.ServiceCall;
@@ -22,22 +23,22 @@ import org.joda.time.DateTime;
 import java.util.List;
 
 /**
- * The implementation for {@link Site}.
+ * The implementation for {@link WebApp}.
  */
-class SiteImpl
+class WebAppImpl
     extends GroupableResourceImpl<
-            Site,
+        WebApp,
             SiteInner,
-            SiteImpl,
+        WebAppImpl,
             WebsiteManager>
     implements
-        Site,
-        Site.Definition,
-        Site.Update {
+        WebApp,
+        WebApp.Definition,
+        WebApp.Update {
 
     private final SitesInner client;
 
-    SiteImpl(String key, SiteInner innerObject, final SitesInner client, WebsiteManager manager) {
+    WebAppImpl(String key, SiteInner innerObject, final SitesInner client, WebsiteManager manager) {
         super(key, innerObject, manager);
         this.client = client;
     }
@@ -199,23 +200,29 @@ class SiteImpl
     }
 
     @Override
-    public Site refresh() throws Exception {
+    public WebAppImpl refresh() throws Exception {
         this.setInner(client.getSite(resourceGroupName(), name()).getBody());
         return this;
     }
 
     @Override
-    public Site.DefinitionStages.WithCreate withNewAppServicePlan() {
-        return null;
+    public WebAppImpl withNewAppServicePlan() {
+        return this;
     }
 
     @Override
-    public Site.DefinitionStages.WithCreate withNewAppServicePlan(String name, AppServicePricingTier pricingTier) {
-        return null;
+    public WebAppImpl withNewAppServicePlan(String name, AppServicePricingTier pricingTier) {
+        AppServicePlan.DefinitionStages.WithCreate creatable = myManager.appServicePlans().define(name)
+                .withRegion(region())
+                .withNewResourceGroup(resourceGroupName())
+                .withPricingTier(pricingTier);
+        addCreatableDependency(creatable);
+        inner().withServerFarmId(name);
+        return this;
     }
 
     @Override
-    public Site.DefinitionStages.WithCreate withExistingAppServicePlan(String appServicePlanName) {
+    public WebAppImpl withExistingAppServicePlan(String appServicePlanName) {
         inner().withServerFarmId(appServicePlanName);
         return this;
     }

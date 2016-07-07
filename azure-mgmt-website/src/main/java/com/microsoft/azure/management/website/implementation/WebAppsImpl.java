@@ -10,24 +10,24 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import com.microsoft.azure.management.website.Site;
-import com.microsoft.azure.management.website.Sites;
+import com.microsoft.azure.management.website.WebApp;
+import com.microsoft.azure.management.website.WebApps;
 
 import java.io.IOException;
 
 /**
- * The implementation for {@link Sites}.
+ * The implementation for {@link WebApps}.
  */
-public class SitesImpl
+class WebAppsImpl
     extends GroupableResourcesImpl<
-            Site,
-            SiteImpl,
+        WebApp,
+        WebAppImpl,
             SiteInner,
             SitesInner,
             WebsiteManager>
-    implements Sites {
+    implements WebApps {
 
-    protected SitesImpl(SitesInner innerCollection, WebsiteManager manager) {
+    WebAppsImpl(SitesInner innerCollection, WebsiteManager manager) {
         super(innerCollection, manager);
     }
 
@@ -37,27 +37,27 @@ public class SitesImpl
     }
 
     @Override
-    public PagedList<Site> listByGroup(String resourceGroupName) throws CloudException, IOException {
+    public PagedList<WebApp> listByGroup(String resourceGroupName) throws CloudException, IOException {
         return wrapList(innerCollection.getSites(resourceGroupName).getBody().value());
     }
 
     @Override
-    public Site getByGroup(String groupName, String name) throws CloudException, IOException {
+    public WebApp getByGroup(String groupName, String name) throws CloudException, IOException {
         return wrapModel(innerCollection.getSite(groupName, name).getBody());
     }
 
     @Override
-    protected SiteImpl wrapModel(String name) {
-        return new SiteImpl(name, new SiteInner(), innerCollection, super.myManager);
+    protected WebAppImpl wrapModel(String name) {
+        return new WebAppImpl(name, new SiteInner(), innerCollection, super.myManager);
     }
 
     @Override
-    protected SiteImpl wrapModel(SiteInner inner) {
-        return new SiteImpl(inner.name(), inner, innerCollection, super.myManager);
+    protected WebAppImpl wrapModel(SiteInner inner) {
+        return new WebAppImpl(inner.name(), inner, innerCollection, super.myManager);
     }
 
     @Override
-    public Site.DefinitionStages.Blank define(String name) {
+    public WebApp.DefinitionStages.Blank define(String name) {
         return wrapModel(name);
     }
 

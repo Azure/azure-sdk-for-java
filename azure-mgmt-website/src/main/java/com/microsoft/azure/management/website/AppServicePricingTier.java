@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.website;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
@@ -61,21 +60,28 @@ public enum AppServicePricingTier {
     /**
      * Parses a serialized value to an AppServicePricingTier instance.
      *
-     * @param value the serialized value to parse.
+     * @param skuDescription the serialized value to parse.
      * @return the parsed AppServicePricingTier object, or null if unable to parse.
      */
-    @JsonCreator
-    public static AppServicePricingTier fromString(String value) {
+    public static AppServicePricingTier fromSkuDescription(SkuDescription skuDescription) {
         AppServicePricingTier[] items = AppServicePricingTier.values();
         for (AppServicePricingTier item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
+            if (item.skuDescription.tier().equalsIgnoreCase(skuDescription.tier())
+                    && item.skuDescription.size().equalsIgnoreCase(skuDescription.size())) {
                 return item;
             }
         }
         return null;
     }
 
+    /**
+     * @return the underneath sku description
+     */
     @JsonValue
+    public SkuDescription toSkuDescription() {
+        return this.skuDescription;
+    }
+
     @Override
     public String toString() {
         return this.skuDescription.tier() + "_" + this.skuDescription.size();

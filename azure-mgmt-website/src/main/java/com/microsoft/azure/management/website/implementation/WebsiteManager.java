@@ -11,7 +11,8 @@ import com.microsoft.azure.RestClient;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
-import com.microsoft.azure.management.website.Sites;
+import com.microsoft.azure.management.website.AppServicePlans;
+import com.microsoft.azure.management.website.WebApps;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
 /**
@@ -19,7 +20,8 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
  */
 public final class WebsiteManager extends Manager<WebsiteManager, WebSiteManagementClientImpl> {
     // Collections
-    private Sites sites;
+    private WebApps webApps;
+    private AppServicePlans appServicePlans;
 
     /**
      * Get a Configurable instance that can be used to create StorageManager with optional configuration.
@@ -87,10 +89,20 @@ public final class WebsiteManager extends Manager<WebsiteManager, WebSiteManagem
     /**
      * @return the web app management API entry point
      */
-    public Sites sites() {
-        if (sites == null) {
-            sites = new SitesImpl(innerManagementClient.sites(), this);
+    public WebApps sites() {
+        if (webApps == null) {
+            webApps = new WebAppsImpl(innerManagementClient.sites(), this);
         }
-        return sites;
+        return webApps;
+    }
+
+    /**
+     * @return the web app management API entry point
+     */
+    public AppServicePlans appServicePlans() {
+        if (appServicePlans == null) {
+            appServicePlans = new AppServicePlansImpl(innerManagementClient.serverFarms(), this);
+        }
+        return appServicePlans;
     }
 }

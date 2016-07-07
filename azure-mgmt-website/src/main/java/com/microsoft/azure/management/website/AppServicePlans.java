@@ -16,11 +16,11 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDe
 /**
  * Entry point for storage accounts management API.
  */
-public interface Sites extends
-        SupportsCreating<Site.DefinitionStages.Blank>,
+public interface AppServicePlans extends
+        SupportsCreating<AppServicePlan.DefinitionStages.Blank>,
         SupportsDeleting,
-        SupportsListingByGroup<Site>,
-        SupportsGettingByGroup<Site>,
-        SupportsGettingById<Site>,
+        SupportsListingByGroup<AppServicePlan>,
+        SupportsGettingByGroup<AppServicePlan>,
+        SupportsGettingById<AppServicePlan>,
         SupportsDeletingByGroup {
 }

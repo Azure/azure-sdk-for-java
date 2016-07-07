@@ -210,7 +210,7 @@ public class SiteInner extends Resource {
     private String resourceGroup;
 
     /**
-     * Site is a default container.
+     * WebApp is a default container.
      */
     @JsonProperty(value = "properties.isDefaultContainer", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDefaultContainer;

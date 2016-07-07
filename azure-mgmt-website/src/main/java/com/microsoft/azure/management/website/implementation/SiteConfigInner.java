@@ -122,7 +122,7 @@ public class SiteConfigInner extends Resource {
     private List<NameValuePair> appSettings;
 
     /**
-     * Site Metadata.
+     * WebApp Metadata.
      */
     @JsonProperty(value = "properties.metadata")
     private List<NameValuePair> metadata;
@@ -200,7 +200,7 @@ public class SiteConfigInner extends Resource {
     private List<VirtualApplication> virtualApplications;
 
     /**
-     * Site load balancing. Possible values include: 'WeightedRoundRobin',
+     * WebApp load balancing. Possible values include: 'WeightedRoundRobin',
      * 'LeastRequests', 'LeastResponseTime', 'WeightedTotalTraffic',
      * 'RequestHash'.
      */
@@ -214,7 +214,7 @@ public class SiteConfigInner extends Resource {
     private Experiments experiments;
 
     /**
-     * Site limits.
+     * WebApp limits.
      */
     @JsonProperty(value = "properties.limits")
     private SiteLimits limits;

@@ -9,6 +9,7 @@ package com.microsoft.azure.management.website;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -29,10 +30,11 @@ public class WebsiteAccountOperationsTests extends WebsiteManagementTestBase {
 
     @Test
     public void canCreateWebApp() throws Exception {
-        Site site = websiteManager.sites().define(WEBAPP_NAME)
+        WebApp webApp = websiteManager.sites().define(WEBAPP_NAME)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME)
-                .withExistingAppServicePlan("Default1")
+                .withNewAppServicePlan("java-webapp-plan-219", AppServicePricingTier.STANDARD_S1)
                 .create();
+        Assert.assertNotNull(webApp);
     }
 }
