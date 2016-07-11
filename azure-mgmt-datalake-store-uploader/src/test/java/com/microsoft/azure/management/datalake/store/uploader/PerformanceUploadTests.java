@@ -95,9 +95,9 @@ public class PerformanceUploadTests extends DataLakeUploaderTestBase {
 
         // upload Rentrak data.
         boolean force = true;  //Set this to true if you want to overwrite existing data
-        System.out.println("Uploading 4mb data...");
+        System.out.println("Uploading 2mb data...");
         for (int i = 0; i < 10; ++i) {
-            String destLocation = destFolder + "/" + folder + "4mbFile.txt";
+            String destLocation = destFolder + "/" + folder + "2mbFile.txt";
             Stopwatch watch = Stopwatch.createStarted();
             UploadFile(dataLakeStoreFileSystemManagementClient, adlsAcct, localFileName, destLocation, force);
             watch.stop();
