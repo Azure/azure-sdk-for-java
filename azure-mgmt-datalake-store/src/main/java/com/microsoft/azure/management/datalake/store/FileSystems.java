@@ -345,6 +345,32 @@ public interface FileSystems {
      * @return the {@link ServiceCall} object
      */
     ServiceCall appendAsync(String accountName, String directFilePath, byte[] streamContents, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    /**
+     * Appends to the specified file. This method does not support multiple concurrent appends to the file. NOTE: Concurrent append and normal (serial) append CANNOT be used interchangeably. Once a file has been appended to using either append option, it can only be appended to using that append option. Use the ConcurrentAppend option if you would like support for concurrent appends.
+     *
+     * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param directFilePath The Data Lake Store path (starting with '/') of the file to which to append.
+     * @param streamContents The file contents to include when appending to the file.
+     * @param offset The optional offset in the stream to begin the append operation. Default is to append at the end of the stream.
+     * @throws AdlsErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    ServiceResponse<Void> append(String accountName, String directFilePath, byte[] streamContents, Long offset) throws AdlsErrorException, IOException, IllegalArgumentException;
+
+    /**
+     * Appends to the specified file. This method does not support multiple concurrent appends to the file. NOTE: Concurrent append and normal (serial) append CANNOT be used interchangeably. Once a file has been appended to using either append option, it can only be appended to using that append option. Use the ConcurrentAppend option if you would like support for concurrent appends.
+     *
+     * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param directFilePath The Data Lake Store path (starting with '/') of the file to which to append.
+     * @param streamContents The file contents to include when appending to the file.
+     * @param offset The optional offset in the stream to begin the append operation. Default is to append at the end of the stream.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall appendAsync(String accountName, String directFilePath, byte[] streamContents, Long offset, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Creates a file with optionally specified content.
