@@ -25,6 +25,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "SecurityException", value = AdlsSecurityException.class),
     @JsonSubTypes.Type(name = "IOException", value = AdlsIOException.class),
     @JsonSubTypes.Type(name = "FileNotFoundException", value = AdlsFileNotFoundException.class),
+    @JsonSubTypes.Type(name = "FileAlreadyExistsException", value = AdlsFileAlreadyExistsException.class),
+    @JsonSubTypes.Type(name = "BadOffsetException", value = AdlsBadOffsetException.class),
     @JsonSubTypes.Type(name = "RuntimeException", value = AdlsRuntimeException.class),
     @JsonSubTypes.Type(name = "AccessControlException", value = AdlsAccessControlException.class)
 })
