@@ -8,13 +8,13 @@
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-parent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0-beta2</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>azure-mgmt-datalake-store-uploader</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0-beta1.2</version>
 
   <name>Microsoft Azure SDK for Data Lake Store Data Uploading</name>
   <description>This package contains Microsoft Azure Data Lake Store Uploader SDK, which enables rapid ingress of data into Azure Data Lake Storage accounts</description>
@@ -50,17 +50,17 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-runtime</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
+      <version>1.0.0-beta2</version>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-mgmt-datalake-store</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
+      <version>1.0.0-beta1.2</version>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-mgmt-resources</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
+      <version>1.0.0-beta2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -71,7 +71,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-authentication</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
+      <version>1.0.0-beta2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
