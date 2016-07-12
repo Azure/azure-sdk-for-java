@@ -96,7 +96,7 @@ gulp.task('default', function() {
 
 var specRoot = args['spec-root'] || "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master";
 var projects = args['projects'];
-var autoRestVersion = '0.16.0-Nightly20160413'; // default
+var autoRestVersion = '0.17.0-Nightly20160706'; // default
 if (args['autorest'] !== undefined) {
     autoRestVersion = args['autorest'];
 }

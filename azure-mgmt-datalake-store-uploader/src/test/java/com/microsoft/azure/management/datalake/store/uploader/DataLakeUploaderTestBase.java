@@ -37,11 +37,8 @@ public abstract class DataLakeUploaderTestBase {
                 .withLogLevel(HttpLoggingInterceptor.Level.BODY)
                 .build();
 
-        resourceManagementClient = new ResourceManagementClientImpl(restClient);
-        resourceManagementClient.withSubscriptionId(System.getenv("arm.subscriptionid"));
-
-        dataLakeStoreAccountManagementClient = new DataLakeStoreAccountManagementClientImpl(restClient);
-        dataLakeStoreAccountManagementClient.withSubscriptionId(System.getenv("arm.subscriptionid"));
+        resourceManagementClient = new ResourceManagementClientImpl(restClient).withSubscriptionId(System.getenv("arm.subscriptionid"));
+        dataLakeStoreAccountManagementClient = new DataLakeStoreAccountManagementClientImpl(restClient).withSubscriptionId(System.getenv("arm.subscriptionid"));
 
         RestClient dataPlaneClient = new RestClient.Builder(new OkHttpClient.Builder().connectTimeout(100, TimeUnit.SECONDS), new Retrofit.Builder())
                 .withBaseUrl("https://{accountName}.{adlsFileSystemDnsSuffix}")

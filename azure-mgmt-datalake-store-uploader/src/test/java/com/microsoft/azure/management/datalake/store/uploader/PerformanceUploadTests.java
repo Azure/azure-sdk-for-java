@@ -30,7 +30,7 @@ public class PerformanceUploadTests extends DataLakeUploaderTestBase {
 
     private static final String Local10GbFileName = "C:\\data\\FixedBlockPerfData.txt"; // 10GB perf test binary file.
     private static final String localLargeFileName = "C:\\data\\MicrosoftTelemetry.tsv"; // 2.5GB perf test binary file
-    private static final String localFileName = "C:\\data\\smallFile.txt"; // 4mb perf test binary file
+    private static final String localFileName = "C:\\data\\2mbfile.txt"; // 2mb perf test binary file
 
     @BeforeClass
     public static void Setup() throws Exception {
@@ -89,15 +89,15 @@ public class PerformanceUploadTests extends DataLakeUploaderTestBase {
     }
 
     @Test
-    public void Test4mbFileUpload() throws Exception {
+    public void Test2mbFileUpload() throws Exception {
         String folder = "begoldsm";
         ArrayList<Long> perfMetrics = new ArrayList();
 
         // upload Rentrak data.
         boolean force = true;  //Set this to true if you want to overwrite existing data
-        System.out.println("Uploading 4mb data...");
+        System.out.println("Uploading 2mb data...");
         for (int i = 0; i < 10; ++i) {
-            String destLocation = destFolder + "/" + folder + "4mbFile.txt";
+            String destLocation = destFolder + "/" + folder + "2mbFile.txt";
             Stopwatch watch = Stopwatch.createStarted();
             UploadFile(dataLakeStoreFileSystemManagementClient, adlsAcct, localFileName, destLocation, force);
             watch.stop();
@@ -134,7 +134,7 @@ public class PerformanceUploadTests extends DataLakeUploaderTestBase {
         }
     }
 
-    //@Test
+    @Test
     public void Test10gbFileUpload() throws Exception {
         String folder = "begoldsm";
         ArrayList<Long> perfMetrics = new ArrayList();

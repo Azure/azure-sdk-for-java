@@ -105,7 +105,7 @@ public final class FileSystemsImpl implements FileSystems {
 
         @Headers("Content-Type: application/octet-stream")
         @POST("webhdfs/v1/{directFilePath}")
-        Call<ResponseBody> append(@Path("directFilePath") String directFilePath, @Body RequestBody streamContents, @Query("op") String op, @Query("append") String append, @Header("Transfer-Encoding") String transferEncoding, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> append(@Path("directFilePath") String directFilePath, @Body RequestBody streamContents, @Query("offset") Long offset, @Query("op") String op, @Query("append") String append, @Header("Transfer-Encoding") String transferEncoding, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/octet-stream")
         @PUT("webhdfs/v1/{directFilePath}")
@@ -1221,9 +1221,10 @@ public final class FileSystemsImpl implements FileSystems {
         final String op = "APPEND";
         final String append = "true";
         final String transferEncoding = "chunked";
+        final Long offset = null;
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
-        Call<ResponseBody> call = service.append(directFilePath, streamContentsConverted, op, append, transferEncoding, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
+        Call<ResponseBody> call = service.append(directFilePath, streamContentsConverted, offset, op, append, transferEncoding, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
         return appendDelegate(call.execute());
     }
 
@@ -1264,9 +1265,102 @@ public final class FileSystemsImpl implements FileSystems {
         final String op = "APPEND";
         final String append = "true";
         final String transferEncoding = "chunked";
+        final Long offset = null;
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
-        Call<ResponseBody> call = service.append(directFilePath, streamContentsConverted, op, append, transferEncoding, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
+        Call<ResponseBody> call = service.append(directFilePath, streamContentsConverted, offset, op, append, transferEncoding, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(appendDelegate(response));
+                } catch (AdlsErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Appends to the specified file. This method does not support multiple concurrent appends to the file. NOTE: Concurrent append and normal (serial) append CANNOT be used interchangeably. Once a file has been appended to using either append option, it can only be appended to using that append option. Use the ConcurrentAppend option if you would like support for concurrent appends.
+     *
+     * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param directFilePath The Data Lake Store path (starting with '/') of the file to which to append.
+     * @param streamContents The file contents to include when appending to the file.
+     * @param offset The optional offset in the stream to begin the append operation. Default is to append at the end of the stream.
+     * @throws AdlsErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public ServiceResponse<Void> append(String accountName, String directFilePath, byte[] streamContents, Long offset) throws AdlsErrorException, IOException, IllegalArgumentException {
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.adlsFileSystemDnsSuffix() == null) {
+            throw new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null.");
+        }
+        if (directFilePath == null) {
+            throw new IllegalArgumentException("Parameter directFilePath is required and cannot be null.");
+        }
+        if (streamContents == null) {
+            throw new IllegalArgumentException("Parameter streamContents is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final String op = "APPEND";
+        final String append = "true";
+        final String transferEncoding = "chunked";
+        String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
+        Call<ResponseBody> call = service.append(directFilePath, streamContentsConverted, offset, op, append, transferEncoding, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
+        return appendDelegate(call.execute());
+    }
+
+    /**
+     * Appends to the specified file. This method does not support multiple concurrent appends to the file. NOTE: Concurrent append and normal (serial) append CANNOT be used interchangeably. Once a file has been appended to using either append option, it can only be appended to using that append option. Use the ConcurrentAppend option if you would like support for concurrent appends.
+     *
+     * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param directFilePath The Data Lake Store path (starting with '/') of the file to which to append.
+     * @param streamContents The file contents to include when appending to the file.
+     * @param offset The optional offset in the stream to begin the append operation. Default is to append at the end of the stream.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall appendAsync(String accountName, String directFilePath, byte[] streamContents, Long offset, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (accountName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.adlsFileSystemDnsSuffix() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null."));
+            return null;
+        }
+        if (directFilePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter directFilePath is required and cannot be null."));
+            return null;
+        }
+        if (streamContents == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter streamContents is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        final String op = "APPEND";
+        final String append = "true";
+        final String transferEncoding = "chunked";
+        String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
+        RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
+        Call<ResponseBody> call = service.append(directFilePath, streamContentsConverted, offset, op, append, transferEncoding, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
