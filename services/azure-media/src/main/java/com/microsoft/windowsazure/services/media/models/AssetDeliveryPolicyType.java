@@ -31,7 +31,9 @@ public enum AssetDeliveryPolicyType {
     /** Apply Dynamic Envelope encryption. */
     DynamicEnvelopeEncryption(3),
     /** Apply Dynamic Common encryption. */
-    DynamicCommonEncryption(4);
+    DynamicCommonEncryption(4),
+    /** Apply Dynamic Common encryption with cbcs */
+    DynamicCommonEncryptionCbcs(5);
     
 
     /** The AssetDeliveryPolicyType code. */
@@ -75,6 +77,8 @@ public enum AssetDeliveryPolicyType {
             return AssetDeliveryPolicyType.DynamicEnvelopeEncryption;
         case 4:
             return AssetDeliveryPolicyType.DynamicCommonEncryption;
+        case 5:
+            return AssetDeliveryPolicyType.DynamicCommonEncryptionCbcs;
         default:
             throw new InvalidParameterException("option");
         }

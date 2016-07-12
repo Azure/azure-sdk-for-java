@@ -37,8 +37,16 @@ public enum AssetDeliveryPolicyConfigurationKey {
     /** The initialization vector to use for envelope encryption. */
     EnvelopeEncryptionIV(6),
     /** Widevine DRM Acquisition Url to use for common encryption. */
-    WidevineLicenseAcquisitionUrl(7);
-
+    WidevineLicenseAcquisitionUrl(7),
+    /** Base Widevine url that will have KID=<Guid> appended */
+    WidevineBaseLicenseAcquisitionUrl(8),
+    /** FairPlay license acquisition URL. */
+    FairPlayLicenseAcquisitionUrl(9),
+    /** Base FairPlay license acquisition URL that will have KID=<Guid> appended. */
+    FairPlayBaseLicenseAcquisitionUrl(10),
+    /** Initialization Vector that will be used for encrypting the content. Must match 
+        IV in the AssetDeliveryPolicy. */
+    CommonEncryptionIVForCbcs(11);    
 
     /** The AssetDeliveryPolicyType code. */
     private int assetDeliveryPolicyConfigurationKey;
@@ -87,6 +95,14 @@ public enum AssetDeliveryPolicyConfigurationKey {
             return AssetDeliveryPolicyConfigurationKey.EnvelopeEncryptionIV;
         case 7:
             return AssetDeliveryPolicyConfigurationKey.WidevineLicenseAcquisitionUrl;
+        case 8:
+            return AssetDeliveryPolicyConfigurationKey.WidevineBaseLicenseAcquisitionUrl;
+        case 9:
+            return AssetDeliveryPolicyConfigurationKey.FairPlayLicenseAcquisitionUrl;
+        case 10:
+            return AssetDeliveryPolicyConfigurationKey.FairPlayBaseLicenseAcquisitionUrl;
+        case 11:
+            return AssetDeliveryPolicyConfigurationKey.CommonEncryptionIVForCbcs;
         default:
             throw new InvalidParameterException("option");
         }

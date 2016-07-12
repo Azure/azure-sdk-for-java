@@ -29,7 +29,9 @@ public enum ContentKeyDeliveryType {
     /** Use MPEG Baseline HTTP key protocol. */
     BaselineHttp(2),
     /** Use Widevine license acquisition protocol. */
-    Widevine(3);
+    Widevine(3),
+    /** Send FairPlay SPC to Key Delivery server and get CKC back */
+    FairPlay(4);
     
     /** The AssetDeliveryPolicyType code. */
     private int contentKeyDeliveryType;
@@ -70,6 +72,8 @@ public enum ContentKeyDeliveryType {
             return ContentKeyDeliveryType.BaselineHttp;
         case 3:
             return ContentKeyDeliveryType.Widevine;
+        case 4:
+            return ContentKeyDeliveryType.FairPlay;
         default:
             throw new InvalidParameterException("option");
         }

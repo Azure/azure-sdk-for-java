@@ -31,7 +31,13 @@ public enum ContentKeyType {
     /** The Configuration encryption. */
     ConfigurationEncryption(2),
     /** The Envelope encryption. */
-    EnvelopeEncryption(4);
+    EnvelopeEncryption(4),
+    /** Specifies a content key for common encryption with CBCS. */
+    CommonEncryptionCbcs(6),
+    /** Application Secret key for FairPlay. */
+    FairPlayASk (7),
+    /** Password for FairPlay application certificate. */
+    FairPlayPfxPassword (8);
 
     /** The content key type code. */
     private int contentKeyTypeCode;
@@ -72,6 +78,12 @@ public enum ContentKeyType {
             return ContentKeyType.ConfigurationEncryption;
         case 4: 
             return ContentKeyType.EnvelopeEncryption;
+        case 6: 
+            return ContentKeyType.CommonEncryptionCbcs;
+        case 7: 
+            return ContentKeyType.FairPlayASk;
+        case 8: 
+            return ContentKeyType.FairPlayPfxPassword;
         default:
             throw new InvalidParameterException("code");
         }
