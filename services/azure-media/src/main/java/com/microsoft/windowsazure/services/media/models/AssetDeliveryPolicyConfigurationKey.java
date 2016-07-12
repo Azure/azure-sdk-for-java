@@ -98,11 +98,11 @@ public enum AssetDeliveryPolicyConfigurationKey {
         case 8:
             return AssetDeliveryPolicyConfigurationKey.WidevineBaseLicenseAcquisitionUrl;
         case 9:
-        	return AssetDeliveryPolicyConfigurationKey.FairPlayLicenseAcquisitionUrl;
+            return AssetDeliveryPolicyConfigurationKey.FairPlayLicenseAcquisitionUrl;
         case 10:
-        	return AssetDeliveryPolicyConfigurationKey.FairPlayBaseLicenseAcquisitionUrl;
+            return AssetDeliveryPolicyConfigurationKey.FairPlayBaseLicenseAcquisitionUrl;
         case 11:
-        	return AssetDeliveryPolicyConfigurationKey.CommonEncryptionIVForCbcs;
+            return AssetDeliveryPolicyConfigurationKey.CommonEncryptionIVForCbcs;
         default:
             throw new InvalidParameterException("option");
         }

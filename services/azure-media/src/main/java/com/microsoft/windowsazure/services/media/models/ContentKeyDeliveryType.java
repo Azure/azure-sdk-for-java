@@ -73,7 +73,7 @@ public enum ContentKeyDeliveryType {
         case 3:
             return ContentKeyDeliveryType.Widevine;
         case 4:
-        	return ContentKeyDeliveryType.FairPlay;
+            return ContentKeyDeliveryType.FairPlay;
         default:
             throw new InvalidParameterException("option");
         }
