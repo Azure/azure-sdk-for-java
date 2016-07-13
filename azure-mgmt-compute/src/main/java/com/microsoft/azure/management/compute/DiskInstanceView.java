@@ -15,12 +15,12 @@ import java.util.List;
  */
 public class DiskInstanceView {
     /**
-     * Gets or sets the disk name.
+     * the disk name.
      */
     private String name;
 
     /**
-     * Gets or sets the resource status information.
+     * the resource status information.
      */
     private List<InstanceViewStatus> statuses;
 

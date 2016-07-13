@@ -18,49 +18,49 @@ import com.microsoft.azure.SubResource;
 @JsonFlatten
 public class VirtualMachineScaleSetExtension extends SubResource {
     /**
-     * Gets or sets the name of the extension.
+     * the name of the extension.
      */
     private String name;
 
     /**
-     * Gets or sets the name of the extension handler publisher.
+     * the name of the extension handler publisher.
      */
     @JsonProperty(value = "properties.publisher")
     private String publisher;
 
     /**
-     * Gets or sets the type of the extension handler.
+     * the type of the extension handler.
      */
     @JsonProperty(value = "properties.type")
     private String type;
 
     /**
-     * Gets or sets the type version of the extension handler.
+     * the type version of the extension handler.
      */
     @JsonProperty(value = "properties.typeHandlerVersion")
     private String typeHandlerVersion;
 
     /**
-     * Gets or sets whether the extension handler should be automatically
-     * upgraded across minor versions.
+     * whether the extension handler should be automatically upgraded across
+     * minor versions.
      */
     @JsonProperty(value = "properties.autoUpgradeMinorVersion")
     private Boolean autoUpgradeMinorVersion;
 
     /**
-     * Gets or sets Json formatted public settings for the extension.
+     * Json formatted public settings for the extension.
      */
     @JsonProperty(value = "properties.settings")
     private Object settings;
 
     /**
-     * Gets or sets Json formatted protected settings for the extension.
+     * Json formatted protected settings for the extension.
      */
     @JsonProperty(value = "properties.protectedSettings")
     private Object protectedSettings;
 
     /**
-     * Gets the provisioning state, which only appears in the response.
+     * the provisioning state, which only appears in the response.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;

@@ -15,20 +15,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class VirtualMachineCaptureParametersInner {
     /**
-     * Gets or sets the captured VirtualHardDisk's name prefix.
+     * the captured VirtualHardDisk's name prefix.
      */
     @JsonProperty(required = true)
     private String vhdPrefix;
 
     /**
-     * Gets or sets the destination container name.
+     * the destination container name.
      */
     @JsonProperty(required = true)
     private String destinationContainerName;
 
     /**
-     * Gets or sets whether it overwrites destination VirtualHardDisk if true,
-     * in case of conflict.
+     * whether it overwrites destination VirtualHardDisk if true, in case of
+     * conflict.
      */
     @JsonProperty(required = true)
     private boolean overwriteVhds;

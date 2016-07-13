@@ -14,22 +14,22 @@ package com.microsoft.azure.management.compute;
  */
 public class VirtualMachineScaleSetVMProfile {
     /**
-     * Gets or sets the virtual machine scale set OS profile.
+     * the virtual machine scale set OS profile.
      */
     private VirtualMachineScaleSetOSProfile osProfile;
 
     /**
-     * Gets or sets the virtual machine scale set storage profile.
+     * the virtual machine scale set storage profile.
      */
     private VirtualMachineScaleSetStorageProfile storageProfile;
 
     /**
-     * Gets or sets the virtual machine scale set network profile.
+     * the virtual machine scale set network profile.
      */
     private VirtualMachineScaleSetNetworkProfile networkProfile;
 
     /**
-     * Gets the virtual machine scale set extension profile.
+     * the virtual machine scale set extension profile.
      */
     private VirtualMachineScaleSetExtensionProfile extensionProfile;
 

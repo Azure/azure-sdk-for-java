@@ -16,13 +16,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class KeyVaultSecretReference {
     /**
-     * Gets or sets the URL referencing a secret in a Key Vault.
+     * the URL referencing a secret in a Key Vault.
      */
     @JsonProperty(required = true)
     private String secretUrl;
 
     /**
-     * Gets or sets the Relative URL of the Key Vault containing the secret.
+     * the Relative URL of the Key Vault containing the secret.
      */
     @JsonProperty(required = true)
     private SubResource sourceVault;

@@ -172,7 +172,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to create or update a virtual machine scale set.
+     * Allows you to create or update a virtual machine scale set by providing parameters or a path to pre-configured parameter file.
      *
      * @param resourceGroupName The name of the resource group.
      * @param name Parameters supplied to the Create Virtual Machine Scale Set operation.
@@ -205,7 +205,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to create or update a virtual machine scale set.
+     * Allows you to create or update a virtual machine scale set by providing parameters or a path to pre-configured parameter file.
      *
      * @param resourceGroupName The name of the resource group.
      * @param name Parameters supplied to the Create Virtual Machine Scale Set operation.
@@ -250,7 +250,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to create or update a virtual machine scale set.
+     * Allows you to create or update a virtual machine scale set by providing parameters or a path to pre-configured parameter file.
      *
      * @param resourceGroupName The name of the resource group.
      * @param name Parameters supplied to the Create Virtual Machine Scale Set operation.
@@ -282,7 +282,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to create or update a virtual machine scale set.
+     * Allows you to create or update a virtual machine scale set by providing parameters or a path to pre-configured parameter file.
      *
      * @param resourceGroupName The name of the resource group.
      * @param name Parameters supplied to the Create Virtual Machine Scale Set operation.
@@ -340,7 +340,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to deallocate virtual machines in a virtual machine scale set.
+     * Allows you to deallocate virtual machines in a virtual machine scale set. Shuts down the virtual machines and releases the compute resources. You are not billed for the compute resources that this virtual machine scale set uses.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -371,7 +371,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to deallocate virtual machines in a virtual machine scale set.
+     * Allows you to deallocate virtual machines in a virtual machine scale set. Shuts down the virtual machines and releases the compute resources. You are not billed for the compute resources that this virtual machine scale set uses.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -413,11 +413,11 @@ public final class VirtualMachineScaleSetsInner {
         return serviceCall;
     }
     /**
-     * The operation to deallocate virtual machines in a virtual machine scale set.
+     * Allows you to deallocate virtual machines in a virtual machine scale set. Shuts down the virtual machines and releases the compute resources. You are not billed for the compute resources that this virtual machine scale set uses.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @param instanceIds Gets or sets the virtual machine scale set instance ids.
+     * @param instanceIds the virtual machine scale set instance ids.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -448,11 +448,11 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to deallocate virtual machines in a virtual machine scale set.
+     * Allows you to deallocate virtual machines in a virtual machine scale set. Shuts down the virtual machines and releases the compute resources. You are not billed for the compute resources that this virtual machine scale set uses.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @param instanceIds Gets or sets the virtual machine scale set instance ids.
+     * @param instanceIds the virtual machine scale set instance ids.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
@@ -495,7 +495,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to deallocate virtual machines in a virtual machine scale set.
+     * Allows you to deallocate virtual machines in a virtual machine scale set. Shuts down the virtual machines and releases the compute resources. You are not billed for the compute resources that this virtual machine scale set uses.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -525,7 +525,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to deallocate virtual machines in a virtual machine scale set.
+     * Allows you to deallocate virtual machines in a virtual machine scale set. Shuts down the virtual machines and releases the compute resources. You are not billed for the compute resources that this virtual machine scale set uses.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -572,11 +572,11 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to deallocate virtual machines in a virtual machine scale set.
+     * Allows you to deallocate virtual machines in a virtual machine scale set. Shuts down the virtual machines and releases the compute resources. You are not billed for the compute resources that this virtual machine scale set uses.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @param instanceIds Gets or sets the virtual machine scale set instance ids.
+     * @param instanceIds the virtual machine scale set instance ids.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -606,11 +606,11 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to deallocate virtual machines in a virtual machine scale set.
+     * Allows you to deallocate virtual machines in a virtual machine scale set. Shuts down the virtual machines and releases the compute resources. You are not billed for the compute resources that this virtual machine scale set uses.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @param instanceIds Gets or sets the virtual machine scale set instance ids.
+     * @param instanceIds the virtual machine scale set instance ids.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
@@ -663,7 +663,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to delete a virtual machine scale set.
+     * Allows you to delete a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -691,7 +691,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to delete a virtual machine scale set.
+     * Allows you to delete a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -731,7 +731,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to delete a virtual machine scale set.
+     * Allows you to delete a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -758,7 +758,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to delete a virtual machine scale set.
+     * Allows you to delete a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -810,7 +810,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to get a virtual machine scale set.
+     * Display information about a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -837,7 +837,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to get a virtual machine scale set.
+     * Display information about a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -888,11 +888,11 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to delete virtual machines in a virtual machine scale set.
+     * Allows you to delete virtual machines in a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @param instanceIds Gets or sets the virtual machine scale set instance ids.
+     * @param instanceIds the virtual machine scale set instance ids.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -923,11 +923,11 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to delete virtual machines in a virtual machine scale set.
+     * Allows you to delete virtual machines in a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @param instanceIds Gets or sets the virtual machine scale set instance ids.
+     * @param instanceIds the virtual machine scale set instance ids.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
@@ -970,11 +970,11 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to delete virtual machines in a virtual machine scale set.
+     * Allows you to delete virtual machines in a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @param instanceIds Gets or sets the virtual machine scale set instance ids.
+     * @param instanceIds the virtual machine scale set instance ids.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -1004,11 +1004,11 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to delete virtual machines in a virtual machine scale set.
+     * Allows you to delete virtual machines in a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @param instanceIds Gets or sets the virtual machine scale set instance ids.
+     * @param instanceIds the virtual machine scale set instance ids.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
@@ -1062,7 +1062,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to get a virtual machine scale set instance view.
+     * Displays status of a virtual machine scale set instance.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -1089,7 +1089,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to get a virtual machine scale set instance view.
+     * Displays status of a virtual machine scale set instance.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -1140,7 +1140,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to list virtual machine scale sets under a resource group.
+     * Lists all virtual machine scale sets under a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @throws CloudException exception thrown from REST call
@@ -1170,7 +1170,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to list virtual machine scale sets under a resource group.
+     * Lists all virtual machine scale sets under a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -1223,7 +1223,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * Gets the list of Virtual Machine Scale Sets in the subscription. Use nextLink property in the response to get the next page of Virtual Machine Scale Sets. Do this till nextLink is not null to fetch all the Virtual Machine Scale Sets.
+     * Lists all Virtual Machine Scale Sets in the subscription. Use nextLink property in the response to get the next page of Virtual Machine Scale Sets. Do this till nextLink is not null to fetch all the Virtual Machine Scale Sets.
      *
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -1249,7 +1249,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * Gets the list of Virtual Machine Scale Sets in the subscription. Use nextLink property in the response to get the next page of Virtual Machine Scale Sets. Do this till nextLink is not null to fetch all the Virtual Machine Scale Sets.
+     * Lists all Virtual Machine Scale Sets in the subscription. Use nextLink property in the response to get the next page of Virtual Machine Scale Sets. Do this till nextLink is not null to fetch all the Virtual Machine Scale Sets.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -1297,7 +1297,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to list available skus for a virtual machine scale set.
+     * Displays available skus for your virtual machine scale set including the minimum and maximum vm instances allowed for a particular sku.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -1331,7 +1331,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to list available skus for a virtual machine scale set.
+     * Displays available skus for your virtual machine scale set including the minimum and maximum vm instances allowed for a particular sku.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -1389,7 +1389,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to power off (stop) virtual machines in a virtual machine scale set.
+     * Allows you to power off (stop) virtual machines in a virtual machine scale set. Note that resources are still attached and you are getting charged for the resources. Use deallocate to release resources.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -1420,7 +1420,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to power off (stop) virtual machines in a virtual machine scale set.
+     * Allows you to power off (stop) virtual machines in a virtual machine scale set. Note that resources are still attached and you are getting charged for the resources. Use deallocate to release resources.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -1462,11 +1462,11 @@ public final class VirtualMachineScaleSetsInner {
         return serviceCall;
     }
     /**
-     * The operation to power off (stop) virtual machines in a virtual machine scale set.
+     * Allows you to power off (stop) virtual machines in a virtual machine scale set. Note that resources are still attached and you are getting charged for the resources. Use deallocate to release resources.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @param instanceIds Gets or sets the virtual machine scale set instance ids.
+     * @param instanceIds the virtual machine scale set instance ids.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -1497,11 +1497,11 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to power off (stop) virtual machines in a virtual machine scale set.
+     * Allows you to power off (stop) virtual machines in a virtual machine scale set. Note that resources are still attached and you are getting charged for the resources. Use deallocate to release resources.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @param instanceIds Gets or sets the virtual machine scale set instance ids.
+     * @param instanceIds the virtual machine scale set instance ids.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
@@ -1544,7 +1544,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to power off (stop) virtual machines in a virtual machine scale set.
+     * Allows you to power off (stop) virtual machines in a virtual machine scale set. Note that resources are still attached and you are getting charged for the resources. Use deallocate to release resources.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -1574,7 +1574,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to power off (stop) virtual machines in a virtual machine scale set.
+     * Allows you to power off (stop) virtual machines in a virtual machine scale set. Note that resources are still attached and you are getting charged for the resources. Use deallocate to release resources.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -1621,11 +1621,11 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to power off (stop) virtual machines in a virtual machine scale set.
+     * Allows you to power off (stop) virtual machines in a virtual machine scale set. Note that resources are still attached and you are getting charged for the resources. Use deallocate to release resources.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @param instanceIds Gets or sets the virtual machine scale set instance ids.
+     * @param instanceIds the virtual machine scale set instance ids.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -1655,11 +1655,11 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to power off (stop) virtual machines in a virtual machine scale set.
+     * Allows you to power off (stop) virtual machines in a virtual machine scale set. Note that resources are still attached and you are getting charged for the resources. Use deallocate to release resources.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @param instanceIds Gets or sets the virtual machine scale set instance ids.
+     * @param instanceIds the virtual machine scale set instance ids.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
@@ -1712,7 +1712,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to restart virtual machines in a virtual machine scale set.
+     * Allows you to restart virtual machines in a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -1743,7 +1743,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to restart virtual machines in a virtual machine scale set.
+     * Allows you to restart virtual machines in a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -1785,11 +1785,11 @@ public final class VirtualMachineScaleSetsInner {
         return serviceCall;
     }
     /**
-     * The operation to restart virtual machines in a virtual machine scale set.
+     * Allows you to restart virtual machines in a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @param instanceIds Gets or sets the virtual machine scale set instance ids.
+     * @param instanceIds the virtual machine scale set instance ids.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -1820,11 +1820,11 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to restart virtual machines in a virtual machine scale set.
+     * Allows you to restart virtual machines in a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @param instanceIds Gets or sets the virtual machine scale set instance ids.
+     * @param instanceIds the virtual machine scale set instance ids.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
@@ -1867,7 +1867,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to restart virtual machines in a virtual machine scale set.
+     * Allows you to restart virtual machines in a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -1897,7 +1897,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to restart virtual machines in a virtual machine scale set.
+     * Allows you to restart virtual machines in a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -1944,11 +1944,11 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to restart virtual machines in a virtual machine scale set.
+     * Allows you to restart virtual machines in a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @param instanceIds Gets or sets the virtual machine scale set instance ids.
+     * @param instanceIds the virtual machine scale set instance ids.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -1978,11 +1978,11 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to restart virtual machines in a virtual machine scale set.
+     * Allows you to restart virtual machines in a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @param instanceIds Gets or sets the virtual machine scale set instance ids.
+     * @param instanceIds the virtual machine scale set instance ids.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
@@ -2035,7 +2035,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to start virtual machines in a virtual machine scale set.
+     * Allows you to start virtual machines in a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -2066,7 +2066,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to start virtual machines in a virtual machine scale set.
+     * Allows you to start virtual machines in a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -2108,11 +2108,11 @@ public final class VirtualMachineScaleSetsInner {
         return serviceCall;
     }
     /**
-     * The operation to start virtual machines in a virtual machine scale set.
+     * Allows you to start virtual machines in a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @param instanceIds Gets or sets the virtual machine scale set instance ids.
+     * @param instanceIds the virtual machine scale set instance ids.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -2143,11 +2143,11 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to start virtual machines in a virtual machine scale set.
+     * Allows you to start virtual machines in a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @param instanceIds Gets or sets the virtual machine scale set instance ids.
+     * @param instanceIds the virtual machine scale set instance ids.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
@@ -2190,7 +2190,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to start virtual machines in a virtual machine scale set.
+     * Allows you to start virtual machines in a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -2220,7 +2220,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to start virtual machines in a virtual machine scale set.
+     * Allows you to start virtual machines in a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -2267,11 +2267,11 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to start virtual machines in a virtual machine scale set.
+     * Allows you to start virtual machines in a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @param instanceIds Gets or sets the virtual machine scale set instance ids.
+     * @param instanceIds the virtual machine scale set instance ids.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -2301,11 +2301,11 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to start virtual machines in a virtual machine scale set.
+     * Allows you to start virtual machines in a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @param instanceIds Gets or sets the virtual machine scale set instance ids.
+     * @param instanceIds the virtual machine scale set instance ids.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
@@ -2358,11 +2358,11 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to manually upgrade virtual machines in a virtual machine scale set.
+     * Allows you to manually upgrade virtual machines in a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @param instanceIds Gets or sets the virtual machine scale set instance ids.
+     * @param instanceIds the virtual machine scale set instance ids.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -2393,11 +2393,11 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to manually upgrade virtual machines in a virtual machine scale set.
+     * Allows you to manually upgrade virtual machines in a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @param instanceIds Gets or sets the virtual machine scale set instance ids.
+     * @param instanceIds the virtual machine scale set instance ids.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
@@ -2440,11 +2440,11 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to manually upgrade virtual machines in a virtual machine scale set.
+     * Allows you to manually upgrade virtual machines in a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @param instanceIds Gets or sets the virtual machine scale set instance ids.
+     * @param instanceIds the virtual machine scale set instance ids.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -2474,11 +2474,11 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to manually upgrade virtual machines in a virtual machine scale set.
+     * Allows you to manually upgrade virtual machines in a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @param instanceIds Gets or sets the virtual machine scale set instance ids.
+     * @param instanceIds the virtual machine scale set instance ids.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
@@ -2532,7 +2532,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to re-image virtual machines in a virtual machine scale set.
+     * Allows you to re-image(update the version of the installed operating system) virtual machines in a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -2560,7 +2560,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to re-image virtual machines in a virtual machine scale set.
+     * Allows you to re-image(update the version of the installed operating system) virtual machines in a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -2600,7 +2600,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to re-image virtual machines in a virtual machine scale set.
+     * Allows you to re-image(update the version of the installed operating system) virtual machines in a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -2627,7 +2627,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to re-image virtual machines in a virtual machine scale set.
+     * Allows you to re-image(update the version of the installed operating system) virtual machines in a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -2677,7 +2677,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to list virtual machine scale sets under a resource group.
+     * Lists all virtual machine scale sets under a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws CloudException exception thrown from REST call
@@ -2694,7 +2694,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to list virtual machine scale sets under a resource group.
+     * Lists all virtual machine scale sets under a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -2740,7 +2740,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * Gets the list of Virtual Machine Scale Sets in the subscription. Use nextLink property in the response to get the next page of Virtual Machine Scale Sets. Do this till nextLink is not null to fetch all the Virtual Machine Scale Sets.
+     * Lists all Virtual Machine Scale Sets in the subscription. Use nextLink property in the response to get the next page of Virtual Machine Scale Sets. Do this till nextLink is not null to fetch all the Virtual Machine Scale Sets.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws CloudException exception thrown from REST call
@@ -2757,7 +2757,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * Gets the list of Virtual Machine Scale Sets in the subscription. Use nextLink property in the response to get the next page of Virtual Machine Scale Sets. Do this till nextLink is not null to fetch all the Virtual Machine Scale Sets.
+     * Lists all Virtual Machine Scale Sets in the subscription. Use nextLink property in the response to get the next page of Virtual Machine Scale Sets. Do this till nextLink is not null to fetch all the Virtual Machine Scale Sets.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -2803,7 +2803,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to list available skus for a virtual machine scale set.
+     * Displays available skus for your virtual machine scale set including the minimum and maximum vm instances allowed for a particular sku.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws CloudException exception thrown from REST call
@@ -2820,7 +2820,7 @@ public final class VirtualMachineScaleSetsInner {
     }
 
     /**
-     * The operation to list available skus for a virtual machine scale set.
+     * Displays available skus for your virtual machine scale set including the minimum and maximum vm instances allowed for a particular sku.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls

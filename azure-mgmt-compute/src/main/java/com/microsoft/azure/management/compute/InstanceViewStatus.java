@@ -15,29 +15,27 @@ import org.joda.time.DateTime;
  */
 public class InstanceViewStatus {
     /**
-     * Gets the status Code.
+     * the status Code.
      */
     private String code;
 
     /**
-     * Gets or sets the level Code. Possible values include: 'Info',
-     * 'Warning', 'Error'.
+     * the level Code. Possible values include: 'Info', 'Warning', 'Error'.
      */
     private StatusLevelTypes level;
 
     /**
-     * Gets or sets the short localizable label for the status.
+     * the short localizable label for the status.
      */
     private String displayStatus;
 
     /**
-     * Gets or sets the detailed Message, including for alerts and error
-     * messages.
+     * the detailed Message, including for alerts and error messages.
      */
     private String message;
 
     /**
-     * Gets or sets the time of the status.
+     * the time of the status.
      */
     private DateTime time;
 

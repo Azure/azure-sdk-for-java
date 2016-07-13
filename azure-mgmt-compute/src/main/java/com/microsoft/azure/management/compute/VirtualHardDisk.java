@@ -14,8 +14,8 @@ package com.microsoft.azure.management.compute;
  */
 public class VirtualHardDisk {
     /**
-     * Gets or sets the virtual hard disk's uri. It should be a valid Uri to a
-     * virtual hard disk.
+     * the virtual hard disk's uri. It should be a valid Uri to a virtual hard
+     * disk.
      */
     private String uri;
 

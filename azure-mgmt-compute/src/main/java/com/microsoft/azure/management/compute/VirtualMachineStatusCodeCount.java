@@ -16,13 +16,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class VirtualMachineStatusCodeCount {
     /**
-     * Gets the instance view status code.
+     * the instance view status code.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String code;
 
     /**
-     * Gets the number of instances having a particular status code.
+     * the number of instances having a particular status code.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer count;

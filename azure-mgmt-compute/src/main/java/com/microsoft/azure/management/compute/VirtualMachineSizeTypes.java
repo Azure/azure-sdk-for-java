@@ -114,6 +114,9 @@ public final class VirtualMachineSizeTypes {
     /** Static value Standard_D14_v2 for VirtualMachineSizeTypes. */
     public static final String STANDARD_D14_V2 = "Standard_D14_v2";
 
+    /** Static value Standard_D15_v2 for VirtualMachineSizeTypes. */
+    public static final String STANDARD_D15_V2 = "Standard_D15_v2";
+
     /** Static value Standard_DS1 for VirtualMachineSizeTypes. */
     public static final String STANDARD_DS1 = "Standard_DS1";
 
@@ -137,6 +140,36 @@ public final class VirtualMachineSizeTypes {
 
     /** Static value Standard_DS14 for VirtualMachineSizeTypes. */
     public static final String STANDARD_DS14 = "Standard_DS14";
+
+    /** Static value Standard_DS1_v2 for VirtualMachineSizeTypes. */
+    public static final String STANDARD_DS1_V2 = "Standard_DS1_v2";
+
+    /** Static value Standard_DS2_v2 for VirtualMachineSizeTypes. */
+    public static final String STANDARD_DS2_V2 = "Standard_DS2_v2";
+
+    /** Static value Standard_DS3_v2 for VirtualMachineSizeTypes. */
+    public static final String STANDARD_DS3_V2 = "Standard_DS3_v2";
+
+    /** Static value Standard_DS4_v2 for VirtualMachineSizeTypes. */
+    public static final String STANDARD_DS4_V2 = "Standard_DS4_v2";
+
+    /** Static value Standard_DS5_v2 for VirtualMachineSizeTypes. */
+    public static final String STANDARD_DS5_V2 = "Standard_DS5_v2";
+
+    /** Static value Standard_DS11_v2 for VirtualMachineSizeTypes. */
+    public static final String STANDARD_DS11_V2 = "Standard_DS11_v2";
+
+    /** Static value Standard_DS12_v2 for VirtualMachineSizeTypes. */
+    public static final String STANDARD_DS12_V2 = "Standard_DS12_v2";
+
+    /** Static value Standard_DS13_v2 for VirtualMachineSizeTypes. */
+    public static final String STANDARD_DS13_V2 = "Standard_DS13_v2";
+
+    /** Static value Standard_DS14_v2 for VirtualMachineSizeTypes. */
+    public static final String STANDARD_DS14_V2 = "Standard_DS14_v2";
+
+    /** Static value Standard_DS15_v2 for VirtualMachineSizeTypes. */
+    public static final String STANDARD_DS15_V2 = "Standard_DS15_v2";
 
     /** Static value Standard_G1 for VirtualMachineSizeTypes. */
     public static final String STANDARD_G1 = "Standard_G1";

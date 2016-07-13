@@ -127,7 +127,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to re-image a virtual machine scale set instance.
+     * Allows you to re-image(update the version of the installed operating system) a virtual machine scale set instance.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -159,7 +159,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to re-image a virtual machine scale set instance.
+     * Allows you to re-image(update the version of the installed operating system) a virtual machine scale set instance.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -203,7 +203,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to re-image a virtual machine scale set instance.
+     * Allows you to re-image(update the version of the installed operating system) a virtual machine scale set instance.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -234,7 +234,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to re-image a virtual machine scale set instance.
+     * Allows you to re-image(update the version of the installed operating system) a virtual machine scale set instance.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -289,7 +289,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to deallocate a virtual machine scale set.
+     * Allows you to deallocate a virtual machine scale set virtual machine. Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources that this virtual machine uses.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -321,7 +321,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to deallocate a virtual machine scale set.
+     * Allows you to deallocate a virtual machine scale set virtual machine. Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources that this virtual machine uses.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -365,7 +365,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to deallocate a virtual machine scale set.
+     * Allows you to deallocate a virtual machine scale set virtual machine. Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources that this virtual machine uses.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -396,7 +396,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to deallocate a virtual machine scale set.
+     * Allows you to deallocate a virtual machine scale set virtual machine. Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources that this virtual machine uses.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -451,7 +451,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to delete a virtual machine scale set.
+     * Allows you to delete a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -483,7 +483,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to delete a virtual machine scale set.
+     * Allows you to delete a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -527,7 +527,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to delete a virtual machine scale set.
+     * Allows you to delete a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -558,7 +558,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to delete a virtual machine scale set.
+     * Allows you to delete a virtual machine scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -615,7 +615,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to get a virtual machine scale set virtual machine.
+     * Displays information about a virtual machine scale set virtual machine.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -646,7 +646,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to get a virtual machine scale set virtual machine.
+     * Displays information about a virtual machine scale set virtual machine.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -702,7 +702,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to get a virtual machine scale set virtual machine.
+     * Displays the status of a virtual machine scale set virtual machine.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -733,7 +733,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to get a virtual machine scale set virtual machine.
+     * Displays the status of a virtual machine scale set virtual machine.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -789,7 +789,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to list virtual machine scale sets VMs.
+     * Lists all virtual machines in a VM scale sets.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
@@ -826,7 +826,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to list virtual machine scale sets VMs.
+     * Lists all virtual machines in a VM scale sets.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
@@ -880,7 +880,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to list virtual machine scale sets VMs.
+     * Lists all virtual machines in a VM scale sets.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
@@ -917,7 +917,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to list virtual machine scale sets VMs.
+     * Lists all virtual machines in a VM scale sets.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
@@ -978,7 +978,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to power off (stop) a virtual machine scale set.
+     * Allows you to power off (stop) a virtual machine in a VM scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -1010,7 +1010,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to power off (stop) a virtual machine scale set.
+     * Allows you to power off (stop) a virtual machine in a VM scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -1054,7 +1054,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to power off (stop) a virtual machine scale set.
+     * Allows you to power off (stop) a virtual machine in a VM scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -1085,7 +1085,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to power off (stop) a virtual machine scale set.
+     * Allows you to power off (stop) a virtual machine in a VM scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -1140,7 +1140,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to restart a virtual machine scale set.
+     * Allows you to restart a virtual machine in a VM scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -1172,7 +1172,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to restart a virtual machine scale set.
+     * Allows you to restart a virtual machine in a VM scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -1216,7 +1216,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to restart a virtual machine scale set.
+     * Allows you to restart a virtual machine in a VM scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -1247,7 +1247,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to restart a virtual machine scale set.
+     * Allows you to restart a virtual machine in a VM scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -1302,7 +1302,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to start a virtual machine scale set.
+     * Allows you to start a virtual machine in a VM scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -1334,7 +1334,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to start a virtual machine scale set.
+     * Allows you to start a virtual machine in a VM scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -1378,7 +1378,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to start a virtual machine scale set.
+     * Allows you to start a virtual machine in a VM scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -1409,7 +1409,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to start a virtual machine scale set.
+     * Allows you to start a virtual machine in a VM scale set.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
@@ -1464,7 +1464,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to list virtual machine scale sets VMs.
+     * Lists all virtual machines in a VM scale sets.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws CloudException exception thrown from REST call
@@ -1481,7 +1481,7 @@ public final class VirtualMachineScaleSetVMsInner {
     }
 
     /**
-     * The operation to list virtual machine scale sets VMs.
+     * Lists all virtual machines in a VM scale sets.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls

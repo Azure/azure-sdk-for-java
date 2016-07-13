@@ -15,17 +15,17 @@ import java.util.List;
  */
 public class StorageProfile {
     /**
-     * Gets or sets the image reference.
+     * the image reference.
      */
     private ImageReference imageReference;
 
     /**
-     * Gets or sets the OS disk.
+     * the OS disk.
      */
     private OSDisk osDisk;
 
     /**
-     * Gets or sets the data disks.
+     * the data disks.
      */
     private List<DataDisk> dataDisks;
 
