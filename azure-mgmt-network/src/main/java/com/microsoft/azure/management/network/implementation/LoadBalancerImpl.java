@@ -5,7 +5,14 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.network.FrontendIPConfiguration;
 import com.microsoft.azure.management.network.LoadBalancer;
+import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;
@@ -62,7 +69,38 @@ class LoadBalancerImpl
         return super.myManager;
     }
 
-    // Setters (fluent)
+    private FrontendIPConfiguration createFrontendIPConfig(String name) {
+        List<FrontendIPConfiguration> frontendIpConfigs = this.inner().frontendIPConfigurations();
+        if (frontendIpConfigs == null) {
+            frontendIpConfigs = new ArrayList<FrontendIPConfiguration>();
+            this.inner().withFrontendIPConfigurations(frontendIpConfigs);
+        }
+
+        FrontendIPConfiguration frontendIpConfig = new FrontendIPConfiguration();
+        frontendIpConfigs.add(frontendIpConfig);
+        if (name == null) {
+            name = "frontend" + frontendIpConfigs.size() + 1;
+        }
+        frontendIpConfig.withName(name);
+
+        return frontendIpConfig;
+    }
+
+    // Withers (fluent)
+
+    @Override
+    public LoadBalancerImpl withExistingPublicIpAddress(PublicIpAddress publicIpAddress) {
+        return this.withExistingPublicIpAddress(publicIpAddress.id());
+    }
+
+    @Override
+    public LoadBalancerImpl withExistingPublicIpAddress(String resourceId) {
+        FrontendIPConfiguration frontendIpConfig = createFrontendIPConfig(null);
+        SubResource pip = new SubResource();
+        pip.withId(resourceId);
+        frontendIpConfig.withPublicIPAddress(pip);
+        return this;
+    }
 
     // Getters
 
@@ -94,5 +132,16 @@ class LoadBalancerImpl
                         callback.success(result);
                     }
                 }));
+    }
+
+    @Override
+    public List<String> publicIpAddressIds() {
+        List<String> publicIpAddressIds = new ArrayList<>();
+        if (this.inner().frontendIPConfigurations() != null) {
+            for (FrontendIPConfiguration frontEndIpConfig : this.inner().frontendIPConfigurations()) {
+                publicIpAddressIds.add(frontEndIpConfig.publicIPAddress().id());
+            }
+        }
+        return Collections.unmodifiableList(publicIpAddressIds);
     }
 }

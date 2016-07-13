@@ -5,6 +5,8 @@
  */
 package com.microsoft.azure.management.network;
 
+import java.util.List;
+
 import com.microsoft.azure.management.network.implementation.LoadBalancerInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -24,6 +26,10 @@ public interface LoadBalancer extends
         Updatable<LoadBalancer.Update> {
 
     // Getters
+    /**
+     * @return resource IDs of the public IP addresses assigned to the front end of this load balancer
+     */
+    List<String> publicIpAddressIds();
 
     /**
      * The entirety of the load balancer definition.
@@ -49,7 +55,7 @@ public interface LoadBalancer extends
          * The stage of the load balancer definition allowing to specify the resource group.
          */
         interface WithGroup
-            extends GroupableResource.DefinitionStages.WithGroup<DefinitionStages.WithCreate> {
+            extends GroupableResource.DefinitionStages.WithGroup<WithCreate> {
         }
 
         /**
@@ -59,7 +65,8 @@ public interface LoadBalancer extends
          */
         interface WithCreate extends
             Creatable<LoadBalancer>,
-            Resource.DefinitionWithTags<WithCreate> {
+            Resource.DefinitionWithTags<WithCreate>,
+            PublicIpAddress.WithPublicIpAddress<WithCreate> {
        }
     }
 
