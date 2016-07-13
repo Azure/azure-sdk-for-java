@@ -92,6 +92,7 @@ class NetworkSecurityGroupImpl
 
     @Override
     public NetworkSecurityGroupImpl apply() throws Exception {
+        this.inner().withNetworkInterfaces(null);
         return this.create();
     }
 
