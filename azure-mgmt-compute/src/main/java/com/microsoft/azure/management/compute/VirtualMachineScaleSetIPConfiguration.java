@@ -19,25 +19,31 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class VirtualMachineScaleSetIPConfiguration extends SubResource {
     /**
-     * Gets or sets the IP configuration name.
+     * the IP configuration name.
      */
     @JsonProperty(required = true)
     private String name;
 
     /**
-     * Gets or sets the subnet.
+     * the subnet.
      */
     @JsonProperty(value = "properties.subnet", required = true)
     private ApiEntityReference subnet;
 
     /**
-     * Gets or sets the load balancer backend address pools.
+     * the application gateway backend address pools.
+     */
+    @JsonProperty(value = "properties.applicationGatewayBackendAddressPools")
+    private List<SubResource> applicationGatewayBackendAddressPools;
+
+    /**
+     * the load balancer backend address pools.
      */
     @JsonProperty(value = "properties.loadBalancerBackendAddressPools")
     private List<SubResource> loadBalancerBackendAddressPools;
 
     /**
-     * Gets or sets the load balancer inbound nat pools.
+     * the load balancer inbound nat pools.
      */
     @JsonProperty(value = "properties.loadBalancerInboundNatPools")
     private List<SubResource> loadBalancerInboundNatPools;
@@ -79,6 +85,26 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
      */
     public VirtualMachineScaleSetIPConfiguration withSubnet(ApiEntityReference subnet) {
         this.subnet = subnet;
+        return this;
+    }
+
+    /**
+     * Get the applicationGatewayBackendAddressPools value.
+     *
+     * @return the applicationGatewayBackendAddressPools value
+     */
+    public List<SubResource> applicationGatewayBackendAddressPools() {
+        return this.applicationGatewayBackendAddressPools;
+    }
+
+    /**
+     * Set the applicationGatewayBackendAddressPools value.
+     *
+     * @param applicationGatewayBackendAddressPools the applicationGatewayBackendAddressPools value to set
+     * @return the VirtualMachineScaleSetIPConfiguration object itself.
+     */
+    public VirtualMachineScaleSetIPConfiguration withApplicationGatewayBackendAddressPools(List<SubResource> applicationGatewayBackendAddressPools) {
+        this.applicationGatewayBackendAddressPools = applicationGatewayBackendAddressPools;
         return this;
     }
 

@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class VirtualMachineScaleSetExtensionProfile {
     /**
-     * Gets the virtual machine scale set child extension resources.
+     * the virtual machine scale set child extension resources.
      */
     private List<VirtualMachineScaleSetExtension> extensions;
 

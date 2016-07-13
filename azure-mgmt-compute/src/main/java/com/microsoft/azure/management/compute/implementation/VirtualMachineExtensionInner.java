@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.compute.implementation;
 
-import com.microsoft.azure.management.compute.ForceUpdateTagTypes;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionInstanceView;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -20,58 +19,57 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class VirtualMachineExtensionInner extends Resource {
     /**
-     * Gets or sets how the extension handler should be forced to update even
-     * if the extension configuration has not changed. Possible values
-     * include: 'RerunExtension'.
+     * how the extension handler should be forced to update even if the
+     * extension configuration has not changed.
      */
     @JsonProperty(value = "properties.forceUpdateTag")
-    private ForceUpdateTagTypes forceUpdateTag;
+    private String forceUpdateTag;
 
     /**
-     * Gets or sets the name of the extension handler publisher.
+     * the name of the extension handler publisher.
      */
     @JsonProperty(value = "properties.publisher")
     private String publisher;
 
     /**
-     * Gets or sets the type of the extension handler.
+     * the type of the extension handler.
      */
     @JsonProperty(value = "properties.type")
     private String virtualMachineExtensionType;
 
     /**
-     * Gets or sets the type version of the extension handler.
+     * the type version of the extension handler.
      */
     @JsonProperty(value = "properties.typeHandlerVersion")
     private String typeHandlerVersion;
 
     /**
-     * Gets or sets whether the extension handler should be automatically
-     * upgraded across minor versions.
+     * whether the extension handler should be automatically upgraded across
+     * minor versions.
      */
     @JsonProperty(value = "properties.autoUpgradeMinorVersion")
     private Boolean autoUpgradeMinorVersion;
 
     /**
-     * Gets or sets Json formatted public settings for the extension.
+     * Json formatted public settings for the extension.
      */
     @JsonProperty(value = "properties.settings")
     private Object settings;
 
     /**
-     * Gets or sets Json formatted protected settings for the extension.
+     * Json formatted protected settings for the extension.
      */
     @JsonProperty(value = "properties.protectedSettings")
     private Object protectedSettings;
 
     /**
-     * Gets or sets the provisioning state, which only appears in the response.
+     * the provisioning state, which only appears in the response.
      */
-    @JsonProperty(value = "properties.provisioningState")
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /**
-     * Gets or sets the virtual machine extension instance view.
+     * the virtual machine extension instance view.
      */
     @JsonProperty(value = "properties.instanceView")
     private VirtualMachineExtensionInstanceView instanceView;
@@ -81,7 +79,7 @@ public class VirtualMachineExtensionInner extends Resource {
      *
      * @return the forceUpdateTag value
      */
-    public ForceUpdateTagTypes forceUpdateTag() {
+    public String forceUpdateTag() {
         return this.forceUpdateTag;
     }
 
@@ -91,7 +89,7 @@ public class VirtualMachineExtensionInner extends Resource {
      * @param forceUpdateTag the forceUpdateTag value to set
      * @return the VirtualMachineExtensionInner object itself.
      */
-    public VirtualMachineExtensionInner withForceUpdateTag(ForceUpdateTagTypes forceUpdateTag) {
+    public VirtualMachineExtensionInner withForceUpdateTag(String forceUpdateTag) {
         this.forceUpdateTag = forceUpdateTag;
         return this;
     }
@@ -223,17 +221,6 @@ public class VirtualMachineExtensionInner extends Resource {
      */
     public String provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState value.
-     *
-     * @param provisioningState the provisioningState value to set
-     * @return the VirtualMachineExtensionInner object itself.
-     */
-    public VirtualMachineExtensionInner withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
     /**

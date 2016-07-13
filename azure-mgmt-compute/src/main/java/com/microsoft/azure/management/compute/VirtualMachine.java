@@ -248,6 +248,11 @@ public interface VirtualMachine extends
     DiagnosticsProfile diagnosticsProfile();
 
     /**
+     * @return the virtual machine unique id.
+     */
+    String vmId();
+
+    /**
      * @return the power state of the virtual machine
      */
     PowerState powerState();

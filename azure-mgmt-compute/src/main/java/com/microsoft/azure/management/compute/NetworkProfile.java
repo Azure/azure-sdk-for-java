@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class NetworkProfile {
     /**
-     * Gets or sets the network interfaces.
+     * the network interfaces.
      */
     private List<NetworkInterfaceReference> networkInterfaces;
 

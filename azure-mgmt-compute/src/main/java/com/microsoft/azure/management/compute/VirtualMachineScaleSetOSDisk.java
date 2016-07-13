@@ -16,40 +16,38 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class VirtualMachineScaleSetOSDisk {
     /**
-     * Gets or sets the disk name.
+     * the disk name.
      */
     @JsonProperty(required = true)
     private String name;
 
     /**
-     * Gets or sets the caching type. Possible values include: 'None',
-     * 'ReadOnly', 'ReadWrite'.
+     * the caching type. Possible values include: 'None', 'ReadOnly',
+     * 'ReadWrite'.
      */
     private CachingTypes caching;
 
     /**
-     * Gets or sets the create option. Possible values include: 'fromImage',
-     * 'empty', 'attach'.
+     * the create option. Possible values include: 'fromImage', 'empty',
+     * 'attach'.
      */
     @JsonProperty(required = true)
     private DiskCreateOptionTypes createOption;
 
     /**
-     * Gets or sets the Operating System type. Possible values include:
-     * 'Windows', 'Linux'.
+     * the Operating System type. Possible values include: 'Windows', 'Linux'.
      */
     private OperatingSystemTypes osType;
 
     /**
-     * Gets or sets the Source User Image VirtualHardDisk. This
-     * VirtualHardDisk will be copied before using it to attach to the
-     * Virtual Machine.If SourceImage is provided, the destination
-     * VirtualHardDisk should not exist.
+     * the Source User Image VirtualHardDisk. This VirtualHardDisk will be
+     * copied before using it to attach to the Virtual Machine.If SourceImage
+     * is provided, the destination VirtualHardDisk should not exist.
      */
     private VirtualHardDisk image;
 
     /**
-     * Gets or sets the list of virtual hard disk container uris.
+     * the list of virtual hard disk container uris.
      */
     private List<String> vhdContainers;
 

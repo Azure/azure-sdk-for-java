@@ -14,7 +14,7 @@ package com.microsoft.azure.management.compute;
  */
 public class DiagnosticsProfile {
     /**
-     * Gets or sets the boot diagnostics.
+     * the boot diagnostics.
      */
     private BootDiagnostics bootDiagnostics;
 

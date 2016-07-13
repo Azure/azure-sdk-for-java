@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class VirtualMachineScaleSetNetworkProfile {
     /**
-     * Gets or sets the list of network configurations.
+     * the list of network configurations.
      */
     private List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations;
 
