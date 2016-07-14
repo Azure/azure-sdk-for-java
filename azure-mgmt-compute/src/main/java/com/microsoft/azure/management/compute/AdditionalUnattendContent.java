@@ -10,36 +10,36 @@ package com.microsoft.azure.management.compute;
 
 
 /**
- * Gets or sets additional XML formatted information that can be included in
- * the Unattend.xml file, which is used by Windows Setup. Contents are
- * defined by setting name, component name, and the pass in which the content
- * is a applied.
+ * additional XML formatted information that can be included in the
+ * Unattend.xml file, which is used by Windows Setup. Contents are defined by
+ * setting name, component name, and the pass in which the content is a
+ * applied.
  */
 public class AdditionalUnattendContent {
     /**
-     * Gets or sets the pass name. Currently, the only allowable value is
-     * oobeSystem. Possible values include: 'oobeSystem'.
+     * the pass name. Currently, the only allowable value is oobeSystem.
+     * Possible values include: 'oobeSystem'.
      */
     private PassNames passName;
 
     /**
-     * Gets or sets the component name. Currently, the only allowable value is
+     * the component name. Currently, the only allowable value is
      * Microsoft-Windows-Shell-Setup. Possible values include:
      * 'Microsoft-Windows-Shell-Setup'.
      */
     private ComponentNames componentName;
 
     /**
-     * Gets or sets setting name (e.g. FirstLogonCommands, AutoLogon ).
-     * Possible values include: 'AutoLogon', 'FirstLogonCommands'.
+     * setting name (e.g. FirstLogonCommands, AutoLogon ). Possible values
+     * include: 'AutoLogon', 'FirstLogonCommands'.
      */
     private SettingNames settingName;
 
     /**
-     * Gets or sets XML formatted content that is added to the unattend.xml
-     * file in the specified pass and component.The XML must be less than 4
-     * KB and must include the root element for the setting or feature that
-     * is being inserted.
+     * XML formatted content that is added to the unattend.xml file in the
+     * specified pass and component.The XML must be less than 4 KB and must
+     * include the root element for the setting or feature that is being
+     * inserted.
      */
     private String content;
 

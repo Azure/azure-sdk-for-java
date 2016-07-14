@@ -14,14 +14,14 @@ package com.microsoft.azure.management.compute;
  */
 public class WinRMListener {
     /**
-     * Gets or sets the Protocol used by WinRM listener. Currently only Http
-     * and Https are supported. Possible values include: 'Http', 'Https'.
+     * the Protocol used by WinRM listener. Currently only Http and Https are
+     * supported. Possible values include: 'Http', 'Https'.
      */
     private ProtocolTypes protocol;
 
     /**
-     * Gets or sets the Certificate URL in KMS for Https listeners. Should be
-     * null for Http listeners.
+     * the Certificate URL in KMS for Https listeners. Should be null for Http
+     * listeners.
      */
     private String certificateUrl;
 

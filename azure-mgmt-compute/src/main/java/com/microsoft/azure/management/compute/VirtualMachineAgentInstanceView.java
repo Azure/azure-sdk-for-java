@@ -15,17 +15,17 @@ import java.util.List;
  */
 public class VirtualMachineAgentInstanceView {
     /**
-     * Gets or sets the VM Agent full version.
+     * the VM Agent full version.
      */
     private String vmAgentVersion;
 
     /**
-     * Gets or sets the virtual machine extension handler instance view.
+     * the virtual machine extension handler instance view.
      */
     private List<VirtualMachineExtensionHandlerInstanceView> extensionHandlers;
 
     /**
-     * Gets or sets the resource status information.
+     * the resource status information.
      */
     private List<InstanceViewStatus> statuses;
 

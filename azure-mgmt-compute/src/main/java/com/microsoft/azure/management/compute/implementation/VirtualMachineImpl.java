@@ -815,6 +815,11 @@ class VirtualMachineImpl
     }
 
     @Override
+    public String vmId() {
+        return inner().vmId();
+    }
+
+    @Override
     public VirtualMachineInstanceView instanceView() throws CloudException, IOException {
         if (this.virtualMachineInstanceView == null) {
             this.refreshInstanceView();
