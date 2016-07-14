@@ -16,9 +16,10 @@ import java.util.List;
  */
 public class CloudTask {
     /**
-     * A string that uniquely identifies the task within the job. The id can
-     * contain any combination of alphanumeric characters including hyphens
-     * and underscores, and cannot contain more than 64 characters.
+     * A string that uniquely identifies the task within the job.
+     * The id can contain any combination of alphanumeric characters including
+     * hyphens and underscores, and cannot contain more than 64 characters.
+     * It is common to use a GUID for the id.
      */
     private String id;
 
@@ -48,8 +49,8 @@ public class CloudTask {
     private DateTime creationTime;
 
     /**
-     * The current state of the task. Possible values include: 'active',
-     * 'preparing', 'running', 'completed'.
+     * The current state of the task.
+     * Possible values include: 'active', 'preparing', 'running', 'completed'.
      */
     private TaskState state;
 
@@ -59,30 +60,35 @@ public class CloudTask {
     private DateTime stateTransitionTime;
 
     /**
-     * The previous state of the task. This property is not set if the task is
-     * in its initial Active state. Possible values include: 'active',
-     * 'preparing', 'running', 'completed'.
+     * The previous state of the task.
+     * This property is not set if the task is in its initial Active state.
+     * Possible values include: 'active', 'preparing', 'running', 'completed'.
      */
     private TaskState previousState;
 
     /**
-     * The time at which the task entered its previous state. This property is
-     * not set if the task is in its initial Active state.
+     * The time at which the task entered its previous state.
+     * This property is not set if the task is in its initial Active state.
      */
     private DateTime previousStateTransitionTime;
 
     /**
-     * The command line of the task. For multi-instance tasks, the command
-     * line is executed on the primary subtask after all the subtasks have
-     * finished executing the coordianation command line.
+     * The command line of the task.
+     * For multi-instance tasks, the command line is executed on the primary
+     * subtask after all the subtasks have finished executing the
+     * coordianation command line. The command line does not run under a
+     * shell, and therefore cannot take advantage of shell features such as
+     * environment variable expansion. If you want to take advantage of such
+     * features, you should invoke the shell in the command line, for example
+     * using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux.
      */
     private String commandLine;
 
     /**
      * A list of files that the Batch service will download to the compute
-     * node before running the command line. For multi-instance tasks, the
-     * resource files will only be downloaded to the compute node on which
-     * the primary subtask is executed.
+     * node before running the command line.
+     * For multi-instance tasks, the resource files will only be downloaded to
+     * the compute node on which the primary subtask is executed.
      */
     private List<ResourceFile> resourceFiles;
 

@@ -36,8 +36,8 @@ public class CertificateAddParameter {
     private String data;
 
     /**
-     * The format of the certificate data. Possible values include: 'pfx',
-     * 'cer', 'unmapped'.
+     * The format of the certificate data.
+     * Possible values include: 'pfx', 'cer', 'unmapped'.
      */
     private CertificateFormat certificateFormat;
 

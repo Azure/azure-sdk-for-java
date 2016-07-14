@@ -16,8 +16,8 @@ import java.util.List;
  */
 public class CloudJob {
     /**
-     * A string that uniquely identifies the job within the account. The id
-     * can contain any combination of alphanumeric characters including
+     * A string that uniquely identifies the job within the account.
+     * The id can contain any combination of alphanumeric characters including
      * hyphens and underscores, and cannot contain more than 64 characters.
      * It is common to use a GUID for the id.
      */
@@ -54,9 +54,9 @@ public class CloudJob {
     private DateTime creationTime;
 
     /**
-     * The current state of the job. Possible values include: 'active',
-     * 'disabling', 'disabled', 'enabling', 'terminating', 'completed',
-     * 'deleting'.
+     * The current state of the job.
+     * Possible values include: 'active', 'disabling', 'disabled', 'enabling',
+     * 'terminating', 'completed', 'deleting'.
      */
     private JobState state;
 
@@ -66,23 +66,24 @@ public class CloudJob {
     private DateTime stateTransitionTime;
 
     /**
-     * The previous state of the job. This property is not set if the job is
-     * in its initial Active state. Possible values include: 'active',
-     * 'disabling', 'disabled', 'enabling', 'terminating', 'completed',
-     * 'deleting'.
+     * The previous state of the job.
+     * This property is not set if the job is in its initial Active state.
+     * Possible values include: 'active', 'disabling', 'disabled',
+     * 'enabling', 'terminating', 'completed', 'deleting'.
      */
     private JobState previousState;
 
     /**
-     * The time at which the job entered its previous state. This property is
-     * not set if the job is in its initial Active state.
+     * The time at which the job entered its previous state.
+     * This property is not set if the job is in its initial Active state.
      */
     private DateTime previousStateTransitionTime;
 
     /**
-     * The priority of the job. Priority values can range from -1000 to 1000,
-     * with -1000 being the lowest priority and 1000 being the highest
-     * priority. The default value is 0.
+     * The priority of the job.
+     * Priority values can range from -1000 to 1000, with -1000 being the
+     * lowest priority and 1000 being the highest priority. The default value
+     * is 0.
      */
     private Integer priority;
 

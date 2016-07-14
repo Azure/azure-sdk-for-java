@@ -15,8 +15,7 @@ import java.util.List;
  */
 public class JobManagerTask {
     /**
-     * A string that uniquely identifies the Job Manager task. A GUID is
-     * recommended.
+     * A string that uniquely identifies the Job Manager task.
      */
     private String id;
 
@@ -27,6 +26,11 @@ public class JobManagerTask {
 
     /**
      * The command line of the Job Manager task.
+     * The command line does not run under a shell, and therefore cannot take
+     * advantage of shell features such as environment variable expansion. If
+     * you want to take advantage of such features, you should invoke the
+     * shell in the command line, for example using "cmd /c MyCommand" in
+     * Windows or "/bin/sh -c MyCommand" in Linux.
      */
     private String commandLine;
 
@@ -60,12 +64,12 @@ public class JobManagerTask {
 
     /**
      * Whether the Job Manager task requires exclusive use of the compute node
-     * where it runs. If true, no other tasks will run on the same compute
-     * node for as long as the Job Manager is running. If false, other tasks
-     * can run simultaneously with the Job Manager on a compute node. (The
-     * Job Manager task counts normally against the node's concurrent task
-     * limit, so this is only relevant if the node allows multiple concurrent
-     * tasks.).
+     * where it runs.
+     * If true, no other tasks will run on the same compute node for as long
+     * as the Job Manager is running. If false, other tasks can run
+     * simultaneously with the Job Manager on a compute node. The Job Manager
+     * task counts normally against the node's concurrent task limit, so this
+     * is only relevant if the node allows multiple concurrent tasks.
      */
     private Boolean runExclusive;
 

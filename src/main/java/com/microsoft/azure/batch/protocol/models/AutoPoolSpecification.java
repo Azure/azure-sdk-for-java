@@ -12,20 +12,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Specifies characteristics for a temporary 'auto pool'. The Batch service
- * will create this auto pool, run all the tasks for the job on it, and will
- * delete the pool once the job has completed.
+ * will create this auto pool when the job is submitted.
  */
 public class AutoPoolSpecification {
     /**
      * A prefix to be added to the unique identifier when a pool is
-     * automatically created. The prefix can be up to 20 characters long.
+     * automatically created.
+     * The prefix can be up to 20 characters long.
      */
     private String autoPoolIdPrefix;
 
     /**
      * The minimum lifetime of created auto pools, and how multiple jobs on a
-     * schedule are assigned to pools. Possible values include:
-     * 'jobschedule', 'job', 'unmapped'.
+     * schedule are assigned to pools.
+     * Possible values include: 'jobschedule', 'job', 'unmapped'.
      */
     @JsonProperty(required = true)
     private PoolLifetimeOption poolLifetimeOption;

@@ -17,14 +17,19 @@ import java.util.List;
 public class JobPreparationTask {
     /**
      * A string that uniquely identifies the job preparation task within the
-     * job. The id can contain any combination of alphanumeric characters
-     * including hyphens and underscores and cannot contain more than 64
-     * characters.
+     * job.
+     * The id can contain any combination of alphanumeric characters including
+     * hyphens and underscores and cannot contain more than 64 characters.
      */
     private String id;
 
     /**
      * The command line of the Job Preparation task.
+     * The command line does not run under a shell, and therefore cannot take
+     * advantage of shell features such as environment variable expansion. If
+     * you want to take advantage of such features, you should invoke the
+     * shell in the command line, for example using "cmd /c MyCommand" in
+     * Windows or "/bin/sh -c MyCommand" in Linux.
      */
     private String commandLine;
 
@@ -59,10 +64,10 @@ public class JobPreparationTask {
 
     /**
      * Whether the Batch service should rerun the Job Preparation task after a
-     * compute node reboots. Note that the Job Preparation task should still
-     * be written to be idempotent because it can be rerun if the compute
-     * node is rebooted while Job Preparation task is still running. The
-     * default value is true.
+     * compute node reboots.
+     * Note that the Job Preparation task should still be written to be
+     * idempotent because it can be rerun if the compute node is rebooted
+     * while Job Preparation task is still running. The default value is true.
      */
     private Boolean rerunOnNodeRebootAfterSuccess;
 

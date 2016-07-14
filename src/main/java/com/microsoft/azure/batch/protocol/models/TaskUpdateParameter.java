@@ -14,8 +14,8 @@ package com.microsoft.azure.batch.protocol.models;
  */
 public class TaskUpdateParameter {
     /**
-     * Constraints that apply to this task. If omitted, the task is given the
-     * default constraints.
+     * Constraints that apply to this task.
+     * If omitted, the task is given the default constraints.
      */
     private TaskConstraints constraints;
 

@@ -15,28 +15,28 @@ import java.util.List;
  */
 public class PoolPatchParameter {
     /**
-     * A task to run on each compute node as it joins the pool. If omitted,
-     * any existing start task is left unchanged.
+     * A task to run on each compute node as it joins the pool.
+     * If omitted, any existing start task is left unchanged.
      */
     private StartTask startTask;
 
     /**
-     * A list of certificates to be installed on each compute node in the
-     * pool. If omitted, any existing certificate references are left
-     * unchanged.
+     * A list of certificates to be installed on each compute node in the pool.
+     * If omitted, any existing certificate references are left unchanged.
      */
     private List<CertificateReference> certificateReferences;
 
     /**
      * A list of application packages to be installed on each compute node in
-     * the pool. If omitted, any existing application package references are
-     * left unchanged.
+     * the pool.
+     * If omitted, any existing application package references are left
+     * unchanged.
      */
     private List<ApplicationPackageReference> applicationPackageReferences;
 
     /**
-     * A list of name-value pairs associated with the pool as metadata. If
-     * omitted, any existing metadata is left unchanged.
+     * A list of name-value pairs associated with the pool as metadata.
+     * If omitted, any existing metadata is left unchanged.
      */
     private List<MetadataItem> metadata;
 

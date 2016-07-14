@@ -23,8 +23,9 @@ public class AutoScaleRun {
 
     /**
      * The final values of all variables used in the evaluation of the
-     * autoscale formula. Each variable value is returned in the form
-     * $variable=value, and variables are separated by semicolons.
+     * autoscale formula.
+     * Each variable value is returned in the form $variable=value, and
+     * variables are separated by semicolons.
      */
     private String results;
 

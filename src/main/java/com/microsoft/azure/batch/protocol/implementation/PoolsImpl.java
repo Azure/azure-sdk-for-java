@@ -432,7 +432,8 @@ public final class PoolsImpl implements Pools {
     }
 
     /**
-     * Gets lifetime summary statistics for all of the pools in the specified account. Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
+     * Gets lifetime summary statistics for all of the pools in the specified account.
+     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
      *
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -457,7 +458,8 @@ public final class PoolsImpl implements Pools {
     }
 
     /**
-     * Gets lifetime summary statistics for all of the pools in the specified account. Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
+     * Gets lifetime summary statistics for all of the pools in the specified account.
+     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -496,7 +498,8 @@ public final class PoolsImpl implements Pools {
     }
 
     /**
-     * Gets lifetime summary statistics for all of the pools in the specified account. Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
+     * Gets lifetime summary statistics for all of the pools in the specified account.
+     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
      *
      * @param poolGetAllPoolsLifetimeStatisticsOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
@@ -534,7 +537,8 @@ public final class PoolsImpl implements Pools {
     }
 
     /**
-     * Gets lifetime summary statistics for all of the pools in the specified account. Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
+     * Gets lifetime summary statistics for all of the pools in the specified account.
+     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
      *
      * @param poolGetAllPoolsLifetimeStatisticsOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -2996,7 +3000,8 @@ public final class PoolsImpl implements Pools {
     }
 
     /**
-     * Stops an ongoing resize operation on the pool. This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state.
+     * Stops an ongoing resize operation on the pool.
+     * This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state.
      *
      * @param poolId The id of the pool whose resizing you want to stop.
      * @throws BatchErrorException exception thrown from REST call
@@ -3037,7 +3042,8 @@ public final class PoolsImpl implements Pools {
     }
 
     /**
-     * Stops an ongoing resize operation on the pool. This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state.
+     * Stops an ongoing resize operation on the pool.
+     * This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state.
      *
      * @param poolId The id of the pool whose resizing you want to stop.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -3093,7 +3099,8 @@ public final class PoolsImpl implements Pools {
     }
 
     /**
-     * Stops an ongoing resize operation on the pool. This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state.
+     * Stops an ongoing resize operation on the pool.
+     * This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state.
      *
      * @param poolId The id of the pool whose resizing you want to stop.
      * @param poolStopResizeOptions Additional parameters for the operation
@@ -3159,7 +3166,8 @@ public final class PoolsImpl implements Pools {
     }
 
     /**
-     * Stops an ongoing resize operation on the pool. This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state.
+     * Stops an ongoing resize operation on the pool.
+     * This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state.
      *
      * @param poolId The id of the pool whose resizing you want to stop.
      * @param poolStopResizeOptions Additional parameters for the operation

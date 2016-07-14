@@ -16,9 +16,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class TaskAddParameter {
     /**
-     * A string that uniquely identifies the task within the job. The id can
-     * contain any combination of alphanumeric characters including hyphens
-     * and underscores, and cannot contain more than 64 characters.
+     * A string that uniquely identifies the task within the job.
+     * The id can contain any combination of alphanumeric characters including
+     * hyphens and underscores, and cannot contain more than 64 characters.
+     * It is common to use a GUID for the id.
      */
     @JsonProperty(required = true)
     private String id;
@@ -32,15 +33,20 @@ public class TaskAddParameter {
      * The command line of the task. For multi-instance tasks, the command
      * line is executed on the primary subtask after all the subtasks have
      * finished executing the coordianation command line.
+     * The command line does not run under a shell, and therefore cannot take
+     * advantage of shell features such as environment variable expansion. If
+     * you want to take advantage of such features, you should invoke the
+     * shell in the command line, for example using "cmd /c MyCommand" in
+     * Windows or "/bin/sh -c MyCommand" in Linux.
      */
     @JsonProperty(required = true)
     private String commandLine;
 
     /**
      * A list of files that the Batch service will download to the compute
-     * node before running the command line. For multi-instance tasks, the
-     * resource files will only be downloaded to the compute node on which
-     * the primary subtask is executed.
+     * node before running the command line.
+     * For multi-instance tasks, the resource files will only be downloaded to
+     * the compute node on which the primary subtask is executed.
      */
     private List<ResourceFile> resourceFiles;
 

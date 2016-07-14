@@ -1461,10 +1461,10 @@ public final class ComputeNodesImpl implements ComputeNodes {
     }
 
     /**
-     * Disable task scheduling of the specified compute node.
+     * Disables task scheduling on the specified compute node.
      *
      * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to disable task scheduling.
+     * @param nodeId The id of the compute node on which you want to disable task scheduling.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -1497,10 +1497,10 @@ public final class ComputeNodesImpl implements ComputeNodes {
     }
 
     /**
-     * Disable task scheduling of the specified compute node.
+     * Disables task scheduling on the specified compute node.
      *
      * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to disable task scheduling.
+     * @param nodeId The id of the compute node on which you want to disable task scheduling.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
@@ -1549,10 +1549,10 @@ public final class ComputeNodesImpl implements ComputeNodes {
     }
 
     /**
-     * Disable task scheduling of the specified compute node.
+     * Disables task scheduling on the specified compute node.
      *
      * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to disable task scheduling.
+     * @param nodeId The id of the compute node on which you want to disable task scheduling.
      * @param nodeDisableSchedulingOption What to do with currently running tasks when disable task scheduling on the compute node. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion'
      * @param computeNodeDisableSchedulingOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
@@ -1601,10 +1601,10 @@ public final class ComputeNodesImpl implements ComputeNodes {
     }
 
     /**
-     * Disable task scheduling of the specified compute node.
+     * Disables task scheduling on the specified compute node.
      *
      * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to disable task scheduling.
+     * @param nodeId The id of the compute node on which you want to disable task scheduling.
      * @param nodeDisableSchedulingOption What to do with currently running tasks when disable task scheduling on the compute node. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion'
      * @param computeNodeDisableSchedulingOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -1676,10 +1676,10 @@ public final class ComputeNodesImpl implements ComputeNodes {
     }
 
     /**
-     * Enable task scheduling of the specified compute node.
+     * Enables task scheduling on the specified compute node.
      *
      * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to enable task scheduling.
+     * @param nodeId The id of the compute node on which you want to enable task scheduling.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -1709,10 +1709,10 @@ public final class ComputeNodesImpl implements ComputeNodes {
     }
 
     /**
-     * Enable task scheduling of the specified compute node.
+     * Enables task scheduling on the specified compute node.
      *
      * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to enable task scheduling.
+     * @param nodeId The id of the compute node on which you want to enable task scheduling.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
@@ -1758,10 +1758,10 @@ public final class ComputeNodesImpl implements ComputeNodes {
     }
 
     /**
-     * Enable task scheduling of the specified compute node.
+     * Enables task scheduling on the specified compute node.
      *
      * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to enable task scheduling.
+     * @param nodeId The id of the compute node on which you want to enable task scheduling.
      * @param computeNodeEnableSchedulingOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -1804,10 +1804,10 @@ public final class ComputeNodesImpl implements ComputeNodes {
     }
 
     /**
-     * Enable task scheduling of the specified compute node.
+     * Enables task scheduling on the specified compute node.
      *
      * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to enable task scheduling.
+     * @param nodeId The id of the compute node on which you want to enable task scheduling.
      * @param computeNodeEnableSchedulingOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null

@@ -32,8 +32,8 @@ public class Certificate {
     private String url;
 
     /**
-     * The current state of the certificate. Possible values include:
-     * 'active', 'deleting', 'deletefailed'.
+     * The current state of the certificate.
+     * Possible values include: 'active', 'deleting', 'deletefailed'.
      */
     private CertificateState state;
 
@@ -43,15 +43,16 @@ public class Certificate {
     private DateTime stateTransitionTime;
 
     /**
-     * The previous state of the certificate. This property is not set if the
-     * certificate is in its initial Active state. Possible values include:
-     * 'active', 'deleting', 'deletefailed'.
+     * The previous state of the certificate.
+     * This property is not set if the certificate is in its initial Active
+     * state. Possible values include: 'active', 'deleting', 'deletefailed'.
      */
     private CertificateState previousState;
 
     /**
-     * The time at which the certificate entered its previous state. This
-     * property is not set if the certificate is in its initial Active state.
+     * The time at which the certificate entered its previous state.
+     * This property is not set if the certificate is in its initial Active
+     * state.
      */
     private DateTime previousStateTransitionTime;
 
@@ -62,7 +63,7 @@ public class Certificate {
 
     /**
      * The error that occurred on the last attempt to delete this certificate.
-     * This property is set only if the certificate is in the deletefailed
+     * This property is set only if the certificate is in the DeleteFailed
      * state.
      */
     private DeleteCertificateError deleteCertificateError;

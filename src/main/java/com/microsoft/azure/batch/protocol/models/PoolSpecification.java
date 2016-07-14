@@ -27,16 +27,16 @@ public class PoolSpecification {
     private String vmSize;
 
     /**
-     * The cloud service configuration for the pool. This property and
-     * VirtualMachineConfiguration are mutually exclusive and one of the
-     * properties must be specified.
+     * The cloud service configuration for the pool.
+     * This property and VirtualMachineConfiguration are mutually exclusive
+     * and one of the properties must be specified.
      */
     private CloudServiceConfiguration cloudServiceConfiguration;
 
     /**
-     * The virtual machine configuration for the pool. This property and
-     * CloudServiceConfiguration are mutually exclusive and one of the
-     * properties must be specified.
+     * The virtual machine configuration for the pool.
+     * This property and CloudServiceConfiguration are mutually exclusive and
+     * one of the properties must be specified.
      */
     private VirtualMachineConfiguration virtualMachineConfiguration;
 

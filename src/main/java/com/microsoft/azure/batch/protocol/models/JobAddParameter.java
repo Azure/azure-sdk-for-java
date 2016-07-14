@@ -16,8 +16,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class JobAddParameter {
     /**
-     * A string that uniquely identifies the job within the account. The id
-     * can contain any combination of alphanumeric characters including
+     * A string that uniquely identifies the job within the account.
+     * The id can contain any combination of alphanumeric characters including
      * hyphens and underscores, and cannot contain more than 64 characters.
      * It is common to use a GUID for the id.
      */
@@ -30,9 +30,10 @@ public class JobAddParameter {
     private String displayName;
 
     /**
-     * The priority of the job. Priority values can range from -1000 to 1000,
-     * with -1000 being the lowest priority and 1000 being the highest
-     * priority. The default value is 0.
+     * The priority of the job.
+     * Priority values can range from -1000 to 1000, with -1000 being the
+     * lowest priority and 1000 being the highest priority. The default value
+     * is 0.
      */
     private Integer priority;
 
