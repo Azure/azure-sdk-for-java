@@ -7,6 +7,7 @@ package com.microsoft.azure.servicebus;
 import java.time.Duration;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -30,17 +31,15 @@ final class Timer
 	/**
 	 * @param runFrequency implemented only for TimeUnit granularity - Seconds
 	 */
-	public static void schedule(Runnable runnable, Duration runFrequency, TimerType timerType)
+	public static ScheduledFuture<?> schedule(Runnable runnable, Duration runFrequency, TimerType timerType)
 	{
 		switch (timerType)
 		{
 		case OneTimeRun:
-			executor.schedule(runnable, runFrequency.toMillis(), TimeUnit.MILLISECONDS);
-			break;
+			return executor.schedule(runnable, runFrequency.toMillis(), TimeUnit.MILLISECONDS);
 
 		case RepeatRun:
-			executor.scheduleWithFixedDelay(runnable, runFrequency.toMillis(), runFrequency.toMillis(), TimeUnit.MILLISECONDS);
-			break;
+			return executor.scheduleWithFixedDelay(runnable, runFrequency.toMillis(), runFrequency.toMillis(), TimeUnit.MILLISECONDS);
 
 		default:
 			throw new UnsupportedOperationException("Unsupported timer pattern.");

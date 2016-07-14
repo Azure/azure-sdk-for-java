@@ -52,7 +52,6 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 
 	private final ConcurrentLinkedQueue<ReceiveWorkItem> pendingReceives;
 	private final MessagingFactory underlyingFactory;
-	private final ITimeoutErrorHandler stuckTransportHandler;
 	private final String receivePath;
 	private final Runnable onOperationTimedout;
 	private final Duration operationTimeout;
@@ -81,7 +80,6 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 	private int nextCreditToFlow;
 
 	private MessageReceiver(final MessagingFactory factory,
-			final ITimeoutErrorHandler stuckTransportHandler,
 			final String name, 
 			final String recvPath, 
 			final String offset,
@@ -94,7 +92,6 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		super(name, factory);
 
 		this.underlyingFactory = factory;
-		this.stuckTransportHandler = stuckTransportHandler;
 		this.operationTimeout = factory.getOperationTimeout();
 		this.receivePath = recvPath;
 		this.prefetchCount = prefetchCount;
@@ -156,11 +153,6 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 						// (and increment the unsentCredits in proton by 0)
 						MessageReceiver.this.receiveLink.flow(0);
 					}
-
-					// we have a known issue with proton libraries where transport layer is stuck while Sending Flow
-					// to workaround this - we built a mechanism to reset the transport whenever we encounter this
-					// https://issues.apache.org/jira/browse/PROTON-1185
-					MessageReceiver.this.stuckTransportHandler.reportTimeoutError();
 				}
 			}
 		};
@@ -181,7 +173,6 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 			final boolean isEpochReceiver)
 	{
 		MessageReceiver msgReceiver = new MessageReceiver(
-				factory,
 				factory,
 				name, 
 				recvPath, 
@@ -339,8 +330,6 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 
 			this.lastKnownLinkError = exception;
 		}
-
-		this.stuckTransportHandler.resetTimeoutErrorTracking();
 	}
 
 	@Override
@@ -361,9 +350,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		}
 
 		this.prefetchedMessages.add(message);
-
 		this.underlyingFactory.getRetryPolicy().resetRetryCount(this.getClientId());
-		this.stuckTransportHandler.resetTimeoutErrorTracking();
 
 		ReceiveWorkItem currentReceive = this.pendingReceives.poll();
 		if (currentReceive != null && !currentReceive.getWork().isDone())
