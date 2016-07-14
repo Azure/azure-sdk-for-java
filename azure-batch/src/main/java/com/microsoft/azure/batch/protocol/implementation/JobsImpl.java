@@ -166,7 +166,8 @@ public final class JobsImpl implements Jobs {
     }
 
     /**
-     * Gets lifetime summary statistics for all of the jobs in the specified account. Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
+     * Gets lifetime summary statistics for all of the jobs in the specified account.
+     * Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
      *
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -191,7 +192,8 @@ public final class JobsImpl implements Jobs {
     }
 
     /**
-     * Gets lifetime summary statistics for all of the jobs in the specified account. Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
+     * Gets lifetime summary statistics for all of the jobs in the specified account.
+     * Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -230,7 +232,8 @@ public final class JobsImpl implements Jobs {
     }
 
     /**
-     * Gets lifetime summary statistics for all of the jobs in the specified account. Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
+     * Gets lifetime summary statistics for all of the jobs in the specified account.
+     * Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
      *
      * @param jobGetAllJobsLifetimeStatisticsOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
@@ -268,7 +271,8 @@ public final class JobsImpl implements Jobs {
     }
 
     /**
-     * Gets lifetime summary statistics for all of the jobs in the specified account. Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
+     * Gets lifetime summary statistics for all of the jobs in the specified account.
+     * Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
      *
      * @param jobGetAllJobsLifetimeStatisticsOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.

@@ -26,9 +26,9 @@ public class ResourceFile {
     private String filePath;
 
     /**
-     * The file mode attribute in octal format. This property will be ignored
-     * if it is specified for a resourceFile which will be downloaded to a
-     * Windows compute node.
+     * The file mode attribute in octal format.
+     * This property will be ignored if it is specified for a resourceFile
+     * which will be downloaded to a Windows compute node.
      */
     private String fileMode;
 

@@ -25,7 +25,8 @@ public class TaskConstraints {
      * The minimum time to retain the working directory for the task on the
      * compute node where it ran, from the time it completes execution. After
      * this time, the Batch service may delete the working directory and all
-     * its contents. The default is infinite.
+     * its contents.
+     * The default is infinite.
      */
     private Period retentionTime;
 

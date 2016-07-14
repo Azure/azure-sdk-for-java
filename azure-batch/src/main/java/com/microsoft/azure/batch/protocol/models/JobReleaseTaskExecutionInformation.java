@@ -24,14 +24,14 @@ public class JobReleaseTaskExecutionInformation {
     private DateTime startTime;
 
     /**
-     * The time at which the Job Release task completed. This property is set
-     * only if the task is in the Completed state.
+     * The time at which the Job Release task completed.
+     * This property is set only if the task is in the Completed state.
      */
     private DateTime endTime;
 
     /**
-     * The current state of the Job Release task. Possible values include:
-     * 'running', 'completed'.
+     * The current state of the Job Release task.
+     * Possible values include: 'running', 'completed'.
      */
     @JsonProperty(required = true)
     private JobReleaseTaskState state;
@@ -49,8 +49,8 @@ public class JobReleaseTaskExecutionInformation {
     private String taskRootDirectoryUrl;
 
     /**
-     * The exit code of the Job Release task. This property is set only if the
-     * task is in the Completed state.
+     * The exit code of the Job Release task.
+     * This property is set only if the task is in the Completed state.
      */
     private Integer exitCode;
 

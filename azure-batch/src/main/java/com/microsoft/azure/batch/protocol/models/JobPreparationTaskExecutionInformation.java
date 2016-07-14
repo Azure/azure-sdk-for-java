@@ -17,21 +17,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class JobPreparationTaskExecutionInformation {
     /**
-     * The time at which the task started running. Note that every time the
-     * task is restarted, this value is updated.
+     * The time at which the task started running.
+     * Note that every time the task is restarted, this value is updated.
      */
     @JsonProperty(required = true)
     private DateTime startTime;
 
     /**
-     * The time at which the Job Preparation task completed. This property is
-     * set only if the task is in the Completed state.
+     * The time at which the Job Preparation task completed.
+     * This property is set only if the task is in the Completed state.
      */
     private DateTime endTime;
 
     /**
-     * The current state of the Job Preparation task. Possible values include:
-     * 'running', 'completed'.
+     * The current state of the Job Preparation task.
+     * Possible values include: 'running', 'completed'.
      */
     @JsonProperty(required = true)
     private JobPreparationTaskState state;
@@ -50,8 +50,8 @@ public class JobPreparationTaskExecutionInformation {
     private String taskRootDirectoryUrl;
 
     /**
-     * The exit code of the Job Preparation task. This property is set only if
-     * the task is in the Completed state.
+     * The exit code of the Job Preparation task.
+     * This property is set only if the task is in the Completed state.
      */
     private Integer exitCode;
 
@@ -71,8 +71,9 @@ public class JobPreparationTaskExecutionInformation {
 
     /**
      * The most recent time at which a retry of the Job Preparation task
-     * started running. This property is set only if the task was retried
-     * (i.e. retryCount is nonzero).
+     * started running.
+     * This property is set only if the task was retried (i.e. retryCount is
+     * nonzero).
      */
     private DateTime lastRetryTime;
 

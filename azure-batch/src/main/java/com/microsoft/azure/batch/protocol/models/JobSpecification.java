@@ -15,16 +15,17 @@ import java.util.List;
  */
 public class JobSpecification {
     /**
-     * The priority of jobs created under this schedule. Priority values can
-     * range from -1000 to 1000, with -1000 being the lowest priority and
-     * 1000 being the highest priority. The default value is 0.
+     * The priority of jobs created under this schedule.
+     * Priority values can range from -1000 to 1000, with -1000 being the
+     * lowest priority and 1000 being the highest priority. The default value
+     * is 0.
      */
     private Integer priority;
 
     /**
-     * The display name for jobs created under this schedule. It need not be
-     * unique and can contain any Unicode characters up to a maximum length
-     * of 1024.
+     * The display name for jobs created under this schedule.
+     * The name need not be unique and can contain any Unicode characters up
+     * to a maximum length of 1024.
      */
     private String displayName;
 

@@ -16,28 +16,35 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class JobUpdateParameter {
     /**
-     * The priority of the job. Priority values can range from -1000 to 1000,
-     * with -1000 being the lowest priority and 1000 being the highest
-     * priority. If omitted, the priority of the job is left unchanged.
+     * The priority of the job.
+     * Priority values can range from -1000 to 1000, with -1000 being the
+     * lowest priority and 1000 being the highest priority. If omitted, it is
+     * set to the default value 0.
      */
     private Integer priority;
 
     /**
-     * The execution constraints for the job. If omitted, the existing
-     * execution constraints are left unchanged.
+     * The execution constraints for the job.
+     * If omitted, the constraints are cleared.
      */
     private JobConstraints constraints;
 
     /**
-     * The pool on which the Batch service runs the job's tasks. If omitted,
-     * the job continues to run on its current pool.
+     * The pool on which the Batch service runs the job's tasks.
+     * You may change the pool for a job only when the job is disabled. The
+     * Update Job call will fail if you include the poolInfo element and the
+     * job is not disabled. If you specify an autoPoolSpecification
+     * specification in the poolInfo, only the keepAlive property can be
+     * updated, and then only if the auto pool has a poolLifetimeOption of
+     * job.
      */
     @JsonProperty(required = true)
     private PoolInformation poolInfo;
 
     /**
-     * A list of name-value pairs associated with the job as metadata. If
-     * omitted, the existing job metadata is left unchanged.
+     * A list of name-value pairs associated with the job as metadata.
+     * If omitted, it takes the default value of an empty list; in effect, any
+     * existing metadata is deleted.
      */
     private List<MetadataItem> metadata;
 

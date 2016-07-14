@@ -16,8 +16,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class TaskSchedulingError {
     /**
-     * The category of the task scheduling error. Possible values include:
-     * 'usererror', 'servererror', 'unmapped'.
+     * The category of the task scheduling error.
+     * Possible values include: 'usererror', 'servererror', 'unmapped'.
      */
     @JsonProperty(required = true)
     private SchedulingErrorCategory category;

@@ -27,8 +27,8 @@ public class ComputeNodeUser {
     private Boolean isAdmin;
 
     /**
-     * The time at which the account should expire. If omitted, the default is
-     * 1 day from the current time.
+     * The time at which the account should expire.
+     * If omitted, the default is 1 day from the current time.
      */
     private DateTime expiryTime;
 

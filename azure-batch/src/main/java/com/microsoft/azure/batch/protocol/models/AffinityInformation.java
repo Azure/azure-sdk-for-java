@@ -16,9 +16,9 @@ package com.microsoft.azure.batch.protocol.models;
 public class AffinityInformation {
     /**
      * An opaque string representing the location of a compute node or a task
-     * that has run previously. You can pass the AffinityId of a compute node
-     * or task to indicate that this task needs to be placed close to the
-     * node or task.
+     * that has run previously.
+     * You can pass the affinityId of a compute node or task to indicate that
+     * this task needs to be placed close to the node or task.
      */
     private String affinityId;
 

@@ -10,9 +10,9 @@ package com.microsoft.azure.batch.protocol.models;
 
 
 /**
- * A name-value pair associated with a Batch service resource. The Batch
- * service does not assign any meaning to this metadata; it is solely for the
- * use of user code.
+ * A name-value pair associated with a Batch service resource.
+ * The Batch service does not assign any meaning to this metadata; it is
+ * solely for the use of user code.
  */
 public class MetadataItem {
     /**

@@ -15,8 +15,7 @@ import java.util.List;
  */
 public class JobSchedulePatchParameter {
     /**
-     * The schedule according to which jobs will be created. If you do not
-     * specify this element, the existing schedule is not modified.
+     * The schedule according to which jobs will be created.
      */
     private Schedule schedule;
 
