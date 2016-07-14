@@ -110,7 +110,7 @@ notification is primarily informational.
 ###Step 3: Instantiate EventProcessorHost
 
 In order to do this, the user will first need to build a connection string for the Event Hub. This may be conveniently done using
-the ConnectionStringBuilder class provided by the Java client for Azure Event Hubs.
+the ConnectionStringBuilder class provided by the Java client for Azure Event Hubs. Make sure the sasKey has listen as well as manage permissions; the manage permissions are needed to request the partitions.
 
 The EventProcessorHost class itself has four constructors. All of them require the path to the Event Hub, the name of the consumer
 group to receive from, and the connection string for the Event Hub. The most basic constructor also requires an Azure Storage
