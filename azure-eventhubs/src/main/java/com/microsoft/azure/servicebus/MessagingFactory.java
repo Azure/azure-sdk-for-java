@@ -5,6 +5,7 @@
 package com.microsoft.azure.servicebus;
 
 import java.io.IOException;
+import java.nio.channels.UnresolvedAddressException;
 import java.time.Duration;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -356,7 +357,11 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 			}
 			catch (HandlerException handlerException)
 			{
-				Exception cause = handlerException;
+				Throwable cause = handlerException.getCause();
+				if (cause == null)
+				{
+					cause = handlerException;
+				}
 
 				if(TRACE_LOGGER.isLoggable(Level.WARNING))
 				{
@@ -386,10 +391,24 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 					TRACE_LOGGER.log(Level.WARNING, builder.toString());
 				}
 
-				MessagingFactory.this.onReactorError(new ServiceBusException(
+				String message = !StringUtil.isNullOrEmpty(cause.getMessage()) ? 
+						cause.getMessage():
+						!StringUtil.isNullOrEmpty(handlerException.getMessage()) ? 
+							handlerException.getMessage() :
+							"Reactor encountered unrecoverable error";
+				ServiceBusException sbException = new ServiceBusException(
 						true,
-						String.format(Locale.US, "%s, %s", StringUtil.isNullOrEmpty(cause.getMessage()) ? "Reactor encountered unrecoverable error" : cause.getMessage(), ExceptionUtil.getTrackingIDAndTimeToLog()),
-						cause));
+						String.format(Locale.US, "%s, %s", message, ExceptionUtil.getTrackingIDAndTimeToLog()),
+						cause);
+				
+				if (cause instanceof UnresolvedAddressException)
+				{
+					sbException = new CommunicationException(
+							String.format(Locale.US, "%s. This is usually caused by incorrect hostname or network configuration. Please check to see if namespace information is correct. %s", message, ExceptionUtil.getTrackingIDAndTimeToLog()),
+							cause);
+				}
+				
+				MessagingFactory.this.onReactorError(sbException);
 			}
 			finally
 			{
