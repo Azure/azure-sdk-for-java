@@ -34,11 +34,6 @@ public interface NetworkInterface extends
     boolean isIpForwardingEnabled();
 
     /**
-     * @return <tt>true</tt> if this is primary network interface in a virtual machine
-     */
-    boolean isPrimary();
-
-    /**
      * @return the MAC Address of the network interface
      */
     String macAddress();
@@ -109,6 +104,11 @@ public interface NetworkInterface extends
      * @return the IP configurations of this network interface
      */
     List<NicIpConfiguration> ipConfigurations();
+
+    /**
+     * @return the primary IP configuration of this network interface
+     */
+    NicIpConfiguration primaryIpConfiguration();
 
     /**
      * @return the network security group resource id or null if there is no network security group

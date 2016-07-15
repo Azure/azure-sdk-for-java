@@ -249,11 +249,6 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public boolean isPrimary() {
-        return Utils.toPrimitiveBoolean(this.inner().primary());
-    }
-
-    @Override
     public String macAddress() {
         return this.inner().macAddress();
     }
@@ -329,6 +324,29 @@ class NetworkInterfaceImpl
         return this.networkSecurityGroup;
     }
 
+    /**
+     * @return the primary IP configuration of the network interface
+     */
+    public NicIpConfigurationImpl primaryIpConfiguration() {
+        if (this.nicPrimaryIpConfiguration != null) {
+            return this.nicPrimaryIpConfiguration;
+        }
+
+        if (isInCreateMode()) {
+            this.nicPrimaryIpConfiguration = prepareNewNicIpConfiguration("primary-nic-config");
+            withIpConfiguration(this.nicPrimaryIpConfiguration);
+        } else {
+            // Currently Azure supports only one IP configuration and that is the primary
+            // hence we pick the first one here.
+            // when Azure support multiple IP configurations then there will be a flag in
+            // the IPConfiguration or a property in the network interface to identify the
+            // primary so below logic will be changed.
+            this.nicPrimaryIpConfiguration = (NicIpConfigurationImpl) this.nicIpConfigurations.get(0);
+        }
+        return this.nicPrimaryIpConfiguration;
+    }
+
+
     /**************************************************.
      * CreatableImpl::createResource
      **************************************************/
@@ -379,28 +397,6 @@ class NetworkInterfaceImpl
     /**************************************************.
      * Helper methods
      **************************************************/
-
-    /**
-     * @return the primary IP configuration of the network interface
-     */
-    private NicIpConfigurationImpl primaryIpConfiguration() {
-        if (this.nicPrimaryIpConfiguration != null) {
-            return this.nicPrimaryIpConfiguration;
-        }
-
-        if (isInCreateMode()) {
-            this.nicPrimaryIpConfiguration = prepareNewNicIpConfiguration("primary-nic-config");
-            withIpConfiguration(this.nicPrimaryIpConfiguration);
-        } else {
-            // Currently Azure supports only one IP configuration and that is the primary
-            // hence we pick the first one here.
-            // when Azure support multiple IP configurations then there will be a flag in
-            // the IPConfiguration or a property in the network interface to identify the
-            // primary so below logic will be changed.
-            this.nicPrimaryIpConfiguration = (NicIpConfigurationImpl) this.nicIpConfigurations.get(0);
-        }
-        return this.nicPrimaryIpConfiguration;
-    }
 
     /**
      * @return the list of DNS server IPs from the DNS settings
