@@ -46,7 +46,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	private final ConnectionHandler connectionHandler;
 	private final ReactorHandler reactorHandler;
 	private final LinkedList<Link> registeredLinks;
-	private final Object reactorSync;
+	private final Object reactorLock;
 	
 	private Reactor reactor;
 	private Thread reactorThread;
@@ -73,7 +73,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		this.retryPolicy = builder.getRetryPolicy();
 		this.registeredLinks = new LinkedList<Link>();
 		this.closeTask = new CompletableFuture<Void>();
-		this.reactorSync = new Object();
+		this.reactorLock = new Object();
 		this.connectionHandler = new ConnectionHandler(this, 
 				builder.getEndpoint().getHost(), builder.getSasKeyName(), builder.getSasKey());
 
@@ -97,7 +97,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	
 	private Reactor getReactor()
 	{
-		synchronized (this.reactorSync)
+		synchronized (this.reactorLock)
 		{
 			return this.reactor;
 		}
@@ -113,7 +113,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	private void startReactor(ReactorHandler reactorHandler) throws IOException
 	{
 		final Reactor newReactor = ProtonUtil.reactor(reactorHandler);
-		synchronized (this.reactorSync)
+		synchronized (this.reactorLock)
 		{
 			this.reactor = newReactor;
 		}
