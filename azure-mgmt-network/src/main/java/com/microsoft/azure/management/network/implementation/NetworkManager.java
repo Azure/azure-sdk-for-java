@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
+import com.microsoft.azure.management.network.LoadBalancers;
 import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PublicIpAddresses;
@@ -26,6 +27,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
     private Networks networks;
     private NetworkSecurityGroups networkSecurityGroups;
     private NetworkInterfaces networkInterfaces;
+    private LoadBalancers loadBalancers;
 
     /**
      * Get a Configurable instance that can be used to create {@link NetworkManager}
@@ -136,9 +138,21 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
     public NetworkInterfaces networkInterfaces() {
         if (networkInterfaces == null) {
             this.networkInterfaces = new NetworkInterfacesImpl(
-                super.innerManagementClient.networkInterfaces(),
-                this);
+                    super.innerManagementClient.networkInterfaces(),
+                    this);
         }
         return this.networkInterfaces;
+    }
+
+    /**
+     * @return entry point to load balancer management
+     */
+    public LoadBalancers loadBalancers() {
+        if (this.loadBalancers == null) {
+            this.loadBalancers = new LoadBalancersImpl(
+                    super.innerManagementClient,
+                    this);
+        }
+        return this.loadBalancers;
     }
  }

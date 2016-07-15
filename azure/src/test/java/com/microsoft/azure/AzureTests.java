@@ -139,6 +139,10 @@ public class AzureTests {
         new TestNSG().runTest(azure.networkSecurityGroups(), azure.resourceGroups());
     }
 
+    @Test public void testLoadBalancers() throws Exception {
+        new TestLoadBalancer(azure.publicIpAddresses()).runTest(azure.loadBalancers(), azure.resourceGroups());
+    }
+
     /**
      * Tests the public IP address implementation
      * @throws Exception

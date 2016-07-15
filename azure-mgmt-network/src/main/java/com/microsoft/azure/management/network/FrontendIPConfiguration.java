@@ -11,7 +11,6 @@ package com.microsoft.azure.management.network;
 import java.util.List;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.implementation.SubnetInner;
-import com.microsoft.azure.management.network.implementation.PublicIPAddressInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
@@ -67,7 +66,7 @@ public class FrontendIPConfiguration extends SubResource {
      * Gets or sets the reference of the PublicIP resource.
      */
     @JsonProperty(value = "properties.publicIPAddress")
-    private PublicIPAddressInner publicIPAddress;
+    private SubResource publicIPAddress;
 
     /**
      * Gets or sets Provisioning state of the PublicIP resource
@@ -232,7 +231,7 @@ public class FrontendIPConfiguration extends SubResource {
      *
      * @return the publicIPAddress value
      */
-    public PublicIPAddressInner publicIPAddress() {
+    public SubResource publicIPAddress() {
         return this.publicIPAddress;
     }
 
@@ -242,7 +241,7 @@ public class FrontendIPConfiguration extends SubResource {
      * @param publicIPAddress the publicIPAddress value to set
      * @return the FrontendIPConfiguration object itself.
      */
-    public FrontendIPConfiguration withPublicIPAddress(PublicIPAddressInner publicIPAddress) {
+    public FrontendIPConfiguration withPublicIPAddress(SubResource publicIPAddress) {
         this.publicIPAddress = publicIPAddress;
         return this;
     }

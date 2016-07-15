@@ -196,7 +196,6 @@ public final class Utils {
             info.append("\n\t\t").append(dnsServerIp);
         }
         info.append("\n\t IP forwarding enabled: ").append(resource.isIpForwardingEnabled())
-                .append("\n\tIs Primary:").append(resource.isPrimary())
                 .append("\n\tMAC Address:").append(resource.macAddress())
                 .append("\n\tPrivate IP:").append(resource.primaryPrivateIp())
                 .append("\n\tPrivate allocation method:").append(resource.primaryPrivateIpAllocationMethod())

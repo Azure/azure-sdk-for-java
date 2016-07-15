@@ -9,6 +9,7 @@ import org.junit.Assert;
 
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkInterfaces;
+import com.microsoft.azure.management.network.NicIpConfiguration;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
 public class TestNetworkInterface extends TestTemplate<NetworkInterface, NetworkInterfaces> {
@@ -57,12 +58,22 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
         for (String dnsServerIp : resource.dnsServers()) {
             info.append("\n\t\t").append(dnsServerIp);
         }
+
         info.append("\n\t IP forwarding enabled: ").append(resource.isIpForwardingEnabled())
-                .append("\n\tIs Primary:").append(resource.isPrimary())
                 .append("\n\tMAC Address:").append(resource.macAddress())
                 .append("\n\tPrivate IP:").append(resource.primaryPrivateIp())
                 .append("\n\tPrivate allocation method:").append(resource.primaryPrivateIpAllocationMethod())
-                .append("\n\tSubnet Id:").append(resource.primarySubnetId());
+                .append("\n\tSubnet Id:").append(resource.primarySubnetId())
+                .append("\n\tIP configurations: ");
+
+        // Output IP configs
+        for (NicIpConfiguration ipConfig : resource.ipConfigurations()) {
+            info.append("\n\t\tName: ").append(ipConfig.name())
+                .append("\n\t\tPrivate IP: ").append(ipConfig.privateIp())
+                .append("\n\t\tPrivate IP allocation method: ").append(ipConfig.privateIpAllocationMethod())
+                .append("\n\t\tPIP id: ").append(ipConfig.publicIpAddressId())
+                .append("\n\t\tSubnet ID: ").append(ipConfig.subnetId());
+        }
 
         System.out.println(info.toString());
     }
