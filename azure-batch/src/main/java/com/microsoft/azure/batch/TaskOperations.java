@@ -34,8 +34,9 @@ public class TaskOperations implements IInheritedBehaviors {
     }
 
     @Override
-    public void setCustomBehaviors(Collection<BatchClientBehavior> behaviors) {
+    public IInheritedBehaviors withCustomBehaviors(Collection<BatchClientBehavior> behaviors) {
         _customBehaviors = behaviors;
+        return this;
     }
 
     public void createTask(String jobId, TaskAddParameter taskToAdd) throws BatchErrorException, IOException {

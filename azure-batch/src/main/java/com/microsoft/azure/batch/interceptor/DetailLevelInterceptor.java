@@ -16,7 +16,7 @@ public class DetailLevelInterceptor extends RequestInterceptor {
 
     public DetailLevelInterceptor(final DetailLevel detailLevel) {
         this.detailLevel = detailLevel;
-        this.setHandler(new BatchRequestInterceptHandler() {
+        this.withHandler(new BatchRequestInterceptHandler() {
             @Override
             public void modify(Object request) {
                 if (detailLevel != null) {

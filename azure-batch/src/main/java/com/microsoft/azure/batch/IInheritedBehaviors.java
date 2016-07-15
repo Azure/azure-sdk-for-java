@@ -12,6 +12,6 @@ public interface IInheritedBehaviors {
 
     Collection<BatchClientBehavior> customBehaviors();
 
-    void setCustomBehaviors(Collection<BatchClientBehavior> behaviors);
+    IInheritedBehaviors withCustomBehaviors(Collection<BatchClientBehavior> behaviors);
 
 }

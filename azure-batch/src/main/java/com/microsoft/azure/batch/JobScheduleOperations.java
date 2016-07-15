@@ -33,8 +33,9 @@ public class JobScheduleOperations implements IInheritedBehaviors {
     }
 
     @Override
-    public void setCustomBehaviors(Collection<BatchClientBehavior> behaviors) {
+    public IInheritedBehaviors withCustomBehaviors(Collection<BatchClientBehavior> behaviors) {
         this._customBehaviors = behaviors;
+        return this;
     }
 
     public boolean existsJobSchedule(String jobScheduleId) throws BatchErrorException, IOException {

@@ -20,13 +20,14 @@ public class BatchClientParallelOptions extends BatchClientBehavior {
         return this.maxDegreeOfParallelism;
     }
 
-    public void setMaxDegreeOfParallelism(int maxDegreeOfParallelism) {
+    public BatchClientParallelOptions withMaxDegreeOfParallelism(int maxDegreeOfParallelism) {
         if (maxDegreeOfParallelism > 0) {
             this.maxDegreeOfParallelism = maxDegreeOfParallelism;
         }
         else {
             throw new IllegalArgumentException("maxDegreeOfParallelism");
         }
+        return this;
     }
 
     public BatchClientParallelOptions() {

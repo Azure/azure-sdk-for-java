@@ -91,8 +91,9 @@ public class BatchClient {
         return customBehaviors;
     }
 
-    public void setCustomBehaviors(Collection<BatchClientBehavior> customBehaviors) {
+    public BatchClient withCustomBehaviors(Collection<BatchClientBehavior> customBehaviors) {
         this.customBehaviors = customBehaviors;
+        return this;
     }
 }
 

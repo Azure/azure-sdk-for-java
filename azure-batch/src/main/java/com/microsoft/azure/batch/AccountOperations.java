@@ -36,8 +36,9 @@ public class AccountOperations implements IInheritedBehaviors {
     }
 
     @Override
-    public void setCustomBehaviors(Collection<BatchClientBehavior> behaviors) {
+    public IInheritedBehaviors withCustomBehaviors(Collection<BatchClientBehavior> behaviors) {
         _customBehaviors = behaviors;
+        return this;
     }
 
     public List<NodeAgentSku> listNodeAgentSkus() throws BatchErrorException, IOException {
