@@ -37,8 +37,9 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
     }
 
     @Override
-    public void setCustomBehaviors(Collection<BatchClientBehavior> behaviors) {
+    public IInheritedBehaviors withCustomBehaviors(Collection<BatchClientBehavior> behaviors) {
         this._customBehaviors = behaviors;
+        return this;
     }
 
     public void addComputeNodeUser(String poolId, String nodeId, ComputeNodeUser user) throws BatchErrorException, IOException {

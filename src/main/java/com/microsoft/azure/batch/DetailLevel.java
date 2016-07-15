@@ -24,17 +24,17 @@ public class DetailLevel {
 
         public Builder() {}
 
-        public Builder filterClause(String filter) {
+        public Builder withFilterClause(String filter) {
             this.filterClause = filter;
             return this;
         }
 
-        public Builder selectClause(String select) {
+        public Builder withSelectClause(String select) {
             this.selectClause = select;
             return this;
         }
 
-        public Builder expandClause(String expand) {
+        public Builder withExpandClause(String expand) {
             this.expandClause = expand;
             return this;
         }

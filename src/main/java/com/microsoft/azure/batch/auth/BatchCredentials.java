@@ -13,7 +13,8 @@ public abstract class BatchCredentials {
         return baseUrl;
     }
 
-    protected void setBaseUrl(String baseUrl) {
+    protected BatchCredentials withBaseUrl(String baseUrl) {
         this.baseUrl = baseUrl;
+        return this;
     }
 }

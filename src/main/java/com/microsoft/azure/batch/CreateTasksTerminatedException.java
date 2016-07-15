@@ -39,14 +39,14 @@ public class CreateTasksTerminatedException extends BatchErrorException {
     /**
      * @return the list of failed tasks
      */
-    public List<TaskAddResult> getFailureTasks() {
+    public List<TaskAddResult> failureTasks() {
         return failureTasks;
     }
 
     /**
      * @return the list of pending tasks
      */
-    public List<TaskAddParameter> getPendingTaskList() {
+    public List<TaskAddParameter> pendingTaskList() {
         return pendingTaskList;
     }
 }

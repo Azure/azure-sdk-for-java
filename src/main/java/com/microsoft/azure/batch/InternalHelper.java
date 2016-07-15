@@ -22,6 +22,6 @@ class InternalHelper {
         }
 
         // set the public property
-        inheritingObject.setCustomBehaviors(customBehaviors);
+        inheritingObject.withCustomBehaviors(customBehaviors);
     }
 }

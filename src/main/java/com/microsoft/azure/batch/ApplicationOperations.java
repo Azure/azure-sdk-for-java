@@ -38,8 +38,9 @@ public class ApplicationOperations  implements IInheritedBehaviors {
     }
 
     @Override
-    public void setCustomBehaviors(Collection<BatchClientBehavior> behaviors) {
+    public IInheritedBehaviors withCustomBehaviors(Collection<BatchClientBehavior> behaviors) {
         _customBehaviors = behaviors;
+        return this;
     }
 
     public List<ApplicationSummary> listApplications() throws BatchErrorException, IOException {

@@ -45,7 +45,7 @@ class BehaviorManager {
     void applyRequestBehaviors(Object request) {
         for (BatchClientBehavior bh : getMasterListOfBehaviors()) {
             if (bh instanceof RequestInterceptor) {
-                ((RequestInterceptor) bh).getHandler().modify(request);
+                ((RequestInterceptor) bh).handler().modify(request);
             }
         }
     }
@@ -60,15 +60,17 @@ class BehaviorManager {
         return baseBehaviors;
     }
 
-    public void setBaseBehaviors(Collection<BatchClientBehavior> baseBehaviors) {
+    public BehaviorManager withBaseBehaviors(Collection<BatchClientBehavior> baseBehaviors) {
         this.baseBehaviors = baseBehaviors;
+        return this;
     }
 
     public Collection<BatchClientBehavior> perCallBehaviors() {
         return perCallBehaviors;
     }
 
-    public void setPerCallBehaviors(Collection<BatchClientBehavior> perCallBehaviors) {
+    public BehaviorManager withPerCallBehaviors(Collection<BatchClientBehavior> perCallBehaviors) {
         this.perCallBehaviors = perCallBehaviors;
+        return this;
     }
 }
