@@ -10,7 +10,6 @@ import java.util.List;
 import org.junit.Assert;
 
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.compute.VirtualMachines;
@@ -46,7 +45,8 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
         Region region = Region.US_WEST;
         String networkName = "net" + this.testId;
         String groupName = "rg" + this.testId;
-        String pipName = "pip" + this.testId;
+        String pipName1 = "pip" + this.testId;
+        String pipName2 = pipName1 + "b";
         String vmName1 = "vm" + this.testId;
         String vmName2 = "vm" + this.testId + "b";
         String vmUsername = "user" + this.testId;
@@ -81,24 +81,18 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                 .withSubnet("subnet1")
                 .withPrimaryPrivateIpAddressDynamic()
                 .withoutPrimaryPublicIpAddress()
-                .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                .withAdminUserName(vmUsername)
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
+                .withRootUserName(vmUsername)
                 .withPassword("Abcdef.123456")
                 .withNewAvailabilitySet(availabilitySetName)
                 .withSize(VirtualMachineSizeTypes.STANDARD_A1)
                 .create();
 
         // Create a pip
-        PublicIpAddress pip1 = this.pips.define(pipName)
+        PublicIpAddress pip1 = this.pips.define(pipName1)
                 .withRegion(region)
                 .withNewResourceGroup(groupName)
-                .withLeafDomainLabel(pipName)
-                .create();
-
-        PublicIpAddress pip2 = this.pips.define(pipName + "b")
-                .withRegion(region)
-                .withExistingResourceGroup(groupName)
-                .withLeafDomainLabel(pipName + "b")
+                .withLeafDomainLabel(pipName1)
                 .create();
 
         // Create a load balancer
@@ -106,7 +100,8 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                 .withRegion(region)
                 .withExistingResourceGroup(groupName)
                 .withExistingVirtualMachines(vm1, vm2)
-                .withExistingPublicIpAddresses(pip1, pip2)
+                .withExistingPublicIpAddresses(pip1)
+                .withNewPublicIpAddress(pipName2)
                 .create();
     }
 

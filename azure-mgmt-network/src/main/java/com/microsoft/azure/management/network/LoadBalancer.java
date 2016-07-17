@@ -91,6 +91,28 @@ public interface LoadBalancer extends
              * @return the next stage of the resource definition
              */
             WithCreate withExistingPublicIpAddresses(PublicIpAddress...publicIpAddresses);
+
+            /**
+             * Adds a new public IP address to the front end of the load balancer, using an automatically generated name and leaf DNS label
+             * derived from the load balancer's name, in the same resource group and region.
+             * @return the next stage of the definition
+             */
+            WithCreate withNewPublicIpAddress();
+
+            /**
+             * Adds a new public IP address to the front end of the load balancer, using the specified DNS leaft label,
+             * an automatically generated name derived from the DNS label, in the same resource group and region.
+             * @return the next stage of the definition
+             */
+            WithCreate withNewPublicIpAddress(String dnsLeafLabel);
+
+            /**
+             * Adds a new public IP address to the front end of the load balancer, creating the public IP based on the provided {@link Creatable}
+             * stage of a public IP endpoint's definition.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withNewPublicIpAddress(Creatable<PublicIpAddress> creatablePublicIpAddress);
         }
 
         /**
