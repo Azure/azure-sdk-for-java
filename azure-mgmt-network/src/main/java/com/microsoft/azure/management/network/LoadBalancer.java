@@ -37,6 +37,7 @@ public interface LoadBalancer extends
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
+        DefinitionStages.WithVirtualMachine,
         DefinitionStages.WithCreate {
     }
 
@@ -55,7 +56,41 @@ public interface LoadBalancer extends
          * The stage of the load balancer definition allowing to specify the resource group.
          */
         interface WithGroup
-            extends GroupableResource.DefinitionStages.WithGroup<WithCreate> {
+            extends GroupableResource.DefinitionStages.WithGroup<WithVirtualMachine> {
+        }
+
+        /**
+         * The stage of the load balancer definition allowing to add a virtual machine to
+         * the load balancer's backend pool.
+         */
+        interface WithVirtualMachine {
+            /**
+             * Adds the specified set of virtual machines, assuming they are from the same
+             * availability set, to this load balancer's back end address pool.
+             * <p>
+             * This will create a new back end address pool for this load balancer and add references to
+             * the primary IP configurations of the primary network interfaces of each of the provided set of
+             * virtual machines.
+             * <p>
+             * If the virtual machines are not in the same availability set, the load balancer will still
+             * be created, but the virtual machines will not associated with its back end.
+             * @param vms existing virtual machines
+             * @return the next stage of the update
+             */
+            WithCreate withExistingVirtualMachines(SupportsNetworkInterfaces...vms);
+        }
+
+        /**
+         * The stage of the load balancer definition allowing to add a public ip address to the load
+         * balancer's front end.
+         */
+        interface WithPublicIpAddresses {
+            /**
+             * Sets the provided set of public IP addresses as the front end for the load balancer, making it an Internet-facing load balancer.
+             * @param publicIpAddresses existing public IP addresses
+             * @return the next stage of the resource definition
+             */
+            WithCreate withExistingPublicIpAddresses(PublicIpAddress...publicIpAddresses);
         }
 
         /**
@@ -66,7 +101,7 @@ public interface LoadBalancer extends
         interface WithCreate extends
             Creatable<LoadBalancer>,
             Resource.DefinitionWithTags<WithCreate>,
-            PublicIpAddress.WithPublicIpAddress<WithCreate> {
+            WithPublicIpAddresses {
        }
     }
 

@@ -310,25 +310,4 @@ public interface PublicIpAddress extends
             Update withIdleTimeoutInMinutes(int minutes);
         }
     }
-
-    /**
-     * Stage of a resource definition allowing the public IP address to be specified.
-     * @param <ReturnT> the next stage of the resource definition
-     */
-    interface WithPublicIpAddress<ReturnT> {
-        /**
-         * Associates an existing public IP address with the resource.
-         *
-         * @param publicIpAddress an existing public IP address
-         * @return the next stage of the resource definition
-         */
-        ReturnT withExistingPublicIpAddress(PublicIpAddress publicIpAddress);
-
-        /**
-         * Associates an existing public IP address with the resource.
-         * @param resourceId the resource ID of an existing public IP address
-         * @return the next stage of the resource definition
-         */
-        ReturnT withExistingPublicIpAddress(String resourceId);
-    }
 }

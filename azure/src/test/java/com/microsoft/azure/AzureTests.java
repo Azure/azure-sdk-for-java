@@ -140,7 +140,11 @@ public class AzureTests {
     }
 
     @Test public void testLoadBalancers() throws Exception {
-        new TestLoadBalancer(azure.publicIpAddresses()).runTest(azure.loadBalancers(), azure.resourceGroups());
+        new TestLoadBalancer(
+                azure.publicIpAddresses(),
+                azure.virtualMachines(),
+                azure.networks())
+            .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
 
     /**

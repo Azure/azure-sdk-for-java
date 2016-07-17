@@ -10,9 +10,13 @@ import java.util.Collections;
 import java.util.List;
 
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.network.BackendAddressPool;
 import com.microsoft.azure.management.network.FrontendIPConfiguration;
 import com.microsoft.azure.management.network.LoadBalancer;
+import com.microsoft.azure.management.network.NetworkInterface;
+import com.microsoft.azure.management.network.NicIpConfiguration;
 import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.SupportsNetworkInterfaces;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;
@@ -34,6 +38,7 @@ class LoadBalancerImpl
         LoadBalancer.Update {
 
     private final LoadBalancersInner innerCollection;
+    private final List<SupportsNetworkInterfaces> vms = new ArrayList<>();
 
     LoadBalancerImpl(String name,
             final LoadBalancerInner innerModel,
@@ -65,6 +70,40 @@ class LoadBalancerImpl
 
     // Helpers
 
+    private void ensureCreationPrerequisites()  {
+        // Ensure backend pools list
+        List<BackendAddressPool> backendPools = this.inner().backendAddressPools();
+        if (backendPools == null) {
+            backendPools = new ArrayList<>();
+            this.inner().withBackendAddressPools(backendPools);
+        }
+
+        // Ensure first backend pool
+        BackendAddressPool backendPool;
+        if (backendPools.size() == 0) {
+            backendPool = new BackendAddressPool();
+            backendPools.add(backendPool);
+            backendPool.withName("backendpool" + backendPools.size());
+        }
+    }
+
+    private void runPostCreationTasks() throws Exception {
+        // Update the NICs to point to the backend pool
+        for (SupportsNetworkInterfaces vm : this.vms) {
+            NetworkInterface primaryNIC = vm.primaryNetworkInterface();
+            NicIpConfiguration nicIp = primaryNIC.primaryIpConfiguration();
+            primaryNIC.update()
+                .updateIpConfiguration(nicIp.name())
+                    .withExistingLoadBalancer(this)
+                    .withBackendAddressPool(this.inner().backendAddressPools().get(0).name())
+                    .parent()
+                .apply();
+        }
+
+        this.vms.clear();
+        this.refresh();
+    }
+
     NetworkManager myManager() {
         return super.myManager;
     }
@@ -88,13 +127,11 @@ class LoadBalancerImpl
 
     // Withers (fluent)
 
-    @Override
-    public LoadBalancerImpl withExistingPublicIpAddress(PublicIpAddress publicIpAddress) {
+    private LoadBalancerImpl withExistingPublicIpAddress(PublicIpAddress publicIpAddress) {
         return this.withExistingPublicIpAddress(publicIpAddress.id());
     }
 
-    @Override
-    public LoadBalancerImpl withExistingPublicIpAddress(String resourceId) {
+    private LoadBalancerImpl withExistingPublicIpAddress(String resourceId) {
         FrontendIPConfiguration frontendIpConfig = createFrontendIPConfig(null);
         SubResource pip = new SubResource();
         pip.withId(resourceId);
@@ -102,10 +139,28 @@ class LoadBalancerImpl
         return this;
     }
 
-    // Getters
-
-    private void ensureCreationPrerequisites() {
+    @Override
+    public LoadBalancerImpl withExistingPublicIpAddresses(PublicIpAddress... publicIpAddresses) {
+        for (PublicIpAddress pip : publicIpAddresses) {
+            withExistingPublicIpAddress(pip);
+        }
+        return this;
     }
+
+    private LoadBalancerImpl withExistingVirtualMachine(SupportsNetworkInterfaces vm) {
+      this.vms.add(vm);
+      return this;
+    }
+
+    @Override
+    public LoadBalancerImpl withExistingVirtualMachines(SupportsNetworkInterfaces... vms) {
+        for (SupportsNetworkInterfaces vm : vms) {
+            withExistingVirtualMachine(vm);
+        }
+        return this;
+    }
+
+    // Getters
 
     @Override
     protected void createResource() throws Exception {
@@ -114,12 +169,13 @@ class LoadBalancerImpl
         ServiceResponse<LoadBalancerInner> response =
                 this.innerCollection.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
         this.setInner(response.getBody());
+
+        runPostCreationTasks();
     }
 
     @Override
-    protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
+    protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback)  {
         ensureCreationPrerequisites();
-
         return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
                 Utils.fromVoidCallback(this, new ServiceCallback<Void>() {
                     @Override
@@ -130,6 +186,12 @@ class LoadBalancerImpl
                     @Override
                     public void success(ServiceResponse<Void> result) {
                         callback.success(result);
+                        try {
+                            runPostCreationTasks();
+                        } catch (Exception e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
                     }
                 }));
     }
