@@ -56,7 +56,6 @@ public class JacksonMapperAdapter {
                 .setSerializationInclusion(JsonInclude.Include.NON_NULL)
                 .registerModule(new JodaModule())
                 .registerModule(ByteArraySerializer.getModule())
-                .registerModule(Base64UrlSerializer.getModule())
                 .registerModule(DateTimeSerializer.getModule())
                 .registerModule(DateTimeRfc1123Serializer.getModule())
                 .registerModule(HeadersSerializer.getModule());
