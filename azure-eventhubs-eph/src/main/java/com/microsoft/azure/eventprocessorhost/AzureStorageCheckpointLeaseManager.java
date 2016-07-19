@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
-import java.util.UUID;
 import java.util.concurrent.*;
 import java.util.logging.Level;
 
@@ -115,9 +114,14 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     private Checkpoint getCheckpointSync(String partitionId) throws URISyntaxException, IOException, StorageException
     {
     	AzureBlobLease lease = getLeaseSync(partitionId);
-    	Checkpoint checkpoint = new Checkpoint(partitionId);
-    	checkpoint.setOffset(lease.getOffset());
-    	checkpoint.setSequenceNumber(lease.getSequenceNumber());
+    	Checkpoint checkpoint = null;
+    	if (lease.getOffset() != null)
+    	{
+	    	checkpoint = new Checkpoint(partitionId);
+	    	checkpoint.setOffset(lease.getOffset());
+	    	checkpoint.setSequenceNumber(lease.getSequenceNumber());
+    	}
+    	// else offset is null meaning no checkpoint stored for this partition so return null
     	return checkpoint;
     }
 
@@ -157,7 +161,17 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     @Override
     public Future<Void> deleteCheckpoint(String partitionId)
     {
-    	// Make this a no-op to avoid deleting leases by accident.
+    	return EventProcessorHost.getExecutorService().submit(() -> deleteCheckpointSync(partitionId));
+    }
+    
+    private Void deleteCheckpointSync(String partitionId) throws Exception
+    {
+    	// "Delete" a checkpoint by changing the offset to null, so first we need to fetch the most current lease
+    	AzureBlobLease lease = getLeaseSync(partitionId);
+    	this.host.logWithHostAndPartition(Level.FINE, partitionId, "Deleting checkpoint for " + partitionId);
+    	lease.setOffset(null);
+    	lease.setSequenceNumber(0L);
+    	updateLeaseSync(lease);
         return null;
     }
 
