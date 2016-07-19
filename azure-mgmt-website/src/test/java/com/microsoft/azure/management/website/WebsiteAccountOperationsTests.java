@@ -11,6 +11,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class WebsiteAccountOperationsTests extends WebsiteManagementTestBase {
@@ -25,10 +26,10 @@ public class WebsiteAccountOperationsTests extends WebsiteManagementTestBase {
 
     @AfterClass
     public static void cleanup() throws Exception {
-        resourceManager.resourceGroups().delete(RG_NAME);
+        //resourceManager.resourceGroups().delete(RG_NAME);
     }
 
-    @Test
+    @Ignore
     public void canCreateWebApp() throws Exception {
         WebApp webApp = websiteManager.sites().define(WEBAPP_NAME)
                 .withRegion(Region.US_WEST)
@@ -36,5 +37,17 @@ public class WebsiteAccountOperationsTests extends WebsiteManagementTestBase {
                 .withNewAppServicePlan("java-webapp-plan-219", AppServicePricingTier.STANDARD_S1)
                 .create();
         Assert.assertNotNull(webApp);
+    }
+
+    @Test
+    public void canUpdateWebApp() throws Exception {
+        WebApp webApp = websiteManager.sites().getByGroup(RG_NAME, WEBAPP_NAME);
+        webApp.update()
+                .defineHostNameBinding("javatest.quarterquota.net")
+                    .withHostNameType(HostNameType.VERIFIED)
+                    .withHostNameDnsRecordType(CustomHostNameDnsRecordType.A)
+                    .attach()
+                .enableSniSsl("javatest.quarterquota.net", "56DD1FF5F5FD02D829B6BC47DC5B733CA93492CF")
+                .apply();
     }
 }

@@ -6,7 +6,9 @@
 
 package com.microsoft.azure.management.website;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
@@ -15,6 +17,7 @@ import com.microsoft.azure.management.website.implementation.SiteConfigInner;
 import com.microsoft.azure.management.website.implementation.SiteInner;
 import org.joda.time.DateTime;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -191,6 +194,8 @@ public interface WebApp extends
      */
     String defaultHostName();
 
+    List<HostNameBinding> hostNameBindings() throws CloudException, IOException;
+
     /**************************************************************
      * Fluent interfaces to provision a Web App
      **************************************************************/
@@ -230,13 +235,36 @@ public interface WebApp extends
             WithCreate withExistingAppServicePlan(String appServicePlanName);
         }
 
+        interface WithHostNameSslStates {
+            WithCreate disableSsl(String hostName);
+            WithCreate enableSniSsl(String hostName, String thumbprint);
+            WithCreate enableIpBasedSsl(String hostName, String thumbprint, String virtualIp);
+        }
+
+        interface withSiteEnabled {
+            WithCreate siteEnabled(boolean enabled);
+        }
+
+        interface withScmSiteAlsoStopped {
+            WithCreate alsoStopScmSiteWhenStopped(boolean scmSiteAlsoStopped);
+        }
+
+        interface withClientAffinityEnabled {
+            WithCreate clientAffinityEnabled(boolean enabled);
+        }
+
+        interface withClientCertEnabled {
+            WithCreate clientCertEnabled(boolean enabled);
+        }
+
         /**
          * A site definition with sufficient inputs to create a new
          * website in the cloud, but exposing additional optional inputs to
          * specify.
          */
         interface WithCreate extends
-                Creatable<WebApp> {
+                Creatable<WebApp>,
+                DefinitionStages.WithHostNameSslStates {
         }
     }
 
@@ -244,13 +272,34 @@ public interface WebApp extends
      * Grouping of all the site update stages.
      */
     interface UpdateStages {
+        /**
+         * A site definition allowing server farm to be set.
+         */
+        interface WithAppServicePlan {
+            Update withNewAppServicePlan();
+            Update withNewAppServicePlan(String name, AppServicePricingTier pricingTier);
+            Update withExistingAppServicePlan(String appServicePlanName);
+        }
 
+        interface WithHostNameSslStates {
+            Update disableSsl(String hostName);
+            Update enableSniSsl(String hostName, String thumbprint);
+            Update enableIpBasedSsl(String hostName, String thumbprint, String virtualIp);
+        }
+
+        interface WithHostNameBinding {
+            HostNameBinding.DefinitionStages.Blank<Update> defineHostNameBinding(String name);
+        }
     }
 
     /**
      * The template for a site update operation, containing all the settings that can be modified.
      */
-    interface Update {
+    interface Update extends
+            Appliable<WebApp>,
+            UpdateStages.WithAppServicePlan,
+            UpdateStages.WithHostNameSslStates,
+            UpdateStages.WithHostNameBinding {
     }
 }
 
