@@ -9,8 +9,14 @@ import java.util.List;
 
 import org.junit.Assert;
 
+import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
+import com.microsoft.azure.management.compute.VirtualMachine;
+import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
+import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancers;
+import com.microsoft.azure.management.network.Network;
+import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -21,36 +27,81 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> {
 
     private final PublicIpAddresses pips;
-    public TestLoadBalancer(PublicIpAddresses pips) {
+    private final VirtualMachines vms;
+    private final Networks networks;
+
+    public TestLoadBalancer(
+            PublicIpAddresses pips,
+            VirtualMachines vms,
+            Networks networks) {
         this.pips = pips;
+        this.vms = vms;
+        this.networks = networks;
     }
 
     @Override
     public LoadBalancer createResource(LoadBalancers resources) throws Exception {
         final String newName = "lb" + this.testId;
         Region region = Region.US_WEST;
+        String networkName = "net" + this.testId;
         String groupName = "rg" + this.testId;
-        String pipName = "pip" + this.testId;
+        String pipName1 = "pip" + this.testId;
+        String pipName2 = pipName1 + "b";
+        String vmName1 = "vm" + this.testId;
+        String vmName2 = "vm" + this.testId + "b";
+        String vmUsername = "user" + this.testId;
+        String availabilitySetName = "as" + this.testId;
 
-        // Create a pip
-        PublicIpAddress pip = this.pips.define(pipName)
-            .withRegion(region)
-            .withNewResourceGroup(groupName)
-            .withLeafDomainLabel(pipName)
-            .create();
+        // Create a VNet for the VMs
+        Network vnet = networks.define(networkName)
+                .withRegion(region)
+                .withNewResourceGroup(groupName)
+                .withAddressSpace("10.0.0.0/28")
+                .create();
 
-        PublicIpAddress pip2 = this.pips.define(pipName + "b")
+        // Create VMs in a new availability set
+        VirtualMachine vm1 = vms.define(vmName1)
+                .withRegion(region)
+                .withNewResourceGroup(groupName)
+                .withExistingPrimaryNetwork(vnet)
+                .withSubnet("subnet1")
+                .withPrimaryPrivateIpAddressDynamic()
+                .withoutPrimaryPublicIpAddress()
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
+                .withRootUserName(vmUsername)
+                .withPassword("Abcdef.123456")
+                .withNewAvailabilitySet(availabilitySetName)
+                .withSize(VirtualMachineSizeTypes.STANDARD_A1)
+                .create();
+
+        VirtualMachine vm2 = vms.define(vmName2)
                 .withRegion(region)
                 .withExistingResourceGroup(groupName)
-                .withLeafDomainLabel(pipName + "b")
+                .withExistingPrimaryNetwork(vnet)
+                .withSubnet("subnet1")
+                .withPrimaryPrivateIpAddressDynamic()
+                .withoutPrimaryPublicIpAddress()
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
+                .withRootUserName(vmUsername)
+                .withPassword("Abcdef.123456")
+                .withNewAvailabilitySet(availabilitySetName)
+                .withSize(VirtualMachineSizeTypes.STANDARD_A1)
+                .create();
+
+        // Create a pip
+        PublicIpAddress pip1 = this.pips.define(pipName1)
+                .withRegion(region)
+                .withNewResourceGroup(groupName)
+                .withLeafDomainLabel(pipName1)
                 .create();
 
         // Create a load balancer
         return resources.define(newName)
                 .withRegion(region)
-                .withNewResourceGroup(groupName)
-                .withExistingPublicIpAddress(pip)
-                .withExistingPublicIpAddress(pip2)
+                .withExistingResourceGroup(groupName)
+                .withExistingVirtualMachines(vm1, vm2)
+                .withExistingPublicIpAddresses(pip1)
+                .withNewPublicIpAddress(pipName2)
                 .create();
     }
 

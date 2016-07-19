@@ -425,7 +425,9 @@ public interface NicIpConfiguration extends
         Settable<NetworkInterface.Update>,
         UpdateStages.WithSubnet,
         UpdateStages.WithPrivateIp,
-        UpdateStages.WithPublicIpAddress {
+        UpdateStages.WithPublicIpAddress,
+        UpdateStages.WithLoadBalancer,
+        UpdateStages.WithBackendAddressPool {
     }
 
     /**
@@ -513,6 +515,33 @@ public interface NicIpConfiguration extends
              * @return the next stage of the network interface IP configuration update
              */
             Update withoutPublicIpAddress();
+        }
+
+        /**
+         * The stage of the network interface IP configuration update allowing to specify the load balancer
+         * back end address pool to add it to.
+         */
+        interface WithBackendAddressPool {
+            /**
+             * Adds this network interface's IP configuration to the provided back end address pool of
+             * the specified load balancer.
+             * @param name the name of an existing load balancer back end address pool
+             * @return the next stage of the update
+             */
+            Update withBackendAddressPool(String name);
+        }
+
+        /**
+         * The stage of the network interface's IP configuration allowing to specify the load balancer
+         * to associate this IP configuration with.
+         */
+        interface WithLoadBalancer {
+            /**
+             * Specifies the load balancer to associate this IP configuration with.
+             * @param loadBalancer an existing load balancer
+             * @return the next stage of the update
+             */
+            WithBackendAddressPool withExistingLoadBalancer(LoadBalancer loadBalancer);
         }
     }
 }

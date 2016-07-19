@@ -7,6 +7,7 @@ import com.microsoft.azure.management.compute.implementation.VirtualMachineExten
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.SupportsNetworkInterfaces;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
@@ -26,7 +27,9 @@ public interface VirtualMachine extends
         GroupableResource,
         Refreshable<VirtualMachine>,
         Wrapper<VirtualMachineInner>,
-        Updatable<VirtualMachine.Update> {
+        Updatable<VirtualMachine.Update>,
+        SupportsNetworkInterfaces {
+
     // Actions
 
     /**
@@ -158,17 +161,6 @@ public interface VirtualMachine extends
     List<VirtualMachineDataDisk> dataDisks();
 
     /**
-     * Gets the primary network interface of this virtual machine.
-     * <p>
-     * note that this method makes a rest API call to fetch the network interface.
-     *
-     * @return the primary network interface associated with this network interface.
-     * @throws CloudException exceptions thrown from the cloud.
-     * @throws IOException exceptions thrown from serialization/deserialization.
-     */
-    NetworkInterface primaryNetworkInterface() throws CloudException, IOException;
-
-    /**
      * Gets the public IP address associated with this virtual machine's primary network interface.
      * <p>
      * note that this method makes a rest API call to fetch the resource.
@@ -178,16 +170,6 @@ public interface VirtualMachine extends
      * @throws IOException exceptions thrown from serialization/deserialization.
      */
     PublicIpAddress primaryPublicIpAddress()  throws CloudException, IOException;
-
-    /**
-     * @return the list of reference ids of the network interfaces associated with this virtual machine
-     */
-    List<String> networkInterfaceIds();
-
-    /**
-     * @return the reference id of the primary network interface of this virtual machine
-     */
-    String primaryNetworkInterfaceId();
 
     /**
      * Returns id to the availability set this virtual machine associated with.

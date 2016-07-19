@@ -2,6 +2,8 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.network.BackendAddressPool;
+import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NicIpConfiguration;
@@ -12,6 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,28 +22,38 @@ import java.util.List;
  */
 class NicIpConfigurationImpl
         extends
-        ChildResourceImpl<NetworkInterfaceIPConfiguration, NetworkInterfaceImpl>
+            ChildResourceImpl<NetworkInterfaceIPConfiguration, NetworkInterfaceImpl>
         implements
-        NicIpConfiguration,
-        NicIpConfiguration.Definition<NetworkInterface.DefinitionStages.WithCreate>,
-        NicIpConfiguration.UpdateDefinition<NetworkInterface.Update>,
-        NicIpConfiguration.Update {
+            NicIpConfiguration,
+            NicIpConfiguration.Definition<NetworkInterface.DefinitionStages.WithCreate>,
+            NicIpConfiguration.UpdateDefinition<NetworkInterface.Update>,
+            NicIpConfiguration.Update {
     // Clients
     private final NetworkManager networkManager;
-    // flag indicating whether IP configuration is in create or update mode
+
+    // Flag indicating whether IP configuration is in create or update mode
     private final boolean isInCreateMode;
-    // unique key of a creatable virtual network to be associated with the ip configuration
+
+    // Unique key of a creatable virtual network to be associated with the ip configuration
     private String creatableVirtualNetworkKey;
-    // unique key of a creatable public IP to be associated with the ip configuration
+
+    // Unique key of a creatable public IP to be associated with the ip configuration
     private String creatablePublicIpKey;
-    // reference to an existing virtual network to be associated with the ip configuration
+
+    // Reference to an existing virtual network to be associated with the ip configuration
     private Network existingVirtualNetworkToAssociate;
-    // reference to an existing public IP to be associated with the ip configuration
+
+    // Reference to an existing public IP to be associated with the ip configuration
     private PublicIpAddress existingPublicIpAddressToAssociate;
-    // name of an existing subnet to be associated with a new or existing ip configuration
+
+    // Name of an existing subnet to be associated with a new or existing ip configuration
     private String subnetToAssociate;
-    // flag indicating to remove public IP association from the ip configuration during update
+
+    // Flag indicating to remove public IP association from the ip configuration during update
     private boolean removePrimaryPublicIPAssociation;
+
+    // Reference to an existing load balancer whose back end pool is to be associated with this IP config
+    private LoadBalancer loadBalancerToAssociate;
 
     protected NicIpConfigurationImpl(String name,
                                      NetworkInterfaceIPConfiguration inner,
@@ -198,6 +211,33 @@ class NicIpConfigurationImpl
     public NicIpConfigurationImpl withSubnet(String name) {
         this.subnetToAssociate = name;
         return this;
+    }
+
+    @Override
+    public NicIpConfigurationImpl withExistingLoadBalancer(LoadBalancer loadBalancer) {
+        this.loadBalancerToAssociate = loadBalancer;
+        return this;
+    }
+
+    @Override
+    public NicIpConfigurationImpl withBackendAddressPool(String name) {
+        for (BackendAddressPool pool : this.loadBalancerToAssociate.inner().backendAddressPools()) {
+            if (pool.name().equalsIgnoreCase(name)) {
+                ensureBackendAddressPools().add(pool);
+                return this;
+            }
+        }
+
+        return null;
+    }
+
+    private List<BackendAddressPool> ensureBackendAddressPools() {
+        List<BackendAddressPool> poolRefs = this.inner().loadBalancerBackendAddressPools();
+        if (poolRefs == null) {
+            poolRefs = new ArrayList<>();
+            this.inner().withLoadBalancerBackendAddressPools(poolRefs);
+        }
+        return poolRefs;
     }
 
     protected static void ensureConfigurations(List<NicIpConfiguration> nicIpConfigurations) {

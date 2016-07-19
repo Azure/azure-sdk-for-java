@@ -578,8 +578,8 @@ class VirtualMachineImpl
                 .define(name)
                 .withRegion(this.regionName());
         Creatable<StorageAccount> definitionAfterGroup;
-        if (this.newGroup != null) {
-            definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.newGroup);
+        if (this.creatableGroup != null) {
+            definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.creatableGroup);
         } else {
             definitionAfterGroup = definitionWithGroup.withExistingResourceGroup(this.resourceGroupName());
         }
@@ -738,8 +738,7 @@ class VirtualMachineImpl
     public NetworkInterface primaryNetworkInterface() throws CloudException, IOException {
         if (this.primaryNetworkInterface == null) {
             String primaryNicId = primaryNetworkInterfaceId();
-            this.primaryNetworkInterface = this.networkManager.networkInterfaces()
-                    .getByGroup(ResourceUtils.groupFromResourceId(primaryNicId), ResourceUtils.nameFromResourceId(primaryNicId));
+            this.primaryNetworkInterface = this.networkManager.networkInterfaces().getById(primaryNicId);
         }
         return this.primaryNetworkInterface;
     }
@@ -763,12 +762,31 @@ class VirtualMachineImpl
 
     @Override
     public String primaryNetworkInterfaceId() {
-        for (NetworkInterfaceReference nicRef : inner().networkProfile().networkInterfaces()) {
-            if (nicRef.primary() != null && nicRef.primary()) {
-                return nicRef.id();
+        final List<NetworkInterfaceReference> nicRefs = this.inner().networkProfile().networkInterfaces();
+        String primaryNicRefId = null;
+
+        if (nicRefs.size() == 1) {
+            // One NIC so assume it to be primary
+            primaryNicRefId = nicRefs.get(0).id();
+        } else if (nicRefs.size() == 0) {
+            // No NICs so null
+            primaryNicRefId = null;
+        } else {
+            // Find primary interface as flagged by Azure
+            for (NetworkInterfaceReference nicRef : inner().networkProfile().networkInterfaces()) {
+                if (nicRef.primary() != null && nicRef.primary()) {
+                    primaryNicRefId = nicRef.id();
+                    break;
+                }
+            }
+
+            // If Azure didn't flag any NIC as primary then assume the first one
+            if (primaryNicRefId == null) {
+                primaryNicRefId = nicRefs.get(0).id();
             }
         }
-        return null;
+
+        return primaryNicRefId;
     }
 
     @Override
@@ -1168,8 +1186,8 @@ class VirtualMachineImpl
                 .define(name)
                 .withRegion(this.regionName());
         NetworkInterface.DefinitionStages.WithPrimaryNetwork definitionWithNetwork;
-        if (this.newGroup != null) {
-            definitionWithNetwork = definitionWithGroup.withNewResourceGroup(this.newGroup);
+        if (this.creatableGroup != null) {
+            definitionWithNetwork = definitionWithGroup.withNewResourceGroup(this.creatableGroup);
         } else {
             definitionWithNetwork = definitionWithGroup.withExistingResourceGroup(this.resourceGroupName());
         }
@@ -1195,8 +1213,8 @@ class VirtualMachineImpl
                 .define(name)
                 .withRegion(this.regionName());
         NetworkInterface.DefinitionStages.WithPrimaryNetwork definitionAfterGroup;
-        if (this.newGroup != null) {
-            definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.newGroup);
+        if (this.creatableGroup != null) {
+            definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.creatableGroup);
         } else {
             definitionAfterGroup = definitionWithGroup.withExistingResourceGroup(this.resourceGroupName());
         }
