@@ -578,8 +578,8 @@ class VirtualMachineImpl
                 .define(name)
                 .withRegion(this.regionName());
         Creatable<StorageAccount> definitionAfterGroup;
-        if (this.newGroup != null) {
-            definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.newGroup);
+        if (this.creatableGroup != null) {
+            definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.creatableGroup);
         } else {
             definitionAfterGroup = definitionWithGroup.withExistingResourceGroup(this.resourceGroupName());
         }
@@ -1186,8 +1186,8 @@ class VirtualMachineImpl
                 .define(name)
                 .withRegion(this.regionName());
         NetworkInterface.DefinitionStages.WithPrimaryNetwork definitionWithNetwork;
-        if (this.newGroup != null) {
-            definitionWithNetwork = definitionWithGroup.withNewResourceGroup(this.newGroup);
+        if (this.creatableGroup != null) {
+            definitionWithNetwork = definitionWithGroup.withNewResourceGroup(this.creatableGroup);
         } else {
             definitionWithNetwork = definitionWithGroup.withExistingResourceGroup(this.resourceGroupName());
         }
@@ -1213,8 +1213,8 @@ class VirtualMachineImpl
                 .define(name)
                 .withRegion(this.regionName());
         NetworkInterface.DefinitionStages.WithPrimaryNetwork definitionAfterGroup;
-        if (this.newGroup != null) {
-            definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.newGroup);
+        if (this.creatableGroup != null) {
+            definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.creatableGroup);
         } else {
             definitionAfterGroup = definitionWithGroup.withExistingResourceGroup(this.resourceGroupName());
         }

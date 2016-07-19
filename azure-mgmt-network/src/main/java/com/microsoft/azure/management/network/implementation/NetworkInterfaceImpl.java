@@ -464,6 +464,6 @@ class NetworkInterfaceImpl
     }
 
     Creatable<ResourceGroup> newGroup() {
-        return this.newGroup;
+        return this.creatableGroup;
     }
 }
