@@ -6,7 +6,7 @@
 
 package com.microsoft.azure;
 
-import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
+import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
@@ -45,7 +45,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
 
         // Prepare the virtual network definition [shared by primary and secondary network interfaces]
         final String vnetName = "vnet" + this.testId;
-        Network.DefinitionStages.WithCreate networkCreatable = this.networks
+        Creatable<Network> networkCreatable = this.networks
                 .define(vnetName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(resourceGroupCreatable)
@@ -80,15 +80,15 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
                 .withNewPrimaryNetwork(networkCreatable)
                 .withPrimaryPrivateIpAddressStatic("10.0.0.4")
                 .withNewPrimaryPublicIpAddress(primaryPipName)
-                .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                .withAdminUserName("testuser")
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
+                .withRootUserName("testuser")
                 .withPassword("12NewPA$$w0rd!")
                 .withSize(VirtualMachineSizeTypes.STANDARD_A9)
                 .withNewSecondaryNetworkInterface(secondaryNetworkInterfaceCreatable)
                 .withNewSecondaryNetworkInterface(secondaryNetworkInterfaceCreatable2)
                 .create();
 
-        Assert.assertTrue(virtualMachine.networkInterfaceIds().size() == 2);
+        Assert.assertTrue(virtualMachine.networkInterfaceIds().size() == 3);
         NetworkInterface primaryNetworkInterface = virtualMachine.primaryNetworkInterface();
         Assert.assertEquals(primaryNetworkInterface.primaryPrivateIp(), "10.0.0.4");
 
@@ -104,7 +104,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
                 .withoutSecondaryNetworkInterface(secondaryNicName)
                 .apply();
 
-        Assert.assertTrue(virtualMachine.networkInterfaceIds().size() == 1);
+        Assert.assertTrue(virtualMachine.networkInterfaceIds().size() == 2);
         return null;
     }
 
