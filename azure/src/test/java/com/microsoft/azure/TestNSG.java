@@ -10,7 +10,7 @@ import org.junit.Assert;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
-import com.microsoft.azure.management.network.NetworkSecurityRule.Protocol;
+import com.microsoft.azure.management.network.Protocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
 /**
