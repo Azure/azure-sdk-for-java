@@ -16,6 +16,7 @@ import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NicIpConfiguration;
 import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.PublicIpAddress.DefinitionStages.WithGroup;
 import com.microsoft.azure.management.network.SupportsNetworkInterfaces;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -159,10 +160,16 @@ class LoadBalancerImpl
 
     @Override
     public LoadBalancerImpl withNewPublicIpAddress(String dnsLeafLabel) {
-        Creatable<PublicIpAddress> creatablePIP = myManager().publicIpAddresses().define(dnsLeafLabel)
-                .withRegion(this.regionName())
-                .withExistingResourceGroup(this.resourceGroupName());
-        return withNewPublicIpAddress(creatablePIP);
+        WithGroup precreatablePIP = myManager().publicIpAddresses().define(dnsLeafLabel)
+                .withRegion(this.regionName());
+        Creatable<PublicIpAddress> creatablePip;
+        if (super.creatableGroup == null) {
+            creatablePip = precreatablePIP.withExistingResourceGroup(this.resourceGroupName());
+        } else {
+            creatablePip = precreatablePIP.withNewResourceGroup(super.creatableGroup);
+        }
+
+        return withNewPublicIpAddress(creatablePip);
     }
 
     @Override
