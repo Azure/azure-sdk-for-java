@@ -6,6 +6,7 @@
 package com.microsoft.azure.eventprocessorhost;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
@@ -96,10 +97,20 @@ class EventHubPartitionPump extends PartitionPump
 		this.internalOperationFuture = null;
 		
 		// Create new receiver and set options
-    	String startingOffset = this.partitionContext.getInitialOffset();
+    	Object startAt = this.partitionContext.getInitialOffset();
     	long epoch = this.lease.getEpoch();
-    	this.host.logWithHostAndPartition(Level.FINE, this.partitionContext, "Opening EH receiver with epoch " + epoch + " at offset " + startingOffset);
-		this.internalOperationFuture = this.eventHubClient.createEpochReceiver(this.partitionContext.getConsumerGroupName(), this.partitionContext.getPartitionId(), startingOffset, epoch);
+    	this.host.logWithHostAndPartition(Level.FINE, this.partitionContext, "Opening EH receiver with epoch " + epoch + " at location " + startAt);
+    	if (startAt instanceof String)
+    	{
+    		this.internalOperationFuture = this.eventHubClient.createEpochReceiver(this.partitionContext.getConsumerGroupName(), this.partitionContext.getPartitionId(),
+    				(String)startAt, epoch);
+    	}
+    	else if (startAt instanceof Instant) 
+    	{
+    		this.internalOperationFuture = this.eventHubClient.createEpochReceiver(this.partitionContext.getConsumerGroupName(), this.partitionContext.getPartitionId(),
+    				(Instant)startAt, epoch);
+    	}
+    	// else getInitialOffset threw an exception and we never get here
 		this.lease.setEpoch(epoch);
 		this.partitionReceiver = (PartitionReceiver) this.internalOperationFuture.get();
 		this.partitionReceiver.setPrefetchCount(this.host.getEventProcessorOptions().getPrefetchCount());

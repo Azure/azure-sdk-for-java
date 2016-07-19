@@ -9,6 +9,8 @@ import java.time.Duration;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import com.microsoft.azure.eventhubs.PartitionReceiver;
+
 public final class EventProcessorOptions
 {
 	private Consumer<ExceptionReceivedEventArgs> exceptionNotificationHandler = null;
@@ -16,7 +18,8 @@ public final class EventProcessorOptions
     private int maxBatchSize = 10;
     private int prefetchCount = 300;
     private Duration receiveTimeOut = Duration.ofMinutes(1);
-    private Function<String, String> initialOffsetProvider = null;
+    private Function<String, Object> initialOffsetProvider =
+    		new Function<String, Object>() { @Override public Object apply(String blah) { return PartitionReceiver.START_OF_STREAM; }};
 
     /***
      * Returns an EventProcessorOptions instance with all options set to the default values.
@@ -127,7 +130,7 @@ public final class EventProcessorOptions
      * 
      * @return the current offset provider function
      */
-    public Function<String, String> getInitialOffsetProvider()
+    public Function<String, Object> getInitialOffsetProvider()
     {
     	return this.initialOffsetProvider;
     }
@@ -141,7 +144,7 @@ public final class EventProcessorOptions
      * 
      * @param initialOffsetProvider
      */
-    public void setInitialOffsetProvider(Function<String, String> initialOffsetProvider)
+    public void setInitialOffsetProvider(Function<String, Object> initialOffsetProvider)
     {
     	this.initialOffsetProvider = initialOffsetProvider;
     }

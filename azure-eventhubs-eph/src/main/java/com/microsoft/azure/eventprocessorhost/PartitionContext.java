@@ -5,6 +5,7 @@
 
 package com.microsoft.azure.eventprocessorhost;
 
+import java.time.Instant;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Function;
 import java.util.logging.Level;
@@ -109,24 +110,42 @@ public class PartitionContext
     	return this.partitionId;
     }
     
-    String getInitialOffset() throws InterruptedException, ExecutionException
+    Object getInitialOffset() throws InterruptedException, ExecutionException
     {
-    	Function<String, String> initialOffsetProvider = this.host.getEventProcessorOptions().getInitialOffsetProvider();
-    	if (initialOffsetProvider != null)
+    	Object startAt = null;
+    	
+    	Checkpoint startingCheckpoint = this.host.getCheckpointManager().getCheckpoint(this.partitionId).get();
+    	if (startingCheckpoint.getOffset() == null)
     	{
+    		// No checkpoint was ever stored. Use the initialOffsetProvider instead.
+        	Function<String, Object> initialOffsetProvider = this.host.getEventProcessorOptions().getInitialOffsetProvider();
     		this.host.logWithHostAndPartition(Level.FINE, this.partitionId, "Calling user-provided initial offset provider");
-    		this.offset = initialOffsetProvider.apply(this.partitionId);
-    		this.sequenceNumber = 0; // TODO we use sequenceNumber to check for regression of offset, 0 could be a problem until it gets updated from an event
-	    	this.host.logWithHostAndPartition(Level.FINE, this.partitionId, "Initial offset provided: " + this.offset + "//" + this.sequenceNumber);
+    		startAt = initialOffsetProvider.apply(this.partitionId);
+    		if (startAt instanceof String)
+    		{
+    			this.offset = (String)startAt;
+        		this.sequenceNumber = 0; // TODO we use sequenceNumber to check for regression of offset, 0 could be a problem until it gets updated from an event
+    	    	this.host.logWithHostAndPartition(Level.FINE, this.partitionId, "Initial offset provided: " + this.offset + "//" + this.sequenceNumber);
+    		}
+    		else if (startAt instanceof Instant)
+    		{
+    			// can't set offset/sequenceNumber
+    	    	this.host.logWithHostAndPartition(Level.FINE, this.partitionId, "Initial timestamp provided: " + (Instant)startAt);
+    		}
+    		else
+    		{
+    			throw new IllegalArgumentException("Unexpected object type returned by user-provided initialOffsetProvider");
+    		}
     	}
     	else
     	{
-	    	Checkpoint startingCheckpoint = this.host.getCheckpointManager().getCheckpoint(this.partitionId).get();
+    		// Checkpoint is valid, use it.
 	    	this.offset = startingCheckpoint.getOffset();
 	    	this.sequenceNumber = startingCheckpoint.getSequenceNumber();
 	    	this.host.logWithHostAndPartition(Level.FINE, this.partitionId, "Retrieved starting offset " + this.offset + "//" + this.sequenceNumber);
     	}
-    	return this.offset;
+    	
+    	return startAt;
     }
 
     /**
