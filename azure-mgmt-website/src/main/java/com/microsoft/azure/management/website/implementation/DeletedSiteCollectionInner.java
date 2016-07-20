@@ -9,7 +9,6 @@
 package com.microsoft.azure.management.website.implementation;
 
 import java.util.List;
-import com.microsoft.azure.management.website.DeletedSite;
 
 /**
  * Collection of deleted sites.
@@ -18,7 +17,7 @@ public class DeletedSiteCollectionInner {
     /**
      * Collection of resources.
      */
-    private List<DeletedSite> value;
+    private List<DeletedSiteInner> value;
 
     /**
      * Link to next page of resources.
@@ -30,7 +29,7 @@ public class DeletedSiteCollectionInner {
      *
      * @return the value value
      */
-    public List<DeletedSite> value() {
+    public List<DeletedSiteInner> value() {
         return this.value;
     }
 
@@ -40,7 +39,7 @@ public class DeletedSiteCollectionInner {
      * @param value the value value to set
      * @return the DeletedSiteCollectionInner object itself.
      */
-    public DeletedSiteCollectionInner withValue(List<DeletedSite> value) {
+    public DeletedSiteCollectionInner withValue(List<DeletedSiteInner> value) {
         this.value = value;
         return this;
     }
