@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.network.implementation.NetworkInterfaceIPConfigurationInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -13,7 +14,7 @@ import java.io.IOException;
  * An IP configuration in a network interface.
  */
 public interface NicIpConfiguration extends
-        Wrapper<NetworkInterfaceIPConfiguration>,
+        Wrapper<NetworkInterfaceIPConfigurationInner>,
         ChildResource {
     // Getters
 

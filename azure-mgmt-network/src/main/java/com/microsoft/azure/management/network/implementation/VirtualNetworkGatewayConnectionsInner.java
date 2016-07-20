@@ -13,6 +13,9 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.network.ConnectionResetSharedKey;
+import com.microsoft.azure.management.network.ConnectionSharedKey;
+import com.microsoft.azure.management.network.ConnectionSharedKeyResult;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
@@ -93,19 +96,19 @@ public final class VirtualNetworkGatewayConnectionsInner {
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections/{virtualNetworkGatewayConnectionName}/sharedkey/reset")
-        Call<ResponseBody> resetSharedKey(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkGatewayConnectionName") String virtualNetworkGatewayConnectionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ConnectionResetSharedKeyInner parameters, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> resetSharedKey(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkGatewayConnectionName") String virtualNetworkGatewayConnectionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ConnectionResetSharedKey parameters, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections/{virtualNetworkGatewayConnectionName}/sharedkey/reset")
-        Call<ResponseBody> beginResetSharedKey(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkGatewayConnectionName") String virtualNetworkGatewayConnectionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ConnectionResetSharedKeyInner parameters, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> beginResetSharedKey(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkGatewayConnectionName") String virtualNetworkGatewayConnectionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ConnectionResetSharedKey parameters, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections/{virtualNetworkGatewayConnectionName}/sharedkey")
-        Call<ResponseBody> setSharedKey(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkGatewayConnectionName") String virtualNetworkGatewayConnectionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ConnectionSharedKeyInner parameters, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> setSharedKey(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkGatewayConnectionName") String virtualNetworkGatewayConnectionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ConnectionSharedKey parameters, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections/{virtualNetworkGatewayConnectionName}/sharedkey")
-        Call<ResponseBody> beginSetSharedKey(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkGatewayConnectionName") String virtualNetworkGatewayConnectionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ConnectionSharedKeyInner parameters, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> beginSetSharedKey(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkGatewayConnectionName") String virtualNetworkGatewayConnectionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ConnectionSharedKey parameters, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
@@ -514,9 +517,9 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ConnectionSharedKeyResultInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the ConnectionSharedKeyResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<ConnectionSharedKeyResultInner> getSharedKey(String resourceGroupName, String connectionSharedKeyName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<ConnectionSharedKeyResult> getSharedKey(String resourceGroupName, String connectionSharedKeyName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -542,7 +545,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSharedKeyAsync(String resourceGroupName, String connectionSharedKeyName, final ServiceCallback<ConnectionSharedKeyResultInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getSharedKeyAsync(String resourceGroupName, String connectionSharedKeyName, final ServiceCallback<ConnectionSharedKeyResult> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -564,7 +567,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         }
         Call<ResponseBody> call = service.getSharedKey(resourceGroupName, connectionSharedKeyName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<ConnectionSharedKeyResultInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<ConnectionSharedKeyResult>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -577,9 +580,9 @@ public final class VirtualNetworkGatewayConnectionsInner {
         return serviceCall;
     }
 
-    private ServiceResponse<ConnectionSharedKeyResultInner> getSharedKeyDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ConnectionSharedKeyResultInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<ConnectionSharedKeyResultInner>() { }.getType())
+    private ServiceResponse<ConnectionSharedKeyResult> getSharedKeyDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<ConnectionSharedKeyResult, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<ConnectionSharedKeyResult>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -676,9 +679,9 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ConnectionResetSharedKeyInner object wrapped in ServiceResponse if successful.
+     * @return the ConnectionResetSharedKey object wrapped in ServiceResponse if successful.
      */
-    public ServiceResponse<ConnectionResetSharedKeyInner> resetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public ServiceResponse<ConnectionResetSharedKey> resetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -692,10 +695,10 @@ public final class VirtualNetworkGatewayConnectionsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final Long keyLength = null;
-        ConnectionResetSharedKeyInner parameters = new ConnectionResetSharedKeyInner();
+        ConnectionResetSharedKey parameters = new ConnectionResetSharedKey();
         parameters.withKeyLength(null);
         Response<ResponseBody> result = service.resetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent()).execute();
-        return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<ConnectionResetSharedKeyInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<ConnectionResetSharedKey>() { }.getType());
     }
 
     /**
@@ -707,7 +710,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall resetSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, final ServiceCallback<ConnectionResetSharedKeyInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall resetSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, final ServiceCallback<ConnectionResetSharedKey> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -724,7 +727,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
         final Long keyLength = null;
-        ConnectionResetSharedKeyInner parameters = new ConnectionResetSharedKeyInner();
+        ConnectionResetSharedKey parameters = new ConnectionResetSharedKey();
         parameters.withKeyLength(null);
         Call<ResponseBody> call = service.resetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
@@ -735,7 +738,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
             }
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<ConnectionResetSharedKeyInner>() { }.getType(), serviceCall, serviceCallback);
+                client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<ConnectionResetSharedKey>() { }.getType(), serviceCall, serviceCallback);
             }
         });
         return serviceCall;
@@ -750,9 +753,9 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ConnectionResetSharedKeyInner object wrapped in ServiceResponse if successful.
+     * @return the ConnectionResetSharedKey object wrapped in ServiceResponse if successful.
      */
-    public ServiceResponse<ConnectionResetSharedKeyInner> resetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, Long keyLength) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public ServiceResponse<ConnectionResetSharedKey> resetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, Long keyLength) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -765,10 +768,10 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        ConnectionResetSharedKeyInner parameters = new ConnectionResetSharedKeyInner();
+        ConnectionResetSharedKey parameters = new ConnectionResetSharedKey();
         parameters.withKeyLength(keyLength);
         Response<ResponseBody> result = service.resetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent()).execute();
-        return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<ConnectionResetSharedKeyInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<ConnectionResetSharedKey>() { }.getType());
     }
 
     /**
@@ -781,7 +784,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall resetSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, Long keyLength, final ServiceCallback<ConnectionResetSharedKeyInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall resetSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, Long keyLength, final ServiceCallback<ConnectionResetSharedKey> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -797,7 +800,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (this.client.apiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
-        ConnectionResetSharedKeyInner parameters = new ConnectionResetSharedKeyInner();
+        ConnectionResetSharedKey parameters = new ConnectionResetSharedKey();
         parameters.withKeyLength(keyLength);
         Call<ResponseBody> call = service.resetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
@@ -808,7 +811,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
             }
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<ConnectionResetSharedKeyInner>() { }.getType(), serviceCall, serviceCallback);
+                client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<ConnectionResetSharedKey>() { }.getType(), serviceCall, serviceCallback);
             }
         });
         return serviceCall;
@@ -822,9 +825,9 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ConnectionResetSharedKeyInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the ConnectionResetSharedKey object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<ConnectionResetSharedKeyInner> beginResetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<ConnectionResetSharedKey> beginResetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -838,7 +841,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final Long keyLength = null;
-        ConnectionResetSharedKeyInner parameters = new ConnectionResetSharedKeyInner();
+        ConnectionResetSharedKey parameters = new ConnectionResetSharedKey();
         parameters.withKeyLength(null);
         Call<ResponseBody> call = service.beginResetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
         return beginResetSharedKeyDelegate(call.execute());
@@ -853,7 +856,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall beginResetSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, final ServiceCallback<ConnectionResetSharedKeyInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall beginResetSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, final ServiceCallback<ConnectionResetSharedKey> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -874,11 +877,11 @@ public final class VirtualNetworkGatewayConnectionsInner {
             return null;
         }
         final Long keyLength = null;
-        ConnectionResetSharedKeyInner parameters = new ConnectionResetSharedKeyInner();
+        ConnectionResetSharedKey parameters = new ConnectionResetSharedKey();
         parameters.withKeyLength(null);
         Call<ResponseBody> call = service.beginResetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<ConnectionResetSharedKeyInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<ConnectionResetSharedKey>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -900,9 +903,9 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ConnectionResetSharedKeyInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the ConnectionResetSharedKey object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<ConnectionResetSharedKeyInner> beginResetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, Long keyLength) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<ConnectionResetSharedKey> beginResetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, Long keyLength) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -915,7 +918,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        ConnectionResetSharedKeyInner parameters = new ConnectionResetSharedKeyInner();
+        ConnectionResetSharedKey parameters = new ConnectionResetSharedKey();
         parameters.withKeyLength(keyLength);
         Call<ResponseBody> call = service.beginResetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
         return beginResetSharedKeyDelegate(call.execute());
@@ -931,7 +934,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall beginResetSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, Long keyLength, final ServiceCallback<ConnectionResetSharedKeyInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall beginResetSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, Long keyLength, final ServiceCallback<ConnectionResetSharedKey> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -951,11 +954,11 @@ public final class VirtualNetworkGatewayConnectionsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        ConnectionResetSharedKeyInner parameters = new ConnectionResetSharedKeyInner();
+        ConnectionResetSharedKey parameters = new ConnectionResetSharedKey();
         parameters.withKeyLength(keyLength);
         Call<ResponseBody> call = service.beginResetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<ConnectionResetSharedKeyInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<ConnectionResetSharedKey>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -968,9 +971,9 @@ public final class VirtualNetworkGatewayConnectionsInner {
         return serviceCall;
     }
 
-    private ServiceResponse<ConnectionResetSharedKeyInner> beginResetSharedKeyDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ConnectionResetSharedKeyInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<ConnectionResetSharedKeyInner>() { }.getType())
+    private ServiceResponse<ConnectionResetSharedKey> beginResetSharedKeyDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<ConnectionResetSharedKey, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<ConnectionResetSharedKey>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -985,9 +988,9 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ConnectionSharedKeyInner object wrapped in ServiceResponse if successful.
+     * @return the ConnectionSharedKey object wrapped in ServiceResponse if successful.
      */
-    public ServiceResponse<ConnectionSharedKeyInner> setSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public ServiceResponse<ConnectionSharedKey> setSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1001,10 +1004,10 @@ public final class VirtualNetworkGatewayConnectionsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String value = null;
-        ConnectionSharedKeyInner parameters = new ConnectionSharedKeyInner();
+        ConnectionSharedKey parameters = new ConnectionSharedKey();
         parameters.withValue(null);
         Response<ResponseBody> result = service.setSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent()).execute();
-        return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<ConnectionSharedKeyInner>() { }.getType());
+        return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<ConnectionSharedKey>() { }.getType());
     }
 
     /**
@@ -1016,7 +1019,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall setSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, final ServiceCallback<ConnectionSharedKeyInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall setSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, final ServiceCallback<ConnectionSharedKey> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -1033,7 +1036,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
         final String value = null;
-        ConnectionSharedKeyInner parameters = new ConnectionSharedKeyInner();
+        ConnectionSharedKey parameters = new ConnectionSharedKey();
         parameters.withValue(null);
         Call<ResponseBody> call = service.setSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
@@ -1044,7 +1047,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
             }
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<ConnectionSharedKeyInner>() { }.getType(), serviceCall, serviceCallback);
+                client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<ConnectionSharedKey>() { }.getType(), serviceCall, serviceCallback);
             }
         });
         return serviceCall;
@@ -1059,9 +1062,9 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ConnectionSharedKeyInner object wrapped in ServiceResponse if successful.
+     * @return the ConnectionSharedKey object wrapped in ServiceResponse if successful.
      */
-    public ServiceResponse<ConnectionSharedKeyInner> setSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, String value) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public ServiceResponse<ConnectionSharedKey> setSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, String value) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1074,10 +1077,10 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        ConnectionSharedKeyInner parameters = new ConnectionSharedKeyInner();
+        ConnectionSharedKey parameters = new ConnectionSharedKey();
         parameters.withValue(value);
         Response<ResponseBody> result = service.setSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent()).execute();
-        return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<ConnectionSharedKeyInner>() { }.getType());
+        return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<ConnectionSharedKey>() { }.getType());
     }
 
     /**
@@ -1090,7 +1093,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall setSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, String value, final ServiceCallback<ConnectionSharedKeyInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall setSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, String value, final ServiceCallback<ConnectionSharedKey> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -1106,7 +1109,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (this.client.apiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
-        ConnectionSharedKeyInner parameters = new ConnectionSharedKeyInner();
+        ConnectionSharedKey parameters = new ConnectionSharedKey();
         parameters.withValue(value);
         Call<ResponseBody> call = service.setSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
@@ -1117,7 +1120,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
             }
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<ConnectionSharedKeyInner>() { }.getType(), serviceCall, serviceCallback);
+                client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<ConnectionSharedKey>() { }.getType(), serviceCall, serviceCallback);
             }
         });
         return serviceCall;
@@ -1131,9 +1134,9 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ConnectionSharedKeyInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the ConnectionSharedKey object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<ConnectionSharedKeyInner> beginSetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<ConnectionSharedKey> beginSetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1147,7 +1150,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String value = null;
-        ConnectionSharedKeyInner parameters = new ConnectionSharedKeyInner();
+        ConnectionSharedKey parameters = new ConnectionSharedKey();
         parameters.withValue(null);
         Call<ResponseBody> call = service.beginSetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
         return beginSetSharedKeyDelegate(call.execute());
@@ -1162,7 +1165,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall beginSetSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, final ServiceCallback<ConnectionSharedKeyInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall beginSetSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, final ServiceCallback<ConnectionSharedKey> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -1183,11 +1186,11 @@ public final class VirtualNetworkGatewayConnectionsInner {
             return null;
         }
         final String value = null;
-        ConnectionSharedKeyInner parameters = new ConnectionSharedKeyInner();
+        ConnectionSharedKey parameters = new ConnectionSharedKey();
         parameters.withValue(null);
         Call<ResponseBody> call = service.beginSetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<ConnectionSharedKeyInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<ConnectionSharedKey>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1209,9 +1212,9 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ConnectionSharedKeyInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the ConnectionSharedKey object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<ConnectionSharedKeyInner> beginSetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, String value) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<ConnectionSharedKey> beginSetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, String value) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1224,7 +1227,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        ConnectionSharedKeyInner parameters = new ConnectionSharedKeyInner();
+        ConnectionSharedKey parameters = new ConnectionSharedKey();
         parameters.withValue(value);
         Call<ResponseBody> call = service.beginSetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
         return beginSetSharedKeyDelegate(call.execute());
@@ -1240,7 +1243,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall beginSetSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, String value, final ServiceCallback<ConnectionSharedKeyInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall beginSetSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, String value, final ServiceCallback<ConnectionSharedKey> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -1260,11 +1263,11 @@ public final class VirtualNetworkGatewayConnectionsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        ConnectionSharedKeyInner parameters = new ConnectionSharedKeyInner();
+        ConnectionSharedKey parameters = new ConnectionSharedKey();
         parameters.withValue(value);
         Call<ResponseBody> call = service.beginSetSharedKey(resourceGroupName, virtualNetworkGatewayConnectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<ConnectionSharedKeyInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<ConnectionSharedKey>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1277,10 +1280,10 @@ public final class VirtualNetworkGatewayConnectionsInner {
         return serviceCall;
     }
 
-    private ServiceResponse<ConnectionSharedKeyInner> beginSetSharedKeyDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ConnectionSharedKeyInner, CloudException>(this.client.mapperAdapter())
-                .register(201, new TypeToken<ConnectionSharedKeyInner>() { }.getType())
-                .register(200, new TypeToken<ConnectionSharedKeyInner>() { }.getType())
+    private ServiceResponse<ConnectionSharedKey> beginSetSharedKeyDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<ConnectionSharedKey, CloudException>(this.client.mapperAdapter())
+                .register(201, new TypeToken<ConnectionSharedKey>() { }.getType())
+                .register(200, new TypeToken<ConnectionSharedKey>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

@@ -9,13 +9,13 @@
 package com.microsoft.azure.management.network.implementation;
 
 import java.util.List;
-import com.microsoft.azure.management.network.VirtualNetworkGatewayIPConfiguration;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.VirtualNetworkGatewaySku;
 import com.microsoft.azure.management.network.VpnClientConfiguration;
 import com.microsoft.azure.management.network.BgpSettings;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.Resource;
 import com.microsoft.azure.Resource;
 
 /**
@@ -27,7 +27,7 @@ public class VirtualNetworkGatewayInner extends Resource {
      * IpConfigurations for Virtual network gateway.
      */
     @JsonProperty(value = "properties.ipConfigurations")
-    private List<VirtualNetworkGatewayIPConfiguration> ipConfigurations;
+    private List<VirtualNetworkGatewayIPConfigurationInner> ipConfigurations;
 
     /**
      * The type of this virtual network gateway. Possible values include:
@@ -102,7 +102,7 @@ public class VirtualNetworkGatewayInner extends Resource {
      *
      * @return the ipConfigurations value
      */
-    public List<VirtualNetworkGatewayIPConfiguration> ipConfigurations() {
+    public List<VirtualNetworkGatewayIPConfigurationInner> ipConfigurations() {
         return this.ipConfigurations;
     }
 
@@ -112,7 +112,7 @@ public class VirtualNetworkGatewayInner extends Resource {
      * @param ipConfigurations the ipConfigurations value to set
      * @return the VirtualNetworkGatewayInner object itself.
      */
-    public VirtualNetworkGatewayInner withIpConfigurations(List<VirtualNetworkGatewayIPConfiguration> ipConfigurations) {
+    public VirtualNetworkGatewayInner withIpConfigurations(List<VirtualNetworkGatewayIPConfigurationInner> ipConfigurations) {
         this.ipConfigurations = ipConfigurations;
         return this;
     }

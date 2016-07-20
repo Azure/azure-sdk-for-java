@@ -2,13 +2,11 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.SubResource;
-import com.microsoft.azure.management.network.BackendAddressPool;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NicIpConfiguration;
 import com.microsoft.azure.management.network.PublicIpAddress;
-import com.microsoft.azure.management.network.NetworkInterfaceIPConfiguration;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -22,7 +20,7 @@ import java.util.List;
  */
 class NicIpConfigurationImpl
         extends
-            ChildResourceImpl<NetworkInterfaceIPConfiguration, NetworkInterfaceImpl>
+            ChildResourceImpl<NetworkInterfaceIPConfigurationInner, NetworkInterfaceImpl>
         implements
             NicIpConfiguration,
             NicIpConfiguration.Definition<NetworkInterface.DefinitionStages.WithCreate>,
@@ -56,7 +54,7 @@ class NicIpConfigurationImpl
     private LoadBalancer loadBalancerToAssociate;
 
     protected NicIpConfigurationImpl(String name,
-                                     NetworkInterfaceIPConfiguration inner,
+                                     NetworkInterfaceIPConfigurationInner inner,
                                      NetworkInterfaceImpl parent,
                                      NetworkManager networkManager,
                                      final boolean isInCreateModel) {
@@ -68,7 +66,7 @@ class NicIpConfigurationImpl
     protected static NicIpConfigurationImpl prepareNicIpConfiguration(String name,
                                                                       NetworkInterfaceImpl parent,
                                                                       final NetworkManager networkManager) {
-        NetworkInterfaceIPConfiguration ipConfigurationInner = new NetworkInterfaceIPConfiguration();
+        NetworkInterfaceIPConfigurationInner ipConfigurationInner = new NetworkInterfaceIPConfigurationInner();
         ipConfigurationInner.withName(name);
         return new NicIpConfigurationImpl(name,
                 ipConfigurationInner,
@@ -221,7 +219,7 @@ class NicIpConfigurationImpl
 
     @Override
     public NicIpConfigurationImpl withBackendAddressPool(String name) {
-        for (BackendAddressPool pool : this.loadBalancerToAssociate.inner().backendAddressPools()) {
+        for (BackendAddressPoolInner pool : this.loadBalancerToAssociate.inner().backendAddressPools()) {
             if (pool.name().equalsIgnoreCase(name)) {
                 ensureBackendAddressPools().add(pool);
                 return this;
@@ -231,8 +229,8 @@ class NicIpConfigurationImpl
         return null;
     }
 
-    private List<BackendAddressPool> ensureBackendAddressPools() {
-        List<BackendAddressPool> poolRefs = this.inner().loadBalancerBackendAddressPools();
+    private List<BackendAddressPoolInner> ensureBackendAddressPools() {
+        List<BackendAddressPoolInner> poolRefs = this.inner().loadBalancerBackendAddressPools();
         if (poolRefs == null) {
             poolRefs = new ArrayList<>();
             this.inner().withLoadBalancerBackendAddressPools(poolRefs);

@@ -10,10 +10,10 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.SubResource;
 import java.util.List;
-import com.microsoft.azure.management.network.NetworkInterfaceIPConfiguration;
 import com.microsoft.azure.management.network.NetworkInterfaceDnsSettings;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.Resource;
 import com.microsoft.azure.Resource;
 
 /**
@@ -37,7 +37,7 @@ public class NetworkInterfaceInner extends Resource {
      * Gets or sets list of IPConfigurations of the NetworkInterface.
      */
     @JsonProperty(value = "properties.ipConfigurations")
-    private List<NetworkInterfaceIPConfiguration> ipConfigurations;
+    private List<NetworkInterfaceIPConfigurationInner> ipConfigurations;
 
     /**
      * Gets or sets DNS Settings in  NetworkInterface.
@@ -127,7 +127,7 @@ public class NetworkInterfaceInner extends Resource {
      *
      * @return the ipConfigurations value
      */
-    public List<NetworkInterfaceIPConfiguration> ipConfigurations() {
+    public List<NetworkInterfaceIPConfigurationInner> ipConfigurations() {
         return this.ipConfigurations;
     }
 
@@ -137,7 +137,7 @@ public class NetworkInterfaceInner extends Resource {
      * @param ipConfigurations the ipConfigurations value to set
      * @return the NetworkInterfaceInner object itself.
      */
-    public NetworkInterfaceInner withIpConfigurations(List<NetworkInterfaceIPConfiguration> ipConfigurations) {
+    public NetworkInterfaceInner withIpConfigurations(List<NetworkInterfaceIPConfigurationInner> ipConfigurations) {
         this.ipConfigurations = ipConfigurations;
         return this;
     }

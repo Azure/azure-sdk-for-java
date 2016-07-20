@@ -8,10 +8,10 @@
 
 package com.microsoft.azure.management.network.implementation;
 
-import com.microsoft.azure.management.network.IPConfiguration;
 import com.microsoft.azure.management.network.PublicIPAddressDnsSettings;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.Resource;
 import com.microsoft.azure.Resource;
 
 /**
@@ -30,7 +30,7 @@ public class PublicIPAddressInner extends Resource {
      * The ipConfiguration property.
      */
     @JsonProperty(value = "properties.ipConfiguration")
-    private IPConfiguration ipConfiguration;
+    private IPConfigurationInner ipConfiguration;
 
     /**
      * Gets or sets FQDN of the DNS record associated with the public IP
@@ -95,7 +95,7 @@ public class PublicIPAddressInner extends Resource {
      *
      * @return the ipConfiguration value
      */
-    public IPConfiguration ipConfiguration() {
+    public IPConfigurationInner ipConfiguration() {
         return this.ipConfiguration;
     }
 
@@ -105,7 +105,7 @@ public class PublicIPAddressInner extends Resource {
      * @param ipConfiguration the ipConfiguration value to set
      * @return the PublicIPAddressInner object itself.
      */
-    public PublicIPAddressInner withIpConfiguration(IPConfiguration ipConfiguration) {
+    public PublicIPAddressInner withIpConfiguration(IPConfigurationInner ipConfiguration) {
         this.ipConfiguration = ipConfiguration;
         return this;
     }

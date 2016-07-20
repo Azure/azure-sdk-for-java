@@ -13,6 +13,7 @@ import com.microsoft.azure.management.network.BgpSettings;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
+import com.microsoft.azure.Resource;
 
 /**
  * A common class for general resource information.

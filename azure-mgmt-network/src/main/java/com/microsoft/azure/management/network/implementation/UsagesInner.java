@@ -13,6 +13,7 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.network.Usage;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
@@ -73,9 +74,9 @@ public final class UsagesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;Usage&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<UsageInner>> list(final String location) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<Usage>> list(final String location) throws CloudException, IOException, IllegalArgumentException {
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
@@ -86,10 +87,10 @@ public final class UsagesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(location, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        ServiceResponse<PageImpl<UsageInner>> response = listDelegate(call.execute());
-        PagedList<UsageInner> result = new PagedList<UsageInner>(response.getBody()) {
+        ServiceResponse<PageImpl<Usage>> response = listDelegate(call.execute());
+        PagedList<Usage> result = new PagedList<Usage>(response.getBody()) {
             @Override
-            public Page<UsageInner> nextPage(String nextPageLink) throws CloudException, IOException {
+            public Page<Usage> nextPage(String nextPageLink) throws CloudException, IOException {
                 return listNext(nextPageLink).getBody();
             }
         };
@@ -104,7 +105,7 @@ public final class UsagesInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listAsync(final String location, final ListOperationCallback<UsageInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listAsync(final String location, final ListOperationCallback<Usage> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -122,11 +123,11 @@ public final class UsagesInner {
         }
         Call<ResponseBody> call = service.list(location, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<UsageInner>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<Usage>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<UsageInner>> result = listDelegate(response);
+                    ServiceResponse<PageImpl<Usage>> result = listDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
@@ -142,9 +143,9 @@ public final class UsagesInner {
         return serviceCall;
     }
 
-    private ServiceResponse<PageImpl<UsageInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<UsageInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl<UsageInner>>() { }.getType())
+    private ServiceResponse<PageImpl<Usage>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<Usage>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<Usage>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -156,9 +157,9 @@ public final class UsagesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;Usage&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<UsageInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl<Usage>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -175,7 +176,7 @@ public final class UsagesInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<UsageInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<Usage> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -185,11 +186,11 @@ public final class UsagesInner {
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<UsageInner>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<Usage>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<UsageInner>> result = listNextDelegate(response);
+                    ServiceResponse<PageImpl<Usage>> result = listNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
@@ -205,9 +206,9 @@ public final class UsagesInner {
         return serviceCall;
     }
 
-    private ServiceResponse<PageImpl<UsageInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<UsageInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl<UsageInner>>() { }.getType())
+    private ServiceResponse<PageImpl<Usage>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<Usage>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<Usage>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

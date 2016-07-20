@@ -9,8 +9,10 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.ExpressRouteCircuitPeeringConfig;
+import com.microsoft.azure.management.network.ExpressRouteCircuitStats;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.SubResource;
 import com.microsoft.azure.SubResource;
 
 /**
@@ -90,7 +92,7 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
      * Gets or peering stats.
      */
     @JsonProperty(value = "properties.stats")
-    private ExpressRouteCircuitStatsInner stats;
+    private ExpressRouteCircuitStats stats;
 
     /**
      * Gets or sets Provisioning state of the PublicIP resource
@@ -335,7 +337,7 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
      *
      * @return the stats value
      */
-    public ExpressRouteCircuitStatsInner stats() {
+    public ExpressRouteCircuitStats stats() {
         return this.stats;
     }
 
@@ -345,7 +347,7 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
      * @param stats the stats value to set
      * @return the ExpressRouteCircuitPeeringInner object itself.
      */
-    public ExpressRouteCircuitPeeringInner withStats(ExpressRouteCircuitStatsInner stats) {
+    public ExpressRouteCircuitPeeringInner withStats(ExpressRouteCircuitStats stats) {
         this.stats = stats;
         return this;
     }
