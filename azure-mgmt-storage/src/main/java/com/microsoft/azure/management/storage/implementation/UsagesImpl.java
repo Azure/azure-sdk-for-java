@@ -6,7 +6,6 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.PageImpl;
 import com.microsoft.azure.management.storage.StorageUsage;
-import com.microsoft.azure.management.storage.Usage;
 import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.rest.RestException;
 
@@ -26,23 +25,23 @@ class UsagesImpl
 
     @Override
     public PagedList<StorageUsage> list() throws CloudException, IOException {
-        PagedListConverter<Usage, StorageUsage> converter =
-                new PagedListConverter<Usage, StorageUsage>() {
+        PagedListConverter<UsageInner, StorageUsage> converter =
+                new PagedListConverter<UsageInner, StorageUsage>() {
             @Override
-            public StorageUsage typeConvert(Usage usageInner) {
+            public StorageUsage typeConvert(UsageInner usageInner) {
                 return new UsageImpl(usageInner);
             }
         };
-        return converter.convert(toPagedList(client.usages().list().getBody().value()));
+        return converter.convert(toPagedList(client.usages().list().getBody()));
     }
 
-    private PagedList<Usage> toPagedList(List<Usage> list) {
-        PageImpl<Usage> page = new PageImpl<>();
+    private PagedList<UsageInner> toPagedList(List<UsageInner> list) {
+        PageImpl<UsageInner> page = new PageImpl<>();
         page.setItems(list);
         page.setNextPageLink(null);
-        return new PagedList<Usage>(page) {
+        return new PagedList<UsageInner>(page) {
             @Override
-            public Page<Usage> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<UsageInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return null;
             }
         };
