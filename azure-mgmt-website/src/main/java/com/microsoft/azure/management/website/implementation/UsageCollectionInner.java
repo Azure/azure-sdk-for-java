@@ -9,7 +9,6 @@
 package com.microsoft.azure.management.website.implementation;
 
 import java.util.List;
-import com.microsoft.azure.management.website.Usage;
 
 /**
  * Collection of usages.
@@ -18,7 +17,7 @@ public class UsageCollectionInner {
     /**
      * Collection of resources.
      */
-    private List<Usage> value;
+    private List<UsageInner> value;
 
     /**
      * Link to next page of resources.
@@ -30,7 +29,7 @@ public class UsageCollectionInner {
      *
      * @return the value value
      */
-    public List<Usage> value() {
+    public List<UsageInner> value() {
         return this.value;
     }
 
@@ -40,7 +39,7 @@ public class UsageCollectionInner {
      * @param value the value value to set
      * @return the UsageCollectionInner object itself.
      */
-    public UsageCollectionInner withValue(List<Usage> value) {
+    public UsageCollectionInner withValue(List<UsageInner> value) {
         this.value = value;
         return this;
     }

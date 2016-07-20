@@ -8,11 +8,11 @@
 
 package com.microsoft.azure.management.website.implementation;
 
+import org.joda.time.DateTime;
 import java.util.List;
 import com.microsoft.azure.management.website.UsageState;
 import com.microsoft.azure.management.website.SiteAvailabilityState;
 import com.microsoft.azure.management.website.HostNameSslState;
-import org.joda.time.DateTime;
 import com.microsoft.azure.management.website.HostingEnvironmentProfile;
 import com.microsoft.azure.management.website.CloningInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,15 +20,21 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Represents a web app.
+ * Reports deleted site including the timestamp of operation.
  */
 @JsonFlatten
-public class SiteInner extends Resource {
+public class DeletedSiteInner extends Resource {
+    /**
+     * Time when the site was deleted.
+     */
+    @JsonProperty(value = "properties.deletedTimestamp")
+    private DateTime deletedTimestamp;
+
     /**
      * Name of web app.
      */
     @JsonProperty(value = "properties.name")
-    private String siteName;
+    private String deletedSiteName;
 
     /**
      * State of the web app.
@@ -222,22 +228,42 @@ public class SiteInner extends Resource {
     private String defaultHostName;
 
     /**
-     * Get the siteName value.
+     * Get the deletedTimestamp value.
      *
-     * @return the siteName value
+     * @return the deletedTimestamp value
      */
-    public String siteName() {
-        return this.siteName;
+    public DateTime deletedTimestamp() {
+        return this.deletedTimestamp;
     }
 
     /**
-     * Set the siteName value.
+     * Set the deletedTimestamp value.
      *
-     * @param siteName the siteName value to set
-     * @return the SiteInner object itself.
+     * @param deletedTimestamp the deletedTimestamp value to set
+     * @return the DeletedSiteInner object itself.
      */
-    public SiteInner withSiteName(String siteName) {
-        this.siteName = siteName;
+    public DeletedSiteInner withDeletedTimestamp(DateTime deletedTimestamp) {
+        this.deletedTimestamp = deletedTimestamp;
+        return this;
+    }
+
+    /**
+     * Get the deletedSiteName value.
+     *
+     * @return the deletedSiteName value
+     */
+    public String deletedSiteName() {
+        return this.deletedSiteName;
+    }
+
+    /**
+     * Set the deletedSiteName value.
+     *
+     * @param deletedSiteName the deletedSiteName value to set
+     * @return the DeletedSiteInner object itself.
+     */
+    public DeletedSiteInner withDeletedSiteName(String deletedSiteName) {
+        this.deletedSiteName = deletedSiteName;
         return this;
     }
 
@@ -290,9 +316,9 @@ public class SiteInner extends Resource {
      * Set the enabled value.
      *
      * @param enabled the enabled value to set
-     * @return the SiteInner object itself.
+     * @return the DeletedSiteInner object itself.
      */
-    public SiteInner withEnabled(Boolean enabled) {
+    public DeletedSiteInner withEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -328,9 +354,9 @@ public class SiteInner extends Resource {
      * Set the hostNameSslStates value.
      *
      * @param hostNameSslStates the hostNameSslStates value to set
-     * @return the SiteInner object itself.
+     * @return the DeletedSiteInner object itself.
      */
-    public SiteInner withHostNameSslStates(List<HostNameSslState> hostNameSslStates) {
+    public DeletedSiteInner withHostNameSslStates(List<HostNameSslState> hostNameSslStates) {
         this.hostNameSslStates = hostNameSslStates;
         return this;
     }
@@ -348,9 +374,9 @@ public class SiteInner extends Resource {
      * Set the serverFarmId value.
      *
      * @param serverFarmId the serverFarmId value to set
-     * @return the SiteInner object itself.
+     * @return the DeletedSiteInner object itself.
      */
-    public SiteInner withServerFarmId(String serverFarmId) {
+    public DeletedSiteInner withServerFarmId(String serverFarmId) {
         this.serverFarmId = serverFarmId;
         return this;
     }
@@ -377,9 +403,9 @@ public class SiteInner extends Resource {
      * Set the siteConfig value.
      *
      * @param siteConfig the siteConfig value to set
-     * @return the SiteInner object itself.
+     * @return the DeletedSiteInner object itself.
      */
-    public SiteInner withSiteConfig(SiteConfigInner siteConfig) {
+    public DeletedSiteInner withSiteConfig(SiteConfigInner siteConfig) {
         this.siteConfig = siteConfig;
         return this;
     }
@@ -415,9 +441,9 @@ public class SiteInner extends Resource {
      * Set the scmSiteAlsoStopped value.
      *
      * @param scmSiteAlsoStopped the scmSiteAlsoStopped value to set
-     * @return the SiteInner object itself.
+     * @return the DeletedSiteInner object itself.
      */
-    public SiteInner withScmSiteAlsoStopped(Boolean scmSiteAlsoStopped) {
+    public DeletedSiteInner withScmSiteAlsoStopped(Boolean scmSiteAlsoStopped) {
         this.scmSiteAlsoStopped = scmSiteAlsoStopped;
         return this;
     }
@@ -444,9 +470,9 @@ public class SiteInner extends Resource {
      * Set the hostingEnvironmentProfile value.
      *
      * @param hostingEnvironmentProfile the hostingEnvironmentProfile value to set
-     * @return the SiteInner object itself.
+     * @return the DeletedSiteInner object itself.
      */
-    public SiteInner withHostingEnvironmentProfile(HostingEnvironmentProfile hostingEnvironmentProfile) {
+    public DeletedSiteInner withHostingEnvironmentProfile(HostingEnvironmentProfile hostingEnvironmentProfile) {
         this.hostingEnvironmentProfile = hostingEnvironmentProfile;
         return this;
     }
@@ -464,9 +490,9 @@ public class SiteInner extends Resource {
      * Set the microService value.
      *
      * @param microService the microService value to set
-     * @return the SiteInner object itself.
+     * @return the DeletedSiteInner object itself.
      */
-    public SiteInner withMicroService(String microService) {
+    public DeletedSiteInner withMicroService(String microService) {
         this.microService = microService;
         return this;
     }
@@ -484,9 +510,9 @@ public class SiteInner extends Resource {
      * Set the gatewaySiteName value.
      *
      * @param gatewaySiteName the gatewaySiteName value to set
-     * @return the SiteInner object itself.
+     * @return the DeletedSiteInner object itself.
      */
-    public SiteInner withGatewaySiteName(String gatewaySiteName) {
+    public DeletedSiteInner withGatewaySiteName(String gatewaySiteName) {
         this.gatewaySiteName = gatewaySiteName;
         return this;
     }
@@ -504,9 +530,9 @@ public class SiteInner extends Resource {
      * Set the clientAffinityEnabled value.
      *
      * @param clientAffinityEnabled the clientAffinityEnabled value to set
-     * @return the SiteInner object itself.
+     * @return the DeletedSiteInner object itself.
      */
-    public SiteInner withClientAffinityEnabled(Boolean clientAffinityEnabled) {
+    public DeletedSiteInner withClientAffinityEnabled(Boolean clientAffinityEnabled) {
         this.clientAffinityEnabled = clientAffinityEnabled;
         return this;
     }
@@ -524,9 +550,9 @@ public class SiteInner extends Resource {
      * Set the clientCertEnabled value.
      *
      * @param clientCertEnabled the clientCertEnabled value to set
-     * @return the SiteInner object itself.
+     * @return the DeletedSiteInner object itself.
      */
-    public SiteInner withClientCertEnabled(Boolean clientCertEnabled) {
+    public DeletedSiteInner withClientCertEnabled(Boolean clientCertEnabled) {
         this.clientCertEnabled = clientCertEnabled;
         return this;
     }
@@ -544,9 +570,9 @@ public class SiteInner extends Resource {
      * Set the hostNamesDisabled value.
      *
      * @param hostNamesDisabled the hostNamesDisabled value to set
-     * @return the SiteInner object itself.
+     * @return the DeletedSiteInner object itself.
      */
-    public SiteInner withHostNamesDisabled(Boolean hostNamesDisabled) {
+    public DeletedSiteInner withHostNamesDisabled(Boolean hostNamesDisabled) {
         this.hostNamesDisabled = hostNamesDisabled;
         return this;
     }
@@ -573,9 +599,9 @@ public class SiteInner extends Resource {
      * Set the containerSize value.
      *
      * @param containerSize the containerSize value to set
-     * @return the SiteInner object itself.
+     * @return the DeletedSiteInner object itself.
      */
-    public SiteInner withContainerSize(Integer containerSize) {
+    public DeletedSiteInner withContainerSize(Integer containerSize) {
         this.containerSize = containerSize;
         return this;
     }
@@ -593,9 +619,9 @@ public class SiteInner extends Resource {
      * Set the maxNumberOfWorkers value.
      *
      * @param maxNumberOfWorkers the maxNumberOfWorkers value to set
-     * @return the SiteInner object itself.
+     * @return the DeletedSiteInner object itself.
      */
-    public SiteInner withMaxNumberOfWorkers(Integer maxNumberOfWorkers) {
+    public DeletedSiteInner withMaxNumberOfWorkers(Integer maxNumberOfWorkers) {
         this.maxNumberOfWorkers = maxNumberOfWorkers;
         return this;
     }
@@ -613,9 +639,9 @@ public class SiteInner extends Resource {
      * Set the cloningInfo value.
      *
      * @param cloningInfo the cloningInfo value to set
-     * @return the SiteInner object itself.
+     * @return the DeletedSiteInner object itself.
      */
-    public SiteInner withCloningInfo(CloningInfo cloningInfo) {
+    public DeletedSiteInner withCloningInfo(CloningInfo cloningInfo) {
         this.cloningInfo = cloningInfo;
         return this;
     }

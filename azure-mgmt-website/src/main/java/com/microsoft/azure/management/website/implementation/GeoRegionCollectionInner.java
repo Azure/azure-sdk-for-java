@@ -9,7 +9,6 @@
 package com.microsoft.azure.management.website.implementation;
 
 import java.util.List;
-import com.microsoft.azure.management.website.GeoRegion;
 
 /**
  * Collection of geo regions.
@@ -18,7 +17,7 @@ public class GeoRegionCollectionInner {
     /**
      * Collection of resources.
      */
-    private List<GeoRegion> value;
+    private List<GeoRegionInner> value;
 
     /**
      * Link to next page of resources.
@@ -30,7 +29,7 @@ public class GeoRegionCollectionInner {
      *
      * @return the value value
      */
-    public List<GeoRegion> value() {
+    public List<GeoRegionInner> value() {
         return this.value;
     }
 
@@ -40,7 +39,7 @@ public class GeoRegionCollectionInner {
      * @param value the value value to set
      * @return the GeoRegionCollectionInner object itself.
      */
-    public GeoRegionCollectionInner withValue(List<GeoRegion> value) {
+    public GeoRegionCollectionInner withValue(List<GeoRegionInner> value) {
         this.value = value;
         return this;
     }

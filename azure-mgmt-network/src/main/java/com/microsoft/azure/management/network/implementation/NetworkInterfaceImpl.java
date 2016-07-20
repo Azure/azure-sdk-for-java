@@ -13,7 +13,6 @@ import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NicIpConfiguration;
 import com.microsoft.azure.management.network.PublicIpAddress;
-import com.microsoft.azure.management.network.NetworkInterfaceIPConfiguration;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -413,11 +412,11 @@ class NetworkInterfaceImpl
      */
     private void initializeNicIpConfigurations() {
         if (this.inner().ipConfigurations() == null) {
-            this.inner().withIpConfigurations(new ArrayList<NetworkInterfaceIPConfiguration>());
+            this.inner().withIpConfigurations(new ArrayList<NetworkInterfaceIPConfigurationInner>());
         }
 
         this.nicIpConfigurations = new ArrayList<>();
-        for (NetworkInterfaceIPConfiguration ipConfig : this.inner().ipConfigurations()) {
+        for (NetworkInterfaceIPConfigurationInner ipConfig : this.inner().ipConfigurations()) {
             NicIpConfigurationImpl  nicIpConfiguration = new NicIpConfigurationImpl(ipConfig.name(),
                     ipConfig,
                     this,
@@ -428,7 +427,7 @@ class NetworkInterfaceImpl
     }
 
     /**
-     * Gets a new IP configuration child resource {@link NicIpConfiguration} wrapping {@link NetworkInterfaceIPConfiguration}.
+     * Gets a new IP configuration child resource {@link NicIpConfiguration} wrapping {@link NetworkInterfaceIPConfigurationInner}.
      *
      * @param name the name for the new ip configuration
      * @return {@link NicIpConfiguration}

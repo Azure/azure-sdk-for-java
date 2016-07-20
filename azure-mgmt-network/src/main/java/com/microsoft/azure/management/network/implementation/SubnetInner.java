@@ -9,7 +9,6 @@
 package com.microsoft.azure.management.network.implementation;
 
 import java.util.List;
-import com.microsoft.azure.management.network.IPConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.SubResource;
@@ -42,7 +41,7 @@ public class SubnetInner extends SubResource {
      * using subnet.
      */
     @JsonProperty(value = "properties.ipConfigurations")
-    private List<IPConfiguration> ipConfigurations;
+    private List<IPConfigurationInner> ipConfigurations;
 
     /**
      * Gets or sets Provisioning state of the PublicIP resource
@@ -127,7 +126,7 @@ public class SubnetInner extends SubResource {
      *
      * @return the ipConfigurations value
      */
-    public List<IPConfiguration> ipConfigurations() {
+    public List<IPConfigurationInner> ipConfigurations() {
         return this.ipConfigurations;
     }
 
@@ -137,7 +136,7 @@ public class SubnetInner extends SubResource {
      * @param ipConfigurations the ipConfigurations value to set
      * @return the SubnetInner object itself.
      */
-    public SubnetInner withIpConfigurations(List<IPConfiguration> ipConfigurations) {
+    public SubnetInner withIpConfigurations(List<IPConfigurationInner> ipConfigurations) {
         this.ipConfigurations = ipConfigurations;
         return this;
     }

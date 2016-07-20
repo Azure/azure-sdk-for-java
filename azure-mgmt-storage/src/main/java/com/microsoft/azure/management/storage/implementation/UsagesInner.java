@@ -17,6 +17,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -64,9 +65,9 @@ public final class UsagesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the UsageListResultInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<UsageListResultInner> list() throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<List<UsageInner>> list() throws CloudException, IOException, IllegalArgumentException {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -74,7 +75,9 @@ public final class UsagesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return listDelegate(call.execute());
+        ServiceResponse<PageImpl<UsageInner>> response = listDelegate(call.execute());
+        List<UsageInner> result = response.getBody().getItems();
+        return new ServiceResponse<>(result, response.getResponse());
     }
 
     /**
@@ -84,7 +87,7 @@ public final class UsagesInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listAsync(final ServiceCallback<UsageListResultInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listAsync(final ServiceCallback<List<UsageInner>> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -98,11 +101,12 @@ public final class UsagesInner {
         }
         Call<ResponseBody> call = service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<UsageListResultInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<UsageInner>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listDelegate(response));
+                    ServiceResponse<PageImpl<UsageInner>> result = listDelegate(response);
+                    serviceCallback.success(new ServiceResponse<>(result.getBody().getItems(), result.getResponse()));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -111,9 +115,9 @@ public final class UsagesInner {
         return serviceCall;
     }
 
-    private ServiceResponse<UsageListResultInner> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<UsageListResultInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<UsageListResultInner>() { }.getType())
+    private ServiceResponse<PageImpl<UsageInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<UsageInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<UsageInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
