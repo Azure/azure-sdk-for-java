@@ -11,7 +11,6 @@ package com.microsoft.azure.management.network.implementation;
 import com.microsoft.azure.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.SubResource;
 
 /**
  * Inbound NAT rule of the loadbalancer.

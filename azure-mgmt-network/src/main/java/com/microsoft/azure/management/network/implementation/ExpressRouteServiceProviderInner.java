@@ -13,7 +13,6 @@ import com.microsoft.azure.management.network.ExpressRouteServiceProviderBandwid
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
-import com.microsoft.azure.Resource;
 
 /**
  * ExpressRouteResourceProvider object.

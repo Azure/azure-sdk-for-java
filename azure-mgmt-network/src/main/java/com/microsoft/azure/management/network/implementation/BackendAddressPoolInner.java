@@ -12,7 +12,6 @@ import java.util.List;
 import com.microsoft.azure.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.SubResource;
 
 /**
  * Pool of backend IP addresseses.
