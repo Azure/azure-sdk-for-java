@@ -35,7 +35,6 @@ import com.microsoft.azure.management.compute.WindowsConfiguration;
 import com.microsoft.azure.management.compute.WinRMConfiguration;
 import com.microsoft.azure.management.compute.SshConfiguration;
 import com.microsoft.azure.management.compute.SshPublicKey;
-import com.microsoft.azure.management.compute.NetworkInterfaceReference;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.PublicIpAddress;
@@ -677,7 +676,7 @@ class VirtualMachineImpl
         if (this.inner().networkProfile() != null
                 && this.inner().networkProfile().networkInterfaces() != null) {
             int idx = -1;
-            for (NetworkInterfaceReference nicReference : this.inner().networkProfile().networkInterfaces()) {
+            for (NetworkInterfaceReferenceInner nicReference : this.inner().networkProfile().networkInterfaces()) {
                 idx++;
                 if (!nicReference.primary()
                         && name.equalsIgnoreCase(ResourceUtils.nameFromResourceId(nicReference.id()))) {
@@ -754,7 +753,7 @@ class VirtualMachineImpl
     @Override
     public List<String> networkInterfaceIds() {
         List<String> nicIds = new ArrayList<>();
-        for (NetworkInterfaceReference nicRef : inner().networkProfile().networkInterfaces()) {
+        for (NetworkInterfaceReferenceInner nicRef : inner().networkProfile().networkInterfaces()) {
             nicIds.add(nicRef.id());
         }
         return nicIds;
@@ -762,7 +761,7 @@ class VirtualMachineImpl
 
     @Override
     public String primaryNetworkInterfaceId() {
-        final List<NetworkInterfaceReference> nicRefs = this.inner().networkProfile().networkInterfaces();
+        final List<NetworkInterfaceReferenceInner> nicRefs = this.inner().networkProfile().networkInterfaces();
         String primaryNicRefId = null;
 
         if (nicRefs.size() == 1) {
@@ -773,7 +772,7 @@ class VirtualMachineImpl
             primaryNicRefId = null;
         } else {
             // Find primary interface as flagged by Azure
-            for (NetworkInterfaceReference nicRef : inner().networkProfile().networkInterfaces()) {
+            for (NetworkInterfaceReferenceInner nicRef : inner().networkProfile().networkInterfaces()) {
                 if (nicRef.primary() != null && nicRef.primary()) {
                     primaryNicRefId = nicRef.id();
                     break;
@@ -1077,7 +1076,7 @@ class VirtualMachineImpl
             }
 
             if (primaryNetworkInterface != null) {
-                NetworkInterfaceReference nicReference = new NetworkInterfaceReference();
+                NetworkInterfaceReferenceInner nicReference = new NetworkInterfaceReferenceInner();
                 nicReference.withPrimary(true);
                 nicReference.withId(primaryNetworkInterface.id());
                 this.inner().networkProfile().networkInterfaces().add(nicReference);
@@ -1088,14 +1087,14 @@ class VirtualMachineImpl
         //
         for (String creatableSecondaryNetworkInterfaceKey : this.creatableSecondaryNetworkInterfaceKeys) {
             NetworkInterface secondaryNetworkInterface = (NetworkInterface) this.createdResource(creatableSecondaryNetworkInterfaceKey);
-            NetworkInterfaceReference nicReference = new NetworkInterfaceReference();
+            NetworkInterfaceReferenceInner nicReference = new NetworkInterfaceReferenceInner();
             nicReference.withPrimary(false);
             nicReference.withId(secondaryNetworkInterface.id());
             this.inner().networkProfile().networkInterfaces().add(nicReference);
         }
 
         for (NetworkInterface secondaryNetworkInterface : this.existingSecondaryNetworkInterfacesToAssociate) {
-            NetworkInterfaceReference nicReference = new NetworkInterfaceReference();
+            NetworkInterfaceReferenceInner nicReference = new NetworkInterfaceReferenceInner();
             nicReference.withPrimary(false);
             nicReference.withId(secondaryNetworkInterface.id());
             this.inner().networkProfile().networkInterfaces().add(nicReference);
