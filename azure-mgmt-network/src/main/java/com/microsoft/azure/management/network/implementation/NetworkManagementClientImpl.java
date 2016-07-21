@@ -333,6 +333,19 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The VirtualNetworkPeeringsInner object to access its operations.
+     */
+    private VirtualNetworkPeeringsInner virtualNetworkPeerings;
+
+    /**
+     * Gets the VirtualNetworkPeeringsInner object to access its operations.
+     * @return the VirtualNetworkPeeringsInner object.
+     */
+    public VirtualNetworkPeeringsInner virtualNetworkPeerings() {
+        return this.virtualNetworkPeerings;
+    }
+
+    /**
      * The UsagesInner object to access its operations.
      */
     private UsagesInner usages;
@@ -417,7 +430,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
     }
 
     protected void initialize() {
-        this.apiVersion = "2015-06-15";
+        this.apiVersion = "2016-06-01";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
@@ -435,6 +448,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
         this.routes = new RoutesInner(restClient().retrofit(), this);
         this.securityRules = new SecurityRulesInner(restClient().retrofit(), this);
         this.subnets = new SubnetsInner(restClient().retrofit(), this);
+        this.virtualNetworkPeerings = new VirtualNetworkPeeringsInner(restClient().retrofit(), this);
         this.usages = new UsagesInner(restClient().retrofit(), this);
         this.virtualNetworkGatewayConnections = new VirtualNetworkGatewayConnectionsInner(restClient().retrofit(), this);
         this.virtualNetworkGateways = new VirtualNetworkGatewaysInner(restClient().retrofit(), this);
@@ -452,7 +466,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
     public String userAgent() {
         return String.format("Azure-SDK-For-Java/%s (%s)",
                 getClass().getPackage().getImplementationVersion(),
-                "NetworkManagementClient, 2015-06-15");
+                "NetworkManagementClient, 2016-06-01");
     }
 
     private void initializeService() {

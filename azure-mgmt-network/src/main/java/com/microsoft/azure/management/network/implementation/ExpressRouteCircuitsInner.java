@@ -31,6 +31,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.HTTP;
 import retrofit2.http.Path;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
@@ -63,36 +64,56 @@ public final class ExpressRouteCircuitsInner {
      */
     interface ExpressRouteCircuitsService {
         @Headers("Content-Type: application/json; charset=utf-8")
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/", method = "DELETE", hasBody = true)
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}", method = "DELETE", hasBody = true)
         Call<ResponseBody> delete(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/", method = "DELETE", hasBody = true)
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}", method = "DELETE", hasBody = true)
         Call<ResponseBody> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}")
         Call<ResponseBody> get(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/")
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}")
         Call<ResponseBody> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("subscriptionId") String subscriptionId, @Body ExpressRouteCircuitInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/")
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}")
         Call<ResponseBody> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("subscriptionId") String subscriptionId, @Body ExpressRouteCircuitInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/arpTable")
-        Call<ResponseBody> listArpTable(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings/{peeringName}/arpTables/{devicePath}")
+        Call<ResponseBody> listArpTable(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("peeringName") String peeringName, @Path("devicePath") String devicePath, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/routesTable")
-        Call<ResponseBody> listRoutesTable(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings/{peeringName}/arpTables/{devicePath}")
+        Call<ResponseBody> beginListArpTable(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("peeringName") String peeringName, @Path("devicePath") String devicePath, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings/{peeringName}/routeTables/{devicePath}")
+        Call<ResponseBody> listRoutesTable(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("peeringName") String peeringName, @Path("devicePath") String devicePath, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings/{peeringName}/routeTables/{devicePath}")
+        Call<ResponseBody> beginListRoutesTable(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("peeringName") String peeringName, @Path("devicePath") String devicePath, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings/{peeringName}/routeTablesSummary/{devicePath}")
+        Call<ResponseBody> listRoutesTableSummary(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("peeringName") String peeringName, @Path("devicePath") String devicePath, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings/{peeringName}/routeTablesSummary/{devicePath}")
+        Call<ResponseBody> beginListRoutesTableSummary(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("peeringName") String peeringName, @Path("devicePath") String devicePath, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/stats")
-        Call<ResponseBody> listStats(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> getStats(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings/{peeringName}/stats")
+        Call<ResponseBody> getPeeringStats(@Path("resourceGroupName") String resourceGroupName, @Path("circuitName") String circuitName, @Path("peeringName") String peeringName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits")
@@ -101,18 +122,6 @@ public final class ExpressRouteCircuitsInner {
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/expressRouteCircuits")
         Call<ResponseBody> listAll(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> listArpTableNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> listRoutesTableNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> listStatsNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
@@ -522,17 +531,26 @@ public final class ExpressRouteCircuitsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
+     * @param peeringName The name of the peering.
+     * @param devicePath The path of the device.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ExpressRouteCircuitArpTableInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @throws InterruptedException exception thrown when long running operation is interrupted
+     * @return the ExpressRouteCircuitsArpTableListResultInner object wrapped in ServiceResponse if successful.
      */
-    public ServiceResponse<PagedList<ExpressRouteCircuitArpTableInner>> listArpTable(final String resourceGroupName, final String circuitName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<ExpressRouteCircuitsArpTableListResultInner> listArpTable(String resourceGroupName, String circuitName, String peeringName, String devicePath) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (circuitName == null) {
             throw new IllegalArgumentException("Parameter circuitName is required and cannot be null.");
+        }
+        if (peeringName == null) {
+            throw new IllegalArgumentException("Parameter peeringName is required and cannot be null.");
+        }
+        if (devicePath == null) {
+            throw new IllegalArgumentException("Parameter devicePath is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
@@ -540,15 +558,8 @@ public final class ExpressRouteCircuitsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listArpTable(resourceGroupName, circuitName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        ServiceResponse<PageImpl<ExpressRouteCircuitArpTableInner>> response = listArpTableDelegate(call.execute());
-        PagedList<ExpressRouteCircuitArpTableInner> result = new PagedList<ExpressRouteCircuitArpTableInner>(response.getBody()) {
-            @Override
-            public Page<ExpressRouteCircuitArpTableInner> nextPage(String nextPageLink) throws CloudException, IOException {
-                return listArpTableNext(nextPageLink).getBody();
-            }
-        };
-        return new ServiceResponse<>(result, response.getResponse());
+        Response<ResponseBody> result = service.listArpTable(resourceGroupName, circuitName, peeringName, devicePath, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
+        return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<ExpressRouteCircuitsArpTableListResultInner>() { }.getType());
     }
 
     /**
@@ -556,11 +567,96 @@ public final class ExpressRouteCircuitsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
+     * @param peeringName The name of the peering.
+     * @param devicePath The path of the device.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall listArpTableAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath, final ServiceCallback<ExpressRouteCircuitsArpTableListResultInner> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (circuitName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
+        }
+        if (peeringName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
+        }
+        if (devicePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter devicePath is required and cannot be null."));
+        }
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+        }
+        Call<ResponseBody> call = service.listArpTable(resourceGroupName, circuitName, peeringName, devicePath, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                serviceCallback.failure(t);
+            }
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<ExpressRouteCircuitsArpTableListResultInner>() { }.getType(), serviceCall, serviceCallback);
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * The ListArpTable from ExpressRouteCircuit opertion retrieves the currently advertised arp table associated with the ExpressRouteCircuits in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the circuit.
+     * @param peeringName The name of the peering.
+     * @param devicePath The path of the device.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ExpressRouteCircuitsArpTableListResultInner object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<ExpressRouteCircuitsArpTableListResultInner> beginListArpTable(String resourceGroupName, String circuitName, String peeringName, String devicePath) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (circuitName == null) {
+            throw new IllegalArgumentException("Parameter circuitName is required and cannot be null.");
+        }
+        if (peeringName == null) {
+            throw new IllegalArgumentException("Parameter peeringName is required and cannot be null.");
+        }
+        if (devicePath == null) {
+            throw new IllegalArgumentException("Parameter devicePath is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.beginListArpTable(resourceGroupName, circuitName, peeringName, devicePath, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return beginListArpTableDelegate(call.execute());
+    }
+
+    /**
+     * The ListArpTable from ExpressRouteCircuit opertion retrieves the currently advertised arp table associated with the ExpressRouteCircuits in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the circuit.
+     * @param peeringName The name of the peering.
+     * @param devicePath The path of the device.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listArpTableAsync(final String resourceGroupName, final String circuitName, final ListOperationCallback<ExpressRouteCircuitArpTableInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall beginListArpTableAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath, final ServiceCallback<ExpressRouteCircuitsArpTableListResultInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -572,6 +668,14 @@ public final class ExpressRouteCircuitsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
             return null;
         }
+        if (peeringName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
+            return null;
+        }
+        if (devicePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter devicePath is required and cannot be null."));
+            return null;
+        }
         if (this.client.subscriptionId() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
@@ -580,20 +684,13 @@ public final class ExpressRouteCircuitsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listArpTable(resourceGroupName, circuitName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        Call<ResponseBody> call = service.beginListArpTable(resourceGroupName, circuitName, peeringName, devicePath, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<ExpressRouteCircuitArpTableInner>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<ExpressRouteCircuitsArpTableListResultInner>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<ExpressRouteCircuitArpTableInner>> result = listArpTableDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listArpTableNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                    }
+                    serviceCallback.success(beginListArpTableDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -602,9 +699,10 @@ public final class ExpressRouteCircuitsInner {
         return serviceCall;
     }
 
-    private ServiceResponse<PageImpl<ExpressRouteCircuitArpTableInner>> listArpTableDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitArpTableInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl<ExpressRouteCircuitArpTableInner>>() { }.getType())
+    private ServiceResponse<ExpressRouteCircuitsArpTableListResultInner> beginListArpTableDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<ExpressRouteCircuitsArpTableListResultInner, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<ExpressRouteCircuitsArpTableListResultInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -614,12 +712,374 @@ public final class ExpressRouteCircuitsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
+     * @param peeringName The name of the peering.
+     * @param devicePath The path of the device.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ExpressRouteCircuitRoutesTableInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @throws InterruptedException exception thrown when long running operation is interrupted
+     * @return the ExpressRouteCircuitsRoutesTableListResultInner object wrapped in ServiceResponse if successful.
      */
-    public ServiceResponse<PagedList<ExpressRouteCircuitRoutesTableInner>> listRoutesTable(final String resourceGroupName, final String circuitName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<ExpressRouteCircuitsRoutesTableListResultInner> listRoutesTable(String resourceGroupName, String circuitName, String peeringName, String devicePath) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (circuitName == null) {
+            throw new IllegalArgumentException("Parameter circuitName is required and cannot be null.");
+        }
+        if (peeringName == null) {
+            throw new IllegalArgumentException("Parameter peeringName is required and cannot be null.");
+        }
+        if (devicePath == null) {
+            throw new IllegalArgumentException("Parameter devicePath is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Response<ResponseBody> result = service.listRoutesTable(resourceGroupName, circuitName, peeringName, devicePath, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
+        return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<ExpressRouteCircuitsRoutesTableListResultInner>() { }.getType());
+    }
+
+    /**
+     * The ListRoutesTable from ExpressRouteCircuit opertion retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the circuit.
+     * @param peeringName The name of the peering.
+     * @param devicePath The path of the device.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall listRoutesTableAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath, final ServiceCallback<ExpressRouteCircuitsRoutesTableListResultInner> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (circuitName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
+        }
+        if (peeringName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
+        }
+        if (devicePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter devicePath is required and cannot be null."));
+        }
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+        }
+        Call<ResponseBody> call = service.listRoutesTable(resourceGroupName, circuitName, peeringName, devicePath, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                serviceCallback.failure(t);
+            }
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<ExpressRouteCircuitsRoutesTableListResultInner>() { }.getType(), serviceCall, serviceCallback);
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * The ListRoutesTable from ExpressRouteCircuit opertion retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the circuit.
+     * @param peeringName The name of the peering.
+     * @param devicePath The path of the device.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ExpressRouteCircuitsRoutesTableListResultInner object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<ExpressRouteCircuitsRoutesTableListResultInner> beginListRoutesTable(String resourceGroupName, String circuitName, String peeringName, String devicePath) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (circuitName == null) {
+            throw new IllegalArgumentException("Parameter circuitName is required and cannot be null.");
+        }
+        if (peeringName == null) {
+            throw new IllegalArgumentException("Parameter peeringName is required and cannot be null.");
+        }
+        if (devicePath == null) {
+            throw new IllegalArgumentException("Parameter devicePath is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.beginListRoutesTable(resourceGroupName, circuitName, peeringName, devicePath, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return beginListRoutesTableDelegate(call.execute());
+    }
+
+    /**
+     * The ListRoutesTable from ExpressRouteCircuit opertion retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the circuit.
+     * @param peeringName The name of the peering.
+     * @param devicePath The path of the device.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall beginListRoutesTableAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath, final ServiceCallback<ExpressRouteCircuitsRoutesTableListResultInner> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (circuitName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
+            return null;
+        }
+        if (peeringName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
+            return null;
+        }
+        if (devicePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter devicePath is required and cannot be null."));
+            return null;
+        }
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        Call<ResponseBody> call = service.beginListRoutesTable(resourceGroupName, circuitName, peeringName, devicePath, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<ExpressRouteCircuitsRoutesTableListResultInner>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(beginListRoutesTableDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<ExpressRouteCircuitsRoutesTableListResultInner> beginListRoutesTableDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<ExpressRouteCircuitsRoutesTableListResultInner, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<ExpressRouteCircuitsRoutesTableListResultInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * The ListRoutesTable from ExpressRouteCircuit opertion retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the circuit.
+     * @param peeringName The name of the peering.
+     * @param devicePath The path of the device.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws InterruptedException exception thrown when long running operation is interrupted
+     * @return the ExpressRouteCircuitsRoutesTableSummaryListResultInner object wrapped in ServiceResponse if successful.
+     */
+    public ServiceResponse<ExpressRouteCircuitsRoutesTableSummaryListResultInner> listRoutesTableSummary(String resourceGroupName, String circuitName, String peeringName, String devicePath) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (circuitName == null) {
+            throw new IllegalArgumentException("Parameter circuitName is required and cannot be null.");
+        }
+        if (peeringName == null) {
+            throw new IllegalArgumentException("Parameter peeringName is required and cannot be null.");
+        }
+        if (devicePath == null) {
+            throw new IllegalArgumentException("Parameter devicePath is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Response<ResponseBody> result = service.listRoutesTableSummary(resourceGroupName, circuitName, peeringName, devicePath, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
+        return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<ExpressRouteCircuitsRoutesTableSummaryListResultInner>() { }.getType());
+    }
+
+    /**
+     * The ListRoutesTable from ExpressRouteCircuit opertion retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the circuit.
+     * @param peeringName The name of the peering.
+     * @param devicePath The path of the device.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall listRoutesTableSummaryAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath, final ServiceCallback<ExpressRouteCircuitsRoutesTableSummaryListResultInner> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (circuitName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
+        }
+        if (peeringName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
+        }
+        if (devicePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter devicePath is required and cannot be null."));
+        }
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+        }
+        Call<ResponseBody> call = service.listRoutesTableSummary(resourceGroupName, circuitName, peeringName, devicePath, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                serviceCallback.failure(t);
+            }
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<ExpressRouteCircuitsRoutesTableSummaryListResultInner>() { }.getType(), serviceCall, serviceCallback);
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * The ListRoutesTable from ExpressRouteCircuit opertion retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the circuit.
+     * @param peeringName The name of the peering.
+     * @param devicePath The path of the device.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ExpressRouteCircuitsRoutesTableSummaryListResultInner object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<ExpressRouteCircuitsRoutesTableSummaryListResultInner> beginListRoutesTableSummary(String resourceGroupName, String circuitName, String peeringName, String devicePath) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (circuitName == null) {
+            throw new IllegalArgumentException("Parameter circuitName is required and cannot be null.");
+        }
+        if (peeringName == null) {
+            throw new IllegalArgumentException("Parameter peeringName is required and cannot be null.");
+        }
+        if (devicePath == null) {
+            throw new IllegalArgumentException("Parameter devicePath is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.beginListRoutesTableSummary(resourceGroupName, circuitName, peeringName, devicePath, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return beginListRoutesTableSummaryDelegate(call.execute());
+    }
+
+    /**
+     * The ListRoutesTable from ExpressRouteCircuit opertion retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the circuit.
+     * @param peeringName The name of the peering.
+     * @param devicePath The path of the device.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall beginListRoutesTableSummaryAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath, final ServiceCallback<ExpressRouteCircuitsRoutesTableSummaryListResultInner> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (circuitName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
+            return null;
+        }
+        if (peeringName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
+            return null;
+        }
+        if (devicePath == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter devicePath is required and cannot be null."));
+            return null;
+        }
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        Call<ResponseBody> call = service.beginListRoutesTableSummary(resourceGroupName, circuitName, peeringName, devicePath, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<ExpressRouteCircuitsRoutesTableSummaryListResultInner>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(beginListRoutesTableSummaryDelegate(response));
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<ExpressRouteCircuitsRoutesTableSummaryListResultInner> beginListRoutesTableSummaryDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<ExpressRouteCircuitsRoutesTableSummaryListResultInner, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<ExpressRouteCircuitsRoutesTableSummaryListResultInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * The Liststats ExpressRouteCircuit opertion retrieves all the stats from a ExpressRouteCircuits in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the circuit.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ExpressRouteCircuitStatsInner object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<ExpressRouteCircuitStatsInner> getStats(String resourceGroupName, String circuitName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -632,19 +1092,12 @@ public final class ExpressRouteCircuitsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listRoutesTable(resourceGroupName, circuitName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        ServiceResponse<PageImpl<ExpressRouteCircuitRoutesTableInner>> response = listRoutesTableDelegate(call.execute());
-        PagedList<ExpressRouteCircuitRoutesTableInner> result = new PagedList<ExpressRouteCircuitRoutesTableInner>(response.getBody()) {
-            @Override
-            public Page<ExpressRouteCircuitRoutesTableInner> nextPage(String nextPageLink) throws CloudException, IOException {
-                return listRoutesTableNext(nextPageLink).getBody();
-            }
-        };
-        return new ServiceResponse<>(result, response.getResponse());
+        Call<ResponseBody> call = service.getStats(resourceGroupName, circuitName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return getStatsDelegate(call.execute());
     }
 
     /**
-     * The ListRoutesTable from ExpressRouteCircuit opertion retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     * The Liststats ExpressRouteCircuit opertion retrieves all the stats from a ExpressRouteCircuits in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
@@ -652,7 +1105,7 @@ public final class ExpressRouteCircuitsInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listRoutesTableAsync(final String resourceGroupName, final String circuitName, final ListOperationCallback<ExpressRouteCircuitRoutesTableInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getStatsAsync(String resourceGroupName, String circuitName, final ServiceCallback<ExpressRouteCircuitStatsInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -672,20 +1125,13 @@ public final class ExpressRouteCircuitsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listRoutesTable(resourceGroupName, circuitName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        Call<ResponseBody> call = service.getStats(resourceGroupName, circuitName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<ExpressRouteCircuitRoutesTableInner>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<ExpressRouteCircuitStatsInner>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<ExpressRouteCircuitRoutesTableInner>> result = listRoutesTableDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listRoutesTableNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                    }
+                    serviceCallback.success(getStatsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -694,9 +1140,9 @@ public final class ExpressRouteCircuitsInner {
         return serviceCall;
     }
 
-    private ServiceResponse<PageImpl<ExpressRouteCircuitRoutesTableInner>> listRoutesTableDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitRoutesTableInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl<ExpressRouteCircuitRoutesTableInner>>() { }.getType())
+    private ServiceResponse<ExpressRouteCircuitStatsInner> getStatsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<ExpressRouteCircuitStatsInner, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<ExpressRouteCircuitStatsInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -705,18 +1151,22 @@ public final class ExpressRouteCircuitsInner {
      * The Liststats ExpressRouteCircuit opertion retrieves all the stats from a ExpressRouteCircuits in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the loadBalancer.
+     * @param circuitName The name of the circuit.
+     * @param peeringName The name of the peering.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ExpressRouteCircuitStatsInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the ExpressRouteCircuitStatsInner object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<ExpressRouteCircuitStatsInner>> listStats(final String resourceGroupName, final String circuitName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<ExpressRouteCircuitStatsInner> getPeeringStats(String resourceGroupName, String circuitName, String peeringName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (circuitName == null) {
             throw new IllegalArgumentException("Parameter circuitName is required and cannot be null.");
+        }
+        if (peeringName == null) {
+            throw new IllegalArgumentException("Parameter peeringName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
@@ -724,27 +1174,21 @@ public final class ExpressRouteCircuitsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listStats(resourceGroupName, circuitName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        ServiceResponse<PageImpl<ExpressRouteCircuitStatsInner>> response = listStatsDelegate(call.execute());
-        PagedList<ExpressRouteCircuitStatsInner> result = new PagedList<ExpressRouteCircuitStatsInner>(response.getBody()) {
-            @Override
-            public Page<ExpressRouteCircuitStatsInner> nextPage(String nextPageLink) throws CloudException, IOException {
-                return listStatsNext(nextPageLink).getBody();
-            }
-        };
-        return new ServiceResponse<>(result, response.getResponse());
+        Call<ResponseBody> call = service.getPeeringStats(resourceGroupName, circuitName, peeringName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return getPeeringStatsDelegate(call.execute());
     }
 
     /**
      * The Liststats ExpressRouteCircuit opertion retrieves all the stats from a ExpressRouteCircuits in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the loadBalancer.
+     * @param circuitName The name of the circuit.
+     * @param peeringName The name of the peering.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listStatsAsync(final String resourceGroupName, final String circuitName, final ListOperationCallback<ExpressRouteCircuitStatsInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getPeeringStatsAsync(String resourceGroupName, String circuitName, String peeringName, final ServiceCallback<ExpressRouteCircuitStatsInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -756,6 +1200,10 @@ public final class ExpressRouteCircuitsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
             return null;
         }
+        if (peeringName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
+            return null;
+        }
         if (this.client.subscriptionId() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
@@ -764,20 +1212,13 @@ public final class ExpressRouteCircuitsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.listStats(resourceGroupName, circuitName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        Call<ResponseBody> call = service.getPeeringStats(resourceGroupName, circuitName, peeringName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<ExpressRouteCircuitStatsInner>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<ExpressRouteCircuitStatsInner>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<ExpressRouteCircuitStatsInner>> result = listStatsDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listStatsNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                    }
+                    serviceCallback.success(getPeeringStatsDelegate(response));
                 } catch (CloudException | IOException exception) {
                     serviceCallback.failure(exception);
                 }
@@ -786,9 +1227,9 @@ public final class ExpressRouteCircuitsInner {
         return serviceCall;
     }
 
-    private ServiceResponse<PageImpl<ExpressRouteCircuitStatsInner>> listStatsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitStatsInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl<ExpressRouteCircuitStatsInner>>() { }.getType())
+    private ServiceResponse<ExpressRouteCircuitStatsInner> getPeeringStatsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<ExpressRouteCircuitStatsInner, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<ExpressRouteCircuitStatsInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -946,195 +1387,6 @@ public final class ExpressRouteCircuitsInner {
     private ServiceResponse<PageImpl<ExpressRouteCircuitInner>> listAllDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<ExpressRouteCircuitInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * The ListArpTable from ExpressRouteCircuit opertion retrieves the currently advertised arp table associated with the ExpressRouteCircuits in a resource group.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ExpressRouteCircuitArpTableInner&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<PageImpl<ExpressRouteCircuitArpTableInner>> listArpTableNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listArpTableNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
-        return listArpTableNextDelegate(call.execute());
-    }
-
-    /**
-     * The ListArpTable from ExpressRouteCircuit opertion retrieves the currently advertised arp table associated with the ExpressRouteCircuits in a resource group.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listArpTableNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<ExpressRouteCircuitArpTableInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listArpTableNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<ExpressRouteCircuitArpTableInner>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<ExpressRouteCircuitArpTableInner>> result = listArpTableNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listArpTableNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                    }
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<PageImpl<ExpressRouteCircuitArpTableInner>> listArpTableNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitArpTableInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl<ExpressRouteCircuitArpTableInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * The ListRoutesTable from ExpressRouteCircuit opertion retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ExpressRouteCircuitRoutesTableInner&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<PageImpl<ExpressRouteCircuitRoutesTableInner>> listRoutesTableNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listRoutesTableNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
-        return listRoutesTableNextDelegate(call.execute());
-    }
-
-    /**
-     * The ListRoutesTable from ExpressRouteCircuit opertion retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listRoutesTableNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<ExpressRouteCircuitRoutesTableInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listRoutesTableNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<ExpressRouteCircuitRoutesTableInner>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<ExpressRouteCircuitRoutesTableInner>> result = listRoutesTableNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listRoutesTableNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                    }
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<PageImpl<ExpressRouteCircuitRoutesTableInner>> listRoutesTableNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitRoutesTableInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl<ExpressRouteCircuitRoutesTableInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * The Liststats ExpressRouteCircuit opertion retrieves all the stats from a ExpressRouteCircuits in a resource group.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ExpressRouteCircuitStatsInner&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<PageImpl<ExpressRouteCircuitStatsInner>> listStatsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listStatsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
-        return listStatsNextDelegate(call.execute());
-    }
-
-    /**
-     * The Liststats ExpressRouteCircuit opertion retrieves all the stats from a ExpressRouteCircuits in a resource group.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listStatsNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<ExpressRouteCircuitStatsInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listStatsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<ExpressRouteCircuitStatsInner>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<ExpressRouteCircuitStatsInner>> result = listStatsNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listStatsNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                    }
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<PageImpl<ExpressRouteCircuitStatsInner>> listStatsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ExpressRouteCircuitStatsInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl<ExpressRouteCircuitStatsInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

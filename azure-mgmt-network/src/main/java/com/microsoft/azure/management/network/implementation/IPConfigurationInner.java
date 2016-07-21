@@ -24,8 +24,8 @@ public class IPConfigurationInner extends SubResource {
     private String privateIPAddress;
 
     /**
-     * Gets or sets PrivateIP allocation method (Static/Dynamic). Possible
-     * values include: 'Static', 'Dynamic'.
+     * Gets or sets PrivateIP allocation method. Possible values include:
+     * 'Static', 'Dynamic'.
      */
     @JsonProperty(value = "properties.privateIPAllocationMethod")
     private String privateIPAllocationMethod;
@@ -43,7 +43,7 @@ public class IPConfigurationInner extends SubResource {
     private PublicIPAddressInner publicIPAddress;
 
     /**
-     * Gets or sets Provisioning state of the PublicIP resource
+     * Gets provisioning state of the PublicIP resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")

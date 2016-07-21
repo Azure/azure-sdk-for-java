@@ -26,6 +26,12 @@ public class ExpressRouteCircuitInner extends Resource {
     private ExpressRouteCircuitSku sku;
 
     /**
+     * allow classic operations.
+     */
+    @JsonProperty(value = "properties.allowClassicOperations")
+    private Boolean allowClassicOperations;
+
+    /**
      * Gets or sets CircuitProvisioningState state of the resource.
      */
     @JsonProperty(value = "properties.circuitProvisioningState")
@@ -70,7 +76,7 @@ public class ExpressRouteCircuitInner extends Resource {
     private ExpressRouteCircuitServiceProviderProperties serviceProviderProperties;
 
     /**
-     * Gets or sets Provisioning state of the PublicIP resource
+     * Gets provisioning state of the PublicIP resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
@@ -99,6 +105,26 @@ public class ExpressRouteCircuitInner extends Resource {
      */
     public ExpressRouteCircuitInner withSku(ExpressRouteCircuitSku sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the allowClassicOperations value.
+     *
+     * @return the allowClassicOperations value
+     */
+    public Boolean allowClassicOperations() {
+        return this.allowClassicOperations;
+    }
+
+    /**
+     * Set the allowClassicOperations value.
+     *
+     * @param allowClassicOperations the allowClassicOperations value to set
+     * @return the ExpressRouteCircuitInner object itself.
+     */
+    public ExpressRouteCircuitInner withAllowClassicOperations(Boolean allowClassicOperations) {
+        this.allowClassicOperations = allowClassicOperations;
         return this;
     }
 

@@ -18,14 +18,8 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class VirtualNetworkGatewayIPConfigurationInner extends SubResource {
     /**
-     * Gets or sets the privateIPAddress of the IP Configuration.
-     */
-    @JsonProperty(value = "properties.privateIPAddress")
-    private String privateIPAddress;
-
-    /**
-     * Gets or sets PrivateIP allocation method (Static/Dynamic). Possible
-     * values include: 'Static', 'Dynamic'.
+     * Gets or sets PrivateIP allocation method. Possible values include:
+     * 'Static', 'Dynamic'.
      */
     @JsonProperty(value = "properties.privateIPAllocationMethod")
     private String privateIPAllocationMethod;
@@ -43,7 +37,7 @@ public class VirtualNetworkGatewayIPConfigurationInner extends SubResource {
     private SubResource publicIPAddress;
 
     /**
-     * Gets or sets Provisioning state of the PublicIP resource
+     * Gets provisioning state of the PublicIP resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
@@ -59,26 +53,6 @@ public class VirtualNetworkGatewayIPConfigurationInner extends SubResource {
      * A unique read-only string that changes whenever the resource is updated.
      */
     private String etag;
-
-    /**
-     * Get the privateIPAddress value.
-     *
-     * @return the privateIPAddress value
-     */
-    public String privateIPAddress() {
-        return this.privateIPAddress;
-    }
-
-    /**
-     * Set the privateIPAddress value.
-     *
-     * @param privateIPAddress the privateIPAddress value to set
-     * @return the VirtualNetworkGatewayIPConfigurationInner object itself.
-     */
-    public VirtualNetworkGatewayIPConfigurationInner withPrivateIPAddress(String privateIPAddress) {
-        this.privateIPAddress = privateIPAddress;
-        return this;
-    }
 
     /**
      * Get the privateIPAllocationMethod value.

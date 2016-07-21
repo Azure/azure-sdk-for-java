@@ -38,52 +38,52 @@ import retrofit2.Response;
 
 /**
  * An instance of this class provides access to all the operations defined
- * in Subnets.
+ * in VirtualNetworkPeerings.
  */
-public final class SubnetsInner {
+public final class VirtualNetworkPeeringsInner {
     /** The Retrofit service to perform REST calls. */
-    private SubnetsService service;
+    private VirtualNetworkPeeringsService service;
     /** The service client containing this operation class. */
     private NetworkManagementClientImpl client;
 
     /**
-     * Initializes an instance of SubnetsInner.
+     * Initializes an instance of VirtualNetworkPeeringsInner.
      *
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public SubnetsInner(Retrofit retrofit, NetworkManagementClientImpl client) {
-        this.service = retrofit.create(SubnetsService.class);
+    public VirtualNetworkPeeringsInner(Retrofit retrofit, NetworkManagementClientImpl client) {
+        this.service = retrofit.create(VirtualNetworkPeeringsService.class);
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for Subnets to be
+     * The interface defining all the services for VirtualNetworkPeerings to be
      * used by Retrofit to perform actually REST calls.
      */
-    interface SubnetsService {
+    interface VirtualNetworkPeeringsService {
         @Headers("Content-Type: application/json; charset=utf-8")
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> delete(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkName") String virtualNetworkName, @Path("subnetName") String subnetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/virtualNetworkPeerings/{virtualNetworkPeeringName}", method = "DELETE", hasBody = true)
+        Call<ResponseBody> delete(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkName") String virtualNetworkName, @Path("virtualNetworkPeeringName") String virtualNetworkPeeringName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkName") String virtualNetworkName, @Path("subnetName") String subnetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/virtualNetworkPeerings/{virtualNetworkPeeringName}", method = "DELETE", hasBody = true)
+        Call<ResponseBody> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkName") String virtualNetworkName, @Path("virtualNetworkPeeringName") String virtualNetworkPeeringName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}")
-        Call<ResponseBody> get(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkName") String virtualNetworkName, @Path("subnetName") String subnetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/virtualNetworkPeerings/{virtualNetworkPeeringName}")
+        Call<ResponseBody> get(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkName") String virtualNetworkName, @Path("virtualNetworkPeeringName") String virtualNetworkPeeringName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}")
-        Call<ResponseBody> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkName") String virtualNetworkName, @Path("subnetName") String subnetName, @Path("subscriptionId") String subscriptionId, @Body SubnetInner subnetParameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/virtualNetworkPeerings/{virtualNetworkPeeringName}")
+        Call<ResponseBody> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkName") String virtualNetworkName, @Path("virtualNetworkPeeringName") String virtualNetworkPeeringName, @Path("subscriptionId") String subscriptionId, @Body VirtualNetworkPeeringInner virtualNetworkPeeringParameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}")
-        Call<ResponseBody> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkName") String virtualNetworkName, @Path("subnetName") String subnetName, @Path("subscriptionId") String subscriptionId, @Body SubnetInner subnetParameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/virtualNetworkPeerings/{virtualNetworkPeeringName}")
+        Call<ResponseBody> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkName") String virtualNetworkName, @Path("virtualNetworkPeeringName") String virtualNetworkPeeringName, @Path("subscriptionId") String subscriptionId, @Body VirtualNetworkPeeringInner virtualNetworkPeeringParameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/virtualNetworkPeerings")
         Call<ResponseBody> list(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkName") String virtualNetworkName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
@@ -93,26 +93,26 @@ public final class SubnetsInner {
     }
 
     /**
-     * The delete subnet operation deletes the specified subnet.
+     * The delete virtual network peering operation deletes the specified peering.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
+     * @param virtualNetworkPeeringName The name of the virtual network peering.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String virtualNetworkName, String subnetName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public ServiceResponse<Void> delete(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (virtualNetworkName == null) {
             throw new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null.");
         }
-        if (subnetName == null) {
-            throw new IllegalArgumentException("Parameter subnetName is required and cannot be null.");
+        if (virtualNetworkPeeringName == null) {
+            throw new IllegalArgumentException("Parameter virtualNetworkPeeringName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
@@ -120,21 +120,21 @@ public final class SubnetsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Response<ResponseBody> result = service.delete(resourceGroupName, virtualNetworkName, subnetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
+        Response<ResponseBody> result = service.delete(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
         return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
     }
 
     /**
-     * The delete subnet operation deletes the specified subnet.
+     * The delete virtual network peering operation deletes the specified peering.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
+     * @param virtualNetworkPeeringName The name of the virtual network peering.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall deleteAsync(String resourceGroupName, String virtualNetworkName, String subnetName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall deleteAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -144,8 +144,8 @@ public final class SubnetsInner {
         if (virtualNetworkName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
         }
-        if (subnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
+        if (virtualNetworkPeeringName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkPeeringName is required and cannot be null."));
         }
         if (this.client.subscriptionId() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
@@ -153,7 +153,7 @@ public final class SubnetsInner {
         if (this.client.apiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
-        Call<ResponseBody> call = service.delete(resourceGroupName, virtualNetworkName, subnetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        Call<ResponseBody> call = service.delete(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -169,25 +169,25 @@ public final class SubnetsInner {
     }
 
     /**
-     * The delete subnet operation deletes the specified subnet.
+     * The delete virtual network peering operation deletes the specified peering.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
+     * @param virtualNetworkPeeringName The name of the virtual network peering.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> beginDelete(String resourceGroupName, String virtualNetworkName, String subnetName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<Void> beginDelete(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (virtualNetworkName == null) {
             throw new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null.");
         }
-        if (subnetName == null) {
-            throw new IllegalArgumentException("Parameter subnetName is required and cannot be null.");
+        if (virtualNetworkPeeringName == null) {
+            throw new IllegalArgumentException("Parameter virtualNetworkPeeringName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
@@ -195,21 +195,21 @@ public final class SubnetsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.beginDelete(resourceGroupName, virtualNetworkName, subnetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        Call<ResponseBody> call = service.beginDelete(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginDeleteDelegate(call.execute());
     }
 
     /**
-     * The delete subnet operation deletes the specified subnet.
+     * The delete virtual network peering operation deletes the specified peering.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
+     * @param virtualNetworkPeeringName The name of the virtual network peering.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall beginDeleteAsync(String resourceGroupName, String virtualNetworkName, String subnetName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall beginDeleteAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -221,8 +221,8 @@ public final class SubnetsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
             return null;
         }
-        if (subnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
+        if (virtualNetworkPeeringName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkPeeringName is required and cannot be null."));
             return null;
         }
         if (this.client.subscriptionId() == null) {
@@ -233,7 +233,7 @@ public final class SubnetsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Call<ResponseBody> call = service.beginDelete(resourceGroupName, virtualNetworkName, subnetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        Call<ResponseBody> call = service.beginDelete(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
@@ -257,25 +257,25 @@ public final class SubnetsInner {
     }
 
     /**
-     * The Get subnet operation retreives information about the specified subnet.
+     * The Get virtual network peering operation retreives information about the specified virtual network peering.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
+     * @param virtualNetworkPeeringName The name of the virtual network peering.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SubnetInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the VirtualNetworkPeeringInner object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<SubnetInner> get(String resourceGroupName, String virtualNetworkName, String subnetName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<VirtualNetworkPeeringInner> get(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (virtualNetworkName == null) {
             throw new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null.");
         }
-        if (subnetName == null) {
-            throw new IllegalArgumentException("Parameter subnetName is required and cannot be null.");
+        if (virtualNetworkPeeringName == null) {
+            throw new IllegalArgumentException("Parameter virtualNetworkPeeringName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
@@ -283,22 +283,21 @@ public final class SubnetsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        final String expand = null;
-        Call<ResponseBody> call = service.get(resourceGroupName, virtualNetworkName, subnetName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent());
+        Call<ResponseBody> call = service.get(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return getDelegate(call.execute());
     }
 
     /**
-     * The Get subnet operation retreives information about the specified subnet.
+     * The Get virtual network peering operation retreives information about the specified virtual network peering.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
+     * @param virtualNetworkPeeringName The name of the virtual network peering.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getAsync(String resourceGroupName, String virtualNetworkName, String subnetName, final ServiceCallback<SubnetInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall getAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, final ServiceCallback<VirtualNetworkPeeringInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -310,8 +309,8 @@ public final class SubnetsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
             return null;
         }
-        if (subnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
+        if (virtualNetworkPeeringName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkPeeringName is required and cannot be null."));
             return null;
         }
         if (this.client.subscriptionId() == null) {
@@ -322,10 +321,9 @@ public final class SubnetsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        final String expand = null;
-        Call<ResponseBody> call = service.get(resourceGroupName, virtualNetworkName, subnetName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent());
+        Call<ResponseBody> call = service.get(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SubnetInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<VirtualNetworkPeeringInner>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -338,144 +336,62 @@ public final class SubnetsInner {
         return serviceCall;
     }
 
-    /**
-     * The Get subnet operation retreives information about the specified subnet.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param expand expand references resources.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SubnetInner object wrapped in {@link ServiceResponse} if successful.
-     */
-    public ServiceResponse<SubnetInner> get(String resourceGroupName, String virtualNetworkName, String subnetName, String expand) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (virtualNetworkName == null) {
-            throw new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null.");
-        }
-        if (subnetName == null) {
-            throw new IllegalArgumentException("Parameter subnetName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.get(resourceGroupName, virtualNetworkName, subnetName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent());
-        return getDelegate(call.execute());
-    }
-
-    /**
-     * The Get subnet operation retreives information about the specified subnet.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param expand expand references resources.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getAsync(String resourceGroupName, String virtualNetworkName, String subnetName, String expand, final ServiceCallback<SubnetInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (virtualNetworkName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
-            return null;
-        }
-        if (subnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.get(resourceGroupName, virtualNetworkName, subnetName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SubnetInner>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<SubnetInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SubnetInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<SubnetInner>() { }.getType())
+    private ServiceResponse<VirtualNetworkPeeringInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<VirtualNetworkPeeringInner, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<VirtualNetworkPeeringInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * The Put Subnet operation creates/updates a subnet in thespecified virtual network.
+     * The Put virtual network peering operation creates/updates a peering in the specified virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param subnetParameters Parameters supplied to the create/update Subnet operation
+     * @param virtualNetworkPeeringName The name of the peering.
+     * @param virtualNetworkPeeringParameters Parameters supplied to the create/update virtual network peering operation
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the SubnetInner object wrapped in ServiceResponse if successful.
+     * @return the VirtualNetworkPeeringInner object wrapped in ServiceResponse if successful.
      */
-    public ServiceResponse<SubnetInner> createOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public ServiceResponse<VirtualNetworkPeeringInner> createOrUpdate(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (virtualNetworkName == null) {
             throw new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null.");
         }
-        if (subnetName == null) {
-            throw new IllegalArgumentException("Parameter subnetName is required and cannot be null.");
+        if (virtualNetworkPeeringName == null) {
+            throw new IllegalArgumentException("Parameter virtualNetworkPeeringName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (subnetParameters == null) {
-            throw new IllegalArgumentException("Parameter subnetParameters is required and cannot be null.");
+        if (virtualNetworkPeeringParameters == null) {
+            throw new IllegalArgumentException("Parameter virtualNetworkPeeringParameters is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(subnetParameters);
-        Response<ResponseBody> result = service.createOrUpdate(resourceGroupName, virtualNetworkName, subnetName, this.client.subscriptionId(), subnetParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
-        return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<SubnetInner>() { }.getType());
+        Validator.validate(virtualNetworkPeeringParameters);
+        Response<ResponseBody> result = service.createOrUpdate(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, this.client.subscriptionId(), virtualNetworkPeeringParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
+        return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<VirtualNetworkPeeringInner>() { }.getType());
     }
 
     /**
-     * The Put Subnet operation creates/updates a subnet in thespecified virtual network.
+     * The Put virtual network peering operation creates/updates a peering in the specified virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param subnetParameters Parameters supplied to the create/update Subnet operation
+     * @param virtualNetworkPeeringName The name of the peering.
+     * @param virtualNetworkPeeringParameters Parameters supplied to the create/update virtual network peering operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall createOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters, final ServiceCallback<SubnetInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall createOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters, final ServiceCallback<VirtualNetworkPeeringInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -485,20 +401,20 @@ public final class SubnetsInner {
         if (virtualNetworkName == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
         }
-        if (subnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
+        if (virtualNetworkPeeringName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkPeeringName is required and cannot be null."));
         }
         if (this.client.subscriptionId() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
         }
-        if (subnetParameters == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter subnetParameters is required and cannot be null."));
+        if (virtualNetworkPeeringParameters == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkPeeringParameters is required and cannot be null."));
         }
         if (this.client.apiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
-        Validator.validate(subnetParameters, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, virtualNetworkName, subnetName, this.client.subscriptionId(), subnetParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        Validator.validate(virtualNetworkPeeringParameters, serviceCallback);
+        Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, this.client.subscriptionId(), virtualNetworkPeeringParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -507,60 +423,60 @@ public final class SubnetsInner {
             }
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<SubnetInner>() { }.getType(), serviceCall, serviceCallback);
+                client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<VirtualNetworkPeeringInner>() { }.getType(), serviceCall, serviceCallback);
             }
         });
         return serviceCall;
     }
 
     /**
-     * The Put Subnet operation creates/updates a subnet in thespecified virtual network.
+     * The Put virtual network peering operation creates/updates a peering in the specified virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param subnetParameters Parameters supplied to the create/update Subnet operation
+     * @param virtualNetworkPeeringName The name of the peering.
+     * @param virtualNetworkPeeringParameters Parameters supplied to the create/update virtual network peering operation
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SubnetInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the VirtualNetworkPeeringInner object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<SubnetInner> beginCreateOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<VirtualNetworkPeeringInner> beginCreateOrUpdate(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (virtualNetworkName == null) {
             throw new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null.");
         }
-        if (subnetName == null) {
-            throw new IllegalArgumentException("Parameter subnetName is required and cannot be null.");
+        if (virtualNetworkPeeringName == null) {
+            throw new IllegalArgumentException("Parameter virtualNetworkPeeringName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (subnetParameters == null) {
-            throw new IllegalArgumentException("Parameter subnetParameters is required and cannot be null.");
+        if (virtualNetworkPeeringParameters == null) {
+            throw new IllegalArgumentException("Parameter virtualNetworkPeeringParameters is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(subnetParameters);
-        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, virtualNetworkName, subnetName, this.client.subscriptionId(), subnetParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        Validator.validate(virtualNetworkPeeringParameters);
+        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, this.client.subscriptionId(), virtualNetworkPeeringParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return beginCreateOrUpdateDelegate(call.execute());
     }
 
     /**
-     * The Put Subnet operation creates/updates a subnet in thespecified virtual network.
+     * The Put virtual network peering operation creates/updates a peering in the specified virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param subnetParameters Parameters supplied to the create/update Subnet operation
+     * @param virtualNetworkPeeringName The name of the peering.
+     * @param virtualNetworkPeeringParameters Parameters supplied to the create/update virtual network peering operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall beginCreateOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters, final ServiceCallback<SubnetInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall beginCreateOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters, final ServiceCallback<VirtualNetworkPeeringInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -572,26 +488,26 @@ public final class SubnetsInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
             return null;
         }
-        if (subnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
+        if (virtualNetworkPeeringName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkPeeringName is required and cannot be null."));
             return null;
         }
         if (this.client.subscriptionId() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
             return null;
         }
-        if (subnetParameters == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter subnetParameters is required and cannot be null."));
+        if (virtualNetworkPeeringParameters == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkPeeringParameters is required and cannot be null."));
             return null;
         }
         if (this.client.apiVersion() == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        Validator.validate(subnetParameters, serviceCallback);
-        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, virtualNetworkName, subnetName, this.client.subscriptionId(), subnetParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        Validator.validate(virtualNetworkPeeringParameters, serviceCallback);
+        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, this.client.subscriptionId(), virtualNetworkPeeringParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SubnetInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<VirtualNetworkPeeringInner>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -604,25 +520,25 @@ public final class SubnetsInner {
         return serviceCall;
     }
 
-    private ServiceResponse<SubnetInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SubnetInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<SubnetInner>() { }.getType())
-                .register(201, new TypeToken<SubnetInner>() { }.getType())
+    private ServiceResponse<VirtualNetworkPeeringInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<VirtualNetworkPeeringInner, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<VirtualNetworkPeeringInner>() { }.getType())
+                .register(201, new TypeToken<VirtualNetworkPeeringInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * The List subnets opertion retrieves all the subnets in a virtual network.
+     * The List virtual network peerings opertion retrieves all the peerings in a virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SubnetInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;VirtualNetworkPeeringInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PagedList<SubnetInner>> list(final String resourceGroupName, final String virtualNetworkName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<VirtualNetworkPeeringInner>> list(final String resourceGroupName, final String virtualNetworkName) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -636,10 +552,10 @@ public final class SubnetsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        ServiceResponse<PageImpl<SubnetInner>> response = listDelegate(call.execute());
-        PagedList<SubnetInner> result = new PagedList<SubnetInner>(response.getBody()) {
+        ServiceResponse<PageImpl<VirtualNetworkPeeringInner>> response = listDelegate(call.execute());
+        PagedList<VirtualNetworkPeeringInner> result = new PagedList<VirtualNetworkPeeringInner>(response.getBody()) {
             @Override
-            public Page<SubnetInner> nextPage(String nextPageLink) throws CloudException, IOException {
+            public Page<VirtualNetworkPeeringInner> nextPage(String nextPageLink) throws CloudException, IOException {
                 return listNext(nextPageLink).getBody();
             }
         };
@@ -647,7 +563,7 @@ public final class SubnetsInner {
     }
 
     /**
-     * The List subnets opertion retrieves all the subnets in a virtual network.
+     * The List virtual network peerings opertion retrieves all the peerings in a virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -655,7 +571,7 @@ public final class SubnetsInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listAsync(final String resourceGroupName, final String virtualNetworkName, final ListOperationCallback<SubnetInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listAsync(final String resourceGroupName, final String virtualNetworkName, final ListOperationCallback<VirtualNetworkPeeringInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -677,11 +593,11 @@ public final class SubnetsInner {
         }
         Call<ResponseBody> call = service.list(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<SubnetInner>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<VirtualNetworkPeeringInner>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<SubnetInner>> result = listDelegate(response);
+                    ServiceResponse<PageImpl<VirtualNetworkPeeringInner>> result = listDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
@@ -697,23 +613,23 @@ public final class SubnetsInner {
         return serviceCall;
     }
 
-    private ServiceResponse<PageImpl<SubnetInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SubnetInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl<SubnetInner>>() { }.getType())
+    private ServiceResponse<PageImpl<VirtualNetworkPeeringInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkPeeringInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<VirtualNetworkPeeringInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * The List subnets opertion retrieves all the subnets in a virtual network.
+     * The List virtual network peerings opertion retrieves all the peerings in a virtual network.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SubnetInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;VirtualNetworkPeeringInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<SubnetInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PageImpl<VirtualNetworkPeeringInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -722,7 +638,7 @@ public final class SubnetsInner {
     }
 
     /**
-     * The List subnets opertion retrieves all the subnets in a virtual network.
+     * The List virtual network peerings opertion retrieves all the peerings in a virtual network.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -730,7 +646,7 @@ public final class SubnetsInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<SubnetInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<VirtualNetworkPeeringInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -740,11 +656,11 @@ public final class SubnetsInner {
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
         serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<SubnetInner>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<VirtualNetworkPeeringInner>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    ServiceResponse<PageImpl<SubnetInner>> result = listNextDelegate(response);
+                    ServiceResponse<PageImpl<VirtualNetworkPeeringInner>> result = listNextDelegate(response);
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
@@ -760,9 +676,9 @@ public final class SubnetsInner {
         return serviceCall;
     }
 
-    private ServiceResponse<PageImpl<SubnetInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<SubnetInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl<SubnetInner>>() { }.getType())
+    private ServiceResponse<PageImpl<VirtualNetworkPeeringInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<VirtualNetworkPeeringInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<VirtualNetworkPeeringInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

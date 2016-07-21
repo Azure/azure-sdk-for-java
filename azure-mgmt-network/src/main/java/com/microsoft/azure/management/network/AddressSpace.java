@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class AddressSpace {
     /**
-     * Gets or sets List of address blocks reserved for this virtual network
+     * Gets or sets list of address blocks reserved for this virtual network
      * in CIDR notation.
      */
     private List<String> addressPrefixes;

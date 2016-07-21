@@ -21,7 +21,7 @@ public class ProbeInner extends SubResource {
     /**
      * Gets Load balancer rules that use this probe.
      */
-    @JsonProperty(value = "properties.loadBalancingRules")
+    @JsonProperty(value = "properties.loadBalancingRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> loadBalancingRules;
 
     /**
@@ -69,7 +69,7 @@ public class ProbeInner extends SubResource {
     private String requestPath;
 
     /**
-     * Gets or sets Provisioning state of the PublicIP resource
+     * Gets provisioning state of the PublicIP resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
@@ -93,17 +93,6 @@ public class ProbeInner extends SubResource {
      */
     public List<SubResource> loadBalancingRules() {
         return this.loadBalancingRules;
-    }
-
-    /**
-     * Set the loadBalancingRules value.
-     *
-     * @param loadBalancingRules the loadBalancingRules value to set
-     * @return the ProbeInner object itself.
-     */
-    public ProbeInner withLoadBalancingRules(List<SubResource> loadBalancingRules) {
-        this.loadBalancingRules = loadBalancingRules;
-        return this;
     }
 
     /**

@@ -100,8 +100,8 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     private String resourceGuid;
 
     /**
-     * Gets or sets Provisioning state of the VirtualNetworkGatewayConnection
-     * resource Updating/Deleting/Failed.
+     * Gets provisioning state of the VirtualNetworkGatewayConnection resource
+     * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;

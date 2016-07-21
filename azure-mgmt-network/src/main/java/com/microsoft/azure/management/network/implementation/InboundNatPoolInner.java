@@ -24,8 +24,8 @@ public class InboundNatPoolInner extends SubResource {
     private SubResource frontendIPConfiguration;
 
     /**
-     * Gets or sets the transport potocol for the external endpoint. Possible
-     * values are Udp or Tcp. Possible values include: 'Udp', 'Tcp'.
+     * Gets or sets the transport potocol for the endpoint. Possible values
+     * are Udp or Tcp. Possible values include: 'Udp', 'Tcp'.
      */
     @JsonProperty(value = "properties.protocol", required = true)
     private String protocol;
@@ -62,7 +62,7 @@ public class InboundNatPoolInner extends SubResource {
     private int backendPort;
 
     /**
-     * Gets or sets Provisioning state of the PublicIP resource
+     * Gets provisioning state of the PublicIP resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")

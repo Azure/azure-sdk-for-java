@@ -40,19 +40,18 @@ public class SubnetInner extends SubResource {
      * Gets array of references to the network interface IP configurations
      * using subnet.
      */
-    @JsonProperty(value = "properties.ipConfigurations")
+    @JsonProperty(value = "properties.ipConfigurations", access = JsonProperty.Access.WRITE_ONLY)
     private List<IPConfigurationInner> ipConfigurations;
 
     /**
-     * Gets or sets Provisioning state of the PublicIP resource
-     * Updating/Deleting/Failed.
+     * Gets provisioning state of the resource.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /**
-     * Gets name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
+     * Gets or sets the name of the resource that is unique within a resource
+     * group. This name can be used to access the resource.
      */
     private String name;
 
@@ -128,17 +127,6 @@ public class SubnetInner extends SubResource {
      */
     public List<IPConfigurationInner> ipConfigurations() {
         return this.ipConfigurations;
-    }
-
-    /**
-     * Set the ipConfigurations value.
-     *
-     * @param ipConfigurations the ipConfigurations value to set
-     * @return the SubnetInner object itself.
-     */
-    public SubnetInner withIpConfigurations(List<IPConfigurationInner> ipConfigurations) {
-        this.ipConfigurations = ipConfigurations;
-        return this;
     }
 
     /**

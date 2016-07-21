@@ -25,8 +25,8 @@ public class ApplicationGatewayIPConfigurationInner extends SubResource {
     private SubResource subnet;
 
     /**
-     * Gets or sets Provisioning state of the application gateway subnet
-     * resource Updating/Deleting/Failed.
+     * Gets provisioning state of the application gateway subnet resource
+     * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
