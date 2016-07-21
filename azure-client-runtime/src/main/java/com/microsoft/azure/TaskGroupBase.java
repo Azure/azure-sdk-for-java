@@ -58,11 +58,7 @@ public abstract class TaskGroupBase<T>
             return;
         }
 
-        if (dag.isRootNode(nextNode)) {
-            executeRootTask(nextNode.data());
-        } else {
-            nextNode.data().execute(this, nextNode);
-        }
+        nextNode.data().execute(this, nextNode);
     }
 
     @Override
@@ -72,40 +68,11 @@ public abstract class TaskGroupBase<T>
             return null;
         }
 
-        if (dag.isRootNode(nextNode)) {
-            return executeRootTaskAsync(nextNode.data(), callback);
-        } else {
-            return nextNode.data().executeAsync(this, nextNode, callback);
-        }
+        return nextNode.data().executeAsync(this, nextNode, callback);
     }
 
     @Override
     public T taskResult(String taskId) {
         return dag.getNodeData(taskId).result();
     }
-
-    /**
-     * Executes the root task in this group.
-     * <p>
-     * This method will be invoked when all the task dependencies of the root task are finished
-     * executing, at this point root task can be executed by consuming the result of tasks it
-     * depends on.
-     *
-     * @param task the root task in this group
-     * @throws Exception the exception
-     */
-    public abstract void executeRootTask(TaskItem<T> task) throws Exception;
-
-    /**
-     * Executes the root task in this group asynchronously.
-     * <p>
-     * This method will be invoked when all the task dependencies of the root task are finished
-     * executing, at this point root task can be executed by consuming the result of tasks it
-     * depends on.
-     *
-     * @param task the root task in this group
-     * @param callback the callback when the task fails or succeeds
-     * @return the handle to the REST call
-     */
-    public abstract ServiceCall executeRootTaskAsync(TaskItem<T> task, ServiceCallback<Void> callback);
 }
