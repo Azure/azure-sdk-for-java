@@ -28,12 +28,12 @@ public class InboundNatRuleInner extends SubResource {
      * NetworkInterface of a VM. Traffic sent to frontendPort of each of the
      * frontendIPConfigurations is forwarded to the backed IP.
      */
-    @JsonProperty(value = "properties.backendIPConfiguration")
+    @JsonProperty(value = "properties.backendIPConfiguration", access = JsonProperty.Access.WRITE_ONLY)
     private NetworkInterfaceIPConfigurationInner backendIPConfiguration;
 
     /**
-     * Gets or sets the transport potocol for the external endpoint. Possible
-     * values are Udp or Tcp. Possible values include: 'Udp', 'Tcp'.
+     * Gets or sets the transport potocol for the endpoint. Possible values
+     * are Udp or Tcp. Possible values include: 'Udp', 'Tcp'.
      */
     @JsonProperty(value = "properties.protocol")
     private String protocol;
@@ -78,7 +78,7 @@ public class InboundNatRuleInner extends SubResource {
     private Boolean enableFloatingIP;
 
     /**
-     * Gets or sets Provisioning state of the PublicIP resource
+     * Gets provisioning state of the PublicIP resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
@@ -122,17 +122,6 @@ public class InboundNatRuleInner extends SubResource {
      */
     public NetworkInterfaceIPConfigurationInner backendIPConfiguration() {
         return this.backendIPConfiguration;
-    }
-
-    /**
-     * Set the backendIPConfiguration value.
-     *
-     * @param backendIPConfiguration the backendIPConfiguration value to set
-     * @return the InboundNatRuleInner object itself.
-     */
-    public InboundNatRuleInner withBackendIPConfiguration(NetworkInterfaceIPConfigurationInner backendIPConfiguration) {
-        this.backendIPConfiguration = backendIPConfiguration;
-        return this;
     }
 
     /**

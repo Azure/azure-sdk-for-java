@@ -24,8 +24,8 @@ public class VpnClientRootCertificateInner extends SubResource {
     private String publicCertData;
 
     /**
-     * Gets or sets Provisioning state of the VPN client root certificate
-     * resource Updating/Deleting/Failed.
+     * Gets provisioning state of the VPN client root certificate resource
+     * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;

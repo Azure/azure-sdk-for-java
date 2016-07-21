@@ -9,10 +9,10 @@
 package com.microsoft.azure.management.network.implementation;
 
 import java.util.List;
-import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendAddress;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.SubResource;
 
 /**
  * Backend Address Pool of application gateway.
@@ -20,10 +20,10 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class ApplicationGatewayBackendAddressPoolInner extends SubResource {
     /**
-     * Gets or sets backendIPConfiguration of application gateway.
+     * Gets collection of references to IPs defined in NICs.
      */
     @JsonProperty(value = "properties.backendIPConfigurations")
-    private List<SubResource> backendIPConfigurations;
+    private List<NetworkInterfaceIPConfigurationInner> backendIPConfigurations;
 
     /**
      * Gets or sets the backend addresses.
@@ -32,7 +32,7 @@ public class ApplicationGatewayBackendAddressPoolInner extends SubResource {
     private List<ApplicationGatewayBackendAddress> backendAddresses;
 
     /**
-     * Gets or sets Provisioning state of the backend address pool resource
+     * Gets provisioning state of the backend address pool resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
@@ -54,7 +54,7 @@ public class ApplicationGatewayBackendAddressPoolInner extends SubResource {
      *
      * @return the backendIPConfigurations value
      */
-    public List<SubResource> backendIPConfigurations() {
+    public List<NetworkInterfaceIPConfigurationInner> backendIPConfigurations() {
         return this.backendIPConfigurations;
     }
 
@@ -64,7 +64,7 @@ public class ApplicationGatewayBackendAddressPoolInner extends SubResource {
      * @param backendIPConfigurations the backendIPConfigurations value to set
      * @return the ApplicationGatewayBackendAddressPoolInner object itself.
      */
-    public ApplicationGatewayBackendAddressPoolInner withBackendIPConfigurations(List<SubResource> backendIPConfigurations) {
+    public ApplicationGatewayBackendAddressPoolInner withBackendIPConfigurations(List<NetworkInterfaceIPConfigurationInner> backendIPConfigurations) {
         this.backendIPConfigurations = backendIPConfigurations;
         return this;
     }

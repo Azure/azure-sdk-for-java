@@ -19,13 +19,13 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class NetworkSecurityGroupInner extends Resource {
     /**
-     * Gets or sets Security rules of network security group.
+     * Gets or sets security rules of network security group.
      */
     @JsonProperty(value = "properties.securityRules")
     private List<SecurityRuleInner> securityRules;
 
     /**
-     * Gets or sets Default security rules of network security group.
+     * Gets or default security rules of network security group.
      */
     @JsonProperty(value = "properties.defaultSecurityRules")
     private List<SecurityRuleInner> defaultSecurityRules;
@@ -33,13 +33,13 @@ public class NetworkSecurityGroupInner extends Resource {
     /**
      * Gets collection of references to Network Interfaces.
      */
-    @JsonProperty(value = "properties.networkInterfaces")
+    @JsonProperty(value = "properties.networkInterfaces", access = JsonProperty.Access.WRITE_ONLY)
     private List<NetworkInterfaceInner> networkInterfaces;
 
     /**
      * Gets collection of references to subnets.
      */
-    @JsonProperty(value = "properties.subnets")
+    @JsonProperty(value = "properties.subnets", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubnetInner> subnets;
 
     /**
@@ -50,7 +50,7 @@ public class NetworkSecurityGroupInner extends Resource {
     private String resourceGuid;
 
     /**
-     * Gets or sets Provisioning state of the PublicIP resource
+     * Gets provisioning state of the PublicIP resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
@@ -112,34 +112,12 @@ public class NetworkSecurityGroupInner extends Resource {
     }
 
     /**
-     * Set the networkInterfaces value.
-     *
-     * @param networkInterfaces the networkInterfaces value to set
-     * @return the NetworkSecurityGroupInner object itself.
-     */
-    public NetworkSecurityGroupInner withNetworkInterfaces(List<NetworkInterfaceInner> networkInterfaces) {
-        this.networkInterfaces = networkInterfaces;
-        return this;
-    }
-
-    /**
      * Get the subnets value.
      *
      * @return the subnets value
      */
     public List<SubnetInner> subnets() {
         return this.subnets;
-    }
-
-    /**
-     * Set the subnets value.
-     *
-     * @param subnets the subnets value to set
-     * @return the NetworkSecurityGroupInner object itself.
-     */
-    public NetworkSecurityGroupInner withSubnets(List<SubnetInner> subnets) {
-        this.subnets = subnets;
-        return this;
     }
 
     /**

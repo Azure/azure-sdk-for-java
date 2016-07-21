@@ -49,7 +49,7 @@ public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
     private SubResource urlPathMap;
 
     /**
-     * Gets or sets Provisioning state of the request routing rule resource
+     * Gets provisioning state of the request routing rule resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")

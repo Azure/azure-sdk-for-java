@@ -37,7 +37,7 @@ public class ApplicationGatewayUrlPathMapInner extends SubResource {
     private List<ApplicationGatewayPathRuleInner> pathRules;
 
     /**
-     * Gets or sets Provisioning state of the backend http settings resource
+     * Gets provisioning state of the backend http settings resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")

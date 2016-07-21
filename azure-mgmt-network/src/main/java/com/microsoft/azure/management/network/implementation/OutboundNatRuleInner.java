@@ -38,7 +38,7 @@ public class OutboundNatRuleInner extends SubResource {
     private SubResource backendAddressPool;
 
     /**
-     * Gets or sets Provisioning state of the PublicIP resource
+     * Gets provisioning state of the PublicIP resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")

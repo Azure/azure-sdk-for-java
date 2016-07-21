@@ -19,6 +19,13 @@ import com.microsoft.azure.SubResource;
 @JsonFlatten
 public class NetworkInterfaceIPConfigurationInner extends SubResource {
     /**
+     * Gets or sets the reference of ApplicationGatewayBackendAddressPool
+     * resource.
+     */
+    @JsonProperty(value = "properties.applicationGatewayBackendAddressPools")
+    private List<ApplicationGatewayBackendAddressPoolInner> applicationGatewayBackendAddressPools;
+
+    /**
      * Gets or sets the reference of LoadBalancerBackendAddressPool resource.
      */
     @JsonProperty(value = "properties.loadBalancerBackendAddressPools")
@@ -37,17 +44,30 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     private String privateIPAddress;
 
     /**
-     * Gets or sets PrivateIP allocation method (Static/Dynamic). Possible
-     * values include: 'Static', 'Dynamic'.
+     * Gets or sets PrivateIP allocation method. Possible values include:
+     * 'Static', 'Dynamic'.
      */
     @JsonProperty(value = "properties.privateIPAllocationMethod")
     private String privateIPAllocationMethod;
+
+    /**
+     * Gets or sets PrivateIP address version (IPv4/IPv6). Possible values
+     * include: 'IPv4', 'IPv6'.
+     */
+    @JsonProperty(value = "properties.privateIPAddressVersion")
+    private String privateIPAddressVersion;
 
     /**
      * The subnet property.
      */
     @JsonProperty(value = "properties.subnet")
     private SubnetInner subnet;
+
+    /**
+     * Gets whether this is a primary customer address on the NIC.
+     */
+    @JsonProperty(value = "properties.primary")
+    private Boolean primary;
 
     /**
      * The publicIPAddress property.
@@ -71,6 +91,26 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
      * A unique read-only string that changes whenever the resource is updated.
      */
     private String etag;
+
+    /**
+     * Get the applicationGatewayBackendAddressPools value.
+     *
+     * @return the applicationGatewayBackendAddressPools value
+     */
+    public List<ApplicationGatewayBackendAddressPoolInner> applicationGatewayBackendAddressPools() {
+        return this.applicationGatewayBackendAddressPools;
+    }
+
+    /**
+     * Set the applicationGatewayBackendAddressPools value.
+     *
+     * @param applicationGatewayBackendAddressPools the applicationGatewayBackendAddressPools value to set
+     * @return the NetworkInterfaceIPConfigurationInner object itself.
+     */
+    public NetworkInterfaceIPConfigurationInner withApplicationGatewayBackendAddressPools(List<ApplicationGatewayBackendAddressPoolInner> applicationGatewayBackendAddressPools) {
+        this.applicationGatewayBackendAddressPools = applicationGatewayBackendAddressPools;
+        return this;
+    }
 
     /**
      * Get the loadBalancerBackendAddressPools value.
@@ -153,6 +193,26 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     }
 
     /**
+     * Get the privateIPAddressVersion value.
+     *
+     * @return the privateIPAddressVersion value
+     */
+    public String privateIPAddressVersion() {
+        return this.privateIPAddressVersion;
+    }
+
+    /**
+     * Set the privateIPAddressVersion value.
+     *
+     * @param privateIPAddressVersion the privateIPAddressVersion value to set
+     * @return the NetworkInterfaceIPConfigurationInner object itself.
+     */
+    public NetworkInterfaceIPConfigurationInner withPrivateIPAddressVersion(String privateIPAddressVersion) {
+        this.privateIPAddressVersion = privateIPAddressVersion;
+        return this;
+    }
+
+    /**
      * Get the subnet value.
      *
      * @return the subnet value
@@ -169,6 +229,26 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
      */
     public NetworkInterfaceIPConfigurationInner withSubnet(SubnetInner subnet) {
         this.subnet = subnet;
+        return this;
+    }
+
+    /**
+     * Get the primary value.
+     *
+     * @return the primary value
+     */
+    public Boolean primary() {
+        return this.primary;
+    }
+
+    /**
+     * Set the primary value.
+     *
+     * @param primary the primary value to set
+     * @return the NetworkInterfaceIPConfigurationInner object itself.
+     */
+    public NetworkInterfaceIPConfigurationInner withPrimary(Boolean primary) {
+        this.primary = primary;
         return this;
     }
 

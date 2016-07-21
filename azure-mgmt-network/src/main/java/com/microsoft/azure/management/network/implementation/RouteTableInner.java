@@ -27,12 +27,11 @@ public class RouteTableInner extends Resource {
     /**
      * Gets collection of references to subnets.
      */
-    @JsonProperty(value = "properties.subnets")
+    @JsonProperty(value = "properties.subnets", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubnetInner> subnets;
 
     /**
-     * Gets or sets Provisioning state of the resource
-     * Updating/Deleting/Failed.
+     * Gets provisioning state of the resource Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
@@ -70,17 +69,6 @@ public class RouteTableInner extends Resource {
      */
     public List<SubnetInner> subnets() {
         return this.subnets;
-    }
-
-    /**
-     * Set the subnets value.
-     *
-     * @param subnets the subnets value to set
-     * @return the RouteTableInner object itself.
-     */
-    public RouteTableInner withSubnets(List<SubnetInner> subnets) {
-        this.subnets = subnets;
-        return this;
     }
 
     /**

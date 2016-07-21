@@ -24,8 +24,8 @@ public class VpnClientRevokedCertificateInner extends SubResource {
     private String thumbprint;
 
     /**
-     * Gets or sets Provisioning state of the VPN client revoked certificate
-     * resource Updating/Deleting/Failed.
+     * Gets provisioning state of the VPN client revoked certificate resource
+     * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
