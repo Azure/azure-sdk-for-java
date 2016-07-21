@@ -1,10 +1,12 @@
 #!/bin/bash
-set -e # exit with nonzero exit code if anything fails
+pull_subtree=`git subtree pull --squash --prefix runtimes git@github.com:Azure/autorest-clientruntime-for-java.git master 2>&1`
 
-git config user.name "Travis CI"
-git config user.email "azuresdk@outlook.com"
+echo $pull_subtree
 
-git subtree pull --squash --prefix runtimes git@github.com:Azure/autorest-clientruntime-for-java.git master --no-edit
-git subtree push --prefix runtimes https://${GH_TOKEN}@github.com:Azure/autorest-clientruntime-for-java.git sdk_${TRAVIS_PULL_REQUEST}
+if [[ $pull_subtree == *"Subtree is already at commit"* ]]; then
+    echo "No changes";
+    exit 0
+fi
 
-curl -i -H "Authorization: token ${GH_TOKEN}" https://api.github.com/repos/Azure/autorest-clientruntime-for-java/pulls --data "{\"title\":\"SDK changes from pull request #${TRAVIS_PULL_REQUEST}\",\"head\":\"sdk_${TRAVIS_PULL_REQUEST}\",\"base\":\"master\",\"body\":\"#${TRAVIS_PULL_REQUEST}\"}"
+git subtree push --prefix runtimes https://${GH_TOKEN}@github.com/Azure/autorest-clientruntime-for-java.git sdk_${TRAVIS_PULL_REQUEST} > /dev/null 2>&1
+curl -i -H "Authorization: token ${GH_TOKEN}" https://api.github.com/repos/Azure/autorest-clientruntime-for-java/pulls --data "{\"title\":\"SDK changes from pull request #${TRAVIS_PULL_REQUEST}\",\"head\":\"sdk_${TRAVIS_PULL_REQUEST}\",\"base\":\"master\",\"body\":\"Azure/azure-sdk-for-java#${TRAVIS_PULL_REQUEST}\"}" > /dev/null 2>&1
