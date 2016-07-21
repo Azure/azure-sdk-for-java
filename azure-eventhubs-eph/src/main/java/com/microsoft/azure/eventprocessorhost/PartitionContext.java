@@ -110,12 +110,13 @@ public class PartitionContext
     	return this.partitionId;
     }
     
+    // Returns a String (offset) or Instant (timestamp).
     Object getInitialOffset() throws InterruptedException, ExecutionException
     {
     	Object startAt = null;
     	
     	Checkpoint startingCheckpoint = this.host.getCheckpointManager().getCheckpoint(this.partitionId).get();
-    	if (startingCheckpoint.getOffset() == null)
+    	if (startingCheckpoint == null)
     	{
     		// No checkpoint was ever stored. Use the initialOffsetProvider instead.
         	Function<String, Object> initialOffsetProvider = this.host.getEventProcessorOptions().getInitialOffsetProvider();
