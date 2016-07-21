@@ -41,6 +41,7 @@ import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
@@ -854,13 +855,11 @@ class VirtualMachineImpl
         return null;
     }
 
-    /**************************************************
-     * .
-     * CreatableImpl::createResource
-     **************************************************/
+
+    // CreatableTaskGroup.ResourceCreator implementation
 
     @Override
-    protected void createResource() throws Exception {
+    public Resource createResource() throws Exception {
         if (isInCreateMode()) {
             setOSDiskAndOSProfileDefaults();
             setHardwareProfileDefaults();
@@ -875,10 +874,11 @@ class VirtualMachineImpl
         this.setInner(serviceResponse.getBody());
         clearCachedRelatedResources();
         initializeDataDisks();
+        return this;
     }
 
     @Override
-    protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
+    public ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
         if (isInCreateMode()) {
             setOSDiskAndOSProfileDefaults();
             setHardwareProfileDefaults();

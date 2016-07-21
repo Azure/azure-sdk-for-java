@@ -5,8 +5,6 @@
  */
 
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
-
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;
@@ -18,18 +16,20 @@ import com.microsoft.rest.ServiceCallback;
  * @param <FluentModelT> the fluent model type representing the creatable resource
  * @param <InnerModelT> the model inner type that the fluent model type wraps
  * @param <FluentModelImplT> the fluent model implementation type
+ * @param <ResourceT> the fluent model or one of the base interface of fluent model
  */
-public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
+public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT, ResourceT>
         extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
-        implements CreatableTaskGroup.RootResourceCreator {
+        implements CreatableTaskGroup.ResourceCreator<ResourceT>
+{
     /**
-     * The group of tasks to create this resource and creatable it depends on.
+     * The group of tasks to create this resource and it's dependencies.
      */
-    private CreatableTaskGroup creatableTaskGroup;
+    private CreatableTaskGroup<ResourceT> creatableTaskGroup;
 
     protected CreatableImpl(String name, InnerModelT innerObject) {
         super(name, innerObject);
-        creatableTaskGroup = new CreatableTaskGroup(name, (Creatable<? extends Resource>) this, this);
+        creatableTaskGroup = new CreatableTaskGroup<>(name, this);
     }
 
     /**
@@ -38,21 +38,11 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
      * @param creatableResource the creatable dependency.
      */
     protected void addCreatableDependency(Creatable<?> creatableResource) {
-        CreatableTaskGroup childGroup = ((CreatableImpl) creatableResource).creatableTaskGroup;
+        CreatableTaskGroup childGroup = ((CreatableTaskGroup.ResourceCreator) creatableResource).creatableTaskGroup();
         childGroup.merge(this.creatableTaskGroup);
     }
 
-    @Override
-    public void createRootResource() throws Exception {
-        this.createResource();
-    }
-
-    @Override
-    public ServiceCall createRootResourceAsync(ServiceCallback<Void> callback) {
-        return this.createResourceAsync(callback);
-    }
-
-    protected Resource createdResource(String key) {
+    protected ResourceT createdResource(String key) {
         return this.creatableTaskGroup.taskResult(key);
     }
 
@@ -64,33 +54,12 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
      */
     @SuppressWarnings("unchecked")
     public FluentModelImplT create() throws Exception {
-        // This method get's called in two ways:
-        // 1. User explicitly call Creatable::create requesting creation of the resource.
-        // 2. Gets called as a part of creating dependent resources for the resource user requested to create in #1.
-        //
-        // The creatableTaskGroup of the 'Creatable' on which user called 'create' (#1) is known as the preparer.
-        // Preparer is the one responsible for preparing the underlying DAG for traversal.
-        //
-        // Initially creatableTaskGroup of all creatables as preparer, but as soon as user calls Create in one of
-        // them (say A::Create) all other creatables that A depends on will be marked as non-preparer.
-        //
-        // This achieve two goals:
-        //
-        // a. When #2 happens we know group is already prepared and all left is to create the currently requested resource.
-        // b. User can call 'Create' on any of the creatables not just the ROOT creatable. [ROOT is the one who does not
-        //    have any dependent]
-        //
-        // After the creation of each resource in the creatableTaskGroup owned by the user chosen Creatable (#1), each
-        // sub-creatableTaskGroup of the created resource will be marked back as preparer. Hence user can again call
-        // Update on any of these resources [which is nothing but equivalent to calling create again]
-        //
         if (creatableTaskGroup.isPreparer()) {
             creatableTaskGroup.prepare();
             creatableTaskGroup.execute();
-        } else {
-            createResource();
+            return (FluentModelImplT) this;
         }
-        return (FluentModelImplT) this;
+        throw new IllegalStateException("Internal Error: create can be called only on preparer");
     }
 
     /**
@@ -104,22 +73,14 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
         if (creatableTaskGroup.isPreparer()) {
             creatableTaskGroup.prepare();
             return creatableTaskGroup.executeAsync(Utils.toVoidCallback((FluentModelT) this, callback));
-        } else {
-            return createResourceAsync(Utils.toVoidCallback((FluentModelT) this, callback));
         }
+        throw new IllegalStateException("Internal Error: createAsync can be called only on preparer");
     }
 
     /**
-     * Creates this resource.
-     *
-     * @throws Exception when anything goes wrong
+     * @return the task group associated with this creatable.
      */
-    protected abstract void createResource() throws Exception;
-
-    /**
-     * Creates this resource asynchronously.
-     *
-     * @throws Exception when anything goes wrong
-     */
-    protected abstract ServiceCall createResourceAsync(ServiceCallback<Void> callback);
+    public CreatableTaskGroup creatableTaskGroup() {
+        return this.creatableTaskGroup;
+    }
 }

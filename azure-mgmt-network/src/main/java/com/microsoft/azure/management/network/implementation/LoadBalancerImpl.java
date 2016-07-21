@@ -18,6 +18,7 @@ import com.microsoft.azure.management.network.NicIpConfiguration;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddress.DefinitionStages.WithGroup;
 import com.microsoft.azure.management.network.SupportsNetworkInterfaces;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
@@ -203,7 +204,20 @@ class LoadBalancerImpl
     // Getters
 
     @Override
-    protected void createResource() throws Exception {
+    public List<String> publicIpAddressIds() {
+        List<String> publicIpAddressIds = new ArrayList<>();
+        if (this.inner().frontendIPConfigurations() != null) {
+            for (FrontendIPConfiguration frontEndIpConfig : this.inner().frontendIPConfigurations()) {
+                publicIpAddressIds.add(frontEndIpConfig.publicIPAddress().id());
+            }
+        }
+        return Collections.unmodifiableList(publicIpAddressIds);
+    }
+
+    // CreatableTaskGroup.ResourceCreator implementation
+
+    @Override
+    public Resource createResource() throws Exception {
         ensureCreationPrerequisites();
 
         ServiceResponse<LoadBalancerInner> response =
@@ -211,10 +225,11 @@ class LoadBalancerImpl
         this.setInner(response.getBody());
 
         runPostCreationTasks();
+        return this;
     }
 
     @Override
-    protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback)  {
+    public ServiceCall createResourceAsync(final ServiceCallback<Void> callback)  {
         ensureCreationPrerequisites();
         return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
                 Utils.fromVoidCallback(this, new ServiceCallback<Void>() {
@@ -235,16 +250,4 @@ class LoadBalancerImpl
                     }
                 }));
     }
-
-    @Override
-    public List<String> publicIpAddressIds() {
-        List<String> publicIpAddressIds = new ArrayList<>();
-        if (this.inner().frontendIPConfigurations() != null) {
-            for (FrontendIPConfiguration frontEndIpConfig : this.inner().frontendIPConfigurations()) {
-                publicIpAddressIds.add(frontEndIpConfig.publicIPAddress().id());
-            }
-        }
-        return Collections.unmodifiableList(publicIpAddressIds);
-    }
-
 }

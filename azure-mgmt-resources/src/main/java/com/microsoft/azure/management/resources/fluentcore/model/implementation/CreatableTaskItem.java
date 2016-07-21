@@ -2,9 +2,7 @@ package com.microsoft.azure.management.resources.fluentcore.model.implementation
 
 import com.microsoft.azure.DAGNode;
 import com.microsoft.azure.TaskGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.TaskItem;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -12,31 +10,30 @@ import com.microsoft.rest.ServiceResponse;
 /**
  * Represents a task that creates a resource when executed.
  */
-public class CreatableTaskItem implements TaskItem<Resource> {
-    private Creatable<? extends Resource> creatable;
-    private DAGNode<TaskItem<Resource>> node;
-    private Resource created;
+public class CreatableTaskItem<ResourceT> implements TaskItem<ResourceT> {
+    private CreatableTaskGroup.ResourceCreator<ResourceT> resourceCreator;
+    private ResourceT created;
 
     /**
      * Creates CreatableTaskItem.
      *
-     * @param creatable the creatable
+     * @param resourceCreator the resource creator
      */
-    public CreatableTaskItem(Creatable<? extends Resource> creatable) {
-        this.creatable = creatable;
+    public CreatableTaskItem(CreatableTaskGroup.ResourceCreator resourceCreator) {
+        this.resourceCreator = resourceCreator;
     }
 
     @Override
-    public Resource result() {
+    public ResourceT result() {
         return created;
     }
 
     @Override
-    public void execute(TaskGroup<Resource, TaskItem<Resource>> taskGroup, DAGNode<TaskItem<Resource>> node) throws Exception {
+    public void execute(TaskGroup<ResourceT, TaskItem<ResourceT>> taskGroup, DAGNode<TaskItem<ResourceT>> node) throws Exception {
         if (this.created == null) {
             // execute will be called both in update and create scenarios,
             // so run the task only if it not not executed already.
-            this.created = this.creatable.create();
+            this.created = this.resourceCreator.createResource();
         }
 
         taskGroup.dag().reportedCompleted(node);
@@ -44,16 +41,16 @@ public class CreatableTaskItem implements TaskItem<Resource> {
     }
 
     @Override
-    public ServiceCall executeAsync(final TaskGroup<Resource, TaskItem<Resource>> taskGroup, final DAGNode<TaskItem<Resource>> node, final ServiceCallback<Void> callback) {
+    public ServiceCall executeAsync(final TaskGroup<ResourceT, TaskItem<ResourceT>> taskGroup, final DAGNode<TaskItem<ResourceT>> node, final ServiceCallback<Void> callback) {
         final CreatableTaskItem self = this;
-        return ((Creatable<Resource>) this.creatable).createAsync(new ServiceCallback<Resource>() {
+        return (this.resourceCreator).createResourceAsync(new ServiceCallback<Void>() {
             @Override
             public void failure(Throwable t) {
                 callback.failure(t);
             }
 
             @Override
-            public void success(ServiceResponse<Resource> result) {
+            public void success(ServiceResponse<ResourceT> result) {
                 self.created = result.getBody();
                 taskGroup.dag().reportedCompleted(node);
                 taskGroup.executeAsync(callback);

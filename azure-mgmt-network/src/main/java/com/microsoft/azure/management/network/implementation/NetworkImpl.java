@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Subnet;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;
@@ -175,17 +176,25 @@ class NetworkImpl
     }
 
     @Override
-    protected void createResource() throws Exception {
+    public SubnetImpl updateSubnet(String name) {
+        return (SubnetImpl) this.subnets.get(name);
+    }
+
+    // CreatableTaskGroup.ResourceCreator implementation
+
+    @Override
+    public Resource createResource() throws Exception {
         ensureCreationPrerequisites();
 
         ServiceResponse<VirtualNetworkInner> response =
                 this.innerCollection.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
         this.setInner(response.getBody());
         initializeSubnetsFromInner();
+        return this;
     }
 
     @Override
-    protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
+    public ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
         ensureCreationPrerequisites();
 
         return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
@@ -201,10 +210,5 @@ class NetworkImpl
                         callback.success(result);
                     }
                 }));
-    }
-
-    @Override
-    public SubnetImpl updateSubnet(String name) {
-        return (SubnetImpl) this.subnets.get(name);
     }
 }

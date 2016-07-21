@@ -62,7 +62,7 @@ public final class Utils {
      * @param <FluentImplT> the implementation for the fuent resource type
      * @return the inner callback
      */
-    public static <T, FluentT, FluentImplT extends CreatableImpl<FluentT, T, FluentImplT>> ServiceCallback<T>
+    public static <T, FluentT, ResourceT, FluentImplT extends CreatableImpl<FluentT, T, FluentImplT, ResourceT>> ServiceCallback<T>
             fromVoidCallback(final FluentImplT modelImpl, final ServiceCallback<Void> callback) {
         return new ServiceCallback<T>() {
             @Override

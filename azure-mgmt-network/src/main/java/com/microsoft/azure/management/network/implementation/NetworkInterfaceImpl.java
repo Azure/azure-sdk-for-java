@@ -347,12 +347,10 @@ class NetworkInterfaceImpl
     }
 
 
-    /**************************************************.
-     * CreatableImpl::createResource
-     **************************************************/
+    // CreatableTaskGroup.ResourceCreator implementation
 
     @Override
-    protected void createResource() throws Exception {
+    public Resource createResource() throws Exception {
         NetworkSecurityGroup networkSecurityGroup = null;
         if (creatableNetworkSecurityGroupKey != null) {
             networkSecurityGroup = (NetworkSecurityGroup) this.createdResource(creatableNetworkSecurityGroupKey);
@@ -371,10 +369,11 @@ class NetworkInterfaceImpl
         this.setInner(response.getBody());
         clearCachedRelatedResources();
         initializeNicIpConfigurations();
+        return this;
     }
 
     @Override
-    protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
+    public ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
         NicIpConfigurationImpl.ensureConfigurations(this.nicIpConfigurations);
         return this.client.createOrUpdateAsync(this.resourceGroupName(),
                 this.nicName,

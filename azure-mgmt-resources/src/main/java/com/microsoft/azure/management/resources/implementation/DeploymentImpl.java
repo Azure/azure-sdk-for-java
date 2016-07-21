@@ -36,7 +36,7 @@ import java.util.List;
  * The implementation of {@link Deployment} and its nested interfaces.
  */
 final class DeploymentImpl extends
-        CreatableUpdatableImpl<Deployment, DeploymentExtendedInner, DeploymentImpl>
+        CreatableUpdatableImpl<Deployment, DeploymentExtendedInner, DeploymentImpl, Deployment>
         implements
         Deployment,
         Deployment.Definition,
@@ -334,7 +334,7 @@ final class DeploymentImpl extends
     }
 
     @Override
-    protected void createResource() throws Exception {
+    public Deployment createResource() throws Exception {
         DeploymentInner inner = new DeploymentInner()
                 .withProperties(new DeploymentProperties());
         inner.properties().withMode(mode());
@@ -343,10 +343,11 @@ final class DeploymentImpl extends
         inner.properties().withParameters(parameters());
         inner.properties().withParametersLink(parametersLink());
         client.createOrUpdate(resourceGroupName(), name(), inner);
+        return this;
     }
 
     @Override
-    protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
+    public ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
         DeploymentInner inner = new DeploymentInner()
                 .withProperties(new DeploymentProperties());
         inner.properties().withMode(mode());
