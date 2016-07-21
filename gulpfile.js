@@ -34,7 +34,7 @@ var mappings = {
     },
     'network': {
         'dir': 'azure-mgmt-network',
-        'source': 'arm-network/2015-06-15/swagger/network.json',
+        'source': 'arm-network/2016-06-01/swagger/network.json',
         'package': 'com.microsoft.azure.management.network',
         'args': '-FT 1'
     },

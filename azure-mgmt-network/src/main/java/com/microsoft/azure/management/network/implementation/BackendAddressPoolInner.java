@@ -21,23 +21,24 @@ public class BackendAddressPoolInner extends SubResource {
     /**
      * Gets collection of references to IPs defined in NICs.
      */
-    @JsonProperty(value = "properties.backendIPConfigurations")
+    @JsonProperty(value = "properties.backendIPConfigurations", access = JsonProperty.Access.WRITE_ONLY)
     private List<NetworkInterfaceIPConfigurationInner> backendIPConfigurations;
 
     /**
      * Gets Load Balancing rules that use this Backend Address Pool.
      */
-    @JsonProperty(value = "properties.loadBalancingRules")
+    @JsonProperty(value = "properties.loadBalancingRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> loadBalancingRules;
 
     /**
      * Gets outbound rules that use this Backend Address Pool.
      */
-    @JsonProperty(value = "properties.outboundNatRule")
+    @JsonProperty(value = "properties.outboundNatRule", access = JsonProperty.Access.WRITE_ONLY)
     private SubResource outboundNatRule;
 
     /**
-     * Provisioning state of the PublicIP resource Updating/Deleting/Failed.
+     * Get provisioning state of the PublicIP resource
+     * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
@@ -63,17 +64,6 @@ public class BackendAddressPoolInner extends SubResource {
     }
 
     /**
-     * Set the backendIPConfigurations value.
-     *
-     * @param backendIPConfigurations the backendIPConfigurations value to set
-     * @return the BackendAddressPoolInner object itself.
-     */
-    public BackendAddressPoolInner withBackendIPConfigurations(List<NetworkInterfaceIPConfigurationInner> backendIPConfigurations) {
-        this.backendIPConfigurations = backendIPConfigurations;
-        return this;
-    }
-
-    /**
      * Get the loadBalancingRules value.
      *
      * @return the loadBalancingRules value
@@ -83,34 +73,12 @@ public class BackendAddressPoolInner extends SubResource {
     }
 
     /**
-     * Set the loadBalancingRules value.
-     *
-     * @param loadBalancingRules the loadBalancingRules value to set
-     * @return the BackendAddressPoolInner object itself.
-     */
-    public BackendAddressPoolInner withLoadBalancingRules(List<SubResource> loadBalancingRules) {
-        this.loadBalancingRules = loadBalancingRules;
-        return this;
-    }
-
-    /**
      * Get the outboundNatRule value.
      *
      * @return the outboundNatRule value
      */
     public SubResource outboundNatRule() {
         return this.outboundNatRule;
-    }
-
-    /**
-     * Set the outboundNatRule value.
-     *
-     * @param outboundNatRule the outboundNatRule value to set
-     * @return the BackendAddressPoolInner object itself.
-     */
-    public BackendAddressPoolInner withOutboundNatRule(SubResource outboundNatRule) {
-        this.outboundNatRule = outboundNatRule;
-        return this;
     }
 
     /**

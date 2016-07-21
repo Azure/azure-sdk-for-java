@@ -99,7 +99,7 @@ public class ApplicationGatewayInner extends Resource {
     private String resourceGuid;
 
     /**
-     * Gets or sets Provisioning state of the ApplicationGateway resource
+     * Gets provisioning state of the ApplicationGateway resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")

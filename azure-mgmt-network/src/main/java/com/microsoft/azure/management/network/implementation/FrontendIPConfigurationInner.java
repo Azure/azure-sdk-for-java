@@ -19,27 +19,27 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class FrontendIPConfigurationInner extends SubResource {
     /**
-     * Read only.Inbound rules URIs that use this frontend IP.
+     * Read only. Inbound rules URIs that use this frontend IP.
      */
-    @JsonProperty(value = "properties.inboundNatRules")
+    @JsonProperty(value = "properties.inboundNatRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> inboundNatRules;
 
     /**
-     * Read only.Inbound pools URIs that use this frontend IP.
+     * Read only. Inbound pools URIs that use this frontend IP.
      */
-    @JsonProperty(value = "properties.inboundNatPools")
+    @JsonProperty(value = "properties.inboundNatPools", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> inboundNatPools;
 
     /**
-     * Read only.Outbound rules URIs that use this frontend IP.
+     * Read only. Outbound rules URIs that use this frontend IP.
      */
-    @JsonProperty(value = "properties.outboundNatRules")
+    @JsonProperty(value = "properties.outboundNatRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> outboundNatRules;
 
     /**
      * Gets Load Balancing rules URIs that use this frontend IP.
      */
-    @JsonProperty(value = "properties.loadBalancingRules")
+    @JsonProperty(value = "properties.loadBalancingRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> loadBalancingRules;
 
     /**
@@ -49,8 +49,8 @@ public class FrontendIPConfigurationInner extends SubResource {
     private String privateIPAddress;
 
     /**
-     * Gets or sets PrivateIP allocation method (Static/Dynamic). Possible
-     * values include: 'Static', 'Dynamic'.
+     * Gets or sets PrivateIP allocation method. Possible values include:
+     * 'Static', 'Dynamic'.
      */
     @JsonProperty(value = "properties.privateIPAllocationMethod")
     private String privateIPAllocationMethod;
@@ -68,7 +68,7 @@ public class FrontendIPConfigurationInner extends SubResource {
     private SubResource publicIPAddress;
 
     /**
-     * Gets or sets Provisioning state of the PublicIP resource
+     * Gets provisioning state of the PublicIP resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
@@ -95,34 +95,12 @@ public class FrontendIPConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the inboundNatRules value.
-     *
-     * @param inboundNatRules the inboundNatRules value to set
-     * @return the FrontendIPConfigurationInner object itself.
-     */
-    public FrontendIPConfigurationInner withInboundNatRules(List<SubResource> inboundNatRules) {
-        this.inboundNatRules = inboundNatRules;
-        return this;
-    }
-
-    /**
      * Get the inboundNatPools value.
      *
      * @return the inboundNatPools value
      */
     public List<SubResource> inboundNatPools() {
         return this.inboundNatPools;
-    }
-
-    /**
-     * Set the inboundNatPools value.
-     *
-     * @param inboundNatPools the inboundNatPools value to set
-     * @return the FrontendIPConfigurationInner object itself.
-     */
-    public FrontendIPConfigurationInner withInboundNatPools(List<SubResource> inboundNatPools) {
-        this.inboundNatPools = inboundNatPools;
-        return this;
     }
 
     /**
@@ -135,34 +113,12 @@ public class FrontendIPConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the outboundNatRules value.
-     *
-     * @param outboundNatRules the outboundNatRules value to set
-     * @return the FrontendIPConfigurationInner object itself.
-     */
-    public FrontendIPConfigurationInner withOutboundNatRules(List<SubResource> outboundNatRules) {
-        this.outboundNatRules = outboundNatRules;
-        return this;
-    }
-
-    /**
      * Get the loadBalancingRules value.
      *
      * @return the loadBalancingRules value
      */
     public List<SubResource> loadBalancingRules() {
         return this.loadBalancingRules;
-    }
-
-    /**
-     * Set the loadBalancingRules value.
-     *
-     * @param loadBalancingRules the loadBalancingRules value to set
-     * @return the FrontendIPConfigurationInner object itself.
-     */
-    public FrontendIPConfigurationInner withLoadBalancingRules(List<SubResource> loadBalancingRules) {
-        this.loadBalancingRules = loadBalancingRules;
-        return this;
     }
 
     /**

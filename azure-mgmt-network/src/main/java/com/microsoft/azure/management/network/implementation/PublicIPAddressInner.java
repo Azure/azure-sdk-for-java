@@ -26,9 +26,16 @@ public class PublicIPAddressInner extends Resource {
     private String publicIPAllocationMethod;
 
     /**
+     * Gets or sets PublicIP address version (IPv4/IPv6). Possible values
+     * include: 'IPv4', 'IPv6'.
+     */
+    @JsonProperty(value = "properties.publicIPAddressVersion")
+    private String publicIPAddressVersion;
+
+    /**
      * The ipConfiguration property.
      */
-    @JsonProperty(value = "properties.ipConfiguration")
+    @JsonProperty(value = "properties.ipConfiguration", access = JsonProperty.Access.WRITE_ONLY)
     private IPConfigurationInner ipConfiguration;
 
     /**
@@ -57,7 +64,7 @@ public class PublicIPAddressInner extends Resource {
     private String resourceGuid;
 
     /**
-     * Gets or sets Provisioning state of the PublicIP resource
+     * Gets provisioning state of the PublicIP resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
@@ -90,23 +97,32 @@ public class PublicIPAddressInner extends Resource {
     }
 
     /**
+     * Get the publicIPAddressVersion value.
+     *
+     * @return the publicIPAddressVersion value
+     */
+    public String publicIPAddressVersion() {
+        return this.publicIPAddressVersion;
+    }
+
+    /**
+     * Set the publicIPAddressVersion value.
+     *
+     * @param publicIPAddressVersion the publicIPAddressVersion value to set
+     * @return the PublicIPAddressInner object itself.
+     */
+    public PublicIPAddressInner withPublicIPAddressVersion(String publicIPAddressVersion) {
+        this.publicIPAddressVersion = publicIPAddressVersion;
+        return this;
+    }
+
+    /**
      * Get the ipConfiguration value.
      *
      * @return the ipConfiguration value
      */
     public IPConfigurationInner ipConfiguration() {
         return this.ipConfiguration;
-    }
-
-    /**
-     * Set the ipConfiguration value.
-     *
-     * @param ipConfiguration the ipConfiguration value to set
-     * @return the PublicIPAddressInner object itself.
-     */
-    public PublicIPAddressInner withIpConfiguration(IPConfigurationInner ipConfiguration) {
-        this.ipConfiguration = ipConfiguration;
-        return this;
     }
 
     /**

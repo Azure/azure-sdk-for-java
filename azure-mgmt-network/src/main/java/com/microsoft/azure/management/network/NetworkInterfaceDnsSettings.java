@@ -11,7 +11,7 @@ package com.microsoft.azure.management.network;
 import java.util.List;
 
 /**
- * Dns Settings of a network interface.
+ * Dns settings of a network interface.
  */
 public class NetworkInterfaceDnsSettings {
     /**
@@ -25,16 +25,19 @@ public class NetworkInterfaceDnsSettings {
     private List<String> appliedDnsServers;
 
     /**
-     * Gets or sets the Internal DNS name.
+     * Gets or sets the internal DNS name.
      */
     private String internalDnsNameLabel;
 
     /**
-     * Gets or sets full IDNS name in the form,
-     * DnsName.VnetId.ZoneId.TopleveSuffix. This is set when the NIC is
-     * associated to a VM.
+     * Gets or sets the internal fqdn.
      */
     private String internalFqdn;
+
+    /**
+     * Gets or sets internal domain name suffix of the NIC.
+     */
+    private String internalDomainNameSuffix;
 
     /**
      * Get the dnsServers value.
@@ -113,6 +116,26 @@ public class NetworkInterfaceDnsSettings {
      */
     public NetworkInterfaceDnsSettings withInternalFqdn(String internalFqdn) {
         this.internalFqdn = internalFqdn;
+        return this;
+    }
+
+    /**
+     * Get the internalDomainNameSuffix value.
+     *
+     * @return the internalDomainNameSuffix value
+     */
+    public String internalDomainNameSuffix() {
+        return this.internalDomainNameSuffix;
+    }
+
+    /**
+     * Set the internalDomainNameSuffix value.
+     *
+     * @param internalDomainNameSuffix the internalDomainNameSuffix value to set
+     * @return the NetworkInterfaceDnsSettings object itself.
+     */
+    public NetworkInterfaceDnsSettings withInternalDomainNameSuffix(String internalDomainNameSuffix) {
+        this.internalDomainNameSuffix = internalDomainNameSuffix;
         return this;
     }
 

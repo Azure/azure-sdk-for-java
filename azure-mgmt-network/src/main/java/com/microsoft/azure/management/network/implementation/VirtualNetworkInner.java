@@ -35,10 +35,16 @@ public class VirtualNetworkInner extends Resource {
     private DhcpOptions dhcpOptions;
 
     /**
-     * Gets or sets List of subnets in a VirtualNetwork.
+     * Gets or sets list of subnets in a VirtualNetwork.
      */
     @JsonProperty(value = "properties.subnets")
     private List<SubnetInner> subnets;
+
+    /**
+     * Gets or sets list of peerings in a VirtualNetwork.
+     */
+    @JsonProperty(value = "properties.VirtualNetworkPeerings")
+    private List<VirtualNetworkPeeringInner> virtualNetworkPeerings;
 
     /**
      * Gets or sets resource guid property of the VirtualNetwork resource.
@@ -47,7 +53,7 @@ public class VirtualNetworkInner extends Resource {
     private String resourceGuid;
 
     /**
-     * Gets or sets Provisioning state of the PublicIP resource
+     * Gets provisioning state of the PublicIP resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
@@ -116,6 +122,26 @@ public class VirtualNetworkInner extends Resource {
      */
     public VirtualNetworkInner withSubnets(List<SubnetInner> subnets) {
         this.subnets = subnets;
+        return this;
+    }
+
+    /**
+     * Get the virtualNetworkPeerings value.
+     *
+     * @return the virtualNetworkPeerings value
+     */
+    public List<VirtualNetworkPeeringInner> virtualNetworkPeerings() {
+        return this.virtualNetworkPeerings;
+    }
+
+    /**
+     * Set the virtualNetworkPeerings value.
+     *
+     * @param virtualNetworkPeerings the virtualNetworkPeerings value to set
+     * @return the VirtualNetworkInner object itself.
+     */
+    public VirtualNetworkInner withVirtualNetworkPeerings(List<VirtualNetworkPeeringInner> virtualNetworkPeerings) {
+        this.virtualNetworkPeerings = virtualNetworkPeerings;
         return this;
     }
 

@@ -93,7 +93,7 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
     private ExpressRouteCircuitStatsInner stats;
 
     /**
-     * Gets or sets Provisioning state of the PublicIP resource
+     * Gets provisioning state of the PublicIP resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")

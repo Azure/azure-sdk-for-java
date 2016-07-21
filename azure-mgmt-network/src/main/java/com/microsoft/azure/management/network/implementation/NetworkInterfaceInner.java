@@ -33,19 +33,19 @@ public class NetworkInterfaceInner extends Resource {
     private SubResource networkSecurityGroup;
 
     /**
-     * Gets or sets list of IPConfigurations of the NetworkInterface.
+     * Gets or sets list of IPConfigurations of the network interface.
      */
     @JsonProperty(value = "properties.ipConfigurations")
     private List<NetworkInterfaceIPConfigurationInner> ipConfigurations;
 
     /**
-     * Gets or sets DNS Settings in  NetworkInterface.
+     * Gets or sets DNS settings in network interface.
      */
     @JsonProperty(value = "properties.dnsSettings")
     private NetworkInterfaceDnsSettings dnsSettings;
 
     /**
-     * Gets the MAC Address of the network interface.
+     * Gets the MAC address of the network interface.
      */
     @JsonProperty(value = "properties.macAddress")
     private String macAddress;
@@ -69,7 +69,7 @@ public class NetworkInterfaceInner extends Resource {
     private String resourceGuid;
 
     /**
-     * Gets or sets Provisioning state of the PublicIP resource
+     * Gets provisioning state of the PublicIP resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
