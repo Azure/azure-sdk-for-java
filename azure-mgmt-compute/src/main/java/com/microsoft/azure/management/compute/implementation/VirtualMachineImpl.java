@@ -877,7 +877,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
+    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback) {
         if (isInCreateMode()) {
             setOSDiskAndOSProfileDefaults();
             setHardwareProfileDefaults();
@@ -896,19 +896,20 @@ class VirtualMachineImpl
                 handleNetworkSettings();
                 handleAvailabilitySettings();
                 call.newCall(client.createOrUpdateAsync(resourceGroupName(), vmName, inner(),
-                        Utils.fromVoidCallback(self, new ServiceCallback<Void>() {
+                        new ServiceCallback<VirtualMachineInner>() {
                             @Override
                             public void failure(Throwable t) {
                                 callback.failure(t);
                             }
 
                             @Override
-                            public void success(ServiceResponse<Void> result) {
+                            public void success(ServiceResponse<VirtualMachineInner> response) {
+                                self.setInner(response.getBody());
                                 clearCachedRelatedResources();
                                 initializeDataDisks();
-                                callback.success(result);
+                                callback.success(new ServiceResponse<Resource>(self, response.getResponse()));
                             }
-                        })).getCall());
+                        }).getCall());
             }
         });
         return call;

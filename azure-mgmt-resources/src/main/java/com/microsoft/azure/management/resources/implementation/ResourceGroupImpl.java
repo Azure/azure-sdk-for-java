@@ -14,9 +14,9 @@ import com.microsoft.azure.management.resources.ResourceGroupExportTemplateOptio
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -147,15 +147,28 @@ class ResourceGroupImpl extends
         ResourceGroupInner params = new ResourceGroupInner();
         params.withLocation(this.inner().location());
         params.withTags(this.inner().tags());
-        client.createOrUpdate(this.name(), params);
+        ServiceResponse<ResourceGroupInner> response = client.createOrUpdate(this.name(), params);
+        this.setInner(response.getBody());
         return this;
     }
 
     @Override
-    public ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
+    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback) {
+        final ResourceGroupImpl self = this;
         ResourceGroupInner params = new ResourceGroupInner();
         params.withLocation(this.inner().location());
         params.withTags(this.inner().tags());
-        return client.createOrUpdateAsync(this.name(), params, Utils.fromVoidCallback(this, callback));
+        return client.createOrUpdateAsync(this.name(), params, new ServiceCallback<ResourceGroupInner>() {
+            @Override
+            public void failure(Throwable t) {
+                callback.failure(t);
+            }
+
+            @Override
+            public void success(ServiceResponse<ResourceGroupInner> response) {
+                self.setInner(response.getBody());
+                callback.success(new ServiceResponse<Resource>(self, response.getResponse()));
+            }
+        });
     }
 }

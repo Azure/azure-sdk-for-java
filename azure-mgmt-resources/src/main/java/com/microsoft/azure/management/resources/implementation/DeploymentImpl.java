@@ -182,7 +182,9 @@ final class DeploymentImpl extends
 
     @Override
     public DeploymentImpl withNewResourceGroup(String resourceGroupName, Region region) {
-        this.creatableResourceGroup = this.resourceManager.resourceGroups().define(resourceGroupName).withRegion(region);
+        this.creatableResourceGroup = this.resourceManager.resourceGroups()
+                .define(resourceGroupName)
+                .withRegion(region);
         this.resourceGroupName = resourceGroupName;
         return this;
     }
@@ -190,9 +192,8 @@ final class DeploymentImpl extends
     @Override
     public DeploymentImpl withNewResourceGroup(Creatable<ResourceGroup> resourceGroupDefinition) {
         this.resourceGroupName = resourceGroupDefinition.key();
-        addCreatableDependency(resourceGroupDefinition);
+        this.creatableResourceGroup = resourceGroupDefinition;
         return this;
-
     }
 
     @Override
@@ -300,28 +301,28 @@ final class DeploymentImpl extends
 
                 @Override
                 public void success(ServiceResponse<ResourceGroup> result) {
-                    createResourceAsync(new ServiceCallback<Void>() {
+                    createResourceAsync(new ServiceCallback<Deployment>() {
                         @Override
                         public void failure(Throwable t) {
                             callback.failure(t);
                         }
 
                         @Override
-                        public void success(ServiceResponse<Void> result) {
+                        public void success(ServiceResponse<Deployment> result) {
                             callback.success(new ServiceResponse<>(self, result.getResponse()));
                         }
                     });
                 }
             });
         } else {
-            return createResourceAsync(new ServiceCallback<Void>() {
+            return createResourceAsync(new ServiceCallback<Deployment>() {
                 @Override
                 public void failure(Throwable t) {
                     callback.failure(t);
                 }
 
                 @Override
-                public void success(ServiceResponse<Void> result) {
+                public void success(ServiceResponse<Deployment> result) {
                     callback.success(new ServiceResponse<>(self, result.getResponse()));
                 }
             });
@@ -347,7 +348,7 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
+    public ServiceCall createResourceAsync(final ServiceCallback<Deployment> callback) {
         DeploymentInner inner = new DeploymentInner()
                 .withProperties(new DeploymentProperties());
         inner.properties().withMode(mode());
@@ -362,8 +363,8 @@ final class DeploymentImpl extends
             }
 
             @Override
-            public void success(ServiceResponse<DeploymentExtendedInner> result) {
-                callback.success(new ServiceResponse<Void>(result.getHeadResponse()));
+            public void success(ServiceResponse<DeploymentExtendedInner> response) {
+                callback.success(new ServiceResponse<Deployment>(response.getHeadResponse()));
             }
         });
     }

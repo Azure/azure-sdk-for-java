@@ -37,8 +37,9 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT,
      *
      * @param creatableResource the creatable dependency.
      */
-    protected void addCreatableDependency(Creatable<?> creatableResource) {
-        CreatableTaskGroup childGroup = ((CreatableTaskGroup.ResourceCreator) creatableResource).creatableTaskGroup();
+    protected void addCreatableDependency(Creatable<? extends ResourceT> creatableResource) {
+        CreatableTaskGroup<ResourceT> childGroup =
+                ((CreatableTaskGroup.ResourceCreator<ResourceT>) creatableResource).creatableTaskGroup();
         childGroup.merge(this.creatableTaskGroup);
     }
 
@@ -72,7 +73,8 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT,
     public ServiceCall createAsync(ServiceCallback<FluentModelT> callback) {
         if (creatableTaskGroup.isPreparer()) {
             creatableTaskGroup.prepare();
-            return creatableTaskGroup.executeAsync(Utils.toVoidCallback((FluentModelT) this, callback));
+            creatableTaskGroup.executeAsync(Utils.toVoidCallback((FluentModelT) this, callback));
+            return creatableTaskGroup.parallelServiceCall;
         }
         throw new IllegalStateException("Internal Error: createAsync can be called only on preparer");
     }

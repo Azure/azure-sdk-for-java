@@ -194,21 +194,22 @@ class NetworkImpl
     }
 
     @Override
-    public ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
+    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback) {
+        final  NetworkImpl self = this;
         ensureCreationPrerequisites();
-
         return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
-                Utils.fromVoidCallback(this, new ServiceCallback<Void>() {
+                new ServiceCallback<VirtualNetworkInner>() {
                     @Override
                     public void failure(Throwable t) {
                         callback.failure(t);
                     }
 
                     @Override
-                    public void success(ServiceResponse<Void> result) {
+                    public void success(ServiceResponse<VirtualNetworkInner> response) {
+                        self.setInner(response.getBody());
                         initializeSubnetsFromInner();
-                        callback.success(result);
+                        callback.success(new ServiceResponse<Resource>(self, response.getResponse()));
                     }
-                }));
+                });
     }
 }

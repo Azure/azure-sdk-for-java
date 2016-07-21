@@ -160,7 +160,8 @@ class PublicIpAddressImpl
     }
 
     @Override
-    public ServiceCall createResourceAsync(ServiceCallback<Void> callback) {
+    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback) {
+        final PublicIpAddressImpl self = this;
         // Clean up empty DNS settings
         final PublicIPAddressDnsSettings dnsSettings = this.inner().dnsSettings();
         if (dnsSettings != null) {
@@ -172,6 +173,17 @@ class PublicIpAddressImpl
         }
 
         return this.client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
-                Utils.fromVoidCallback(this, callback));
+                new ServiceCallback<PublicIPAddressInner>() {
+                    @Override
+                    public void failure(Throwable t) {
+                        callback.failure(t);
+                    }
+
+                    @Override
+                    public void success(ServiceResponse<PublicIPAddressInner> response) {
+                        self.setInner(response.getBody());
+                        callback.success(new ServiceResponse<Resource>(self, response.getResponse()));
+                    }
+                });
     }
 }

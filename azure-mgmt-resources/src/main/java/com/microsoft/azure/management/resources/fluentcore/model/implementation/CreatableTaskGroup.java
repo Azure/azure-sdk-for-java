@@ -13,16 +13,16 @@ public class CreatableTaskGroup<ResourceT> extends TaskGroupBase<ResourceT> {
     /**
      * Represents a type that know how to create resource.
      *
-     * @param <ResourceT> the type of the resource that this creator creates
+     * @param <T> the type of the resource that this creator creates
      */
-    interface ResourceCreator<ResourceT> {
+    interface ResourceCreator<T> {
         /**
          * Creates the resource asynchronously.
          *
          * @param serviceCallback the callback to be invoked after the creation of resource
          * @return the service call reference
          */
-        ServiceCall createResourceAsync(ServiceCallback<Void> serviceCallback);
+        ServiceCall createResourceAsync(ServiceCallback<T> serviceCallback);
 
         /**
          * Creates the resource synchronously.
@@ -30,7 +30,7 @@ public class CreatableTaskGroup<ResourceT> extends TaskGroupBase<ResourceT> {
          * @return the created resource
          * @throws Exception
          */
-        ResourceT createResource() throws Exception;
+        T createResource() throws Exception;
 
         /**
          * @return Gets the task group.
@@ -44,8 +44,8 @@ public class CreatableTaskGroup<ResourceT> extends TaskGroupBase<ResourceT> {
      * @param rootCreatableId the id of the root creatable
      * @param resourceCreator represents the resource creator that this group want to create ultimately
      */
-    public CreatableTaskGroup(String rootCreatableId, ResourceCreator resourceCreator) {
-        this(rootCreatableId, new CreatableTaskItem(resourceCreator));
+    public CreatableTaskGroup(String rootCreatableId, ResourceCreator<ResourceT> resourceCreator) {
+        this(rootCreatableId, new CreatableTaskItem<>(resourceCreator));
     }
 
     /**
@@ -54,7 +54,7 @@ public class CreatableTaskGroup<ResourceT> extends TaskGroupBase<ResourceT> {
      * @param key the key of the root task
      * @param rootTask represents the root task that this group want to executes ultimately
      */
-    public CreatableTaskGroup(String key, CreatableTaskItem rootTask) {
+    public CreatableTaskGroup(String key, CreatableTaskItem<ResourceT> rootTask) {
         super(key, rootTask);
     }
 

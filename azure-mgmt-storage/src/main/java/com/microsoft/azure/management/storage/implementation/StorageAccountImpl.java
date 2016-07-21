@@ -279,10 +279,10 @@ class StorageAccountImpl
     }
 
     @Override
-    public ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
+    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback) {
+        final StorageAccountImpl self = this;
         createParameters.withLocation(this.regionName());
         createParameters.withTags(this.inner().getTags());
-        final StorageAccountImpl self = this;
         return this.client.createAsync(this.resourceGroupName(), this.name(), createParameters,
                 new ServiceCallback<StorageAccountInner>() {
                     @Override
@@ -293,8 +293,18 @@ class StorageAccountImpl
                     @Override
                     public void success(ServiceResponse<StorageAccountInner> result) {
                         client.getPropertiesAsync(resourceGroupName(), name(),
-                                Utils.fromVoidCallback(self, callback));
-                        clearWrapperProperties();
+                                new ServiceCallback<StorageAccountInner>() {
+                                    @Override
+                                    public void failure(Throwable t) {
+                                        callback.failure(t);
+                                    }
+
+                                    @Override
+                                    public void success(ServiceResponse<StorageAccountInner> response) {
+                                        self.setInner(response.getBody());
+                                        clearWrapperProperties();
+                                    }
+                                });
                     }
                 });
     }

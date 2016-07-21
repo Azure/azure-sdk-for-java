@@ -221,24 +221,25 @@ class LoadBalancerImpl
         ServiceResponse<LoadBalancerInner> response =
                 this.innerCollection.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
         this.setInner(response.getBody());
-
         runPostCreationTasks();
         return this;
     }
 
     @Override
-    public ServiceCall createResourceAsync(final ServiceCallback<Void> callback)  {
+    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback)  {
+        final LoadBalancerImpl self = this;
         ensureCreationPrerequisites();
         return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
-                Utils.fromVoidCallback(this, new ServiceCallback<Void>() {
+                new ServiceCallback<LoadBalancerInner>() {
                     @Override
                     public void failure(Throwable t) {
                         callback.failure(t);
                     }
 
                     @Override
-                    public void success(ServiceResponse<Void> result) {
-                        callback.success(result);
+                    public void success(ServiceResponse<LoadBalancerInner> response) {
+                        self.setInner(response.getBody());
+                        callback.success(new ServiceResponse<Resource>(self, response.getResponse()));
                         try {
                             runPostCreationTasks();
                         } catch (Exception e) {
@@ -246,6 +247,6 @@ class LoadBalancerImpl
                             e.printStackTrace();
                         }
                     }
-                }));
+                });
     }
 }

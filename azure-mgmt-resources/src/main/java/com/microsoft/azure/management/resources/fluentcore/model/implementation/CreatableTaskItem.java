@@ -19,7 +19,7 @@ public class CreatableTaskItem<ResourceT> implements TaskItem<ResourceT> {
      *
      * @param resourceCreator the resource creator
      */
-    public CreatableTaskItem(CreatableTaskGroup.ResourceCreator resourceCreator) {
+    public CreatableTaskItem(CreatableTaskGroup.ResourceCreator<ResourceT> resourceCreator) {
         this.resourceCreator = resourceCreator;
     }
 
@@ -42,15 +42,15 @@ public class CreatableTaskItem<ResourceT> implements TaskItem<ResourceT> {
 
     @Override
     public ServiceCall executeAsync(final TaskGroup<ResourceT, TaskItem<ResourceT>> taskGroup, final DAGNode<TaskItem<ResourceT>> node, final ServiceCallback<Void> callback) {
-        final CreatableTaskItem self = this;
-        return (this.resourceCreator).createResourceAsync(new ServiceCallback<Void>() {
+        final CreatableTaskItem<ResourceT> self = this;
+        return (this.resourceCreator).createResourceAsync(new ServiceCallback<ResourceT>() {
             @Override
             public void failure(Throwable t) {
                 callback.failure(t);
             }
 
             @Override
-            public void success(ServiceResponse<Void> result) {
+            public void success(ServiceResponse<ResourceT> result) {
                 self.created = result.getBody();
                 taskGroup.dag().reportedCompleted(node);
                 taskGroup.executeAsync(callback);

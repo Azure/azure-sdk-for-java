@@ -107,26 +107,27 @@ class AvailabilitySetImpl
     @Override
     public Resource createResource() throws Exception {
         ServiceResponse<AvailabilitySetInner> response = this.client.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
-        AvailabilitySetInner availabilitySetInner = response.getBody();
-        this.setInner(availabilitySetInner);
+        this.setInner(response.getBody());
         this.idOfVMsInSet = null;
         return this;
     }
 
     @Override
-    public ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
+    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback) {
+        final AvailabilitySetImpl self = this;
         return this.client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
-                Utils.fromVoidCallback(this, new ServiceCallback<Void>() {
+                new ServiceCallback<AvailabilitySetInner>() {
                     @Override
                     public void failure(Throwable t) {
                         callback.failure(t);
                     }
 
                     @Override
-                    public void success(ServiceResponse<Void> result) {
+                    public void success(ServiceResponse<AvailabilitySetInner> response) {
+                        self.setInner(response.getBody());
                         idOfVMsInSet = null;
-                        callback.success(result);
+                        callback.success(new ServiceResponse<Resource>(self, response.getResponse()));
                     }
-                }));
+                });
     }
 }

@@ -372,24 +372,26 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
+    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback) {
+        final NetworkInterfaceImpl self = this;
         NicIpConfigurationImpl.ensureConfigurations(this.nicIpConfigurations);
         return this.client.createOrUpdateAsync(this.resourceGroupName(),
                 this.nicName,
                 this.inner(),
-                Utils.fromVoidCallback(this, new ServiceCallback<Void>() {
+                new ServiceCallback<NetworkInterfaceInner>() {
                     @Override
                     public void failure(Throwable t) {
                         callback.failure(t);
                     }
 
                     @Override
-                    public void success(ServiceResponse<Void> result) {
+                    public void success(ServiceResponse<NetworkInterfaceInner> response) {
+                        self.setInner(response.getBody());
                         clearCachedRelatedResources();
                         initializeNicIpConfigurations();
-                        callback.success(result);
+                        callback.success(new ServiceResponse<Resource>(self, response.getResponse()));
                     }
-                }));
+                });
     }
 
     /**************************************************.
@@ -453,7 +455,7 @@ class NetworkInterfaceImpl
         return this;
     }
 
-    void addToCreatableDependencies(Creatable<?> creatableResource) {
+    void addToCreatableDependencies(Creatable<? extends Resource> creatableResource) {
         super.addCreatableDependency(creatableResource);
     }
 
