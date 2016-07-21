@@ -19,14 +19,14 @@ public class VpnClientParameters {
      * 'Amd64', 'X86'.
      */
     @JsonProperty(value = "ProcessorArchitecture")
-    private String processorArchitecture;
+    private ProcessorArchitecture processorArchitecture;
 
     /**
      * Get the processorArchitecture value.
      *
      * @return the processorArchitecture value
      */
-    public String processorArchitecture() {
+    public ProcessorArchitecture processorArchitecture() {
         return this.processorArchitecture;
     }
 
@@ -36,7 +36,7 @@ public class VpnClientParameters {
      * @param processorArchitecture the processorArchitecture value to set
      * @return the VpnClientParameters object itself.
      */
-    public VpnClientParameters withProcessorArchitecture(String processorArchitecture) {
+    public VpnClientParameters withProcessorArchitecture(ProcessorArchitecture processorArchitecture) {
         this.processorArchitecture = processorArchitecture;
         return this;
     }

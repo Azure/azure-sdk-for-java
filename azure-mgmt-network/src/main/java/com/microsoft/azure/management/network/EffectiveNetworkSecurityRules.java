@@ -24,7 +24,7 @@ public class EffectiveNetworkSecurityRules {
      * Gets Network protocol this rule applies to. Possible values include:
      * 'Tcp', 'Udp', '*'.
      */
-    private String protocol;
+    private SecurityRuleProtocol protocol;
 
     /**
      * Gets source port or range.
@@ -60,7 +60,7 @@ public class EffectiveNetworkSecurityRules {
      * Gets network traffic is allowed or denied. Possible values include:
      * 'Allow', 'Deny'.
      */
-    private String access;
+    private SecurityRuleAccess access;
 
     /**
      * Gets the priority of the rule.
@@ -71,7 +71,7 @@ public class EffectiveNetworkSecurityRules {
      * Gets the direction of the rule. Possible values include: 'Inbound',
      * 'Outbound'.
      */
-    private String direction;
+    private SecurityRuleDirection direction;
 
     /**
      * Get the name value.
@@ -98,7 +98,7 @@ public class EffectiveNetworkSecurityRules {
      *
      * @return the protocol value
      */
-    public String protocol() {
+    public SecurityRuleProtocol protocol() {
         return this.protocol;
     }
 
@@ -108,7 +108,7 @@ public class EffectiveNetworkSecurityRules {
      * @param protocol the protocol value to set
      * @return the EffectiveNetworkSecurityRules object itself.
      */
-    public EffectiveNetworkSecurityRules withProtocol(String protocol) {
+    public EffectiveNetworkSecurityRules withProtocol(SecurityRuleProtocol protocol) {
         this.protocol = protocol;
         return this;
     }
@@ -238,7 +238,7 @@ public class EffectiveNetworkSecurityRules {
      *
      * @return the access value
      */
-    public String access() {
+    public SecurityRuleAccess access() {
         return this.access;
     }
 
@@ -248,7 +248,7 @@ public class EffectiveNetworkSecurityRules {
      * @param access the access value to set
      * @return the EffectiveNetworkSecurityRules object itself.
      */
-    public EffectiveNetworkSecurityRules withAccess(String access) {
+    public EffectiveNetworkSecurityRules withAccess(SecurityRuleAccess access) {
         this.access = access;
         return this;
     }
@@ -278,7 +278,7 @@ public class EffectiveNetworkSecurityRules {
      *
      * @return the direction value
      */
-    public String direction() {
+    public SecurityRuleDirection direction() {
         return this.direction;
     }
 
@@ -288,7 +288,7 @@ public class EffectiveNetworkSecurityRules {
      * @param direction the direction value to set
      * @return the EffectiveNetworkSecurityRules object itself.
      */
-    public EffectiveNetworkSecurityRules withDirection(String direction) {
+    public EffectiveNetworkSecurityRules withDirection(SecurityRuleDirection direction) {
         this.direction = direction;
         return this;
     }

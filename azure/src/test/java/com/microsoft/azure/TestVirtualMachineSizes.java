@@ -34,7 +34,7 @@ public class TestVirtualMachineSizes extends TestTemplate<VirtualMachine, Virtua
                 .withSize(availableSizes.get(0).name()) // Use the first size
                 .create();
 
-        Assert.assertTrue(vm.size().equalsIgnoreCase(availableSizes.get(0).name()));
+        Assert.assertTrue(vm.size().toString().equalsIgnoreCase(availableSizes.get(0).name()));
         return vm;
     }
 
@@ -44,7 +44,7 @@ public class TestVirtualMachineSizes extends TestTemplate<VirtualMachine, Virtua
         Assert.assertTrue(resizableSizes.size() > 1);
         VirtualMachineSize newSize = null;
         for (VirtualMachineSize resizableSize : resizableSizes) {
-            if (!resizableSize.name().equalsIgnoreCase(virtualMachine.size())) {
+            if (!resizableSize.name().equalsIgnoreCase(virtualMachine.size().toString())) {
                 newSize = resizableSize;
                 break;
             }
@@ -54,7 +54,7 @@ public class TestVirtualMachineSizes extends TestTemplate<VirtualMachine, Virtua
                 .withSize(newSize.name())
                 .apply();
 
-        Assert.assertTrue(virtualMachine.size().equalsIgnoreCase(newSize.name()));
+        Assert.assertTrue(virtualMachine.size().toString().equalsIgnoreCase(newSize.name()));
         return virtualMachine;
     }
 

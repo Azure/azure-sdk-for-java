@@ -5,13 +5,12 @@
  */
 package com.microsoft.azure;
 
-import org.junit.Assert;
-
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
-import com.microsoft.azure.management.network.NetworkSecurityRule.Protocol;
+import com.microsoft.azure.management.network.SecurityRuleProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import org.junit.Assert;
 
 /**
  * Test for network security group CRUD.
@@ -33,7 +32,7 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                     .fromPort(80)
                     .toAnyAddress()
                     .toPort(80)
-                    .withProtocol(Protocol.TCP)
+                    .withProtocol(SecurityRuleProtocol.TCP)
                     .attach()
                 .defineRule("rule2")
                     .allowInbound()
@@ -66,7 +65,7 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                     .fromAnyPort()
                     .toAnyAddress()
                     .toAnyPort()
-                    .withProtocol(Protocol.UDP)
+                    .withProtocol(SecurityRuleProtocol.UDP)
                     .attach()
                 .withoutRule("rule1")
                 .updateRule("rule2")

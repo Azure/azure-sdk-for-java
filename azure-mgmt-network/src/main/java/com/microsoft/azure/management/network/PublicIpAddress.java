@@ -23,39 +23,6 @@ public interface PublicIpAddress extends
         Wrapper<PublicIPAddressInner>,
         Updatable<PublicIpAddress.Update> {
 
-    /**
-     * IP allocation methods.
-     */
-    enum IpAllocationMethod {
-        STATIC(IPAllocationMethod.STATIC),
-        DYNAMIC(IPAllocationMethod.DYNAMIC);
-
-        private final String name;
-        IpAllocationMethod(String name) {
-            this.name = name;
-        }
-
-        public String toString() {
-            return this.name;
-        }
-
-        /**
-         * Converts a string value returned by Azure into a constant.
-         * @param value the value to convert
-         * @return the matching enum constant, or null if no match
-         */
-        public static IpAllocationMethod fromString(String value) {
-            for (IpAllocationMethod i : IpAllocationMethod.values()) {
-                if (i.name.equalsIgnoreCase(value)) {
-                    return i;
-                }
-            }
-
-            return null;
-        }
-    }
-
-
     /***********************************************************
      * Getters
      ***********************************************************/
@@ -83,7 +50,7 @@ public interface PublicIpAddress extends
     /**
      * @return the IP address allocation method (Static/Dynamic)
      */
-    IpAllocationMethod ipAllocationMethod();
+    IPAllocationMethod ipAllocationMethod();
 
     /**
      * @return the idle connection timeout setting (in minutes)

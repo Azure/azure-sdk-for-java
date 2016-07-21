@@ -36,7 +36,7 @@ public class TestVirtualMachineDataDisk extends TestTemplate<VirtualMachine, Vir
                     .attach()
                 .create();
 
-        Assert.assertTrue(virtualMachine.size().equalsIgnoreCase("STANDARD_A8"));
+        Assert.assertTrue(virtualMachine.size().equals(VirtualMachineSizeTypes.STANDARD_A8));
         Assert.assertTrue(virtualMachine.dataDisks().size() == 2);
         VirtualMachineDataDisk disk2 = null;
         for (VirtualMachineDataDisk dataDisk : virtualMachine.dataDisks()) {

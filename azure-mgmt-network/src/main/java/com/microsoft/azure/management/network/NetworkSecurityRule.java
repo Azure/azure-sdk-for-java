@@ -19,111 +19,14 @@ public interface NetworkSecurityRule extends
     ChildResource {
 
     /**
-     * The possible directions of the network traffic supported by a network security rule.
-     */
-    enum Direction {
-        INBOUND(SecurityRuleDirection.INBOUND),
-        OUTBOUND(SecurityRuleDirection.OUTBOUND);
-
-        private final String name;
-        Direction(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return this.name;
-        }
-
-        /**
-         * Converts the string used by Azure into the corresponding constant, if any.
-         * @param s the string used by Azure to convert to a constant
-         * @return the identified constant, or null if not supported
-         */
-        public static Direction fromString(String s) {
-            for (Direction e : Direction.values()) {
-                if (e.name.equalsIgnoreCase(s)) {
-                    return e;
-                }
-            }
-            return null;
-        }
-    }
-
-    /**
-     * The possible access types supported by a network security rule.
-     */
-    enum Access {
-        ALLOW(SecurityRuleAccess.ALLOW),
-        DENY(SecurityRuleAccess.DENY);
-
-        private final String name;
-        Access(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return this.name;
-        }
-
-        /**
-         * Converts the string used by Azure into the corresponding constant, if any.
-         * @param s the string used by Azure to convert to a constant
-         * @return the identified constant, or null if not supported
-         */
-        public static Access fromString(String s) {
-            for (Access e : Access.values()) {
-                if (e.name.equalsIgnoreCase(s)) {
-                    return e;
-                }
-            }
-            return null;
-        }
-    }
-
-    /**
-     * The possible Azure network protocols supported by a network security rule.
-     */
-    enum Protocol {
-        TCP(SecurityRuleProtocol.TCP),
-        UDP(SecurityRuleProtocol.UDP),
-        ANY(SecurityRuleProtocol.ASTERISK);
-
-        public final String name;
-        Protocol(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return this.name;
-        }
-
-        /**
-         * Converts the string used by Azure into the corresponding constant, if any.
-         * @param s the string used by Azure to convert to a constant
-         * @return the identified constant, or null if not supported
-         */
-        public static Protocol fromString(String s) {
-            for (Protocol protocol : Protocol.values()) {
-                if (protocol.name.equalsIgnoreCase(s)) {
-                    return protocol;
-                }
-            }
-            return null;
-        }
-    }
-
-    /**
      * @return the network traffic direction the rule applies to
      */
-    Direction direction();
+    SecurityRuleDirection direction();
 
     /**
      * @return the network protocol the rule applies to
      */
-    Protocol protocol();
+    SecurityRuleProtocol protocol();
 
     /**
      * @return the user-defined description of the security rule
@@ -133,7 +36,7 @@ public interface NetworkSecurityRule extends
     /**
      * @return the type of access the rule enforces
      */
-    Access access();
+    SecurityRuleAccess access();
 
     /**
      * @return the source address prefix the rule applies to, expressed using the CIDR notation in the format: "###.###.###.###/##",
@@ -199,7 +102,7 @@ public interface NetworkSecurityRule extends
              * @param protocol one of the supported protocols
              * @return the next stage of the security rule definition
              */
-            WithAttach<ParentT> withProtocol(Protocol protocol);
+            WithAttach<ParentT> withProtocol(SecurityRuleProtocol protocol);
 
             /**
              * Makes this rule apply to any supported protocol.
@@ -528,7 +431,7 @@ public interface NetworkSecurityRule extends
              * @param protocol one of the supported protocols
              * @return the next stage of the security rule definition
              */
-            WithAttach<ParentT> withProtocol(Protocol protocol);
+            WithAttach<ParentT> withProtocol(SecurityRuleProtocol protocol);
 
             /**
              * Makes this rule apply to any supported protocol.
@@ -721,7 +624,7 @@ public interface NetworkSecurityRule extends
              * @param protocol one of the supported protocols
              * @return the next stage of the security rule definition
              */
-            Update withProtocol(Protocol protocol);
+            Update withProtocol(SecurityRuleProtocol protocol);
 
             /**
              * Makes this rule apply to any supported protocol.

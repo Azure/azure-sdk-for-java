@@ -8,16 +8,52 @@
 
 package com.microsoft.azure.management.network;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Defines values for ExpressRouteCircuitPeeringState.
  */
 public final class ExpressRouteCircuitPeeringState {
     /** Static value Disabled for ExpressRouteCircuitPeeringState. */
-    public static final String DISABLED = "Disabled";
+    public static final ExpressRouteCircuitPeeringState DISABLED = new ExpressRouteCircuitPeeringState("Disabled");
 
     /** Static value Enabled for ExpressRouteCircuitPeeringState. */
-    public static final String ENABLED = "Enabled";
+    public static final ExpressRouteCircuitPeeringState ENABLED = new ExpressRouteCircuitPeeringState("Enabled");
 
-    private ExpressRouteCircuitPeeringState() {
+    private String value;
+
+    /**
+     * Creates a custom value for ExpressRouteCircuitPeeringState.
+     * @param value the custom value
+     */
+    public ExpressRouteCircuitPeeringState(String value) {
+        this.value = value;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return value;
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ExpressRouteCircuitPeeringState)) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        ExpressRouteCircuitPeeringState rhs = (ExpressRouteCircuitPeeringState) obj;
+        if (value == null) {
+            return rhs.value == null;
+        } else {
+            return value.equals(rhs.value);
+        }
     }
 }

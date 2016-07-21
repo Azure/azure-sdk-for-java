@@ -12,9 +12,9 @@ import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.Network;
-import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkInterface;
-import com.microsoft.azure.management.network.NetworkSecurityRule;
+import com.microsoft.azure.management.network.NetworkSecurityGroup;
+import com.microsoft.azure.management.network.SecurityRuleProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.samples.Utils;
@@ -110,7 +110,7 @@ public final class ManageNetworkSecurityGroup {
                             .fromAnyPort()
                             .toAnyAddress()
                             .toPort(22)
-                            .withProtocol(NetworkSecurityRule.Protocol.TCP)
+                            .withProtocol(SecurityRuleProtocol.TCP)
                             .withPriority(100)
                             .withDescription("Allow SSH")
                             .attach()
@@ -120,7 +120,7 @@ public final class ManageNetworkSecurityGroup {
                             .fromAnyPort()
                             .toAnyAddress()
                             .toPort(80)
-                            .withProtocol(NetworkSecurityRule.Protocol.TCP)
+                            .withProtocol(SecurityRuleProtocol.TCP)
                             .withPriority(101)
                             .withDescription("Allow HTTP")
                             .attach()
@@ -148,7 +148,7 @@ public final class ManageNetworkSecurityGroup {
                             .fromAnyPort()
                             .toAnyAddress()
                             .toPort(1433)
-                            .withProtocol(NetworkSecurityRule.Protocol.TCP)
+                            .withProtocol(SecurityRuleProtocol.TCP)
                             .withPriority(100)
                             .withDescription("Allow SQL")
                             .attach()
@@ -285,7 +285,7 @@ public final class ManageNetworkSecurityGroup {
                             .fromAnyPort()
                             .toAnyAddress()
                             .toPortRange(20, 21)
-                            .withProtocol(NetworkSecurityRule.Protocol.TCP)
+                            .withProtocol(SecurityRuleProtocol.TCP)
                             .withDescription("Allow FTP")
                             .withPriority(200)
                             .attach()

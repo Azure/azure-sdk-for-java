@@ -8,22 +8,58 @@
 
 package com.microsoft.azure.management.network;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Defines values for VirtualNetworkGatewayConnectionType.
  */
 public final class VirtualNetworkGatewayConnectionType {
     /** Static value IPsec for VirtualNetworkGatewayConnectionType. */
-    public static final String IPSEC = "IPsec";
+    public static final VirtualNetworkGatewayConnectionType IPSEC = new VirtualNetworkGatewayConnectionType("IPsec");
 
     /** Static value Vnet2Vnet for VirtualNetworkGatewayConnectionType. */
-    public static final String VNET2VNET = "Vnet2Vnet";
+    public static final VirtualNetworkGatewayConnectionType VNET2VNET = new VirtualNetworkGatewayConnectionType("Vnet2Vnet");
 
     /** Static value ExpressRoute for VirtualNetworkGatewayConnectionType. */
-    public static final String EXPRESS_ROUTE = "ExpressRoute";
+    public static final VirtualNetworkGatewayConnectionType EXPRESS_ROUTE = new VirtualNetworkGatewayConnectionType("ExpressRoute");
 
     /** Static value VPNClient for VirtualNetworkGatewayConnectionType. */
-    public static final String VPNCLIENT = "VPNClient";
+    public static final VirtualNetworkGatewayConnectionType VPNCLIENT = new VirtualNetworkGatewayConnectionType("VPNClient");
 
-    private VirtualNetworkGatewayConnectionType() {
+    private String value;
+
+    /**
+     * Creates a custom value for VirtualNetworkGatewayConnectionType.
+     * @param value the custom value
+     */
+    public VirtualNetworkGatewayConnectionType(String value) {
+        this.value = value;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return value;
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof VirtualNetworkGatewayConnectionType)) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        VirtualNetworkGatewayConnectionType rhs = (VirtualNetworkGatewayConnectionType) obj;
+        if (value == null) {
+            return rhs.value == null;
+        } else {
+            return value.equals(rhs.value);
+        }
     }
 }
