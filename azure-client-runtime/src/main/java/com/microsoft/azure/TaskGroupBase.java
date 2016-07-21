@@ -9,6 +9,54 @@ package com.microsoft.azure;
 
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceResponse;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+/**
+ /**
+ * An instance of this class provides access to the underlying REST service call running
+ * in parallel.
+ *
+ * @param <T>
+ */
+class ParallelServiceCall<T> extends ServiceCall {
+    private TaskGroupBase<T> taskGroup;
+
+    /**
+     * Creates a ParallelServiceCall
+     *
+     * @param taskGroup the task group
+     */
+    public ParallelServiceCall(TaskGroupBase<T> taskGroup) {
+        super(null);
+        this.taskGroup = taskGroup;
+    }
+
+    /**
+     * Cancels all the service calls currently executing.
+     */
+    public void cancel() {
+        for (ServiceCall call : this.taskGroup.calls()) {
+            call.cancel();
+        }
+    }
+
+    /**
+     * @return true if the call has been canceled; false otherwise.
+     */
+    public boolean isCancelled() {
+        for (ServiceCall call : this.taskGroup.calls()) {
+            if (!call.isCanceled()) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
 
 /**
  * The base implementation of TaskGroup interface.
@@ -18,6 +66,9 @@ import com.microsoft.rest.ServiceCallback;
 public abstract class TaskGroupBase<T>
     implements TaskGroup<T, TaskItem<T>> {
     private DAGraph<TaskItem<T>, DAGNode<TaskItem<T>>> dag;
+    private ConcurrentLinkedQueue<ServiceCall> serviceCalls = new ConcurrentLinkedQueue<>();
+
+    public ParallelServiceCall<T> parallelServiceCall;
 
     /**
      * Creates TaskGroupBase.
@@ -27,6 +78,11 @@ public abstract class TaskGroupBase<T>
      */
     public TaskGroupBase(String rootTaskItemId, TaskItem<T> rootTaskItem) {
         this.dag = new DAGraph<>(new DAGNode<>(rootTaskItemId, rootTaskItem));
+        this.parallelServiceCall = new ParallelServiceCall<>(this);
+    }
+
+    List<ServiceCall> calls() {
+        return Collections.unmodifiableList(Arrays.asList(serviceCalls.toArray(new ServiceCall[0])));
     }
 
     @Override
@@ -63,12 +119,34 @@ public abstract class TaskGroupBase<T>
 
     @Override
     public ServiceCall executeAsync(final ServiceCallback<Void> callback) {
-        final DAGNode<TaskItem<T>> nextNode = dag.getNext();
-        if (nextNode == null) {
-            return null;
-        }
+        ServiceCall serviceCall = null;
+        DAGNode<TaskItem<T>> nextNode = dag.getNext();
+        while (nextNode != null) {
+            if (dag.isRootNode(nextNode)) {
+                serviceCall = nextNode.data().executeAsync(this, nextNode, new ServiceCallback<Void>() {
+                    @Override
+                    public void failure(Throwable t) {
+                        callback.failure(t);
+                    }
 
-        return nextNode.data().executeAsync(this, nextNode, callback);
+                    @Override
+                    public void success(ServiceResponse<Void> result) {
+                        callback.success(result);
+                    }
+                });
+            } else {
+                serviceCall = nextNode.data().executeAsync(this, nextNode, callback);
+            }
+
+            if (serviceCall != null) {
+                // We need to filter out the null value returned by executeAsync. This can
+                // happen when TaskItem::executeAsync invokes TaskGroupBase::executeAsync
+                // but there is no task available in the queue at the moment.
+                this.serviceCalls.add(serviceCall);
+            }
+            nextNode = dag.getNext();
+        }
+        return serviceCall;
     }
 
     @Override
