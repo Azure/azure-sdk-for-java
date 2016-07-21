@@ -1,5 +1,7 @@
 #!/bin/bash
-pull_subtree=`git subtree pull --squash --prefix runtimes git@github.com:Azure/autorest-clientruntime-for-java.git master 2>&1`
+set -e
+
+pull_subtree=`git subtree pull --squash --prefix runtimes https://${GH_TOKEN}@github.com/Azure/autorest-clientruntime-for-java.git master 2>&1`
 
 echo $pull_subtree
 
