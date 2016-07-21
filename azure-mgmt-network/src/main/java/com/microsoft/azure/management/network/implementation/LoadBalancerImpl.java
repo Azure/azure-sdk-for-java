@@ -12,7 +12,6 @@ import java.util.List;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancer.DefinitionStages.WithCreate;
-import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NicIpConfiguration;
 import com.microsoft.azure.management.network.Protocol;
@@ -80,8 +79,8 @@ class LoadBalancerImpl
                 .append(this.name()).toString();
     }
 
-    private List<LoadBalancingRule> ensureLoadBalancingRules() {
-        List<LoadBalancingRule> rules = this.inner().loadBalancingRules();
+    private List<LoadBalancingRuleInner> ensureLoadBalancingRules() {
+        List<LoadBalancingRuleInner> rules = this.inner().loadBalancingRules();
         if (rules == null) {
             rules = new ArrayList<>();
             this.inner().withLoadBalancingRules(rules);
@@ -115,7 +114,7 @@ class LoadBalancerImpl
         this.creatablePIPKeys.clear();
 
         // TODO Connect the load balancing rules to the first front end IP config (for now)
-        for (LoadBalancingRule lbRule : this.inner().loadBalancingRules()) {
+        for (LoadBalancingRuleInner lbRule : this.inner().loadBalancingRules()) {
             if (lbRule.frontendIPConfiguration() == null) {
                 // TODO Add a reference to the first frontend IP config (TODO for now...)
                 SubResource frontendIpConfigReference = new SubResource();
@@ -127,7 +126,7 @@ class LoadBalancerImpl
 
         // Connect the load balancing rules to the back end pools.
         // TODO For now, we just take the first back end pool. More logic needs to be implemented for handling more complex rule <-> backend pool.
-        for (LoadBalancingRule lbRule : this.inner().loadBalancingRules()) {
+        for (LoadBalancingRuleInner lbRule : this.inner().loadBalancingRules()) {
             if (lbRule.backendAddressPool() == null) {
                 // TODO Add a reference to the first back end address pool [In progress]
                 SubResource backendPoolReference = new SubResource();
@@ -240,7 +239,7 @@ class LoadBalancerImpl
 
     @Override
     public WithCreate withLoadBalancingRule(String name, Protocol protocol, int frontendPort, int backendPort) {
-        LoadBalancingRule ruleInner = new LoadBalancingRule();
+        LoadBalancingRuleInner ruleInner = new LoadBalancingRuleInner();
         ensureLoadBalancingRules().add(ruleInner);
 
         ruleInner.withName(name);
