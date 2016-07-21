@@ -31,6 +31,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.HTTP;
 import retrofit2.http.Path;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
@@ -103,6 +104,22 @@ public final class NetworkInterfacesInner {
         Call<ResponseBody> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}/effectiveRouteTable")
+        Call<ResponseBody> getEffectiveRouteTable(@Path("resourceGroupName") String resourceGroupName, @Path("networkInterfaceName") String networkInterfaceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}/effectiveRouteTable")
+        Call<ResponseBody> beginGetEffectiveRouteTable(@Path("resourceGroupName") String resourceGroupName, @Path("networkInterfaceName") String networkInterfaceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}/effectiveNetworkSecurityGroups")
+        Call<ResponseBody> listEffectiveNetworkSecurityGroups(@Path("resourceGroupName") String resourceGroupName, @Path("networkInterfaceName") String networkInterfaceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}/effectiveNetworkSecurityGroups")
+        Call<ResponseBody> beginListEffectiveNetworkSecurityGroups(@Path("resourceGroupName") String resourceGroupName, @Path("networkInterfaceName") String networkInterfaceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET
         Call<ResponseBody> listVirtualMachineScaleSetVMNetworkInterfacesNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
@@ -117,6 +134,22 @@ public final class NetworkInterfacesInner {
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
         Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET
+        Call<ResponseBody> getEffectiveRouteTableNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET
+        Call<ResponseBody> beginGetEffectiveRouteTableNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET
+        Call<ResponseBody> listEffectiveNetworkSecurityGroupsNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET
+        Call<ResponseBody> beginListEffectiveNetworkSecurityGroupsNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -1128,6 +1161,326 @@ public final class NetworkInterfacesInner {
     }
 
     /**
+     * The get effective routetable operation retrieves all the route tables applied on a networkInterface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws InterruptedException exception thrown when long running operation is interrupted
+     * @return the List&lt;EffectiveRouteInner&gt; object wrapped in ServiceResponse if successful.
+     */
+    public ServiceResponse<PagedList<EffectiveRouteInner>> getEffectiveRouteTable(final String resourceGroupName, final String networkInterfaceName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (networkInterfaceName == null) {
+            throw new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Response<ResponseBody> result = service.getEffectiveRouteTable(resourceGroupName, networkInterfaceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
+        return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<PagedList<EffectiveRouteInner>>() { }.getType());
+    }
+
+    /**
+     * The get effective routetable operation retrieves all the route tables applied on a networkInterface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall getEffectiveRouteTableAsync(final String resourceGroupName, final String networkInterfaceName, final ListOperationCallback<EffectiveRouteInner> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkInterfaceName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
+        }
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+        }
+        Call<ResponseBody> call = service.getEffectiveRouteTable(resourceGroupName, networkInterfaceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                serviceCallback.failure(t);
+            }
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<PagedList<EffectiveRouteInner>>() { }.getType(), serviceCall, serviceCallback);
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * The get effective routetable operation retrieves all the route tables applied on a networkInterface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;EffectiveRouteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<EffectiveRouteInner>> beginGetEffectiveRouteTable(final String resourceGroupName, final String networkInterfaceName) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (networkInterfaceName == null) {
+            throw new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.beginGetEffectiveRouteTable(resourceGroupName, networkInterfaceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        ServiceResponse<PageImpl<EffectiveRouteInner>> response = beginGetEffectiveRouteTableDelegate(call.execute());
+        PagedList<EffectiveRouteInner> result = new PagedList<EffectiveRouteInner>(response.getBody()) {
+            @Override
+            public Page<EffectiveRouteInner> nextPage(String nextPageLink) throws CloudException, IOException {
+                return beginGetEffectiveRouteTableNext(nextPageLink).getBody();
+            }
+        };
+        return new ServiceResponse<>(result, response.getResponse());
+    }
+
+    /**
+     * The get effective routetable operation retrieves all the route tables applied on a networkInterface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall beginGetEffectiveRouteTableAsync(final String resourceGroupName, final String networkInterfaceName, final ListOperationCallback<EffectiveRouteInner> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (networkInterfaceName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        Call<ResponseBody> call = service.beginGetEffectiveRouteTable(resourceGroupName, networkInterfaceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<List<EffectiveRouteInner>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<PageImpl<EffectiveRouteInner>> result = beginGetEffectiveRouteTableDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        beginGetEffectiveRouteTableNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+                    }
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<PageImpl<EffectiveRouteInner>> beginGetEffectiveRouteTableDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<EffectiveRouteInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<EffectiveRouteInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * The list effective network security group operation retrieves all the network security groups applied on a networkInterface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws InterruptedException exception thrown when long running operation is interrupted
+     * @return the List&lt;EffectiveNetworkSecurityGroupInner&gt; object wrapped in ServiceResponse if successful.
+     */
+    public ServiceResponse<PagedList<EffectiveNetworkSecurityGroupInner>> listEffectiveNetworkSecurityGroups(final String resourceGroupName, final String networkInterfaceName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (networkInterfaceName == null) {
+            throw new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Response<ResponseBody> result = service.listEffectiveNetworkSecurityGroups(resourceGroupName, networkInterfaceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
+        return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<PagedList<EffectiveNetworkSecurityGroupInner>>() { }.getType());
+    }
+
+    /**
+     * The list effective network security group operation retrieves all the network security groups applied on a networkInterface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall listEffectiveNetworkSecurityGroupsAsync(final String resourceGroupName, final String networkInterfaceName, final ListOperationCallback<EffectiveNetworkSecurityGroupInner> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkInterfaceName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
+        }
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+        }
+        Call<ResponseBody> call = service.listEffectiveNetworkSecurityGroups(resourceGroupName, networkInterfaceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                serviceCallback.failure(t);
+            }
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<PagedList<EffectiveNetworkSecurityGroupInner>>() { }.getType(), serviceCall, serviceCallback);
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * The list effective network security group operation retrieves all the network security groups applied on a networkInterface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;EffectiveNetworkSecurityGroupInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<EffectiveNetworkSecurityGroupInner>> beginListEffectiveNetworkSecurityGroups(final String resourceGroupName, final String networkInterfaceName) throws CloudException, IOException, IllegalArgumentException {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (networkInterfaceName == null) {
+            throw new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.beginListEffectiveNetworkSecurityGroups(resourceGroupName, networkInterfaceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        ServiceResponse<PageImpl<EffectiveNetworkSecurityGroupInner>> response = beginListEffectiveNetworkSecurityGroupsDelegate(call.execute());
+        PagedList<EffectiveNetworkSecurityGroupInner> result = new PagedList<EffectiveNetworkSecurityGroupInner>(response.getBody()) {
+            @Override
+            public Page<EffectiveNetworkSecurityGroupInner> nextPage(String nextPageLink) throws CloudException, IOException {
+                return beginListEffectiveNetworkSecurityGroupsNext(nextPageLink).getBody();
+            }
+        };
+        return new ServiceResponse<>(result, response.getResponse());
+    }
+
+    /**
+     * The list effective network security group operation retrieves all the network security groups applied on a networkInterface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall beginListEffectiveNetworkSecurityGroupsAsync(final String resourceGroupName, final String networkInterfaceName, final ListOperationCallback<EffectiveNetworkSecurityGroupInner> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (resourceGroupName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return null;
+        }
+        if (networkInterfaceName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.subscriptionId() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        Call<ResponseBody> call = service.beginListEffectiveNetworkSecurityGroups(resourceGroupName, networkInterfaceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<List<EffectiveNetworkSecurityGroupInner>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<PageImpl<EffectiveNetworkSecurityGroupInner>> result = beginListEffectiveNetworkSecurityGroupsDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        beginListEffectiveNetworkSecurityGroupsNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+                    }
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<PageImpl<EffectiveNetworkSecurityGroupInner>> beginListEffectiveNetworkSecurityGroupsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<EffectiveNetworkSecurityGroupInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<EffectiveNetworkSecurityGroupInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
      * The list network interface operation retrieves information about all network interfaces in a virtual machine from a virtual machine scale set.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
@@ -1375,6 +1728,230 @@ public final class NetworkInterfacesInner {
     private ServiceResponse<PageImpl<NetworkInterfaceInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<NetworkInterfaceInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<NetworkInterfaceInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * The get effective routetable operation retrieves all the route tables applied on a networkInterface.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws InterruptedException exception thrown when long running operation is interrupted
+     * @return the List&lt;EffectiveRouteInner&gt; object wrapped in ServiceResponse if successful.
+     */
+    public ServiceResponse<PageImpl<EffectiveRouteInner>> getEffectiveRouteTableNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        Response<ResponseBody> result = service.getEffectiveRouteTableNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent()).execute();
+        return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<PageImpl<EffectiveRouteInner>>() { }.getType());
+    }
+
+    /**
+     * The get effective routetable operation retrieves all the route tables applied on a networkInterface.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall getEffectiveRouteTableNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<EffectiveRouteInner> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (nextPageLink == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+        }
+        Call<ResponseBody> call = service.getEffectiveRouteTableNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
+        serviceCall.newCall(call);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                serviceCallback.failure(t);
+            }
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<PageImpl<EffectiveRouteInner>>() { }.getType(), serviceCall, serviceCallback);
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * The get effective routetable operation retrieves all the route tables applied on a networkInterface.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;EffectiveRouteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PageImpl<EffectiveRouteInner>> beginGetEffectiveRouteTableNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.beginGetEffectiveRouteTableNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
+        return beginGetEffectiveRouteTableNextDelegate(call.execute());
+    }
+
+    /**
+     * The get effective routetable operation retrieves all the route tables applied on a networkInterface.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall beginGetEffectiveRouteTableNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<EffectiveRouteInner> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (nextPageLink == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            return null;
+        }
+        Call<ResponseBody> call = service.beginGetEffectiveRouteTableNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
+        serviceCall.newCall(call);
+        call.enqueue(new ServiceResponseCallback<List<EffectiveRouteInner>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<PageImpl<EffectiveRouteInner>> result = beginGetEffectiveRouteTableNextDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        beginGetEffectiveRouteTableNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+                    }
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<PageImpl<EffectiveRouteInner>> beginGetEffectiveRouteTableNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<EffectiveRouteInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<EffectiveRouteInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * The list effective network security group operation retrieves all the network security groups applied on a networkInterface.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws InterruptedException exception thrown when long running operation is interrupted
+     * @return the List&lt;EffectiveNetworkSecurityGroupInner&gt; object wrapped in ServiceResponse if successful.
+     */
+    public ServiceResponse<PageImpl<EffectiveNetworkSecurityGroupInner>> listEffectiveNetworkSecurityGroupsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        Response<ResponseBody> result = service.listEffectiveNetworkSecurityGroupsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent()).execute();
+        return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<PageImpl<EffectiveNetworkSecurityGroupInner>>() { }.getType());
+    }
+
+    /**
+     * The list effective network security group operation retrieves all the network security groups applied on a networkInterface.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall listEffectiveNetworkSecurityGroupsNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<EffectiveNetworkSecurityGroupInner> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (nextPageLink == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+        }
+        Call<ResponseBody> call = service.listEffectiveNetworkSecurityGroupsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
+        serviceCall.newCall(call);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                serviceCallback.failure(t);
+            }
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<PageImpl<EffectiveNetworkSecurityGroupInner>>() { }.getType(), serviceCall, serviceCallback);
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * The list effective network security group operation retrieves all the network security groups applied on a networkInterface.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;EffectiveNetworkSecurityGroupInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PageImpl<EffectiveNetworkSecurityGroupInner>> beginListEffectiveNetworkSecurityGroupsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.beginListEffectiveNetworkSecurityGroupsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
+        return beginListEffectiveNetworkSecurityGroupsNextDelegate(call.execute());
+    }
+
+    /**
+     * The list effective network security group operation retrieves all the network security groups applied on a networkInterface.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall beginListEffectiveNetworkSecurityGroupsNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<EffectiveNetworkSecurityGroupInner> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (nextPageLink == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            return null;
+        }
+        Call<ResponseBody> call = service.beginListEffectiveNetworkSecurityGroupsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
+        serviceCall.newCall(call);
+        call.enqueue(new ServiceResponseCallback<List<EffectiveNetworkSecurityGroupInner>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<PageImpl<EffectiveNetworkSecurityGroupInner>> result = beginListEffectiveNetworkSecurityGroupsNextDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        beginListEffectiveNetworkSecurityGroupsNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+                    }
+                } catch (CloudException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<PageImpl<EffectiveNetworkSecurityGroupInner>> beginListEffectiveNetworkSecurityGroupsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<EffectiveNetworkSecurityGroupInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<EffectiveNetworkSecurityGroupInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

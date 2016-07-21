@@ -9,7 +9,6 @@
 package com.microsoft.azure.management.website.implementation;
 
 import java.util.List;
-import com.microsoft.azure.management.website.SlotDifference;
 
 /**
  * Collection of Slot Differences.
@@ -18,7 +17,7 @@ public class SlotDifferenceCollectionInner {
     /**
      * Collection of resources.
      */
-    private List<SlotDifference> value;
+    private List<SlotDifferenceInner> value;
 
     /**
      * Link to next page of resources.
@@ -30,7 +29,7 @@ public class SlotDifferenceCollectionInner {
      *
      * @return the value value
      */
-    public List<SlotDifference> value() {
+    public List<SlotDifferenceInner> value() {
         return this.value;
     }
 
@@ -40,7 +39,7 @@ public class SlotDifferenceCollectionInner {
      * @param value the value value to set
      * @return the SlotDifferenceCollectionInner object itself.
      */
-    public SlotDifferenceCollectionInner withValue(List<SlotDifference> value) {
+    public SlotDifferenceCollectionInner withValue(List<SlotDifferenceInner> value) {
         this.value = value;
         return this;
     }

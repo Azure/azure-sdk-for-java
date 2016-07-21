@@ -12,6 +12,7 @@ import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroupExportResult;
 import com.microsoft.azure.management.resources.ResourceGroupExportTemplateOptions;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;
@@ -27,7 +28,7 @@ import java.util.Map;
  * The implementation for {@link ResourceGroup} and its create and update interfaces.
  */
 class ResourceGroupImpl extends
-        CreatableUpdatableImpl<ResourceGroup, ResourceGroupInner, ResourceGroupImpl>
+        CreatableUpdatableImpl<ResourceGroup, ResourceGroupInner, ResourceGroupImpl, Resource>
         implements
         ResourceGroup,
         ResourceGroup.DefinitionBlank,
@@ -142,15 +143,16 @@ class ResourceGroupImpl extends
     }
 
     @Override
-    protected void createResource() throws Exception {
+    public Resource createResource() throws Exception {
         ResourceGroupInner params = new ResourceGroupInner();
         params.withLocation(this.inner().location());
         params.withTags(this.inner().tags());
         client.createOrUpdate(this.name(), params);
+        return this;
     }
 
     @Override
-    protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
+    public ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
         ResourceGroupInner params = new ResourceGroupInner();
         params.withLocation(this.inner().location());
         params.withTags(this.inner().tags());

@@ -34,7 +34,7 @@ var mappings = {
     },
     'network': {
         'dir': 'azure-mgmt-network',
-        'source': 'arm-network/2015-06-15/swagger/network.json',
+        'source': 'arm-network/2016-06-01/swagger/network.json',
         'package': 'com.microsoft.azure.management.network',
         'args': '-FT 1'
     },
@@ -181,7 +181,7 @@ var deleteFolderRecursive = function(path) {
 
 function GetAutoRestFolder() {
   if (isWindows) {
-    return "src/core/AutoRest/bin/Release/net451/win7-x64/";
+    return "src/core/AutoRest/bin/Debug/net451/win7-x64/";
   }
   if( isMac ) {
 	return "src/core/AutoRest/bin/Debug/net451/osx.10.11-x64/";

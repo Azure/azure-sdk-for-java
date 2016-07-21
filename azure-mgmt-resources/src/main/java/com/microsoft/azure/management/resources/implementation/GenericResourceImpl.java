@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.management.resources.GenericResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.resources.Plan;
@@ -136,7 +137,19 @@ final class GenericResourceImpl
     }
 
     @Override
-    protected void createResource() throws Exception {
+    public GenericResourceImpl apply() throws Exception {
+        return create();
+    }
+
+    @Override
+    public ServiceCall applyAsync(ServiceCallback<GenericResource> callback) {
+        return createAsync(callback);
+    }
+
+    // CreatableTaskGroup.ResourceCreator implementation
+
+    @Override
+    public Resource createResource() throws Exception {
         GenericResourceInner inner = client.createOrUpdate(
                 resourceGroupName(),
                 resourceProviderNamespace,
@@ -147,10 +160,11 @@ final class GenericResourceImpl
                 inner()
         ).getBody();
         this.setInner(inner);
+        return this;
     }
 
     @Override
-    protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
+    public ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
         return client.createOrUpdateAsync(
                 resourceGroupName(),
                 resourceProviderNamespace,
@@ -160,15 +174,5 @@ final class GenericResourceImpl
                 apiVersion,
                 inner(),
                 Utils.fromVoidCallback(this, callback));
-    }
-
-    @Override
-    public GenericResourceImpl apply() throws Exception {
-        return create();
-    }
-
-    @Override
-    public ServiceCall applyAsync(ServiceCallback<GenericResource> callback) {
-        return createAsync(callback);
     }
 }

@@ -142,6 +142,7 @@ public class SiteInner extends Resource {
     private HostingEnvironmentProfile hostingEnvironmentProfile;
 
     /**
+     * The microService property.
      */
     @JsonProperty(value = "properties.microService")
     private String microService;

@@ -9,7 +9,6 @@
 package com.microsoft.azure.management.website.implementation;
 
 import java.util.List;
-import com.microsoft.azure.management.website.SiteInstance;
 
 /**
  * Collection of site instances.
@@ -18,7 +17,7 @@ public class SiteInstanceCollectionInner {
     /**
      * Collection of resources.
      */
-    private List<SiteInstance> value;
+    private List<SiteInstanceInner> value;
 
     /**
      * Link to next page of resources.
@@ -30,7 +29,7 @@ public class SiteInstanceCollectionInner {
      *
      * @return the value value
      */
-    public List<SiteInstance> value() {
+    public List<SiteInstanceInner> value() {
         return this.value;
     }
 
@@ -40,7 +39,7 @@ public class SiteInstanceCollectionInner {
      * @param value the value value to set
      * @return the SiteInstanceCollectionInner object itself.
      */
-    public SiteInstanceCollectionInner withValue(List<SiteInstance> value) {
+    public SiteInstanceCollectionInner withValue(List<SiteInstanceInner> value) {
         this.value = value;
         return this;
     }

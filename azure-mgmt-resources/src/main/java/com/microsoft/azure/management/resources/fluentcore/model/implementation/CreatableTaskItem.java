@@ -50,7 +50,7 @@ public class CreatableTaskItem<ResourceT> implements TaskItem<ResourceT> {
             }
 
             @Override
-            public void success(ServiceResponse<ResourceT> result) {
+            public void success(ServiceResponse<Void> result) {
                 self.created = result.getBody();
                 taskGroup.dag().reportedCompleted(node);
                 taskGroup.executeAsync(callback);

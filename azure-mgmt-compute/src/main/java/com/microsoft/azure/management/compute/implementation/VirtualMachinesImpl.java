@@ -11,7 +11,6 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizes;
 import com.microsoft.azure.management.compute.VirtualMachines;
-import com.microsoft.azure.management.compute.NetworkInterfaceReference;
 import com.microsoft.azure.management.compute.StorageProfile;
 import com.microsoft.azure.management.compute.OSDisk;
 import com.microsoft.azure.management.compute.DataDisk;
@@ -147,7 +146,7 @@ class VirtualMachinesImpl
         inner.withOsProfile(new OSProfile());
         inner.withHardwareProfile(new HardwareProfile());
         inner.withNetworkProfile(new NetworkProfile()
-                .withNetworkInterfaces(new ArrayList<NetworkInterfaceReference>()));
+                .withNetworkInterfaces(new ArrayList<NetworkInterfaceReferenceInner>()));
         return new VirtualMachineImpl(name,
             inner,
             this.innerCollection,

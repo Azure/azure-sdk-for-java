@@ -10,8 +10,6 @@ import java.util.Collections;
 import java.util.List;
 
 import com.microsoft.azure.SubResource;
-import com.microsoft.azure.management.network.BackendAddressPool;
-import com.microsoft.azure.management.network.FrontendIPConfiguration;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NicIpConfiguration;
@@ -76,16 +74,16 @@ class LoadBalancerImpl
 
     private void ensureCreationPrerequisites()  {
         // Ensure backend pools list
-        List<BackendAddressPool> backendPools = this.inner().backendAddressPools();
+        List<BackendAddressPoolInner> backendPools = this.inner().backendAddressPools();
         if (backendPools == null) {
             backendPools = new ArrayList<>();
             this.inner().withBackendAddressPools(backendPools);
         }
 
         // Ensure first backend pool
-        BackendAddressPool backendPool;
+        BackendAddressPoolInner backendPool;
         if (backendPools.size() == 0) {
-            backendPool = new BackendAddressPool();
+            backendPool = new BackendAddressPoolInner();
             backendPools.add(backendPool);
             backendPool.withName("backendpool" + backendPools.size());
         }
@@ -121,14 +119,14 @@ class LoadBalancerImpl
         return super.myManager;
     }
 
-    private FrontendIPConfiguration createFrontendIPConfig(String name) {
-        List<FrontendIPConfiguration> frontendIpConfigs = this.inner().frontendIPConfigurations();
+    private FrontendIPConfigurationInner createFrontendIPConfig(String name) {
+        List<FrontendIPConfigurationInner> frontendIpConfigs = this.inner().frontendIPConfigurations();
         if (frontendIpConfigs == null) {
-            frontendIpConfigs = new ArrayList<FrontendIPConfiguration>();
+            frontendIpConfigs = new ArrayList<FrontendIPConfigurationInner>();
             this.inner().withFrontendIPConfigurations(frontendIpConfigs);
         }
 
-        FrontendIPConfiguration frontendIpConfig = new FrontendIPConfiguration();
+        FrontendIPConfigurationInner frontendIpConfig = new FrontendIPConfigurationInner();
         frontendIpConfigs.add(frontendIpConfig);
         if (name == null) {
             name = "frontend" + frontendIpConfigs.size() + 1;
@@ -145,7 +143,7 @@ class LoadBalancerImpl
     }
 
     private LoadBalancerImpl withExistingPublicIpAddress(String resourceId) {
-        FrontendIPConfiguration frontendIpConfig = createFrontendIPConfig(null);
+        FrontendIPConfigurationInner frontendIpConfig = createFrontendIPConfig(null);
         SubResource pip = new SubResource();
         pip.withId(resourceId);
         frontendIpConfig.withPublicIPAddress(pip);
@@ -207,7 +205,7 @@ class LoadBalancerImpl
     public List<String> publicIpAddressIds() {
         List<String> publicIpAddressIds = new ArrayList<>();
         if (this.inner().frontendIPConfigurations() != null) {
-            for (FrontendIPConfiguration frontEndIpConfig : this.inner().frontendIPConfigurations()) {
+            for (FrontendIPConfigurationInner frontEndIpConfig : this.inner().frontendIPConfigurations()) {
                 publicIpAddressIds.add(frontEndIpConfig.publicIPAddress().id());
             }
         }
