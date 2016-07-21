@@ -37,6 +37,7 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT,
      *
      * @param creatableResource the creatable dependency.
      */
+    @SuppressWarnings("unchecked")
     protected void addCreatableDependency(Creatable<? extends ResourceT> creatableResource) {
         CreatableTaskGroup<ResourceT> childGroup =
                 ((CreatableTaskGroup.ResourceCreator<ResourceT>) creatableResource).creatableTaskGroup();
