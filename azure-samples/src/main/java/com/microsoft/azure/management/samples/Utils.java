@@ -188,7 +188,9 @@ public final class Utils {
                 .append("\n\tTags: ").append(resource.tags())
                 .append("\n\tInternal DNS name label: ").append(resource.internalDnsNameLabel())
                 .append("\n\tInternal FQDN: ").append(resource.internalFqdn())
+                .append("\n\tInternal domain name suffix: ").append(resource.internalDomainNameSuffix())
                 .append("\n\tNetwork security group: ").append(resource.networkSecurityGroupId())
+                .append("\n\tApplied DNS servers: ").append(resource.appliedDnsServers().toString())
                 .append("\n\tDNS server IPs: ");
 
         // Output dns servers

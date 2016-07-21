@@ -258,6 +258,16 @@ class NetworkInterfaceImpl
     }
 
     @Override
+    public String internalDomainNameSuffix() {
+        return this.inner().dnsSettings().internalDomainNameSuffix();
+    }
+
+    @Override
+    public List<String> appliedDnsServers() {
+        return Collections.unmodifiableList(this.inner().dnsSettings().appliedDnsServers());
+    }
+
+    @Override
     public String internalFqdn() {
         return this.inner().dnsSettings().internalFqdn();
     }

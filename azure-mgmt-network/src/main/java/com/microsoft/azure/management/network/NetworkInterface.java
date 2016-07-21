@@ -54,9 +54,19 @@ public interface NetworkInterface extends
     String internalFqdn();
 
     /**
+     * @return the internal domain name suffix
+     */
+    String internalDomainNameSuffix();
+
+    /**
      * @return IP addresses of this network interface's DNS servers
      */
     List<String> dnsServers();
+
+    /**
+     * @return applied DNS servers
+     */
+    List<String> appliedDnsServers();
 
     /**
      * Gets the public IP address associated with this network interface.
