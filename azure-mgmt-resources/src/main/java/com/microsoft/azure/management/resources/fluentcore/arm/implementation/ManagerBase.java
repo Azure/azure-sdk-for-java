@@ -15,11 +15,20 @@ import com.microsoft.azure.RestClient;
 public abstract class ManagerBase {
 
     private ResourceManager resourceManager;
+    private final String subscriptionId;
 
     protected ManagerBase(RestClient restClient, String subscriptionId) {
         if (restClient != null) {
             this.resourceManager = ResourceManager.authenticate(restClient).withSubscription(subscriptionId);
         }
+        this.subscriptionId = subscriptionId;
+    }
+
+    /**
+     * @return the ID of the subscription the manager is working with
+     */
+    public String subscriptionId() {
+        return this.subscriptionId;
     }
 
     protected final void setResourceManager(ResourceManager resourceManager) {

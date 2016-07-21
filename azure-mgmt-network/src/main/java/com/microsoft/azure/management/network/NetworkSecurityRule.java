@@ -82,38 +82,6 @@ public interface NetworkSecurityRule extends
         }
     }
 
-    /**
-     * The possible Azure network protocols supported by a network security rule.
-     */
-    enum Protocol {
-        TCP(SecurityRuleProtocol.TCP),
-        UDP(SecurityRuleProtocol.UDP),
-        ANY(SecurityRuleProtocol.ASTERISK);
-
-        public final String name;
-        Protocol(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return this.name;
-        }
-
-        /**
-         * Converts the string used by Azure into the corresponding constant, if any.
-         * @param s the string used by Azure to convert to a constant
-         * @return the identified constant, or null if not supported
-         */
-        public static Protocol fromString(String s) {
-            for (Protocol protocol : Protocol.values()) {
-                if (protocol.name.equalsIgnoreCase(s)) {
-                    return protocol;
-                }
-            }
-            return null;
-        }
-    }
 
     /**
      * @return the network traffic direction the rule applies to

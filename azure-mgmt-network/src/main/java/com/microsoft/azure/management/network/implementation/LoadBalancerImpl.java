@@ -13,8 +13,11 @@ import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.BackendAddressPool;
 import com.microsoft.azure.management.network.FrontendIPConfiguration;
 import com.microsoft.azure.management.network.LoadBalancer;
+import com.microsoft.azure.management.network.LoadBalancer.DefinitionStages.WithCreate;
+import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NicIpConfiguration;
+import com.microsoft.azure.management.network.Protocol;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddress.DefinitionStages.WithGroup;
 import com.microsoft.azure.management.network.SupportsNetworkInterfaces;
@@ -72,6 +75,21 @@ class LoadBalancerImpl
     }
 
     // Helpers
+    private String futureResourceId() {
+        return new StringBuilder()
+                .append(super.resourceIdBase())
+                .append("/providers/Microsoft.Network/loadBalancers/")
+                .append(this.name()).toString();
+    }
+
+    private List<LoadBalancingRule> ensureLoadBalancingRules() {
+        List<LoadBalancingRule> rules = this.inner().loadBalancingRules();
+        if (rules == null) {
+            rules = new ArrayList<>();
+            this.inner().withLoadBalancingRules(rules);
+        }
+        return rules;
+    }
 
     private void ensureCreationPrerequisites()  {
         // Ensure backend pools list
@@ -97,6 +115,28 @@ class LoadBalancerImpl
             }
         }
         this.creatablePIPKeys.clear();
+
+        // TODO Connect the load balancing rules to the first front end IP config (for now)
+        for (LoadBalancingRule lbRule : this.inner().loadBalancingRules()) {
+            if (lbRule.frontendIPConfiguration() == null) {
+                // TODO Add a reference to the first frontend IP config (TODO for now...)
+                SubResource frontendIpConfigReference = new SubResource();
+                String frontendIpConfigName = this.inner().frontendIPConfigurations().get(0).name();
+                frontendIpConfigReference.withId(this.futureResourceId() + "/frontendIPConfigurations/" + frontendIpConfigName);
+                lbRule.withFrontendIPConfiguration(frontendIpConfigReference);
+            }
+        }
+
+        // Connect the load balancing rules to the back end pools.
+        // TODO For now, we just take the first back end pool. More logic needs to be implemented for handling more complex rule <-> backend pool.
+        for (LoadBalancingRule lbRule : this.inner().loadBalancingRules()) {
+            if (lbRule.backendAddressPool() == null) {
+                // TODO Add a reference to the first back end address pool [In progress]
+                SubResource backendPoolReference = new SubResource();
+                String backendPoolName = this.inner().backendAddressPools().get(0).name();
+                backendPoolReference.withId(this.futureResourceId() + "/backendPools/" + backendPoolName);
+            }
+        }
     }
 
     private void runPostCreationTasks() throws Exception {
@@ -117,7 +157,7 @@ class LoadBalancerImpl
     }
 
     NetworkManager myManager() {
-        return super.myManager;
+        return this.myManager;
     }
 
     private FrontendIPConfiguration createFrontendIPConfig(String name) {
@@ -130,7 +170,7 @@ class LoadBalancerImpl
         FrontendIPConfiguration frontendIpConfig = new FrontendIPConfiguration();
         frontendIpConfigs.add(frontendIpConfig);
         if (name == null) {
-            name = "frontend" + frontendIpConfigs.size() + 1;
+            name = "frontend" + (frontendIpConfigs.size());
         }
         frontendIpConfig.withName(name);
 
@@ -200,6 +240,19 @@ class LoadBalancerImpl
         return this;
     }
 
+    @Override
+    public WithCreate withLoadBalancingRule(String name, Protocol protocol, int frontendPort, int backendPort) {
+        LoadBalancingRule ruleInner = new LoadBalancingRule();
+        ensureLoadBalancingRules().add(ruleInner);
+
+        ruleInner.withName(name);
+        ruleInner.withProtocol(protocol.toString());
+        ruleInner.withFrontendPort(frontendPort);
+        ruleInner.withBackendPort(backendPort);
+
+        return this;
+    }
+
     // Getters
 
     @Override
@@ -246,5 +299,4 @@ class LoadBalancerImpl
         }
         return Collections.unmodifiableList(publicIpAddressIds);
     }
-
 }

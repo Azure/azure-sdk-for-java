@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
@@ -17,9 +18,11 @@ import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancers;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Networks;
+import com.microsoft.azure.management.network.Protocol;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 
 /**
  * Test of virtual network management.
@@ -39,56 +42,77 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
         this.networks = networks;
     }
 
+    private VirtualMachine[] ensureVMs(String...vmIds) throws Exception {
+        ArrayList<VirtualMachine> createdVMs = new ArrayList<>();
+        Network network = null;
+        Region region = Region.US_WEST;
+        String userName = "user" + this.testId;
+        String availabilitySetName = "as" + this.testId;
+
+        for (String vmId : vmIds) {
+            String groupName = ResourceUtils.groupFromResourceId(vmId);
+            String vmName = ResourceUtils.nameFromResourceId(vmId);
+            VirtualMachine vm = null;
+
+            if (groupName == null) {
+                // Creating a new VM
+                vm = null;
+                groupName = "rg" + this.testId;
+                vmName = "vm" + this.testId;
+
+                if (network == null) {
+                    // Create a VNet for the VM
+                    network = networks.define("net" + this.testId)
+                        .withRegion(region)
+                        .withNewResourceGroup(groupName)
+                        .withAddressSpace("10.0.0.0/28")
+                        .create();
+                }
+
+                vm = this.vms.define(vmName)
+                        .withRegion(Region.US_WEST)
+                        .withNewResourceGroup(groupName)
+                        .withExistingPrimaryNetwork(network)
+                        .withSubnet("subnet1")
+                        .withPrimaryPrivateIpAddressDynamic()
+                        .withoutPrimaryPublicIpAddress()
+                        .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
+                        .withRootUserName(userName)
+                        .withPassword("Abcdef.123456")
+                        .withNewAvailabilitySet(availabilitySetName)
+                        .withSize(VirtualMachineSizeTypes.STANDARD_A1)
+                        .create();
+            } else {
+                // Getting an existing VM
+                try {
+                    vm = this.vms.getById(vmId);
+                } catch (Exception e) {
+                    vm = null;
+                }
+            }
+
+            if (vm != null) {
+                createdVMs.add(vm);
+            }
+        }
+
+        return createdVMs.toArray(new VirtualMachine[createdVMs.size()]);
+    }
+
+
     @Override
     public LoadBalancer createResource(LoadBalancers resources) throws Exception {
         final String newName = "lb" + this.testId;
         Region region = Region.US_WEST;
-        String networkName = "net" + this.testId;
         String groupName = "rg" + this.testId;
         String pipName1 = "pip" + this.testId;
         String pipName2 = pipName1 + "b";
-        String vmName1 = "vm" + this.testId;
-        String vmName2 = "vm" + this.testId + "b";
-        String vmUsername = "user" + this.testId;
-        String availabilitySetName = "as" + this.testId;
+        String vmID1 = "/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/marcinslbtest/providers/Microsoft.Compute/virtualMachines/marcinslbtest1";
+        String vmID2 = "/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/marcinslbtest/providers/Microsoft.Compute/virtualMachines/marcinslbtest2";
 
-        // Create a VNet for the VMs
-        Network vnet = networks.define(networkName)
-                .withRegion(region)
-                .withNewResourceGroup(groupName)
-                .withAddressSpace("10.0.0.0/28")
-                .create();
+        VirtualMachine[] existingVMs = ensureVMs(vmID1, vmID2);
 
-        // Create VMs in a new availability set
-        VirtualMachine vm1 = vms.define(vmName1)
-                .withRegion(region)
-                .withNewResourceGroup(groupName)
-                .withExistingPrimaryNetwork(vnet)
-                .withSubnet("subnet1")
-                .withPrimaryPrivateIpAddressDynamic()
-                .withoutPrimaryPublicIpAddress()
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
-                .withRootUserName(vmUsername)
-                .withPassword("Abcdef.123456")
-                .withNewAvailabilitySet(availabilitySetName)
-                .withSize(VirtualMachineSizeTypes.STANDARD_A1)
-                .create();
-
-        VirtualMachine vm2 = vms.define(vmName2)
-                .withRegion(region)
-                .withExistingResourceGroup(groupName)
-                .withExistingPrimaryNetwork(vnet)
-                .withSubnet("subnet1")
-                .withPrimaryPrivateIpAddressDynamic()
-                .withoutPrimaryPublicIpAddress()
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
-                .withRootUserName(vmUsername)
-                .withPassword("Abcdef.123456")
-                .withNewAvailabilitySet(availabilitySetName)
-                .withSize(VirtualMachineSizeTypes.STANDARD_A1)
-                .create();
-
-        // Create a pip
+        // Create a pip for the LB
         PublicIpAddress pip1 = this.pips.define(pipName1)
                 .withRegion(region)
                 .withNewResourceGroup(groupName)
@@ -99,9 +123,10 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
         return resources.define(newName)
                 .withRegion(region)
                 .withExistingResourceGroup(groupName)
-                .withExistingVirtualMachines(vm1, vm2)
+                .withExistingVirtualMachines(existingVMs)
                 .withExistingPublicIpAddresses(pip1)
                 .withNewPublicIpAddress(pipName2)
+                .withLoadBalancingRule("rule1", Protocol.TCP, 80, 8080)
                 .create();
     }
 

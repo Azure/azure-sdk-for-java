@@ -116,6 +116,18 @@ public interface LoadBalancer extends
         }
 
         /**
+         * The stage of the load balancer definition allowing to create a new load balancing rule.
+         */
+        interface WithLoadBalancingRule {
+            /**
+             * Adds a new load balancing rule.
+             * @param name the name of the rule
+             * @return the next stage of the definition
+             */
+            WithCreate withLoadBalancingRule(String name, Protocol protocol, int frontEndPort, int backEndPort);
+        }
+
+        /**
          * The stage of the load balancer definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
@@ -123,7 +135,8 @@ public interface LoadBalancer extends
         interface WithCreate extends
             Creatable<LoadBalancer>,
             Resource.DefinitionWithTags<WithCreate>,
-            WithPublicIpAddresses {
+            WithPublicIpAddresses,
+            WithLoadBalancingRule {
        }
     }
 
