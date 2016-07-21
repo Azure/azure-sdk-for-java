@@ -144,7 +144,7 @@ Waiting for the Future to complete (by calling get) is important because initial
 ExecutionException from the get call. The actual failure is available as the inner exception on the ExecutionException.
 
     ``` Java
-    EventProcessorOptions options = new EventProcessorOptions();
+    EventProcessorOptions options = EventProcessorOptions.getDefaultOptions();
     options.setExceptionNotification(new ErrorNotificationHandler());
     try
     {
