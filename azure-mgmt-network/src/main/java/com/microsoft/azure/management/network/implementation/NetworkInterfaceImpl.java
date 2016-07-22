@@ -8,6 +8,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
@@ -304,7 +305,7 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public String primaryPrivateIpAllocationMethod() {
+    public IPAllocationMethod primaryPrivateIpAllocationMethod() {
         return this.primaryIpConfiguration().privateIpAllocationMethod();
     }
 

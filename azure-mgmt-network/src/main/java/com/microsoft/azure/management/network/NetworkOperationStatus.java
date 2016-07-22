@@ -8,19 +8,55 @@
 
 package com.microsoft.azure.management.network;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Defines values for NetworkOperationStatus.
  */
 public final class NetworkOperationStatus {
     /** Static value InProgress for NetworkOperationStatus. */
-    public static final String IN_PROGRESS = "InProgress";
+    public static final NetworkOperationStatus IN_PROGRESS = new NetworkOperationStatus("InProgress");
 
     /** Static value Succeeded for NetworkOperationStatus. */
-    public static final String SUCCEEDED = "Succeeded";
+    public static final NetworkOperationStatus SUCCEEDED = new NetworkOperationStatus("Succeeded");
 
     /** Static value Failed for NetworkOperationStatus. */
-    public static final String FAILED = "Failed";
+    public static final NetworkOperationStatus FAILED = new NetworkOperationStatus("Failed");
 
-    private NetworkOperationStatus() {
+    private String value;
+
+    /**
+     * Creates a custom value for NetworkOperationStatus.
+     * @param value the custom value
+     */
+    public NetworkOperationStatus(String value) {
+        this.value = value;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return value;
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof NetworkOperationStatus)) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        NetworkOperationStatus rhs = (NetworkOperationStatus) obj;
+        if (value == null) {
+            return rhs.value == null;
+        } else {
+            return value.equals(rhs.value);
+        }
     }
 }

@@ -18,9 +18,9 @@ import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancers;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Networks;
-import com.microsoft.azure.management.network.Protocol;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddresses;
+import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 
@@ -124,7 +124,7 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                 .withExistingResourceGroup(groupName)
                 .withExistingPublicIpAddresses(pip1)
                 .withExistingVirtualMachines(existingVMs)
-                .withLoadBalancingRule(Protocol.TCP, 80)
+                .withLoadBalancingRule(TransportProtocol.TCP, 80)
                 .create();
     }
 

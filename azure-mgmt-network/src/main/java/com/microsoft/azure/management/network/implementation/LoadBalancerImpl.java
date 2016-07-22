@@ -13,10 +13,10 @@ import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NicIpConfiguration;
-import com.microsoft.azure.management.network.Protocol;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddress.DefinitionStages.WithGroup;
 import com.microsoft.azure.management.network.SupportsNetworkInterfaces;
+import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
@@ -240,7 +240,7 @@ class LoadBalancerImpl
     }
 
     @Override
-    public LoadBalancerImpl withLoadBalancingRule(Protocol protocol, int frontendPort, int backendPort, String name) {
+    public LoadBalancerImpl withLoadBalancingRule(TransportProtocol protocol, int frontendPort, int backendPort, String name) {
         LoadBalancingRuleInner ruleInner = new LoadBalancingRuleInner();
         ensureLoadBalancingRules().add(ruleInner);
 
@@ -249,7 +249,7 @@ class LoadBalancerImpl
         }
 
         ruleInner.withName(name);
-        ruleInner.withProtocol(protocol.toString());
+        ruleInner.withProtocol(protocol);
         ruleInner.withFrontendPort(frontendPort);
         ruleInner.withBackendPort(backendPort);
 
@@ -257,12 +257,12 @@ class LoadBalancerImpl
     }
 
     @Override
-    public LoadBalancerImpl withLoadBalancingRule(Protocol protocol, int frontendPort, int backendPort) {
+    public LoadBalancerImpl withLoadBalancingRule(TransportProtocol protocol, int frontendPort, int backendPort) {
         return withLoadBalancingRule(protocol, frontendPort, backendPort, null);
     }
 
     @Override
-    public LoadBalancerImpl withLoadBalancingRule(Protocol protocol, int port) {
+    public LoadBalancerImpl withLoadBalancingRule(TransportProtocol protocol, int port) {
         return withLoadBalancingRule(protocol, port, port);
     }
 

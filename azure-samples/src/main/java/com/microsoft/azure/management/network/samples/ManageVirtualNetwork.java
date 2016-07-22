@@ -13,7 +13,7 @@ import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
-import com.microsoft.azure.management.network.Protocol;
+import com.microsoft.azure.management.network.SecurityRuleProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.samples.Utils;
@@ -143,7 +143,7 @@ public final class ManageVirtualNetwork {
                             .fromAnyPort()
                             .toAnyAddress()
                             .toPort(80)
-                            .withProtocol(Protocol.TCP)
+                            .withProtocol(SecurityRuleProtocol.TCP)
                             .attach()
                         .defineRule("DenyInternetOutGoing")
                             .denyOutbound()

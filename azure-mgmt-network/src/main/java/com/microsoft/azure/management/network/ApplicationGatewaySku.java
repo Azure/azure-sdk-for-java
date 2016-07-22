@@ -17,13 +17,13 @@ public class ApplicationGatewaySku {
      * Gets or sets name of application gateway SKU. Possible values include:
      * 'Standard_Small', 'Standard_Medium', 'Standard_Large'.
      */
-    private String name;
+    private ApplicationGatewaySkuName name;
 
     /**
      * Gets or sets tier of application gateway. Possible values include:
      * 'Standard'.
      */
-    private String tier;
+    private ApplicationGatewayTier tier;
 
     /**
      * Gets or sets capacity (instance count) of application gateway.
@@ -35,7 +35,7 @@ public class ApplicationGatewaySku {
      *
      * @return the name value
      */
-    public String name() {
+    public ApplicationGatewaySkuName name() {
         return this.name;
     }
 
@@ -45,7 +45,7 @@ public class ApplicationGatewaySku {
      * @param name the name value to set
      * @return the ApplicationGatewaySku object itself.
      */
-    public ApplicationGatewaySku withName(String name) {
+    public ApplicationGatewaySku withName(ApplicationGatewaySkuName name) {
         this.name = name;
         return this;
     }
@@ -55,7 +55,7 @@ public class ApplicationGatewaySku {
      *
      * @return the tier value
      */
-    public String tier() {
+    public ApplicationGatewayTier tier() {
         return this.tier;
     }
 
@@ -65,7 +65,7 @@ public class ApplicationGatewaySku {
      * @param tier the tier value to set
      * @return the ApplicationGatewaySku object itself.
      */
-    public ApplicationGatewaySku withTier(String tier) {
+    public ApplicationGatewaySku withTier(ApplicationGatewayTier tier) {
         this.tier = tier;
         return this;
     }

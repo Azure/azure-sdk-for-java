@@ -8,6 +8,8 @@
 
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.management.network.ExpressRouteCircuitPeeringType;
+import com.microsoft.azure.management.network.ExpressRouteCircuitPeeringState;
 import com.microsoft.azure.management.network.ExpressRouteCircuitPeeringConfig;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -23,14 +25,14 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
      * 'AzurePublicPeering', 'AzurePrivatePeering', 'MicrosoftPeering'.
      */
     @JsonProperty(value = "properties.peeringType")
-    private String peeringType;
+    private ExpressRouteCircuitPeeringType peeringType;
 
     /**
      * Gets or sets state of Peering. Possible values include: 'Disabled',
      * 'Enabled'.
      */
     @JsonProperty(value = "properties.state")
-    private String state;
+    private ExpressRouteCircuitPeeringState state;
 
     /**
      * Gets or sets the azure ASN.
@@ -115,7 +117,7 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
      *
      * @return the peeringType value
      */
-    public String peeringType() {
+    public ExpressRouteCircuitPeeringType peeringType() {
         return this.peeringType;
     }
 
@@ -125,7 +127,7 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
      * @param peeringType the peeringType value to set
      * @return the ExpressRouteCircuitPeeringInner object itself.
      */
-    public ExpressRouteCircuitPeeringInner withPeeringType(String peeringType) {
+    public ExpressRouteCircuitPeeringInner withPeeringType(ExpressRouteCircuitPeeringType peeringType) {
         this.peeringType = peeringType;
         return this;
     }
@@ -135,7 +137,7 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
      *
      * @return the state value
      */
-    public String state() {
+    public ExpressRouteCircuitPeeringState state() {
         return this.state;
     }
 
@@ -145,7 +147,7 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
      * @param state the state value to set
      * @return the ExpressRouteCircuitPeeringInner object itself.
      */
-    public ExpressRouteCircuitPeeringInner withState(String state) {
+    public ExpressRouteCircuitPeeringInner withState(ExpressRouteCircuitPeeringState state) {
         this.state = state;
         return this;
     }

@@ -8,19 +8,55 @@
 
 package com.microsoft.azure.management.network;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Defines values for VirtualNetworkPeeringState.
  */
 public final class VirtualNetworkPeeringState {
     /** Static value Initiated for VirtualNetworkPeeringState. */
-    public static final String INITIATED = "Initiated";
+    public static final VirtualNetworkPeeringState INITIATED = new VirtualNetworkPeeringState("Initiated");
 
     /** Static value Connected for VirtualNetworkPeeringState. */
-    public static final String CONNECTED = "Connected";
+    public static final VirtualNetworkPeeringState CONNECTED = new VirtualNetworkPeeringState("Connected");
 
     /** Static value Disconnected for VirtualNetworkPeeringState. */
-    public static final String DISCONNECTED = "Disconnected";
+    public static final VirtualNetworkPeeringState DISCONNECTED = new VirtualNetworkPeeringState("Disconnected");
 
-    private VirtualNetworkPeeringState() {
+    private String value;
+
+    /**
+     * Creates a custom value for VirtualNetworkPeeringState.
+     * @param value the custom value
+     */
+    public VirtualNetworkPeeringState(String value) {
+        this.value = value;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return value;
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof VirtualNetworkPeeringState)) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        VirtualNetworkPeeringState rhs = (VirtualNetworkPeeringState) obj;
+        if (value == null) {
+            return rhs.value == null;
+        } else {
+            return value.equals(rhs.value);
+        }
     }
 }

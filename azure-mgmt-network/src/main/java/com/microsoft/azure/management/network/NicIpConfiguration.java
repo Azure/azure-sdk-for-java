@@ -64,7 +64,7 @@ public interface NicIpConfiguration extends
     /**
      * @return the private IP allocation method (Dynamic, Static)
      */
-    String privateIpAllocationMethod();
+    IPAllocationMethod privateIpAllocationMethod();
 
     // Setters (fluent)
 

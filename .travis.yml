@@ -1,10 +1,12 @@
 language: java
 sudo: false
-
 jdk:
-  - oraclejdk8
-
+- oraclejdk8
 script:
-  - mvn install -DskipTests=true
-  - mvn -pl !azure-batch,!azure-mgmt-website checkstyle:check
-  - mvn package javadoc:aggregate -DskipTests=true
+- bash ./tools/sync_runtimes.sh
+- mvn install -DskipTests=true
+- mvn -pl !azure-batch,!azure-mgmt-website checkstyle:check
+- mvn package javadoc:aggregate -DskipTests=true
+env:
+  global:
+  - secure: w5X4c2Zts4PygmbNZ+E1ttYvwpMgvALj5ae/I8vTpygtePaF4avp7GYLgadnNS7z0Sh2Gn+xd8IajWeyT4cFn/Cxq8RxsHqEnJUM1hamCE/IfZnxgMNC3xkFkZ7MuyL4E0V9mKYiRRvHU+C8ed2e4UeKcyWu+7MoviiKpyS37Pw=

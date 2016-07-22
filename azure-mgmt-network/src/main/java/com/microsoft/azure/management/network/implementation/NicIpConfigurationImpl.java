@@ -2,6 +2,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
@@ -117,7 +118,7 @@ class NicIpConfigurationImpl
     }
 
     @Override
-    public String privateIpAllocationMethod() {
+    public IPAllocationMethod privateIpAllocationMethod() {
         return this.inner().privateIPAllocationMethod();
     }
 
@@ -161,14 +162,14 @@ class NicIpConfigurationImpl
 
     @Override
     public NicIpConfigurationImpl withPrivateIpAddressDynamic() {
-        this.inner().withPrivateIPAllocationMethod("Dynamic");
+        this.inner().withPrivateIPAllocationMethod(IPAllocationMethod.DYNAMIC);
         this.inner().withPrivateIPAddress(null);
         return this;
     }
 
     @Override
     public NicIpConfigurationImpl withPrivateIpAddressStatic(String staticPrivateIpAddress) {
-        this.inner().withPrivateIPAllocationMethod("Static");
+        this.inner().withPrivateIPAllocationMethod(IPAllocationMethod.STATIC);
         this.inner().withPrivateIPAddress(staticPrivateIpAddress);
         return this;
     }

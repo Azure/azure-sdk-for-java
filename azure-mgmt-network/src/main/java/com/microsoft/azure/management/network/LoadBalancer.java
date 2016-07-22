@@ -165,7 +165,7 @@ public interface LoadBalancer extends
         /**
          * The stage of the load balancer definition allowing to create a load balancing rule.
          */
-        interface WithLoadBalancingRules {
+        interface WithLoadBalancingRule {
             /**
              * Creates a load balancing rule between the specified front end and back end ports for the specified protocol.
              * @param protocol the network protocol for the rule
@@ -174,7 +174,7 @@ public interface LoadBalancer extends
              * @param name the name for the load balancing rule
              * @return the next stage of the definition
              */
-            WithCreate withLoadBalancingRule(Protocol protocol, int frontendPort, int backendPort, String name);
+            WithCreate withLoadBalancingRule(TransportProtocol protocol, int frontendPort, int backendPort, String name);
 
             /**
              * Creates a load balancing rule between the specified front end and back end ports for the specified protocol.
@@ -185,7 +185,7 @@ public interface LoadBalancer extends
              * @param backendPort the port number on the back end to send load balanced traffic to
              * @return the next stage of the definition
              */
-            WithCreate withLoadBalancingRule(Protocol protocol, int frontendPort, int backendPort);
+            WithCreate withLoadBalancingRule(TransportProtocol protocol, int frontendPort, int backendPort);
 
             /**
              * Creates a load balancing rule for the specified port and protocol.
@@ -193,7 +193,7 @@ public interface LoadBalancer extends
              * @param port the port number on the front and back end for the network traffic to be load balanced on
              * @return the next stage of the definition
              */
-            WithCreate withLoadBalancingRule(Protocol protocol, int port);
+            WithCreate withLoadBalancingRule(TransportProtocol protocol, int port);
         }
 
         /**
@@ -204,7 +204,7 @@ public interface LoadBalancer extends
         interface WithCreate extends
             Creatable<LoadBalancer>,
             Resource.DefinitionWithTags<WithCreate>,
-            WithLoadBalancingRules {
+            WithLoadBalancingRule {
        }
     }
 

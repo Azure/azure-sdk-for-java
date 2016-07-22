@@ -22,13 +22,13 @@ public class ExpressRouteCircuitSku {
      * Gets or sets tier of the sku. Possible values include: 'Standard',
      * 'Premium'.
      */
-    private String tier;
+    private ExpressRouteCircuitSkuTier tier;
 
     /**
      * Gets or sets family of the sku. Possible values include:
      * 'UnlimitedData', 'MeteredData'.
      */
-    private String family;
+    private ExpressRouteCircuitSkuFamily family;
 
     /**
      * Get the name value.
@@ -55,7 +55,7 @@ public class ExpressRouteCircuitSku {
      *
      * @return the tier value
      */
-    public String tier() {
+    public ExpressRouteCircuitSkuTier tier() {
         return this.tier;
     }
 
@@ -65,7 +65,7 @@ public class ExpressRouteCircuitSku {
      * @param tier the tier value to set
      * @return the ExpressRouteCircuitSku object itself.
      */
-    public ExpressRouteCircuitSku withTier(String tier) {
+    public ExpressRouteCircuitSku withTier(ExpressRouteCircuitSkuTier tier) {
         this.tier = tier;
         return this;
     }
@@ -75,7 +75,7 @@ public class ExpressRouteCircuitSku {
      *
      * @return the family value
      */
-    public String family() {
+    public ExpressRouteCircuitSkuFamily family() {
         return this.family;
     }
 
@@ -85,7 +85,7 @@ public class ExpressRouteCircuitSku {
      * @param family the family value to set
      * @return the ExpressRouteCircuitSku object itself.
      */
-    public ExpressRouteCircuitSku withFamily(String family) {
+    public ExpressRouteCircuitSku withFamily(ExpressRouteCircuitSkuFamily family) {
         this.family = family;
         return this;
     }
