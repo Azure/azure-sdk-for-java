@@ -9,6 +9,8 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.network.TransportProtocol;
+import com.microsoft.azure.management.network.LoadDistribution;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
@@ -42,14 +44,14 @@ public class LoadBalancingRuleInner extends SubResource {
      * values are Udp or Tcp. Possible values include: 'Udp', 'Tcp'.
      */
     @JsonProperty(value = "properties.protocol", required = true)
-    private String protocol;
+    private TransportProtocol protocol;
 
     /**
      * Gets or sets the load distribution policy for this rule. Possible
      * values include: 'Default', 'SourceIP', 'SourceIPProtocol'.
      */
     @JsonProperty(value = "properties.loadDistribution")
-    private String loadDistribution;
+    private LoadDistribution loadDistribution;
 
     /**
      * Gets or sets the port for the external endpoint. You can specify any
@@ -173,7 +175,7 @@ public class LoadBalancingRuleInner extends SubResource {
      *
      * @return the protocol value
      */
-    public String protocol() {
+    public TransportProtocol protocol() {
         return this.protocol;
     }
 
@@ -183,7 +185,7 @@ public class LoadBalancingRuleInner extends SubResource {
      * @param protocol the protocol value to set
      * @return the LoadBalancingRuleInner object itself.
      */
-    public LoadBalancingRuleInner withProtocol(String protocol) {
+    public LoadBalancingRuleInner withProtocol(TransportProtocol protocol) {
         this.protocol = protocol;
         return this;
     }
@@ -193,7 +195,7 @@ public class LoadBalancingRuleInner extends SubResource {
      *
      * @return the loadDistribution value
      */
-    public String loadDistribution() {
+    public LoadDistribution loadDistribution() {
         return this.loadDistribution;
     }
 
@@ -203,7 +205,7 @@ public class LoadBalancingRuleInner extends SubResource {
      * @param loadDistribution the loadDistribution value to set
      * @return the LoadBalancingRuleInner object itself.
      */
-    public LoadBalancingRuleInner withLoadDistribution(String loadDistribution) {
+    public LoadBalancingRuleInner withLoadDistribution(LoadDistribution loadDistribution) {
         this.loadDistribution = loadDistribution;
         return this;
     }

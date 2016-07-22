@@ -10,6 +10,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import java.util.List;
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.network.ProbeProtocol;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
@@ -32,7 +33,7 @@ public class ProbeInner extends SubResource {
      * values include: 'Http', 'Tcp'.
      */
     @JsonProperty(value = "properties.protocol", required = true)
-    private String protocol;
+    private ProbeProtocol protocol;
 
     /**
      * Gets or sets Port for communicating the probe. Possible values range
@@ -100,7 +101,7 @@ public class ProbeInner extends SubResource {
      *
      * @return the protocol value
      */
-    public String protocol() {
+    public ProbeProtocol protocol() {
         return this.protocol;
     }
 
@@ -110,7 +111,7 @@ public class ProbeInner extends SubResource {
      * @param protocol the protocol value to set
      * @return the ProbeInner object itself.
      */
-    public ProbeInner withProtocol(String protocol) {
+    public ProbeInner withProtocol(ProbeProtocol protocol) {
         this.protocol = protocol;
         return this;
     }

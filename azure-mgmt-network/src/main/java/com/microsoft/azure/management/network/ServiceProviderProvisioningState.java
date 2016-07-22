@@ -8,22 +8,58 @@
 
 package com.microsoft.azure.management.network;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Defines values for ServiceProviderProvisioningState.
  */
 public final class ServiceProviderProvisioningState {
     /** Static value NotProvisioned for ServiceProviderProvisioningState. */
-    public static final String NOT_PROVISIONED = "NotProvisioned";
+    public static final ServiceProviderProvisioningState NOT_PROVISIONED = new ServiceProviderProvisioningState("NotProvisioned");
 
     /** Static value Provisioning for ServiceProviderProvisioningState. */
-    public static final String PROVISIONING = "Provisioning";
+    public static final ServiceProviderProvisioningState PROVISIONING = new ServiceProviderProvisioningState("Provisioning");
 
     /** Static value Provisioned for ServiceProviderProvisioningState. */
-    public static final String PROVISIONED = "Provisioned";
+    public static final ServiceProviderProvisioningState PROVISIONED = new ServiceProviderProvisioningState("Provisioned");
 
     /** Static value Deprovisioning for ServiceProviderProvisioningState. */
-    public static final String DEPROVISIONING = "Deprovisioning";
+    public static final ServiceProviderProvisioningState DEPROVISIONING = new ServiceProviderProvisioningState("Deprovisioning");
 
-    private ServiceProviderProvisioningState() {
+    private String value;
+
+    /**
+     * Creates a custom value for ServiceProviderProvisioningState.
+     * @param value the custom value
+     */
+    public ServiceProviderProvisioningState(String value) {
+        this.value = value;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return value;
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ServiceProviderProvisioningState)) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        ServiceProviderProvisioningState rhs = (ServiceProviderProvisioningState) obj;
+        if (value == null) {
+            return rhs.value == null;
+        } else {
+            return value.equals(rhs.value);
+        }
     }
 }

@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.ApplicationGatewaySku;
+import com.microsoft.azure.management.network.ApplicationGatewayOperationalState;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -30,7 +31,7 @@ public class ApplicationGatewayInner extends Resource {
      * include: 'Stopped', 'Starting', 'Running', 'Stopping'.
      */
     @JsonProperty(value = "properties.operationalState", access = JsonProperty.Access.WRITE_ONLY)
-    private String operationalState;
+    private ApplicationGatewayOperationalState operationalState;
 
     /**
      * Gets or sets subnets of application gateway resource.
@@ -136,7 +137,7 @@ public class ApplicationGatewayInner extends Resource {
      *
      * @return the operationalState value
      */
-    public String operationalState() {
+    public ApplicationGatewayOperationalState operationalState() {
         return this.operationalState;
     }
 

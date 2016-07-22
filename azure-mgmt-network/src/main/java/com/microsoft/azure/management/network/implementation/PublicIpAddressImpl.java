@@ -110,8 +110,8 @@ class PublicIpAddressImpl
     }
 
     @Override
-    public IpAllocationMethod ipAllocationMethod() {
-        return IpAllocationMethod.fromString(this.inner().publicIPAllocationMethod());
+    public IPAllocationMethod ipAllocationMethod() {
+        return this.inner().publicIPAllocationMethod();
     }
 
     @Override

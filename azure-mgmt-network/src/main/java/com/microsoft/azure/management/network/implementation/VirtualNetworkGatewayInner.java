@@ -9,6 +9,8 @@
 package com.microsoft.azure.management.network.implementation;
 
 import java.util.List;
+import com.microsoft.azure.management.network.VirtualNetworkGatewayType;
+import com.microsoft.azure.management.network.VpnType;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.VirtualNetworkGatewaySku;
 import com.microsoft.azure.management.network.VpnClientConfiguration;
@@ -33,14 +35,14 @@ public class VirtualNetworkGatewayInner extends Resource {
      * 'Vpn', 'ExpressRoute'.
      */
     @JsonProperty(value = "properties.gatewayType")
-    private String gatewayType;
+    private VirtualNetworkGatewayType gatewayType;
 
     /**
      * The type of this virtual network gateway. Possible values include:
      * 'PolicyBased', 'RouteBased'.
      */
     @JsonProperty(value = "properties.vpnType")
-    private String vpnType;
+    private VpnType vpnType;
 
     /**
      * EnableBgp Flag.
@@ -121,7 +123,7 @@ public class VirtualNetworkGatewayInner extends Resource {
      *
      * @return the gatewayType value
      */
-    public String gatewayType() {
+    public VirtualNetworkGatewayType gatewayType() {
         return this.gatewayType;
     }
 
@@ -131,7 +133,7 @@ public class VirtualNetworkGatewayInner extends Resource {
      * @param gatewayType the gatewayType value to set
      * @return the VirtualNetworkGatewayInner object itself.
      */
-    public VirtualNetworkGatewayInner withGatewayType(String gatewayType) {
+    public VirtualNetworkGatewayInner withGatewayType(VirtualNetworkGatewayType gatewayType) {
         this.gatewayType = gatewayType;
         return this;
     }
@@ -141,7 +143,7 @@ public class VirtualNetworkGatewayInner extends Resource {
      *
      * @return the vpnType value
      */
-    public String vpnType() {
+    public VpnType vpnType() {
         return this.vpnType;
     }
 
@@ -151,7 +153,7 @@ public class VirtualNetworkGatewayInner extends Resource {
      * @param vpnType the vpnType value to set
      * @return the VirtualNetworkGatewayInner object itself.
      */
-    public VirtualNetworkGatewayInner withVpnType(String vpnType) {
+    public VirtualNetworkGatewayInner withVpnType(VpnType vpnType) {
         this.vpnType = vpnType;
         return this;
     }

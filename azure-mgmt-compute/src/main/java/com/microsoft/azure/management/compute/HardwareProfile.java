@@ -33,14 +33,14 @@ public class HardwareProfile {
      * 'Standard_G4', 'Standard_G5', 'Standard_GS1', 'Standard_GS2',
      * 'Standard_GS3', 'Standard_GS4', 'Standard_GS5'.
      */
-    private String vmSize;
+    private VirtualMachineSizeTypes vmSize;
 
     /**
      * Get the vmSize value.
      *
      * @return the vmSize value
      */
-    public String vmSize() {
+    public VirtualMachineSizeTypes vmSize() {
         return this.vmSize;
     }
 
@@ -50,7 +50,7 @@ public class HardwareProfile {
      * @param vmSize the vmSize value to set
      * @return the HardwareProfile object itself.
      */
-    public HardwareProfile withVmSize(String vmSize) {
+    public HardwareProfile withVmSize(VirtualMachineSizeTypes vmSize) {
         this.vmSize = vmSize;
         return this;
     }

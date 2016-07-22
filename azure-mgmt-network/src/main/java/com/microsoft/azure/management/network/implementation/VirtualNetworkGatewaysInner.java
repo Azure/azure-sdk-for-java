@@ -13,6 +13,7 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.network.ProcessorArchitecture;
 import com.microsoft.azure.management.network.VpnClientParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
@@ -773,7 +774,7 @@ public final class VirtualNetworkGatewaysInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        final String processorArchitecture = null;
+        final ProcessorArchitecture processorArchitecture = null;
         VpnClientParameters parameters = new VpnClientParameters();
         parameters.withProcessorArchitecture(null);
         Call<ResponseBody> call = service.generatevpnclientpackage(resourceGroupName, virtualNetworkGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
@@ -809,7 +810,7 @@ public final class VirtualNetworkGatewaysInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
             return null;
         }
-        final String processorArchitecture = null;
+        final ProcessorArchitecture processorArchitecture = null;
         VpnClientParameters parameters = new VpnClientParameters();
         parameters.withProcessorArchitecture(null);
         Call<ResponseBody> call = service.generatevpnclientpackage(resourceGroupName, virtualNetworkGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
@@ -838,7 +839,7 @@ public final class VirtualNetworkGatewaysInner {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the String object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<String> generatevpnclientpackage(String resourceGroupName, String virtualNetworkGatewayName, String processorArchitecture) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<String> generatevpnclientpackage(String resourceGroupName, String virtualNetworkGatewayName, ProcessorArchitecture processorArchitecture) throws CloudException, IOException, IllegalArgumentException {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -867,7 +868,7 @@ public final class VirtualNetworkGatewaysInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall generatevpnclientpackageAsync(String resourceGroupName, String virtualNetworkGatewayName, String processorArchitecture, final ServiceCallback<String> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall generatevpnclientpackageAsync(String resourceGroupName, String virtualNetworkGatewayName, ProcessorArchitecture processorArchitecture, final ServiceCallback<String> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }

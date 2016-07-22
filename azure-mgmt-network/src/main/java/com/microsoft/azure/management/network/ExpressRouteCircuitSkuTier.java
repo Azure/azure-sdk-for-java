@@ -8,16 +8,52 @@
 
 package com.microsoft.azure.management.network;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Defines values for ExpressRouteCircuitSkuTier.
  */
 public final class ExpressRouteCircuitSkuTier {
     /** Static value Standard for ExpressRouteCircuitSkuTier. */
-    public static final String STANDARD = "Standard";
+    public static final ExpressRouteCircuitSkuTier STANDARD = new ExpressRouteCircuitSkuTier("Standard");
 
     /** Static value Premium for ExpressRouteCircuitSkuTier. */
-    public static final String PREMIUM = "Premium";
+    public static final ExpressRouteCircuitSkuTier PREMIUM = new ExpressRouteCircuitSkuTier("Premium");
 
-    private ExpressRouteCircuitSkuTier() {
+    private String value;
+
+    /**
+     * Creates a custom value for ExpressRouteCircuitSkuTier.
+     * @param value the custom value
+     */
+    public ExpressRouteCircuitSkuTier(String value) {
+        this.value = value;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return value;
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ExpressRouteCircuitSkuTier)) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        ExpressRouteCircuitSkuTier rhs = (ExpressRouteCircuitSkuTier) obj;
+        if (value == null) {
+            return rhs.value == null;
+        } else {
+            return value.equals(rhs.value);
+        }
     }
 }

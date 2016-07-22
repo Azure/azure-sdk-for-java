@@ -24,7 +24,7 @@ public class AzureAsyncOperationResult {
      * Status of the AzureAsuncOperation. Possible values include:
      * 'InProgress', 'Succeeded', 'Failed'.
      */
-    private String status;
+    private NetworkOperationStatus status;
 
     /**
      * The error property.
@@ -36,7 +36,7 @@ public class AzureAsyncOperationResult {
      *
      * @return the status value
      */
-    public String status() {
+    public NetworkOperationStatus status() {
         return this.status;
     }
 
@@ -46,7 +46,7 @@ public class AzureAsyncOperationResult {
      * @param status the status value to set
      * @return the AzureAsyncOperationResult object itself.
      */
-    public AzureAsyncOperationResult withStatus(String status) {
+    public AzureAsyncOperationResult withStatus(NetworkOperationStatus status) {
         this.status = status;
         return this;
     }

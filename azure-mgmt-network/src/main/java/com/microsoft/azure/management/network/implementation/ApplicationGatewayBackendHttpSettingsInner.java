@@ -8,6 +8,8 @@
 
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
+import com.microsoft.azure.management.network.ApplicationGatewayCookieBasedAffinity;
 import com.microsoft.azure.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -27,14 +29,14 @@ public class ApplicationGatewayBackendHttpSettingsInner extends SubResource {
      * Gets or sets the protocol. Possible values include: 'Http', 'Https'.
      */
     @JsonProperty(value = "properties.protocol")
-    private String protocol;
+    private ApplicationGatewayProtocol protocol;
 
     /**
      * Gets or sets the cookie affinity. Possible values include: 'Enabled',
      * 'Disabled'.
      */
     @JsonProperty(value = "properties.cookieBasedAffinity")
-    private String cookieBasedAffinity;
+    private ApplicationGatewayCookieBasedAffinity cookieBasedAffinity;
 
     /**
      * Gets or sets request timeout.
@@ -91,7 +93,7 @@ public class ApplicationGatewayBackendHttpSettingsInner extends SubResource {
      *
      * @return the protocol value
      */
-    public String protocol() {
+    public ApplicationGatewayProtocol protocol() {
         return this.protocol;
     }
 
@@ -101,7 +103,7 @@ public class ApplicationGatewayBackendHttpSettingsInner extends SubResource {
      * @param protocol the protocol value to set
      * @return the ApplicationGatewayBackendHttpSettingsInner object itself.
      */
-    public ApplicationGatewayBackendHttpSettingsInner withProtocol(String protocol) {
+    public ApplicationGatewayBackendHttpSettingsInner withProtocol(ApplicationGatewayProtocol protocol) {
         this.protocol = protocol;
         return this;
     }
@@ -111,7 +113,7 @@ public class ApplicationGatewayBackendHttpSettingsInner extends SubResource {
      *
      * @return the cookieBasedAffinity value
      */
-    public String cookieBasedAffinity() {
+    public ApplicationGatewayCookieBasedAffinity cookieBasedAffinity() {
         return this.cookieBasedAffinity;
     }
 
@@ -121,7 +123,7 @@ public class ApplicationGatewayBackendHttpSettingsInner extends SubResource {
      * @param cookieBasedAffinity the cookieBasedAffinity value to set
      * @return the ApplicationGatewayBackendHttpSettingsInner object itself.
      */
-    public ApplicationGatewayBackendHttpSettingsInner withCookieBasedAffinity(String cookieBasedAffinity) {
+    public ApplicationGatewayBackendHttpSettingsInner withCookieBasedAffinity(ApplicationGatewayCookieBasedAffinity cookieBasedAffinity) {
         this.cookieBasedAffinity = cookieBasedAffinity;
         return this;
     }

@@ -8,16 +8,52 @@
 
 package com.microsoft.azure.management.network;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Defines values for ApplicationGatewayRequestRoutingRuleType.
  */
 public final class ApplicationGatewayRequestRoutingRuleType {
     /** Static value Basic for ApplicationGatewayRequestRoutingRuleType. */
-    public static final String BASIC = "Basic";
+    public static final ApplicationGatewayRequestRoutingRuleType BASIC = new ApplicationGatewayRequestRoutingRuleType("Basic");
 
     /** Static value PathBasedRouting for ApplicationGatewayRequestRoutingRuleType. */
-    public static final String PATH_BASED_ROUTING = "PathBasedRouting";
+    public static final ApplicationGatewayRequestRoutingRuleType PATH_BASED_ROUTING = new ApplicationGatewayRequestRoutingRuleType("PathBasedRouting");
 
-    private ApplicationGatewayRequestRoutingRuleType() {
+    private String value;
+
+    /**
+     * Creates a custom value for ApplicationGatewayRequestRoutingRuleType.
+     * @param value the custom value
+     */
+    public ApplicationGatewayRequestRoutingRuleType(String value) {
+        this.value = value;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return value;
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ApplicationGatewayRequestRoutingRuleType)) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        ApplicationGatewayRequestRoutingRuleType rhs = (ApplicationGatewayRequestRoutingRuleType) obj;
+        if (value == null) {
+            return rhs.value == null;
+        } else {
+            return value.equals(rhs.value);
+        }
     }
 }

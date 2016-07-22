@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRuleType;
 import com.microsoft.azure.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -22,7 +23,7 @@ public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
      * 'PathBasedRouting'.
      */
     @JsonProperty(value = "properties.ruleType")
-    private String ruleType;
+    private ApplicationGatewayRequestRoutingRuleType ruleType;
 
     /**
      * Gets or sets backend address pool resource of application gateway.
@@ -71,7 +72,7 @@ public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
      *
      * @return the ruleType value
      */
-    public String ruleType() {
+    public ApplicationGatewayRequestRoutingRuleType ruleType() {
         return this.ruleType;
     }
 
@@ -81,7 +82,7 @@ public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
      * @param ruleType the ruleType value to set
      * @return the ApplicationGatewayRequestRoutingRuleInner object itself.
      */
-    public ApplicationGatewayRequestRoutingRuleInner withRuleType(String ruleType) {
+    public ApplicationGatewayRequestRoutingRuleInner withRuleType(ApplicationGatewayRequestRoutingRuleType ruleType) {
         this.ruleType = ruleType;
         return this;
     }

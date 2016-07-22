@@ -24,7 +24,7 @@ public class ExpressRouteCircuitPeeringConfig {
      * Possible values include: 'NotConfigured', 'Configuring', 'Configured',
      * 'ValidationNeeded'.
      */
-    private String advertisedPublicPrefixesState;
+    private ExpressRouteCircuitPeeringAdvertisedPublicPrefixState advertisedPublicPrefixesState;
 
     /**
      * Gets or Sets CustomerAsn of the peering.
@@ -61,7 +61,7 @@ public class ExpressRouteCircuitPeeringConfig {
      *
      * @return the advertisedPublicPrefixesState value
      */
-    public String advertisedPublicPrefixesState() {
+    public ExpressRouteCircuitPeeringAdvertisedPublicPrefixState advertisedPublicPrefixesState() {
         return this.advertisedPublicPrefixesState;
     }
 
@@ -71,7 +71,7 @@ public class ExpressRouteCircuitPeeringConfig {
      * @param advertisedPublicPrefixesState the advertisedPublicPrefixesState value to set
      * @return the ExpressRouteCircuitPeeringConfig object itself.
      */
-    public ExpressRouteCircuitPeeringConfig withAdvertisedPublicPrefixesState(String advertisedPublicPrefixesState) {
+    public ExpressRouteCircuitPeeringConfig withAdvertisedPublicPrefixesState(ExpressRouteCircuitPeeringAdvertisedPublicPrefixState advertisedPublicPrefixesState) {
         this.advertisedPublicPrefixesState = advertisedPublicPrefixesState;
         return this;
     }

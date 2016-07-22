@@ -9,6 +9,8 @@
 package com.microsoft.azure.management.network.implementation;
 
 import java.util.List;
+import com.microsoft.azure.management.network.IPAllocationMethod;
+import com.microsoft.azure.management.network.IPVersion;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.SubResource;
@@ -48,14 +50,14 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
      * 'Static', 'Dynamic'.
      */
     @JsonProperty(value = "properties.privateIPAllocationMethod")
-    private String privateIPAllocationMethod;
+    private IPAllocationMethod privateIPAllocationMethod;
 
     /**
      * Gets or sets PrivateIP address version (IPv4/IPv6). Possible values
      * include: 'IPv4', 'IPv6'.
      */
     @JsonProperty(value = "properties.privateIPAddressVersion")
-    private String privateIPAddressVersion;
+    private IPVersion privateIPAddressVersion;
 
     /**
      * The subnet property.
@@ -177,7 +179,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
      *
      * @return the privateIPAllocationMethod value
      */
-    public String privateIPAllocationMethod() {
+    public IPAllocationMethod privateIPAllocationMethod() {
         return this.privateIPAllocationMethod;
     }
 
@@ -187,7 +189,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
      * @param privateIPAllocationMethod the privateIPAllocationMethod value to set
      * @return the NetworkInterfaceIPConfigurationInner object itself.
      */
-    public NetworkInterfaceIPConfigurationInner withPrivateIPAllocationMethod(String privateIPAllocationMethod) {
+    public NetworkInterfaceIPConfigurationInner withPrivateIPAllocationMethod(IPAllocationMethod privateIPAllocationMethod) {
         this.privateIPAllocationMethod = privateIPAllocationMethod;
         return this;
     }
@@ -197,7 +199,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
      *
      * @return the privateIPAddressVersion value
      */
-    public String privateIPAddressVersion() {
+    public IPVersion privateIPAddressVersion() {
         return this.privateIPAddressVersion;
     }
 
@@ -207,7 +209,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
      * @param privateIPAddressVersion the privateIPAddressVersion value to set
      * @return the NetworkInterfaceIPConfigurationInner object itself.
      */
-    public NetworkInterfaceIPConfigurationInner withPrivateIPAddressVersion(String privateIPAddressVersion) {
+    public NetworkInterfaceIPConfigurationInner withPrivateIPAddressVersion(IPVersion privateIPAddressVersion) {
         this.privateIPAddressVersion = privateIPAddressVersion;
         return this;
     }
