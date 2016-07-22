@@ -1,14 +1,17 @@
 language: android
 android:
   components:
-    - build-tools-23.0.1
-    - android-23
-    - platform-tools
-    - extra-android-support
-    - extra-google-m2repository
-    - extra-android-m2repository
+  - build-tools-23.0.1
+  - android-23
+  - platform-tools
+  - extra-android-support
+  - extra-google-m2repository
+  - extra-android-m2repository
 sudo: false
 script:
-  - mvn clean install
-  - mvn checkstyle:check
-  - cd ./azure-android-client-authentication && ./gradlew check
+- mvn clean install
+- mvn checkstyle:check
+- cd ./azure-android-client-authentication && ./gradlew check
+env:
+  global:
+    secure: RnU4qnuCJRzSvAAXApk9yVhIH+gtl5RNmoVva/hzuSF0WcSaRh2CBe37KUNnbBDJaHd53L5AvHBpbcmaylbOYaRQ/vxUG1gAEHuyrX3ANvGLKYKjtg1F8i853h1Y/y/TZ9MNfzLOqlo/DtD/jAl6pOAMyxNxSEwwFjHY+zbzTOA4kXjTDPGtNwB253v46j5vzSUcEKHpAXER2RjTeurVFeMFDT78Ou+4DCFBqpenObwr1CH+YPTwIoRBvzzPFDKy8+3rdWXOCB2QloaeFntxH1NDbkhReBe4KL3Ue03ksxrAqcmoJR6qFCQebvHYQYSXTk7kmoOxRFTowGqJ0SErUQwT85MA+3JYDmWDKvI3Zq1lQvhmv7dhsbgJASTxpwW+cqStCzKhAYADB6nB8Nv5AUE/5wQDWXEANUQ2t/eWooip0IcIHeJfBj0qDk+WvjAKGSGu0tIAD71Z1h36WHxf0U/fTi673tguwrhWpnUCbQaQCiDqMm7sSWOlyIdAoxy3JwLGaJq3bRGAjgwbfY32VQ/GN00ttSYu63SFDkxYATC4/FtYheNB0Yi4bDU//me9WcB/mt4bi98nC1CBK1tVS1Rn6ATkXu5K9oMvfCX7UlKe6rGmW7tVdXqtwMEFBpH3Z94tXxQEkZ+AITociIBV85+Oy/BOYvMCwysNv/PEqx0=
