@@ -139,7 +139,7 @@ public class DAGraph<T, U extends DAGNode<T>> extends Graph<T, U> {
                     queue.add(dependent.key());
                 }
             } finally {
-                dependent.lock().lock();
+                dependent.lock().unlock();
             }
         }
     }
