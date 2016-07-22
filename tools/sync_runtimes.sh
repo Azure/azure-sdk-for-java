@@ -7,7 +7,7 @@ if [[ `curl https://api.github.com/repos/Azure/autorest-clientruntime-for-java/b
 fi
 
 # Pull and push the subtree
-git subtree pull --squash --prefix runtimes https://github.com/Azure/autorest-clientruntime-for-java.git $branch
+git subtree pull --squash --prefix runtimes https://${GH_TOKEN}@github.com/Azure/autorest-clientruntime-for-java.git $branch
 git subtree push --prefix runtimes https://${GH_TOKEN}@github.com/Azure/autorest-clientruntime-for-java.git sdk_${TRAVIS_PULL_REQUEST} > /dev/null 2>&1
 
 # Create a pull request. This only applies when first time creating the branch
