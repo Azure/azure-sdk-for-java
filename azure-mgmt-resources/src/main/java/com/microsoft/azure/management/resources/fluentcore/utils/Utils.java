@@ -59,8 +59,9 @@ public final class Utils {
      * @param callback the void callback
      * @param <T> the inner resource type
      * @param <FluentT> the fluent resource type
-     * @param <FluentImplT> the implementation for the fuent resource type
-     * @return the inner callback
+     * @param <ResourceT> the fluent model base type that all fluent models in the same task group derive from
+     * @param <FluentImplT> the implementation for the fluent resource type
+     * @return
      */
     public static <T, FluentT, ResourceT, FluentImplT extends CreatableImpl<FluentT, T, FluentImplT, ResourceT>> ServiceCallback<T>
             fromVoidCallback(final FluentImplT modelImpl, final ServiceCallback<Void> callback) {

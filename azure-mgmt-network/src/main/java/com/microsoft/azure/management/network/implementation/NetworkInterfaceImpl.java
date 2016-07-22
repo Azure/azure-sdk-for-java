@@ -346,7 +346,7 @@ class NetworkInterfaceImpl
     }
 
 
-    // CreatableTaskGroup.ResourceCreator implementation
+    // CreatorTaskGroup.ResourceCreator implementation
 
     @Override
     public Resource createResource() throws Exception {

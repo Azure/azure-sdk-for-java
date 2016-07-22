@@ -9,7 +9,6 @@ package com.microsoft.azure.management.storage.implementation;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.storage.PublicEndpoints;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.AccessTier;
@@ -262,7 +261,7 @@ class StorageAccountImpl
         return this;
     }
 
-    // CreatableTaskGroup.ResourceCreator implementation
+    // CreatorTaskGroup.ResourceCreator implementation
 
     @Override
     public Resource createResource() throws Exception {

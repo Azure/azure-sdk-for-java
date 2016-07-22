@@ -45,7 +45,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.resources.implementation.PageImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
@@ -855,7 +854,7 @@ class VirtualMachineImpl
     }
 
 
-    // CreatableTaskGroup.ResourceCreator implementation
+    // CreatorTaskGroup.ResourceCreator implementation
 
     @Override
     public Resource createResource() throws Exception {

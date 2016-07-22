@@ -9,7 +9,7 @@ import com.microsoft.rest.ServiceCallback;
  *
  * @param <ResourceT> the type of the resource this group creates
  */
-public class CreatableTaskGroup<ResourceT> extends TaskGroupBase<ResourceT> {
+public class CreatorTaskGroup<ResourceT> extends TaskGroupBase<ResourceT> {
     /**
      * Represents a type that know how to create resource.
      *
@@ -35,26 +35,26 @@ public class CreatableTaskGroup<ResourceT> extends TaskGroupBase<ResourceT> {
         /**
          * @return Gets the task group.
          */
-        CreatableTaskGroup creatableTaskGroup();
+        CreatorTaskGroup creatorTaskGroup();
     }
 
     /**
-     * Creates CreatableTaskGroup.
+     * Creates CreatorTaskGroup.
      *
      * @param rootCreatableId the id of the root creatable
      * @param resourceCreator represents the resource creator that this group want to create ultimately
      */
-    public CreatableTaskGroup(String rootCreatableId, ResourceCreator<ResourceT> resourceCreator) {
-        this(rootCreatableId, new CreatableTaskItem<>(resourceCreator));
+    public CreatorTaskGroup(String rootCreatableId, ResourceCreator<ResourceT> resourceCreator) {
+        this(rootCreatableId, new CreatorTaskItem<>(resourceCreator));
     }
 
     /**
-     * Creates CreatableTaskGroup.
+     * Creates CreatorTaskGroup.
      *
      * @param key the key of the root task
      * @param rootTask represents the root task that this group want to executes ultimately
      */
-    public CreatableTaskGroup(String key, CreatableTaskItem<ResourceT> rootTask) {
+    public CreatorTaskGroup(String key, CreatorTaskItem<ResourceT> rootTask) {
         super(key, rootTask);
     }
 

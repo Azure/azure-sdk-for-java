@@ -10,7 +10,6 @@ import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.InstanceViewStatus;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -102,7 +101,7 @@ class AvailabilitySetImpl
         return this.createAsync(callback);
     }
 
-    // CreatableTaskGroup.ResourceCreator implementation
+    // CreatorTaskGroup.ResourceCreator implementation
 
     @Override
     public Resource createResource() throws Exception {

@@ -20,16 +20,16 @@ import com.microsoft.rest.ServiceCallback;
  */
 public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT, ResourceT>
         extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
-        implements CreatableTaskGroup.ResourceCreator<ResourceT>
-{
+        implements CreatorTaskGroup.ResourceCreator<ResourceT> {
+
     /**
      * The group of tasks to create this resource and it's dependencies.
      */
-    private CreatableTaskGroup<ResourceT> creatableTaskGroup;
+    private CreatorTaskGroup<ResourceT> creatorTaskGroup;
 
     protected CreatableImpl(String name, InnerModelT innerObject) {
         super(name, innerObject);
-        creatableTaskGroup = new CreatableTaskGroup<>(name, this);
+        creatorTaskGroup = new CreatorTaskGroup<>(name, this);
     }
 
     /**
@@ -39,13 +39,13 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT,
      */
     @SuppressWarnings("unchecked")
     protected void addCreatableDependency(Creatable<? extends ResourceT> creatableResource) {
-        CreatableTaskGroup<ResourceT> childGroup =
-                ((CreatableTaskGroup.ResourceCreator<ResourceT>) creatableResource).creatableTaskGroup();
-        childGroup.merge(this.creatableTaskGroup);
+        CreatorTaskGroup<ResourceT> childGroup =
+                ((CreatorTaskGroup.ResourceCreator<ResourceT>) creatableResource).creatorTaskGroup();
+        childGroup.merge(this.creatorTaskGroup);
     }
 
     protected ResourceT createdResource(String key) {
-        return this.creatableTaskGroup.taskResult(key);
+        return this.creatorTaskGroup.taskResult(key);
     }
 
     /**
@@ -56,9 +56,9 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT,
      */
     @SuppressWarnings("unchecked")
     public FluentModelImplT create() throws Exception {
-        if (creatableTaskGroup.isPreparer()) {
-            creatableTaskGroup.prepare();
-            creatableTaskGroup.execute();
+        if (creatorTaskGroup.isPreparer()) {
+            creatorTaskGroup.prepare();
+            creatorTaskGroup.execute();
             return (FluentModelImplT) this;
         }
         throw new IllegalStateException("Internal Error: create can be called only on preparer");
@@ -72,10 +72,10 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT,
      */
     @SuppressWarnings("unchecked")
     public ServiceCall createAsync(ServiceCallback<FluentModelT> callback) {
-        if (creatableTaskGroup.isPreparer()) {
-            creatableTaskGroup.prepare();
-            creatableTaskGroup.executeAsync(Utils.toVoidCallback((FluentModelT) this, callback));
-            return creatableTaskGroup.parallelServiceCall();
+        if (creatorTaskGroup.isPreparer()) {
+            creatorTaskGroup.prepare();
+            creatorTaskGroup.executeAsync(Utils.toVoidCallback((FluentModelT) this, callback));
+            return creatorTaskGroup.parallelServiceCall();
         }
         throw new IllegalStateException("Internal Error: createAsync can be called only on preparer");
     }
@@ -83,7 +83,7 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT,
     /**
      * @return the task group associated with this creatable.
      */
-    public CreatableTaskGroup creatableTaskGroup() {
-        return this.creatableTaskGroup;
+    public CreatorTaskGroup creatorTaskGroup() {
+        return this.creatorTaskGroup;
     }
 }

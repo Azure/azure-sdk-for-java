@@ -9,17 +9,19 @@ import com.microsoft.rest.ServiceResponse;
 
 /**
  * Represents a task that creates a resource when executed.
+ *
+ * @param <ResourceT> the type of the resource that this task creates
  */
-public class CreatableTaskItem<ResourceT> implements TaskItem<ResourceT> {
-    private CreatableTaskGroup.ResourceCreator<ResourceT> resourceCreator;
+public class CreatorTaskItem<ResourceT> implements TaskItem<ResourceT> {
+    private CreatorTaskGroup.ResourceCreator<ResourceT> resourceCreator;
     private ResourceT created;
 
     /**
-     * Creates CreatableTaskItem.
+     * Creates CreatorTaskItem.
      *
      * @param resourceCreator the resource creator
      */
-    public CreatableTaskItem(CreatableTaskGroup.ResourceCreator<ResourceT> resourceCreator) {
+    public CreatorTaskItem(CreatorTaskGroup.ResourceCreator<ResourceT> resourceCreator) {
         this.resourceCreator = resourceCreator;
     }
 
@@ -42,7 +44,7 @@ public class CreatableTaskItem<ResourceT> implements TaskItem<ResourceT> {
 
     @Override
     public ServiceCall executeAsync(final TaskGroup<ResourceT, TaskItem<ResourceT>> taskGroup, final DAGNode<TaskItem<ResourceT>> node, final ServiceCallback<Void> callback) {
-        final CreatableTaskItem<ResourceT> self = this;
+        final CreatorTaskItem<ResourceT> self = this;
         return (this.resourceCreator).createResourceAsync(new ServiceCallback<ResourceT>() {
             @Override
             public void failure(Throwable t) {
