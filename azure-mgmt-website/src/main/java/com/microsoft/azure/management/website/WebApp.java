@@ -241,19 +241,19 @@ public interface WebApp extends
             WithCreate enableIpBasedSsl(String hostName, String thumbprint, String virtualIp);
         }
 
-        interface withSiteEnabled {
+        interface WithSiteEnabled {
             WithCreate siteEnabled(boolean enabled);
         }
 
-        interface withScmSiteAlsoStopped {
+        interface WithScmSiteAlsoStopped {
             WithCreate alsoStopScmSiteWhenStopped(boolean scmSiteAlsoStopped);
         }
 
-        interface withClientAffinityEnabled {
+        interface WithClientAffinityEnabled {
             WithCreate clientAffinityEnabled(boolean enabled);
         }
 
-        interface withClientCertEnabled {
+        interface WithClientCertEnabled {
             WithCreate clientCertEnabled(boolean enabled);
         }
 

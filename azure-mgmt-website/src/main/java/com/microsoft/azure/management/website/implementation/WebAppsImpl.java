@@ -57,7 +57,7 @@ class WebAppsImpl
     }
 
     @Override
-    public WebApp.DefinitionStages.Blank define(String name) {
+    public WebAppImpl define(String name) {
         return wrapModel(name);
     }
 
