@@ -27,11 +27,11 @@ class ParallelServiceCall<T> extends ServiceCall {
     private TaskGroupBase<T> taskGroup;
 
     /**
-     * Creates a ParallelServiceCall
+     * Creates a ParallelServiceCall.
      *
      * @param taskGroup the task group
      */
-    public ParallelServiceCall(TaskGroupBase<T> taskGroup) {
+    ParallelServiceCall(TaskGroupBase<T> taskGroup) {
         super(null);
         this.taskGroup = taskGroup;
     }
@@ -68,6 +68,9 @@ public abstract class TaskGroupBase<T>
     private DAGraph<TaskItem<T>, DAGNode<TaskItem<T>>> dag;
     private ConcurrentLinkedQueue<ServiceCall> serviceCalls = new ConcurrentLinkedQueue<>();
 
+    /**
+     * Wraps the services calls running in parallel.
+     */
     public ParallelServiceCall<T> parallelServiceCall;
 
     /**
