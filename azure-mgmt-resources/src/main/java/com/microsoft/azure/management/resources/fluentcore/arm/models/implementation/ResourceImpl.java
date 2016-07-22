@@ -29,7 +29,7 @@ public abstract class ResourceImpl<
         InnerModelT extends com.microsoft.azure.Resource,
         FluentModelImplT extends ResourceImpl<FluentModelT, InnerModelT, FluentModelImplT>>
     extends
-        CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
+        CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentModelImplT, Resource>
     implements
         Resource {
 

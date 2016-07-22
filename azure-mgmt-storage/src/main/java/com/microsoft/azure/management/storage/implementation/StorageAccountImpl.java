@@ -7,8 +7,8 @@
 package com.microsoft.azure.management.storage.implementation;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.storage.PublicEndpoints;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.AccessTier;
@@ -195,40 +195,6 @@ class StorageAccountImpl
     }
 
     @Override
-    protected void createResource() throws Exception {
-        createParameters.withLocation(this.regionName());
-        createParameters.withTags(this.inner().getTags());
-        this.client.create(this.resourceGroupName(), this.name(), createParameters);
-        // create response does not seems including the endpoints so fetching it again.
-        StorageAccountInner storageAccountInner = this.client
-                .getProperties(this.resourceGroupName(), this.name())
-                .getBody();
-        this.setInner(storageAccountInner);
-        clearWrapperProperties();
-    }
-
-    @Override
-    protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
-        createParameters.withLocation(this.regionName());
-        createParameters.withTags(this.inner().getTags());
-        final StorageAccountImpl self = this;
-        return this.client.createAsync(this.resourceGroupName(), this.name(), createParameters,
-                new ServiceCallback<StorageAccountInner>() {
-                        @Override
-                        public void failure(Throwable t) {
-                            callback.failure(t);
-                        }
-
-                        @Override
-                        public void success(ServiceResponse<StorageAccountInner> result) {
-                            client.getPropertiesAsync(resourceGroupName(), name(),
-                                    Utils.fromVoidCallback(self, callback));
-                            clearWrapperProperties();
-                        }
-                });
-    }
-
-    @Override
     public StorageAccountImpl update() {
         updateParameters = new StorageAccountUpdateParametersInner();
         return super.update();
@@ -293,5 +259,53 @@ class StorageAccountImpl
             updateParameters.withAccessTier(accessTier);
         }
         return this;
+    }
+
+    // CreatorTaskGroup.ResourceCreator implementation
+
+    @Override
+    public Resource createResource() throws Exception {
+        createParameters.withLocation(this.regionName());
+        createParameters.withTags(this.inner().getTags());
+        this.client.create(this.resourceGroupName(), this.name(), createParameters);
+        // create response does not seems including the endpoints so fetching it again.
+        StorageAccountInner storageAccountInner = this.client
+                .getProperties(this.resourceGroupName(), this.name())
+                .getBody();
+        this.setInner(storageAccountInner);
+        clearWrapperProperties();
+        return this;
+    }
+
+    @Override
+    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback) {
+        final StorageAccountImpl self = this;
+        createParameters.withLocation(this.regionName());
+        createParameters.withTags(this.inner().getTags());
+        return this.client.createAsync(this.resourceGroupName(), this.name(), createParameters,
+                new ServiceCallback<StorageAccountInner>() {
+                    @Override
+                    public void failure(Throwable t) {
+                        callback.failure(t);
+                    }
+
+                    @Override
+                    public void success(ServiceResponse<StorageAccountInner> result) {
+                        client.getPropertiesAsync(resourceGroupName(), name(),
+                                new ServiceCallback<StorageAccountInner>() {
+                                    @Override
+                                    public void failure(Throwable t) {
+                                        callback.failure(t);
+                                    }
+
+                                    @Override
+                                    public void success(ServiceResponse<StorageAccountInner> response) {
+                                        self.setInner(response.getBody());
+                                        clearWrapperProperties();
+                                        callback.success(new ServiceResponse<Resource>(self, response.getResponse()));
+                                    }
+                                });
+                    }
+                });
     }
 }

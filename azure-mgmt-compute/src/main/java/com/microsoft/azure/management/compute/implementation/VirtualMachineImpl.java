@@ -40,11 +40,11 @@ import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.resources.implementation.PageImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
@@ -853,13 +853,11 @@ class VirtualMachineImpl
         return null;
     }
 
-    /**************************************************
-     * .
-     * CreatableImpl::createResource
-     **************************************************/
+
+    // CreatorTaskGroup.ResourceCreator implementation
 
     @Override
-    protected void createResource() throws Exception {
+    public Resource createResource() throws Exception {
         if (isInCreateMode()) {
             setOSDiskAndOSProfileDefaults();
             setHardwareProfileDefaults();
@@ -874,10 +872,11 @@ class VirtualMachineImpl
         this.setInner(serviceResponse.getBody());
         clearCachedRelatedResources();
         initializeDataDisks();
+        return this;
     }
 
     @Override
-    protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
+    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback) {
         if (isInCreateMode()) {
             setOSDiskAndOSProfileDefaults();
             setHardwareProfileDefaults();
@@ -896,19 +895,20 @@ class VirtualMachineImpl
                 handleNetworkSettings();
                 handleAvailabilitySettings();
                 call.newCall(client.createOrUpdateAsync(resourceGroupName(), vmName, inner(),
-                        Utils.fromVoidCallback(self, new ServiceCallback<Void>() {
+                        new ServiceCallback<VirtualMachineInner>() {
                             @Override
                             public void failure(Throwable t) {
                                 callback.failure(t);
                             }
 
                             @Override
-                            public void success(ServiceResponse<Void> result) {
+                            public void success(ServiceResponse<VirtualMachineInner> response) {
+                                self.setInner(response.getBody());
                                 clearCachedRelatedResources();
                                 initializeDataDisks();
-                                callback.success(result);
+                                callback.success(new ServiceResponse<Resource>(self, response.getResponse()));
                             }
-                        })).getCall());
+                        }).getCall());
             }
         });
         return call;
