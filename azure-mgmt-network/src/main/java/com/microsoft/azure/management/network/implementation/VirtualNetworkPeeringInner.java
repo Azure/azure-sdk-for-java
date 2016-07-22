@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.network.VirtualNetworkPeeringState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
@@ -59,7 +60,7 @@ public class VirtualNetworkPeeringInner extends SubResource {
      * include: 'Initiated', 'Connected', 'Disconnected'.
      */
     @JsonProperty(value = "properties.peeringState")
-    private String peeringState;
+    private VirtualNetworkPeeringState peeringState;
 
     /**
      * Gets provisioning state of the resource.
@@ -183,7 +184,7 @@ public class VirtualNetworkPeeringInner extends SubResource {
      *
      * @return the peeringState value
      */
-    public String peeringState() {
+    public VirtualNetworkPeeringState peeringState() {
         return this.peeringState;
     }
 
@@ -193,7 +194,7 @@ public class VirtualNetworkPeeringInner extends SubResource {
      * @param peeringState the peeringState value to set
      * @return the VirtualNetworkPeeringInner object itself.
      */
-    public VirtualNetworkPeeringInner withPeeringState(String peeringState) {
+    public VirtualNetworkPeeringInner withPeeringState(VirtualNetworkPeeringState peeringState) {
         this.peeringState = peeringState;
         return this;
     }

@@ -8,16 +8,52 @@
 
 package com.microsoft.azure.management.network;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Defines values for ApplicationGatewayProtocol.
  */
 public final class ApplicationGatewayProtocol {
     /** Static value Http for ApplicationGatewayProtocol. */
-    public static final String HTTP = "Http";
+    public static final ApplicationGatewayProtocol HTTP = new ApplicationGatewayProtocol("Http");
 
     /** Static value Https for ApplicationGatewayProtocol. */
-    public static final String HTTPS = "Https";
+    public static final ApplicationGatewayProtocol HTTPS = new ApplicationGatewayProtocol("Https");
 
-    private ApplicationGatewayProtocol() {
+    private String value;
+
+    /**
+     * Creates a custom value for ApplicationGatewayProtocol.
+     * @param value the custom value
+     */
+    public ApplicationGatewayProtocol(String value) {
+        this.value = value;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return value;
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ApplicationGatewayProtocol)) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        ApplicationGatewayProtocol rhs = (ApplicationGatewayProtocol) obj;
+        if (value == null) {
+            return rhs.value == null;
+        } else {
+            return value.equals(rhs.value);
+        }
     }
 }

@@ -9,7 +9,10 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.network.EffectiveRouteSource;
+import com.microsoft.azure.management.network.EffectiveRouteState;
 import java.util.List;
+import com.microsoft.azure.management.network.RouteNextHopType;
 
 /**
  * Effective Route.
@@ -25,13 +28,13 @@ public class EffectiveRouteInner extends SubResource {
      * Gets who created the route. Possible values include: 'Unknown', 'User',
      * 'VirtualNetworkGateway', 'Default'.
      */
-    private String source;
+    private EffectiveRouteSource source;
 
     /**
      * Gets value of effective route. Possible values include: 'Active',
      * 'Invalid'.
      */
-    private String state;
+    private EffectiveRouteState state;
 
     /**
      * Gets address prefixes of the effective routes in CIDR notation.
@@ -48,7 +51,7 @@ public class EffectiveRouteInner extends SubResource {
      * Possible values include: 'VirtualNetworkGateway', 'VnetLocal',
      * 'Internet', 'VirtualAppliance', 'None'.
      */
-    private String nextHopType;
+    private RouteNextHopType nextHopType;
 
     /**
      * Get the userDefinedRoute value.
@@ -75,7 +78,7 @@ public class EffectiveRouteInner extends SubResource {
      *
      * @return the source value
      */
-    public String source() {
+    public EffectiveRouteSource source() {
         return this.source;
     }
 
@@ -85,7 +88,7 @@ public class EffectiveRouteInner extends SubResource {
      * @param source the source value to set
      * @return the EffectiveRouteInner object itself.
      */
-    public EffectiveRouteInner withSource(String source) {
+    public EffectiveRouteInner withSource(EffectiveRouteSource source) {
         this.source = source;
         return this;
     }
@@ -95,7 +98,7 @@ public class EffectiveRouteInner extends SubResource {
      *
      * @return the state value
      */
-    public String state() {
+    public EffectiveRouteState state() {
         return this.state;
     }
 
@@ -105,7 +108,7 @@ public class EffectiveRouteInner extends SubResource {
      * @param state the state value to set
      * @return the EffectiveRouteInner object itself.
      */
-    public EffectiveRouteInner withState(String state) {
+    public EffectiveRouteInner withState(EffectiveRouteState state) {
         this.state = state;
         return this;
     }
@@ -155,7 +158,7 @@ public class EffectiveRouteInner extends SubResource {
      *
      * @return the nextHopType value
      */
-    public String nextHopType() {
+    public RouteNextHopType nextHopType() {
         return this.nextHopType;
     }
 
@@ -165,7 +168,7 @@ public class EffectiveRouteInner extends SubResource {
      * @param nextHopType the nextHopType value to set
      * @return the EffectiveRouteInner object itself.
      */
-    public EffectiveRouteInner withNextHopType(String nextHopType) {
+    public EffectiveRouteInner withNextHopType(RouteNextHopType nextHopType) {
         this.nextHopType = nextHopType;
         return this;
     }

@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.SubResource;
@@ -28,7 +29,7 @@ public class IPConfigurationInner extends SubResource {
      * 'Static', 'Dynamic'.
      */
     @JsonProperty(value = "properties.privateIPAllocationMethod")
-    private String privateIPAllocationMethod;
+    private IPAllocationMethod privateIPAllocationMethod;
 
     /**
      * Gets or sets the reference of the subnet resource.
@@ -85,7 +86,7 @@ public class IPConfigurationInner extends SubResource {
      *
      * @return the privateIPAllocationMethod value
      */
-    public String privateIPAllocationMethod() {
+    public IPAllocationMethod privateIPAllocationMethod() {
         return this.privateIPAllocationMethod;
     }
 
@@ -95,7 +96,7 @@ public class IPConfigurationInner extends SubResource {
      * @param privateIPAllocationMethod the privateIPAllocationMethod value to set
      * @return the IPConfigurationInner object itself.
      */
-    public IPConfigurationInner withPrivateIPAllocationMethod(String privateIPAllocationMethod) {
+    public IPConfigurationInner withPrivateIPAllocationMethod(IPAllocationMethod privateIPAllocationMethod) {
         this.privateIPAllocationMethod = privateIPAllocationMethod;
         return this;
     }

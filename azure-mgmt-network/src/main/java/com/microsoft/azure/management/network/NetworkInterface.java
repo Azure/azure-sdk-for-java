@@ -98,7 +98,7 @@ public interface NetworkInterface extends
      * @return the private IP allocation method (Dynamic, Static) of this network interface's
      * primary IP configuration.
      */
-    String primaryPrivateIpAllocationMethod();
+    IPAllocationMethod primaryPrivateIpAllocationMethod();
 
     /**
      * @return the IP configurations of this network interface

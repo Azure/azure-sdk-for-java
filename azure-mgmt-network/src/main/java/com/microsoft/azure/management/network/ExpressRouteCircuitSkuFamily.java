@@ -8,16 +8,52 @@
 
 package com.microsoft.azure.management.network;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Defines values for ExpressRouteCircuitSkuFamily.
  */
 public final class ExpressRouteCircuitSkuFamily {
     /** Static value UnlimitedData for ExpressRouteCircuitSkuFamily. */
-    public static final String UNLIMITED_DATA = "UnlimitedData";
+    public static final ExpressRouteCircuitSkuFamily UNLIMITED_DATA = new ExpressRouteCircuitSkuFamily("UnlimitedData");
 
     /** Static value MeteredData for ExpressRouteCircuitSkuFamily. */
-    public static final String METERED_DATA = "MeteredData";
+    public static final ExpressRouteCircuitSkuFamily METERED_DATA = new ExpressRouteCircuitSkuFamily("MeteredData");
 
-    private ExpressRouteCircuitSkuFamily() {
+    private String value;
+
+    /**
+     * Creates a custom value for ExpressRouteCircuitSkuFamily.
+     * @param value the custom value
+     */
+    public ExpressRouteCircuitSkuFamily(String value) {
+        this.value = value;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return value;
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ExpressRouteCircuitSkuFamily)) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        ExpressRouteCircuitSkuFamily rhs = (ExpressRouteCircuitSkuFamily) obj;
+        if (value == null) {
+            return rhs.value == null;
+        } else {
+            return value.equals(rhs.value);
+        }
     }
 }

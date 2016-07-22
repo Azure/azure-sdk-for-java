@@ -8,19 +8,55 @@
 
 package com.microsoft.azure.management.network;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Defines values for ApplicationGatewaySkuName.
  */
 public final class ApplicationGatewaySkuName {
     /** Static value Standard_Small for ApplicationGatewaySkuName. */
-    public static final String STANDARD_SMALL = "Standard_Small";
+    public static final ApplicationGatewaySkuName STANDARD_SMALL = new ApplicationGatewaySkuName("Standard_Small");
 
     /** Static value Standard_Medium for ApplicationGatewaySkuName. */
-    public static final String STANDARD_MEDIUM = "Standard_Medium";
+    public static final ApplicationGatewaySkuName STANDARD_MEDIUM = new ApplicationGatewaySkuName("Standard_Medium");
 
     /** Static value Standard_Large for ApplicationGatewaySkuName. */
-    public static final String STANDARD_LARGE = "Standard_Large";
+    public static final ApplicationGatewaySkuName STANDARD_LARGE = new ApplicationGatewaySkuName("Standard_Large");
 
-    private ApplicationGatewaySkuName() {
+    private String value;
+
+    /**
+     * Creates a custom value for ApplicationGatewaySkuName.
+     * @param value the custom value
+     */
+    public ApplicationGatewaySkuName(String value) {
+        this.value = value;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return value;
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ApplicationGatewaySkuName)) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        ApplicationGatewaySkuName rhs = (ApplicationGatewaySkuName) obj;
+        if (value == null) {
+            return rhs.value == null;
+        } else {
+            return value.equals(rhs.value);
+        }
     }
 }

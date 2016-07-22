@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.network.TransportProtocol;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
@@ -28,7 +29,7 @@ public class InboundNatPoolInner extends SubResource {
      * are Udp or Tcp. Possible values include: 'Udp', 'Tcp'.
      */
     @JsonProperty(value = "properties.protocol", required = true)
-    private String protocol;
+    private TransportProtocol protocol;
 
     /**
      * Gets or sets the starting port range for the NAT pool. You can spcify
@@ -104,7 +105,7 @@ public class InboundNatPoolInner extends SubResource {
      *
      * @return the protocol value
      */
-    public String protocol() {
+    public TransportProtocol protocol() {
         return this.protocol;
     }
 
@@ -114,7 +115,7 @@ public class InboundNatPoolInner extends SubResource {
      * @param protocol the protocol value to set
      * @return the InboundNatPoolInner object itself.
      */
-    public InboundNatPoolInner withProtocol(String protocol) {
+    public InboundNatPoolInner withProtocol(TransportProtocol protocol) {
         this.protocol = protocol;
         return this;
     }

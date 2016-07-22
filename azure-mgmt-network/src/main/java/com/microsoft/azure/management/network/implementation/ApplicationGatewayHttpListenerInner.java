@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
@@ -33,7 +34,7 @@ public class ApplicationGatewayHttpListenerInner extends SubResource {
      * Gets or sets the protocol. Possible values include: 'Http', 'Https'.
      */
     @JsonProperty(value = "properties.protocol")
-    private String protocol;
+    private ApplicationGatewayProtocol protocol;
 
     /**
      * Gets or sets the host name of http listener.
@@ -116,7 +117,7 @@ public class ApplicationGatewayHttpListenerInner extends SubResource {
      *
      * @return the protocol value
      */
-    public String protocol() {
+    public ApplicationGatewayProtocol protocol() {
         return this.protocol;
     }
 
@@ -126,7 +127,7 @@ public class ApplicationGatewayHttpListenerInner extends SubResource {
      * @param protocol the protocol value to set
      * @return the ApplicationGatewayHttpListenerInner object itself.
      */
-    public ApplicationGatewayHttpListenerInner withProtocol(String protocol) {
+    public ApplicationGatewayHttpListenerInner withProtocol(ApplicationGatewayProtocol protocol) {
         this.protocol = protocol;
         return this;
     }

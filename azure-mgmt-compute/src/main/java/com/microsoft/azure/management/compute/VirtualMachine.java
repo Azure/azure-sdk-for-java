@@ -133,7 +133,7 @@ public interface VirtualMachine extends
     /**
      * @return the virtual machine size
      */
-    String size();
+    VirtualMachineSizeTypes size();
 
     /**
      * @return the operating system of this virtual machine
