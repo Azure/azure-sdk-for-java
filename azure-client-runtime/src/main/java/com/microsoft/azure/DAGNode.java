@@ -21,7 +21,12 @@ public class DAGNode<T> extends Node<T> {
     private List<String> dependentKeys;
     private int toBeResolved;
     private boolean isPreparer;
+
+    /**
+     * The lock to be used while performing thread safe operation on this node.
+     */
     public ReentrantLock lock;
+
     /**
      * Creates a DAG node.
      *
