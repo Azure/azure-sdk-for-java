@@ -132,14 +132,14 @@ public class DAGraph<T, U extends DAGNode<T>> extends Graph<T, U> {
         String dependency = completed.key();
         for (String dependentKey : graph.get(dependency).dependentKeys()) {
             DAGNode<T> dependent = graph.get(dependentKey);
-            dependent.lock.lock();
+            dependent.Lock().lock();
             try {
                 dependent.reportResolved(dependency);
                 if (dependent.hasAllResolved()) {
                     queue.add(dependent.key());
                 }
             } finally {
-                dependent.lock.lock();
+                dependent.Lock().lock();
             }
         }
     }

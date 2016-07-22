@@ -75,7 +75,7 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT,
         if (creatableTaskGroup.isPreparer()) {
             creatableTaskGroup.prepare();
             creatableTaskGroup.executeAsync(Utils.toVoidCallback((FluentModelT) this, callback));
-            return creatableTaskGroup.parallelServiceCall;
+            return creatableTaskGroup.parallelServiceCall();
         }
         throw new IllegalStateException("Internal Error: createAsync can be called only on preparer");
     }
