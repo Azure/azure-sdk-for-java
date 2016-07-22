@@ -67,11 +67,7 @@ public abstract class TaskGroupBase<T>
     implements TaskGroup<T, TaskItem<T>> {
     private DAGraph<TaskItem<T>, DAGNode<TaskItem<T>>> dag;
     private ConcurrentLinkedQueue<ServiceCall> serviceCalls = new ConcurrentLinkedQueue<>();
-
-    /**
-     * Wraps the services calls running in parallel.
-     */
-    public ParallelServiceCall<T> parallelServiceCall;
+    private ParallelServiceCall<T> parallelServiceCall;
 
     /**
      * Creates TaskGroupBase.
@@ -96,6 +92,14 @@ public abstract class TaskGroupBase<T>
     @Override
     public boolean isPreparer() {
         return dag.isPreparer();
+    }
+
+    /**
+     * @return Gets the ParallelServiceCall instance that wraps the service calls running
+     * in parallel.
+     */
+    public ParallelServiceCall<T> parallelServiceCall() {
+        return this.parallelServiceCall;
     }
 
     @Override
