@@ -38,7 +38,7 @@ public class DAGNode<T> extends Node<T> {
     /**
      * @return the lock to be used while performing thread safe operation on this node.
      */
-    public ReentrantLock Lock() {
+    public ReentrantLock lock() {
         return this.lock;
     }
 
