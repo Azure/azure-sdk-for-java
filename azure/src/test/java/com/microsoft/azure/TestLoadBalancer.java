@@ -106,7 +106,6 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
         Region region = Region.US_WEST;
         String groupName = "rg" + this.testId;
         String pipName1 = "pip" + this.testId;
-        String pipName2 = pipName1 + "b";
         String vmID1 = "/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/marcinslbtest/providers/Microsoft.Compute/virtualMachines/marcinslbtest1";
         String vmID2 = "/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/marcinslbtest/providers/Microsoft.Compute/virtualMachines/marcinslbtest2";
 
@@ -123,10 +122,9 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
         return resources.define(newName)
                 .withRegion(region)
                 .withExistingResourceGroup(groupName)
-                .withExistingVirtualMachines(existingVMs)
                 .withExistingPublicIpAddresses(pip1)
-                .withNewPublicIpAddress(pipName2)
-                .withLoadBalancingRule("rule1", Protocol.TCP, 80, 8080)
+                .withExistingVirtualMachines(existingVMs)
+                .withLoadBalancingRule(Protocol.TCP, 80)
                 .create();
     }
 

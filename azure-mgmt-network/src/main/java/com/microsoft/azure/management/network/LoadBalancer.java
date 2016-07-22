@@ -38,7 +38,11 @@ public interface LoadBalancer extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
         DefinitionStages.WithVirtualMachine,
-        DefinitionStages.WithCreate {
+        DefinitionStages.WithCreate,
+        DefinitionStages.WithFrontends,
+        DefinitionStages.WithInternetFrontendOrBackend,
+        DefinitionStages.WithBackend,
+        DefinitionStages.WithBackendOrCreate {
     }
 
     /**
@@ -53,10 +57,52 @@ public interface LoadBalancer extends
         }
 
         /**
+         * The stage of the definition describing the nature of the frontend of the load balancer: imternal or Internet-facing.
+         */
+        interface WithFrontends extends
+            WithPublicIpAddresses<WithInternetFrontendOrBackend>,
+            WithInternetFrontends,
+            WithInternalFrontends {
+        }
+
+        /**
+         * The stage of the definition allowing to define one or more internal frontends.
+         */
+        interface WithInternalFrontends {
+            // TODO
+        }
+
+        /**
+         * The stage of the definition allowing to define one or more Internet-facing frontends.
+         */
+        interface WithInternetFrontends extends WithPublicIpAddresses<WithInternetFrontendOrBackend> {
+            // TODO defineFrontend(String name)...
+        }
+
+        /**
+         * The stage of the definition allowing to add additional Internet-facing frontends or add the first back end pool.
+         */
+        interface WithInternetFrontendOrBackend extends WithInternetFrontends, WithBackend {
+        }
+
+        /**
+         * The stage of the definition allowing to add a backend pool.
+         */
+        interface WithBackend extends WithVirtualMachine {
+        }
+
+        /**
+         * The stage of the definition allowing to add another backend pool or the first load balancing rule.
+         */
+        interface WithBackendOrCreate extends WithBackend, WithCreate {
+            // TODO
+        }
+
+        /**
          * The stage of the load balancer definition allowing to specify the resource group.
          */
         interface WithGroup
-            extends GroupableResource.DefinitionStages.WithGroup<WithVirtualMachine> {
+            extends GroupableResource.DefinitionStages.WithGroup<WithFrontends> {
         }
 
         /**
@@ -77,34 +123,35 @@ public interface LoadBalancer extends
              * @param vms existing virtual machines
              * @return the next stage of the update
              */
-            WithCreate withExistingVirtualMachines(SupportsNetworkInterfaces...vms);
+            WithBackendOrCreate withExistingVirtualMachines(SupportsNetworkInterfaces...vms);
         }
 
         /**
          * The stage of the load balancer definition allowing to add a public ip address to the load
          * balancer's front end.
+         * @param <ReturnT> the next stage of the definition
          */
-        interface WithPublicIpAddresses {
+        interface WithPublicIpAddresses<ReturnT> {
             /**
              * Sets the provided set of public IP addresses as the front end for the load balancer, making it an Internet-facing load balancer.
              * @param publicIpAddresses existing public IP addresses
              * @return the next stage of the resource definition
              */
-            WithCreate withExistingPublicIpAddresses(PublicIpAddress...publicIpAddresses);
+            ReturnT withExistingPublicIpAddresses(PublicIpAddress...publicIpAddresses);
 
             /**
              * Adds a new public IP address to the front end of the load balancer, using an automatically generated name and leaf DNS label
              * derived from the load balancer's name, in the same resource group and region.
              * @return the next stage of the definition
              */
-            WithCreate withNewPublicIpAddress();
+            ReturnT withNewPublicIpAddress();
 
             /**
              * Adds a new public IP address to the front end of the load balancer, using the specified DNS leaft label,
              * an automatically generated name derived from the DNS label, in the same resource group and region.
              * @return the next stage of the definition
              */
-            WithCreate withNewPublicIpAddress(String dnsLeafLabel);
+            ReturnT withNewPublicIpAddress(String dnsLeafLabel);
 
             /**
              * Adds a new public IP address to the front end of the load balancer, creating the public IP based on the provided {@link Creatable}
@@ -112,19 +159,41 @@ public interface LoadBalancer extends
              *
              * @return the next stage of the definition
              */
-            WithCreate withNewPublicIpAddress(Creatable<PublicIpAddress> creatablePublicIpAddress);
+            ReturnT withNewPublicIpAddress(Creatable<PublicIpAddress> creatablePublicIpAddress);
         }
 
         /**
-         * The stage of the load balancer definition allowing to create a new load balancing rule.
+         * The stage of the load balancer definition allowing to create a load balancing rule.
          */
-        interface WithLoadBalancingRule {
+        interface WithLoadBalancingRules {
             /**
-             * Adds a new load balancing rule.
-             * @param name the name of the rule
+             * Creates a load balancing rule between the specified front end and back end ports for the specified protocol.
+             * @param protocol the network protocol for the rule
+             * @param frontendPort the port number on the front end to accept incoming traffic on
+             * @param backendPort the port number on the back end to send load balanced traffic to
+             * @param name the name for the load balancing rule
              * @return the next stage of the definition
              */
-            WithCreate withLoadBalancingRule(String name, Protocol protocol, int frontEndPort, int backEndPort);
+            WithCreate withLoadBalancingRule(Protocol protocol, int frontendPort, int backendPort, String name);
+
+            /**
+             * Creates a load balancing rule between the specified front end and back end ports for the specified protocol.
+             * <p>
+             * The new rule will be assigned an automatically generated name.
+             * @param protocol the network protocol for the rule
+             * @param frontendPort the port number on the front end to accept incoming traffic on
+             * @param backendPort the port number on the back end to send load balanced traffic to
+             * @return the next stage of the definition
+             */
+            WithCreate withLoadBalancingRule(Protocol protocol, int frontendPort, int backendPort);
+
+            /**
+             * Creates a load balancing rule for the specified port and protocol.
+             * @param protocol the network protocol for the rule
+             * @param port the port number on the front and back end for the network traffic to be load balanced on
+             * @return the next stage of the definition
+             */
+            WithCreate withLoadBalancingRule(Protocol protocol, int port);
         }
 
         /**
@@ -135,8 +204,7 @@ public interface LoadBalancer extends
         interface WithCreate extends
             Creatable<LoadBalancer>,
             Resource.DefinitionWithTags<WithCreate>,
-            WithPublicIpAddresses,
-            WithLoadBalancingRule {
+            WithLoadBalancingRules {
        }
     }
 
