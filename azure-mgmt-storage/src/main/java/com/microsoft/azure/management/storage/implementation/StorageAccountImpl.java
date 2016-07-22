@@ -302,6 +302,7 @@ class StorageAccountImpl
                                     public void success(ServiceResponse<StorageAccountInner> response) {
                                         self.setInner(response.getBody());
                                         clearWrapperProperties();
+                                        callback.success(new ServiceResponse<Resource>(self, response.getResponse()));
                                     }
                                 });
                     }
