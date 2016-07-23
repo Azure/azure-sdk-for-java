@@ -10,6 +10,7 @@ import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.ManagerBase;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
 /**
@@ -22,7 +23,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
  * @param <ManagerT> the service manager type
  */
 public abstract class GroupableResourceImpl<
-        FluentModelT,
+        FluentModelT extends Resource,
         InnerModelT extends com.microsoft.azure.Resource,
         FluentModelImplT extends GroupableResourceImpl<FluentModelT, InnerModelT, FluentModelImplT, ManagerT>,
         ManagerT extends ManagerBase>

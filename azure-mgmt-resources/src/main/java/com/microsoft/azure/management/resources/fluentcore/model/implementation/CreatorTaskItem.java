@@ -43,7 +43,7 @@ public class CreatorTaskItem<ResourceT> implements TaskItem<ResourceT> {
     }
 
     @Override
-    public ServiceCall executeAsync(final TaskGroup<ResourceT, TaskItem<ResourceT>> taskGroup, final DAGNode<TaskItem<ResourceT>> node, final ServiceCallback<Void> callback) {
+    public ServiceCall executeAsync(final TaskGroup<ResourceT, TaskItem<ResourceT>> taskGroup, final DAGNode<TaskItem<ResourceT>> node, final boolean isRootNode, final ServiceCallback<ResourceT> callback) {
         final CreatorTaskItem<ResourceT> self = this;
         return (this.resourceCreator).createResourceAsync(new ServiceCallback<ResourceT>() {
             @Override
@@ -55,7 +55,11 @@ public class CreatorTaskItem<ResourceT> implements TaskItem<ResourceT> {
             public void success(ServiceResponse<ResourceT> result) {
                 self.created = result.getBody();
                 taskGroup.dag().reportedCompleted(node);
-                taskGroup.executeAsync(callback);
+                if (isRootNode) {
+                    callback.success(result);
+                } else {
+                    taskGroup.executeAsync(callback);
+                }
             }
         });
     }

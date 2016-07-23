@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 
@@ -18,7 +17,7 @@ import com.microsoft.rest.ServiceCallback;
  * @param <FluentModelImplT> the fluent model implementation type
  * @param <ResourceT> the fluent model or one of the base interface of fluent model
  */
-public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT, ResourceT>
+public abstract class CreatableImpl<FluentModelT extends ResourceT, InnerModelT, FluentModelImplT, ResourceT>
         extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
         implements CreatorTaskGroup.ResourceCreator<ResourceT> {
 
@@ -74,7 +73,7 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT,
     public ServiceCall createAsync(ServiceCallback<FluentModelT> callback) {
         if (creatorTaskGroup.isPreparer()) {
             creatorTaskGroup.prepare();
-            creatorTaskGroup.executeAsync(Utils.toVoidCallback((FluentModelT) this, callback));
+            creatorTaskGroup.executeAsync((ServiceCallback<ResourceT>) callback);
             return creatorTaskGroup.parallelServiceCall();
         }
         throw new IllegalStateException("Internal Error: createAsync can be called only on preparer");

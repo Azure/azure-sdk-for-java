@@ -16,7 +16,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
  * @param <FluentModelImplT> the implementation type of the fluent model
  * @param <ResourceT> the fluent model or one of the base interface of fluent model
  */
-public abstract class CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentModelImplT, ResourceT>
+public abstract class CreatableUpdatableImpl<FluentModelT extends ResourceT, InnerModelT, FluentModelImplT, ResourceT>
         extends CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT, ResourceT> {
 
     protected CreatableUpdatableImpl(String name, InnerModelT innerObject) {

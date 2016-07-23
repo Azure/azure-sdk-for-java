@@ -64,7 +64,7 @@ public final class Utils {
      *
      * @return new callback from the void callback
      */
-    public static <T, FluentT, ResourceT, FluentImplT extends CreatableImpl<FluentT, T, FluentImplT, ResourceT>> ServiceCallback<T>
+    public static <T, FluentT  extends ResourceT, ResourceT, FluentImplT extends CreatableImpl<FluentT, T, FluentImplT, ResourceT>> ServiceCallback<T>
             fromVoidCallback(final FluentImplT modelImpl, final ServiceCallback<Void> callback) {
         return new ServiceCallback<T>() {
             @Override

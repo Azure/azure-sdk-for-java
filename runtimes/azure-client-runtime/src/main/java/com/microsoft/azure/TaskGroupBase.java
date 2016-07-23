@@ -9,7 +9,6 @@ package com.microsoft.azure;
 
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceResponse;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -125,29 +124,14 @@ public abstract class TaskGroupBase<T>
     }
 
     @Override
-    public ServiceCall executeAsync(final ServiceCallback<Void> callback) {
+    public ServiceCall executeAsync(final ServiceCallback<T> callback) {
         ServiceCall serviceCall = null;
         DAGNode<TaskItem<T>> nextNode = dag.getNext();
         while (nextNode != null) {
-            if (dag.isRootNode(nextNode)) {
-                serviceCall = nextNode.data().executeAsync(this, nextNode, new ServiceCallback<Void>() {
-                    @Override
-                    public void failure(Throwable t) {
-                        callback.failure(t);
-                    }
-
-                    @Override
-                    public void success(ServiceResponse<Void> result) {
-                        callback.success(result);
-                    }
-                });
-            } else {
-                serviceCall = nextNode.data().executeAsync(this, nextNode, callback);
-            }
-
+            serviceCall = nextNode.data().executeAsync(this, nextNode, dag.isRootNode(nextNode), callback);
             if (serviceCall != null) {
-                // We need to filter out the null value returned by executeAsync. This can
-                // happen when TaskItem::executeAsync invokes TaskGroupBase::executeAsync
+                // Filter out the null value returned by executeAsync. that happen
+                // when TaskItem::executeAsync invokes TaskGroupBase::executeAsync
                 // but there is no task available in the queue at the moment.
                 this.serviceCalls.add(serviceCall);
             }
