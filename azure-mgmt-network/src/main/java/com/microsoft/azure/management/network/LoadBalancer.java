@@ -39,6 +39,7 @@ public interface LoadBalancer extends
         DefinitionStages.WithGroup,
         DefinitionStages.WithVirtualMachine,
         DefinitionStages.WithCreate,
+        DefinitionStages.WithCreateAndRule,
         DefinitionStages.WithFrontends,
         DefinitionStages.WithInternetFrontendOrBackend,
         DefinitionStages.WithBackend,
@@ -167,45 +168,116 @@ public interface LoadBalancer extends
          */
         interface WithLoadBalancingRule {
             /**
-             * Creates a load balancing rule between the specified front end and back end ports for the specified protocol.
-             * @param protocol the network protocol for the rule
+             * Creates a load balancing rule between the specified front end and back end ports and protocol.
              * @param frontendPort the port number on the front end to accept incoming traffic on
+             * @param protocol the protocol to load balance
              * @param backendPort the port number on the back end to send load balanced traffic to
              * @param name the name for the load balancing rule
              * @return the next stage of the definition
              */
-            WithCreate withLoadBalancingRule(TransportProtocol protocol, int frontendPort, int backendPort, String name);
+            WithCreateAndRule withLoadBalancedPort(int frontendPort, TransportProtocol protocol, int backendPort, String name);
 
             /**
-             * Creates a load balancing rule between the specified front end and back end ports for the specified protocol.
+             * Creates a load balancing rule between the specified front end and back end ports and protocol.
              * <p>
              * The new rule will be assigned an automatically generated name.
-             * @param protocol the network protocol for the rule
              * @param frontendPort the port number on the front end to accept incoming traffic on
+             * @param protocol the protocol to load balance
              * @param backendPort the port number on the back end to send load balanced traffic to
              * @return the next stage of the definition
              */
-            WithCreate withLoadBalancingRule(TransportProtocol protocol, int frontendPort, int backendPort);
+            WithCreateAndRule withLoadBalancedPort(int frontendPort, TransportProtocol protocol, int backendPort);
 
             /**
              * Creates a load balancing rule for the specified port and protocol.
-             * @param protocol the network protocol for the rule
              * @param port the port number on the front and back end for the network traffic to be load balanced on
+             * @param protocol the protocol to load balance
              * @return the next stage of the definition
              */
-            WithCreate withLoadBalancingRule(TransportProtocol protocol, int port);
+            WithCreateAndRule withLoadBalancedPort(int port, TransportProtocol protocol);
         }
 
         /**
-         * The stage of the load balancer definition which contains all the minimum required inputs for
-         * the resource to be created (via {@link WithCreate#create()}), but also allows
+         * The stage of the load balancer definition allowing to add a load balancing probe.
+         */
+        interface WithProbe {
+            /**
+             * Adds a TCP probe checking the specified port.
+             * <p>
+             * The probe will be named using an automatically generated name.
+             * @param port the port number for the probe to monitor
+             * @return the next stage of the definition
+             */
+            WithCreateAndRule withTcpProbe(int port);
+
+            /**
+             * Adds a TCP probe checking the specified port.
+             * <p>
+             * An automatically generated name is assigned to the probe.
+             * @param port the port number for the probe to monitor
+             * @param name the name for the probe, so that the probe can be referenced from load balancing rules
+             * @return the next stage of the definition
+             */
+            WithCreateAndRule withTcpProbe(int port, String name);
+
+            /**
+             * Adds an HTTP probe checking for an HTTP 200 response from the specified path at regular intervals, using port 80.
+             * <p>
+             * An automatically generated name is assigned to the probe.
+             * @param requestPath the path for the probe to invoke
+             * @return the next stage of the definition
+             */
+            WithCreateAndRule withHttpProbe(String requestPath);
+
+            /**
+             * Adds an HTTP probe checking for an HTTP 200 response from the specified path at regular intervals, using the specified port.
+             * <p>
+             * An automatically generated name is assigned to the probe.
+             * @param requestPath the path for the probe to invoke
+             * @param port the port number to check
+             * @return the next stage of the definition
+             */
+            WithCreateAndRule withHttpProbe(String requestPath, int port);
+
+            /**
+             * Adds an HTTP probe checking for an HTTP 200 response from the specified path at regular intervals, using port 80.
+             * @param requestPath the path for the probe to invoke
+             * @param name the name to assign to the probe so that references to the probe can be made from load balancing rules
+             * @return the next stage of the definition
+             */
+            WithCreateAndRule withHttpProbe(String requestPath, String name);
+
+            /**
+             * Adds an HTTP probe checking for an HTTP 200 response from the specified path at regular intervals, using the specified port.
+             * @param requestPath the path for the probe to invoke
+             * @param port the port number to check
+             * @param name the name to assign to the probe so that references to the probe can be made from load balancing rules
+             * @return the next stage of the definition
+             */
+            WithCreateAndRule withHttpProbe(String requestPath, int port, String name);
+        }
+
+
+        /**
+         * The stage of the load balancer definition containing all the required inputs for
+         * the resource to be created (via {@link WithCreate#create()}), but also allowing
          * for any other optional settings to be specified.
          */
         interface WithCreate extends
             Creatable<LoadBalancer>,
             Resource.DefinitionWithTags<WithCreate>,
+            WithProbe {
+        }
+
+        /**
+         * The stage of the load balancer definition containing all the required inputs for
+         * the resource to be created (via {@link WithCreate#create()}), but also allowing
+         * for any other optional settings to be specified, including load balancing rules.
+         */
+        interface WithCreateAndRule extends
+            WithCreate,
             WithLoadBalancingRule {
-       }
+        }
     }
 
     /**

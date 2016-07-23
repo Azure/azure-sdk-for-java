@@ -124,7 +124,8 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                 .withExistingResourceGroup(groupName)
                 .withExistingPublicIpAddresses(pip1)
                 .withExistingVirtualMachines(existingVMs)
-                .withLoadBalancingRule(TransportProtocol.TCP, 80)
+                .withTcpProbe(80)
+                .withLoadBalancedPort(80, TransportProtocol.TCP)
                 .create();
     }
 

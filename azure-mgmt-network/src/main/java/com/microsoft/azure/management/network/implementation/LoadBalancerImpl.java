@@ -13,6 +13,7 @@ import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NicIpConfiguration;
+import com.microsoft.azure.management.network.ProbeProtocol;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddress.DefinitionStages.WithGroup;
 import com.microsoft.azure.management.network.SupportsNetworkInterfaces;
@@ -78,16 +79,40 @@ class LoadBalancerImpl
                 .append(this.name()).toString();
     }
 
-    private List<LoadBalancingRuleInner> ensureLoadBalancingRules() {
+    private LoadBalancingRuleInner createLoadBalancingRuleInner(String name) {
         List<LoadBalancingRuleInner> rules = this.inner().loadBalancingRules();
         if (rules == null) {
             rules = new ArrayList<>();
             this.inner().withLoadBalancingRules(rules);
         }
-        return rules;
+
+        if (name == null) {
+           name = "lbrule" + (rules.size() + 1);
+        }
+
+        LoadBalancingRuleInner ruleInner = new LoadBalancingRuleInner().withName(name);
+        rules.add(ruleInner);
+        return ruleInner;
     }
 
-    private void ensureCreationPrerequisites()  {
+
+    private ProbeInner createProbeInner(String name) {
+        List<ProbeInner> probes = this.inner().probes();
+        if (probes == null) {
+            probes = new ArrayList<>();
+            this.inner().withProbes(probes);
+        }
+
+        if (name == null) {
+            name = "probe" + (probes.size() + 1);
+        }
+
+        ProbeInner probeInner = new ProbeInner().withName(name);
+        probes.add(probeInner);
+        return probeInner;
+    }
+
+    private void beforeCreating()  {
         // Ensure backend pools list
         List<BackendAddressPoolInner> backendPools = this.inner().backendAddressPools();
         if (backendPools == null) {
@@ -98,9 +123,9 @@ class LoadBalancerImpl
         // Ensure first backend pool
         BackendAddressPoolInner backendPool;
         if (backendPools.size() == 0) {
-            backendPool = new BackendAddressPoolInner();
+            backendPool = new BackendAddressPoolInner()
+                    .withName("backendpool" + (backendPools.size() + 1));
             backendPools.add(backendPool);
-            backendPool.withName("backendpool" + backendPools.size());
         }
 
         // Account for the newly created public IPs
@@ -112,33 +137,37 @@ class LoadBalancerImpl
         }
         this.creatablePIPKeys.clear();
 
-        // TODO Connect the load balancing rules to the first front end IP config (for now)
+        // Connect the load balancing rules to the defaults
         if (this.inner().loadBalancingRules() != null) {
             for (LoadBalancingRuleInner lbRule : this.inner().loadBalancingRules()) {
                 if (lbRule.frontendIPConfiguration() == null) {
-                    // TODO Add a reference to the first frontend IP config (TODO for now...)
-                    SubResource frontendIpConfigReference = new SubResource();
+                    // If no reference to frontend IP config yet, add reference to the first frontend IP config
                     String frontendIpConfigName = this.inner().frontendIPConfigurations().get(0).name();
-                    frontendIpConfigReference.withId(this.futureResourceId() + "/frontendIPConfigurations/" + frontendIpConfigName);
+                    SubResource frontendIpConfigReference = new SubResource()
+                            .withId(this.futureResourceId() + "/frontendIPConfigurations/" + frontendIpConfigName);
                     lbRule.withFrontendIPConfiguration(frontendIpConfigReference);
                 }
-            }
 
-            // Connect the load balancing rules to the back end pools.
-            // TODO For now, we just take the first back end pool. More logic needs to be implemented for handling more complex rule <-> backend pool.
-            for (LoadBalancingRuleInner lbRule : this.inner().loadBalancingRules()) {
                 if (lbRule.backendAddressPool() == null) {
-                    // TODO Add a reference to the first back end address pool [In progress]
-                    SubResource backendPoolReference = new SubResource();
+                    // If no reference to a back end pool, then add reference to the first back end address pool
                     String backendPoolName = this.inner().backendAddressPools().get(0).name();
-                    backendPoolReference.withId(this.futureResourceId() + "/backendAddressPools/" + backendPoolName);
+                    SubResource backendPoolReference = new SubResource()
+                            .withId(this.futureResourceId() + "/backendAddressPools/" + backendPoolName);
                     lbRule.withBackendAddressPool(backendPoolReference);
+                }
+
+                if (lbRule.probe() == null) {
+                    // If no probe assigned, add a reference to the first one
+                    String probeName = this.inner().probes().get(0).name();
+                    SubResource probeReference = new SubResource()
+                            .withId(this.futureResourceId() + "/probes/" + probeName);
+                    lbRule.withProbe(probeReference);
                 }
             }
         }
     }
 
-    private void runPostCreationTasks() throws Exception {
+    private void afterCreating() throws Exception {
         // Update the NICs to point to the backend pool
         for (SupportsNetworkInterfaces vm : this.vms) {
             NetworkInterface primaryNIC = vm.primaryNetworkInterface();
@@ -166,13 +195,13 @@ class LoadBalancerImpl
             this.inner().withFrontendIPConfigurations(frontendIpConfigs);
         }
 
-        FrontendIPConfigurationInner frontendIpConfig = new FrontendIPConfigurationInner();
-        frontendIpConfigs.add(frontendIpConfig);
         if (name == null) {
-            name = "frontend" + (frontendIpConfigs.size());
+            name = "frontend" + (frontendIpConfigs.size() + 1);
         }
-        frontendIpConfig.withName(name);
 
+        FrontendIPConfigurationInner frontendIpConfig = new FrontendIPConfigurationInner()
+                .withName(name);
+        frontendIpConfigs.add(frontendIpConfig);
         return frontendIpConfig;
     }
 
@@ -240,48 +269,79 @@ class LoadBalancerImpl
     }
 
     @Override
-    public LoadBalancerImpl withLoadBalancingRule(TransportProtocol protocol, int frontendPort, int backendPort, String name) {
-        LoadBalancingRuleInner ruleInner = new LoadBalancingRuleInner();
-        ensureLoadBalancingRules().add(ruleInner);
-
-        if (name == null) {
-            name = "lbrule" + (this.inner().loadBalancingRules().size() + 1);
-        }
-
-        ruleInner.withName(name);
-        ruleInner.withProtocol(protocol);
-        ruleInner.withFrontendPort(frontendPort);
-        ruleInner.withBackendPort(backendPort);
+    public LoadBalancerImpl withLoadBalancedPort(int frontendPort, TransportProtocol protocol, int backendPort, String name) {
+        createLoadBalancingRuleInner(name)
+            .withProtocol(protocol)
+            .withFrontendPort(frontendPort)
+            .withBackendPort(backendPort);
 
         return this;
     }
 
     @Override
-    public LoadBalancerImpl withLoadBalancingRule(TransportProtocol protocol, int frontendPort, int backendPort) {
-        return withLoadBalancingRule(protocol, frontendPort, backendPort, null);
+    public LoadBalancerImpl withLoadBalancedPort(int frontendPort, TransportProtocol protocol, int backendPort) {
+        return withLoadBalancedPort(frontendPort, protocol, backendPort, null);
     }
 
     @Override
-    public LoadBalancerImpl withLoadBalancingRule(TransportProtocol protocol, int port) {
-        return withLoadBalancingRule(protocol, port, port);
+    public LoadBalancerImpl withLoadBalancedPort(int port, TransportProtocol protocol) {
+        return withLoadBalancedPort(port, protocol, port);
+    }
+
+    @Override
+    public LoadBalancerImpl withTcpProbe(int port) {
+        return withTcpProbe(port, null);
+    }
+
+    @Override
+    public LoadBalancerImpl withTcpProbe(int port, String name) {
+        createProbeInner(name)
+            .withPort(port)
+            .withProtocol(ProbeProtocol.TCP);
+
+        return this;
+    }
+
+    @Override
+    public LoadBalancerImpl withHttpProbe(String path) {
+        return withHttpProbe(path, 80, null);
+    }
+
+    @Override
+    public LoadBalancerImpl withHttpProbe(String path, int port) {
+        return withHttpProbe(path, port, null);
+    }
+
+    @Override
+    public LoadBalancerImpl withHttpProbe(String path, String name) {
+        return withHttpProbe(path, 80, name);
+    }
+
+    @Override
+    public LoadBalancerImpl withHttpProbe(String path, int port, String name) {
+        createProbeInner(name)
+            .withRequestPath(path)
+            .withPort(port)
+            .withProtocol(ProbeProtocol.HTTP);
+        return this;
     }
 
     // Getters
 
     @Override
     protected void createResource() throws Exception {
-        ensureCreationPrerequisites();
+        beforeCreating();
 
         ServiceResponse<LoadBalancerInner> response =
                 this.innerCollection.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
         this.setInner(response.getBody());
 
-        runPostCreationTasks();
+        afterCreating();
     }
 
     @Override
     protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback)  {
-        ensureCreationPrerequisites();
+        beforeCreating();
         return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
                 Utils.fromVoidCallback(this, new ServiceCallback<Void>() {
                     @Override
@@ -293,7 +353,7 @@ class LoadBalancerImpl
                     public void success(ServiceResponse<Void> result) {
                         callback.success(result);
                         try {
-                            runPostCreationTasks();
+                            afterCreating();
                         } catch (Exception e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
