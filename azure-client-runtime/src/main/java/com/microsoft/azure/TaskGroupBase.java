@@ -9,53 +9,9 @@ package com.microsoft.azure;
 
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceResponse;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
-
-/**
- /**
- * An instance of this class provides access to the underlying REST service call running
- * in parallel.
- *
- * @param <T>
- */
-class ParallelServiceCall<T> extends ServiceCall {
-    private TaskGroupBase<T> taskGroup;
-
-    /**
-     * Creates a ParallelServiceCall.
-     *
-     * @param taskGroup the task group
-     */
-    ParallelServiceCall(TaskGroupBase<T> taskGroup) {
-        super(null);
-        this.taskGroup = taskGroup;
-    }
-
-    /**
-     * Cancels all the service calls currently executing.
-     */
-    public void cancel() {
-        for (ServiceCall call : this.taskGroup.calls()) {
-            call.cancel();
-        }
-    }
-
-    /**
-     * @return true if the call has been canceled; false otherwise.
-     */
-    public boolean isCancelled() {
-        for (ServiceCall call : this.taskGroup.calls()) {
-            if (!call.isCanceled()) {
-                return false;
-            }
-        }
-        return true;
-    }
-}
 
 /**
  * The base implementation of TaskGroup interface.
@@ -65,8 +21,7 @@ class ParallelServiceCall<T> extends ServiceCall {
 public abstract class TaskGroupBase<T>
     implements TaskGroup<T, TaskItem<T>> {
     private DAGraph<TaskItem<T>, DAGNode<TaskItem<T>>> dag;
-    private ConcurrentLinkedQueue<ServiceCall> serviceCalls = new ConcurrentLinkedQueue<>();
-    private ParallelServiceCall<T> parallelServiceCall;
+    private ParallelServiceCall parallelServiceCall;
 
     /**
      * Creates TaskGroupBase.
@@ -76,11 +31,7 @@ public abstract class TaskGroupBase<T>
      */
     public TaskGroupBase(String rootTaskItemId, TaskItem<T> rootTaskItem) {
         this.dag = new DAGraph<>(new DAGNode<>(rootTaskItemId, rootTaskItem));
-        this.parallelServiceCall = new ParallelServiceCall<>(this);
-    }
-
-    List<ServiceCall> calls() {
-        return Collections.unmodifiableList(Arrays.asList(serviceCalls.toArray(new ServiceCall[0])));
+        this.parallelServiceCall = new ParallelServiceCall();
     }
 
     @Override
@@ -91,14 +42,6 @@ public abstract class TaskGroupBase<T>
     @Override
     public boolean isPreparer() {
         return dag.isPreparer();
-    }
-
-    /**
-     * @return Gets the ParallelServiceCall instance that wraps the service calls running
-     * in parallel.
-     */
-    public ParallelServiceCall<T> parallelServiceCall() {
-        return this.parallelServiceCall;
     }
 
     @Override
@@ -116,32 +59,109 @@ public abstract class TaskGroupBase<T>
     @Override
     public void execute() throws Exception {
         DAGNode<TaskItem<T>> nextNode = dag.getNext();
-        if (nextNode == null) {
-            return;
+        while (nextNode != null) {
+            nextNode.data().execute();
+            this.dag().reportedCompleted(nextNode);
+            nextNode = dag.getNext();
         }
-
-        nextNode.data().execute(this, nextNode);
     }
 
     @Override
     public ServiceCall executeAsync(final ServiceCallback<T> callback) {
-        ServiceCall serviceCall = null;
-        DAGNode<TaskItem<T>> nextNode = dag.getNext();
-        while (nextNode != null) {
-            serviceCall = nextNode.data().executeAsync(this, nextNode, dag.isRootNode(nextNode), callback);
-            if (serviceCall != null) {
-                // Filter out the null value returned by executeAsync. that happen
-                // when TaskItem::executeAsync invokes TaskGroupBase::executeAsync
-                // but there is no task available in the queue at the moment.
-                this.serviceCalls.add(serviceCall);
-            }
-            nextNode = dag.getNext();
-        }
-        return serviceCall;
+        executeReadyTasksAsync(callback);
+        return parallelServiceCall;
     }
 
     @Override
     public T taskResult(String taskId) {
         return dag.getNodeData(taskId).result();
+    }
+
+    /**
+     * Executes all runnable tasks, a task is runnable when all the tasks its depends
+     * on are finished running.
+     *
+     * @param callback the callback
+     */
+    private void executeReadyTasksAsync(final ServiceCallback<T> callback) {
+        DAGNode<TaskItem<T>> nextNode = dag.getNext();
+        while (nextNode != null) {
+            ServiceCall serviceCall = nextNode.data().executeAsync(taskCallback(nextNode, callback));
+            this.parallelServiceCall.addCall(serviceCall);
+            nextNode = dag.getNext();
+        }
+    }
+
+    /**
+     * This method create and return a callback for the runnable task stored in the given node.
+     * This callback wraps the given callback.
+     *
+     * @param taskNode the node containing runnable task
+     * @param callback the callback to wrap
+     * @return the task callback
+     */
+    private ServiceCallback<T> taskCallback(final DAGNode<TaskItem<T>> taskNode, final ServiceCallback<T> callback) {
+        final TaskGroupBase<T> self = this;
+        return new ServiceCallback<T>() {
+            @Override
+            public void failure(Throwable t) {
+                callback.failure(t);
+            }
+
+            @Override
+            public void success(ServiceResponse<T> result) {
+                self.dag().reportedCompleted(taskNode);
+                if (self.dag().isRootNode(taskNode)) {
+                    callback.success(result);
+                } else {
+                    self.executeReadyTasksAsync(callback);
+                }
+            }
+        };
+    }
+
+    /**
+     * Type represents a set of REST calls running possibly in parallel.
+     */
+    private class ParallelServiceCall extends ServiceCall {
+        private ConcurrentLinkedQueue<ServiceCall> serviceCalls;
+
+        /**
+         * Creates a ParallelServiceCall.
+         */
+        ParallelServiceCall() {
+            super(null);
+            this.serviceCalls = new ConcurrentLinkedQueue<>();
+        }
+
+        /**
+         * Cancels all the service calls currently executing.
+         */
+        public void cancel() {
+            for (ServiceCall call : this.serviceCalls) {
+                call.cancel();
+            }
+        }
+
+        /**
+         * @return true if the call has been canceled; false otherwise.
+         */
+        public boolean isCancelled() {
+            for (ServiceCall call : this.serviceCalls) {
+                if (!call.isCanceled()) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /**
+         * Add a call to the list of parallel calls.
+         *
+         * @param call the call
+         */
+        private void addCall(ServiceCall call) {
+            this.serviceCalls.add(call);
+        }
     }
 }

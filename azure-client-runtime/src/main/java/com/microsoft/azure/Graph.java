@@ -13,6 +13,16 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * The edge types in a graph.
+ */
+enum GraphEdgeType {
+    TREE,
+    FORWARD,
+    BACK,
+    CROSS
+}
+
+/**
  * Type representing a directed graph data structure.
  * <p>
  * Each node in a graph is represented by {@link Node}
@@ -23,6 +33,11 @@ import java.util.Set;
 public class Graph<T, U extends Node<T>> {
     protected Map<String, U> graph;
     private Set<String> visited;
+    private Integer time;
+    private Map<String, Integer> entryTime;
+    private Map<String, Integer> exitTime;
+    private Map<String, String> parent;
+    private Set<String> processed;
 
     /**
      * Creates a directed graph.
@@ -30,6 +45,11 @@ public class Graph<T, U extends Node<T>> {
     public Graph() {
         this.graph = new HashMap<>();
         this.visited = new HashSet<>();
+        this.time = 0;
+        this.entryTime = new HashMap<>();
+        this.exitTime = new HashMap<>();
+        this.parent = new HashMap<>();
+        this.processed = new HashSet<>();
     }
 
     /**
@@ -53,14 +73,23 @@ public class Graph<T, U extends Node<T>> {
          *
          * @param node the node to visited
          */
-        void visit(U node);
+        void visitNode(U node);
+
+        /**
+         * visit an edge.
+         *
+         * @param fromKey key of the from node
+         * @param toKey key of the to node
+         * @param graphEdgeType the edge type
+         */
+        void visitEdge(String fromKey, String toKey, GraphEdgeType graphEdgeType);
     }
 
     /**
      * Perform DFS visit in this graph.
      * <p>
      * The directed graph will be traversed in DFS order and the visitor will be notified as
-     * search explores each node
+     * search explores each node and edge.
      *
      * @param visitor the graph visitor
      */
@@ -71,15 +100,61 @@ public class Graph<T, U extends Node<T>> {
             }
         }
         visited.clear();
+        time = 0;
+        entryTime.clear();
+        exitTime.clear();
+        parent.clear();
+        processed.clear();
     }
 
     private void dfs(Visitor visitor, Node<T> node) {
-        visitor.visit(node);
-        visited.add(node.key());
-        for (String childKey : node.children()) {
-            if (!visited.contains(childKey)) {
-                this.dfs(visitor, this.graph.get(childKey));
+        visitor.visitNode(node);
+
+        String fromKey = node.key();
+        visited.add(fromKey);
+        time++;
+        entryTime.put(fromKey, time);
+        for (String toKey : node.children()) {
+            if (!visited.contains(toKey)) {
+                parent.put(toKey, fromKey);
+                visitor.visitEdge(fromKey, toKey, edgeType(fromKey, toKey));
+                this.dfs(visitor, this.graph.get(toKey));
+            } else {
+                visitor.visitEdge(fromKey, toKey, edgeType(fromKey, toKey));
             }
+        }
+        time++;
+        exitTime.put(fromKey, time);
+        processed.add(fromKey);
+    }
+
+    private GraphEdgeType edgeType(String fromKey, String toKey) {
+        if (parent.containsKey(toKey) && parent.get(toKey).equals(fromKey)) {
+            return GraphEdgeType.TREE;
+        }
+
+        if (visited.contains(toKey) && !processed.contains(toKey)) {
+            return GraphEdgeType.BACK;
+        }
+
+        if (processed.contains(toKey) && entryTime.containsKey(toKey) && entryTime.containsKey(fromKey)) {
+            if (entryTime.get(toKey) > entryTime.get(fromKey)) {
+                return GraphEdgeType.FORWARD;
+            }
+
+            if (entryTime.get(toKey) < entryTime.get(fromKey)) {
+                return GraphEdgeType.CROSS;
+            }
+        }
+
+        throw new IllegalStateException("Internal Error: Unable to locate the edge type {" + fromKey + ", " + toKey + "}");
+    }
+
+    protected String findPath(String start, String end) {
+        if (start.equals(end)) {
+            return start;
+        } else {
+            return findPath(start, parent.get(end)) + " -> " + end;
         }
     }
 }
