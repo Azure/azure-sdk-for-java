@@ -73,8 +73,7 @@ public abstract class CreatableImpl<FluentModelT extends ResourceT, InnerModelT,
     public ServiceCall createAsync(ServiceCallback<FluentModelT> callback) {
         if (creatorTaskGroup.isPreparer()) {
             creatorTaskGroup.prepare();
-            creatorTaskGroup.executeAsync((ServiceCallback<ResourceT>) callback);
-            return creatorTaskGroup.parallelServiceCall();
+            return creatorTaskGroup.executeAsync((ServiceCallback<ResourceT>) callback);
         }
         throw new IllegalStateException("Internal Error: createAsync can be called only on preparer");
     }

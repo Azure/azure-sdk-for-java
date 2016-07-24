@@ -153,9 +153,8 @@ public class DAGraph<T, U extends DAGNode<T>> extends Graph<T, U> {
      */
     private void initializeDependentKeys() {
         visit(new Visitor<U>() {
-            // This 'visit' will be called only once per each node.
             @Override
-            public void visit(U node) {
+            public void visitNode(U node) {
                 if (node.dependencyKeys().isEmpty()) {
                     return;
                 }
@@ -164,6 +163,14 @@ public class DAGraph<T, U extends DAGNode<T>> extends Graph<T, U> {
                 for (String dependencyKey : node.dependencyKeys()) {
                     graph.get(dependencyKey)
                             .addDependent(dependentKey);
+                }
+            }
+
+            @Override
+            public  void visitEdge(String fromKey, String toKey, GraphEdgeType edgeType) {
+                System.out.println("{" + fromKey + ", " + toKey + "} " + edgeType);
+                if (edgeType == GraphEdgeType.BACK) {
+                    throw new IllegalStateException("Detected circular dependency: " + findPath(fromKey, toKey));
                 }
             }
         });

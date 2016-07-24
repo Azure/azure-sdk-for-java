@@ -1,7 +1,5 @@
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
 
-import com.microsoft.azure.DAGNode;
-import com.microsoft.azure.TaskGroup;
 import com.microsoft.azure.TaskItem;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
@@ -31,19 +29,16 @@ public class CreatorTaskItem<ResourceT> implements TaskItem<ResourceT> {
     }
 
     @Override
-    public void execute(TaskGroup<ResourceT, TaskItem<ResourceT>> taskGroup, DAGNode<TaskItem<ResourceT>> node) throws Exception {
+    public void execute() throws Exception {
         if (this.created == null) {
             // execute will be called both in update and create scenarios,
             // so run the task only if it not not executed already.
             this.created = this.resourceCreator.createResource();
         }
-
-        taskGroup.dag().reportedCompleted(node);
-        taskGroup.execute();
     }
 
     @Override
-    public ServiceCall executeAsync(final TaskGroup<ResourceT, TaskItem<ResourceT>> taskGroup, final DAGNode<TaskItem<ResourceT>> node, final boolean isRootNode, final ServiceCallback<ResourceT> callback) {
+    public ServiceCall executeAsync(final ServiceCallback<ResourceT> callback) {
         final CreatorTaskItem<ResourceT> self = this;
         return (this.resourceCreator).createResourceAsync(new ServiceCallback<ResourceT>() {
             @Override
@@ -54,12 +49,7 @@ public class CreatorTaskItem<ResourceT> implements TaskItem<ResourceT> {
             @Override
             public void success(ServiceResponse<ResourceT> result) {
                 self.created = result.getBody();
-                taskGroup.dag().reportedCompleted(node);
-                if (isRootNode) {
-                    callback.success(result);
-                } else {
-                    taskGroup.executeAsync(callback);
-                }
+                callback.success(result);
             }
         });
     }
