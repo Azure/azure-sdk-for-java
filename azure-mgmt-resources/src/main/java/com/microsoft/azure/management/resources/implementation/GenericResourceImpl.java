@@ -7,11 +7,12 @@
 package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.management.resources.GenericResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.resources.Plan;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceResponse;
 
 /**
  * The implementation for {@link GenericResource} and its nested interfaces.
@@ -132,34 +133,17 @@ final class GenericResourceImpl
 
     @Override
     public ServiceCall createAsync(final ServiceCallback<GenericResource> callback) {
-        return createResourceAsync(Utils.toVoidCallback(this, callback));
-    }
+        return createResourceAsync(new ServiceCallback<Resource>() {
+            @Override
+            public void failure(Throwable t) {
+                callback.failure(t);
+            }
 
-    @Override
-    protected void createResource() throws Exception {
-        GenericResourceInner inner = client.createOrUpdate(
-                resourceGroupName(),
-                resourceProviderNamespace,
-                parentResourceId,
-                resourceType,
-                key(),
-                apiVersion,
-                inner()
-        ).getBody();
-        this.setInner(inner);
-    }
-
-    @Override
-    protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
-        return client.createOrUpdateAsync(
-                resourceGroupName(),
-                resourceProviderNamespace,
-                parentResourceId,
-                resourceType,
-                key(),
-                apiVersion,
-                inner(),
-                Utils.fromVoidCallback(this, callback));
+            @Override
+            public void success(ServiceResponse<Resource> result) {
+                callback.success(new ServiceResponse<>((GenericResource) result.getBody(), result.getResponse()));
+            }
+        });
     }
 
     @Override
@@ -170,5 +154,47 @@ final class GenericResourceImpl
     @Override
     public ServiceCall applyAsync(ServiceCallback<GenericResource> callback) {
         return createAsync(callback);
+    }
+
+    // CreatorTaskGroup.ResourceCreator implementation
+
+    @Override
+    public Resource createResource() throws Exception {
+        GenericResourceInner inner = client.createOrUpdate(
+                resourceGroupName(),
+                resourceProviderNamespace,
+                parentResourceId,
+                resourceType,
+                key(),
+                apiVersion,
+                inner()
+        ).getBody();
+        this.setInner(inner);
+        return this;
+    }
+
+    @Override
+    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback) {
+        final GenericResourceImpl self = this;
+        return client.createOrUpdateAsync(
+                resourceGroupName(),
+                resourceProviderNamespace,
+                parentResourceId,
+                resourceType,
+                key(),
+                apiVersion,
+                inner(),
+                new ServiceCallback<GenericResourceInner>() {
+                    @Override
+                    public void failure(Throwable t) {
+                        callback.failure(t);
+                    }
+
+                    @Override
+                    public void success(ServiceResponse<GenericResourceInner> response) {
+                        self.setInner(response.getBody());
+                        callback.success(new ServiceResponse<Resource>(self, response.getResponse()));
+                    }
+                });
     }
 }

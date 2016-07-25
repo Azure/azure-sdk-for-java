@@ -25,11 +25,11 @@ import java.util.TreeMap;
  * @param <FluentModelImplT> the implementation type of the fluent model type
  */
 public abstract class ResourceImpl<
-        FluentModelT,
+        FluentModelT extends Resource,
         InnerModelT extends com.microsoft.azure.Resource,
         FluentModelImplT extends ResourceImpl<FluentModelT, InnerModelT, FluentModelImplT>>
     extends
-        CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
+        CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentModelImplT, Resource>
     implements
         Resource {
 

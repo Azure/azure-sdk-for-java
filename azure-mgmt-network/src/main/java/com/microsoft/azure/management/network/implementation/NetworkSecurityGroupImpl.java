@@ -7,8 +7,8 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -100,32 +100,6 @@ class NetworkSecurityGroupImpl
         return createAsync(callback);
     }
 
-    @Override
-    protected void createResource() throws Exception {
-        ServiceResponse<NetworkSecurityGroupInner> response =
-                this.innerCollection.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
-        this.setInner(response.getBody());
-        initializeRulesFromInner();
-    }
-
-    @Override
-    protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
-                Utils.fromVoidCallback(this, new ServiceCallback<Void>() {
-                    @Override
-                    public void failure(Throwable t) {
-                        callback.failure(t);
-                    }
-
-                    @Override
-                    public void success(ServiceResponse<Void> result) {
-                        initializeRulesFromInner();
-                        callback.success(result);
-                    }
-                }));
-    }
-
-
     // Setters (fluent)
 
     @Override
@@ -173,5 +147,35 @@ class NetworkSecurityGroupImpl
             }
         }
         return Collections.unmodifiableList(ids);
+    }
+
+    // CreatorTaskGroup.ResourceCreator implementation
+
+    @Override
+    public Resource createResource() throws Exception {
+        ServiceResponse<NetworkSecurityGroupInner> response =
+                this.innerCollection.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
+        this.setInner(response.getBody());
+        initializeRulesFromInner();
+        return this;
+    }
+
+    @Override
+    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback) {
+        final NetworkSecurityGroupImpl self = this;
+        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
+                new ServiceCallback<NetworkSecurityGroupInner>() {
+                    @Override
+                    public void failure(Throwable t) {
+                        callback.failure(t);
+                    }
+
+                    @Override
+                    public void success(ServiceResponse<NetworkSecurityGroupInner> response) {
+                        self.setInner(response.getBody());
+                        initializeRulesFromInner();
+                        callback.success(new ServiceResponse<Resource>(self, response.getResponse()));
+                    }
+                });
     }
  }

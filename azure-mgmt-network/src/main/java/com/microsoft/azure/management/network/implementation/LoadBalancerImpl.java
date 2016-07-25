@@ -22,9 +22,9 @@ import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddress.DefinitionStages.WithGroup;
 import com.microsoft.azure.management.network.SupportsNetworkInterfaces;
 import com.microsoft.azure.management.network.TransportProtocol;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -377,40 +377,6 @@ class LoadBalancerImpl
     }
 
     @Override
-    protected void createResource() throws Exception {
-        beforeCreating();
-
-        ServiceResponse<LoadBalancerInner> response =
-                this.innerCollection.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
-        this.setInner(response.getBody());
-
-        afterCreating();
-    }
-
-    @Override
-    protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback)  {
-        beforeCreating();
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
-                Utils.fromVoidCallback(this, new ServiceCallback<Void>() {
-                    @Override
-                    public void failure(Throwable t) {
-                        callback.failure(t);
-                    }
-
-                    @Override
-                    public void success(ServiceResponse<Void> result) {
-                        callback.success(result);
-                        try {
-                            afterCreating();
-                        } catch (Exception e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                    }
-                }));
-    }
-
-    @Override
     public List<String> publicIpAddressIds() {
         List<String> publicIpAddressIds = new ArrayList<>();
         if (this.inner().frontendIPConfigurations() != null) {
@@ -419,5 +385,42 @@ class LoadBalancerImpl
             }
         }
         return Collections.unmodifiableList(publicIpAddressIds);
+    }
+
+    // CreatorTaskGroup.ResourceCreator implementation
+
+    @Override
+    public Resource createResource() throws Exception {
+        beforeCreating();
+        ServiceResponse<LoadBalancerInner> response =
+                this.innerCollection.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
+        this.setInner(response.getBody());
+        afterCreating();
+        return this;
+    }
+
+    @Override
+    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback)  {
+        final LoadBalancerImpl self = this;
+        beforeCreating();
+        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
+                new ServiceCallback<LoadBalancerInner>() {
+                    @Override
+                    public void failure(Throwable t) {
+                        callback.failure(t);
+                    }
+
+                    @Override
+                    public void success(ServiceResponse<LoadBalancerInner> response) {
+                        self.setInner(response.getBody());
+                        callback.success(new ServiceResponse<Resource>(self, response.getResponse()));
+                        try {
+                            afterCreating();
+                        } catch (Exception e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 }

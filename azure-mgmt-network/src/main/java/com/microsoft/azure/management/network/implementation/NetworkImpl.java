@@ -7,12 +7,11 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Subnet;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -175,36 +174,40 @@ class NetworkImpl
     }
 
     @Override
-    protected void createResource() throws Exception {
+    public SubnetImpl updateSubnet(String name) {
+        return (SubnetImpl) this.subnets.get(name);
+    }
+
+    // CreatorTaskGroup.ResourceCreator implementation
+
+    @Override
+    public Resource createResource() throws Exception {
         ensureCreationPrerequisites();
 
         ServiceResponse<VirtualNetworkInner> response =
                 this.innerCollection.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
         this.setInner(response.getBody());
         initializeSubnetsFromInner();
+        return this;
     }
 
     @Override
-    protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
+    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback) {
+        final  NetworkImpl self = this;
         ensureCreationPrerequisites();
-
         return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
-                Utils.fromVoidCallback(this, new ServiceCallback<Void>() {
+                new ServiceCallback<VirtualNetworkInner>() {
                     @Override
                     public void failure(Throwable t) {
                         callback.failure(t);
                     }
 
                     @Override
-                    public void success(ServiceResponse<Void> result) {
+                    public void success(ServiceResponse<VirtualNetworkInner> response) {
+                        self.setInner(response.getBody());
                         initializeSubnetsFromInner();
-                        callback.success(result);
+                        callback.success(new ServiceResponse<Resource>(self, response.getResponse()));
                     }
-                }));
-    }
-
-    @Override
-    public SubnetImpl updateSubnet(String name) {
-        return (SubnetImpl) this.subnets.get(name);
+                });
     }
 }
