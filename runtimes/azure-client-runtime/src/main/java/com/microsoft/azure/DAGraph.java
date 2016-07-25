@@ -167,9 +167,8 @@ public class DAGraph<T, U extends DAGNode<T>> extends Graph<T, U> {
             }
 
             @Override
-            public  void visitEdge(String fromKey, String toKey, GraphEdgeType edgeType) {
-                System.out.println("{" + fromKey + ", " + toKey + "} " + edgeType);
-                if (edgeType == GraphEdgeType.BACK) {
+            public  void visitEdge(String fromKey, String toKey, EdgeType edgeType) {
+                if (edgeType == EdgeType.BACK) {
                     throw new IllegalStateException("Detected circular dependency: " + findPath(fromKey, toKey));
                 }
             }
