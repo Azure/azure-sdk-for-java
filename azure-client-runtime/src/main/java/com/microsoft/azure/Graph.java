@@ -13,16 +13,6 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * The edge types in a graph.
- */
-enum GraphEdgeType {
-    TREE,
-    FORWARD,
-    BACK,
-    CROSS
-}
-
-/**
  * Type representing a directed graph data structure.
  * <p>
  * Each node in a graph is represented by {@link Node}
@@ -59,30 +49,6 @@ public class Graph<T, U extends Node<T>> {
      */
     public void addNode(U node) {
         graph.put(node.key(), node);
-    }
-
-    /**
-     * Represents a visitor to be implemented by the consumer who want to visit the
-     * graph's nodes in DFS order.
-     *
-     * @param <U> the type of the node
-     */
-    interface Visitor<U> {
-        /**
-         * visit a node.
-         *
-         * @param node the node to visited
-         */
-        void visitNode(U node);
-
-        /**
-         * visit an edge.
-         *
-         * @param fromKey key of the from node
-         * @param toKey key of the to node
-         * @param graphEdgeType the edge type
-         */
-        void visitEdge(String fromKey, String toKey, GraphEdgeType graphEdgeType);
     }
 
     /**
@@ -128,22 +94,22 @@ public class Graph<T, U extends Node<T>> {
         processed.add(fromKey);
     }
 
-    private GraphEdgeType edgeType(String fromKey, String toKey) {
+    private EdgeType edgeType(String fromKey, String toKey) {
         if (parent.containsKey(toKey) && parent.get(toKey).equals(fromKey)) {
-            return GraphEdgeType.TREE;
+            return EdgeType.TREE;
         }
 
         if (visited.contains(toKey) && !processed.contains(toKey)) {
-            return GraphEdgeType.BACK;
+            return EdgeType.BACK;
         }
 
         if (processed.contains(toKey) && entryTime.containsKey(toKey) && entryTime.containsKey(fromKey)) {
             if (entryTime.get(toKey) > entryTime.get(fromKey)) {
-                return GraphEdgeType.FORWARD;
+                return EdgeType.FORWARD;
             }
 
             if (entryTime.get(toKey) < entryTime.get(fromKey)) {
-                return GraphEdgeType.CROSS;
+                return EdgeType.CROSS;
             }
         }
 
@@ -156,5 +122,51 @@ public class Graph<T, U extends Node<T>> {
         } else {
             return findPath(start, parent.get(end)) + " -> " + end;
         }
+    }
+
+    /**
+     * The edge types in a graph.
+     */
+    enum EdgeType {
+        /**
+         * An edge (u, v) is a tree edge if v is visited the first time.
+         */
+        TREE,
+        /**
+         * An edge (u, v) is a forward edge if v is descendant of u.
+         */
+        FORWARD,
+        /**
+         * An edge (u, v) is a back edge if v is ancestor of u.
+         */
+        BACK,
+        /**
+         * An edge (u, v) is a cross edge if v is neither ancestor or descendant of u.
+         */
+        CROSS
+    }
+
+    /**
+     * Represents a visitor to be implemented by the consumer who want to visit the
+     * graph's nodes in DFS order by calling visit method.
+     *
+     * @param <U> the type of the node
+     */
+    interface Visitor<U> {
+        /**
+         * visit a node.
+         *
+         * @param node the node to visited
+         */
+        void visitNode(U node);
+
+        /**
+         * visit an edge.
+         *
+         * @param fromKey key of the from node
+         * @param toKey key of the to node
+         * @param edgeType the edge type
+         */
+        void visitEdge(String fromKey, String toKey, EdgeType edgeType);
     }
 }
