@@ -8,11 +8,15 @@ package com.microsoft.azure.management.network.implementation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.network.HttpProbe;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NicIpConfiguration;
+import com.microsoft.azure.management.network.TcpProbe;
 import com.microsoft.azure.management.network.ProbeProtocol;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddress.DefinitionStages.WithGroup;
@@ -42,6 +46,8 @@ class LoadBalancerImpl
     private final LoadBalancersInner innerCollection;
     private final List<SupportsNetworkInterfaces> vms = new ArrayList<>();
     private List<String> creatablePIPKeys = new ArrayList<>();
+    private final TreeMap<String, TcpProbe> tcpProbes = new TreeMap<>();
+    private final TreeMap<String, HttpProbe> httpProbes = new TreeMap<>();
 
     LoadBalancerImpl(String name,
             final LoadBalancerInner innerModel,
@@ -72,6 +78,26 @@ class LoadBalancerImpl
     }
 
     // Helpers
+    private List<ProbeInner> ensureProbes() {
+        List<ProbeInner> probes = this.inner().probes();
+        if (probes == null) {
+            probes = new ArrayList<>();
+            this.inner().withProbes(probes);
+        }
+
+        return probes;
+    }
+
+    LoadBalancerImpl withProbe(ProbeImpl probe) {
+        ensureProbes().add(probe.inner());
+        if (probe.protocol() == ProbeProtocol.HTTP) {
+            httpProbes.put(probe.name(), probe);
+        } else if (probe.protocol() == ProbeProtocol.TCP) {
+            tcpProbes.put(probe.name(), probe);
+        }
+        return this;
+    }
+
     private String futureResourceId() {
         return new StringBuilder()
                 .append(super.resourceIdBase())
@@ -97,12 +123,7 @@ class LoadBalancerImpl
 
 
     private ProbeInner createProbeInner(String name) {
-        List<ProbeInner> probes = this.inner().probes();
-        if (probes == null) {
-            probes = new ArrayList<>();
-            this.inner().withProbes(probes);
-        }
-
+        final List<ProbeInner> probes = ensureProbes();
         if (name == null) {
             name = "probe" + (probes.size() + 1);
         }
@@ -326,7 +347,34 @@ class LoadBalancerImpl
         return this;
     }
 
+    @Override
+    public ProbeImpl defineTcpProbe(String name) {
+        ProbeInner inner = new ProbeInner()
+                .withName(name)
+                .withProtocol(ProbeProtocol.TCP);
+        return new ProbeImpl(name, inner, this);
+    }
+
+    @Override
+    public ProbeImpl defineHttpProbe(String name) {
+        ProbeInner inner = new ProbeInner()
+                .withName(name)
+                .withProtocol(ProbeProtocol.HTTP)
+                .withPort(80);
+        return new ProbeImpl(name, inner, this);
+    }
+
     // Getters
+
+    @Override
+    public Map<String, TcpProbe> tcpProbes() {
+        return Collections.unmodifiableMap(this.tcpProbes);
+    }
+
+    @Override
+    public Map<String, HttpProbe> httpProbes() {
+        return Collections.unmodifiableMap(this.httpProbes);
+    }
 
     @Override
     protected void createResource() throws Exception {

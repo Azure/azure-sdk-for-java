@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network;
 
 import java.util.List;
+import java.util.Map;
 
 import com.microsoft.azure.management.network.implementation.LoadBalancerInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -30,6 +31,16 @@ public interface LoadBalancer extends
      * @return resource IDs of the public IP addresses assigned to the front end of this load balancer
      */
     List<String> publicIpAddressIds();
+
+    /**
+     * @return TCP probes of this load balancer as a map indexed by the probe name
+     */
+    Map<String, TcpProbe> tcpProbes();
+
+    /**
+     * @return HTTP probes of this load balancer as a map indexed by the probe name
+     */
+    Map<String, HttpProbe> httpProbes();
 
     /**
      * The entirety of the load balancer definition.
@@ -255,6 +266,24 @@ public interface LoadBalancer extends
              * @return the next stage of the definition
              */
             WithCreateAndRule withHttpProbe(String requestPath, int port, String name);
+
+            /**
+             * Begins the definition of a new TCP probe to add to the load balancer.
+             * <p>
+             * The definition must be completed with a call to {@link TcpProbe.DefinitionStages.WithAttach#attach()}
+             * @param name the name of the probe
+             * @return the first stage of the new probe definition
+             */
+            TcpProbe.DefinitionStages.Blank<WithCreate> defineTcpProbe(String name);
+
+            /**
+             * Begins the definition of a new HTTP probe to add to the load balancer.
+             * <p>
+             * The definition must be completed with a call to {@link HttpProbe.DefinitionStages.WithAttach#attach()}
+             * @param name the name of the probe
+             * @return the first stage of the new probe definition
+             */
+            HttpProbe.DefinitionStages.Blank<WithCreate> defineHttpProbe(String name);
         }
 
 

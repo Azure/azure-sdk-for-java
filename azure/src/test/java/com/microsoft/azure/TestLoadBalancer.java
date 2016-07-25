@@ -126,6 +126,12 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                 .withExistingVirtualMachines(existingVMs)
                 .withTcpProbe(80)
                 .withLoadBalancedPort(80, TransportProtocol.TCP)
+                .defineTcpProbe("probeTCP")
+                    .withPort(25)
+                    .attach()
+                .defineHttpProbe("probeHTTP")
+                    .withRequestPath("/")
+                    .attach()
                 .create();
     }
 
