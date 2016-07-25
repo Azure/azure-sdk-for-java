@@ -6,6 +6,7 @@
 package com.microsoft.azure.eventprocessorhost;
 
 import java.util.List;
+import java.util.Locale;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -32,13 +33,11 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.microsoft.azure.servicebus.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.SharedAccessSignatureTokenProvider;
-
 
 class PartitionManager
 {
@@ -65,7 +64,12 @@ class PartitionManager
 	        	String contentEncoding = StandardCharsets.UTF_8.name();
 	        	ConnectionStringBuilder connectionString = new ConnectionStringBuilder(this.host.getEventHubConnectionString());
 	        	URI namespaceUri = new URI("https", connectionString.getEndpoint().getHost(), null, null);
-	        	String resourcePath = String.join("/", namespaceUri.toString(), connectionString.getEntityPath());
+	        	String resourcePath = String.join("/", 
+	        			namespaceUri.toString(),
+	        			connectionString.getEntityPath(),
+	        			"consumergroups",
+	        			this.host.getConsumerGroupName(),
+	        			"partitions");
 	        	
 	        	final String authorizationToken = SharedAccessSignatureTokenProvider.generateSharedAccessSignature(
 	        			connectionString.getSasKeyName(), connectionString.getSasKey(), 
@@ -82,18 +86,18 @@ class PartitionManager
 	        	Document doc = docBuilder.parse(responseStream);
 	        	
 	        	XPath xpath = XPathFactory.newInstance().newXPath();
-	        	Node partitionIdsNode = ((NodeList) xpath.evaluate("//entry/content/EventHubDescription/PartitionIds", doc.getDocumentElement(), XPathConstants.NODESET)).item(0);
-	        	NodeList partitionIdsNodes = partitionIdsNode.getChildNodes();
+	        	NodeList partitionIdsNodes = (NodeList) xpath.evaluate("//feed/entry/title", doc.getDocumentElement(), XPathConstants.NODESET);
 	        	
-	        	this.partitionIds = new ArrayList<String>();
-	            for (int partitionIndex = 0; partitionIndex < partitionIdsNodes.getLength(); partitionIndex++)
+	        	for (int partitionIndex = 0; partitionIndex < partitionIdsNodes.getLength(); partitionIndex++)
 	        	{
 	        		this.partitionIds.add(partitionIdsNodes.item(partitionIndex).getTextContent());    		
 	        	}
         	}
         	catch(XPathExpressionException|ParserConfigurationException|IOException|InvalidKeyException|NoSuchAlgorithmException|URISyntaxException|SAXException exception)
         	{
-        		throw new EPHConfigurationException("Encountered error while fetching the list of EventHub PartitionIds", exception);
+        		final String errorMessage = String.format(Locale.US, "Encountered error while fetching the list of EventHub PartitionIds: %s", exception.getMessage());
+        		this.host.logWithHost(Level.SEVERE, errorMessage);
+        		throw new EPHConfigurationException(errorMessage, exception);
         	}
             
             this.host.logWithHost(Level.INFO, "Eventhub " + this.host.getEventHubPath() + " count of partitions: " + this.partitionIds.size());
