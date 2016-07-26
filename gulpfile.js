@@ -17,6 +17,12 @@ var mappings = {
         'package': 'com.microsoft.azure.management.graphrbac',
         'args': '-FT 1'
     },
+    'keyvault': {
+        'dir': 'azure-mgmt-keyvault',
+        'source': 'arm-keyvault/2015-06-01/swagger/keyvault.json',
+        'package': 'com.microsoft.azure.management.keyvault',
+        'args': '-FT 1'
+    },
     'storage': {
         'dir': 'azure-mgmt-storage',
         'source': 'arm-storage/2016-01-01/swagger/storage.json',
