@@ -17,10 +17,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * The base implementation of TaskGroup interface.
  *
  * @param <T> the result type of the tasks in the group
+ * @param <U> the task item
  */
-public abstract class TaskGroupBase<T>
-    implements TaskGroup<T, TaskItem<T>> {
-    private DAGraph<TaskItem<T>, DAGNode<TaskItem<T>>> dag;
+public abstract class TaskGroupBase<T, U extends TaskItem<T>>
+    implements TaskGroup<T, U> {
+    private DAGraph<U, DAGNode<U>> dag;
     private ParallelServiceCall parallelServiceCall;
 
     /**
@@ -29,13 +30,13 @@ public abstract class TaskGroupBase<T>
      * @param rootTaskItemId the id of the root task in this task group
      * @param rootTaskItem the root task
      */
-    public TaskGroupBase(String rootTaskItemId, TaskItem<T> rootTaskItem) {
+    public TaskGroupBase(String rootTaskItemId, U rootTaskItem) {
         this.dag = new DAGraph<>(new DAGNode<>(rootTaskItemId, rootTaskItem));
         this.parallelServiceCall = new ParallelServiceCall();
     }
 
     @Override
-    public DAGraph<TaskItem<T>, DAGNode<TaskItem<T>>> dag() {
+    public DAGraph<U, DAGNode<U>> dag() {
         return dag;
     }
 
@@ -45,7 +46,7 @@ public abstract class TaskGroupBase<T>
     }
 
     @Override
-    public void merge(TaskGroup<T, TaskItem<T>> parentTaskGroup) {
+    public void merge(TaskGroup<T, U> parentTaskGroup) {
         dag.merge(parentTaskGroup.dag());
     }
 
@@ -58,7 +59,7 @@ public abstract class TaskGroupBase<T>
 
     @Override
     public void execute() throws Exception {
-        DAGNode<TaskItem<T>> nextNode = dag.getNext();
+        DAGNode<U> nextNode = dag.getNext();
         while (nextNode != null) {
             nextNode.data().execute();
             this.dag().reportedCompleted(nextNode);
@@ -84,7 +85,7 @@ public abstract class TaskGroupBase<T>
      * @param callback the callback
      */
     private void executeReadyTasksAsync(final ServiceCallback<T> callback) {
-        DAGNode<TaskItem<T>> nextNode = dag.getNext();
+        DAGNode<U> nextNode = dag.getNext();
         while (nextNode != null) {
             ServiceCall serviceCall = nextNode.data().executeAsync(taskCallback(nextNode, callback));
             this.parallelServiceCall.addCall(serviceCall);
@@ -100,8 +101,8 @@ public abstract class TaskGroupBase<T>
      * @param callback the callback to wrap
      * @return the task callback
      */
-    private ServiceCallback<T> taskCallback(final DAGNode<TaskItem<T>> taskNode, final ServiceCallback<T> callback) {
-        final TaskGroupBase<T> self = this;
+    private ServiceCallback<T> taskCallback(final DAGNode<U> taskNode, final ServiceCallback<T> callback) {
+        final TaskGroupBase<T, U> self = this;
         return new ServiceCallback<T>() {
             @Override
             public void failure(Throwable t) {

@@ -7,6 +7,7 @@
 
 package com.microsoft.azure;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -49,6 +50,13 @@ public class Graph<T, U extends Node<T>> {
      */
     public void addNode(U node) {
         graph.put(node.key(), node);
+    }
+
+    /**
+     * @return all nodes in the graph.
+     */
+    public Collection<U> getNodes() {
+        return graph.values();
     }
 
     /**
