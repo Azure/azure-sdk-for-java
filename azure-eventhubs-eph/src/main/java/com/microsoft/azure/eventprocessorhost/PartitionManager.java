@@ -392,7 +392,11 @@ class PartitionManager
             	}
             	else
             	{
-            		this.pump.removePump(partitionId, CloseReason.LeaseLost);
+            		Future<?> removing = this.pump.removePump(partitionId, CloseReason.LeaseLost);
+            		if (removing != null)
+            		{
+            			removing.get();
+            		}
             	}
             }
             
