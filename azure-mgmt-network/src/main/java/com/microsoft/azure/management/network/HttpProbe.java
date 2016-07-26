@@ -37,7 +37,9 @@ public interface HttpProbe extends Probe {
          */
         interface WithAttach<ParentT> extends
             Attachable.InDefinition<ParentT>,
-            WithPort<ParentT> {
+            WithPort<ParentT>,
+            WithIntervalInSeconds<ParentT>,
+            WithNumberOfProbes<ParentT> {
         }
 
         /**
@@ -49,16 +51,42 @@ public interface HttpProbe extends Probe {
         }
 
         /**
+         * The stage of the HTTP probe definition allowing to specify the probe interval.
+         * @param <ParentT> the parent resource type
+         */
+        interface WithIntervalInSeconds<ParentT> {
+            /**
+             * Specifies the interval between probes, in seconds.
+             * @param seconds number of seconds
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withIntervalInSeconds(int seconds);
+        }
+
+        /**
          * The stage of the probe definition allowing to specify the port to monitor.
          * @param <ParentT> the parent type
          */
         interface WithPort<ParentT> {
             /**
-             * Specifies the port number to call the {@link HttpProbe#requestPath()} on.
+             * Specifies the port number to call for health monitoring.
              * @param port a port number
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withPort(int port);
+        }
+
+        /**
+         * The stage of the HTTP probe definition allowing to specify the number of unsuccessful probes before failure is determined.
+         * @param <ParentT>
+         */
+        interface WithNumberOfProbes<ParentT> {
+            /**
+             * Specifies the number of unsuccessful probes before failure is determined.
+             * @param probes number of probes
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withNumberOfProbes(int probes);
         }
     }
 

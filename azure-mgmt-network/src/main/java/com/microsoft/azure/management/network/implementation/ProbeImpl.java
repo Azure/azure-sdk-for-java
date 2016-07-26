@@ -33,8 +33,18 @@ class ProbeImpl
     // Getters
 
     @Override
+    public int intervalInSeconds() {
+        return this.inner().intervalInSeconds();
+    }
+
+    @Override
     public int port() {
         return this.inner().port();
+    }
+
+    @Override
+    public int numberOfProbes() {
+        return this.inner().numberOfProbes();
     }
 
     @Override
@@ -63,6 +73,18 @@ class ProbeImpl
     @Override
     public ProbeImpl withRequestPath(String requestPath) {
         this.inner().withRequestPath(requestPath);
+        return this;
+    }
+
+    @Override
+    public ProbeImpl withIntervalInSeconds(int seconds) {
+        this.inner().withIntervalInSeconds(seconds);
+        return this;
+    }
+
+    @Override
+    public ProbeImpl withNumberOfProbes(int probes) {
+        this.inner().withNumberOfProbes(probes);
         return this;
     }
 

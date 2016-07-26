@@ -14,12 +14,14 @@ import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.compute.VirtualMachines;
+import com.microsoft.azure.management.network.HttpProbe;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancers;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddresses;
+import com.microsoft.azure.management.network.TcpProbe;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
@@ -127,10 +129,15 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                 .withTcpProbe(80)
                 .withLoadBalancedPort(80, TransportProtocol.TCP)
                 .defineTcpProbe("probeTCP")
-                    .withPort(25)
+                    .withPort(25)               // Required
+                    .withIntervalInSeconds(15)  // Optionals
+                    .withNumberOfProbes(5)
                     .attach()
                 .defineHttpProbe("probeHTTP")
-                    .withRequestPath("/")
+                    .withRequestPath("/")       // Required
+                    .withPort(80)               // Optionals
+                    .withIntervalInSeconds(13)
+                    .withNumberOfProbes(4)
                     .attach()
                 .create();
     }
@@ -164,6 +171,25 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
             for (String pipId : resource.publicIpAddressIds()) {
                 info.append("\n\t\tPIP id: ").append(pipId);
             }
+        }
+
+        // Show TCP probes
+        info.append("\n\tTCP probes:");
+        for (TcpProbe probe : resource.tcpProbes().values()) {
+            info.append("\n\t\tProbe name: ").append(probe.name())
+                .append("\n\t\tPort: ").append(probe.port())
+                .append("\n\t\tInterval in seconds: ").append(probe.intervalInSeconds())
+                .append("\n\t\tRetries before unhealthy: ").append(probe.numberOfProbes());
+        }
+
+        // Show HTTP probes
+        info.append("\n\tHTTP probes:");
+        for (HttpProbe probe : resource.httpProbes().values()) {
+            info.append("\n\t\tProbe name: ").append(probe.name())
+                .append("\n\t\tPort: ").append(probe.port())
+                .append("\n\t\tInterval in seconds: ").append(probe.intervalInSeconds())
+                .append("\n\t\tRetries before unhealthy: ").append(probe.numberOfProbes())
+                .append("\n\t\tHTTP request path: ").append(probe.requestPath());
         }
 
         System.out.println(info.toString());

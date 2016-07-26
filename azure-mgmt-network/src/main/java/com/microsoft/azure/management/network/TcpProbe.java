@@ -37,6 +37,32 @@ public interface TcpProbe extends Probe {
             WithAttach<ParentT> withPort(int port);
         }
 
+        /**
+         * The stage of the TCP probe definition allowing to specify the probe interval.
+         * @param <ParentT> the parent resource type
+         */
+        interface WithIntervalInSeconds<ParentT> {
+            /**
+             * Specifies the interval between probes, in seconds.
+             * @param seconds number of seconds
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withIntervalInSeconds(int seconds);
+        }
+
+        /**
+         * The stage of the TCP probe definition allowing to specify the number of unsuccessful probes before failure is determined.
+         * @param <ParentT>
+         */
+        interface WithNumberOfProbes<ParentT> {
+            /**
+             * Specifies the number of unsuccessful probes before failure is determined.
+             * @param probes number of probes
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withNumberOfProbes(int probes);
+        }
+
         /** The final stage of the probe definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the probe definition
@@ -44,7 +70,9 @@ public interface TcpProbe extends Probe {
          * @param <ParentT> the parent resource type
          */
         interface WithAttach<ParentT> extends
-            Attachable.InDefinition<ParentT> {
+            Attachable.InDefinition<ParentT>,
+            WithIntervalInSeconds<ParentT>,
+            WithNumberOfProbes<ParentT> {
         }
     }
 

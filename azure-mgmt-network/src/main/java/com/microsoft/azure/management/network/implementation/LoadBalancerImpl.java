@@ -55,6 +55,7 @@ class LoadBalancerImpl
             final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
         this.innerCollection = innerCollection;
+        initializeProbesFromInner();
     }
 
     // Verbs
@@ -64,6 +65,7 @@ class LoadBalancerImpl
         ServiceResponse<LoadBalancerInner> response =
             this.innerCollection.get(this.resourceGroupName(), this.name());
         this.setInner(response.getBody());
+        initializeProbesFromInner();
         return this;
     }
 
@@ -131,6 +133,43 @@ class LoadBalancerImpl
         ProbeInner probeInner = new ProbeInner().withName(name);
         probes.add(probeInner);
         return probeInner;
+    }
+
+    // CreatorTaskGroup.ResourceCreator implementation
+
+    @Override
+    public Resource createResource() throws Exception {
+        beforeCreating();
+        ServiceResponse<LoadBalancerInner> response =
+                this.innerCollection.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
+        this.setInner(response.getBody());
+        afterCreating();
+        return this;
+    }
+
+    @Override
+    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback)  {
+        final LoadBalancerImpl self = this;
+        beforeCreating();
+        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
+                new ServiceCallback<LoadBalancerInner>() {
+                    @Override
+                    public void failure(Throwable t) {
+                        callback.failure(t);
+                    }
+
+                    @Override
+                    public void success(ServiceResponse<LoadBalancerInner> response) {
+                        self.setInner(response.getBody());
+                        callback.success(new ServiceResponse<Resource>(self, response.getResponse()));
+                        try {
+                            afterCreating();
+                        } catch (Exception e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 
     private void beforeCreating()  {
@@ -203,6 +242,21 @@ class LoadBalancerImpl
 
         this.vms.clear();
         this.refresh();
+    }
+
+    private void initializeProbesFromInner() {
+        this.httpProbes.clear();
+        this.tcpProbes.clear();
+        if (this.inner().probes() != null) {
+            for (ProbeInner probeInner : this.inner().probes()) {
+                ProbeImpl probe = new ProbeImpl(probeInner.name(), probeInner, this);
+                if (probeInner.protocol().equals(ProbeProtocol.TCP)) {
+                    this.tcpProbes.put(probeInner.name(), probe);
+                } else if (probeInner.protocol().equals(ProbeProtocol.HTTP)) {
+                    this.httpProbes.put(probeInner.name(), probe);
+                }
+            }
+        }
     }
 
     NetworkManager myManager() {
@@ -385,42 +439,5 @@ class LoadBalancerImpl
             }
         }
         return Collections.unmodifiableList(publicIpAddressIds);
-    }
-
-    // CreatorTaskGroup.ResourceCreator implementation
-
-    @Override
-    public Resource createResource() throws Exception {
-        beforeCreating();
-        ServiceResponse<LoadBalancerInner> response =
-                this.innerCollection.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
-        this.setInner(response.getBody());
-        afterCreating();
-        return this;
-    }
-
-    @Override
-    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback)  {
-        final LoadBalancerImpl self = this;
-        beforeCreating();
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
-                new ServiceCallback<LoadBalancerInner>() {
-                    @Override
-                    public void failure(Throwable t) {
-                        callback.failure(t);
-                    }
-
-                    @Override
-                    public void success(ServiceResponse<LoadBalancerInner> response) {
-                        self.setInner(response.getBody());
-                        callback.success(new ServiceResponse<Resource>(self, response.getResponse()));
-                        try {
-                            afterCreating();
-                        } catch (Exception e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                    }
-                });
     }
 }
