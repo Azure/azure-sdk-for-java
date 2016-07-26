@@ -25,6 +25,7 @@ import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.microsoft.azure.keyvault.models.CertificateItem;
 import com.microsoft.azure.keyvault.models.KeyVaultErrorException;
 import com.microsoft.azure.keyvault.models.SecretBundle;
 import com.microsoft.azure.Page;
@@ -196,22 +197,10 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
 
         HashSet<String> toDelete = new HashSet<String>();
 
-        listResult.forEach((item) -> {
+        for (SecretItem item : listResult) {
             SecretIdentifier id = new SecretIdentifier(item.id());
             toDelete.add(id.name());
             secrets.remove(item.id());
-        });
-        
-        String nextLink = listResult.nextPageLink();
-        
-        while (nextLink != null) {
-            Page<SecretItem> nextSecrets = listResult.nextPage(nextLink);
-            nextLink = nextSecrets.getNextPageLink();
-            for (SecretItem item : nextSecrets.getItems()) {
-                SecretIdentifier id = new SecretIdentifier(item.id());
-                toDelete.add(id.name());
-                secrets.remove(item.id());
-            }
         }
 
         Assert.assertEquals(0, secrets.size());
@@ -257,14 +246,13 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
 
         listResult = keyVaultClient.getSecretVersions(getVaultUri(), SECRET_NAME).getBody();
         for (;;) {
-        	listResult.forEach((item) -> {
+        	for (SecretItem item : listResult) {
                 secrets.remove(item.id());
-            });
+            }
             String nextLink = listResult.nextPageLink();
             if (nextLink == null) {
                 break;
             }
-            //TODO test after list bug is resolved
             keyVaultClient.getSecretVersionsNext(nextLink).getBody();
         }
 

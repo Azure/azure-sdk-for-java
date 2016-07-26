@@ -49,7 +49,6 @@ import javax.crypto.NoSuchPaddingException;
 
 import org.apache.commons.codec.binary.Base64;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.microsoft.azure.Page;
@@ -903,22 +902,10 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
 
 		HashSet<String> toDelete = new HashSet<String>();
 
-        listResult.forEach((item) -> {
+        for (CertificateItem item : listResult) {
             CertificateIdentifier id = new CertificateIdentifier(item.id());
             toDelete.add(id.name());
             certificates.remove(item.id());
-        });
-        
-        String nextLink = listResult.nextPageLink();
-        
-        while (nextLink != null) {
-            Page<CertificateItem> nextSecrets = listResult.nextPage(nextLink);
-            nextLink = nextSecrets.getNextPageLink();
-            for (CertificateItem item : nextSecrets.getItems()) {
-                CertificateIdentifier id = new CertificateIdentifier(item.id());
-                toDelete.add(id.name());
-                certificates.remove(item.id());
-            }
         }
 
 		Assert.assertEquals(0, certificates.size());
@@ -974,14 +961,13 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
 
         listResult = keyVaultClient.getCertificateVersions(getVaultUri(), certificateName).getBody();
         for (;;) {
-        	listResult.forEach((item) -> {
+        	for (CertificateItem item : listResult) {
                 certificates.remove(item.id());
-            });
+            }
             String nextLink = listResult.nextPageLink();
             if (nextLink == null) {
                 break;
             }
-            //TODO test after list bug is resolved
             keyVaultClient.getCertificateVersionsNext(nextLink).getBody();
         }
 

@@ -49,6 +49,7 @@ import com.microsoft.azure.keyvault.models.KeyItem;
 import com.microsoft.azure.keyvault.models.KeyOperationResult;
 import com.microsoft.azure.keyvault.models.KeyVaultErrorException;
 import com.microsoft.azure.keyvault.models.KeyVerifyResult;
+import com.microsoft.azure.keyvault.models.CertificateItem;
 import com.microsoft.azure.keyvault.models.JsonWebKey;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyEncryptionAlgorithm;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyOperation;
@@ -323,22 +324,10 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
 
         HashSet<String> toDelete = new HashSet<String>();
 
-        listResult.forEach((item) -> {
+        for (KeyItem item : listResult) {
             KeyIdentifier id = new KeyIdentifier(item.kid());
             toDelete.add(id.name());
             keys.remove(item.kid());
-        });
-        
-        String nextLink = listResult.nextPageLink();
-        
-        while (nextLink != null) {
-            Page<KeyItem> nextKeys = listResult.nextPage(nextLink);
-            nextLink = nextKeys.getNextPageLink();
-            for (KeyItem item : nextKeys.getItems()) {
-                SecretIdentifier id = new SecretIdentifier(item.kid());
-                toDelete.add(id.name());
-                keys.remove(item.kid());
-            }
         }
 
         Assert.assertEquals(0, keys.size());
@@ -384,14 +373,13 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         listResult = keyVaultClient.getKeyVersions(getVaultUri(), KEY_NAME).getBody();
         
         for (;;) {
-        	listResult.forEach((item) -> {
+        	for (KeyItem item : listResult) {
                 keys.remove(item.kid());
-            });
+            }
             String nextLink = listResult.nextPageLink();
             if (nextLink == null) {
                 break;
             }
-            //TODO test after list bug is resolved
             keyVaultClient.getKeyVersionsNext(nextLink).getBody();
         }
 
