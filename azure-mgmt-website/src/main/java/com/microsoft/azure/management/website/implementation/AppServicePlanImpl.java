@@ -25,7 +25,7 @@ class AppServicePlanImpl
             AppServicePlan,
             ServerFarmWithRichSkuInner,
             AppServicePlanImpl,
-            WebsiteManager>
+                AppServiceManager>
     implements
         AppServicePlan,
         AppServicePlan.Definition,
@@ -33,7 +33,7 @@ class AppServicePlanImpl
 
     private final ServerFarmsInner client;
 
-    AppServicePlanImpl(String key, ServerFarmWithRichSkuInner innerObject, final ServerFarmsInner client, WebsiteManager manager) {
+    AppServicePlanImpl(String key, ServerFarmWithRichSkuInner innerObject, final ServerFarmsInner client, AppServiceManager manager) {
         super(key, innerObject, manager);
         this.client = client;
     }

@@ -12,16 +12,20 @@ import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
 import com.microsoft.azure.management.website.AppServicePlans;
+import com.microsoft.azure.management.website.CertificateOrders;
+import com.microsoft.azure.management.website.Certificates;
 import com.microsoft.azure.management.website.WebApps;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
 /**
  * Entry point to Azure storage resource management.
  */
-public final class WebsiteManager extends Manager<WebsiteManager, WebSiteManagementClientImpl> {
+public final class AppServiceManager extends Manager<AppServiceManager, WebSiteManagementClientImpl> {
     // Collections
     private WebApps webApps;
     private AppServicePlans appServicePlans;
+    private CertificateOrders certificateOrders;
+    private Certificates certificates;
 
     /**
      * Get a Configurable instance that can be used to create StorageManager with optional configuration.
@@ -29,7 +33,7 @@ public final class WebsiteManager extends Manager<WebsiteManager, WebSiteManagem
      * @return the instance allowing configurations
      */
     public static Configurable configure() {
-        return new WebsiteManager.ConfigurableImpl();
+        return new AppServiceManager.ConfigurableImpl();
     }
 
     /**
@@ -39,8 +43,8 @@ public final class WebsiteManager extends Manager<WebsiteManager, WebSiteManagem
      * @param subscriptionId the subscription UUID
      * @return the StorageManager
      */
-    public static WebsiteManager authenticate(ServiceClientCredentials credentials, String subscriptionId) {
-        return new WebsiteManager(AzureEnvironment.AZURE.newRestClientBuilder()
+    public static AppServiceManager authenticate(ServiceClientCredentials credentials, String subscriptionId) {
+        return new AppServiceManager(AzureEnvironment.AZURE.newRestClientBuilder()
                 .withCredentials(credentials)
                 .build(), subscriptionId);
     }
@@ -52,8 +56,8 @@ public final class WebsiteManager extends Manager<WebsiteManager, WebSiteManagem
      * @param subscriptionId the subscription UUID
      * @return the StorageManager
      */
-    public static WebsiteManager authenticate(RestClient restClient, String subscriptionId) {
-        return new WebsiteManager(restClient, subscriptionId);
+    public static AppServiceManager authenticate(RestClient restClient, String subscriptionId) {
+        return new AppServiceManager(restClient, subscriptionId);
     }
 
     /**
@@ -67,19 +71,19 @@ public final class WebsiteManager extends Manager<WebsiteManager, WebSiteManagem
          * @param subscriptionId the subscription UUID
          * @return the interface exposing storage management API entry points that work across subscriptions
          */
-        WebsiteManager authenticate(ServiceClientCredentials credentials, String subscriptionId);
+        AppServiceManager authenticate(ServiceClientCredentials credentials, String subscriptionId);
     }
 
     /**
      * The implementation for Configurable interface.
      */
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
-        public WebsiteManager authenticate(ServiceClientCredentials credentials, String subscriptionId) {
-            return WebsiteManager.authenticate(buildRestClient(credentials), subscriptionId);
+        public AppServiceManager authenticate(ServiceClientCredentials credentials, String subscriptionId) {
+            return AppServiceManager.authenticate(buildRestClient(credentials), subscriptionId);
         }
     }
 
-    private WebsiteManager(RestClient restClient, String subscriptionId) {
+    private AppServiceManager(RestClient restClient, String subscriptionId) {
         super(
                 restClient,
                 subscriptionId,
@@ -97,12 +101,32 @@ public final class WebsiteManager extends Manager<WebsiteManager, WebSiteManagem
     }
 
     /**
-     * @return the web app management API entry point
+     * @return the app service plan management API entry point
      */
     public AppServicePlans appServicePlans() {
         if (appServicePlans == null) {
             appServicePlans = new AppServicePlansImpl(innerManagementClient.serverFarms(), this);
         }
         return appServicePlans;
+    }
+
+    /**
+     * @return the certificate order management API entry point
+     */
+    public CertificateOrders certificateOrders() {
+        if (certificateOrders == null) {
+            certificateOrders = new CertificateOrdersImpl(innerManagementClient.certificateOrders(), this);
+        }
+        return certificateOrders;
+    }
+
+    /**
+     * @return the certificate management API entry point
+     */
+    public Certificates certificates() {
+        if (certificates == null) {
+            certificates = new CertificatesImpl(innerManagementClient.certificates(), this);
+        }
+        return certificates;
     }
 }

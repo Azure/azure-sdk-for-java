@@ -24,10 +24,10 @@ class WebAppsImpl
         WebAppImpl,
             SiteInner,
             SitesInner,
-            WebsiteManager>
+        AppServiceManager>
     implements WebApps {
 
-    WebAppsImpl(SitesInner innerCollection, WebsiteManager manager) {
+    WebAppsImpl(SitesInner innerCollection, AppServiceManager manager) {
         super(innerCollection, manager);
     }
 

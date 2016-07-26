@@ -44,12 +44,12 @@ public interface CertificateOrder extends
     /**
      * @return Duration in years (must be between 1 and 3).
      */
-    Integer validityInYears();
+    int validityInYears();
 
     /**
      * @return Certificate Key Size.
      */
-    Integer keySize();
+    int keySize();
 
     /**
      * @return Certificate product type. Possible values include:
@@ -60,7 +60,7 @@ public interface CertificateOrder extends
     /**
      * @return Auto renew.
      */
-    Boolean autoRenew();
+    boolean autoRenew();
 
     /**
      * @return Status of certificate order. Possible values include: 'Succeeded',
@@ -118,9 +118,11 @@ public interface CertificateOrder extends
      * Container interface for all the definitions that need to be implemented.
      */
     interface Definition extends
-        DefinitionStages.Blank,
+            DefinitionStages.Blank,
             DefinitionStages.WithHostName,
-        DefinitionStages.WithCreate {
+            DefinitionStages.WithCertificateSku,
+            DefinitionStages.WithValidYears,
+            DefinitionStages.WithCreate {
     }
 
     /**
@@ -137,7 +139,15 @@ public interface CertificateOrder extends
          * An app service plan definition allowing pricing tier to be set.
          */
         interface WithHostName {
-            WithCreate withHostName(String hostName);
+            WithCertificateSku withHostName(String hostName);
+        }
+
+        interface WithCertificateSku {
+            WithValidYears withSku(CertificateProductType sku);
+        }
+
+        interface WithValidYears {
+            WithCreate withValidYears(int years);
         }
 
         /**

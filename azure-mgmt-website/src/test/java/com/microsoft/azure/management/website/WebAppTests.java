@@ -14,7 +14,7 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-public class WebsiteAccountOperationsTests extends WebsiteManagementTestBase {
+public class WebAppTests extends AppServiceTestBase {
     private static final String RG_NAME = "javacsmrg219";
     private static final String WEBAPP_NAME = "java-webapp-219";
     private static ResourceGroup resourceGroup;
@@ -31,7 +31,7 @@ public class WebsiteAccountOperationsTests extends WebsiteManagementTestBase {
 
     @Ignore
     public void canCreateWebApp() throws Exception {
-        WebApp webApp = websiteManager.sites().define(WEBAPP_NAME)
+        WebApp webApp = appServiceManager.sites().define(WEBAPP_NAME)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME)
                 .withNewAppServicePlan("java-webapp-plan-219", AppServicePricingTier.STANDARD_S1)
@@ -41,7 +41,7 @@ public class WebsiteAccountOperationsTests extends WebsiteManagementTestBase {
 
     @Test
     public void canUpdateWebApp() throws Exception {
-        WebApp webApp = websiteManager.sites().getByGroup(RG_NAME, WEBAPP_NAME);
+        WebApp webApp = appServiceManager.sites().getByGroup(RG_NAME, WEBAPP_NAME);
         webApp.update()
                 .defineHostNameBinding("javatest.quarterquota.net")
                     .withHostNameType(HostNameType.VERIFIED)

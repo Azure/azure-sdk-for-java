@@ -24,10 +24,10 @@ class AppServicePlansImpl
         AppServicePlanImpl,
             ServerFarmWithRichSkuInner,
             ServerFarmsInner,
-            WebsiteManager>
+        AppServiceManager>
     implements AppServicePlans {
 
-    AppServicePlansImpl(ServerFarmsInner innerCollection, WebsiteManager manager) {
+    AppServicePlansImpl(ServerFarmsInner innerCollection, AppServiceManager manager) {
         super(innerCollection, manager);
     }
 
@@ -57,7 +57,7 @@ class AppServicePlansImpl
     }
 
     @Override
-    public AppServicePlan.DefinitionStages.Blank define(String name) {
+    public AppServicePlanImpl define(String name) {
         return wrapModel(name);
     }
 

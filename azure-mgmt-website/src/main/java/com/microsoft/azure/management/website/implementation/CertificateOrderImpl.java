@@ -9,7 +9,6 @@ package com.microsoft.azure.management.website.implementation;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.website.AppServicePlan;
-import com.microsoft.azure.management.website.CertificateDetails;
 import com.microsoft.azure.management.website.CertificateOrder;
 import com.microsoft.azure.management.website.CertificateOrderStatus;
 import com.microsoft.azure.management.website.CertificateProductType;
@@ -29,7 +28,7 @@ class CertificateOrderImpl
                 CertificateOrder,
                 CertificateOrderInner,
                 CertificateOrderImpl,
-                WebsiteManager>
+                AppServiceManager>
     implements
         CertificateOrder,
         CertificateOrder.Definition,
@@ -37,9 +36,10 @@ class CertificateOrderImpl
 
     private final CertificateOrdersInner client;
 
-    CertificateOrderImpl(String key, CertificateOrderInner innerObject, final CertificateOrdersInner client, WebsiteManager manager) {
+    CertificateOrderImpl(String key, CertificateOrderInner innerObject, final CertificateOrdersInner client, AppServiceManager manager) {
         super(key, innerObject, manager);
         this.client = client;
+        this.withRegion("global");
     }
 
     @Override
@@ -60,67 +60,67 @@ class CertificateOrderImpl
 
     @Override
     public Map<String, CertificateOrderCertificateInner> certificates() {
-        return null;
+        return inner().certificates();
     }
 
     @Override
     public String distinguishedName() {
-        return null;
+        return inner().distinguishedName();
     }
 
     @Override
     public String domainVerificationToken() {
-        return null;
+        return inner().domainVerificationToken();
     }
 
     @Override
-    public Integer validityInYears() {
-        return null;
+    public int validityInYears() {
+        return inner().validityInYears();
     }
 
     @Override
-    public Integer keySize() {
-        return null;
+    public int keySize() {
+        return inner().keySize();
     }
 
     @Override
     public CertificateProductType productType() {
-        return null;
+        return inner().productType();
     }
 
     @Override
-    public Boolean autoRenew() {
-        return null;
+    public boolean autoRenew() {
+        return inner().autoRenew();
     }
 
     @Override
     public ProvisioningState provisioningState() {
-        return null;
+        return inner().provisioningState();
     }
 
     @Override
     public CertificateOrderStatus status() {
-        return null;
+        return inner().status();
     }
 
     @Override
-    public CertificateDetails signedCertificate() {
-        return null;
+    public CertificateDetailsImpl signedCertificate() {
+        return new CertificateDetailsImpl(inner().signedCertificate().name(), inner().signedCertificate());
     }
 
     @Override
     public String csr() {
-        return null;
+        return inner().csr();
     }
 
     @Override
-    public CertificateDetails intermediate() {
-        return null;
+    public CertificateDetailsImpl intermediate() {
+        return new CertificateDetailsImpl(inner().intermediate().name(), inner().intermediate());
     }
 
     @Override
-    public CertificateDetails root() {
-        return null;
+    public CertificateDetailsImpl root() {
+        return new CertificateDetailsImpl(inner().root().name(), inner().root());
     }
 
     @Override
@@ -139,7 +139,20 @@ class CertificateOrderImpl
     }
 
     @Override
-    public CertificateOrder.DefinitionStages.WithCreate withHostName(String hostName) {
-        return null;
+    public CertificateOrderImpl withHostName(String hostName) {
+        inner().withDistinguishedName("CN=" + hostName);
+        return this;
+    }
+
+    @Override
+    public CertificateOrderImpl withSku(CertificateProductType sku) {
+        inner().withProductType(sku);
+        return this;
+    }
+
+    @Override
+    public CertificateOrderImpl withValidYears(int years) {
+        inner().withValidityInYears(years);
+        return this;
     }
 }

@@ -39,7 +39,7 @@ class WebAppImpl
         WebApp,
             SiteInner,
         WebAppImpl,
-            WebsiteManager>
+        AppServiceManager>
     implements
         WebApp,
         WebApp.Definition,
@@ -48,7 +48,7 @@ class WebAppImpl
     private final SitesInner client;
     private Map<String, HostNameSslState> hostNameSslStateMap;
 
-    WebAppImpl(String key, SiteInner innerObject, final SitesInner client, WebsiteManager manager) {
+    WebAppImpl(String key, SiteInner innerObject, final SitesInner client, AppServiceManager manager) {
         super(key, innerObject, manager);
         this.client = client;
         this.hostNameSslStateMap = new HashMap<>();
@@ -340,7 +340,7 @@ class WebAppImpl
         return this;
     }
 
-    WebsiteManager myManager() {
+    AppServiceManager myManager() {
         return super.myManager;
     }
 }

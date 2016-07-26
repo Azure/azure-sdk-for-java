@@ -10,15 +10,15 @@ import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.RestClient;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
-import com.microsoft.azure.management.website.implementation.WebsiteManager;
+import com.microsoft.azure.management.website.implementation.AppServiceManager;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
  * The base for storage manager tests.
  */
-public abstract class WebsiteManagementTestBase {
+public abstract class AppServiceTestBase {
     protected static ResourceManager resourceManager;
-    protected static WebsiteManager websiteManager;
+    protected static AppServiceManager appServiceManager;
 
     protected static void createClients() {
         ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(
@@ -36,7 +36,7 @@ public abstract class WebsiteManagementTestBase {
                 .authenticate(restClient)
                 .withSubscription(System.getenv("subscription-id"));
 
-        websiteManager = WebsiteManager
+        appServiceManager = AppServiceManager
                 .authenticate(restClient, System.getenv("subscription-id"));
     }
 }
