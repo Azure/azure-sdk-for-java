@@ -47,9 +47,11 @@ class NetworkImpl
 
     private void initializeSubnetsFromInner() {
         this.subnets = new TreeMap<>();
-        for (SubnetInner subnetInner : this.inner().subnets()) {
-            SubnetImpl subnet = new SubnetImpl(subnetInner.name(), subnetInner, this);
-            this.subnets.put(subnetInner.name(), subnet);
+        if (this.inner().subnets() != null) {
+            for (SubnetInner subnetInner : this.inner().subnets()) {
+                SubnetImpl subnet = new SubnetImpl(subnetInner.name(), subnetInner, this);
+                this.subnets.put(subnetInner.name(), subnet);
+            }
         }
     }
 
