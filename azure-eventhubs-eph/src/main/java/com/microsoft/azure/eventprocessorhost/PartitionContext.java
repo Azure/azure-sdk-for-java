@@ -192,8 +192,12 @@ public class PartitionContext
     			persistThis.getOffset() + "//" + persistThis.getSequenceNumber());
 		
     	Checkpoint inStoreCheckpoint = this.host.getCheckpointManager().getCheckpoint(persistThis.getPartitionId()).get();
-    	if (persistThis.getSequenceNumber() >= inStoreCheckpoint.getSequenceNumber())
+    	if ((inStoreCheckpoint == null) || (persistThis.getSequenceNumber() >= inStoreCheckpoint.getSequenceNumber()))
     	{
+        	if (inStoreCheckpoint == null)
+        	{
+        		inStoreCheckpoint = this.host.getCheckpointManager().createCheckpointIfNotExists(persistThis.getPartitionId()).get();
+        	}
 	    	inStoreCheckpoint.setOffset(persistThis.getOffset());
 	    	inStoreCheckpoint.setSequenceNumber(persistThis.getSequenceNumber());
 	        this.host.getCheckpointManager().updateCheckpoint(inStoreCheckpoint).get();
