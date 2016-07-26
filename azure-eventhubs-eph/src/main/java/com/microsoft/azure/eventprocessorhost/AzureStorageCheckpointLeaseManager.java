@@ -13,6 +13,7 @@ import java.util.concurrent.*;
 import java.util.logging.Level;
 
 import com.google.gson.Gson;
+import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.storage.AccessCondition;
 import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
@@ -131,10 +132,16 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
         return EventProcessorHost.getExecutorService().submit(() -> createCheckpointIfNotExistsSync(partitionId));
     }
     
-    private Checkpoint createCheckpointIfNotExistsSync(String partitionId) throws URISyntaxException, IOException, StorageException
+    private Checkpoint createCheckpointIfNotExistsSync(String partitionId) throws Exception
     {
     	// Normally the lease will already be created, checkpoint store is initialized after lease store.
     	AzureBlobLease lease = createLeaseIfNotExistsSync(partitionId);
+    	if (lease.getOffset() == null)
+    	{
+	    	lease.setOffset(PartitionReceiver.START_OF_STREAM);
+	    	lease.setSequenceNumber(0);
+	    	updateLeaseSync(lease);
+    	}
     	Checkpoint checkpoint = new Checkpoint(partitionId);
     	checkpoint.setOffset(lease.getOffset());
     	checkpoint.setSequenceNumber(lease.getSequenceNumber());
