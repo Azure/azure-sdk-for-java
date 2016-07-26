@@ -33,10 +33,11 @@ public abstract class ResourceImpl<
     implements
         Resource {
 
+    private String name;
 
-    protected ResourceImpl(String key, InnerModelT innerObject) {
-        super(key, innerObject);
-
+    protected ResourceImpl(String name, InnerModelT innerObject) {
+        super(name, innerObject);
+        this.name = name;
         // Initialize tags
         if (innerObject.getTags() == null) {
             innerObject.withTags(new TreeMap<String, String>());
@@ -61,7 +62,7 @@ public abstract class ResourceImpl<
     public Map<String, String> tags() {
         Map<String, String> tags = this.inner().getTags();
         if (tags == null) {
-            tags = new TreeMap<String, String>();
+            tags = new TreeMap<>();
         }
         return Collections.unmodifiableMap(tags);
     }
@@ -79,7 +80,7 @@ public abstract class ResourceImpl<
     @Override
     public String name() {
         if (this.inner().name() == null) {
-            return this.key(); // Not yet created, so use the key
+            return this.name;
         } else {
             return this.inner().name();
         }
@@ -152,5 +153,12 @@ public abstract class ResourceImpl<
      */
     protected boolean isInCreateMode() {
         return this.inner().id() == null;
+    }
+
+    /**
+     * @return the key of this resource.
+     */
+    public String key() {
+        return this.inner().getClass().getName() + "-" + super.key();
     }
 }

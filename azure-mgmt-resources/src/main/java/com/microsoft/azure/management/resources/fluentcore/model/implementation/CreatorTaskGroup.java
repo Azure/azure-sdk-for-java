@@ -1,5 +1,6 @@
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
 
+import com.microsoft.azure.DAGNode;
 import com.microsoft.azure.TaskGroupBase;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
@@ -9,7 +10,7 @@ import com.microsoft.rest.ServiceCallback;
  *
  * @param <ResourceT> the type of the resource this group creates
  */
-public class CreatorTaskGroup<ResourceT> extends TaskGroupBase<ResourceT> {
+public class CreatorTaskGroup<ResourceT> extends TaskGroupBase<ResourceT, CreatorTaskItem<ResourceT>> {
     /**
      * Represents a type that know how to create resource.
      *
@@ -36,16 +37,25 @@ public class CreatorTaskGroup<ResourceT> extends TaskGroupBase<ResourceT> {
          * @return Gets the task group.
          */
         CreatorTaskGroup creatorTaskGroup();
+
+        /**
+         * @return unique id of this creator.
+         */
+        String uuid();
+
+        /**
+         * @return key of the resource this creator created.
+         */
+        String resourceKey();
     }
 
     /**
      * Creates CreatorTaskGroup.
      *
-     * @param rootCreatableId the id of the root creatable
      * @param resourceCreator represents the resource creator that this group want to create ultimately
      */
-    public CreatorTaskGroup(String rootCreatableId, ResourceCreator<ResourceT> resourceCreator) {
-        this(rootCreatableId, new CreatorTaskItem<>(resourceCreator));
+    public CreatorTaskGroup(ResourceCreator<ResourceT> resourceCreator) {
+        this(resourceCreator.uuid(), new CreatorTaskItem<>(resourceCreator));
     }
 
     /**
@@ -62,12 +72,17 @@ public class CreatorTaskGroup<ResourceT> extends TaskGroupBase<ResourceT> {
      * Gets a resource created by a creator task in this group.
      * <p>
      * This method can return null if the resource has not yet created that happens if the responsible task
-     * is not yet selected for execution or it's it progress
+     * is not yet selected for execution or it's it progress or provided key is invalid.
      *
-     * @param key the resource id
+     * @param resourceKey the resource id
      * @return the created resource
      */
-    public ResourceT createdResource(String key) {
-        return super.taskResult(key);
+    public ResourceT createdResource(String resourceKey) {
+        for (DAGNode<CreatorTaskItem<ResourceT>> node : dag().getNodes()) {
+            if (node.data().resourceKey().equals(resourceKey)) {
+                return super.taskResult(node.data().uuid());
+            }
+        }
+        return null;
     }
 }

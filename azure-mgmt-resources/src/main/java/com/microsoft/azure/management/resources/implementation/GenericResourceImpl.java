@@ -181,7 +181,7 @@ final class GenericResourceImpl
                 resourceProviderNamespace,
                 parentResourceId,
                 resourceType,
-                key(),
+                name(),
                 apiVersion,
                 inner(),
                 new ServiceCallback<GenericResourceInner>() {

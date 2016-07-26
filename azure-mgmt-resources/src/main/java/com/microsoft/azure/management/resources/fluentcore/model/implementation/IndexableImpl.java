@@ -18,15 +18,6 @@ public abstract class IndexableImpl implements Indexable {
         this.key = key;
     }
 
-    /**
-     * Set the indexing key.
-     *
-     * @param key the indexing key
-     */
-    public void setKey(String key) {
-        this.key = key;
-    }
-
     @Override
     public String key() {
         return this.key;
