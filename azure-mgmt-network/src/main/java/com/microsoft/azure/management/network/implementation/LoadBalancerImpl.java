@@ -123,18 +123,6 @@ class LoadBalancerImpl
         return ruleInner;
     }
 
-
-    private ProbeInner createProbeInner(String name) {
-        final List<ProbeInner> probes = ensureProbes();
-        if (name == null) {
-            name = "probe" + (probes.size() + 1);
-        }
-
-        ProbeInner probeInner = new ProbeInner().withName(name);
-        probes.add(probeInner);
-        return probeInner;
-    }
-
     // CreatorTaskGroup.ResourceCreator implementation
 
     @Override
@@ -370,35 +358,30 @@ class LoadBalancerImpl
 
     @Override
     public LoadBalancerImpl withTcpProbe(int port, String name) {
-        createProbeInner(name)
-            .withPort(port)
-            .withProtocol(ProbeProtocol.TCP);
+        if (name == null) {
+            name = "probe" + (this.tcpProbes.size() + 1);
+        }
 
-        return this;
+        return this.defineTcpProbe(name)
+                .withPort(port)
+                .attach();
     }
 
     @Override
     public LoadBalancerImpl withHttpProbe(String path) {
-        return withHttpProbe(path, 80, null);
-    }
-
-    @Override
-    public LoadBalancerImpl withHttpProbe(String path, int port) {
-        return withHttpProbe(path, port, null);
+        return withHttpProbe(path, null);
     }
 
     @Override
     public LoadBalancerImpl withHttpProbe(String path, String name) {
-        return withHttpProbe(path, 80, name);
-    }
+        if (name == null) {
+            name = "probe" + (this.httpProbes.size() + 1);
+        }
 
-    @Override
-    public LoadBalancerImpl withHttpProbe(String path, int port, String name) {
-        createProbeInner(name)
+        return this.defineHttpProbe(name)
             .withRequestPath(path)
-            .withPort(port)
-            .withProtocol(ProbeProtocol.HTTP);
-        return this;
+            .withPort(80)
+            .attach();
     }
 
     @Override

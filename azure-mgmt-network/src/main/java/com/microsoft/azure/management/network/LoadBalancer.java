@@ -241,31 +241,12 @@ public interface LoadBalancer extends
             WithCreateAndRule withHttpProbe(String requestPath);
 
             /**
-             * Adds an HTTP probe checking for an HTTP 200 response from the specified path at regular intervals, using the specified port.
-             * <p>
-             * An automatically generated name is assigned to the probe.
-             * @param requestPath the path for the probe to invoke
-             * @param port the port number to check
-             * @return the next stage of the definition
-             */
-            WithCreateAndRule withHttpProbe(String requestPath, int port);
-
-            /**
              * Adds an HTTP probe checking for an HTTP 200 response from the specified path at regular intervals, using port 80.
              * @param requestPath the path for the probe to invoke
              * @param name the name to assign to the probe so that references to the probe can be made from load balancing rules
              * @return the next stage of the definition
              */
             WithCreateAndRule withHttpProbe(String requestPath, String name);
-
-            /**
-             * Adds an HTTP probe checking for an HTTP 200 response from the specified path at regular intervals, using the specified port.
-             * @param requestPath the path for the probe to invoke
-             * @param port the port number to check
-             * @param name the name to assign to the probe so that references to the probe can be made from load balancing rules
-             * @return the next stage of the definition
-             */
-            WithCreateAndRule withHttpProbe(String requestPath, int port, String name);
 
             /**
              * Begins the definition of a new TCP probe to add to the load balancer.
