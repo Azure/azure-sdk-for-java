@@ -27,10 +27,6 @@ not present in that lower layer:
 
 This library is available from the Maven Central Repository. See the readme for the Java Azure Event Hubs client for more information.
 
-Note that Event Processor Host currently requires the Manage claim for the event hub in order to get the list of partition ids.
-We are aware that this additional permission requirement is undesirable and will have a change soon that will allow Event Processor
-Host to work with just the Listen claim.
-
 ##Using Event Processor Host
 
 ###Step 1: Implement IEventProcessor
