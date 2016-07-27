@@ -135,8 +135,7 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                     .attach()
                 .defineHttpProbe("probeHTTP")
                     .withRequestPath("/")       // Required
-                    .withPort(80)               // Optionals
-                    .withIntervalInSeconds(13)
+                    .withIntervalInSeconds(13)  // Optionals
                     .withNumberOfProbes(4)
                     .attach()
                 .create();
