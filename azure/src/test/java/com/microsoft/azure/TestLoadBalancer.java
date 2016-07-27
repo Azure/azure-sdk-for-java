@@ -121,7 +121,7 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                 .create();
 
         // Create a load balancer
-        return resources.define(newName)
+        LoadBalancer lb = resources.define(newName)
                 .withRegion(region)
                 .withExistingResourceGroup(groupName)
                 .withExistingPublicIpAddresses(pip1)
@@ -139,6 +139,9 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                     .withNumberOfProbes(4)
                     .attach()
                 .create();
+
+        Assert.assertTrue(lb.backends().size() == 1);
+        return lb;
     }
 
     @Override
@@ -179,7 +182,8 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                 .append("Name: ").append(resource.name())
                 .append("\n\tResource group: ").append(resource.resourceGroupName())
                 .append("\n\tRegion: ").append(resource.region())
-                .append("\n\tTags: ").append(resource.tags());
+                .append("\n\tTags: ").append(resource.tags())
+                .append("\n\tBackends: ").append(resource.backends().keySet().toString());
 
         // Show public IP addresses
         info.append("\n\tPublic IP address IDs:");

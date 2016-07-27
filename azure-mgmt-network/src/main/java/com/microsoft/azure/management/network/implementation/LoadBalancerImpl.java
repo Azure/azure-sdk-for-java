@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.network.Backend;
 import com.microsoft.azure.management.network.HttpProbe;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.NetworkInterface;
@@ -47,6 +48,7 @@ class LoadBalancerImpl
     private final LoadBalancersInner innerCollection;
     private final List<SupportsNetworkInterfaces> vms = new ArrayList<>();
     private List<String> creatablePIPKeys = new ArrayList<>();
+    private final TreeMap<String, Backend> backends = new TreeMap<>();
     private final TreeMap<String, TcpProbe> tcpProbes = new TreeMap<>();
     private final TreeMap<String, HttpProbe> httpProbes = new TreeMap<>();
 
@@ -57,6 +59,7 @@ class LoadBalancerImpl
         super(name, innerModel, networkManager);
         this.innerCollection = innerCollection;
         initializeProbesFromInner();
+        initializeBackendsFromInner();
     }
 
     // Verbs
@@ -67,6 +70,7 @@ class LoadBalancerImpl
             this.innerCollection.get(this.resourceGroupName(), this.name());
         this.setInner(response.getBody());
         initializeProbesFromInner();
+        initializeBackendsFromInner();
         return this;
     }
 
@@ -81,7 +85,7 @@ class LoadBalancerImpl
     }
 
     // Helpers
-    private List<ProbeInner> ensureProbes() {
+    private List<ProbeInner> ensureInnerProbes() {
         List<ProbeInner> probes = this.inner().probes();
         if (probes == null) {
             probes = new ArrayList<>();
@@ -91,13 +95,28 @@ class LoadBalancerImpl
         return probes;
     }
 
+    private List<BackendAddressPoolInner> ensureInnerBackends() {
+        List<BackendAddressPoolInner> backends = this.inner().backendAddressPools();
+        if (backends == null) {
+            backends = new ArrayList<>();
+            this.inner().withBackendAddressPools(backends);
+        }
+
+        return backends;
+    }
+
     LoadBalancerImpl withProbe(ProbeImpl probe) {
-        ensureProbes().add(probe.inner());
+        ensureInnerProbes().add(probe.inner());
         if (probe.protocol() == ProbeProtocol.HTTP) {
             httpProbes.put(probe.name(), probe);
         } else if (probe.protocol() == ProbeProtocol.TCP) {
             tcpProbes.put(probe.name(), probe);
         }
+        return this;
+    }
+
+    LoadBalancerImpl withBackend(BackendImpl backend) {
+        ensureInnerBackends().add(backend.inner());
         return this;
     }
 
@@ -244,6 +263,16 @@ class LoadBalancerImpl
                 } else if (probeInner.protocol().equals(ProbeProtocol.HTTP)) {
                     this.httpProbes.put(probeInner.name(), probe);
                 }
+            }
+        }
+    }
+
+    private void initializeBackendsFromInner() {
+        this.backends.clear();
+        if (this.inner().backendAddressPools() != null) {
+            for (BackendAddressPoolInner backendInner : this.inner().backendAddressPools()) {
+                BackendImpl backend = new BackendImpl(backendInner.name(), backendInner, this);
+                this.backends.put(backendInner.name(), backend);
             }
         }
     }
@@ -429,6 +458,11 @@ class LoadBalancerImpl
     }
 
     // Getters
+
+    @Override
+    public Map<String, Backend> backends() {
+        return Collections.unmodifiableMap(this.backends);
+    }
 
     @Override
     public Map<String, TcpProbe> tcpProbes() {

@@ -43,6 +43,11 @@ public interface LoadBalancer extends
     Map<String, HttpProbe> httpProbes();
 
     /**
+     * @return backends for this load balancer to load balance
+     */
+    Map<String, Backend> backends();
+
+    /**
      * The entirety of the load balancer definition.
      */
     interface Definition extends
@@ -98,7 +103,7 @@ public interface LoadBalancer extends
         }
 
         /**
-         * The stage of the definition allowing to add a backend pool.
+         * The stage of the definition allowing to add a backend.
          */
         interface WithBackend extends WithVirtualMachine {
         }
