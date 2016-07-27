@@ -9,7 +9,7 @@ package com.microsoft.azure.keyvault.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The Trigger model.
+ * A condition to be satisfied for an action to be executed.
  */
 public class Trigger {
     /**

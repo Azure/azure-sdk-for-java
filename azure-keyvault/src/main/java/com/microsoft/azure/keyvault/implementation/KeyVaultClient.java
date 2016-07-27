@@ -9,9 +9,7 @@ package com.microsoft.azure.keyvault.implementation;
 import java.io.IOException;
 
 import com.google.common.base.Joiner;
-import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureClient;
-import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.keyvault.implementation.requests.CreateCertificateRequest;
@@ -1205,7 +1203,7 @@ public final class KeyVaultClient {
      * Sets the certificate contacts for the specified vault.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
-     * @param contacts Contacts.
+     * @param contacts The contacts for the vault certificates.
      * @throws KeyVaultErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -1220,7 +1218,7 @@ public final class KeyVaultClient {
      * Sets the certificate contacts for the specified vault.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
-     * @param contacts Contacts.
+     * @param contacts The contacts for the vault certificates.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
@@ -1524,9 +1522,9 @@ public final class KeyVaultClient {
     	return innerKeyVaultClient.importCertificate(
     			importCertificateRequest.vaultBaseUrl(), 
     			importCertificateRequest.certificateName(), 
-    			importCertificateRequest.base64EncodedCertificate(), 
+    			importCertificateRequest.base64EncodedCertificate(),
+    			importCertificateRequest.password(), 
     			importCertificateRequest.certificatePolicy(), 
-    			importCertificateRequest.password(),
     			importCertificateRequest.certificateAttributes(), 
     			importCertificateRequest.tags());
     }
@@ -1546,8 +1544,8 @@ public final class KeyVaultClient {
     			importCertificateRequest.vaultBaseUrl(), 
     			importCertificateRequest.certificateName(), 
     			importCertificateRequest.base64EncodedCertificate(), 
-    			importCertificateRequest.certificatePolicy(), 
     			importCertificateRequest.password(), 
+    			importCertificateRequest.certificatePolicy(), 
     			importCertificateRequest.certificateAttributes(), 
     			importCertificateRequest.tags(), 
     			serviceCallback);
@@ -1964,7 +1962,8 @@ public final class KeyVaultClient {
         }
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
         Call<ResponseBody> call = service.getPendingCertificateSigningRequest(certificateName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        return getPendingCertificateSigningRequestDelegate(call.execute());
+        Response<ResponseBody> response = call.execute();
+        return new ServiceResponse<String>(response.body().string(), response);
     }
 
     /**
@@ -2000,20 +1999,13 @@ public final class KeyVaultClient {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getPendingCertificateSigningRequestDelegate(response));
-                } catch (KeyVaultErrorException | IOException exception) {
+                    serviceCallback.success(new ServiceResponse<String>(response.body().string(), response));
+                } catch (IOException exception) {
                     serviceCallback.failure(exception);
                 }
             }
         });
         return serviceCall;
-    }
-    
-    private ServiceResponse<String> getPendingCertificateSigningRequestDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<String, KeyVaultErrorException>(innerKeyVaultClient.restClient().mapperAdapter())
-                .register(200, new TypeToken<String>() { }.getType())
-                .registerError(KeyVaultErrorException.class)
-                .build(response);
     }
     
     /**

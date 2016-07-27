@@ -11,7 +11,7 @@ import org.joda.time.DateTimeZone;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The IssuerAttributes model.
+ * The attributes of an issuer managed by the KeyVault service.
  */
 public class IssuerAttributes {
     /**

@@ -9,7 +9,7 @@ package com.microsoft.azure.keyvault.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The KeyVaultError model.
+ * the key vault error exception.
  */
 public class KeyVaultError {
     /**

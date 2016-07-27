@@ -8,7 +8,8 @@ package com.microsoft.azure.keyvault.models;
 
 
 /**
- * The LifetimeAction model.
+ * Action and its trigger that will be performed by Key Vault over the
+ * lifetime of a certificate.
  */
 public class LifetimeAction {
     /**

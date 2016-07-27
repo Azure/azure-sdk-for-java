@@ -11,7 +11,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The KeyCreateParameters model.
+ * The key create parameters.
  */
 public class KeyCreateParameters {
     /**

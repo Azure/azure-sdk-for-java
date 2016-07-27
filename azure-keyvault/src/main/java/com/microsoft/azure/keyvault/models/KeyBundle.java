@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.keyvault.implementation.KeyIdentifier;
 
 /**
- * The KeyBundle model.
+ * A KeyBundle consisting of a WebKey plus its Attributes.
  */
 public class KeyBundle {
     /**

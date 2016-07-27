@@ -9,7 +9,7 @@ package com.microsoft.azure.keyvault.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The IssuerCredentials model.
+ * The credentials to be used for the certificate issuer.
  */
 public class IssuerCredentials {
     /**

@@ -9,7 +9,7 @@ package com.microsoft.azure.keyvault.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The KeyProperties model.
+ * Properties of the key pair backing a certificate.
  */
 public class KeyProperties {
     /**

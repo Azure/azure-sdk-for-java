@@ -10,13 +10,13 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The CertificateCreateParameters model.
+ * The certificate create parameters.
  */
 public class CertificateCreateParameters {
     /**
      * The management policy for the certificate.
      */
-    @JsonProperty(value = "policy", required = true)
+    @JsonProperty(value = "policy")
     private CertificatePolicy certificatePolicy;
 
     /**

@@ -4,6 +4,6 @@
 
 /**
  * This package contains the implementation classes for KeyVaultClient.
- * Client class to perform cryptographic key operations and vault operations against the Key Vault service.
+ * Perform cryptographic key operations and vault operations against the Key Vault service.
  */
 package com.microsoft.azure.keyvault.implementation;

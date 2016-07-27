@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.keyvault.implementation.SecretIdentifier;
 
 /**
- * The SecretBundle model.
+ * A Secret consisting of a value, id and its attributes.
  */
 public class SecretBundle {
     /**

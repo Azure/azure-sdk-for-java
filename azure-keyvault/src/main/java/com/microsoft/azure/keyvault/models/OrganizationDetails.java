@@ -10,7 +10,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The OrganizationDetails model.
+ * Details of the organization of the certificate issuer.
  */
 public class OrganizationDetails {
     /**
@@ -21,8 +21,8 @@ public class OrganizationDetails {
     /**
      * Details of the organization administrator.
      */
-    @JsonProperty(value = "AdministratorDetails")
-    private List<AdministratorDetails> administratorDetails;
+    @JsonProperty(value = "admin_details")
+    private List<AdministratorDetails> adminDetails;
 
     /**
      * Get the id value.
@@ -45,22 +45,22 @@ public class OrganizationDetails {
     }
 
     /**
-     * Get the administratorDetails value.
+     * Get the adminDetails value.
      *
-     * @return the administratorDetails value
+     * @return the adminDetails value
      */
-    public List<AdministratorDetails> administratorDetails() {
-        return this.administratorDetails;
+    public List<AdministratorDetails> adminDetails() {
+        return this.adminDetails;
     }
 
     /**
-     * Set the administratorDetails value.
+     * Set the adminDetails value.
      *
-     * @param administratorDetails the administratorDetails value to set
+     * @param adminDetails the adminDetails value to set
      * @return the OrganizationDetails object itself.
      */
-    public OrganizationDetails withAdministratorDetails(List<AdministratorDetails> administratorDetails) {
-        this.administratorDetails = administratorDetails;
+    public OrganizationDetails withAdminDetails(List<AdministratorDetails> adminDetails) {
+        this.adminDetails = adminDetails;
         return this;
     }
 

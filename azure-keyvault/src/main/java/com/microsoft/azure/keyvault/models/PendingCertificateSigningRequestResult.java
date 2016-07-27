@@ -9,7 +9,7 @@ package com.microsoft.azure.keyvault.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The PendingCertificateSigningRequestResult model.
+ * The pending certificate signing request result.
  */
 public class PendingCertificateSigningRequestResult {
     /**

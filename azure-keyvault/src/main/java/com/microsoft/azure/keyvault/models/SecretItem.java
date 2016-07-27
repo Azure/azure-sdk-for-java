@@ -11,7 +11,7 @@ import java.util.Map;
 import com.microsoft.azure.keyvault.implementation.SecretIdentifier;
 
 /**
- * The SecretItem model.
+ * The secret item containing secret metadata.
  */
 public class SecretItem {
     /**

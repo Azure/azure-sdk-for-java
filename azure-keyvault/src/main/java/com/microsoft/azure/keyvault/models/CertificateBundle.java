@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * The CertificateBundle model.
+ * A certificate bundle consists of a certificate (X509) plus its attributes.
  */
 public class CertificateBundle {
     /**

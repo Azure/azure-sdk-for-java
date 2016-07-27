@@ -9,7 +9,7 @@ package com.microsoft.azure.keyvault.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The KeyVerifyResult model.
+ * The key verify result.
  */
 public class KeyVerifyResult {
     /**

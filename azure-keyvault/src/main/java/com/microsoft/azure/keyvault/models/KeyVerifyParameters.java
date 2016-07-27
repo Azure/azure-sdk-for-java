@@ -10,7 +10,7 @@ import com.microsoft.rest.Base64Url;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The KeyVerifyParameters model.
+ * The key verify parameters.
  */
 public class KeyVerifyParameters {
     /**
@@ -71,7 +71,11 @@ public class KeyVerifyParameters {
      * @return the KeyVerifyParameters object itself.
      */
     public KeyVerifyParameters withDigest(byte[] digest) {
-        this.digest = Base64Url.encode(digest);
+        if (digest == null) {
+            this.digest = null;
+        } else {
+            this.digest = Base64Url.encode(digest);
+        }
         return this;
     }
 
@@ -94,7 +98,11 @@ public class KeyVerifyParameters {
      * @return the KeyVerifyParameters object itself.
      */
     public KeyVerifyParameters withSignature(byte[] signature) {
-        this.signature = Base64Url.encode(signature);
+        if (signature == null) {
+            this.signature = null;
+        } else {
+            this.signature = Base64Url.encode(signature);
+        }
         return this;
     }
 

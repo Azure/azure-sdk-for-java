@@ -10,11 +10,11 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The X509CertificateProperties model.
+ * Properties of the X509 component of a certificate.
  */
 public class X509CertificateProperties {
     /**
-     * The subject name. Should be a valid X500 Distinguished Name.
+     * The subject name. Should be a valid X509 Distinguished Name.
      */
     private String subject;
 

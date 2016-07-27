@@ -9,7 +9,7 @@ package com.microsoft.azure.keyvault.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The Action model.
+ * The action that will be executed.
  */
 public class Action {
     /**

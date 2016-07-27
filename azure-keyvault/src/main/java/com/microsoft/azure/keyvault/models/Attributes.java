@@ -11,7 +11,7 @@ import org.joda.time.DateTimeZone;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The Attributes model.
+ * The object attributes managed by the KeyVault service.
  */
 public class Attributes {
     /**
@@ -82,9 +82,11 @@ public class Attributes {
      * @return the Attributes object itself.
      */
     public Attributes withNotBefore(DateTime notBefore) {
-        if (notBefore != null)
-        	this.notBefore = notBefore.toDateTime(DateTimeZone.UTC).getMillis() / 1000;
-        else this.notBefore = null;
+        if (notBefore == null) {
+            this.notBefore = null;
+        } else {
+            this.notBefore = notBefore.toDateTime(DateTimeZone.UTC).getMillis() / 1000;
+        }
         return this;
     }
 
@@ -107,9 +109,11 @@ public class Attributes {
      * @return the Attributes object itself.
      */
     public Attributes withExpires(DateTime expires) {
-        if (expires != null)
-        	this.expires = expires.toDateTime(DateTimeZone.UTC).getMillis() / 1000;
-        else this.expires = null;
+        if (expires == null) {
+            this.expires = null;
+        } else {
+            this.expires = expires.toDateTime(DateTimeZone.UTC).getMillis() / 1000;
+        }
         return this;
     }
 

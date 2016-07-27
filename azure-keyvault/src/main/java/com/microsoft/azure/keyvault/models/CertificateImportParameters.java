@@ -10,7 +10,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The CertificateImportParameters model.
+ * The certificate import parameters.
  */
 public class CertificateImportParameters {
     /**
@@ -30,7 +30,7 @@ public class CertificateImportParameters {
     /**
      * The management policy for the certificate.
      */
-    @JsonProperty(value = "policy", required = true)
+    @JsonProperty(value = "policy")
     private CertificatePolicy certificatePolicy;
 
     /**

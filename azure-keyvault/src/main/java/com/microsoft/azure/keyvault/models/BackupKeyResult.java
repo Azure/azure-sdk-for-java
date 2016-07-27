@@ -10,7 +10,7 @@ import com.microsoft.rest.Base64Url;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The BackupKeyResult model.
+ * The backup key result, containing the backup blob.
  */
 public class BackupKeyResult {
     /**

@@ -10,7 +10,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The Contacts model.
+ * The contacts for the vault certificates.
  */
 public class Contacts {
     /**
@@ -20,7 +20,7 @@ public class Contacts {
     private String id;
 
     /**
-     * Contacts.
+     * The contact list for the vault certificates.
      */
     @JsonProperty(value = "contacts")
     private List<Contact> contactList;
