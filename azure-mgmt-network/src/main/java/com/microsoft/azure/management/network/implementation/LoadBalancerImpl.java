@@ -16,6 +16,7 @@ import com.microsoft.azure.management.network.HttpProbe;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NicIpConfiguration;
+import com.microsoft.azure.management.network.Probe;
 import com.microsoft.azure.management.network.TcpProbe;
 import com.microsoft.azure.management.network.ProbeProtocol;
 import com.microsoft.azure.management.network.PublicIpAddress;
@@ -399,6 +400,32 @@ class LoadBalancerImpl
                 .withProtocol(ProbeProtocol.HTTP)
                 .withPort(80);
         return new ProbeImpl(name, inner, this);
+    }
+
+    @Override
+    public LoadBalancerImpl withoutProbe(String name) {
+        if (this.httpProbes.containsKey(name)) {
+            this.httpProbes.remove(name);
+        } else if (this.tcpProbes.containsKey(name)) {
+            this.tcpProbes.remove(name);
+        }
+
+        List<ProbeInner> probes = this.inner().probes();
+        if (probes != null) {
+            for (int i = 0; i < probes.size(); i++) {
+                if (probes.get(i).name().equalsIgnoreCase(name)) {
+                    probes.remove(i);
+                    break;
+                }
+            }
+        }
+
+        return this;
+    }
+
+    @Override
+    public LoadBalancerImpl withoutProbe(Probe probe) {
+        return this.withoutProbe(probe.name());
     }
 
     // Getters

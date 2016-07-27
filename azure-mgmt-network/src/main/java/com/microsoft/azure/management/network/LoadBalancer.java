@@ -294,6 +294,78 @@ public interface LoadBalancer extends
      * Grouping of load balancer update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the load balancer update allowing to add, remove or modify probes.
+         */
+        interface WithProbe {
+            /**
+             * Adds a TCP probe checking the specified port.
+             * <p>
+             * The probe will be named using an automatically generated name.
+             * @param port the port number for the probe to monitor
+             * @return the next stage of the definition
+             */
+            Update withTcpProbe(int port);
+
+            /**
+             * Adds a TCP probe checking the specified port.
+             * <p>
+             * An automatically generated name is assigned to the probe.
+             * @param port the port number for the probe to monitor
+             * @param name the name for the probe, so that the probe can be referenced from load balancing rules
+             * @return the next stage of the definition
+             */
+            Update withTcpProbe(int port, String name);
+
+            /**
+             * Adds an HTTP probe checking for an HTTP 200 response from the specified path at regular intervals, using port 80.
+             * <p>
+             * An automatically generated name is assigned to the probe.
+             * @param requestPath the path for the probe to invoke
+             * @return the next stage of the definition
+             */
+            Update withHttpProbe(String requestPath);
+
+            /**
+             * Adds an HTTP probe checking for an HTTP 200 response from the specified path at regular intervals, using port 80.
+             * @param requestPath the path for the probe to invoke
+             * @param name the name to assign to the probe so that references to the probe can be made from load balancing rules
+             * @return the next stage of the definition
+             */
+            Update withHttpProbe(String requestPath, String name);
+
+            /**
+             * Begins the definition of a new HTTP probe to add to the load balancer.
+             * <p>
+             * The definition must be completed with a call to {@link HttpProbe.DefinitionStages.WithAttach#attach()}
+             * @param name the name of the new probe
+             * @return the next stage of the definition
+             */
+            HttpProbe.UpdateDefinitionStages.Blank<Update> defineHttpProbe(String name);
+
+            /**
+             * Begins the definition of a new TCP probe to add to the load balancer.
+             * <p>
+             * The definition must be completed with a call to {@link HttpProbe.DefinitionStages.WithAttach#attach()}
+             * @param name the name of the new probe
+             * @return the next stage of the definition
+             */
+            TcpProbe.UpdateDefinitionStages.Blank<Update> defineTcpProbe(String name);
+
+            /**
+             * Removes the specified probe from the load balancer, if present.
+             * @param name the name of the probe to remove
+             * @return the next stage of the update
+             */
+            Update withoutProbe(String name);
+
+            /**
+             * Removes the specified probe from the load balancer, if present.
+             * @param probe the probe to remove
+             * @return the next stage of the update
+             */
+            Update withoutProbe(Probe probe);
+        }
     }
 
     /**
@@ -304,6 +376,7 @@ public interface LoadBalancer extends
      */
     interface Update extends
         Appliable<LoadBalancer>,
-        Resource.UpdateWithTags<Update> {
+        Resource.UpdateWithTags<Update>,
+        UpdateStages.WithProbe {
     }
 }

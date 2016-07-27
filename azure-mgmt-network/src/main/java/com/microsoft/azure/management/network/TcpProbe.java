@@ -106,7 +106,46 @@ public interface TcpProbe extends Probe {
          * The first stage of the probe definition.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface Blank<ParentT> extends WithAttach<ParentT> {
+        interface Blank<ParentT> extends WithPort<ParentT> {
+        }
+
+        /**
+         * The stage of the TCP probe definition allowing to specify the port number to monitor.
+         * @param <ParentT> the parent resource type
+         */
+        interface WithPort<ParentT> {
+            /**
+             * Specifies the port number to call for health monitoring.
+             * @param port a port number
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withPort(int port);
+        }
+
+        /**
+         * The stage of the TCP probe definition allowing to specify the probe interval.
+         * @param <ParentT> the parent resource type
+         */
+        interface WithIntervalInSeconds<ParentT> {
+            /**
+             * Specifies the interval between probes, in seconds.
+             * @param seconds number of seconds
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withIntervalInSeconds(int seconds);
+        }
+
+        /**
+         * The stage of the TCP probe definition allowing to specify the number of unsuccessful probes before failure is determined.
+         * @param <ParentT>
+         */
+        interface WithNumberOfProbes<ParentT> {
+            /**
+             * Specifies the number of unsuccessful probes before failure is determined.
+             * @param probes number of probes
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withNumberOfProbes(int probes);
         }
 
         /** The final stage of the probe definition.
@@ -116,7 +155,9 @@ public interface TcpProbe extends Probe {
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithAttach<ParentT> extends
-            Attachable.InUpdate<ParentT> {
+            Attachable.InUpdate<ParentT>,
+            WithNumberOfProbes<ParentT>,
+            WithIntervalInSeconds<ParentT> {
         }
     }
 
@@ -125,6 +166,7 @@ public interface TcpProbe extends Probe {
      */
     interface UpdateDefinition<ParentT> extends
        UpdateDefinitionStages.Blank<ParentT>,
-       UpdateDefinitionStages.WithAttach<ParentT> {
+       UpdateDefinitionStages.WithAttach<ParentT>,
+       UpdateDefinitionStages.WithPort<ParentT> {
     }
 }

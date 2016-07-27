@@ -120,7 +120,7 @@ public interface HttpProbe extends Probe {
          * The first stage of the probe definition.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface Blank<ParentT> extends WithAttach<ParentT> {
+        interface Blank<ParentT> extends WithRequestPath<ParentT> {
         }
 
         /** The final stage of the probe definition.
@@ -130,15 +130,67 @@ public interface HttpProbe extends Probe {
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithAttach<ParentT> extends
-            Attachable.InUpdate<ParentT> {
+            Attachable.InUpdate<ParentT>,
+            WithPort<ParentT>,
+            WithIntervalInSeconds<ParentT>,
+            WithNumberOfProbes<ParentT> {
         }
+
+        /**
+         * The stage of the probe definition allowing to specify the HTTP request path for the probe to monitor.
+         * @param <ParentT> the parent type
+         */
+        interface WithRequestPath<ParentT> {
+            WithAttach<ParentT> withRequestPath(String requestPath);
+        }
+
+        /**
+         * The stage of the HTTP probe definition allowing to specify the probe interval.
+         * @param <ParentT> the parent resource type
+         */
+        interface WithIntervalInSeconds<ParentT> {
+            /**
+             * Specifies the interval between probes, in seconds.
+             * @param seconds number of seconds
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withIntervalInSeconds(int seconds);
+        }
+
+        /**
+         * The stage of the probe definition allowing to specify the port to monitor.
+         * @param <ParentT> the parent type
+         */
+        interface WithPort<ParentT> {
+            /**
+             * Specifies the port number to call for health monitoring.
+             * @param port a port number
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withPort(int port);
+        }
+
+        /**
+         * The stage of the HTTP probe definition allowing to specify the number of unsuccessful probes before failure is determined.
+         * @param <ParentT>
+         */
+        interface WithNumberOfProbes<ParentT> {
+            /**
+             * Specifies the number of unsuccessful probes before failure is determined.
+             * @param probes number of probes
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withNumberOfProbes(int probes);
+        }
+
     }
 
     /** The entirety of a probe definition as part of a load balancer update.
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
     interface UpdateDefinition<ParentT> extends
-       UpdateDefinitionStages.Blank<ParentT>,
-       UpdateDefinitionStages.WithAttach<ParentT> {
+        UpdateDefinitionStages.Blank<ParentT>,
+        UpdateDefinitionStages.WithAttach<ParentT>,
+        UpdateDefinitionStages.WithRequestPath<ParentT> {
     }
 }

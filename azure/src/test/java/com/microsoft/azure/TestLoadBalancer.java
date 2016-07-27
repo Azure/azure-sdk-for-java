@@ -128,12 +128,12 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                 .withExistingVirtualMachines(existingVMs)
                 .withTcpProbe(80)
                 .withLoadBalancedPort(80, TransportProtocol.TCP)
-                .defineTcpProbe("probeTCP")
+                .defineTcpProbe("tcp1")
                     .withPort(25)               // Required
                     .withIntervalInSeconds(15)  // Optionals
                     .withNumberOfProbes(5)
                     .attach()
-                .defineHttpProbe("probeHTTP")
+                .defineHttpProbe("http1")
                     .withRequestPath("/")       // Required
                     .withIntervalInSeconds(13)  // Optionals
                     .withNumberOfProbes(4)
@@ -144,10 +144,23 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
     @Override
     public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
         resource =  resource.update()
+                .withoutProbe("tcp1")
+                .defineHttpProbe("http2")
+                    .withRequestPath("/foo")
+                    .withNumberOfProbes(3)
+                    .withPort(443)
+                    .attach()
+                .defineTcpProbe("tcp2")
+                    .withPort(33)
+                    .withIntervalInSeconds(33)
+                    .attach()
                 .withTag("tag1", "value1")
                 .withTag("tag2", "value2")
                 .apply();
         Assert.assertTrue(resource.tags().containsKey("tag1"));
+        Assert.assertTrue(resource.httpProbes().containsKey("http2"));
+        Assert.assertTrue(resource.tcpProbes().containsKey("tcp2"));
+        Assert.assertTrue(!resource.tcpProbes().containsKey("tcp1"));
 
         return resource;
     }
@@ -176,19 +189,19 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
         info.append("\n\tTCP probes:");
         for (TcpProbe probe : resource.tcpProbes().values()) {
             info.append("\n\t\tProbe name: ").append(probe.name())
-                .append("\n\t\tPort: ").append(probe.port())
-                .append("\n\t\tInterval in seconds: ").append(probe.intervalInSeconds())
-                .append("\n\t\tRetries before unhealthy: ").append(probe.numberOfProbes());
+                .append("\n\t\t\tPort: ").append(probe.port())
+                .append("\n\t\t\tInterval in seconds: ").append(probe.intervalInSeconds())
+                .append("\n\t\t\tRetries before unhealthy: ").append(probe.numberOfProbes());
         }
 
         // Show HTTP probes
         info.append("\n\tHTTP probes:");
         for (HttpProbe probe : resource.httpProbes().values()) {
             info.append("\n\t\tProbe name: ").append(probe.name())
-                .append("\n\t\tPort: ").append(probe.port())
-                .append("\n\t\tInterval in seconds: ").append(probe.intervalInSeconds())
-                .append("\n\t\tRetries before unhealthy: ").append(probe.numberOfProbes())
-                .append("\n\t\tHTTP request path: ").append(probe.requestPath());
+                .append("\n\t\t\tPort: ").append(probe.port())
+                .append("\n\t\t\tInterval in seconds: ").append(probe.intervalInSeconds())
+                .append("\n\t\t\tRetries before unhealthy: ").append(probe.numberOfProbes())
+                .append("\n\t\t\tHTTP request path: ").append(probe.requestPath());
         }
 
         System.out.println(info.toString());
