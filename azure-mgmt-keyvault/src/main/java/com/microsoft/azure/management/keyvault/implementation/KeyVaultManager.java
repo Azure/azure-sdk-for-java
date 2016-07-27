@@ -12,9 +12,6 @@ import com.microsoft.azure.management.keyvault.Vaults;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
-import com.microsoft.azure.management.storage.StorageAccounts;
-import com.microsoft.azure.management.storage.implementation.StorageAccountsImpl;
-import com.microsoft.azure.management.storage.implementation.StorageManagementClientImpl;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
 /**

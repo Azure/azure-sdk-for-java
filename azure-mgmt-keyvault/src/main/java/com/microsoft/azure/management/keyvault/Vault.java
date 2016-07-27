@@ -76,6 +76,7 @@ public interface Vault extends
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
+        DefinitionStages.WithTenantId,
         DefinitionStages.WithCreate {
     }
 
@@ -92,7 +93,11 @@ public interface Vault extends
         /**
          * A key vault definition allowing resource group to be set.
          */
-        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithCreate> {
+        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithTenantId> {
+        }
+
+        interface WithTenantId {
+            WithCreate withTenantId(UUID tenantId);
         }
 
         /**
@@ -144,8 +149,7 @@ public interface Vault extends
      * The template for a key vault update operation, containing all the settings that can be modified.
      */
     interface Update extends
-            Appliable<Vault>,
-            UpdateWithTags<Update> {
+            Appliable<Vault> {
     }
 }
 
