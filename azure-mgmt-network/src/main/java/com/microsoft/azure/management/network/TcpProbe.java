@@ -89,13 +89,51 @@ public interface TcpProbe extends Probe {
      * Grouping of probe update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the TCP probe update allowing to modify the port number to monitor.
+         */
+        interface WithPort {
+            /**
+             * Specifies the port number to call for health monitoring.
+             * @param port a port number
+             * @return the next stage of the update
+             */
+            Update withPort(int port);
+        }
+
+        /**
+         * The stage of the TCP probe update allowing to modify the probe interval.
+         */
+        interface WithIntervalInSeconds {
+            /**
+             * Specifies the interval between probes, in seconds.
+             * @param seconds number of seconds
+             * @return the next stage of the update
+             */
+            Update withIntervalInSeconds(int seconds);
+        }
+
+        /**
+         * The stage of the TCP probe update allowing to modify the number of unsuccessful probes before failure is determined.
+         */
+        interface WithNumberOfProbes {
+            /**
+             * Specifies the number of unsuccessful probes before failure is determined.
+             * @param probes number of probes
+             * @return the next stage of the update
+             */
+            Update withNumberOfProbes(int probes);
+        }
     }
 
     /**
      * The entirety of a probe update as part of a load balancer update.
      */
     interface Update extends
-        Settable<LoadBalancer.Update> {
+        Settable<LoadBalancer.Update>,
+        UpdateStages.WithPort,
+        UpdateStages.WithIntervalInSeconds,
+        UpdateStages.WithNumberOfProbes {
     }
 
     /**

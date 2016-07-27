@@ -450,4 +450,14 @@ class LoadBalancerImpl
         }
         return Collections.unmodifiableList(publicIpAddressIds);
     }
+
+    @Override
+    public ProbeImpl updateTcpProbe(String name) {
+        return (ProbeImpl) this.tcpProbes.get(name);
+    }
+
+    @Override
+    public ProbeImpl updateHttpProbe(String name) {
+        return (ProbeImpl) this.httpProbes.get(name);
+    }
 }

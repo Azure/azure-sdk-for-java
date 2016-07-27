@@ -126,9 +126,9 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                 .withExistingResourceGroup(groupName)
                 .withExistingPublicIpAddresses(pip1)
                 .withExistingVirtualMachines(existingVMs)
-                .withTcpProbe(80)
+                .withTcpProbe(80, "tcp1")
                 .withLoadBalancedPort(80, TransportProtocol.TCP)
-                .defineTcpProbe("tcp1")
+                .defineTcpProbe("tcp2")
                     .withPort(25)               // Required
                     .withIntervalInSeconds(15)  // Optionals
                     .withNumberOfProbes(5)
@@ -144,23 +144,30 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
     @Override
     public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
         resource =  resource.update()
-                .withoutProbe("tcp1")
+                .withoutProbe("tcp2")
                 .defineHttpProbe("http2")
                     .withRequestPath("/foo")
                     .withNumberOfProbes(3)
                     .withPort(443)
                     .attach()
-                .defineTcpProbe("tcp2")
+                .defineTcpProbe("tcp3")
                     .withPort(33)
                     .withIntervalInSeconds(33)
                     .attach()
+                .updateTcpProbe("tcp1")
+                    .withPort(81)
+                    .parent()
+                .updateHttpProbe("http1")
+                    .withIntervalInSeconds(14)
+                    .withNumberOfProbes(5)
+                    .parent()
                 .withTag("tag1", "value1")
                 .withTag("tag2", "value2")
                 .apply();
         Assert.assertTrue(resource.tags().containsKey("tag1"));
         Assert.assertTrue(resource.httpProbes().containsKey("http2"));
-        Assert.assertTrue(resource.tcpProbes().containsKey("tcp2"));
-        Assert.assertTrue(!resource.tcpProbes().containsKey("tcp1"));
+        Assert.assertTrue(resource.tcpProbes().containsKey("tcp3"));
+        Assert.assertTrue(!resource.tcpProbes().containsKey("tcp2"));
 
         return resource;
     }

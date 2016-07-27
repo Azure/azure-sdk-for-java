@@ -365,6 +365,20 @@ public interface LoadBalancer extends
              * @return the next stage of the update
              */
             Update withoutProbe(Probe probe);
+
+            /**
+             * Begins the description of an update to an existing TCP probe on this load balancer.
+             * @param name the name of the probe to update
+             * @return the first stage of the probe update
+             */
+            TcpProbe.Update updateTcpProbe(String name);
+
+            /**
+             * Begins the description of an update to an existing HTTP probe on this load balancer.
+             * @param name the name of the probe to update
+             * @return the first stage of the probe update
+             */
+            HttpProbe.Update updateHttpProbe(String name);
         }
     }
 
