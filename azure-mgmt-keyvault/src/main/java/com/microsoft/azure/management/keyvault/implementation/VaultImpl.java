@@ -144,7 +144,19 @@ class VaultImpl
 
     @Override
     public VaultImpl withSku(SkuName skuName) {
+        if (inner().properties() == null) {
+            inner().withProperties(new VaultProperties());
+        }
         inner().properties().withSku(new Sku().withName(skuName).withFamily(SkuFamily.A));
+        return this;
+    }
+
+    @Override
+    public VaultImpl withTenantId(UUID tenantId) {
+        if (inner().properties() == null) {
+            inner().withProperties(new VaultProperties());
+        }
+        inner().properties().withTenantId(tenantId);
         return this;
     }
 
