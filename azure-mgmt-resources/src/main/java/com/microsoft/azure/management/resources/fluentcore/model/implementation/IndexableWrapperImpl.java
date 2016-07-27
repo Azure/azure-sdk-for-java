@@ -18,8 +18,8 @@ public abstract class IndexableWrapperImpl<InnerT>
         extends IndexableImpl
         implements Wrapper<InnerT> {
     private InnerT innerObject;
-    protected IndexableWrapperImpl(String name, InnerT innerObject) {
-        super(name);
+    protected IndexableWrapperImpl(InnerT innerObject) {
+        super();
         this.innerObject = innerObject;
     }
 

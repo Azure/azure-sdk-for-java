@@ -25,8 +25,8 @@ class SubnetImpl
         Subnet.UpdateDefinition<Network.Update>,
         Subnet.Update {
 
-    protected SubnetImpl(String name, SubnetInner inner, NetworkImpl parent) {
-        super(name, inner, parent);
+    protected SubnetImpl(SubnetInner inner, NetworkImpl parent) {
+        super(inner, parent);
     }
 
     // Getters

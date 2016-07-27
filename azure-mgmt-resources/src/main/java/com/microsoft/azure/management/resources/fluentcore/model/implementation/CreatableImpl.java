@@ -8,7 +8,6 @@ package com.microsoft.azure.management.resources.fluentcore.model.implementation
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
-import java.util.UUID;
 
 /**
  * The base class for all creatable resource.
@@ -22,9 +21,9 @@ public abstract class CreatableImpl<FluentModelT extends ResourceT, InnerModelT,
         extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
         implements CreatorTaskGroup.ResourceCreator<ResourceT> {
     /**
-     * The unique id used to implement CreatorTaskGroup.ResourceCreator::uuid().
+     * The name of the creatable resource.
      */
-    private String uuid = UUID.randomUUID().toString();
+    private String name;
 
     /**
      * The group of tasks to create this resource and it's dependencies.
@@ -32,8 +31,9 @@ public abstract class CreatableImpl<FluentModelT extends ResourceT, InnerModelT,
     private CreatorTaskGroup<ResourceT> creatorTaskGroup;
 
     protected CreatableImpl(String name, InnerModelT innerObject) {
-        super(name, innerObject);
-        creatorTaskGroup = new CreatorTaskGroup<>(this);
+        super(innerObject);
+        this.name = name;
+        creatorTaskGroup = new CreatorTaskGroup<>(this.key(), this);
     }
 
     /**
@@ -50,6 +50,13 @@ public abstract class CreatableImpl<FluentModelT extends ResourceT, InnerModelT,
 
     protected ResourceT createdResource(String key) {
         return this.creatorTaskGroup.createdResource(key);
+    }
+
+    /**
+     * @return the name of the creatable resource.
+     */
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -88,15 +95,5 @@ public abstract class CreatableImpl<FluentModelT extends ResourceT, InnerModelT,
      */
     public CreatorTaskGroup creatorTaskGroup() {
         return this.creatorTaskGroup;
-    }
-
-    @Override
-    public String uuid() {
-        return uuid;
-    }
-
-    @Override
-    public String resourceKey() {
-        return this.key();
     }
 }

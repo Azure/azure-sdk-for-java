@@ -91,7 +91,7 @@ public abstract class GroupableResourceImpl<
      */
     @SuppressWarnings("unchecked")
     public final FluentModelImplT withNewResourceGroup(Creatable<ResourceGroup> creatable) {
-        this.groupName = creatable.key();
+        this.groupName = creatable.name();
         this.creatableGroup = creatable;
         addCreatableDependency(creatable);
         return (FluentModelImplT) this;
@@ -115,12 +115,5 @@ public abstract class GroupableResourceImpl<
      */
     public final FluentModelImplT withExistingResourceGroup(ResourceGroup group) {
         return this.withExistingResourceGroup(group.name());
-    }
-
-    /**
-     * @return the key of this group-able resource.
-     */
-    public String key() {
-        return this.resourceGroupName() + "-" + super.key();
     }
 }

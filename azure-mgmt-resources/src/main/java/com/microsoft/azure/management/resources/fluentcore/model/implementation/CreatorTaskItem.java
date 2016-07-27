@@ -53,18 +53,4 @@ public class CreatorTaskItem<ResourceT> implements TaskItem<ResourceT> {
             }
         });
     }
-
-    /**
-     * @return the unique id of the creator
-     */
-    public String uuid() {
-        return resourceCreator.uuid();
-    }
-
-    /**
-     * @return the unique key assigned to the created resource.
-     */
-    public String resourceKey() {
-        return resourceCreator.resourceKey();
-    }
 }

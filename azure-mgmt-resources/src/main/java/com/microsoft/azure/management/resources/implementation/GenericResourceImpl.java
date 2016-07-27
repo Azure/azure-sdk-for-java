@@ -165,7 +165,7 @@ final class GenericResourceImpl
                 resourceProviderNamespace,
                 parentResourceId,
                 resourceType,
-                key(),
+                name(),
                 apiVersion,
                 inner()
         ).getBody();

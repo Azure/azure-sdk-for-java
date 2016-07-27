@@ -16,6 +16,11 @@ import com.microsoft.rest.ServiceCallback;
  */
 public interface Creatable<T> extends Indexable {
     /**
+     * @return the name of the creatable resource.
+     */
+    String name();
+
+    /**
      * Execute the create request.
      *
      * @return the create resource
