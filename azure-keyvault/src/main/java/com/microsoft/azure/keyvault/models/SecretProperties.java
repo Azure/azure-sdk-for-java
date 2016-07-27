@@ -6,16 +6,14 @@
 
 package com.microsoft.azure.keyvault.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The SecretProperties model.
+ * Properties of the key backing a certificate.
  */
 public class SecretProperties {
     /**
      * The media type (MIME type).
      */
-    @JsonProperty(value = "ContentType")
     private String contentType;
 
     /**

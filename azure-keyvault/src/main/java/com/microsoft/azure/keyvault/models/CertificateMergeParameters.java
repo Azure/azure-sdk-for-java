@@ -11,7 +11,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The CertificateMergeParameters model.
+ * The certificate merge parameters.
  */
 public class CertificateMergeParameters {
     /**

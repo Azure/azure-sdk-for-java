@@ -51,7 +51,7 @@ public class CreateCertificateRequest {
      *          The management policy for the certificate.
      * @return the Builder object itself.
      */
-    public Builder withCertificatePolicy(CertificatePolicy certificatePolicy) {
+    public Builder withPolicy(CertificatePolicy certificatePolicy) {
       this.policy = certificatePolicy;
       return this;
     }

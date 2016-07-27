@@ -11,7 +11,7 @@ import java.util.Map;
 import com.microsoft.azure.keyvault.implementation.KeyIdentifier;
 
 /**
- * The KeyItem model.
+ * The key item containing key metadata.
  */
 public class KeyItem {
     /**

@@ -6,8 +6,6 @@
 
 package com.microsoft.azure.keyvault.models;
 
-import com.microsoft.rest.Base64Url;
-
 import java.io.IOException;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,7 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.keyvault.implementation.CertificateOperationIdentifier;
 
 /**
- * The CertificateOperation model.
+ * A certificate operation is returned in case of async requests.
  */
 public class CertificateOperation {
     /**

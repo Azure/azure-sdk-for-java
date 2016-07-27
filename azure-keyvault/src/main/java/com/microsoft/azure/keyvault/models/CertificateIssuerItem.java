@@ -8,7 +8,7 @@ package com.microsoft.azure.keyvault.models;
 
 
 /**
- * The CertificateIssuerItem model.
+ * The certificate issuer item containing certificate issuer metadata.
  */
 public class CertificateIssuerItem {
     /**

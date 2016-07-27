@@ -10,7 +10,7 @@ import com.microsoft.rest.Base64Url;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The KeyRestoreParameters model.
+ * The key restore parameters.
  */
 public class KeyRestoreParameters {
     /**
@@ -38,7 +38,11 @@ public class KeyRestoreParameters {
      * @return the KeyRestoreParameters object itself.
      */
     public KeyRestoreParameters withKeyBundleBackup(byte[] keyBundleBackup) {
-        this.keyBundleBackup = Base64Url.encode(keyBundleBackup);
+        if (keyBundleBackup == null) {
+            this.keyBundleBackup = null;
+        } else {
+            this.keyBundleBackup = Base64Url.encode(keyBundleBackup);
+        }
         return this;
     }
 

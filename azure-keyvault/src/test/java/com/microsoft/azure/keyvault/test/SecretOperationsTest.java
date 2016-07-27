@@ -25,10 +25,8 @@ import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.microsoft.azure.keyvault.models.CertificateItem;
 import com.microsoft.azure.keyvault.models.KeyVaultErrorException;
 import com.microsoft.azure.keyvault.models.SecretBundle;
-import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.keyvault.implementation.SecretIdentifier;
 import com.microsoft.azure.keyvault.implementation.requests.SetSecretRequest;

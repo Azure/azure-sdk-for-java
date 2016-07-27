@@ -56,7 +56,6 @@ import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -203,7 +202,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
     }
 
     protected void initialize() {
-        this.apiVersion = "2015-06-01-preview2";
+        this.apiVersion = "2015-06-01";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
@@ -220,7 +219,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
     public String userAgent() {
         return String.format("Azure-SDK-For-Java/%s (%s)",
                 getClass().getPackage().getImplementationVersion(),
-                "KeyVaultClient, 2015-06-01-preview2");
+                "KeyVaultClient, 2015-06-01");
     }
 
     private void initializeService() {
@@ -3388,7 +3387,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * Sets the certificate contacts for the specified vault.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
-     * @param contacts Contacts.
+     * @param contacts The contacts for the vault certificates.
      * @throws KeyVaultErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -3414,7 +3413,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * Sets the certificate contacts for the specified vault.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
-     * @param contacts Contacts.
+     * @param contacts The contacts for the vault certificates.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
@@ -4059,13 +4058,12 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param certificateName The name of the certificate
-     * @param certificatePolicy The management policy for the certificate
      * @throws KeyVaultErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the CertificateOperation object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<CertificateOperation> createCertificate(String vaultBaseUrl, String certificateName, CertificatePolicy certificatePolicy) throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public ServiceResponse<CertificateOperation> createCertificate(String vaultBaseUrl, String certificateName) throws KeyVaultErrorException, IOException, IllegalArgumentException {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -4075,14 +4073,11 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        if (certificatePolicy == null) {
-            throw new IllegalArgumentException("Parameter certificatePolicy is required and cannot be null.");
-        }
-        Validator.validate(certificatePolicy);
+        final CertificatePolicy certificatePolicy = null;
         final CertificateAttributes certificateAttributes = null;
         final Map<String, String> tags = null;
         CertificateCreateParameters parameters = new CertificateCreateParameters();
-        parameters.withCertificatePolicy(certificatePolicy);
+        parameters.withCertificatePolicy(null);
         parameters.withCertificateAttributes(null);
         parameters.withTags(null);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
@@ -4095,12 +4090,11 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param certificateName The name of the certificate
-     * @param certificatePolicy The management policy for the certificate
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall createCertificateAsync(String vaultBaseUrl, String certificateName, CertificatePolicy certificatePolicy, final ServiceCallback<CertificateOperation> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall createCertificateAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<CertificateOperation> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -4116,15 +4110,11 @@ final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null."));
             return null;
         }
-        if (certificatePolicy == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter certificatePolicy is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(certificatePolicy, serviceCallback);
+        final CertificatePolicy certificatePolicy = null;
         final CertificateAttributes certificateAttributes = null;
         final Map<String, String> tags = null;
         CertificateCreateParameters parameters = new CertificateCreateParameters();
-        parameters.withCertificatePolicy(certificatePolicy);
+        parameters.withCertificatePolicy(null);
         parameters.withCertificateAttributes(null);
         parameters.withTags(null);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
@@ -4166,9 +4156,6 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        if (certificatePolicy == null) {
-            throw new IllegalArgumentException("Parameter certificatePolicy is required and cannot be null.");
-        }
         Validator.validate(certificatePolicy);
         Validator.validate(certificateAttributes);
         Validator.validate(tags);
@@ -4209,10 +4196,6 @@ final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null."));
             return null;
         }
-        if (certificatePolicy == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter certificatePolicy is required and cannot be null."));
-            return null;
-        }
         Validator.validate(certificatePolicy, serviceCallback);
         Validator.validate(certificateAttributes, serviceCallback);
         Validator.validate(tags, serviceCallback);
@@ -4249,13 +4232,12 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param certificateName The name of the certificate
      * @param base64EncodedCertificate Base64 encoded representation of the certificate object to import. This certificate needs to contain the private key.
-     * @param certificatePolicy The management policy for the certificate
      * @throws KeyVaultErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the CertificateBundle object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<CertificateBundle> importCertificate(String vaultBaseUrl, String certificateName, String base64EncodedCertificate, CertificatePolicy certificatePolicy) throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public ServiceResponse<CertificateBundle> importCertificate(String vaultBaseUrl, String certificateName, String base64EncodedCertificate) throws KeyVaultErrorException, IOException, IllegalArgumentException {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -4268,17 +4250,14 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         if (base64EncodedCertificate == null) {
             throw new IllegalArgumentException("Parameter base64EncodedCertificate is required and cannot be null.");
         }
-        if (certificatePolicy == null) {
-            throw new IllegalArgumentException("Parameter certificatePolicy is required and cannot be null.");
-        }
-        Validator.validate(certificatePolicy);
         final String password = null;
+        final CertificatePolicy certificatePolicy = null;
         final CertificateAttributes certificateAttributes = null;
         final Map<String, String> tags = null;
         CertificateImportParameters parameters = new CertificateImportParameters();
         parameters.withBase64EncodedCertificate(base64EncodedCertificate);
         parameters.withPassword(null);
-        parameters.withCertificatePolicy(certificatePolicy);
+        parameters.withCertificatePolicy(null);
         parameters.withCertificateAttributes(null);
         parameters.withTags(null);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
@@ -4292,12 +4271,11 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param certificateName The name of the certificate
      * @param base64EncodedCertificate Base64 encoded representation of the certificate object to import. This certificate needs to contain the private key.
-     * @param certificatePolicy The management policy for the certificate
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall importCertificateAsync(String vaultBaseUrl, String certificateName, String base64EncodedCertificate, CertificatePolicy certificatePolicy, final ServiceCallback<CertificateBundle> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall importCertificateAsync(String vaultBaseUrl, String certificateName, String base64EncodedCertificate, final ServiceCallback<CertificateBundle> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -4317,18 +4295,14 @@ final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter base64EncodedCertificate is required and cannot be null."));
             return null;
         }
-        if (certificatePolicy == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter certificatePolicy is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(certificatePolicy, serviceCallback);
         final String password = null;
+        final CertificatePolicy certificatePolicy = null;
         final CertificateAttributes certificateAttributes = null;
         final Map<String, String> tags = null;
         CertificateImportParameters parameters = new CertificateImportParameters();
         parameters.withBase64EncodedCertificate(base64EncodedCertificate);
         parameters.withPassword(null);
-        parameters.withCertificatePolicy(certificatePolicy);
+        parameters.withCertificatePolicy(null);
         parameters.withCertificateAttributes(null);
         parameters.withTags(null);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
@@ -4353,8 +4327,8 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param certificateName The name of the certificate
      * @param base64EncodedCertificate Base64 encoded representation of the certificate object to import. This certificate needs to contain the private key.
-     * @param certificatePolicy The management policy for the certificate
      * @param password If the private key in base64EncodedCertificate is encrypted, the password used for encryption
+     * @param certificatePolicy The management policy for the certificate
      * @param certificateAttributes The attributes of the certificate (optional)
      * @param tags Application-specific metadata in the form of key-value pairs
      * @throws KeyVaultErrorException exception thrown from REST call
@@ -4362,7 +4336,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the CertificateBundle object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<CertificateBundle> importCertificate(String vaultBaseUrl, String certificateName, String base64EncodedCertificate, CertificatePolicy certificatePolicy, String password, CertificateAttributes certificateAttributes, Map<String, String> tags) throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public ServiceResponse<CertificateBundle> importCertificate(String vaultBaseUrl, String certificateName, String base64EncodedCertificate, String password, CertificatePolicy certificatePolicy, CertificateAttributes certificateAttributes, Map<String, String> tags) throws KeyVaultErrorException, IOException, IllegalArgumentException {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -4374,9 +4348,6 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         }
         if (base64EncodedCertificate == null) {
             throw new IllegalArgumentException("Parameter base64EncodedCertificate is required and cannot be null.");
-        }
-        if (certificatePolicy == null) {
-            throw new IllegalArgumentException("Parameter certificatePolicy is required and cannot be null.");
         }
         Validator.validate(certificatePolicy);
         Validator.validate(certificateAttributes);
@@ -4398,15 +4369,15 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param certificateName The name of the certificate
      * @param base64EncodedCertificate Base64 encoded representation of the certificate object to import. This certificate needs to contain the private key.
-     * @param certificatePolicy The management policy for the certificate
      * @param password If the private key in base64EncodedCertificate is encrypted, the password used for encryption
+     * @param certificatePolicy The management policy for the certificate
      * @param certificateAttributes The attributes of the certificate (optional)
      * @param tags Application-specific metadata in the form of key-value pairs
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall importCertificateAsync(String vaultBaseUrl, String certificateName, String base64EncodedCertificate, CertificatePolicy certificatePolicy, String password, CertificateAttributes certificateAttributes, Map<String, String> tags, final ServiceCallback<CertificateBundle> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall importCertificateAsync(String vaultBaseUrl, String certificateName, String base64EncodedCertificate, String password, CertificatePolicy certificatePolicy, CertificateAttributes certificateAttributes, Map<String, String> tags, final ServiceCallback<CertificateBundle> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -4424,10 +4395,6 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         }
         if (base64EncodedCertificate == null) {
             serviceCallback.failure(new IllegalArgumentException("Parameter base64EncodedCertificate is required and cannot be null."));
-            return null;
-        }
-        if (certificatePolicy == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter certificatePolicy is required and cannot be null."));
             return null;
         }
         Validator.validate(certificatePolicy, serviceCallback);

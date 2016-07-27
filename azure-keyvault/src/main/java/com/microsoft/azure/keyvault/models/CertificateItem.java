@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.azure.keyvault.implementation.CertificateIdentifier;
 
 /**
- * The CertificateItem model.
+ * The certificate item containing certificate metadata.
  */
 public class CertificateItem {
     /**
@@ -115,7 +115,11 @@ public class CertificateItem {
      * @return the CertificateItem object itself.
      */
     public CertificateItem withX5T(byte[] x5T) {
-        this.x5T = Base64Url.encode(x5T);
+        if (x5T == null) {
+            this.x5T = null;
+        } else {
+            this.x5T = Base64Url.encode(x5T);
+        }
         return this;
     }
     

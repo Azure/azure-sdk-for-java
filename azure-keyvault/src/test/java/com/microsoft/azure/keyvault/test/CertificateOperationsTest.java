@@ -51,7 +51,6 @@ import org.apache.commons.codec.binary.Base64;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.keyvault.implementation.CertificateIdentifier;
 import com.microsoft.azure.keyvault.implementation.SecretIdentifier;
@@ -139,7 +138,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
 		CertificateOperation certificateOperation = keyVaultClient.createCertificate(
 				new CreateCertificateRequest
 						.Builder(vaultUri, certificateName)
-						.withCertificatePolicy(certificatePolicy)
+						.withPolicy(certificatePolicy)
 						.build()).getBody();
 
 		Assert.assertNotNull(certificateOperation);
@@ -237,7 +236,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
 		CertificateOperation certificateOperation = keyVaultClient.createCertificate(
 				new CreateCertificateRequest
 					.Builder(vaultUri, certificateName)
-					.withCertificatePolicy(certificatePolicy)
+					.withPolicy(certificatePolicy)
 					.build()).getBody();
 
 		Assert.assertNotNull(certificateOperation);
@@ -274,7 +273,6 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
 		Assert.assertNotNull(certificates);
 		Assert.assertTrue(certificates.size() == 1);
 
-		// TODO: Iterate over certificates collection to find which certificate
 		// has the public key corresponding to the private key.
 		X509Certificate secretCertificate = certificates.get(0);
 		Assert.assertNotNull(secretCertificate);
@@ -320,7 +318,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
 		OrganizationDetails organizationDetails = new OrganizationDetails();
 		List<AdministratorDetails> administratorsDetails = new ArrayList<AdministratorDetails>();
 		administratorsDetails.add(administratorDetails);
-		organizationDetails.withAdministratorDetails(administratorsDetails);
+		organizationDetails.withAdminDetails(administratorsDetails);
 
 		// Construct certificate issuer credentials
 		IssuerCredentials credentials = new IssuerCredentials();
@@ -367,7 +365,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
 		CertificateOperation certificateOperation = keyVaultClient.createCertificate(
 				new CreateCertificateRequest
 					.Builder(vaultUri, certificateName)
-					.withCertificatePolicy(certificatePolicy)
+					.withPolicy(certificatePolicy)
 					.build()).getBody();
 
 		Assert.assertNotNull(certificateOperation);
@@ -459,7 +457,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
 		OrganizationDetails organizationDetails = new OrganizationDetails();
 		List<AdministratorDetails> administratorsDetails = new ArrayList<AdministratorDetails>();
 		administratorsDetails.add(administratorDetails);
-		organizationDetails.withAdministratorDetails(administratorsDetails);
+		organizationDetails.withAdminDetails(administratorsDetails);
 
 		// Construct certificate issuer credentials
 		IssuerCredentials credentials = new IssuerCredentials();
@@ -505,7 +503,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
 		CertificateOperation certificateOperation = keyVaultClient.createCertificate(
 				new CreateCertificateRequest
 					.Builder(vaultUri, certificateName)
-					.withCertificatePolicy(certificatePolicy)
+					.withPolicy(certificatePolicy)
 					.build()).getBody();
 
 		Assert.assertNotNull(certificateOperation);
@@ -547,7 +545,6 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
 		Assert.assertNotNull(certificates);
 		Assert.assertTrue(certificates.size() == 1);
 
-		// TODO: Iterate over certificates collection to find which certificate
 		// has the public key corresponding to the private key.
 		X509Certificate secretCertificate = certificates.get(0);
 		Assert.assertNotNull(secretCertificate);
@@ -605,11 +602,11 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
 		certificatePolicy.withX509CertificateProperties(x509Properties);
 
 		String vaultUri = getVaultUri();
-		String certificateName = "createManualEnrollmentJava4";
+		String certificateName = "createManualEnrollmentJava";
 		CertificateOperation certificateOperation = keyVaultClient.createCertificate(
 				new CreateCertificateRequest
 					.Builder(vaultUri, certificateName)
-					.withCertificatePolicy(certificatePolicy)
+					.withPolicy(certificatePolicy)
 					.build()).getBody();
 
 		Assert.assertNotNull(certificateOperation);
@@ -992,7 +989,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
 		OrganizationDetails organizationDetails = new OrganizationDetails();
 		List<AdministratorDetails> administratorsDetails = new ArrayList<AdministratorDetails>();
 		administratorsDetails.add(administratorDetails);
-		organizationDetails.withAdministratorDetails(administratorsDetails);
+		organizationDetails.withAdminDetails(administratorsDetails);
 
 		// Construct certificate issuer credentials
 		IssuerCredentials credentials = new IssuerCredentials();

@@ -28,7 +28,7 @@ import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
 import com.microsoft.rest.Base64Url;
 
 /**
- * The JsonWebKey model.
+ * As of http://tools.ietf.org/html/draft-ietf-jose-json-web-key-18.
  */
 public class JsonWebKey {
     /**
@@ -63,27 +63,27 @@ public class JsonWebKey {
     private Base64Url d;
 
     /**
-     * The dp property.
+     * RSA Private Key Parameter.
      */
     private Base64Url dp;
 
     /**
-     * The dq property.
+     * RSA Private Key Parameter.
      */
     private Base64Url dq;
 
     /**
-     * The qi property.
+     * RSA Private Key Parameter.
      */
     private Base64Url qi;
 
     /**
-     * The p property.
+     * RSA secret prime.
      */
     private Base64Url p;
 
     /**
-     * The q property.
+     * RSA secret prime, with p &lt; q.
      */
     private Base64Url q;
 
@@ -178,8 +178,11 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey withN(byte[] n) {
-        if (n != null) 
-        this.n = Base64Url.encode(n);
+        if (n == null) {
+            this.n = null;
+        } else {
+            this.n = Base64Url.encode(n);
+        }
         return this;
     }
 
@@ -202,8 +205,11 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey withE(byte[] e) {
-        if (e != null) 
-        this.e = Base64Url.encode(e);
+        if (e == null) {
+            this.e = null;
+        } else {
+            this.e = Base64Url.encode(e);
+        }
         return this;
     }
 
@@ -226,8 +232,11 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey withD(byte[] d) {
-        if (d != null) 
-        this.d = Base64Url.encode(d);
+        if (d == null) {
+            this.d = null;
+        } else {
+            this.d = Base64Url.encode(d);
+        }
         return this;
     }
 
@@ -250,8 +259,11 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey withDp(byte[] dp) {
-        if (dp != null) 
-        this.dp = Base64Url.encode(dp);
+        if (dp == null) {
+            this.dp = null;
+        } else {
+            this.dp = Base64Url.encode(dp);
+        }
         return this;
     }
 
@@ -274,8 +286,11 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey withDq(byte[] dq) {
-        if (dq != null) 
-        this.dq = Base64Url.encode(dq);
+        if (dq == null) {
+            this.dq = null;
+        } else {
+            this.dq = Base64Url.encode(dq);
+        }
         return this;
     }
 
@@ -298,8 +313,11 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey withQi(byte[] qi) {
-        if (qi != null) 
-        this.qi = Base64Url.encode(qi);
+        if (qi == null) {
+            this.qi = null;
+        } else {
+            this.qi = Base64Url.encode(qi);
+        }
         return this;
     }
 
@@ -322,8 +340,11 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey withP(byte[] p) {
-        if (p != null) 
-        this.p = Base64Url.encode(p);
+        if (p == null) {
+            this.p = null;
+        } else {
+            this.p = Base64Url.encode(p);
+        }
         return this;
     }
 
@@ -346,8 +367,11 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey withQ(byte[] q) {
-        if (q != null) 
-        this.q = Base64Url.encode(q);
+        if (q == null) {
+            this.q = null;
+        } else {
+            this.q = Base64Url.encode(q);
+        }
         return this;
     }
 
@@ -370,8 +394,11 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey withK(byte[] k) {
-        if (k != null) 
-        this.k = Base64Url.encode(k);
+        if (k == null) {
+            this.k = null;
+        } else {
+            this.k = Base64Url.encode(k);
+        }
         return this;
     }
 
@@ -394,8 +421,11 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey withT(byte[] t) {
-        if (t != null) 
-        this.t = Base64Url.encode(t);
+        if (t == null) {
+            this.t = null;
+        } else {
+            this.t = Base64Url.encode(t);
+        }
         return this;
     }
 

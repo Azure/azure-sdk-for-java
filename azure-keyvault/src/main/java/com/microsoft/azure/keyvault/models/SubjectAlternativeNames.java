@@ -10,7 +10,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The SubjectAlternativeNames model.
+ * The subject alternate names of a X509 object.
  */
 public class SubjectAlternativeNames {
     /**

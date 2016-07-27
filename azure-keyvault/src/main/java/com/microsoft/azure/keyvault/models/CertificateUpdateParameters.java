@@ -10,7 +10,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The CertificateUpdateParameters model.
+ * The certificate update parameters.
  */
 public class CertificateUpdateParameters {
     /**

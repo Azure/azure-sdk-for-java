@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.keyvault.implementation.IssuerIdentifier;
 
 /**
- * The IssuerBundle model.
+ * The issuer for Key Vault certificate.
  */
 public class IssuerBundle {
     /**

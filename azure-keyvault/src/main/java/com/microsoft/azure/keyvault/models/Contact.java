@@ -9,7 +9,7 @@ package com.microsoft.azure.keyvault.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The Contact model.
+ * The contact information for the vault certificates.
  */
 public class Contact {
     /**

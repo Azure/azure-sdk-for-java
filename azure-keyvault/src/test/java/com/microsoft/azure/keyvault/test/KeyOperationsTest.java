@@ -38,10 +38,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.microsoft.azure.keyvault.models.KeyBundle;
-import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.keyvault.implementation.KeyIdentifier;
-import com.microsoft.azure.keyvault.implementation.SecretIdentifier;
 import com.microsoft.azure.keyvault.implementation.requests.CreateKeyRequest;
 import com.microsoft.azure.keyvault.implementation.requests.ImportKeyRequest;
 import com.microsoft.azure.keyvault.implementation.requests.UpdateKeyRequest;
@@ -49,7 +47,6 @@ import com.microsoft.azure.keyvault.models.KeyItem;
 import com.microsoft.azure.keyvault.models.KeyOperationResult;
 import com.microsoft.azure.keyvault.models.KeyVaultErrorException;
 import com.microsoft.azure.keyvault.models.KeyVerifyResult;
-import com.microsoft.azure.keyvault.models.CertificateItem;
 import com.microsoft.azure.keyvault.models.JsonWebKey;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyEncryptionAlgorithm;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyOperation;

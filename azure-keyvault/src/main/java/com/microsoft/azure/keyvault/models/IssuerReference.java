@@ -8,7 +8,7 @@ package com.microsoft.azure.keyvault.models;
 
 
 /**
- * The IssuerReference model.
+ * Reference to the issuer of the X509 component of a certificate.
  */
 public class IssuerReference {
     /**

@@ -10,7 +10,7 @@ import com.microsoft.rest.Base64Url;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The KeyOperationResult model.
+ * The key operation result.
  */
 public class KeyOperationResult {
     /**

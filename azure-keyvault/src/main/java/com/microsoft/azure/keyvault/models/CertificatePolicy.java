@@ -10,7 +10,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The CertificatePolicy model.
+ * Management policy for a certificate.
  */
 public class CertificatePolicy {
     /**

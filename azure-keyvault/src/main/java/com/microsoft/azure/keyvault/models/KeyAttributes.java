@@ -8,7 +8,7 @@ package com.microsoft.azure.keyvault.models;
 
 
 /**
- * The key management attributes.
+ * The attributes of a key managed by the KeyVault service.
  */
 public class KeyAttributes extends Attributes {
 }

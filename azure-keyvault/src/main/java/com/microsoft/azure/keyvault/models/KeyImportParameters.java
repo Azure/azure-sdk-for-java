@@ -10,7 +10,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The KeyImportParameters model.
+ * The key import parameters.
  */
 public class KeyImportParameters {
     /**

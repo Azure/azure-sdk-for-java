@@ -10,7 +10,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The SecretUpdateParameters model.
+ * The secret update parameters.
  */
 public class SecretUpdateParameters {
     /**

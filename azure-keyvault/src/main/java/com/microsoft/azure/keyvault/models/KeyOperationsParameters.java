@@ -10,7 +10,7 @@ import com.microsoft.rest.Base64Url;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The KeyOperationsParameters model.
+ * The key operations parameters.
  */
 public class KeyOperationsParameters {
     /**
@@ -64,7 +64,11 @@ public class KeyOperationsParameters {
      * @return the KeyOperationsParameters object itself.
      */
     public KeyOperationsParameters withValue(byte[] value) {
-        this.value = Base64Url.encode(value);
+        if (value == null) {
+            this.value = null;
+        } else {
+            this.value = Base64Url.encode(value);
+        }
         return this;
     }
 

@@ -9,7 +9,7 @@ package com.microsoft.azure.keyvault.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The AdministratorDetails model.
+ * Details of the organization administrator of the certificate issuer.
  */
 public class AdministratorDetails {
     /**
