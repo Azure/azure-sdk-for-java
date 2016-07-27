@@ -30,6 +30,7 @@ import com.microsoft.azure.servicebus.amqp.ConnectionHandler;
 import com.microsoft.azure.servicebus.amqp.IAmqpConnection;
 import com.microsoft.azure.servicebus.amqp.ProtonUtil;
 import com.microsoft.azure.servicebus.amqp.ReactorHandler;
+import com.microsoft.azure.servicebus.amqp.ReactorDispatcher;
 
 /**
  * Abstracts all amqp related details and exposes AmqpConnection object
@@ -49,6 +50,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	private final Object reactorLock;
 	
 	private Reactor reactor;
+	private ReactorDispatcher reactorScheduler;
 	private Thread reactorThread;
 	private Connection connection;
 	private boolean waitingConnectionOpen;
@@ -102,6 +104,14 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 			return this.reactor;
 		}
 	}
+	
+	private ReactorDispatcher getReactorScheduler()
+	{
+		synchronized (this.reactorLock)
+		{
+			return this.reactorScheduler;
+		}
+	}
 
 	private void createConnection(ConnectionStringBuilder builder) throws IOException
 	{
@@ -116,6 +126,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		synchronized (this.reactorLock)
 		{
 			this.reactor = newReactor;
+			this.reactorScheduler = new ReactorDispatcher(newReactor);
 		}
 		
 		this.reactorThread = new Thread(new RunReactor(newReactor));
@@ -428,9 +439,14 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	{
 		this.registeredLinks.remove(link);	
 	}
-
-	public Task scheduleOnReactorThread(final int delay, final Handler handler)
+	
+	public void scheduleOnReactorThread(final BaseHandler handler) throws IOException
 	{
-		return this.getReactor().schedule(delay, handler);
+		this.getReactorScheduler().invoke(handler);
+	}
+
+	public void scheduleOnReactorThread(final int delay, final BaseHandler handler) throws IOException
+	{
+		this.getReactorScheduler().invoke(delay, handler);
 	}	
 }
