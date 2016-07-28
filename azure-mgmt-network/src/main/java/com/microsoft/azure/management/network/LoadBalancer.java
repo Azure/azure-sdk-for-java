@@ -106,6 +106,12 @@ public interface LoadBalancer extends
          * The stage of the definition allowing to add a backend.
          */
         interface WithBackend extends WithVirtualMachine {
+            /**
+             * Adds a new empty backend to the load balancer.
+             * @param name the name to assign to the backend
+             * @return the next stage of the update
+             */
+            WithBackendOrCreate withBackend(String name);
         }
 
         /**
@@ -137,10 +143,34 @@ public interface LoadBalancer extends
              * <p>
              * If the virtual machines are not in the same availability set, the load balancer will still
              * be created, but the virtual machines will not associated with its back end.
+             * <p>
+             * Only those virtual machines will be associated with the load balancer that already have an existing
+             * network interface. Virtual machines without a network interface will be skipped.
              * @param vms existing virtual machines
              * @return the next stage of the update
              */
             WithBackendOrCreate withExistingVirtualMachines(SupportsNetworkInterfaces...vms);
+
+            /**
+             * Adds the specified set of virtual machines, assuming they are from the same
+             * availability set, to the specified backend of this load balancer.
+             * <p>
+             * If an existing backend with the provided name does not exist on this load balancer, it will be created.
+             * If the name is null, a new name for the backend will be generated automatically.
+             * <p>
+             * Reference to the primary IP configurations of the primary network interfaces of each of the provided set of
+             * virtual machines will be added to the backend.
+             * <p>
+             * If the virtual machines are not in the same availability set, the load balancer will still
+             * be created, but the virtual machines will not be associated it.
+             * <p>
+             * Only those virtual machines will be associated with the load balancer that already have an existing
+             * network interface. Virtual machines without a network interface will be skipped.
+             * @param backendName the name of the backend to associate the virtual machines with
+             * @param vms existing virtual machines
+             * @return the next stage of the update
+             */
+            WithBackendOrCreate withExistingVirtualMachines(String backendName, SupportsNetworkInterfaces...vms);
         }
 
         /**
@@ -300,6 +330,25 @@ public interface LoadBalancer extends
      */
     interface UpdateStages {
         /**
+         * The stage of the load balancer update allowing to add or remove backends.
+         */
+        interface WithBackend {
+            /**
+             * Adds a new empty backend to the load balancer.
+             * @param name the name to assign to the backend
+             * @return the next stage of the update
+             */
+            Update withBackend(String name);
+
+            /**
+             * Removes the specified backend from the load balancer.
+             * @param name the name of the backend to remove
+             * @return the next stage of the update
+             */
+            Update withoutBackend(String name);
+        }
+
+        /**
          * The stage of the load balancer update allowing to add, remove or modify probes.
          */
         interface WithProbe {
@@ -396,6 +445,7 @@ public interface LoadBalancer extends
     interface Update extends
         Appliable<LoadBalancer>,
         Resource.UpdateWithTags<Update>,
-        UpdateStages.WithProbe {
+        UpdateStages.WithProbe,
+        UpdateStages.WithBackend {
     }
 }

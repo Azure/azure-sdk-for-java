@@ -126,6 +126,7 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                 .withExistingResourceGroup(groupName)
                 .withExistingPublicIpAddresses(pip1)
                 .withExistingVirtualMachines(existingVMs)
+                .withBackend("backend2")
                 .withTcpProbe(80, "tcp1")
                 .withLoadBalancedPort(80, TransportProtocol.TCP)
                 .defineTcpProbe("tcp2")
@@ -140,7 +141,8 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                     .attach()
                 .create();
 
-        Assert.assertTrue(lb.backends().size() == 1);
+        Assert.assertTrue(lb.backends().size() == 2);
+        Assert.assertTrue(lb.backends().containsKey("backend2"));
         return lb;
     }
 
@@ -164,6 +166,8 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                     .withIntervalInSeconds(14)
                     .withNumberOfProbes(5)
                     .parent()
+                .withBackend("backend3")
+                .withoutBackend("backend2")
                 .withTag("tag1", "value1")
                 .withTag("tag2", "value2")
                 .apply();
@@ -171,6 +175,8 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
         Assert.assertTrue(resource.httpProbes().containsKey("http2"));
         Assert.assertTrue(resource.tcpProbes().containsKey("tcp3"));
         Assert.assertTrue(!resource.tcpProbes().containsKey("tcp2"));
+        Assert.assertTrue(resource.backends().containsKey("backend3"));
+        Assert.assertTrue(!resource.backends().containsKey("backend2"));
 
         return resource;
     }

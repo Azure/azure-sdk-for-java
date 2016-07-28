@@ -7,8 +7,10 @@ package com.microsoft.azure.management.network.implementation;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import com.microsoft.azure.SubResource;
@@ -46,7 +48,7 @@ class LoadBalancerImpl
         LoadBalancer.Update {
 
     private final LoadBalancersInner innerCollection;
-    private final List<SupportsNetworkInterfaces> vms = new ArrayList<>();
+    private final HashMap<String, String> nicsInBackends = new HashMap<>();
     private List<String> creatablePIPKeys = new ArrayList<>();
     private final TreeMap<String, Backend> backends = new TreeMap<>();
     private final TreeMap<String, TcpProbe> tcpProbes = new TreeMap<>();
@@ -181,22 +183,14 @@ class LoadBalancerImpl
     }
 
     private void beforeCreating()  {
-        // Ensure backend pools list
-        List<BackendAddressPoolInner> backendPools = this.inner().backendAddressPools();
-        if (backendPools == null) {
-            backendPools = new ArrayList<>();
-            this.inner().withBackendAddressPools(backendPools);
+        // Ensure existence of backends referred to by VMs
+        for (String backendName : this.nicsInBackends.values()) {
+            if (!this.backends().containsKey(backendName)) {
+                this.withBackend(backendName);
+            }
         }
 
-        // Ensure first backend pool
-        BackendAddressPoolInner backendPool;
-        if (backendPools.size() == 0) {
-            backendPool = new BackendAddressPoolInner()
-                    .withName("backendpool" + (backendPools.size() + 1));
-            backendPools.add(backendPool);
-        }
-
-        // Account for the newly created public IPs
+        // Account for the newly created public IPs5
         for (String pipKey : this.creatablePIPKeys) {
             PublicIpAddress pip = (PublicIpAddress) this.createdResource(pipKey);
             if (pip != null) {
@@ -237,18 +231,20 @@ class LoadBalancerImpl
 
     private void afterCreating() throws Exception {
         // Update the NICs to point to the backend pool
-        for (SupportsNetworkInterfaces vm : this.vms) {
-            NetworkInterface primaryNIC = vm.primaryNetworkInterface();
-            NicIpConfiguration nicIp = primaryNIC.primaryIpConfiguration();
-            primaryNIC.update()
+        for (Entry<String, String> nicInBackend : this.nicsInBackends.entrySet()) {
+            String nicId = nicInBackend.getKey();
+            String backendName = nicInBackend.getValue();
+            NetworkInterface nic = this.myManager().networkInterfaces().getById(nicId);
+            NicIpConfiguration nicIp = nic.primaryIpConfiguration();
+            nic.update()
                 .updateIpConfiguration(nicIp.name())
                     .withExistingLoadBalancer(this)
-                    .withBackendAddressPool(this.inner().backendAddressPools().get(0).name())
+                    .withBackendAddressPool(backendName)
                     .parent()
                 .apply();
         }
 
-        this.vms.clear();
+        this.nicsInBackends.clear();
         this.refresh();
     }
 
@@ -348,15 +344,27 @@ class LoadBalancerImpl
         return this;
     }
 
-    private LoadBalancerImpl withExistingVirtualMachine(SupportsNetworkInterfaces vm) {
-      this.vms.add(vm);
-      return this;
+    private LoadBalancerImpl withExistingVirtualMachine(SupportsNetworkInterfaces vm, String backendName) {
+        if (vm.primaryNetworkInterfaceId() != null) {
+            this.nicsInBackends.put(vm.primaryNetworkInterfaceId(), backendName.toLowerCase());
+        }
+        return this;
     }
 
     @Override
     public LoadBalancerImpl withExistingVirtualMachines(SupportsNetworkInterfaces... vms) {
-        for (SupportsNetworkInterfaces vm : vms) {
-            withExistingVirtualMachine(vm);
+        return this.withExistingVirtualMachines(null, vms);
+    }
+
+    @Override public LoadBalancerImpl withExistingVirtualMachines(String backendName, SupportsNetworkInterfaces... vms) {
+        if (backendName == null) {
+            backendName = "backend" + (this.backends().size() + 1);
+        }
+
+        if (vms != null) {
+            for (SupportsNetworkInterfaces vm : vms) {
+                withExistingVirtualMachine(vm, backendName);
+            }
         }
         return this;
     }
@@ -455,6 +463,32 @@ class LoadBalancerImpl
     @Override
     public LoadBalancerImpl withoutProbe(Probe probe) {
         return this.withoutProbe(probe.name());
+    }
+
+    @Override
+    public LoadBalancerImpl withBackend(String name) {
+        BackendAddressPoolInner inner = new BackendAddressPoolInner()
+                .withName(name);
+        BackendImpl backend = new BackendImpl(inner.name(), inner, this);
+        ensureInnerBackends().add(inner);
+        this.backends.put(inner.name(), backend);
+        return this;
+    }
+
+    @Override
+    public LoadBalancerImpl withoutBackend(String name) {
+        this.backends.remove(name);
+        List<BackendAddressPoolInner> inners = this.inner().backendAddressPools();
+        if (inners != null) {
+            for (int i = 0; i < inners.size(); i++) {
+                if (inners.get(i).name().equalsIgnoreCase(name)) {
+                    inners.remove(i);
+                    break;
+                }
+            }
+        }
+
+        return this;
     }
 
     // Getters
