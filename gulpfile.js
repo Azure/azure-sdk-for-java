@@ -76,7 +76,7 @@ var mappings = {
     },
     'batchService': {
         'dir': 'azure-batch',
-        'source': 'batch/2016-02-01.3.0/swagger/BatchService.json',
+        'source': 'batch/2016-07-01.3.1/swagger/BatchService.json',
         'package': 'com.microsoft.azure.batch.protocol',
         'fluent': false,
         'args': '-FT 1'
