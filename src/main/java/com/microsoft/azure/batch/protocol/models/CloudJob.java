@@ -120,6 +120,22 @@ public class CloudJob {
     private PoolInformation poolInfo;
 
     /**
+     * The action the Batch service should take when all tasks in the job are
+     * in the completed state. Possible values include: 'noAction',
+     * 'terminateJob'.
+     */
+    private OnAllTasksComplete onAllTasksComplete;
+
+    /**
+     * The action the Batch service should take when any task in the job
+     * fails. A task is considered to have failed if it completes with a
+     * non-zero exit code and has exhausted its retry count, or if it had a
+     * scheduling error. Possible values include: 'noAction',
+     * 'performExitOptionsJobAction'.
+     */
+    private OnTaskFailure onTaskFailure;
+
+    /**
      * A list of name-value pairs associated with the job as metadata.
      */
     private List<MetadataItem> metadata;
@@ -491,6 +507,46 @@ public class CloudJob {
      */
     public CloudJob withPoolInfo(PoolInformation poolInfo) {
         this.poolInfo = poolInfo;
+        return this;
+    }
+
+    /**
+     * Get the onAllTasksComplete value.
+     *
+     * @return the onAllTasksComplete value
+     */
+    public OnAllTasksComplete onAllTasksComplete() {
+        return this.onAllTasksComplete;
+    }
+
+    /**
+     * Set the onAllTasksComplete value.
+     *
+     * @param onAllTasksComplete the onAllTasksComplete value to set
+     * @return the CloudJob object itself.
+     */
+    public CloudJob withOnAllTasksComplete(OnAllTasksComplete onAllTasksComplete) {
+        this.onAllTasksComplete = onAllTasksComplete;
+        return this;
+    }
+
+    /**
+     * Get the onTaskFailure value.
+     *
+     * @return the onTaskFailure value
+     */
+    public OnTaskFailure onTaskFailure() {
+        return this.onTaskFailure;
+    }
+
+    /**
+     * Set the onTaskFailure value.
+     *
+     * @param onTaskFailure the onTaskFailure value to set
+     * @return the CloudJob object itself.
+     */
+    public CloudJob withOnTaskFailure(OnTaskFailure onTaskFailure) {
+        this.onTaskFailure = onTaskFailure;
         return this;
     }
 

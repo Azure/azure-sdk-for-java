@@ -49,6 +49,13 @@ public class JobUpdateParameter {
     private List<MetadataItem> metadata;
 
     /**
+     * Specifies an action the Batch service should take when all tasks in the
+     * job are in the completed state. Possible values include: 'noAction',
+     * 'terminateJob'.
+     */
+    private OnAllTasksComplete onAllTasksComplete;
+
+    /**
      * Get the priority value.
      *
      * @return the priority value
@@ -125,6 +132,26 @@ public class JobUpdateParameter {
      */
     public JobUpdateParameter withMetadata(List<MetadataItem> metadata) {
         this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Get the onAllTasksComplete value.
+     *
+     * @return the onAllTasksComplete value
+     */
+    public OnAllTasksComplete onAllTasksComplete() {
+        return this.onAllTasksComplete;
+    }
+
+    /**
+     * Set the onAllTasksComplete value.
+     *
+     * @param onAllTasksComplete the onAllTasksComplete value to set
+     * @return the JobUpdateParameter object itself.
+     */
+    public JobUpdateParameter withOnAllTasksComplete(OnAllTasksComplete onAllTasksComplete) {
+        this.onAllTasksComplete = onAllTasksComplete;
         return this;
     }
 

@@ -10,6 +10,7 @@ package com.microsoft.azure.batch.protocol.models;
 
 import java.util.List;
 import org.joda.time.Period;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A Job Release task to run on job completion on any compute node where the
@@ -31,6 +32,7 @@ public class JobReleaseTask {
      * shell in the command line, for example using "cmd /c MyCommand" in
      * Windows or "/bin/sh -c MyCommand" in Linux.
      */
+    @JsonProperty(required = true)
     private String commandLine;
 
     /**

@@ -9,6 +9,7 @@
 package com.microsoft.azure.batch.protocol.models;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A task which is run when a compute node joins a pool in the Azure Batch
@@ -23,6 +24,7 @@ public class StartTask {
      * shell in the command line, for example using "cmd /c MyCommand" in
      * Windows or "/bin/sh -c MyCommand" in Linux.
      */
+    @JsonProperty(required = true)
     private String commandLine;
 
     /**

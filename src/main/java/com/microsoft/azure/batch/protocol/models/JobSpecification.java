@@ -9,6 +9,7 @@
 package com.microsoft.azure.batch.protocol.models;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Specifies details of the jobs to be created on a schedule.
@@ -66,6 +67,7 @@ public class JobSpecification {
      * The pool on which the Batch service runs the tasks of jobs created
      * under this schedule.
      */
+    @JsonProperty(required = true)
     private PoolInformation poolInfo;
 
     /**

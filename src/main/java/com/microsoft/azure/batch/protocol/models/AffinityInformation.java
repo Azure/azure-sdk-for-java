@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A locality hint that can be used by the Batch service to select a compute
@@ -20,6 +21,7 @@ public class AffinityInformation {
      * You can pass the affinityId of a compute node or task to indicate that
      * this task needs to be placed close to the node or task.
      */
+    @JsonProperty(required = true)
     private String affinityId;
 
     /**

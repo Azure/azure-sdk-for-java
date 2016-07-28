@@ -10,6 +10,7 @@ package com.microsoft.azure.batch.protocol.models;
 
 import org.joda.time.Period;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Specification for creating a new pool.
@@ -24,6 +25,7 @@ public class PoolSpecification {
      * The size of the virtual machines in the pool. All virtual machines in a
      * pool are the same size.
      */
+    @JsonProperty(required = true)
     private String vmSize;
 
     /**
@@ -80,6 +82,11 @@ public class PoolSpecification {
      * Whether the pool permits direct communication between nodes.
      */
     private Boolean enableInterNodeCommunication;
+
+    /**
+     * The network configuration for the pool.
+     */
+    private NetworkConfiguration networkConfiguration;
 
     /**
      * A task to run on each compute node as it joins the pool. The task runs
@@ -340,6 +347,26 @@ public class PoolSpecification {
      */
     public PoolSpecification withEnableInterNodeCommunication(Boolean enableInterNodeCommunication) {
         this.enableInterNodeCommunication = enableInterNodeCommunication;
+        return this;
+    }
+
+    /**
+     * Get the networkConfiguration value.
+     *
+     * @return the networkConfiguration value
+     */
+    public NetworkConfiguration networkConfiguration() {
+        return this.networkConfiguration;
+    }
+
+    /**
+     * Set the networkConfiguration value.
+     *
+     * @param networkConfiguration the networkConfiguration value to set
+     * @return the PoolSpecification object itself.
+     */
+    public PoolSpecification withNetworkConfiguration(NetworkConfiguration networkConfiguration) {
+        this.networkConfiguration = networkConfiguration;
         return this;
     }
 

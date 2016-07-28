@@ -124,7 +124,11 @@ public class ComputeNodeDisableSchedulingOptions {
      * @return the ComputeNodeDisableSchedulingOptions object itself.
      */
     public ComputeNodeDisableSchedulingOptions withOcpDate(DateTime ocpDate) {
-        this.ocpDate = new DateTimeRfc1123(ocpDate);
+        if (ocpDate == null) {
+            this.ocpDate = null;
+        } else {
+            this.ocpDate = new DateTimeRfc1123(ocpDate);
+        }
         return this;
     }
 

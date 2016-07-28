@@ -120,7 +120,11 @@ public class ApplicationGetHeaders {
      * @return the ApplicationGetHeaders object itself.
      */
     public ApplicationGetHeaders withLastModified(DateTime lastModified) {
-        this.lastModified = new DateTimeRfc1123(lastModified);
+        if (lastModified == null) {
+            this.lastModified = null;
+        } else {
+            this.lastModified = new DateTimeRfc1123(lastModified);
+        }
         return this;
     }
 

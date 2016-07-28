@@ -228,7 +228,11 @@ public class JobListFromJobScheduleOptions {
      * @return the JobListFromJobScheduleOptions object itself.
      */
     public JobListFromJobScheduleOptions withOcpDate(DateTime ocpDate) {
-        this.ocpDate = new DateTimeRfc1123(ocpDate);
+        if (ocpDate == null) {
+            this.ocpDate = null;
+        } else {
+            this.ocpDate = new DateTimeRfc1123(ocpDate);
+        }
         return this;
     }
 

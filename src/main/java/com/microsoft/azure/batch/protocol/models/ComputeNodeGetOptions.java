@@ -150,7 +150,11 @@ public class ComputeNodeGetOptions {
      * @return the ComputeNodeGetOptions object itself.
      */
     public ComputeNodeGetOptions withOcpDate(DateTime ocpDate) {
-        this.ocpDate = new DateTimeRfc1123(ocpDate);
+        if (ocpDate == null) {
+            this.ocpDate = null;
+        } else {
+            this.ocpDate = new DateTimeRfc1123(ocpDate);
+        }
         return this;
     }
 

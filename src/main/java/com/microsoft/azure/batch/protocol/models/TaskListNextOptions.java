@@ -97,7 +97,11 @@ public class TaskListNextOptions {
      * @return the TaskListNextOptions object itself.
      */
     public TaskListNextOptions withOcpDate(DateTime ocpDate) {
-        this.ocpDate = new DateTimeRfc1123(ocpDate);
+        if (ocpDate == null) {
+            this.ocpDate = null;
+        } else {
+            this.ocpDate = new DateTimeRfc1123(ocpDate);
+        }
         return this;
     }
 

@@ -23,6 +23,13 @@ public class JobPatchParameter {
     private Integer priority;
 
     /**
+     * Specifies an action the Batch service should take when all tasks in the
+     * job are in the completed state. Possible values include: 'noAction',
+     * 'terminateJob'.
+     */
+    private OnAllTasksComplete onAllTasksComplete;
+
+    /**
      * The execution constraints for the job.
      * If omitted, the existing execution constraints are left unchanged.
      */
@@ -62,6 +69,26 @@ public class JobPatchParameter {
      */
     public JobPatchParameter withPriority(Integer priority) {
         this.priority = priority;
+        return this;
+    }
+
+    /**
+     * Get the onAllTasksComplete value.
+     *
+     * @return the onAllTasksComplete value
+     */
+    public OnAllTasksComplete onAllTasksComplete() {
+        return this.onAllTasksComplete;
+    }
+
+    /**
+     * Set the onAllTasksComplete value.
+     *
+     * @param onAllTasksComplete the onAllTasksComplete value to set
+     * @return the JobPatchParameter object itself.
+     */
+    public JobPatchParameter withOnAllTasksComplete(OnAllTasksComplete onAllTasksComplete) {
+        this.onAllTasksComplete = onAllTasksComplete;
         return this;
     }
 

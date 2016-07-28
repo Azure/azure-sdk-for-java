@@ -9,6 +9,7 @@
 package com.microsoft.azure.batch.protocol.models;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Specifies details of a Job Manager task.
@@ -17,6 +18,7 @@ public class JobManagerTask {
     /**
      * A string that uniquely identifies the Job Manager task.
      */
+    @JsonProperty(required = true)
     private String id;
 
     /**
@@ -32,6 +34,7 @@ public class JobManagerTask {
      * shell in the command line, for example using "cmd /c MyCommand" in
      * Windows or "/bin/sh -c MyCommand" in Linux.
      */
+    @JsonProperty(required = true)
     private String commandLine;
 
     /**
@@ -72,6 +75,12 @@ public class JobManagerTask {
      * is only relevant if the node allows multiple concurrent tasks.
      */
     private Boolean runExclusive;
+
+    /**
+     * A list of application packages that the Batch service will deploy to
+     * the compute node before running the command line.
+     */
+    private List<ApplicationPackageReference> applicationPackageReferences;
 
     /**
      * Get the id value.
@@ -250,6 +259,26 @@ public class JobManagerTask {
      */
     public JobManagerTask withRunExclusive(Boolean runExclusive) {
         this.runExclusive = runExclusive;
+        return this;
+    }
+
+    /**
+     * Get the applicationPackageReferences value.
+     *
+     * @return the applicationPackageReferences value
+     */
+    public List<ApplicationPackageReference> applicationPackageReferences() {
+        return this.applicationPackageReferences;
+    }
+
+    /**
+     * Set the applicationPackageReferences value.
+     *
+     * @param applicationPackageReferences the applicationPackageReferences value to set
+     * @return the JobManagerTask object itself.
+     */
+    public JobManagerTask withApplicationPackageReferences(List<ApplicationPackageReference> applicationPackageReferences) {
+        this.applicationPackageReferences = applicationPackageReferences;
         return this;
     }
 

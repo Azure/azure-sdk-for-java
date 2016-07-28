@@ -126,7 +126,11 @@ public class JobSchedulePatchHeaders {
      * @return the JobSchedulePatchHeaders object itself.
      */
     public JobSchedulePatchHeaders withLastModified(DateTime lastModified) {
-        this.lastModified = new DateTimeRfc1123(lastModified);
+        if (lastModified == null) {
+            this.lastModified = null;
+        } else {
+            this.lastModified = new DateTimeRfc1123(lastModified);
+        }
         return this;
     }
 

@@ -36,6 +36,8 @@ public class JobPreparationAndReleaseTaskExecutionInformation {
     private JobPreparationTaskExecutionInformation jobPreparationTaskExecutionInfo;
 
     /**
+     * Information about the execution status of the Job Release task on this
+     * compute node.
      * This property is set only if the Job Release task has run on the node.
      */
     private JobReleaseTaskExecutionInformation jobReleaseTaskExecutionInfo;

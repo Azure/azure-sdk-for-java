@@ -120,7 +120,11 @@ public class ApplicationListHeaders {
      * @return the ApplicationListHeaders object itself.
      */
     public ApplicationListHeaders withLastModified(DateTime lastModified) {
-        this.lastModified = new DateTimeRfc1123(lastModified);
+        if (lastModified == null) {
+            this.lastModified = null;
+        } else {
+            this.lastModified = new DateTimeRfc1123(lastModified);
+        }
         return this;
     }
 
