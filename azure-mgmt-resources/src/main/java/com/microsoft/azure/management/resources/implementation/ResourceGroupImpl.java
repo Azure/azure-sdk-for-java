@@ -7,7 +7,6 @@
 package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.resources.ResourceConnector;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroupExportResult;
 import com.microsoft.azure.management.resources.ResourceGroupExportTemplateOptions;
@@ -31,8 +30,7 @@ class ResourceGroupImpl extends
         CreatableUpdatableImpl<ResourceGroup, ResourceGroupInner, ResourceGroupImpl, Resource>
         implements
         ResourceGroup,
-        ResourceGroup.DefinitionBlank,
-        ResourceGroup.DefinitionCreatable,
+        ResourceGroup.Definition,
         ResourceGroup.Update  {
 
     private final ResourceGroupsInner client;
@@ -135,11 +133,6 @@ class ResourceGroupImpl extends
     public ResourceGroupImpl refresh() throws Exception {
         this.setInner(client.get(this.key).getBody());
         return this;
-    }
-
-    @Override
-    public <T extends ResourceConnector> T connectToResource(ResourceConnector.Builder<T> adapterBuilder) {
-        return adapterBuilder.create(this.serviceClient.restClient(), this.serviceClient.subscriptionId(), this);
     }
 
     @Override
