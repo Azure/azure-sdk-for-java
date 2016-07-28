@@ -154,11 +154,6 @@ public class GroupPagedListTests {
             }
 
             @Override
-            public <T extends ResourceConnector> T connectToResource(ResourceConnector.Builder<T> builder) {
-                return null;
-            }
-
-            @Override
             public String key() {
                 return null;
             }

@@ -20,7 +20,7 @@ import java.io.IOException;
 public interface ResourceGroups extends
         SupportsListing<ResourceGroup>,
         SupportsGettingByName<ResourceGroup>,
-        SupportsCreating<ResourceGroup.DefinitionBlank>,
+        SupportsCreating<ResourceGroup.DefinitionStages.Blank>,
         SupportsDeleting {
     /**
      * Checks whether resource group exists.
