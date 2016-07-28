@@ -17,8 +17,8 @@ import java.util.List;
  */
 public class CloudJobSchedule {
     /**
-     * A string that uniquely identifies the schedule within the account. A
-     * GUID is recommended.
+     * A string that uniquely identifies the schedule within the account.
+     * It is common to use a GUID for the id.
      */
     private String id;
 
@@ -48,8 +48,9 @@ public class CloudJobSchedule {
     private DateTime creationTime;
 
     /**
-     * The current state of the job schedule. Possible values include:
-     * 'active', 'completed', 'disabled', 'terminating', 'deleting'.
+     * The current state of the job schedule.
+     * Possible values include: 'active', 'completed', 'disabled',
+     * 'terminating', 'deleting'.
      */
     private JobScheduleState state;
 
@@ -59,8 +60,9 @@ public class CloudJobSchedule {
     private DateTime stateTransitionTime;
 
     /**
-     * The previous state of the job schedule. Possible values include:
-     * 'active', 'completed', 'disabled', 'terminating', 'deleting'.
+     * The previous state of the job schedule.
+     * Possible values include: 'active', 'completed', 'disabled',
+     * 'terminating', 'deleting'.
      */
     private JobScheduleState previousState;
 

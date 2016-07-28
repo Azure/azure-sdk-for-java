@@ -17,8 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class JobScheduleAddParameter {
     /**
-     * A string that uniquely identifies the schedule within the account. A
-     * GUID is recommended.
+     * A string that uniquely identifies the schedule within the account.
      */
     @JsonProperty(required = true)
     private String id;

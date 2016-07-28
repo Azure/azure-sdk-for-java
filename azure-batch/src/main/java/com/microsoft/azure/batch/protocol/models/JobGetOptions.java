@@ -58,6 +58,34 @@ public class JobGetOptions {
     private DateTimeRfc1123 ocpDate;
 
     /**
+     * An ETag is specified. Specify this header to perform the operation only
+     * if the resource's ETag is an exact match as specified.
+     */
+    @JsonProperty(value = "")
+    private String ifMatch;
+
+    /**
+     * An ETag is specified. Specify this header to perform the operation only
+     * if the resource's ETag does not match the specified ETag.
+     */
+    @JsonProperty(value = "")
+    private String ifNoneMatch;
+
+    /**
+     * Specify this header to perform the operation only if the resource has
+     * been modified since the specified date/time.
+     */
+    @JsonProperty(value = "")
+    private DateTimeRfc1123 ifModifiedSince;
+
+    /**
+     * Specify this header to perform the operation only if the resource has
+     * not been modified since the specified date/time.
+     */
+    @JsonProperty(value = "")
+    private DateTimeRfc1123 ifUnmodifiedSince;
+
+    /**
      * Get the select value.
      *
      * @return the select value
@@ -176,7 +204,105 @@ public class JobGetOptions {
      * @return the JobGetOptions object itself.
      */
     public JobGetOptions withOcpDate(DateTime ocpDate) {
-        this.ocpDate = new DateTimeRfc1123(ocpDate);
+        if (ocpDate == null) {
+            this.ocpDate = null;
+        } else {
+            this.ocpDate = new DateTimeRfc1123(ocpDate);
+        }
+        return this;
+    }
+
+    /**
+     * Get the ifMatch value.
+     *
+     * @return the ifMatch value
+     */
+    public String ifMatch() {
+        return this.ifMatch;
+    }
+
+    /**
+     * Set the ifMatch value.
+     *
+     * @param ifMatch the ifMatch value to set
+     * @return the JobGetOptions object itself.
+     */
+    public JobGetOptions withIfMatch(String ifMatch) {
+        this.ifMatch = ifMatch;
+        return this;
+    }
+
+    /**
+     * Get the ifNoneMatch value.
+     *
+     * @return the ifNoneMatch value
+     */
+    public String ifNoneMatch() {
+        return this.ifNoneMatch;
+    }
+
+    /**
+     * Set the ifNoneMatch value.
+     *
+     * @param ifNoneMatch the ifNoneMatch value to set
+     * @return the JobGetOptions object itself.
+     */
+    public JobGetOptions withIfNoneMatch(String ifNoneMatch) {
+        this.ifNoneMatch = ifNoneMatch;
+        return this;
+    }
+
+    /**
+     * Get the ifModifiedSince value.
+     *
+     * @return the ifModifiedSince value
+     */
+    public DateTime ifModifiedSince() {
+        if (this.ifModifiedSince == null) {
+            return null;
+        }
+        return this.ifModifiedSince.getDateTime();
+    }
+
+    /**
+     * Set the ifModifiedSince value.
+     *
+     * @param ifModifiedSince the ifModifiedSince value to set
+     * @return the JobGetOptions object itself.
+     */
+    public JobGetOptions withIfModifiedSince(DateTime ifModifiedSince) {
+        if (ifModifiedSince == null) {
+            this.ifModifiedSince = null;
+        } else {
+            this.ifModifiedSince = new DateTimeRfc1123(ifModifiedSince);
+        }
+        return this;
+    }
+
+    /**
+     * Get the ifUnmodifiedSince value.
+     *
+     * @return the ifUnmodifiedSince value
+     */
+    public DateTime ifUnmodifiedSince() {
+        if (this.ifUnmodifiedSince == null) {
+            return null;
+        }
+        return this.ifUnmodifiedSince.getDateTime();
+    }
+
+    /**
+     * Set the ifUnmodifiedSince value.
+     *
+     * @param ifUnmodifiedSince the ifUnmodifiedSince value to set
+     * @return the JobGetOptions object itself.
+     */
+    public JobGetOptions withIfUnmodifiedSince(DateTime ifUnmodifiedSince) {
+        if (ifUnmodifiedSince == null) {
+            this.ifUnmodifiedSince = null;
+        } else {
+            this.ifUnmodifiedSince = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         return this;
     }
 

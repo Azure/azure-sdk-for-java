@@ -9,6 +9,7 @@
 package com.microsoft.azure.batch.protocol.models;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A task which is run when a compute node joins a pool in the Azure Batch
@@ -17,7 +18,13 @@ import java.util.List;
 public class StartTask {
     /**
      * The command line of the start task.
+     * The command line does not run under a shell, and therefore cannot take
+     * advantage of shell features such as environment variable expansion. If
+     * you want to take advantage of such features, you should invoke the
+     * shell in the command line, for example using "cmd /c MyCommand" in
+     * Windows or "/bin/sh -c MyCommand" in Linux.
      */
+    @JsonProperty(required = true)
     private String commandLine;
 
     /**

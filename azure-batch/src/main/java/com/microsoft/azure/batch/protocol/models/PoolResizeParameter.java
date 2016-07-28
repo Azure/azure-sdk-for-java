@@ -23,14 +23,15 @@ public class PoolResizeParameter {
 
     /**
      * The timeout for allocation of compute nodes to the pool or removal of
-     * compute nodes from the pool. The default value is 10 minutes.
+     * compute nodes from the pool.
+     * The default value is 10 minutes.
      */
     private Period resizeTimeout;
 
     /**
-     * When nodes may be removed from the pool, if the pool size is
-     * decreasing. Possible values include: 'requeue', 'terminate',
-     * 'taskcompletion', 'retaineddata'.
+     * When nodes may be removed from the pool, if the pool size is decreasing.
+     * Possible values include: 'requeue', 'terminate', 'taskcompletion',
+     * 'retaineddata'.
      */
     private ComputeNodeDeallocationOption nodeDeallocationOption;
 

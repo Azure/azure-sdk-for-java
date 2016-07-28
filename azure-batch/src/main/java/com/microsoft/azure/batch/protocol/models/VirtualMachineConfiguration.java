@@ -22,19 +22,19 @@ public class VirtualMachineConfiguration {
     private ImageReference imageReference;
 
     /**
-     * The SKU of Batch Node Agent to be provisioned on the compute node. The
-     * Batch node agent is a program that runs on each node in the pool, and
-     * provides the command-and-control interface between the node and the
-     * Batch service. There are different implementations of the node agent,
-     * known as SKUs, for different operating systems.
+     * The SKU of Batch Node Agent to be provisioned on the compute node.
+     * The Batch node agent is a program that runs on each node in the pool,
+     * and provides the command-and-control interface between the node and
+     * the Batch service. There are different implementations of the node
+     * agent, known as SKUs, for different operating systems.
      */
     @JsonProperty(required = true)
     private String nodeAgentSKUId;
 
     /**
-     * Windows operating system settings on the virtual machine. This property
-     * must not be specified if the ImageReference property specifies a Linux
-     * OS image.
+     * Windows operating system settings on the virtual machine.
+     * This property must not be specified if the imageReference property
+     * specifies a Linux OS image.
      */
     private WindowsConfiguration windowsConfiguration;
 

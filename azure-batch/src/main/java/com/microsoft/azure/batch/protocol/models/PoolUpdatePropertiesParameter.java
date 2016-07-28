@@ -16,31 +16,32 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class PoolUpdatePropertiesParameter {
     /**
-     * A task to run on each compute node as it joins the pool. If omitted,
-     * any existing start task is removed from the pool.
+     * A task to run on each compute node as it joins the pool.
+     * If omitted, any existing start task is removed from the pool.
      */
     private StartTask startTask;
 
     /**
-     * A list of certificates to be installed on each compute node in the
-     * pool. If you specify an empty collection, any existing certificate
-     * references are removed from the pool.
+     * A list of certificates to be installed on each compute node in the pool.
+     * If you specify an empty collection, any existing certificate references
+     * are removed from the pool.
      */
     @JsonProperty(required = true)
     private List<CertificateReference> certificateReferences;
 
     /**
      * A list of application packages to be installed on each compute node in
-     * the pool. If you specify an empty collection, any existing application
-     * packages references are removed from the pool.
+     * the pool.
+     * If you specify an empty collection, any existing application packages
+     * references are removed from the pool.
      */
     @JsonProperty(required = true)
     private List<ApplicationPackageReference> applicationPackageReferences;
 
     /**
-     * A list of name-value pairs associated with the pool as metadata. If you
-     * specify an empty collection, any existing metadata is removed from the
-     * pool.
+     * A list of name-value pairs associated with the pool as metadata.
+     * If you specify an empty collection, any existing metadata is removed
+     * from the pool.
      */
     @JsonProperty(required = true)
     private List<MetadataItem> metadata;

@@ -54,36 +54,52 @@ public interface ResourceGroup extends
      */
     ResourceGroupExportResult exportTemplate(ResourceGroupExportTemplateOptions options) throws CloudException, IOException;
 
+    /**************************************************************
+     * Fluent interfaces to provision a ResourceGroup
+     **************************************************************/
+
     /**
-     * A resource group definition allowing location to be set.
+     * Container interface for all the definitions that need to be implemented.
      */
-    interface DefinitionBlank extends GroupableResource.DefinitionWithRegion<DefinitionCreatable> {
+    interface Definition extends
+            DefinitionStages.Blank,
+            DefinitionStages.WithCreate {
     }
 
     /**
-     * A resource group definition with sufficient inputs to create a new
-     * resource group in the cloud, but exposing additional optional inputs to
-     * specify.
+     * Grouping of all the resource group definition stages.
      */
-    interface DefinitionCreatable extends
-            Creatable<ResourceGroup>,
-            Resource.DefinitionWithTags<DefinitionCreatable> {
+    interface DefinitionStages {
+        /**
+         * A resource group definition allowing location to be set.
+         */
+        interface Blank extends GroupableResource.DefinitionWithRegion<WithCreate> {
+        }
+
+        /**
+         * A resource group definition with sufficient inputs to create a new
+         * resource group in the cloud, but exposing additional optional inputs to
+         * specify.
+         */
+        interface WithCreate extends
+                Creatable<ResourceGroup>,
+                Resource.DefinitionWithTags<WithCreate> {
+        }
+    }
+
+    /**
+     * Grouping of all the resource group update stages.
+     */
+    interface UpdateStages {
     }
 
     /**
      * The template for a resource group update operation, containing all the settings that can be modified.
+     * <p>
+     * Call {@link Update#apply()} to apply the changes to the resource group in Azure.
      */
     interface Update extends
-        Appliable<ResourceGroup>,
-        Resource.UpdateWithTags<Update> {
+            Appliable<ResourceGroup>,
+            Resource.UpdateWithTags<Update> {
     }
-
-    /**
-     * Connects to other resources inside the resource group.
-     *
-     * @param adapterBuilder the builder for building a connector.
-     * @param <T> the type of the resource connector.
-     * @return the connector with access to other resource types.
-     */
-    <T extends ResourceConnector> T connectToResource(ResourceConnector.Builder<T> adapterBuilder);
 }
