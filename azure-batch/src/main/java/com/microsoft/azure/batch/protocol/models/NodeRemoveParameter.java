@@ -17,21 +17,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class NodeRemoveParameter {
     /**
-     * A list containing the id of the compute nodes to be removed from the
+     * A list containing the ids of the compute nodes to be removed from the
      * specified pool.
      */
     @JsonProperty(required = true)
     private List<String> nodeList;
 
     /**
-     * The timeout for removal of compute nodes to the pool. The default value
-     * is 10 minutes.
+     * The timeout for removal of compute nodes to the pool.
+     * The default value is 10 minutes.
      */
     private Period resizeTimeout;
 
     /**
-     * When compute nodes may be removed from the pool. Possible values
-     * include: 'requeue', 'terminate', 'taskcompletion', 'retaineddata'.
+     * When compute nodes may be removed from the pool.
+     * Possible values include: 'requeue', 'terminate', 'taskcompletion',
+     * 'retaineddata'.
      */
     private ComputeNodeDeallocationOption nodeDeallocationOption;
 

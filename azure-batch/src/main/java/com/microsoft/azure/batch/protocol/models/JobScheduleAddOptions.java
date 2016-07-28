@@ -124,7 +124,11 @@ public class JobScheduleAddOptions {
      * @return the JobScheduleAddOptions object itself.
      */
     public JobScheduleAddOptions withOcpDate(DateTime ocpDate) {
-        this.ocpDate = new DateTimeRfc1123(ocpDate);
+        if (ocpDate == null) {
+            this.ocpDate = null;
+        } else {
+            this.ocpDate = new DateTimeRfc1123(ocpDate);
+        }
         return this;
     }
 

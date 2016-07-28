@@ -33,13 +33,14 @@ public class ApplicationOperations  implements IInheritedBehaviors {
     private BatchClient _parentBatchClient;
 
     @Override
-    public Collection<BatchClientBehavior> getCustomBehaviors() {
+    public Collection<BatchClientBehavior> customBehaviors() {
         return _customBehaviors;
     }
 
     @Override
-    public void setCustomBehaviors(Collection<BatchClientBehavior> behaviors) {
+    public IInheritedBehaviors withCustomBehaviors(Collection<BatchClientBehavior> behaviors) {
         _customBehaviors = behaviors;
+        return this;
     }
 
     public List<ApplicationSummary> listApplications() throws BatchErrorException, IOException {
@@ -48,10 +49,10 @@ public class ApplicationOperations  implements IInheritedBehaviors {
 
     public List<ApplicationSummary> listApplications(Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         ApplicationListOptions options = new ApplicationListOptions();
-        BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
+        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<PagedList<ApplicationSummary>, ApplicationListHeaders> response = this._parentBatchClient.getProtocolLayer().applications().list(options);
+        ServiceResponseWithHeaders<PagedList<ApplicationSummary>, ApplicationListHeaders> response = this._parentBatchClient.protocolLayer().applications().list(options);
 
         return response.getBody();
     }
@@ -62,10 +63,10 @@ public class ApplicationOperations  implements IInheritedBehaviors {
 
     public ApplicationSummary getApplication(String applicationId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         ApplicationGetOptions options = new ApplicationGetOptions();
-        BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
+        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders> response = this._parentBatchClient.getProtocolLayer().applications().get(applicationId, options);
+        ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders> response = this._parentBatchClient.protocolLayer().applications().get(applicationId, options);
 
         return response.getBody();
     }

@@ -12,8 +12,8 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Settings which specify how to run a multi-instance task. Multi-instance
- * tasks are commonly used to support MPI tasks.
+ * Settings which specify how to run a multi-instance task.
+ * Multi-instance tasks are commonly used to support MPI tasks.
  */
 public class MultiInstanceSettings {
     /**
@@ -30,10 +30,11 @@ public class MultiInstanceSettings {
 
     /**
      * A list of files that the Batch service will download before running the
-     * coordination command line. The difference between common resource
-     * files and task resource files is that common resource files are
-     * downloaded for all subtasks including the primary, whereas task
-     * resource files are downloaded only for the primary.
+     * coordination command line.
+     * The difference between common resource files and task resource files is
+     * that common resource files are downloaded for all subtasks including
+     * the primary, whereas task resource files are downloaded only for the
+     * primary.
      */
     private List<ResourceFile> commonResourceFiles;
 

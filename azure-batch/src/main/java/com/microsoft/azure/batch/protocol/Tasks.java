@@ -139,7 +139,7 @@ public interface Tasks {
      * Adds a collection of tasks to the specified job.
      *
      * @param jobId The id of the job to which the task collection is to be added.
-     * @param value The collection of tasks to add.
+     * @param value The collection of tasks to add. 
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -151,7 +151,7 @@ public interface Tasks {
      * Adds a collection of tasks to the specified job.
      *
      * @param jobId The id of the job to which the task collection is to be added.
-     * @param value The collection of tasks to add.
+     * @param value The collection of tasks to add. 
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
@@ -161,7 +161,7 @@ public interface Tasks {
      * Adds a collection of tasks to the specified job.
      *
      * @param jobId The id of the job to which the task collection is to be added.
-     * @param value The collection of tasks to add.
+     * @param value The collection of tasks to add. 
      * @param taskAddCollectionOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -174,7 +174,7 @@ public interface Tasks {
      * Adds a collection of tasks to the specified job.
      *
      * @param jobId The id of the job to which the task collection is to be added.
-     * @param value The collection of tasks to add.
+     * @param value The collection of tasks to add. 
      * @param taskAddCollectionOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null

@@ -28,71 +28,72 @@ public class BatchClient {
     private AccountOperations accountOperations;
     private Collection<BatchClientBehavior> customBehaviors;
 
-    public BatchServiceClient getProtocolLayer() {
+    public BatchServiceClient protocolLayer() {
         return this.protocolLayer;
     }
 
     private BatchClient(BatchSharedKeyCredentials credentials) {
-        this.protocolLayer = new BatchServiceClientImpl(credentials.getBaseUrl(), credentials);
+        this.protocolLayer = new BatchServiceClientImpl(credentials.baseUrl(), credentials);
         this.customBehaviors = new LinkedList<>();
         this.customBehaviors.add(new ClientRequestIdInterceptor());
-        this.certificateOperations = new CertificateOperations(this, getCustomBehaviors());
-        this.jobOperations = new JobOperations(this, getCustomBehaviors());
-        this.taskOperations = new TaskOperations(this, getCustomBehaviors());
-        this.jobScheduleOperations = new JobScheduleOperations(this, getCustomBehaviors());
-        this.poolOperations = new PoolOperations(this, getCustomBehaviors());
-        this.fileOperations = new FileOperations(this, getCustomBehaviors());
-        this.applicationOperations = new ApplicationOperations(this, getCustomBehaviors());
-        this.accountOperations = new AccountOperations(this, getCustomBehaviors());
-        this.computeNodeOperations = new ComputeNodeOperations(this, getCustomBehaviors());
+        this.certificateOperations = new CertificateOperations(this, customBehaviors());
+        this.jobOperations = new JobOperations(this, customBehaviors());
+        this.taskOperations = new TaskOperations(this, customBehaviors());
+        this.jobScheduleOperations = new JobScheduleOperations(this, customBehaviors());
+        this.poolOperations = new PoolOperations(this, customBehaviors());
+        this.fileOperations = new FileOperations(this, customBehaviors());
+        this.applicationOperations = new ApplicationOperations(this, customBehaviors());
+        this.accountOperations = new AccountOperations(this, customBehaviors());
+        this.computeNodeOperations = new ComputeNodeOperations(this, customBehaviors());
     }
 
-    public static BatchClient Open(BatchSharedKeyCredentials credentials) {
+    public static BatchClient open(BatchSharedKeyCredentials credentials) {
         return new BatchClient(credentials);
     }
 
-    public CertificateOperations getCertificateOperations() {
+    public CertificateOperations certificateOperations() {
         return certificateOperations;
     }
 
-    public JobOperations getJobOperations() {
+    public JobOperations jobOperations() {
         return jobOperations;
     }
 
-    public TaskOperations getTaskOperations() {
+    public TaskOperations taskOperations() {
         return taskOperations;
     }
 
-    public JobScheduleOperations getJobScheduleOperations() {
+    public JobScheduleOperations jobScheduleOperations() {
         return jobScheduleOperations;
     }
 
-    public FileOperations getFileOperations() {
+    public FileOperations fileOperations() {
         return fileOperations;
     }
 
-    public PoolOperations getPoolOperations() {
+    public PoolOperations poolOperations() {
         return poolOperations;
     }
 
-    public ComputeNodeOperations getComputeNodeOperations() {
+    public ComputeNodeOperations computeNodeOperations() {
         return computeNodeOperations;
     }
 
-    public ApplicationOperations getApplicationOperations() {
+    public ApplicationOperations applicationOperations() {
         return applicationOperations;
     }
 
-    public AccountOperations getAccountOperations() {
+    public AccountOperations accountOperations() {
         return accountOperations;
     }
 
-    public Collection<BatchClientBehavior> getCustomBehaviors() {
+    public Collection<BatchClientBehavior> customBehaviors() {
         return customBehaviors;
     }
 
-    public void setCustomBehaviors(Collection<BatchClientBehavior> customBehaviors) {
+    public BatchClient withCustomBehaviors(Collection<BatchClientBehavior> customBehaviors) {
         this.customBehaviors = customBehaviors;
+        return this;
     }
 }
 

@@ -16,8 +16,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class StartTaskInformation {
     /**
-     * The state of the start task on the compute node. Possible values
-     * include: 'running', 'completed'.
+     * The state of the start task on the compute node.
+     * Possible values include: 'running', 'completed'.
      */
     @JsonProperty(required = true)
     private StartTaskState state;

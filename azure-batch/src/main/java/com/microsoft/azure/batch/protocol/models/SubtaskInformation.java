@@ -32,14 +32,14 @@ public class SubtaskInformation {
     private DateTime startTime;
 
     /**
-     * The time at which the subtask completed. This property is set only if
-     * the subtask is in the Completed state.
+     * The time at which the subtask completed.
+     * This property is set only if the subtask is in the Completed state.
      */
     private DateTime endTime;
 
     /**
-     * The exit code of the subtask. This property is set only if the subtask
-     * is in the Completed state.
+     * The exit code of the subtask.
+     * This property is set only if the subtask is in the Completed state.
      */
     private Integer exitCode;
 
@@ -49,8 +49,8 @@ public class SubtaskInformation {
     private TaskSchedulingError schedulingError;
 
     /**
-     * The current state of the subtask. Possible values include: 'active',
-     * 'preparing', 'running', 'completed'.
+     * The current state of the subtask.
+     * Possible values include: 'active', 'preparing', 'running', 'completed'.
      */
     private TaskState state;
 
@@ -60,15 +60,15 @@ public class SubtaskInformation {
     private DateTime stateTransitionTime;
 
     /**
-     * The previous state of the subtask. This property is not set if the
-     * subtask is in its initial Active state. Possible values include:
-     * 'active', 'preparing', 'running', 'completed'.
+     * The previous state of the subtask.
+     * This property is not set if the subtask is in its initial Active state.
+     * Possible values include: 'active', 'preparing', 'running', 'completed'.
      */
     private TaskState previousState;
 
     /**
-     * The time at which the subtask entered its previous state. This property
-     * is not set if the subtask is in its initial Active state.
+     * The time at which the subtask entered its previous state.
+     * This property is not set if the subtask is in its initial Active state.
      */
     private DateTime previousStateTransitionTime;
 

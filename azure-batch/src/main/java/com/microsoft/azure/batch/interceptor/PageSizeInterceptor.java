@@ -15,7 +15,7 @@ public class PageSizeInterceptor extends RequestInterceptor {
 
     public PageSizeInterceptor(int pageSize) {
         this.maxResults = pageSize;
-        this.setHandler(new BatchRequestInterceptHandler() {
+        this.withHandler(new BatchRequestInterceptHandler() {
             @Override
             public void modify(Object request) {
                 Class<?> c = request.getClass();

@@ -16,21 +16,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class TaskExecutionInformation {
     /**
-     * The time at which the task started running. If the task has been
-     * restarted or retried, this is the most recent time at which the task
-     * started running.
+     * The time at which the task started running.
+     * If the task has been restarted or retried, this is the most recent time
+     * at which the task started running.
      */
     private DateTime startTime;
 
     /**
-     * The time at which the task completed. This property is set only if the
-     * task is in the Completed state.
+     * The time at which the task completed.
+     * This property is set only if the task is in the Completed state.
      */
     private DateTime endTime;
 
     /**
-     * The exit code of the task. This property is set only if the task is in
-     * completed state.
+     * The exit code of the task.
+     * This property is set only if the task is in Completed state.
      */
     private Integer exitCode;
 

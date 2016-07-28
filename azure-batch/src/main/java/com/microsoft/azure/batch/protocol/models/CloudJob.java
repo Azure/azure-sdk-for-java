@@ -16,8 +16,8 @@ import java.util.List;
  */
 public class CloudJob {
     /**
-     * A string that uniquely identifies the job within the account. The id
-     * can contain any combination of alphanumeric characters including
+     * A string that uniquely identifies the job within the account.
+     * The id can contain any combination of alphanumeric characters including
      * hyphens and underscores, and cannot contain more than 64 characters.
      * It is common to use a GUID for the id.
      */
@@ -54,9 +54,9 @@ public class CloudJob {
     private DateTime creationTime;
 
     /**
-     * The current state of the job. Possible values include: 'active',
-     * 'disabling', 'disabled', 'enabling', 'terminating', 'completed',
-     * 'deleting'.
+     * The current state of the job.
+     * Possible values include: 'active', 'disabling', 'disabled', 'enabling',
+     * 'terminating', 'completed', 'deleting'.
      */
     private JobState state;
 
@@ -66,23 +66,24 @@ public class CloudJob {
     private DateTime stateTransitionTime;
 
     /**
-     * The previous state of the job. This property is not set if the job is
-     * in its initial Active state. Possible values include: 'active',
-     * 'disabling', 'disabled', 'enabling', 'terminating', 'completed',
-     * 'deleting'.
+     * The previous state of the job.
+     * This property is not set if the job is in its initial Active state.
+     * Possible values include: 'active', 'disabling', 'disabled',
+     * 'enabling', 'terminating', 'completed', 'deleting'.
      */
     private JobState previousState;
 
     /**
-     * The time at which the job entered its previous state. This property is
-     * not set if the job is in its initial Active state.
+     * The time at which the job entered its previous state.
+     * This property is not set if the job is in its initial Active state.
      */
     private DateTime previousStateTransitionTime;
 
     /**
-     * The priority of the job. Priority values can range from -1000 to 1000,
-     * with -1000 being the lowest priority and 1000 being the highest
-     * priority. The default value is 0.
+     * The priority of the job.
+     * Priority values can range from -1000 to 1000, with -1000 being the
+     * lowest priority and 1000 being the highest priority. The default value
+     * is 0.
      */
     private Integer priority;
 
@@ -117,6 +118,22 @@ public class CloudJob {
      * The pool on which the Batch service runs the job's tasks.
      */
     private PoolInformation poolInfo;
+
+    /**
+     * The action the Batch service should take when all tasks in the job are
+     * in the completed state. Possible values include: 'noAction',
+     * 'terminateJob'.
+     */
+    private OnAllTasksComplete onAllTasksComplete;
+
+    /**
+     * The action the Batch service should take when any task in the job
+     * fails. A task is considered to have failed if it completes with a
+     * non-zero exit code and has exhausted its retry count, or if it had a
+     * scheduling error. Possible values include: 'noAction',
+     * 'performExitOptionsJobAction'.
+     */
+    private OnTaskFailure onTaskFailure;
 
     /**
      * A list of name-value pairs associated with the job as metadata.
@@ -490,6 +507,46 @@ public class CloudJob {
      */
     public CloudJob withPoolInfo(PoolInformation poolInfo) {
         this.poolInfo = poolInfo;
+        return this;
+    }
+
+    /**
+     * Get the onAllTasksComplete value.
+     *
+     * @return the onAllTasksComplete value
+     */
+    public OnAllTasksComplete onAllTasksComplete() {
+        return this.onAllTasksComplete;
+    }
+
+    /**
+     * Set the onAllTasksComplete value.
+     *
+     * @param onAllTasksComplete the onAllTasksComplete value to set
+     * @return the CloudJob object itself.
+     */
+    public CloudJob withOnAllTasksComplete(OnAllTasksComplete onAllTasksComplete) {
+        this.onAllTasksComplete = onAllTasksComplete;
+        return this;
+    }
+
+    /**
+     * Get the onTaskFailure value.
+     *
+     * @return the onTaskFailure value
+     */
+    public OnTaskFailure onTaskFailure() {
+        return this.onTaskFailure;
+    }
+
+    /**
+     * Set the onTaskFailure value.
+     *
+     * @param onTaskFailure the onTaskFailure value to set
+     * @return the CloudJob object itself.
+     */
+    public CloudJob withOnTaskFailure(OnTaskFailure onTaskFailure) {
+        this.onTaskFailure = onTaskFailure;
         return this;
     }
 

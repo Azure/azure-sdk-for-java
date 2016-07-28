@@ -11,19 +11,18 @@ package com.microsoft.azure.batch.protocol.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A reference to an application package to be installed on compute nodes in a
- * pool.
+ * A reference to an application package to be deployed to compute nodes.
  */
 public class ApplicationPackageReference {
     /**
-     * The id of the application to install.
+     * The id of the application to deploy.
      */
     @JsonProperty(required = true)
     private String applicationId;
 
     /**
-     * The version of the application to install. If omitted, the default
-     * version is installed.
+     * The version of the application to deploy. If omitted, the default
+     * version is deployed.
      */
     private String version;
 

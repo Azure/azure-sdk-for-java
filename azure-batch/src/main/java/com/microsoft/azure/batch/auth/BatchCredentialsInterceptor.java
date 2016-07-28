@@ -46,7 +46,7 @@ class BatchCredentialsInterceptor implements Interceptor {
         return chain.proceed(newRequest);
     }
 
-    private String getHeaderValue(Request request, String headerName) {
+    private String headerValue(Request request, String headerName) {
         String headerValue = request.header(headerName);
         if (headerValue == null) {
             return "";
@@ -81,9 +81,9 @@ class BatchCredentialsInterceptor implements Interceptor {
         }
 
         String signature = request.method() + "\n";
-        signature = signature + getHeaderValue(request, "Content-Encoding")
+        signature = signature + headerValue(request, "Content-Encoding")
                 + "\n";
-        signature = signature + getHeaderValue(request, "Content-Language")
+        signature = signature + headerValue(request, "Content-Language")
                 + "\n";
 
         // Special handle content length
@@ -94,7 +94,7 @@ class BatchCredentialsInterceptor implements Interceptor {
         signature = signature + (length >= 0 ? Long.valueOf(length) : "")
                 + "\n";
 
-        signature = signature + getHeaderValue(request, "Content-MD5") + "\n";
+        signature = signature + headerValue(request, "Content-MD5") + "\n";
 
         // Special handle content type header
         String contentType = request.header("Content-Type");
@@ -109,14 +109,14 @@ class BatchCredentialsInterceptor implements Interceptor {
         }
         signature = signature + contentType + "\n";
 
-        signature = signature + getHeaderValue(request, "Date") + "\n";
-        signature = signature + getHeaderValue(request, "If-Modified-Since")
+        signature = signature + headerValue(request, "Date") + "\n";
+        signature = signature + headerValue(request, "If-Modified-Since")
                 + "\n";
-        signature = signature + getHeaderValue(request, "If-Match") + "\n";
-        signature = signature + getHeaderValue(request, "If-None-Match") + "\n";
-        signature = signature + getHeaderValue(request, "If-Unmodified-Since")
+        signature = signature + headerValue(request, "If-Match") + "\n";
+        signature = signature + headerValue(request, "If-None-Match") + "\n";
+        signature = signature + headerValue(request, "If-Unmodified-Since")
                 + "\n";
-        signature = signature + getHeaderValue(request, "Range") + "\n";
+        signature = signature + headerValue(request, "Range") + "\n";
 
         ArrayList<String> customHeaders = new ArrayList<String>();
         for (String name : request.headers().names()) {
@@ -133,7 +133,7 @@ class BatchCredentialsInterceptor implements Interceptor {
         }
 
         signature = signature + "/"
-                + credentials.getAccountName().toLowerCase() + "/"
+                + credentials.accountName().toLowerCase() + "/"
                 + request.url().uri().getPath().replaceAll("^[/]+", "");
         // We temporary change client side auth code generator to bypass server
         // bug 4092533
@@ -159,8 +159,8 @@ class BatchCredentialsInterceptor implements Interceptor {
                 signature = signature + "\n" + entry.getValue();
             }
         }
-        String signedSignature = sign(credentials.getKeyValue(), signature);
-        String authorization = "SharedKey " + credentials.getAccountName()
+        String signedSignature = sign(credentials.keyValue(), signature);
+        String authorization = "SharedKey " + credentials.accountName()
                 + ":" + signedSignature;
         builder.header("Authorization", authorization);
 

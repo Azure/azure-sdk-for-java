@@ -28,7 +28,7 @@ public class ApplicationSummary {
     private String displayName;
 
     /**
-     * The versions property.
+     * The versions of the application which are available.
      */
     @JsonProperty(required = true)
     private List<String> versions;

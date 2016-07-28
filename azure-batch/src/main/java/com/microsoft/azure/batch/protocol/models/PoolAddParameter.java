@@ -17,9 +17,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class PoolAddParameter {
     /**
-     * A string that uniquely identifies the pool within the account. The id
-     * can contain any combination of alphanumeric characters including
+     * A string that uniquely identifies the pool within the account.
+     * The id can contain any combination of alphanumeric characters including
      * hyphens and underscores, and cannot contain more than 64 characters.
+     * It is common to use a GUID for the id.
      */
     @JsonProperty(required = true)
     private String id;
@@ -37,37 +38,36 @@ public class PoolAddParameter {
     private String vmSize;
 
     /**
-     * The cloud service configuration for the pool. This property and
-     * VirtualMachineConfiguration are mutually exclusive and one of the
-     * properties must be specified.
+     * The cloud service configuration for the pool.
+     * This property and virtualMachineConfiguration are mutually exclusive
+     * and one of the properties must be specified.
      */
     private CloudServiceConfiguration cloudServiceConfiguration;
 
     /**
-     * The virtual machine configuration for the pool. This property and
-     * CloudServiceConfiguration are mutually exclusive and one of the
-     * properties must be specified.
+     * The virtual machine configuration for the pool.
+     * This property and cloudServiceConfiguration are mutually exclusive and
+     * one of the properties must be specified.
      */
     private VirtualMachineConfiguration virtualMachineConfiguration;
 
     /**
-     * The timeout for allocation of compute nodes to the pool. In a Get Pool
-     * operation, this is the timeout for the most recent resize operation.
+     * The timeout for allocation of compute nodes to the pool.
      * The default value is 10 minutes.
      */
     private Period resizeTimeout;
 
     /**
-     * The desired number of compute nodes in the pool. This property must
-     * have the default value if EnableAutoScale is true. It is required if
-     * EnableAutoScale is false.
+     * The desired number of compute nodes in the pool.
+     * This property must have the default value if enableAutoScale is true.
+     * It is required if enableAutoScale is false.
      */
     private Integer targetDedicated;
 
     /**
-     * Whether the pool size should automatically adjust over time. If true,
-     * the AutoScaleFormula property must be set. If false, the
-     * TargetDedicated property must be set.
+     * Whether the pool size should automatically adjust over time.
+     * If true, the autoScaleFormula property must be set. If false, the
+     * targetDedicated property must be set.
      */
     private Boolean enableAutoScale;
 
@@ -85,6 +85,11 @@ public class PoolAddParameter {
      * Whether the pool permits direct communication between nodes.
      */
     private Boolean enableInterNodeCommunication;
+
+    /**
+     * The network configuration for the pool.
+     */
+    private NetworkConfiguration networkConfiguration;
 
     /**
      * A task specified to run on each compute node as it joins the pool.
@@ -337,6 +342,26 @@ public class PoolAddParameter {
      */
     public PoolAddParameter withEnableInterNodeCommunication(Boolean enableInterNodeCommunication) {
         this.enableInterNodeCommunication = enableInterNodeCommunication;
+        return this;
+    }
+
+    /**
+     * Get the networkConfiguration value.
+     *
+     * @return the networkConfiguration value
+     */
+    public NetworkConfiguration networkConfiguration() {
+        return this.networkConfiguration;
+    }
+
+    /**
+     * Set the networkConfiguration value.
+     *
+     * @param networkConfiguration the networkConfiguration value to set
+     * @return the PoolAddParameter object itself.
+     */
+    public PoolAddParameter withNetworkConfiguration(NetworkConfiguration networkConfiguration) {
+        this.networkConfiguration = networkConfiguration;
         return this;
     }
 
