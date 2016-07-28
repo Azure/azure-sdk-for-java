@@ -146,6 +146,11 @@ public class CloudPool {
     private Boolean enableInterNodeCommunication;
 
     /**
+     * The network configuration for the pool.
+     */
+    private NetworkConfiguration networkConfiguration;
+
+    /**
      * A task specified to run on each compute node as it joins the pool.
      */
     private StartTask startTask;
@@ -622,6 +627,26 @@ public class CloudPool {
      */
     public CloudPool withEnableInterNodeCommunication(Boolean enableInterNodeCommunication) {
         this.enableInterNodeCommunication = enableInterNodeCommunication;
+        return this;
+    }
+
+    /**
+     * Get the networkConfiguration value.
+     *
+     * @return the networkConfiguration value
+     */
+    public NetworkConfiguration networkConfiguration() {
+        return this.networkConfiguration;
+    }
+
+    /**
+     * Set the networkConfiguration value.
+     *
+     * @param networkConfiguration the networkConfiguration value to set
+     * @return the CloudPool object itself.
+     */
+    public CloudPool withNetworkConfiguration(NetworkConfiguration networkConfiguration) {
+        this.networkConfiguration = networkConfiguration;
         return this;
     }
 

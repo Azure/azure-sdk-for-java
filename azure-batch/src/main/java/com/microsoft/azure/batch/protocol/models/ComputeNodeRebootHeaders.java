@@ -126,7 +126,11 @@ public class ComputeNodeRebootHeaders {
      * @return the ComputeNodeRebootHeaders object itself.
      */
     public ComputeNodeRebootHeaders withLastModified(DateTime lastModified) {
-        this.lastModified = new DateTimeRfc1123(lastModified);
+        if (lastModified == null) {
+            this.lastModified = null;
+        } else {
+            this.lastModified = new DateTimeRfc1123(lastModified);
+        }
         return this;
     }
 

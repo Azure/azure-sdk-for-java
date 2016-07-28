@@ -43,6 +43,11 @@ public class TaskAddParameter {
     private String commandLine;
 
     /**
+     * How the Batch service should respond when the task completes.
+     */
+    private ExitConditions exitConditions;
+
+    /**
      * A list of files that the Batch service will download to the compute
      * node before running the command line.
      * For multi-instance tasks, the resource files will only be downloaded to
@@ -80,6 +85,12 @@ public class TaskAddParameter {
      * Any other tasks that this task depends on.
      */
     private TaskDependencies dependsOn;
+
+    /**
+     * A list of application packages that the Batch service will deploy to
+     * the compute node before running the command line.
+     */
+    private List<ApplicationPackageReference> applicationPackageReferences;
 
     /**
      * Get the id value.
@@ -138,6 +149,26 @@ public class TaskAddParameter {
      */
     public TaskAddParameter withCommandLine(String commandLine) {
         this.commandLine = commandLine;
+        return this;
+    }
+
+    /**
+     * Get the exitConditions value.
+     *
+     * @return the exitConditions value
+     */
+    public ExitConditions exitConditions() {
+        return this.exitConditions;
+    }
+
+    /**
+     * Set the exitConditions value.
+     *
+     * @param exitConditions the exitConditions value to set
+     * @return the TaskAddParameter object itself.
+     */
+    public TaskAddParameter withExitConditions(ExitConditions exitConditions) {
+        this.exitConditions = exitConditions;
         return this;
     }
 
@@ -278,6 +309,26 @@ public class TaskAddParameter {
      */
     public TaskAddParameter withDependsOn(TaskDependencies dependsOn) {
         this.dependsOn = dependsOn;
+        return this;
+    }
+
+    /**
+     * Get the applicationPackageReferences value.
+     *
+     * @return the applicationPackageReferences value
+     */
+    public List<ApplicationPackageReference> applicationPackageReferences() {
+        return this.applicationPackageReferences;
+    }
+
+    /**
+     * Set the applicationPackageReferences value.
+     *
+     * @param applicationPackageReferences the applicationPackageReferences value to set
+     * @return the TaskAddParameter object itself.
+     */
+    public TaskAddParameter withApplicationPackageReferences(List<ApplicationPackageReference> applicationPackageReferences) {
+        this.applicationPackageReferences = applicationPackageReferences;
         return this;
     }
 

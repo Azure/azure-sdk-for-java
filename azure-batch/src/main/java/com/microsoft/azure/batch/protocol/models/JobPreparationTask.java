@@ -9,6 +9,7 @@
 package com.microsoft.azure.batch.protocol.models;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A Job Preparation task to run before any tasks of the job on any given
@@ -31,6 +32,7 @@ public class JobPreparationTask {
      * shell in the command line, for example using "cmd /c MyCommand" in
      * Windows or "/bin/sh -c MyCommand" in Linux.
      */
+    @JsonProperty(required = true)
     private String commandLine;
 
     /**

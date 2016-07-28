@@ -269,7 +269,7 @@ public final class BatchServiceClientImpl extends AzureServiceClient implements 
     }
 
     protected void initialize() {
-        this.apiVersion = "2016-02-01.3.0";
+        this.apiVersion = "2016-07-01.3.1";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
@@ -294,6 +294,6 @@ public final class BatchServiceClientImpl extends AzureServiceClient implements 
     public String userAgent() {
         return String.format("Azure-SDK-For-Java/%s (%s)",
                 getClass().getPackage().getImplementationVersion(),
-                "BatchServiceClient, 2016-02-01.3.0");
+                "BatchServiceClient, 2016-07-01.3.1");
     }
 }

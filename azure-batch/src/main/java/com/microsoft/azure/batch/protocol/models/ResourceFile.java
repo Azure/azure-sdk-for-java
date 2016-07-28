@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A file to be downloaded from Azure blob storage to a compute node.
@@ -17,12 +18,14 @@ public class ResourceFile {
      * The URL of the file within Azure Blob Storage. This URL should include
      * a shared access signature if the blob is not publicly readable.
      */
+    @JsonProperty(required = true)
     private String blobSource;
 
     /**
      * The location to which to download the file, relative to the task's
      * working directory.
      */
+    @JsonProperty(required = true)
     private String filePath;
 
     /**

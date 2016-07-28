@@ -120,7 +120,11 @@ public class PoolListPoolUsageMetricsHeaders {
      * @return the PoolListPoolUsageMetricsHeaders object itself.
      */
     public PoolListPoolUsageMetricsHeaders withLastModified(DateTime lastModified) {
-        this.lastModified = new DateTimeRfc1123(lastModified);
+        if (lastModified == null) {
+            this.lastModified = null;
+        } else {
+            this.lastModified = new DateTimeRfc1123(lastModified);
+        }
         return this;
     }
 

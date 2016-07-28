@@ -120,7 +120,11 @@ public class PoolGetHeaders {
      * @return the PoolGetHeaders object itself.
      */
     public PoolGetHeaders withLastModified(DateTime lastModified) {
-        this.lastModified = new DateTimeRfc1123(lastModified);
+        if (lastModified == null) {
+            this.lastModified = null;
+        } else {
+            this.lastModified = new DateTimeRfc1123(lastModified);
+        }
         return this;
     }
 

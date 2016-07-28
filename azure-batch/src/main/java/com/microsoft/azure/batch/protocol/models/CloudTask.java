@@ -49,6 +49,11 @@ public class CloudTask {
     private DateTime creationTime;
 
     /**
+     * How the Batch service should respond when the task completes.
+     */
+    private ExitConditions exitConditions;
+
+    /**
      * The current state of the task.
      * Possible values include: 'active', 'preparing', 'running', 'completed'.
      */
@@ -137,6 +142,12 @@ public class CloudTask {
      * Any dependencies this task has.
      */
     private TaskDependencies dependsOn;
+
+    /**
+     * A list of application packages that the Batch service will deploy to
+     * the compute node before running the command line.
+     */
+    private List<ApplicationPackageReference> applicationPackageReferences;
 
     /**
      * Get the id value.
@@ -255,6 +266,26 @@ public class CloudTask {
      */
     public CloudTask withCreationTime(DateTime creationTime) {
         this.creationTime = creationTime;
+        return this;
+    }
+
+    /**
+     * Get the exitConditions value.
+     *
+     * @return the exitConditions value
+     */
+    public ExitConditions exitConditions() {
+        return this.exitConditions;
+    }
+
+    /**
+     * Set the exitConditions value.
+     *
+     * @param exitConditions the exitConditions value to set
+     * @return the CloudTask object itself.
+     */
+    public CloudTask withExitConditions(ExitConditions exitConditions) {
+        this.exitConditions = exitConditions;
         return this;
     }
 
@@ -555,6 +586,26 @@ public class CloudTask {
      */
     public CloudTask withDependsOn(TaskDependencies dependsOn) {
         this.dependsOn = dependsOn;
+        return this;
+    }
+
+    /**
+     * Get the applicationPackageReferences value.
+     *
+     * @return the applicationPackageReferences value
+     */
+    public List<ApplicationPackageReference> applicationPackageReferences() {
+        return this.applicationPackageReferences;
+    }
+
+    /**
+     * Set the applicationPackageReferences value.
+     *
+     * @param applicationPackageReferences the applicationPackageReferences value to set
+     * @return the CloudTask object itself.
+     */
+    public CloudTask withApplicationPackageReferences(List<ApplicationPackageReference> applicationPackageReferences) {
+        this.applicationPackageReferences = applicationPackageReferences;
         return this;
     }
 
