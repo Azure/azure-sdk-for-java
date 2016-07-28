@@ -11,6 +11,12 @@ var mappings = {
         'package': 'com.microsoft.azure.management.compute',
         'args': '-FT 1'
     },
+    'graph': {
+        'dir': 'azure-mgmt-graph-rbac',
+        'source': 'arm-graphrbac/1.6/swagger/graphrbac.json',
+        'package': 'com.microsoft.azure.management.graphrbac',
+        'args': '-FT 1'
+    },
     'storage': {
         'dir': 'azure-mgmt-storage',
         'source': 'arm-storage/2016-01-01/swagger/storage.json',
