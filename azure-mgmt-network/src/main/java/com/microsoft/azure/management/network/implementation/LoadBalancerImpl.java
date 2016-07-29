@@ -183,14 +183,14 @@ class LoadBalancerImpl
     }
 
     private void beforeCreating()  {
-        // Ensure existence of backends referred to by VMs
+        // Ensure existence of backends for the VMs to be associated with
         for (String backendName : this.nicsInBackends.values()) {
             if (!this.backends().containsKey(backendName)) {
                 this.withBackend(backendName);
             }
         }
 
-        // Account for the newly created public IPs5
+        // Account for the newly created public IPs
         for (String pipKey : this.creatablePIPKeys) {
             PublicIpAddress pip = (PublicIpAddress) this.createdResource(pipKey);
             if (pip != null) {
@@ -477,13 +477,45 @@ class LoadBalancerImpl
 
     @Override
     public LoadBalancerImpl withoutBackend(String name) {
+        // Remove from cache
+        Backend backend = this.backends().get(name);
         this.backends.remove(name);
+
+        // Remove from inner
         List<BackendAddressPoolInner> inners = this.inner().backendAddressPools();
         if (inners != null) {
             for (int i = 0; i < inners.size(); i++) {
                 if (inners.get(i).name().equalsIgnoreCase(name)) {
                     inners.remove(i);
                     break;
+                }
+            }
+        }
+
+        // Remove any LB rule references to it
+        // TODO Revisit when full LB rule CRUD is done
+        List<LoadBalancingRuleInner> rulesInner = this.inner().loadBalancingRules();
+        if (rulesInner != null) {
+            for (LoadBalancingRuleInner ruleInner : rulesInner) {
+                SubResource backendRef = ruleInner.backendAddressPool();
+                if (backendRef == null) {
+                    continue;
+                } else if (backendRef.id().equalsIgnoreCase(backend.inner().id())) {
+                    ruleInner.withBackendAddressPool(null);
+                }
+            }
+        }
+
+        // Remove any outbound NAT rules to it
+        // TODO Revisit when full outbound NAT rule is done
+        List<OutboundNatRuleInner> outboundNatsInner = this.inner().outboundNatRules();
+        if (outboundNatsInner != null) {
+            for (OutboundNatRuleInner outboundNatInner : outboundNatsInner) {
+                SubResource backendRef = outboundNatInner.backendAddressPool();
+                if (backendRef == null) {
+                    continue;
+                } else if (backendRef.id().equalsIgnoreCase(backend.inner().id())) {
+                    outboundNatInner.withBackendAddressPool(null);
                 }
             }
         }
