@@ -33,19 +33,24 @@ public interface LoadBalancer extends
     List<String> publicIpAddressIds();
 
     /**
-     * @return TCP probes of this load balancer as a map indexed by the probe name
+     * @return TCP probes of this load balancer, indexed by the name
      */
     Map<String, TcpProbe> tcpProbes();
 
     /**
-     * @return HTTP probes of this load balancer as a map indexed by the probe name
+     * @return HTTP probes of this load balancer, indexed by the name
      */
     Map<String, HttpProbe> httpProbes();
 
     /**
-     * @return backends for this load balancer to load balance
+     * @return backends for this load balancer to load balance, indexed by name
      */
     Map<String, Backend> backends();
+
+    /**
+     * @return load balancing rules, indexed by name
+     */
+    Map<String, LoadBalancingRule> loadBalancingRules();
 
     /**
      * The entirety of the load balancer definition.
@@ -118,7 +123,6 @@ public interface LoadBalancer extends
          * The stage of the definition allowing to add another backend pool or the first load balancing rule.
          */
         interface WithBackendOrCreate extends WithBackend, WithCreate {
-            // TODO
         }
 
         /**
@@ -221,7 +225,7 @@ public interface LoadBalancer extends
              * @param name the name for the load balancing rule
              * @return the next stage of the definition
              */
-            WithCreateAndRule withLoadBalancedPort(int frontendPort, TransportProtocol protocol, int backendPort, String name);
+            WithCreateAndRule withLoadBalancingRule(int frontendPort, TransportProtocol protocol, int backendPort, String name);
 
             /**
              * Creates a load balancing rule between the specified front end and back end ports and protocol.
@@ -232,7 +236,7 @@ public interface LoadBalancer extends
              * @param backendPort the port number on the back end to send load balanced traffic to
              * @return the next stage of the definition
              */
-            WithCreateAndRule withLoadBalancedPort(int frontendPort, TransportProtocol protocol, int backendPort);
+            WithCreateAndRule withLoadBalancingRule(int frontendPort, TransportProtocol protocol, int backendPort);
 
             /**
              * Creates a load balancing rule for the specified port and protocol.
@@ -240,7 +244,25 @@ public interface LoadBalancer extends
              * @param protocol the protocol to load balance
              * @return the next stage of the definition
              */
-            WithCreateAndRule withLoadBalancedPort(int port, TransportProtocol protocol);
+            WithCreateAndRule withLoadBalancingRule(int port, TransportProtocol protocol);
+
+            /**
+             * Creates a load balancing rule for the specified port and protocol.
+             * @param port the port number on the front and back ends for the network traffic to be load balanced on
+             * @param protocol the protocol to load balance
+             * @param name a unique name for the load balancing rule
+             * @return the next stage of the definition
+             */
+            WithCreateAndRule withLoadBalancingRule(int port, TransportProtocol protocol, String name);
+
+            /**
+             * Begins the definition of a new load balancing rule to add to the load balancer.
+             * <p>
+             * The definition must be completed with a call to {@link TcpProbe.DefinitionStages.WithAttach#attach()}
+             * @param name the name of the load balancing rule
+             * @return the first stage of the new load balancing rule definition
+             */
+            LoadBalancingRule.DefinitionStages.Blank<WithCreateAndRule> defineLoadBalancingRule(String name);
         }
 
         /**
@@ -434,6 +456,70 @@ public interface LoadBalancer extends
              */
             HttpProbe.Update updateHttpProbe(String name);
         }
+
+        /**
+         * The stage of the load balancer update allowing to add, remove or modify load balancing rules.
+         */
+        interface WithLoadBalancingRule {
+            /**
+             * Creates a load balancing rule between the specified front end and back end ports and protocol.
+             * @param frontendPort the port number on the front end to accept incoming traffic on
+             * @param protocol the protocol to load balance
+             * @param backendPort the port number on the back end to send load balanced traffic to
+             * @param name the name for the load balancing rule
+             * @return the next stage of the definition
+             */
+            Update withLoadBalancingRule(int frontendPort, TransportProtocol protocol, int backendPort, String name);
+
+            /**
+             * Creates a load balancing rule between the specified front end and back end ports and protocol.
+             * <p>
+             * The new rule will be assigned an automatically generated name.
+             * @param frontendPort the port number on the front end to accept incoming traffic on
+             * @param protocol the protocol to load balance
+             * @param backendPort the port number on the back end to send load balanced traffic to
+             * @return the next stage of the definition
+             */
+            Update withLoadBalancingRule(int frontendPort, TransportProtocol protocol, int backendPort);
+
+            /**
+             * Creates a load balancing rule for the specified port and protocol.
+             * @param port the port number on the front and back end for the network traffic to be load balanced on
+             * @param protocol the protocol to load balance
+             * @return the next stage of the definition
+             */
+            Update withLoadBalancingRule(int port, TransportProtocol protocol);
+
+            /**
+             * Begins the definition of a new load balancing rule to add to the load balancer.
+             * <p>
+             * The definition must be completed with a call to {@link TcpProbe.DefinitionStages.WithAttach#attach()}
+             * @param name the name of the load balancing rule
+             * @return the first stage of the new load balancing rule definition
+             */
+            LoadBalancingRule.UpdateDefinitionStages.Blank<Update> defineLoadBalancingRule(String name);
+
+            /**
+             * Removes the specified load balancing rule from the load balancer, if present.
+             * @param name the name of the load balancing rule to remove
+             * @return the next stage of the update
+             */
+            Update withoutLoadBalancingRule(String name);
+
+            /**
+             * Removes the specified load balancing rule from the load balancer, if present.
+             * @param rule the load balancing rule to remove
+             * @return the next stage of the update
+             */
+            Update withoutLoadBalancingRule(LoadBalancingRule rule);
+
+            /**
+             * Begins the description of an update to an existing load balancing rule on this load balancer.
+             * @param name the name of the load balancing rule to update
+             * @return the first stage of the load balancing rule update
+             */
+            LoadBalancingRule.Update updateLoadBalancingRule(String name);
+        }
     }
 
     /**
@@ -446,6 +532,7 @@ public interface LoadBalancer extends
         Appliable<LoadBalancer>,
         Resource.UpdateWithTags<Update>,
         UpdateStages.WithProbe,
-        UpdateStages.WithBackend {
+        UpdateStages.WithBackend,
+        UpdateStages.WithLoadBalancingRule {
     }
 }

@@ -17,6 +17,7 @@ import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.network.HttpProbe;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancers;
+import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PublicIpAddress;
@@ -128,7 +129,12 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                 .withExistingVirtualMachines(existingVMs)
                 .withBackend("backend2")
                 .withTcpProbe(80, "tcp1")
-                .withLoadBalancedPort(80, TransportProtocol.TCP)
+                .withLoadBalancingRule(80, TransportProtocol.TCP, "rule1")
+                .defineLoadBalancingRule("rule2")
+                    .withProtocol(TransportProtocol.TCP)    // Required
+                    .withFrontendPort(81)
+                    .withBackendPort(82)                    // Optionals
+                    .attach()
                 .defineTcpProbe("tcp2")
                     .withPort(25)               // Required
                     .withIntervalInSeconds(15)  // Optionals
@@ -166,6 +172,15 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                     .withIntervalInSeconds(14)
                     .withNumberOfProbes(5)
                     .parent()
+                .withoutLoadBalancingRule("rule2")
+                .updateLoadBalancingRule("rule1")
+                    .withBackendPort(8080)
+                    .withFrontendPort(8080)
+                    .parent()
+                .defineLoadBalancingRule("rule3")
+                    .withProtocol(TransportProtocol.UDP)
+                    .withFrontendPort(22)
+                    .attach()
                 .withBackend("backend3")
                 .withoutBackend("backend2")
                 .withTag("tag1", "value1")
@@ -177,6 +192,9 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
         Assert.assertTrue(!resource.tcpProbes().containsKey("tcp2"));
         Assert.assertTrue(resource.backends().containsKey("backend3"));
         Assert.assertTrue(!resource.backends().containsKey("backend2"));
+        Assert.assertTrue(resource.loadBalancingRules().containsKey("rule1"));
+        Assert.assertTrue(resource.loadBalancingRules().containsKey("rule3"));
+        Assert.assertTrue(!resource.loadBalancingRules().containsKey("rule2"));
 
         return resource;
     }
@@ -219,6 +237,19 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                 .append("\n\t\t\tInterval in seconds: ").append(probe.intervalInSeconds())
                 .append("\n\t\t\tRetries before unhealthy: ").append(probe.numberOfProbes())
                 .append("\n\t\t\tHTTP request path: ").append(probe.requestPath());
+        }
+
+        // Show load balancing rules
+        info.append("\n\tLoad balancing rules:");
+        for (LoadBalancingRule rule : resource.loadBalancingRules().values()) {
+            info.append("\n\t\tLB rule name: ").append(rule.name())
+                .append("\n\t\t\tFrontend port: ").append(rule.frontendPort())
+                .append("\n\t\t\tBackend port: ").append(rule.backendPort())
+                .append("\n\t\t\tProtocol: ").append(rule.protocol())
+                .append("\n\t\t\tFloating IP enabled? ").append(rule.floatingIp())
+                .append("\n\t\t\tIdle timeout in minutes: ").append(rule.idleTimeoutInMinutes())
+                .append("\n\t\t\tLoad distribution method: ").append(rule.loadDistribution().toString());
+
         }
 
         System.out.println(info.toString());
