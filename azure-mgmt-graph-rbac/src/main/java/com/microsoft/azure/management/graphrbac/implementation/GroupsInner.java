@@ -496,7 +496,7 @@ public final class GroupsInner {
         ServiceResponse<PageImpl1<ADGroupInner>> response = listDelegate(call.execute());
         PagedList<ADGroupInner> result = new PagedList<ADGroupInner>(response.getBody()) {
             @Override
-            public Page<ADGroupInner> nextPage(String nextPageLink) throws CloudException, IOException {
+            public Page<ADGroupInner> nextPage(String nextLink) throws CloudException, IOException {
                 return listNext(nextLink).getBody();
             }
         };
@@ -533,7 +533,7 @@ public final class GroupsInner {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), nextLink, serviceCall, serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
@@ -565,7 +565,7 @@ public final class GroupsInner {
         ServiceResponse<PageImpl1<ADGroupInner>> response = listDelegate(call.execute());
         PagedList<ADGroupInner> result = new PagedList<ADGroupInner>(response.getBody()) {
             @Override
-            public Page<ADGroupInner> nextPage(String nextPageLink) throws CloudException, IOException {
+            public Page<ADGroupInner> nextPage(String nextLink) throws CloudException, IOException {
                 return listNext(nextLink).getBody();
             }
         };
@@ -602,7 +602,7 @@ public final class GroupsInner {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), nextLink, serviceCall, serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
@@ -644,7 +644,7 @@ public final class GroupsInner {
         ServiceResponse<PageImpl1<AADObjectInner>> response = getGroupMembersDelegate(call.execute());
         PagedList<AADObjectInner> result = new PagedList<AADObjectInner>(response.getBody()) {
             @Override
-            public Page<AADObjectInner> nextPage(String nextPageLink) throws CloudException, IOException {
+            public Page<AADObjectInner> nextPage(String nextLink) throws CloudException, IOException {
                 return getGroupMembersNext(nextLink).getBody();
             }
         };
@@ -685,7 +685,7 @@ public final class GroupsInner {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        getGroupMembersNextAsync(result.getBody().getNextPageLink(), nextLink, serviceCall, serviceCallback);
+                        getGroupMembersNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
@@ -909,7 +909,7 @@ public final class GroupsInner {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), nextLink, serviceCall, serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
@@ -986,7 +986,7 @@ public final class GroupsInner {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        getGroupMembersNextAsync(result.getBody().getNextPageLink(), nextLink, serviceCall, serviceCallback);
+                        getGroupMembersNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }

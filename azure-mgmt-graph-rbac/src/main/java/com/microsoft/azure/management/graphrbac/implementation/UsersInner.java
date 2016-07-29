@@ -8,33 +8,34 @@
 
 package com.microsoft.azure.management.graphrbac.implementation;
 
-import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
-import com.microsoft.azure.management.graphrbac.UserGetMemberGroupsParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.graphrbac.UserGetMemberGroupsParameters;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
-import java.io.IOException;
-import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
-import retrofit2.http.HTTP;
 import retrofit2.http.PATCH;
-import retrofit2.http.Path;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
-import retrofit2.Response;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -183,7 +184,7 @@ public final class UsersInner {
         ServiceResponse<PageImpl1<UserInner>> response = listDelegate(call.execute());
         PagedList<UserInner> result = new PagedList<UserInner>(response.getBody()) {
             @Override
-            public Page<UserInner> nextPage(String nextPageLink) throws CloudException, IOException {
+            public Page<UserInner> nextPage(String nextLink) throws CloudException, IOException {
                 return listNext(nextLink).getBody();
             }
         };
@@ -220,7 +221,7 @@ public final class UsersInner {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), nextLink, serviceCall, serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
@@ -252,7 +253,7 @@ public final class UsersInner {
         ServiceResponse<PageImpl1<UserInner>> response = listDelegate(call.execute());
         PagedList<UserInner> result = new PagedList<UserInner>(response.getBody()) {
             @Override
-            public Page<UserInner> nextPage(String nextPageLink) throws CloudException, IOException {
+            public Page<UserInner> nextPage(String nextLink) throws CloudException, IOException {
                 return listNext(nextLink).getBody();
             }
         };
@@ -289,7 +290,7 @@ public final class UsersInner {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), nextLink, serviceCall, serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
@@ -660,7 +661,7 @@ public final class UsersInner {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), nextLink, serviceCall, serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }

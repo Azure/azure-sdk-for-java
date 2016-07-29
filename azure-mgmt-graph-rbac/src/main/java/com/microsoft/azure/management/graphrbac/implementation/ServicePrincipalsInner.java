@@ -173,7 +173,7 @@ public final class ServicePrincipalsInner {
         ServiceResponse<PageImpl1<ServicePrincipalInner>> response = listDelegate(call.execute());
         PagedList<ServicePrincipalInner> result = new PagedList<ServicePrincipalInner>(response.getBody()) {
             @Override
-            public Page<ServicePrincipalInner> nextPage(String nextPageLink) throws CloudException, IOException {
+            public Page<ServicePrincipalInner> nextPage(String nextLink) throws CloudException, IOException {
                 return listNext(nextLink).getBody();
             }
         };
@@ -210,7 +210,7 @@ public final class ServicePrincipalsInner {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), nextLink, serviceCall, serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
@@ -242,7 +242,7 @@ public final class ServicePrincipalsInner {
         ServiceResponse<PageImpl1<ServicePrincipalInner>> response = listDelegate(call.execute());
         PagedList<ServicePrincipalInner> result = new PagedList<ServicePrincipalInner>(response.getBody()) {
             @Override
-            public Page<ServicePrincipalInner> nextPage(String nextPageLink) throws CloudException, IOException {
+            public Page<ServicePrincipalInner> nextPage(String nextLink) throws CloudException, IOException {
                 return listNext(nextLink).getBody();
             }
         };
@@ -279,7 +279,7 @@ public final class ServicePrincipalsInner {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), nextLink, serviceCall, serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
@@ -493,7 +493,7 @@ public final class ServicePrincipalsInner {
                     serviceCallback.load(result.getBody().getItems());
                     if (result.getBody().getNextPageLink() != null
                             && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), nextLink, serviceCall, serviceCallback);
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
                     } else {
                         serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
                     }
