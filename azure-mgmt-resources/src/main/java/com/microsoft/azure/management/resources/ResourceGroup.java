@@ -40,11 +40,6 @@ public interface ResourceGroup extends
     String provisioningState();
 
     /**
-     * @return the tags attached to the resource group
-     */
-    Map<String, String> tags();
-
-    /**
      * Captures the specified resource group as a template.
      *
      * @param options the export options
