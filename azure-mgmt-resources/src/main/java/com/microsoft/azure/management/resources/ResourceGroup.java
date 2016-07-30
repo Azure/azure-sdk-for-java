@@ -18,7 +18,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.resources.implementation.ResourceGroupInner;
 
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * An immutable client-side representation of an Azure resource group.
@@ -38,11 +37,6 @@ public interface ResourceGroup extends
      * @return the provisioning state of the resource group
      */
     String provisioningState();
-
-    /**
-     * @return the tags attached to the resource group
-     */
-    Map<String, String> tags();
 
     /**
      * Captures the specified resource group as a template.

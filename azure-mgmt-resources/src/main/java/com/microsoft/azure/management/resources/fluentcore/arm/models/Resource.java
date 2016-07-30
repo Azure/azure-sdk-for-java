@@ -86,13 +86,6 @@ public interface Resource extends Indexable {
          * @return the next stage of the resource definition
          */
         T withTag(String key, String value);
-
-        /**
-         * Removes a tag from the resource.
-         * @param key the key of the tag to remove
-         * @return the next stage of the resource definition
-         */
-        T withoutTag(String key);
     }
 
     /**
