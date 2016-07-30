@@ -15,6 +15,8 @@ The `Azure` class is the simplest entry point for creating and interacting with 
 
 `Azure azure = Azure.authenticate(credFile).withDefaultSubscription();` 
 
+The client currently supports authentication to the Service Management API with certificates or Azure `.publishSettings` file. You can download the `.publishSettings` file for your subscriptions [here](https://manage.windowsazure.com/publishsettings).
+
 **Create a Virtual Machine**
 
 You can create a virtual machine instance by using the `define() … create()` method chain.
