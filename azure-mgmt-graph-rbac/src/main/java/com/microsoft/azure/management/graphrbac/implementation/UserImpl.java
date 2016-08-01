@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.graphrbac.implementation;
 
+import com.microsoft.azure.management.graphrbac.PasswordProfile;
 import com.microsoft.azure.management.graphrbac.User;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import com.microsoft.rest.ServiceCall;
@@ -24,7 +25,13 @@ class UserImpl
     private UsersInner client;
     private UserCreateParametersInner createParameters;
 
-    protected UserImpl(UserInner innerObject, UsersInner client) {
+    UserImpl(String userPrincipalName, UsersInner client) {
+        super(new UserInner());
+        this.client = client;
+        this.createParameters = new UserCreateParametersInner().withUserPrincipalName(userPrincipalName);
+    }
+
+    UserImpl(UserInner innerObject, UsersInner client) {
         super(innerObject);
         this.client = client;
         this.createParameters = new UserCreateParametersInner();
@@ -91,5 +98,35 @@ class UserImpl
     @Override
     public String key() {
         return objectId();
+    }
+
+    @Override
+    public UserImpl withAccountEnabled(boolean enabled) {
+        createParameters.withAccountEnabled(enabled);
+        return this;
+    }
+
+    @Override
+    public UserImpl withDisplayName(String displayName) {
+        createParameters.withDisplayName(displayName);
+        return this;
+    }
+
+    @Override
+    public UserImpl withMailNickname(String mailNickname) {
+        createParameters.withMailNickname(mailNickname);
+        return this;
+    }
+
+    @Override
+    public UserImpl withPassword(String password) {
+        createParameters.withPasswordProfile(new PasswordProfile().withPassword(password));
+        return this;
+    }
+
+    @Override
+    public UserImpl withPassword(String password, boolean forceChangePasswordNextLogin) {
+        createParameters.withPasswordProfile(new PasswordProfile().withPassword(password).withForceChangePasswordNextLogin(forceChangePasswordNextLogin));
+        return this;
     }
 }

@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
         implements AzureConfigurable<T> {
-    private RestClient.Builder.Buildable restClientBuilder;
+    protected RestClient.Builder.Buildable restClientBuilder;
 
     protected AzureConfigurableImpl() {
         this.restClientBuilder = AzureEnvironment.AZURE.newRestClientBuilder();
