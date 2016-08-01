@@ -10,13 +10,7 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.graphrbac.User;
 import com.microsoft.azure.management.graphrbac.Users;
-import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
-import com.microsoft.azure.management.storage.CheckNameAvailabilityResult;
-import com.microsoft.azure.management.storage.SkuName;
-import com.microsoft.azure.management.storage.StorageAccount;
 
 import java.io.IOException;
 
@@ -35,6 +29,8 @@ class UsersImpl
     UsersImpl(
             final UsersInner client,
             final GraphRbacManager graphRbacManager) {
+        this.innerCollection = client;
+        this.manager = graphRbacManager;
     }
 
     @Override
@@ -48,37 +44,22 @@ class UsersImpl
     }
 
     @Override
-    public UserImpl define(String name) {
-        return wrapModel(name)
-                .withSku(SkuName.STANDARD_GRS)
-                .withGeneralPurposeAccountKind();
+    public UserImpl define(String userPrincipalName) {
+        return wrapModel(userPrincipalName);
     }
 
     @Override
-    protected UserImpl wrapModel(String name) {
-        return new UserImpl(
-                name,
-                new UserInner(),
-                innerCollection,
-                manager);
+    protected UserImpl wrapModel(String userPrincipalName) {
+        return new UserImpl(userPrincipalName, innerCollection);
     }
 
     @Override
-    protected StorageAccountImpl wrapModel(UserInner userInner) {
-        return new StorageAccountImpl(
-                userInner.name(),
-                userInner,
-                this.innerCollection,
-                manager);
+    protected UserImpl wrapModel(UserInner userInner) {
+        return new UserImpl(userInner, this.innerCollection);
     }
 
     @Override
-    public User getByName(String name) throws CloudException, IOException {
-        return null;
-    }
-
-    @Override
-    protected UserImpl wrapModel(UserInner inner) {
-        return null;
+    public UserImpl getByName(String upnOrId) throws CloudException, IOException {
+        return new UserImpl(innerCollection.get(upnOrId).getBody(), innerCollection);
     }
 }

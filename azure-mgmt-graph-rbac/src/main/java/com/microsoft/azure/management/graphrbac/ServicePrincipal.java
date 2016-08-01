@@ -6,53 +6,45 @@
 
 package com.microsoft.azure.management.graphrbac;
 
-import com.microsoft.azure.management.graphrbac.implementation.UserInner;
+import com.microsoft.azure.management.graphrbac.implementation.ServicePrincipalInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+
+import java.util.List;
 
 /**
  * An immutable client-side representation of an Azure tenant.
  */
-public interface User extends
-        Wrapper<UserInner> {
+public interface ServicePrincipal extends
+        Wrapper<ServicePrincipalInner> {
 
     /**
-     * @return Gets or sets object Id.
+     * @return object Id.
      */
     String objectId();
 
     /**
-     * @return Gets or sets object type.
+     * @return object type.
      */
     String objectType();
 
     /**
-     * @return Gets or sets user principal name.
-     */
-    String userPrincipalName();
-
-    /**
-     * @return Gets or sets user display name.
+     * @return service principal display name.
      */
     String displayName();
 
     /**
-     * @return Gets or sets user signIn name.
+     * @return app id.
      */
-    String signInName();
+    String appId();
 
     /**
-     * @return Gets or sets user mail.
+     * @return the list of names.
      */
-    String mail();
-
-    /**
-     * @return The mail alias for the user.
-     */
-    String mailNickname();
+    List<String> servicePrincipalNames();
 
     /**************************************************************
-     * Fluent interfaces to provision a StorageAccount
+     * Fluent interfaces to provision a service principal
      **************************************************************/
 
     /**
@@ -60,9 +52,6 @@ public interface User extends
      */
     interface Definition extends
             DefinitionStages.Blank,
-            DefinitionStages.WithDisplayName,
-            DefinitionStages.WithPassword,
-            DefinitionStages.WithMailNickname,
             DefinitionStages.WithCreate {
     }
 
@@ -73,20 +62,7 @@ public interface User extends
         /**
          * The first stage of the storage account definition.
          */
-        interface Blank extends WithDisplayName {
-        }
-
-        interface WithDisplayName {
-            WithPassword withDisplayName(String displayName);
-        }
-
-        interface WithPassword {
-            WithMailNickname withPassword(String password);
-            WithMailNickname withPassword(String password, boolean forceChangePasswordNextLogin);
-        }
-
-        interface WithMailNickname {
-            WithCreate withMailNickname(String mailNickname);
+        interface Blank extends WithCreate {
         }
 
         interface WithAccountEnabled {
@@ -99,7 +75,7 @@ public interface User extends
          * specify.
          */
         interface WithCreate extends
-                Creatable<User>,
+                Creatable<ServicePrincipal>,
                 WithAccountEnabled {
         }
     }
