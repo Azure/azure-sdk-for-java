@@ -142,6 +142,7 @@ public class PartitionContext
     	{
     		// Checkpoint is valid, use it.
 	    	this.offset = startingCheckpoint.getOffset();
+	    	startAt = this.offset;
 	    	this.sequenceNumber = startingCheckpoint.getSequenceNumber();
 	    	this.host.logWithHostAndPartition(Level.FINE, this.partitionId, "Retrieved starting offset " + this.offset + "//" + this.sequenceNumber);
     	}

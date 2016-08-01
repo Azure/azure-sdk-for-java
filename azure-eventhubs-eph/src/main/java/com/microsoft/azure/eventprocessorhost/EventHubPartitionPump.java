@@ -110,7 +110,12 @@ class EventHubPartitionPump extends PartitionPump
     		this.internalOperationFuture = this.eventHubClient.createEpochReceiver(this.partitionContext.getConsumerGroupName(), this.partitionContext.getPartitionId(),
     				(Instant)startAt, epoch);
     	}
-    	// else getInitialOffset threw an exception and we never get here
+    	else
+    	{
+    		String errMsg = "Starting offset is not String or Instant, is " + ((startAt != null) ? startAt.getClass().toString() : "null");
+    		this.host.logWithHostAndPartition(Level.SEVERE, this.partitionContext, errMsg);
+    		throw new RuntimeException(errMsg);
+    	}
 		this.lease.setEpoch(epoch);
 		if (this.internalOperationFuture != null)
 		{
