@@ -176,6 +176,7 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                 .updateLoadBalancingRule("rule1")
                     .withBackendPort(8080)
                     .withFrontendPort(8080)
+                    .withFloatingIp(true)
                     .parent()
                 .defineLoadBalancingRule("rule3")
                     .withProtocol(TransportProtocol.UDP)

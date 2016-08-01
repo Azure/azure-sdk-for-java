@@ -28,6 +28,10 @@ public interface LoadBalancingRule extends
      */
     boolean floatingIp();
 
+    //TODO:
+    /* withLoadDistribution, withIdleTimeoutInMinutes
+     * withFrontend, withBackend, withProbe and return them
+     */
     /**
      * @return the method of load distribution
      */
@@ -98,7 +102,8 @@ public interface LoadBalancingRule extends
             WithAttach<ParentT> withBackendPort(int port);
         }
 
-        /** The final stage of the load balancing rule definition.
+        /**
+         * The final stage of the load balancing rule definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the load balancing rule definition
          * can be attached to the parent load balancer definition using {@link WithAttach#attach()}.
@@ -106,7 +111,21 @@ public interface LoadBalancingRule extends
          */
         interface WithAttach<ParentT> extends
             Attachable.InDefinition<ParentT>,
-            DefinitionStages.WithBackendPort<ParentT> {
+            DefinitionStages.WithBackendPort<ParentT>,
+            DefinitionStages.WithFloatingIp<ParentT> {
+        }
+
+        /**
+         * The stage of a load balancing rule definition allowing to enable the floating IP functionality.
+         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         */
+        interface WithFloatingIp<ParentT> {
+            /**
+             * Controls the floating IP functionality.
+             * @param enable set to true to turn on, false to turn off
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withFloatingIp(boolean enable);
         }
     }
 
@@ -159,6 +178,18 @@ public interface LoadBalancingRule extends
              */
             Update withBackendPort(int port);
         }
+
+        /**
+         * The stage of a load balancing rule update allowing to enable the floating IP functionality.
+         */
+        interface WithFloatingIp {
+            /**
+             * Controls the floating IP functionality.
+             * @param enable set to true to turn on, false to turn off
+             * @return the next stage of the update
+             */
+            Update withFloatingIp(boolean enable);
+        }
     }
 
     /**
@@ -168,7 +199,8 @@ public interface LoadBalancingRule extends
         Settable<LoadBalancer.Update>,
         UpdateStages.WithFrontendPort,
         UpdateStages.WithProtocol,
-        UpdateStages.WithBackendPort {
+        UpdateStages.WithBackendPort,
+        UpdateStages.WithFloatingIp {
     }
 
     /**
@@ -221,6 +253,19 @@ public interface LoadBalancingRule extends
             WithAttach<ParentT> withBackendPort(int port);
         }
 
+        /**
+         * The stage of a load balancing rule definition allowing to enable the floating IP functionality.
+         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         */
+        interface WithFloatingIp<ParentT> {
+            /**
+             * Controls the floating IP functionality.
+             * @param enable set to true to turn on, false to turn off
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withFloatingIp(boolean enable);
+        }
+
         /** The final stage of the load balancing rule definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the load balancing rule definition
@@ -240,6 +285,7 @@ public interface LoadBalancingRule extends
         UpdateDefinitionStages.Blank<ParentT>,
         UpdateDefinitionStages.WithAttach<ParentT>,
         UpdateDefinitionStages.WithFrontendPort<ParentT>,
-        UpdateDefinitionStages.WithProtocol<ParentT> {
+        UpdateDefinitionStages.WithProtocol<ParentT>,
+        UpdateDefinitionStages.WithFloatingIp<ParentT> {
     }
 }

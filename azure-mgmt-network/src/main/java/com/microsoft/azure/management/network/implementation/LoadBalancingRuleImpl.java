@@ -70,6 +70,12 @@ class LoadBalancingRuleImpl
     // Fluent setters
 
     @Override
+    public LoadBalancingRuleImpl withFloatingIp(boolean enable) {
+        this.inner().withEnableFloatingIP(enable);
+        return this;
+    }
+
+    @Override
     public LoadBalancingRuleImpl withProtocol(TransportProtocol protocol) {
         this.inner().withProtocol(protocol);
         return this;
