@@ -112,7 +112,15 @@ class EventHubPartitionPump extends PartitionPump
     	}
     	// else getInitialOffset threw an exception and we never get here
 		this.lease.setEpoch(epoch);
-		this.partitionReceiver = (PartitionReceiver) this.internalOperationFuture.get();
+		if (this.internalOperationFuture != null)
+		{
+			this.partitionReceiver = (PartitionReceiver) this.internalOperationFuture.get();
+		}
+		else
+		{
+			this.host.logWithHostAndPartition(Level.SEVERE, this.partitionContext, "createEpochReceiver failed with null");
+			throw new RuntimeException("createEpochReceiver failed with null");
+		}
 		this.partitionReceiver.setPrefetchCount(this.host.getEventProcessorOptions().getPrefetchCount());
 		this.partitionReceiver.setReceiveTimeout(this.host.getEventProcessorOptions().getReceiveTimeOut());
 		this.internalOperationFuture = null;
