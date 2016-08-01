@@ -76,7 +76,7 @@ public interface Vault extends
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
-        DefinitionStages.WithTenantId,
+        DefinitionStages.WithTenantIdOrAccessPolicy,
         DefinitionStages.WithCreate {
     }
 
@@ -93,11 +93,14 @@ public interface Vault extends
         /**
          * A key vault definition allowing resource group to be set.
          */
-        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithTenantId> {
+        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithTenantIdOrAccessPolicy> {
+        }
+
+        interface WithTenantIdOrAccessPolicy extends WithTenantId, WithAccessPolicy {
         }
 
         interface WithTenantId {
-            WithCreate withTenantId(UUID tenantId);
+            WithAccessPolicy withTenantId(UUID tenantId);
         }
 
         /**
@@ -116,7 +119,7 @@ public interface Vault extends
         interface WithAccessPolicy {
             WithCreate withEmptyAccessPolicy();
             WithCreate withAccessPolicy(AccessPolicy accessPolicy);
-            AccessPolicy.DefinitionStages.Blank<WithCreate> defineAccessPolicy(String objectId);
+            AccessPolicy.DefinitionStages.Blank<WithCreate> defineAccessPolicy();
         }
 
         interface WithConfigurations {
@@ -134,7 +137,6 @@ public interface Vault extends
             Creatable<Vault>,
             GroupableResource.DefinitionWithTags<WithCreate>,
             DefinitionStages.WithSku,
-            DefinitionStages.WithAccessPolicy,
             DefinitionStages.WithConfigurations {
         }
     }

@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.keyvault;
 
+import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import org.junit.AfterClass;
@@ -33,10 +34,18 @@ public class VaultTests extends KeyVaultManagementTestBase {
     @Test
     public void canCRUDVault() throws Exception {
         // CREATE
+        ServicePrincipal sp = graphRbacManager.servicePrincipals().getByName(credentials.getClientId());
         Vault vault = keyVaultManager.vaults().define(VAULT_NAME)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME)
-                .withTenantId(UUID.fromString("72f988bf-86f1-41af-91ab-2d7cd011db47"))
+                .withTenantId(UUID.fromString(credentials.getDomain()))
+                .defineAccessPolicy()
+                    .forServicePrincipal(sp)
+                    .allowKeyGetting()
+                    .allowKeyListing()
+                    .allowKeyCreating()
+                    .allowSecretAllPermissions()
+                    .attach()
                 .create();
         Assert.assertNotNull(vault);
         // GET

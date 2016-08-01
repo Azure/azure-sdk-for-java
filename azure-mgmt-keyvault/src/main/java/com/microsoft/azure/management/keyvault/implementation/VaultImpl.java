@@ -120,8 +120,8 @@ class VaultImpl
     }
 
     @Override
-    public AccessPolicyImpl defineAccessPolicy(String objectId) {
-        return new AccessPolicyImpl(objectId, new AccessPolicyEntry(), this);
+    public AccessPolicyImpl defineAccessPolicy() {
+        return new AccessPolicyImpl(new AccessPolicyEntry(), this);
     }
 
     @Override
