@@ -27,6 +27,6 @@ public abstract class GraphRbacManagementTestBase {
         graphRbacManager = GraphRbacManager
                 .configure()
                 .withLogLevel(HttpLoggingInterceptor.Level.BODY)
-                .authenticate(credentials, credentials.getDomain());
+                .authenticate(credentials, "myorganization");
     }
 }
