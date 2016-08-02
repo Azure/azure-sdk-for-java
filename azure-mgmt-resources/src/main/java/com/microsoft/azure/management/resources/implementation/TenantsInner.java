@@ -33,7 +33,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in Tenants.
  */
-public final class TenantsInner {
+public class TenantsInner {
     /** The Retrofit service to perform REST calls. */
     private TenantsService service;
     /** The service client containing this operation class. */

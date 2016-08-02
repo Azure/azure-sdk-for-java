@@ -211,7 +211,7 @@ public class AzureClient extends AzureServiceClient {
      * @param callback  the user callback to call when operation terminates.
      * @return          the task describing the asynchronous polling.
      */
-    public <T, THeader> AsyncPollingTask<T> getPutOrPatchResultWithHeadersAsync(Response<ResponseBody> response, Type resourceType, final Class<THeader> headerType, final ServiceCall serviceCall, final ServiceCallback<T> callback) {
+    public <T, THeader> AsyncPollingTask<T> getPutOrPatchResultWithHeadersAsync(Response<ResponseBody> response, Type resourceType, class<THeader> headerType, final ServiceCall serviceCall, final ServiceCallback<T> callback) {
         return this.getPutOrPatchResultAsync(response, resourceType, serviceCall, new ServiceCallback<T>() {
             @Override
             public void failure(Throwable t) {
@@ -383,7 +383,7 @@ public class AzureClient extends AzureServiceClient {
      * @param callback  the user callback to call when operation terminates.
      * @return          the task describing the asynchronous polling.
      */
-    public <T, THeader> AsyncPollingTask<T> getPostOrDeleteResultWithHeadersAsync(Response<ResponseBody> response, Type resourceType, final Class<THeader> headerType, final ServiceCall serviceCall, final ServiceCallback<T> callback) {
+    public <T, THeader> AsyncPollingTask<T> getPostOrDeleteResultWithHeadersAsync(Response<ResponseBody> response, Type resourceType, class<THeader> headerType, final ServiceCall serviceCall, final ServiceCallback<T> callback) {
         return this.getPostOrDeleteResultAsync(response, resourceType, serviceCall, new ServiceCallback<T>() {
             @Override
             public void failure(Throwable t) {

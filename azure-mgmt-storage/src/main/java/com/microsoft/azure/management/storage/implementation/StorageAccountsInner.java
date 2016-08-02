@@ -40,7 +40,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in StorageAccounts.
  */
-public final class StorageAccountsInner {
+public class StorageAccountsInner {
     /** The Retrofit service to perform REST calls. */
     private StorageAccountsService service;
     /** The service client containing this operation class. */

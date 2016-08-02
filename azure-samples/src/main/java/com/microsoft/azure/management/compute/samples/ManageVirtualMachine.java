@@ -36,7 +36,7 @@ import java.util.Date;
  *  - List virtual machines
  *  - Delete a virtual machine.
  */
-public final class ManageVirtualMachine {
+public class ManageVirtualMachine {
 
     /**
      * Main entry point.

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for VpnType.
  */
-public final class VpnType {
+public class VpnType {
     /** Static value PolicyBased for VpnType. */
     public static final VpnType POLICY_BASED = new VpnType("PolicyBased");
 

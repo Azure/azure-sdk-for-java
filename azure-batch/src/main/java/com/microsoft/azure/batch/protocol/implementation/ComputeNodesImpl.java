@@ -79,7 +79,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in ComputeNodes.
  */
-public final class ComputeNodesImpl implements ComputeNodes {
+public class ComputeNodesImpl implements ComputeNodes {
     /** The Retrofit service to perform REST calls. */
     private ComputeNodesService service;
     /** The service client containing this operation class. */

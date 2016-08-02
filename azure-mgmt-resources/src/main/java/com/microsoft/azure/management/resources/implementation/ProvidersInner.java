@@ -36,7 +36,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in Providers.
  */
-public final class ProvidersInner {
+public class ProvidersInner {
     /** The Retrofit service to perform REST calls. */
     private ProvidersService service;
     /** The service client containing this operation class. */

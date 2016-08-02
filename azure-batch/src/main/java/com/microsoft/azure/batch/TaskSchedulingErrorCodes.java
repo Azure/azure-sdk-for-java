@@ -7,7 +7,7 @@
 package com.microsoft.azure.batch;
 
 // Contains error codes specific to task scheduling errors.
-public final class TaskSchedulingErrorCodes
+public class TaskSchedulingErrorCodes
 {
     // Access was denied when trying to download a resource file required for the task.
     public static final String BlobAccessDenied = "BlobAccessDenied";

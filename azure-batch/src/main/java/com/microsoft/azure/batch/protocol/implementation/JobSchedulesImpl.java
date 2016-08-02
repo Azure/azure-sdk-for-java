@@ -72,7 +72,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in JobSchedules.
  */
-public final class JobSchedulesImpl implements JobSchedules {
+public class JobSchedulesImpl implements JobSchedules {
     /** The Retrofit service to perform REST calls. */
     private JobSchedulesService service;
     /** The service client containing this operation class. */

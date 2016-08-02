@@ -40,7 +40,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in LocalNetworkGateways.
  */
-public final class LocalNetworkGatewaysInner {
+public class LocalNetworkGatewaysInner {
     /** The Retrofit service to perform REST calls. */
     private LocalNetworkGatewaysService service;
     /** The service client containing this operation class. */

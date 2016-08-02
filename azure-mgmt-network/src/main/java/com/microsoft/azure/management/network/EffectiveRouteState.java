@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for EffectiveRouteState.
  */
-public final class EffectiveRouteState {
+public class EffectiveRouteState {
     /** Static value Active for EffectiveRouteState. */
     public static final EffectiveRouteState ACTIVE = new EffectiveRouteState("Active");
 

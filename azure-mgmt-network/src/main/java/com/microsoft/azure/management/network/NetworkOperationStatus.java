@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for NetworkOperationStatus.
  */
-public final class NetworkOperationStatus {
+public class NetworkOperationStatus {
     /** Static value InProgress for NetworkOperationStatus. */
     public static final NetworkOperationStatus IN_PROGRESS = new NetworkOperationStatus("InProgress");
 

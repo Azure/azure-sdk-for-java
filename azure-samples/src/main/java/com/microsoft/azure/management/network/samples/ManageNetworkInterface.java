@@ -30,7 +30,7 @@ import java.util.Date;
  *  - Delete a network interface.
  */
 
-public final class ManageNetworkInterface {
+public class ManageNetworkInterface {
 
     /**
      * Main entry point.

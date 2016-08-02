@@ -41,7 +41,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in Sites.
  */
-public final class SitesInner {
+public class SitesInner {
     /** The Retrofit service to perform REST calls. */
     private SitesService service;
     /** The service client containing this operation class. */
@@ -14731,7 +14731,7 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @param format Name of the format. Valid values are: 
+     * @param format Name of the format. Valid values are:
                  FileZilla3
                  WebDeploy -- default
                  Ftp
@@ -14764,7 +14764,7 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @param format Name of the format. Valid values are: 
+     * @param format Name of the format. Valid values are:
                  FileZilla3
                  WebDeploy -- default
                  Ftp
@@ -14908,7 +14908,7 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @param format Name of the format. Valid values are: 
+     * @param format Name of the format. Valid values are:
                  FileZilla3
                  WebDeploy -- default
                  Ftp
@@ -14945,7 +14945,7 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @param format Name of the format. Valid values are: 
+     * @param format Name of the format. Valid values are:
                  FileZilla3
                  WebDeploy -- default
                  Ftp

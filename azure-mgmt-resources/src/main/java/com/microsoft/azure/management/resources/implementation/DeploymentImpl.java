@@ -35,7 +35,7 @@ import java.util.List;
 /**
  * The implementation of {@link Deployment} and its nested interfaces.
  */
-final class DeploymentImpl extends
+class DeploymentImpl extends
         CreatableUpdatableImpl<Deployment, DeploymentExtendedInner, DeploymentImpl, Deployment>
         implements
         Deployment,

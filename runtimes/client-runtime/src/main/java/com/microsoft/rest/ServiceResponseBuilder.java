@@ -83,7 +83,7 @@ public class ServiceResponseBuilder<T, E extends RestException> {
      * @param type the type to deserialize.
      * @return the same builder instance.
      */
-    public ServiceResponseBuilder<T, E> registerError(final Class<? extends RestException> type) {
+    public ServiceResponseBuilder<T, E> registerError(class<? extends RestException> type) {
         this.exceptionType = type;
         try {
             Field f = type.getDeclaredField("body");

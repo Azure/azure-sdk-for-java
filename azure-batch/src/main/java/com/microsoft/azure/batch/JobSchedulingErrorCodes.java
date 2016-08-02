@@ -7,7 +7,7 @@
 package com.microsoft.azure.batch;
 
 // Contains error codes specific to job scheduling errors.
-public final class JobSchedulingErrorCodes
+public class JobSchedulingErrorCodes
 {
     // The Batch service could not create an auto pool to run the job on, because the account
     // has reached its quota of compute nodes.

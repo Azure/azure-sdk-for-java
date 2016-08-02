@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for VirtualNetworkGatewayType.
  */
-public final class VirtualNetworkGatewayType {
+public class VirtualNetworkGatewayType {
     /** Static value Vpn for VirtualNetworkGatewayType. */
     public static final VirtualNetworkGatewayType VPN = new VirtualNetworkGatewayType("Vpn");
 

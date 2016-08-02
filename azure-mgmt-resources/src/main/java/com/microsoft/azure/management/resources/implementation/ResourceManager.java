@@ -23,7 +23,7 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 /**
  * Entry point to Azure resource management.
  */
-public final class ResourceManager extends ManagerBase {
+public class ResourceManager extends ManagerBase {
     // The sdk clients
     private final ResourceManagementClientImpl resourceManagementClient;
     private final FeatureClientImpl featureClient;
@@ -113,7 +113,7 @@ public final class ResourceManager extends ManagerBase {
     /**
      * The implementation for Authenticated interface.
      */
-    private static final class AuthenticatedImpl implements Authenticated {
+    private static class AuthenticatedImpl implements Authenticated {
         private RestClient restClient;
         private SubscriptionClientImpl subscriptionClient;
         // The subscription less collections

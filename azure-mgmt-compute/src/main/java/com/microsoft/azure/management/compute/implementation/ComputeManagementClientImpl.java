@@ -16,7 +16,7 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 /**
  * Initializes a new instance of the ComputeManagementClientImpl class.
  */
-public final class ComputeManagementClientImpl extends AzureServiceClient {
+public class ComputeManagementClientImpl extends AzureServiceClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 

@@ -31,7 +31,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in Usages.
  */
-public final class UsagesInner {
+public class UsagesInner {
     /** The Retrofit service to perform REST calls. */
     private UsagesService service;
     /** The service client containing this operation class. */

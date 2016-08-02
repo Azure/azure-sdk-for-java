@@ -18,7 +18,7 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 /**
  * Entry point to Azure storage resource management.
  */
-public final class StorageManager extends Manager<StorageManager, StorageManagementClientImpl> {
+public class StorageManager extends Manager<StorageManager, StorageManagementClientImpl> {
     // Collections
     private StorageAccounts storageAccounts;
     private Usages storageUsages;
@@ -73,7 +73,7 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
     /**
      * The implementation for Configurable interface.
      */
-    private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
+    private static class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         public StorageManager authenticate(ServiceClientCredentials credentials, String subscriptionId) {
             return StorageManager.authenticate(buildRestClient(credentials), subscriptionId);
         }

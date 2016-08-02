@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for SecurityRuleProtocol.
  */
-public final class SecurityRuleProtocol {
+public class SecurityRuleProtocol {
     /** Static value Tcp for SecurityRuleProtocol. */
     public static final SecurityRuleProtocol TCP = new SecurityRuleProtocol("Tcp");
 

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for VirtualNetworkGatewayConnectionType.
  */
-public final class VirtualNetworkGatewayConnectionType {
+public class VirtualNetworkGatewayConnectionType {
     /** Static value IPsec for VirtualNetworkGatewayConnectionType. */
     public static final VirtualNetworkGatewayConnectionType IPSEC = new VirtualNetworkGatewayConnectionType("IPsec");
 

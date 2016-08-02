@@ -32,7 +32,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in GlobalResourceGroups.
  */
-public final class GlobalResourceGroupsInner {
+public class GlobalResourceGroupsInner {
     /** The Retrofit service to perform REST calls. */
     private GlobalResourceGroupsService service;
     /** The service client containing this operation class. */

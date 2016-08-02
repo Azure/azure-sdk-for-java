@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * The implementation of {@link Subscription}.
  */
-final class SubscriptionImpl extends
+class SubscriptionImpl extends
         IndexableWrapperImpl<SubscriptionInner>
         implements
         Subscription  {

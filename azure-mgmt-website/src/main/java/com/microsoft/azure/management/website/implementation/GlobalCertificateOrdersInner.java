@@ -33,7 +33,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in GlobalCertificateOrders.
  */
-public final class GlobalCertificateOrdersInner {
+public class GlobalCertificateOrdersInner {
     /** The Retrofit service to perform REST calls. */
     private GlobalCertificateOrdersService service;
     /** The service client containing this operation class. */

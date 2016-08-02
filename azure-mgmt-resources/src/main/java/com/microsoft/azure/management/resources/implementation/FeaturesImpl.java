@@ -16,7 +16,7 @@ import java.io.IOException;
 /**
  * The implementation of {@link Features}.
  */
-final class FeaturesImpl
+class FeaturesImpl
         implements Features {
     private final FeaturesInner client;
 

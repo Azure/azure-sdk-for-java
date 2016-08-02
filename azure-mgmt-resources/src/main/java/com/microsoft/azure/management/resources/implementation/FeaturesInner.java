@@ -36,7 +36,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in Features.
  */
-public final class FeaturesInner {
+public class FeaturesInner {
     /** The Retrofit service to perform REST calls. */
     private FeaturesService service;
     /** The service client containing this operation class. */

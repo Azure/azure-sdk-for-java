@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for ProbeProtocol.
  */
-public final class ProbeProtocol {
+public class ProbeProtocol {
     /** Static value Http for ProbeProtocol. */
     public static final ProbeProtocol HTTP = new ProbeProtocol("Http");
 

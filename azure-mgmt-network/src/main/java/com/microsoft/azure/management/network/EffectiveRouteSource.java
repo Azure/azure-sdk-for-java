@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for EffectiveRouteSource.
  */
-public final class EffectiveRouteSource {
+public class EffectiveRouteSource {
     /** Static value Unknown for EffectiveRouteSource. */
     public static final EffectiveRouteSource UNKNOWN = new EffectiveRouteSource("Unknown");
 

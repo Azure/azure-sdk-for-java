@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for VirtualNetworkGatewayConnectionStatus.
  */
-public final class VirtualNetworkGatewayConnectionStatus {
+public class VirtualNetworkGatewayConnectionStatus {
     /** Static value Unknown for VirtualNetworkGatewayConnectionStatus. */
     public static final VirtualNetworkGatewayConnectionStatus UNKNOWN = new VirtualNetworkGatewayConnectionStatus("Unknown");
 

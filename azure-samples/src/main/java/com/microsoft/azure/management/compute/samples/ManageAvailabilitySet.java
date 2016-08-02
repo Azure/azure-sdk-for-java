@@ -31,7 +31,7 @@ import java.io.File;
  *  - Delete an availability set.
  */
 
-public final class ManageAvailabilitySet {
+public class ManageAvailabilitySet {
 
     /**
      * Main entry point.

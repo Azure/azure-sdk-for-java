@@ -16,7 +16,7 @@ import java.util.List;
  * @param <ParentT> the type of parent paged list item
  * @param <ChildT> the type of child paged list item
  */
-final class ChildListFlattener<ParentT, ChildT> {
+class ChildListFlattener<ParentT, ChildT> {
     protected final String switchToCousin = "switchToCousin";
     protected Iterator<ParentT> parentItr;
     protected PagedList<ChildT> currentChildList;

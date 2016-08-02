@@ -37,7 +37,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in Tags.
  */
-public final class TagsInner {
+public class TagsInner {
     /** The Retrofit service to perform REST calls. */
     private TagsService service;
     /** The service client containing this operation class. */

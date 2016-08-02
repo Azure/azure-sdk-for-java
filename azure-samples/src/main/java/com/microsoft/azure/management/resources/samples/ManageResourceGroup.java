@@ -25,7 +25,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
  * - Delete a resource group.
  */
 
-public final class ManageResourceGroup {
+public class ManageResourceGroup {
 
     /**
      * Main entry point.

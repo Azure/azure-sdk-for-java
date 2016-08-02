@@ -15,7 +15,7 @@ import org.joda.time.DateTime;
 /**
  * The implementation of {@link DeploymentOperation}.
  */
-final class DeploymentOperationImpl extends
+class DeploymentOperationImpl extends
         IndexableRefreshableWrapperImpl<DeploymentOperation, DeploymentOperationInner>
         implements
         DeploymentOperation {

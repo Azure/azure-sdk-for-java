@@ -43,7 +43,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in Resources.
  */
-public final class ResourcesInner {
+public class ResourcesInner {
     /** The Retrofit service to perform REST calls. */
     private ResourcesService service;
     /** The service client containing this operation class. */

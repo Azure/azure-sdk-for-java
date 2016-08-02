@@ -40,7 +40,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in ExpressRouteCircuitPeerings.
  */
-public final class ExpressRouteCircuitPeeringsInner {
+public class ExpressRouteCircuitPeeringsInner {
     /** The Retrofit service to perform REST calls. */
     private ExpressRouteCircuitPeeringsService service;
     /** The service client containing this operation class. */

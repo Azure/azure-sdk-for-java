@@ -29,7 +29,7 @@ import java.util.Date;
  *  - Get the assigned public IP address for a virtual machine
  *  - Remove a public IP address from a virtual machine.
  */
-public final class ManageIPAddress {
+public class ManageIPAddress {
 
     /**
      * Main entry point.

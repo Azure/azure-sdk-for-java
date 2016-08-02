@@ -36,7 +36,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in Certificates.
  */
-public final class CertificatesInner {
+public class CertificatesInner {
     /** The Retrofit service to perform REST calls. */
     private CertificatesService service;
     /** The service client containing this operation class. */

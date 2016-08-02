@@ -31,7 +31,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in Recommendations.
  */
-public final class RecommendationsInner {
+public class RecommendationsInner {
     /** The Retrofit service to perform REST calls. */
     private RecommendationsService service;
     /** The service client containing this operation class. */

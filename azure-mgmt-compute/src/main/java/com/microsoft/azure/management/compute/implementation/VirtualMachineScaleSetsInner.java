@@ -43,7 +43,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in VirtualMachineScaleSets.
  */
-public final class VirtualMachineScaleSetsInner {
+public class VirtualMachineScaleSetsInner {
     /** The Retrofit service to perform REST calls. */
     private VirtualMachineScaleSetsService service;
     /** The service client containing this operation class. */

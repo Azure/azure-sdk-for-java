@@ -18,7 +18,7 @@ import java.io.IOException;
 /**
  * The implementation of {@link DeploymentOperations}.
  */
-final class DeploymentOperationsImpl
+class DeploymentOperationsImpl
         implements DeploymentOperations {
     private final DeploymentOperationsInner client;
     private final Deployment deployment;

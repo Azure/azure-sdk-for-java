@@ -29,7 +29,7 @@ import java.util.UUID;
  * Common utils for Azure management samples.
  */
 
-public final class Utils {
+public class Utils {
 
     /**
      * Print virtual machine info.

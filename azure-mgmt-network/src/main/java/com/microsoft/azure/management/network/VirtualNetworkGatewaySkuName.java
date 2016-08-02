@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for VirtualNetworkGatewaySkuName.
  */
-public final class VirtualNetworkGatewaySkuName {
+public class VirtualNetworkGatewaySkuName {
     /** Static value Basic for VirtualNetworkGatewaySkuName. */
     public static final VirtualNetworkGatewaySkuName BASIC = new VirtualNetworkGatewaySkuName("Basic");
 

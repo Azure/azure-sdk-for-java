@@ -17,7 +17,7 @@ import java.io.IOException;
 /**
  * The implementation for {@link Providers}.
  */
-final class ProvidersImpl
+class ProvidersImpl
         implements Providers {
     private final ProvidersInner client;
 

@@ -35,7 +35,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in Subscriptions.
  */
-public final class SubscriptionsInner {
+public class SubscriptionsInner {
     /** The Retrofit service to perform REST calls. */
     private SubscriptionsService service;
     /** The service client containing this operation class. */

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for ExpressRouteCircuitPeeringState.
  */
-public final class ExpressRouteCircuitPeeringState {
+public class ExpressRouteCircuitPeeringState {
     /** Static value Disabled for ExpressRouteCircuitPeeringState. */
     public static final ExpressRouteCircuitPeeringState DISABLED = new ExpressRouteCircuitPeeringState("Disabled");
 

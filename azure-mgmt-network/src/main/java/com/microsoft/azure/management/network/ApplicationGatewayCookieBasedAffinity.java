@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for ApplicationGatewayCookieBasedAffinity.
  */
-public final class ApplicationGatewayCookieBasedAffinity {
+public class ApplicationGatewayCookieBasedAffinity {
     /** Static value Enabled for ApplicationGatewayCookieBasedAffinity. */
     public static final ApplicationGatewayCookieBasedAffinity ENABLED = new ApplicationGatewayCookieBasedAffinity("Enabled");
 

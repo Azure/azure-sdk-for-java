@@ -26,7 +26,7 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 /**
  * Initializes a new instance of the BatchServiceClientImpl class.
  */
-public final class BatchServiceClientImpl extends AzureServiceClient implements BatchServiceClient {
+public class BatchServiceClientImpl extends AzureServiceClient implements BatchServiceClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 

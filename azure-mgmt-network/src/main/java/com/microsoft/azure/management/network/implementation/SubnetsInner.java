@@ -40,7 +40,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in Subnets.
  */
-public final class SubnetsInner {
+public class SubnetsInner {
     /** The Retrofit service to perform REST calls. */
     private SubnetsService service;
     /** The service client containing this operation class. */

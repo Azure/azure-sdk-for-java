@@ -13,7 +13,7 @@ import com.microsoft.rest.ServiceResponse;
 /**
  * Defines a few utilities.
  */
-public final class Utils {
+public class Utils {
     /**
      * Converts an object Boolean to a primitive boolean.
      *

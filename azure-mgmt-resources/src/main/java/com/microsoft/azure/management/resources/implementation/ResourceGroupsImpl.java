@@ -17,7 +17,7 @@ import java.io.IOException;
 /**
  * The implementation for {@link ResourceGroups} and its parent interfaces.
  */
-final class ResourceGroupsImpl
+class ResourceGroupsImpl
         extends CreatableWrappersImpl<ResourceGroup, ResourceGroupImpl, ResourceGroupInner>
         implements ResourceGroups {
     private final ResourceGroupsInner client;

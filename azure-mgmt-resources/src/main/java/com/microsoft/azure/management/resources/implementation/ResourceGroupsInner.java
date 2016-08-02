@@ -44,7 +44,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in ResourceGroups.
  */
-public final class ResourceGroupsInner {
+public class ResourceGroupsInner {
     /** The Retrofit service to perform REST calls. */
     private ResourceGroupsService service;
     /** The service client containing this operation class. */

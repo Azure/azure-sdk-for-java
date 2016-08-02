@@ -34,7 +34,7 @@ import java.util.List;
  *  - Update a network security group.
  */
 
-public final class ManageNetworkSecurityGroup {
+public class ManageNetworkSecurityGroup {
 
     /**
      * Main entry point.

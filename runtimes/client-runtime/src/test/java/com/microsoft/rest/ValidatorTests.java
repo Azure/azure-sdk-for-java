@@ -138,38 +138,38 @@ public class ValidatorTests {
         Validator.validate(textNode);
     }
 
-    public final class IntWrapper {
+    public class IntWrapper {
         @JsonProperty(required = true)
         // CHECKSTYLE IGNORE VisibilityModifier FOR NEXT 2 LINES
         public int value;
         public Object nullable;
     }
 
-    public final class IntegerWrapper {
+    public class IntegerWrapper {
         @JsonProperty(required = true)
         // CHECKSTYLE IGNORE VisibilityModifier FOR NEXT 1 LINE
         public Integer value;
     }
 
-    public final class StringWrapper {
+    public class StringWrapper {
         @JsonProperty(required = true)
         // CHECKSTYLE IGNORE VisibilityModifier FOR NEXT 1 LINE
         public String value;
     }
 
-    public final class LocalDateWrapper {
+    public class LocalDateWrapper {
         @JsonProperty(required = true)
         // CHECKSTYLE IGNORE VisibilityModifier FOR NEXT 1 LINE
         public LocalDate value;
     }
 
-    public final class ListWrapper {
+    public class ListWrapper {
         @JsonProperty(required = true)
         // CHECKSTYLE IGNORE VisibilityModifier FOR NEXT 1 LINE
         public List<StringWrapper> list;
     }
 
-    public final class MapWrapper {
+    public class MapWrapper {
         @JsonProperty(required = true)
         // CHECKSTYLE IGNORE VisibilityModifier FOR NEXT 1 LINE
         public Map<LocalDate, StringWrapper> map;
@@ -181,13 +181,13 @@ public class ValidatorTests {
         Blue
     }
 
-    public final class EnumWrapper {
+    public class EnumWrapper {
         @JsonProperty(required = true)
         // CHECKSTYLE IGNORE VisibilityModifier FOR NEXT 1 LINE
         public Color color;
     }
 
-    public final class Product {
+    public class Product {
         // CHECKSTYLE IGNORE VisibilityModifier FOR NEXT 2 LINES
         public String id;
         public String tag;

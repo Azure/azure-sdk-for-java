@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for ExpressRouteCircuitPeeringAdvertisedPublicPrefixState.
  */
-public final class ExpressRouteCircuitPeeringAdvertisedPublicPrefixState {
+public class ExpressRouteCircuitPeeringAdvertisedPublicPrefixState {
     /** Static value NotConfigured for ExpressRouteCircuitPeeringAdvertisedPublicPrefixState. */
     public static final ExpressRouteCircuitPeeringAdvertisedPublicPrefixState NOT_CONFIGURED = new ExpressRouteCircuitPeeringAdvertisedPublicPrefixState("NotConfigured");
 

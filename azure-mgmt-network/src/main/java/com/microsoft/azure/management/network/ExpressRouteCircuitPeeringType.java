@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for ExpressRouteCircuitPeeringType.
  */
-public final class ExpressRouteCircuitPeeringType {
+public class ExpressRouteCircuitPeeringType {
     /** Static value AzurePublicPeering for ExpressRouteCircuitPeeringType. */
     public static final ExpressRouteCircuitPeeringType AZURE_PUBLIC_PEERING = new ExpressRouteCircuitPeeringType("AzurePublicPeering");
 
