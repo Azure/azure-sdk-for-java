@@ -104,10 +104,15 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testGenericResources() throws Exception {
-        azure.genericResources().listByGroup("sdkpriv");
-        GenericResource resourceByGroup = azure.genericResources().getByGroup("sdkpriv", "sdkpriv");
-        GenericResource resourceById = azure.genericResources().getById(resourceByGroup.id());
-        Assert.assertTrue(resourceById.id().equalsIgnoreCase(resourceByGroup.id()));
+        PagedList<GenericResource> resources = azure.genericResources().listByGroup("sdkpriv");
+        GenericResource firstResource = resources.get(0);
+        GenericResource resourceById = azure.genericResources().getById(firstResource.id());
+        GenericResource resourceByDetails = azure.genericResources().get(
+                firstResource.resourceGroupName(),
+                firstResource.resourceProviderNamespace(),
+                firstResource.resourceType(),
+                firstResource.name());
+        Assert.assertTrue(resourceById.id().equalsIgnoreCase(resourceByDetails.id()));
     }
 
     /**
