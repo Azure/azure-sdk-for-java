@@ -18,7 +18,7 @@ final class TenantImpl extends
         Tenant {
 
     TenantImpl(TenantIdDescriptionInner innerModel) {
-        super(innerModel.id(), innerModel);
+        super(innerModel);
     }
 
     @Override

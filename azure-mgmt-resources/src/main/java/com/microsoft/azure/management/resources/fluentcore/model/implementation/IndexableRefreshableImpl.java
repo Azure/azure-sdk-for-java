@@ -18,8 +18,7 @@ public abstract class IndexableRefreshableImpl<T>
     extends IndexableImpl
     implements Refreshable<T> {
 
-    protected IndexableRefreshableImpl(String name) {
-        super(name);
+    protected IndexableRefreshableImpl() {
     }
 
     @Override

@@ -32,11 +32,8 @@ public abstract class ResourceImpl<
         CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentModelImplT, Resource>
     implements
         Resource {
-
-
-    protected ResourceImpl(String key, InnerModelT innerObject) {
-        super(key, innerObject);
-
+    protected ResourceImpl(String name, InnerModelT innerObject) {
+        super(name, innerObject);
         // Initialize tags
         if (innerObject.getTags() == null) {
             innerObject.withTags(new TreeMap<String, String>());
@@ -61,7 +58,7 @@ public abstract class ResourceImpl<
     public Map<String, String> tags() {
         Map<String, String> tags = this.inner().getTags();
         if (tags == null) {
-            tags = new TreeMap<String, String>();
+            tags = new TreeMap<>();
         }
         return Collections.unmodifiableMap(tags);
     }
@@ -79,7 +76,7 @@ public abstract class ResourceImpl<
     @Override
     public String name() {
         if (this.inner().name() == null) {
-            return this.key(); // Not yet created, so use the key
+            return super.name();
         } else {
             return this.inner().name();
         }

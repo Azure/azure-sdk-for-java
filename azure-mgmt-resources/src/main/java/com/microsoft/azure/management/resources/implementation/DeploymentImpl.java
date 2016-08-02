@@ -191,7 +191,7 @@ final class DeploymentImpl extends
 
     @Override
     public DeploymentImpl withNewResourceGroup(Creatable<ResourceGroup> resourceGroupDefinition) {
-        this.resourceGroupName = resourceGroupDefinition.key();
+        this.resourceGroupName = resourceGroupDefinition.name();
         this.creatableResourceGroup = resourceGroupDefinition;
         return this;
     }

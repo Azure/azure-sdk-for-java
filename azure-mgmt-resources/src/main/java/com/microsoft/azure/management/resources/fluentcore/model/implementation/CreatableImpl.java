@@ -20,6 +20,10 @@ import com.microsoft.rest.ServiceCallback;
 public abstract class CreatableImpl<FluentModelT extends ResourceT, InnerModelT, FluentModelImplT, ResourceT>
         extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
         implements CreatorTaskGroup.ResourceCreator<ResourceT> {
+    /**
+     * The name of the creatable resource.
+     */
+    private String name;
 
     /**
      * The group of tasks to create this resource and it's dependencies.
@@ -27,8 +31,9 @@ public abstract class CreatableImpl<FluentModelT extends ResourceT, InnerModelT,
     private CreatorTaskGroup<ResourceT> creatorTaskGroup;
 
     protected CreatableImpl(String name, InnerModelT innerObject) {
-        super(name, innerObject);
-        creatorTaskGroup = new CreatorTaskGroup<>(name, this);
+        super(innerObject);
+        this.name = name;
+        creatorTaskGroup = new CreatorTaskGroup<>(this.key(), this);
     }
 
     /**
@@ -44,7 +49,14 @@ public abstract class CreatableImpl<FluentModelT extends ResourceT, InnerModelT,
     }
 
     protected ResourceT createdResource(String key) {
-        return this.creatorTaskGroup.taskResult(key);
+        return this.creatorTaskGroup.createdResource(key);
+    }
+
+    /**
+     * @return the name of the creatable resource.
+     */
+    public String name() {
+        return this.name;
     }
 
     /**
