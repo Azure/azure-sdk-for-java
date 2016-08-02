@@ -61,7 +61,7 @@ public interface GenericResource extends
             DefinitionStages.WithGroup,
             DefinitionStages.WithResourceType,
             DefinitionStages.WithProviderNamespace,
-            DefinitionStages.WithOrWithoutParentResource,
+            DefinitionStages.WithParentResource,
             DefinitionStages.WithPlan,
             DefinitionStages.WithApiVersion,
             DefinitionStages.WithCreate {
@@ -106,20 +106,7 @@ public interface GenericResource extends
              * @param resourceProviderNamespace the namespace of the resource provider
              * @return the next stage of the generic resource definition
              */
-            WithOrWithoutParentResource withProviderNamespace(String resourceProviderNamespace);
-        }
-
-        /**
-         * A generic resource definition allowing parent resource to be specified.
-         */
-        interface WithOrWithoutParentResource extends WithPlan {
-            /**
-             * Specifies the parent resource.
-             *
-             * @param parentResourceId the parent resource id
-             * @return the next stage of the generic resource definition
-             */
-            WithPlan withParentResource(String parentResourceId); // ParentResource is optional so user can navigate to WithPlan with or without it.
+            WithPlan withProviderNamespace(String resourceProviderNamespace);
         }
 
         /**
@@ -159,11 +146,25 @@ public interface GenericResource extends
         }
 
         /**
+         * A generic resource definition allowing parent resource to be specified.
+         */
+        interface WithParentResource {
+            /**
+             * Specifies the parent resource.
+             *
+             * @param parentResourceId the parent resource id
+             * @return the next stage of the generic resource definition
+             */
+            WithCreate withParentResource(String parentResourceId);
+        }
+
+        /**
          * A deployment definition with sufficient inputs to create a new
          * resource in the cloud, but exposing additional optional inputs to
          * specify.
          */
         interface WithCreate extends
+                WithParentResource,
                 Creatable<GenericResource>,
                 Resource.DefinitionWithTags<WithCreate> {
             /**
