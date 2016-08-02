@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
 /**
- * Entry point for application gateway management API in Azure
+ * Entry point for application gateway management API in Azure.
  */
 public interface ApplicationGateway extends
         GroupableResource,
@@ -35,9 +35,7 @@ public interface ApplicationGateway extends
             DefinitionStages.WithIpConfiguration,
             DefinitionStages.WithPublicIpAddresses,
             DefinitionStages.WithFrontendPort,
-            DefinitionStages.WithBackendAddressPool,
             DefinitionStages.WithBackendHttpSettings,
-            DefinitionStages.WithHttpListener,
             DefinitionStages.WithCreate {
     }
 
@@ -60,7 +58,7 @@ public interface ApplicationGateway extends
         }
 
         /**
-         * A storage account definition allowing the sku to be set.
+         * An application gateway definition allowing the sku to be set.
          */
         interface WithSku {
             /**
@@ -74,6 +72,9 @@ public interface ApplicationGateway extends
             WithIpConfiguration withCapacity(Integer capacity);
         }
 
+        /**
+         * The stage of application gateway definition allowing to specify virtual network.
+         */
         interface WithIpConfiguration {
             WithPublicIpAddresses withExistingNetwork(Network network);
         }
@@ -108,7 +109,7 @@ public interface ApplicationGateway extends
             WithFrontendPort withNewPublicIpAddress(String dnsLeafLabel);
 
             /**
-             * Adds a new public IP address to the front end of the load balancer, creating the public IP based on the provided {@link Creatable}
+             * Adds a new public IP address to the front end of the application gateway, creating the public IP based on the provided {@link Creatable}
              * stage of a public IP endpoint's definition.
              *
              * @return the next stage of the definition
@@ -116,20 +117,18 @@ public interface ApplicationGateway extends
             WithFrontendPort withNewPublicIpAddress(Creatable<PublicIpAddress> creatablePublicIpAddress);
         }
 
+        /**
+         * The stage of application gateway definition allowing to specify front end port.
+         */
         interface WithFrontendPort {
-            WithBackendAddressPool withFrontendPort(Integer port);
+            WithBackendHttpSettings withFrontendPort(Integer port);
         }
 
-        interface WithBackendAddressPool {
-            WithBackendHttpSettings withBackendAddressPool();
-        }
-
+        /**
+         * The stage of application gateway definition allowing to specify htp settings.
+         */
         interface WithBackendHttpSettings {
-            WithHttpListener withBackendHttpSettings();
-        }
-
-        interface WithHttpListener {
-            WithCreate withHttpListener();
+            WithCreate withBackendHttpSettings(Integer port);
         }
 
         /**

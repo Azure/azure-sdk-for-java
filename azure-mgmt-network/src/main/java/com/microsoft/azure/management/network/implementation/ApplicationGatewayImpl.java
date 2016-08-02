@@ -6,7 +6,11 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.SubResource;
-import com.microsoft.azure.management.network.*;
+import com.microsoft.azure.management.network.ApplicationGateway;
+import com.microsoft.azure.management.network.ApplicationGatewaySku;
+import com.microsoft.azure.management.network.ApplicationGatewaySkuName;
+import com.microsoft.azure.management.network.Network;
+import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -73,12 +77,30 @@ class ApplicationGatewayImpl
             }
         }
         this.creatablePIPKeys.clear();
+
+        // add default backend address pool
+        if (inner().backendAddressPools() == null) {
+            inner().withBackendAddressPools(new ArrayList<ApplicationGatewayBackendAddressPoolInner>());
+        }
+        ApplicationGatewayBackendAddressPoolInner addressPool = new ApplicationGatewayBackendAddressPoolInner();
+        addressPool.withName("ap" + inner().backendAddressPools().size());
+        inner().backendAddressPools().add(addressPool);
+
+        // add default request routing rule
         if (inner().requestRoutingRules() == null) {
             inner().withRequestRoutingRules(new ArrayList<ApplicationGatewayRequestRoutingRuleInner>());
         }
         ApplicationGatewayRequestRoutingRuleInner requestRoutingRule = new ApplicationGatewayRequestRoutingRuleInner();
         requestRoutingRule.withName("rrule" + inner().requestRoutingRules().size());
         inner().requestRoutingRules().add(requestRoutingRule);
+
+        // add default http listener
+        if (inner().httpListeners() == null) {
+            inner().withHttpListeners(new ArrayList<ApplicationGatewayHttpListenerInner>());
+        }
+        ApplicationGatewayHttpListenerInner httpListenerInner = new ApplicationGatewayHttpListenerInner();
+        httpListenerInner.withName("hl" + inner().httpListeners().size());
+        inner().httpListeners().add(httpListenerInner);
 
         // Connect the http listener to the defaults
         for (ApplicationGatewayHttpListenerInner httpListener : this.inner().httpListeners()) {
@@ -241,36 +263,13 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGateway.DefinitionStages.WithBackendHttpSettings withBackendAddressPool() {
-        if (inner().backendAddressPools() == null) {
-            inner().withBackendAddressPools(new ArrayList<ApplicationGatewayBackendAddressPoolInner>());
-        }
-        ApplicationGatewayBackendAddressPoolInner addressPool = new ApplicationGatewayBackendAddressPoolInner();
-        addressPool.withName("ap" + inner().backendAddressPools().size());
-        inner().backendAddressPools().add(addressPool);
-        return this;
-    }
-
-    @Override
-    public ApplicationGateway.DefinitionStages.WithHttpListener withBackendHttpSettings() {
+    public ApplicationGateway.DefinitionStages.WithCreate withBackendHttpSettings(Integer port) {
         if (inner().backendHttpSettingsCollection() == null) {
             inner().withBackendHttpSettingsCollection(new ArrayList<ApplicationGatewayBackendHttpSettingsInner>());
         }
         ApplicationGatewayBackendHttpSettingsInner httpSettings = new ApplicationGatewayBackendHttpSettingsInner();
-        httpSettings.withName("hs" + inner().backendHttpSettingsCollection().size())
-                .withPort(80);
+        httpSettings.withName("hs" + inner().backendHttpSettingsCollection().size()).withPort(port);
         inner().backendHttpSettingsCollection().add(httpSettings);
-        return this;
-    }
-
-    @Override
-    public ApplicationGateway.DefinitionStages.WithCreate withHttpListener() {
-        if (inner().httpListeners() == null) {
-            inner().withHttpListeners(new ArrayList<ApplicationGatewayHttpListenerInner>());
-        }
-        ApplicationGatewayHttpListenerInner httpListener = new ApplicationGatewayHttpListenerInner();
-        httpListener.withName("hl" + inner().httpListeners().size());
-        inner().httpListeners().add(httpListener);
         return this;
     }
 

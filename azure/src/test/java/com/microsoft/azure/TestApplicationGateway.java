@@ -43,9 +43,7 @@ public class TestApplicationGateway extends TestTemplate<ApplicationGateway, App
                 .withExistingNetwork(vnet)
                 .withNewPublicIpAddress()
                 .withFrontendPort(80)
-                .withBackendAddressPool()
-                .withBackendHttpSettings()
-                .withHttpListener()
+                .withBackendHttpSettings(80)
                 .create();
     }
 
