@@ -20,6 +20,7 @@ package com.microsoft.azure.keyvault;
 
 import java.io.IOException;
 
+import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.ObjectReader;
 import org.codehaus.jackson.map.ObjectWriter;
@@ -31,7 +32,7 @@ final class JsonSupport {
     }
 
     static <T> ObjectReader getJsonReader(Class<T> clazz) {
-        return new ObjectMapper().reader(clazz);
+        return new ObjectMapper().configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false).reader(clazz);
     }
 
     static ObjectWriter getJsonWriter() {
