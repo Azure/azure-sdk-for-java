@@ -25,15 +25,8 @@ final class GenericResourceImpl
         ResourceManager>
     implements
         GenericResource,
-        GenericResource.DefinitionBlank,
-        GenericResource.DefinitionWithGroup,
-        GenericResource.DefinitionWithResourceType,
-        GenericResource.DefinitionWithProviderNamespace,
-        GenericResource.DefinitionWithOrWithoutParentResource,
-        GenericResource.DefinitionWithPlan,
-        GenericResource.DefinitionWithApiVersion,
-        GenericResource.DefinitionCreatable,
-        GenericResource.UpdateWithApiVersion,
+        GenericResource.Definition,
+        GenericResource.UpdateStages.WithApiVersion,
         GenericResource.Update {
     private final ResourcesInner client;
     private String resourceProviderNamespace;
