@@ -14,17 +14,17 @@ package com.microsoft.azure.management.resources;
  */
 public class TargetResource {
     /**
-     * Gets or sets the ID of the resource.
+     * The ID of the resource.
      */
     private String id;
 
     /**
-     * Gets or sets the name of the resource.
+     * The name of the resource.
      */
     private String resourceName;
 
     /**
-     * Gets or sets the type of the resource.
+     * The type of the resource.
      */
     private String resourceType;
 

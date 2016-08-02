@@ -27,8 +27,7 @@ public class Identity {
     private String tenantId;
 
     /**
-     * Gets or sets the identity type. Possible values include:
-     * 'SystemAssigned'.
+     * The identity type. Possible values include: 'SystemAssigned'.
      */
     private ResourceIdentityType type;
 

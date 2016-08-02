@@ -84,6 +84,12 @@ public class ExpressRouteCircuitInner extends Resource {
     private String provisioningState;
 
     /**
+     * Gets or sets the GatewayManager Etag.
+     */
+    @JsonProperty(value = "properties.gatewayManagerEtag")
+    private String gatewayManagerEtag;
+
+    /**
      * Gets a unique read-only string that changes whenever the resource is
      * updated.
      */
@@ -286,6 +292,26 @@ public class ExpressRouteCircuitInner extends Resource {
      */
     public ExpressRouteCircuitInner withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
+     * Get the gatewayManagerEtag value.
+     *
+     * @return the gatewayManagerEtag value
+     */
+    public String gatewayManagerEtag() {
+        return this.gatewayManagerEtag;
+    }
+
+    /**
+     * Set the gatewayManagerEtag value.
+     *
+     * @param gatewayManagerEtag the gatewayManagerEtag value to set
+     * @return the ExpressRouteCircuitInner object itself.
+     */
+    public ExpressRouteCircuitInner withGatewayManagerEtag(String gatewayManagerEtag) {
+        this.gatewayManagerEtag = gatewayManagerEtag;
         return this;
     }
 

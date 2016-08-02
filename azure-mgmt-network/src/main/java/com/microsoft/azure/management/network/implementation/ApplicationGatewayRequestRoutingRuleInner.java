@@ -19,46 +19,45 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
     /**
-     * Gets or sets the rule type. Possible values include: 'Basic',
-     * 'PathBasedRouting'.
+     * Rule type. Possible values include: 'Basic', 'PathBasedRouting'.
      */
     @JsonProperty(value = "properties.ruleType")
     private ApplicationGatewayRequestRoutingRuleType ruleType;
 
     /**
-     * Gets or sets backend address pool resource of application gateway.
+     * Backend address pool resource of application gateway.
      */
     @JsonProperty(value = "properties.backendAddressPool")
     private SubResource backendAddressPool;
 
     /**
-     * Gets or sets frontend port resource of application gateway.
+     * Frontend port resource of application gateway.
      */
     @JsonProperty(value = "properties.backendHttpSettings")
     private SubResource backendHttpSettings;
 
     /**
-     * Gets or sets http listener resource of application gateway.
+     * Http listener resource of application gateway.
      */
     @JsonProperty(value = "properties.httpListener")
     private SubResource httpListener;
 
     /**
-     * Gets or sets url path map resource of application gateway.
+     * Url path map resource of application gateway.
      */
     @JsonProperty(value = "properties.urlPathMap")
     private SubResource urlPathMap;
 
     /**
-     * Gets provisioning state of the request routing rule resource
+     * Provisioning state of the request routing rule resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /**
-     * Gets name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
+     * Name of the resource that is unique within a resource group. This name
+     * can be used to access the resource.
      */
     private String name;
 

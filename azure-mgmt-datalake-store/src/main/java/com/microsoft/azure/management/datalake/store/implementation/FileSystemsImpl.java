@@ -193,32 +193,23 @@ public final class FileSystemsImpl implements FileSystems {
      * @param filePath The Data Lake Store path (starting with '/') of the file to which to append using concurrent append.
      * @param streamContents The file contents to include when appending to the file.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall concurrentAppendAsync(String accountName, String filePath, byte[] streamContents, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> concurrentAppendAsync(String accountName, String filePath, byte[] streamContents, final ServiceCallback<Void> serviceCallback) {
         if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.adlsFileSystemDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null.");
         }
         if (filePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter filePath is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter filePath is required and cannot be null.");
         }
         if (streamContents == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter streamContents is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter streamContents is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "CONCURRENTAPPEND";
         final String transferEncoding = "chunked";
@@ -226,14 +217,21 @@ public final class FileSystemsImpl implements FileSystems {
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
         Call<ResponseBody> call = service.concurrentAppend(filePath, streamContentsConverted, appendMode, op, transferEncoding, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(concurrentAppendDelegate(response));
+                    ServiceResponse<Void> clientResponse = concurrentAppendDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (AdlsErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -284,46 +282,44 @@ public final class FileSystemsImpl implements FileSystems {
      * @param streamContents The file contents to include when appending to the file.
      * @param appendMode Indicates the concurrent append call should create the file if it doesn't exist or just open the existing file for append. Possible values include: 'autocreate'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall concurrentAppendAsync(String accountName, String filePath, byte[] streamContents, AppendModeType appendMode, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> concurrentAppendAsync(String accountName, String filePath, byte[] streamContents, AppendModeType appendMode, final ServiceCallback<Void> serviceCallback) {
         if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.adlsFileSystemDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null.");
         }
         if (filePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter filePath is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter filePath is required and cannot be null.");
         }
         if (streamContents == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter streamContents is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter streamContents is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "CONCURRENTAPPEND";
         final String transferEncoding = "chunked";
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
         Call<ResponseBody> call = service.concurrentAppend(filePath, streamContentsConverted, appendMode, op, transferEncoding, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(concurrentAppendDelegate(response));
+                    ServiceResponse<Void> clientResponse = concurrentAppendDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (AdlsErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -373,41 +369,40 @@ public final class FileSystemsImpl implements FileSystems {
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
      * @param path The Data Lake Store path (starting with '/') of the file or directory for which to check access.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall checkAccessAsync(String accountName, String path, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> checkAccessAsync(String accountName, String path, final ServiceCallback<Void> serviceCallback) {
         if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.adlsFileSystemDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null.");
         }
         if (path == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter path is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter path is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "CHECKACCESS";
         final String fsaction = null;
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.checkAccess(path, fsaction, op, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(checkAccessDelegate(response));
+                    ServiceResponse<Void> clientResponse = checkAccessDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (AdlsErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -451,40 +446,39 @@ public final class FileSystemsImpl implements FileSystems {
      * @param path The Data Lake Store path (starting with '/') of the file or directory for which to check access.
      * @param fsaction File system operation read/write/execute in string form, matching regex pattern '[rwx-]{3}'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall checkAccessAsync(String accountName, String path, String fsaction, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> checkAccessAsync(String accountName, String path, String fsaction, final ServiceCallback<Void> serviceCallback) {
         if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.adlsFileSystemDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null.");
         }
         if (path == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter path is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter path is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "CHECKACCESS";
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.checkAccess(path, fsaction, op, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(checkAccessDelegate(response));
+                    ServiceResponse<Void> clientResponse = checkAccessDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (AdlsErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -533,40 +527,39 @@ public final class FileSystemsImpl implements FileSystems {
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
      * @param path The Data Lake Store path (starting with '/') of the directory to create.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall mkdirsAsync(String accountName, String path, final ServiceCallback<FileOperationResult> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<FileOperationResult> mkdirsAsync(String accountName, String path, final ServiceCallback<FileOperationResult> serviceCallback) {
         if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.adlsFileSystemDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null.");
         }
         if (path == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter path is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter path is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "MKDIRS";
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.mkdirs(path, op, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<FileOperationResult> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<FileOperationResult>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(mkdirsDelegate(response));
+                    ServiceResponse<FileOperationResult> clientResponse = mkdirsDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (AdlsErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -622,46 +615,44 @@ public final class FileSystemsImpl implements FileSystems {
      * @param destinationPath The Data Lake Store path (starting with '/') of the destination file resulting from the concatenation.
      * @param sources A list of comma seperated Data Lake Store paths (starting with '/') of the files to concatenate, in the order in which they should be concatenated.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall concatAsync(String accountName, String destinationPath, List<String> sources, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> concatAsync(String accountName, String destinationPath, List<String> sources, final ServiceCallback<Void> serviceCallback) {
         if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.adlsFileSystemDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null.");
         }
         if (destinationPath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter destinationPath is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter destinationPath is required and cannot be null.");
         }
         if (sources == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter sources is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter sources is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(sources, serviceCallback);
+        Validator.validate(sources);
         final String op = "CONCAT";
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         String sourcesConverted = this.client.mapperAdapter().serializeList(sources, CollectionFormat.CSV);
         Call<ResponseBody> call = service.concat(destinationPath, sourcesConverted, op, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(concatDelegate(response));
+                    ServiceResponse<Void> clientResponse = concatDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (AdlsErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -717,46 +708,44 @@ public final class FileSystemsImpl implements FileSystems {
      * @param msConcatDestinationPath The Data Lake Store path (starting with '/') of the destination file resulting from the concatenation.
      * @param streamContents A list of Data Lake Store paths (starting with '/') of the source files. Must be in the format: sources=&lt;comma separated list&gt;
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall msConcatAsync(String accountName, String msConcatDestinationPath, byte[] streamContents, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> msConcatAsync(String accountName, String msConcatDestinationPath, byte[] streamContents, final ServiceCallback<Void> serviceCallback) {
         if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.adlsFileSystemDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null.");
         }
         if (msConcatDestinationPath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter msConcatDestinationPath is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter msConcatDestinationPath is required and cannot be null.");
         }
         if (streamContents == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter streamContents is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter streamContents is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "MSCONCAT";
         final Boolean deleteSourceDirectory = null;
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
         Call<ResponseBody> call = service.msConcat(msConcatDestinationPath, deleteSourceDirectory, streamContentsConverted, op, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(msConcatDelegate(response));
+                    ServiceResponse<Void> clientResponse = msConcatDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (AdlsErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -806,45 +795,43 @@ public final class FileSystemsImpl implements FileSystems {
      * @param streamContents A list of Data Lake Store paths (starting with '/') of the source files. Must be in the format: sources=&lt;comma separated list&gt;
      * @param deleteSourceDirectory Indicates that as an optimization instead of deleting each individual source stream, delete the source stream folder if all streams are in the same folder instead. This results in a substantial performance improvement when the only streams in the folder are part of the concatenation operation. WARNING: This includes the deletion of any other files that are not source files. Only set this to true when source files are the only files in the source directory.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall msConcatAsync(String accountName, String msConcatDestinationPath, byte[] streamContents, Boolean deleteSourceDirectory, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> msConcatAsync(String accountName, String msConcatDestinationPath, byte[] streamContents, Boolean deleteSourceDirectory, final ServiceCallback<Void> serviceCallback) {
         if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.adlsFileSystemDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null.");
         }
         if (msConcatDestinationPath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter msConcatDestinationPath is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter msConcatDestinationPath is required and cannot be null.");
         }
         if (streamContents == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter streamContents is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter streamContents is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "MSCONCAT";
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
         Call<ResponseBody> call = service.msConcat(msConcatDestinationPath, deleteSourceDirectory, streamContentsConverted, op, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(msConcatDelegate(response));
+                    ServiceResponse<Void> clientResponse = msConcatDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (AdlsErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -896,28 +883,20 @@ public final class FileSystemsImpl implements FileSystems {
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
      * @param listFilePath The Data Lake Store path (starting with '/') of the directory to list.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listFileStatusAsync(String accountName, String listFilePath, final ServiceCallback<FileStatusesResult> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<FileStatusesResult> listFileStatusAsync(String accountName, String listFilePath, final ServiceCallback<FileStatusesResult> serviceCallback) {
         if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.adlsFileSystemDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null.");
         }
         if (listFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter listFilePath is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter listFilePath is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "MSLISTSTATUS";
         final Integer listSize = null;
@@ -925,14 +904,21 @@ public final class FileSystemsImpl implements FileSystems {
         final String listBefore = null;
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.listFileStatus(listFilePath, listSize, listAfter, listBefore, op, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<FileStatusesResult> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<FileStatusesResult>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listFileStatusDelegate(response));
+                    ServiceResponse<FileStatusesResult> clientResponse = listFileStatusDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (AdlsErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -980,40 +966,39 @@ public final class FileSystemsImpl implements FileSystems {
      * @param listAfter Gets or sets the item or lexographical index after which to begin returning results. For example, a file list of 'a','b','d' and listAfter='b' will return 'd', and a listAfter='c' will also return 'd'. Optional.
      * @param listBefore Gets or sets the item or lexographical index before which to begin returning results. For example, a file list of 'a','b','d' and listBefore='d' will return 'a','b', and a listBefore='c' will also return 'a','b'. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listFileStatusAsync(String accountName, String listFilePath, Integer listSize, String listAfter, String listBefore, final ServiceCallback<FileStatusesResult> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<FileStatusesResult> listFileStatusAsync(String accountName, String listFilePath, Integer listSize, String listAfter, String listBefore, final ServiceCallback<FileStatusesResult> serviceCallback) {
         if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.adlsFileSystemDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null.");
         }
         if (listFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter listFilePath is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter listFilePath is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "MSLISTSTATUS";
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.listFileStatus(listFilePath, listSize, listAfter, listBefore, op, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<FileStatusesResult> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<FileStatusesResult>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listFileStatusDelegate(response));
+                    ServiceResponse<FileStatusesResult> clientResponse = listFileStatusDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (AdlsErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1062,40 +1047,39 @@ public final class FileSystemsImpl implements FileSystems {
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
      * @param getContentSummaryFilePath The Data Lake Store path (starting with '/') of the file for which to retrieve the summary.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getContentSummaryAsync(String accountName, String getContentSummaryFilePath, final ServiceCallback<ContentSummaryResult> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<ContentSummaryResult> getContentSummaryAsync(String accountName, String getContentSummaryFilePath, final ServiceCallback<ContentSummaryResult> serviceCallback) {
         if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.adlsFileSystemDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null.");
         }
         if (getContentSummaryFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter getContentSummaryFilePath is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter getContentSummaryFilePath is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "GETCONTENTSUMMARY";
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.getContentSummary(getContentSummaryFilePath, op, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<ContentSummaryResult> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<ContentSummaryResult>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getContentSummaryDelegate(response));
+                    ServiceResponse<ContentSummaryResult> clientResponse = getContentSummaryDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (AdlsErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1144,40 +1128,39 @@ public final class FileSystemsImpl implements FileSystems {
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
      * @param getFilePath The Data Lake Store path (starting with '/') of the file or directory for which to retrieve the status.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getFileStatusAsync(String accountName, String getFilePath, final ServiceCallback<FileStatusResult> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<FileStatusResult> getFileStatusAsync(String accountName, String getFilePath, final ServiceCallback<FileStatusResult> serviceCallback) {
         if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.adlsFileSystemDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null.");
         }
         if (getFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter getFilePath is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter getFilePath is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "GETFILESTATUS";
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.getFileStatus(getFilePath, op, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<FileStatusResult> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<FileStatusResult>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getFileStatusDelegate(response));
+                    ServiceResponse<FileStatusResult> clientResponse = getFileStatusDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (AdlsErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1235,32 +1218,23 @@ public final class FileSystemsImpl implements FileSystems {
      * @param directFilePath The Data Lake Store path (starting with '/') of the file to which to append.
      * @param streamContents The file contents to include when appending to the file.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall appendAsync(String accountName, String directFilePath, byte[] streamContents, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> appendAsync(String accountName, String directFilePath, byte[] streamContents, final ServiceCallback<Void> serviceCallback) {
         if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.adlsFileSystemDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null.");
         }
         if (directFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter directFilePath is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter directFilePath is required and cannot be null.");
         }
         if (streamContents == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter streamContents is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter streamContents is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "APPEND";
         final String append = "true";
@@ -1269,14 +1243,21 @@ public final class FileSystemsImpl implements FileSystems {
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
         Call<ResponseBody> call = service.append(directFilePath, streamContentsConverted, offset, op, append, transferEncoding, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(appendDelegate(response));
+                    ServiceResponse<Void> clientResponse = appendDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (AdlsErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1328,32 +1309,23 @@ public final class FileSystemsImpl implements FileSystems {
      * @param streamContents The file contents to include when appending to the file.
      * @param offset The optional offset in the stream to begin the append operation. Default is to append at the end of the stream.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall appendAsync(String accountName, String directFilePath, byte[] streamContents, Long offset, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> appendAsync(String accountName, String directFilePath, byte[] streamContents, Long offset, final ServiceCallback<Void> serviceCallback) {
         if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.adlsFileSystemDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null.");
         }
         if (directFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter directFilePath is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter directFilePath is required and cannot be null.");
         }
         if (streamContents == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter streamContents is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter streamContents is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "APPEND";
         final String append = "true";
@@ -1361,14 +1333,21 @@ public final class FileSystemsImpl implements FileSystems {
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         RequestBody streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
         Call<ResponseBody> call = service.append(directFilePath, streamContentsConverted, offset, op, append, transferEncoding, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(appendDelegate(response));
+                    ServiceResponse<Void> clientResponse = appendDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (AdlsErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1425,28 +1404,20 @@ public final class FileSystemsImpl implements FileSystems {
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
      * @param directFilePath The Data Lake Store path (starting with '/') of the file to create.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall createAsync(String accountName, String directFilePath, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> createAsync(String accountName, String directFilePath, final ServiceCallback<Void> serviceCallback) {
         if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.adlsFileSystemDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null.");
         }
         if (directFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter directFilePath is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter directFilePath is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "CREATE";
         final String write = "true";
@@ -1459,14 +1430,21 @@ public final class FileSystemsImpl implements FileSystems {
             streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
         }
         Call<ResponseBody> call = service.create(directFilePath, streamContentsConverted, overwrite, op, write, transferEncoding, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createDelegate(response));
+                    ServiceResponse<Void> clientResponse = createDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (AdlsErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1518,28 +1496,20 @@ public final class FileSystemsImpl implements FileSystems {
      * @param streamContents The file contents to include when creating the file. This parameter is optional, resulting in an empty file if not specified.
      * @param overwrite The indication of if the file should be overwritten.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall createAsync(String accountName, String directFilePath, byte[] streamContents, Boolean overwrite, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> createAsync(String accountName, String directFilePath, byte[] streamContents, Boolean overwrite, final ServiceCallback<Void> serviceCallback) {
         if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.adlsFileSystemDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null.");
         }
         if (directFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter directFilePath is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter directFilePath is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "CREATE";
         final String write = "true";
@@ -1550,14 +1520,21 @@ public final class FileSystemsImpl implements FileSystems {
             streamContentsConverted = RequestBody.create(MediaType.parse("application/octet-stream"), streamContents);
         }
         Call<ResponseBody> call = service.create(directFilePath, streamContentsConverted, overwrite, op, write, transferEncoding, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createDelegate(response));
+                    ServiceResponse<Void> clientResponse = createDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (AdlsErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1609,28 +1586,20 @@ public final class FileSystemsImpl implements FileSystems {
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
      * @param directFilePath The Data Lake Store path (starting with '/') of the file to open.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall openAsync(String accountName, String directFilePath, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<InputStream> openAsync(String accountName, String directFilePath, final ServiceCallback<InputStream> serviceCallback) {
         if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.adlsFileSystemDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null.");
         }
         if (directFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter directFilePath is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter directFilePath is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "OPEN";
         final String read = "true";
@@ -1638,14 +1607,21 @@ public final class FileSystemsImpl implements FileSystems {
         final Long offset = null;
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.open(directFilePath, length, offset, op, read, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<InputStream> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(openDelegate(response));
+                    ServiceResponse<InputStream> clientResponse = openDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (AdlsErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1692,41 +1668,40 @@ public final class FileSystemsImpl implements FileSystems {
      * @param length the Long value
      * @param offset the Long value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall openAsync(String accountName, String directFilePath, Long length, Long offset, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<InputStream> openAsync(String accountName, String directFilePath, Long length, Long offset, final ServiceCallback<InputStream> serviceCallback) {
         if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.adlsFileSystemDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null.");
         }
         if (directFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter directFilePath is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter directFilePath is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "OPEN";
         final String read = "true";
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.open(directFilePath, length, offset, op, read, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<InputStream> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(openDelegate(response));
+                    ServiceResponse<InputStream> clientResponse = openDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (AdlsErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1780,44 +1755,42 @@ public final class FileSystemsImpl implements FileSystems {
      * @param setAclFilePath The Data Lake Store path (starting with '/') of the file or directory on which to set the ACL.
      * @param aclspec The ACL spec included in ACL creation operations in the format '[default:]user|group|other::r|-w|-x|-'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall setAclAsync(String accountName, String setAclFilePath, String aclspec, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> setAclAsync(String accountName, String setAclFilePath, String aclspec, final ServiceCallback<Void> serviceCallback) {
         if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.adlsFileSystemDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null.");
         }
         if (setAclFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter setAclFilePath is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter setAclFilePath is required and cannot be null.");
         }
         if (aclspec == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter aclspec is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter aclspec is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "SETACL";
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.setAcl(setAclFilePath, aclspec, op, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(setAclDelegate(response));
+                    ServiceResponse<Void> clientResponse = setAclDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (AdlsErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1871,44 +1844,42 @@ public final class FileSystemsImpl implements FileSystems {
      * @param modifyAclFilePath The Data Lake Store path (starting with '/') of the file or directory with the ACL being modified.
      * @param aclspec The ACL specification included in ACL modification operations in the format '[default:]user|group|other::r|-w|-x|-'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall modifyAclEntriesAsync(String accountName, String modifyAclFilePath, String aclspec, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> modifyAclEntriesAsync(String accountName, String modifyAclFilePath, String aclspec, final ServiceCallback<Void> serviceCallback) {
         if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.adlsFileSystemDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null.");
         }
         if (modifyAclFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter modifyAclFilePath is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter modifyAclFilePath is required and cannot be null.");
         }
         if (aclspec == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter aclspec is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter aclspec is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "MODIFYACLENTRIES";
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.modifyAclEntries(modifyAclFilePath, aclspec, op, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(modifyAclEntriesDelegate(response));
+                    ServiceResponse<Void> clientResponse = modifyAclEntriesDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (AdlsErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1962,44 +1933,42 @@ public final class FileSystemsImpl implements FileSystems {
      * @param removeAclFilePath The Data Lake Store path (starting with '/') of the file or directory with the ACL being removed.
      * @param aclspec The ACL spec included in ACL removal operations in the format '[default:]user|group|other'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall removeAclEntriesAsync(String accountName, String removeAclFilePath, String aclspec, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> removeAclEntriesAsync(String accountName, String removeAclFilePath, String aclspec, final ServiceCallback<Void> serviceCallback) {
         if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.adlsFileSystemDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null.");
         }
         if (removeAclFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter removeAclFilePath is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter removeAclFilePath is required and cannot be null.");
         }
         if (aclspec == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter aclspec is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter aclspec is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "REMOVEACLENTRIES";
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.removeAclEntries(removeAclFilePath, aclspec, op, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(removeAclEntriesDelegate(response));
+                    ServiceResponse<Void> clientResponse = removeAclEntriesDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (AdlsErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2048,40 +2017,39 @@ public final class FileSystemsImpl implements FileSystems {
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
      * @param aclFilePath The Data Lake Store path (starting with '/') of the file or directory for which to get the ACL.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getAclStatusAsync(String accountName, String aclFilePath, final ServiceCallback<AclStatusResult> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<AclStatusResult> getAclStatusAsync(String accountName, String aclFilePath, final ServiceCallback<AclStatusResult> serviceCallback) {
         if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.adlsFileSystemDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null.");
         }
         if (aclFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter aclFilePath is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter aclFilePath is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "GETACLSTATUS";
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.getAclStatus(aclFilePath, op, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<AclStatusResult> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<AclStatusResult>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getAclStatusDelegate(response));
+                    ServiceResponse<AclStatusResult> clientResponse = getAclStatusDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (AdlsErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2131,41 +2099,40 @@ public final class FileSystemsImpl implements FileSystems {
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
      * @param filePath The Data Lake Store path (starting with '/') of the file or directory to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteAsync(String accountName, String filePath, final ServiceCallback<FileOperationResult> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<FileOperationResult> deleteAsync(String accountName, String filePath, final ServiceCallback<FileOperationResult> serviceCallback) {
         if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.adlsFileSystemDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null.");
         }
         if (filePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter filePath is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter filePath is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "DELETE";
         final Boolean recursive = null;
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.delete(filePath, recursive, op, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<FileOperationResult> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<FileOperationResult>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteDelegate(response));
+                    ServiceResponse<FileOperationResult> clientResponse = deleteDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (AdlsErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2209,40 +2176,39 @@ public final class FileSystemsImpl implements FileSystems {
      * @param filePath The Data Lake Store path (starting with '/') of the file or directory to delete.
      * @param recursive The optional switch indicating if the delete should be recursive
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteAsync(String accountName, String filePath, Boolean recursive, final ServiceCallback<FileOperationResult> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<FileOperationResult> deleteAsync(String accountName, String filePath, Boolean recursive, final ServiceCallback<FileOperationResult> serviceCallback) {
         if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.adlsFileSystemDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null.");
         }
         if (filePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter filePath is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter filePath is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "DELETE";
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.delete(filePath, recursive, op, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<FileOperationResult> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<FileOperationResult>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteDelegate(response));
+                    ServiceResponse<FileOperationResult> clientResponse = deleteDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (AdlsErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2296,44 +2262,42 @@ public final class FileSystemsImpl implements FileSystems {
      * @param renameFilePath The Data Lake Store path (starting with '/') of the file or directory to move/rename.
      * @param destination The path to move/rename the file or folder to
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall renameAsync(String accountName, String renameFilePath, String destination, final ServiceCallback<FileOperationResult> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<FileOperationResult> renameAsync(String accountName, String renameFilePath, String destination, final ServiceCallback<FileOperationResult> serviceCallback) {
         if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.adlsFileSystemDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null.");
         }
         if (renameFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter renameFilePath is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter renameFilePath is required and cannot be null.");
         }
         if (destination == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter destination is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter destination is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "RENAME";
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.rename(renameFilePath, destination, op, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<FileOperationResult> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<FileOperationResult>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(renameDelegate(response));
+                    ServiceResponse<FileOperationResult> clientResponse = renameDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (AdlsErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2384,42 +2348,41 @@ public final class FileSystemsImpl implements FileSystems {
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
      * @param setOwnerFilePath The Data Lake Store path (starting with '/') of the file or directory for which to set the owner.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall setOwnerAsync(String accountName, String setOwnerFilePath, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> setOwnerAsync(String accountName, String setOwnerFilePath, final ServiceCallback<Void> serviceCallback) {
         if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.adlsFileSystemDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null.");
         }
         if (setOwnerFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter setOwnerFilePath is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter setOwnerFilePath is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "SETOWNER";
         final String owner = null;
         final String group = null;
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.setOwner(setOwnerFilePath, owner, group, op, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(setOwnerDelegate(response));
+                    ServiceResponse<Void> clientResponse = setOwnerDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (AdlsErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2465,40 +2428,39 @@ public final class FileSystemsImpl implements FileSystems {
      * @param owner The AAD Object ID of the user owner of the file or directory. If empty, the property will remain unchanged.
      * @param group The AAD Object ID of the group owner of the file or directory. If empty, the property will remain unchanged.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall setOwnerAsync(String accountName, String setOwnerFilePath, String owner, String group, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> setOwnerAsync(String accountName, String setOwnerFilePath, String owner, String group, final ServiceCallback<Void> serviceCallback) {
         if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.adlsFileSystemDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null.");
         }
         if (setOwnerFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter setOwnerFilePath is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter setOwnerFilePath is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "SETOWNER";
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.setOwner(setOwnerFilePath, owner, group, op, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(setOwnerDelegate(response));
+                    ServiceResponse<Void> clientResponse = setOwnerDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (AdlsErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2548,41 +2510,40 @@ public final class FileSystemsImpl implements FileSystems {
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
      * @param setPermissionFilePath The Data Lake Store path (starting with '/') of the file or directory for which to set the permission.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall setPermissionAsync(String accountName, String setPermissionFilePath, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> setPermissionAsync(String accountName, String setPermissionFilePath, final ServiceCallback<Void> serviceCallback) {
         if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.adlsFileSystemDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null.");
         }
         if (setPermissionFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter setPermissionFilePath is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter setPermissionFilePath is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "SETPERMISSION";
         final String permission = null;
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.setPermission(setPermissionFilePath, permission, op, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(setPermissionDelegate(response));
+                    ServiceResponse<Void> clientResponse = setPermissionDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (AdlsErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2626,40 +2587,39 @@ public final class FileSystemsImpl implements FileSystems {
      * @param setPermissionFilePath The Data Lake Store path (starting with '/') of the file or directory for which to set the permission.
      * @param permission A string representation of the permission (i.e 'rwx'). If empty, this property remains unchanged.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall setPermissionAsync(String accountName, String setPermissionFilePath, String permission, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> setPermissionAsync(String accountName, String setPermissionFilePath, String permission, final ServiceCallback<Void> serviceCallback) {
         if (accountName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
         }
         if (this.client.adlsFileSystemDnsSuffix() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.adlsFileSystemDnsSuffix() is required and cannot be null.");
         }
         if (setPermissionFilePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter setPermissionFilePath is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter setPermissionFilePath is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String op = "SETPERMISSION";
         String parameterizedHost = Joiner.on(", ").join("{accountName}", accountName, "{adlsFileSystemDnsSuffix}", this.client.adlsFileSystemDnsSuffix());
         Call<ResponseBody> call = service.setPermission(setPermissionFilePath, permission, op, this.client.apiVersion(), this.client.acceptLanguage(), parameterizedHost, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(setPermissionDelegate(response));
+                    ServiceResponse<Void> clientResponse = setPermissionDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (AdlsErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });

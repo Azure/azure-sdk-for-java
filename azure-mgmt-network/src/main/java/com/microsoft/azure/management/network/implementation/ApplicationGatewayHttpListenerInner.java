@@ -19,51 +19,51 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class ApplicationGatewayHttpListenerInner extends SubResource {
     /**
-     * Gets or sets frontend IP configuration resource of application gateway.
+     * Frontend IP configuration resource of application gateway.
      */
     @JsonProperty(value = "properties.frontendIPConfiguration")
     private SubResource frontendIPConfiguration;
 
     /**
-     * Gets or sets frontend port resource of application gateway.
+     * Frontend port resource of application gateway.
      */
     @JsonProperty(value = "properties.frontendPort")
     private SubResource frontendPort;
 
     /**
-     * Gets or sets the protocol. Possible values include: 'Http', 'Https'.
+     * Protocol. Possible values include: 'Http', 'Https'.
      */
     @JsonProperty(value = "properties.protocol")
     private ApplicationGatewayProtocol protocol;
 
     /**
-     * Gets or sets the host name of http listener.
+     * Host name of http listener.
      */
     @JsonProperty(value = "properties.hostName")
     private String hostName;
 
     /**
-     * Gets or sets ssl certificate resource of application gateway.
+     * Ssl certificate resource of application gateway.
      */
     @JsonProperty(value = "properties.sslCertificate")
     private SubResource sslCertificate;
 
     /**
-     * Gets or sets the requireServerNameIndication of http listener.
+     * RequireServerNameIndication of http listener.
      */
     @JsonProperty(value = "properties.requireServerNameIndication")
     private Boolean requireServerNameIndication;
 
     /**
-     * Gets or sets Provisioning state of the http listener resource
+     * Provisioning state of the http listener resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /**
-     * Gets name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
+     * Name of the resource that is unique within a resource group. This name
+     * can be used to access the resource.
      */
     private String name;
 

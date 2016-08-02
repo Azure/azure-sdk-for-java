@@ -14,19 +14,18 @@ package com.microsoft.azure.management.network;
  */
 public class ApplicationGatewaySku {
     /**
-     * Gets or sets name of application gateway SKU. Possible values include:
+     * Name of application gateway SKU. Possible values include:
      * 'Standard_Small', 'Standard_Medium', 'Standard_Large'.
      */
     private ApplicationGatewaySkuName name;
 
     /**
-     * Gets or sets tier of application gateway. Possible values include:
-     * 'Standard'.
+     * Tier of application gateway. Possible values include: 'Standard'.
      */
     private ApplicationGatewayTier tier;
 
     /**
-     * Gets or sets capacity (instance count) of application gateway.
+     * Capacity (instance count) of application gateway.
      */
     private Integer capacity;
 

@@ -15,17 +15,17 @@ import com.microsoft.azure.management.resources.DeploymentOperationProperties;
  */
 public class DeploymentOperationInner {
     /**
-     * Gets or sets full deployment operation id.
+     * Full deployment operation id.
      */
     private String id;
 
     /**
-     * Gets or sets deployment operation id.
+     * Deployment operation id.
      */
     private String operationId;
 
     /**
-     * Gets or sets deployment properties.
+     * Deployment properties.
      */
     private DeploymentOperationProperties properties;
 

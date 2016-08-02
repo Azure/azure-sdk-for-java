@@ -16,12 +16,12 @@ import com.microsoft.azure.management.resources.DeploymentPropertiesExtended;
  */
 public class DeploymentValidateResultInner {
     /**
-     * Gets or sets validation error.
+     * Validation error.
      */
     private ResourceManagementErrorWithDetails error;
 
     /**
-     * Gets or sets the template deployment properties.
+     * The template deployment properties.
      */
     private DeploymentPropertiesExtended properties;
 

@@ -47,7 +47,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getStatisticsAsync(String accountName, UUID jobIdentity, final ServiceCallback<JobStatistics> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<JobStatistics> getStatisticsAsync(String accountName, UUID jobIdentity, final ServiceCallback<JobStatistics> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets the job debug data information specified by the job ID.
@@ -70,7 +70,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getDebugDataPathAsync(String accountName, UUID jobIdentity, final ServiceCallback<JobDataPath> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<JobDataPath> getDebugDataPathAsync(String accountName, UUID jobIdentity, final ServiceCallback<JobDataPath> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Builds (compiles) the specified job in the specified Data Lake Analytics account for job correctness and validation.
@@ -93,7 +93,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall buildAsync(String accountName, JobInformation parameters, final ServiceCallback<JobInformation> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<JobInformation> buildAsync(String accountName, JobInformation parameters, final ServiceCallback<JobInformation> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Cancels the running job specified by the job ID.
@@ -116,7 +116,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall cancelAsync(String accountName, UUID jobIdentity, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> cancelAsync(String accountName, UUID jobIdentity, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets the job information for the specified job ID.
@@ -139,7 +139,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getAsync(String accountName, UUID jobIdentity, final ServiceCallback<JobInformation> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<JobInformation> getAsync(String accountName, UUID jobIdentity, final ServiceCallback<JobInformation> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Submits a job to the specified Data Lake Analytics account.
@@ -164,7 +164,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall createAsync(String accountName, UUID jobIdentity, JobInformation parameters, final ServiceCallback<JobInformation> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<JobInformation> createAsync(String accountName, UUID jobIdentity, JobInformation parameters, final ServiceCallback<JobInformation> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
@@ -185,7 +185,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listAsync(final String accountName, final ListOperationCallback<JobInformation> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<PagedList<JobInformation>> listAsync(final String accountName, final ListOperationCallback<JobInformation> serviceCallback) throws IllegalArgumentException;
     /**
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
      *
@@ -223,7 +223,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<JobInformation> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<PagedList<JobInformation>> listAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<JobInformation> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
@@ -245,6 +245,6 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<JobInformation> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<PageImpl<JobInformation>> listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<JobInformation> serviceCallback) throws IllegalArgumentException;
 
 }

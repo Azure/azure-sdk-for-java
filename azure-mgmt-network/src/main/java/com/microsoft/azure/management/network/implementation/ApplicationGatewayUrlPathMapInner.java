@@ -19,33 +19,33 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class ApplicationGatewayUrlPathMapInner extends SubResource {
     /**
-     * Gets or sets default backend address pool resource of URL path map.
+     * Default backend address pool resource of URL path map.
      */
     @JsonProperty(value = "properties.defaultBackendAddressPool")
     private SubResource defaultBackendAddressPool;
 
     /**
-     * Gets or sets default backend http settings resource of URL path map.
+     * Default backend http settings resource of URL path map.
      */
     @JsonProperty(value = "properties.defaultBackendHttpSettings")
     private SubResource defaultBackendHttpSettings;
 
     /**
-     * Gets or sets path rule of URL path map resource.
+     * Path rule of URL path map resource.
      */
     @JsonProperty(value = "properties.pathRules")
     private List<ApplicationGatewayPathRuleInner> pathRules;
 
     /**
-     * Gets provisioning state of the backend http settings resource
+     * Provisioning state of the backend http settings resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /**
-     * Gets name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
+     * Name of the resource that is unique within a resource group. This name
+     * can be used to access the resource.
      */
     private String name;
 

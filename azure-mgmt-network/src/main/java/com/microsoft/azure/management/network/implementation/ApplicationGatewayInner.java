@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.ApplicationGatewaySku;
+import com.microsoft.azure.management.network.ApplicationGatewaySslPolicy;
 import com.microsoft.azure.management.network.ApplicationGatewayOperationalState;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,94 +22,105 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class ApplicationGatewayInner extends Resource {
     /**
-     * Gets or sets sku of application gateway resource.
+     * Sku of application gateway resource.
      */
     @JsonProperty(value = "properties.sku")
     private ApplicationGatewaySku sku;
 
     /**
-     * Gets operational state of application gateway resource. Possible values
+     * SSL policy of application gateway resource.
+     */
+    @JsonProperty(value = "properties.sslPolicy")
+    private ApplicationGatewaySslPolicy sslPolicy;
+
+    /**
+     * Operational state of application gateway resource. Possible values
      * include: 'Stopped', 'Starting', 'Running', 'Stopping'.
      */
     @JsonProperty(value = "properties.operationalState", access = JsonProperty.Access.WRITE_ONLY)
     private ApplicationGatewayOperationalState operationalState;
 
     /**
-     * Gets or sets subnets of application gateway resource.
+     * Subnets of application gateway resource.
      */
     @JsonProperty(value = "properties.gatewayIPConfigurations")
     private List<ApplicationGatewayIPConfigurationInner> gatewayIPConfigurations;
 
     /**
-     * Gets or sets ssl certificates of application gateway resource.
+     * Authentication certificates of application gateway resource.
+     */
+    @JsonProperty(value = "properties.authenticationCertificates")
+    private List<ApplicationGatewayAuthenticationCertificateInner> authenticationCertificates;
+
+    /**
+     * SSL certificates of application gateway resource.
      */
     @JsonProperty(value = "properties.sslCertificates")
     private List<ApplicationGatewaySslCertificateInner> sslCertificates;
 
     /**
-     * Gets or sets frontend IP addresses of application gateway resource.
+     * Frontend IP addresses of application gateway resource.
      */
     @JsonProperty(value = "properties.frontendIPConfigurations")
     private List<ApplicationGatewayFrontendIPConfigurationInner> frontendIPConfigurations;
 
     /**
-     * Gets or sets frontend ports of application gateway resource.
+     * Frontend ports of application gateway resource.
      */
     @JsonProperty(value = "properties.frontendPorts")
     private List<ApplicationGatewayFrontendPortInner> frontendPorts;
 
     /**
-     * Gets or sets probes of application gateway resource.
+     * Probes of application gateway resource.
      */
     @JsonProperty(value = "properties.probes")
     private List<ApplicationGatewayProbeInner> probes;
 
     /**
-     * Gets or sets backend address pool of application gateway resource.
+     * Backend address pool of application gateway resource.
      */
     @JsonProperty(value = "properties.backendAddressPools")
     private List<ApplicationGatewayBackendAddressPoolInner> backendAddressPools;
 
     /**
-     * Gets or sets backend http settings of application gateway resource.
+     * Backend http settings of application gateway resource.
      */
     @JsonProperty(value = "properties.backendHttpSettingsCollection")
     private List<ApplicationGatewayBackendHttpSettingsInner> backendHttpSettingsCollection;
 
     /**
-     * Gets or sets HTTP listeners of application gateway resource.
+     * HTTP listeners of application gateway resource.
      */
     @JsonProperty(value = "properties.httpListeners")
     private List<ApplicationGatewayHttpListenerInner> httpListeners;
 
     /**
-     * Gets or sets URL path map of application gateway resource.
+     * URL path map of application gateway resource.
      */
     @JsonProperty(value = "properties.urlPathMaps")
     private List<ApplicationGatewayUrlPathMapInner> urlPathMaps;
 
     /**
-     * Gets or sets request routing rules of application gateway resource.
+     * Request routing rules of application gateway resource.
      */
     @JsonProperty(value = "properties.requestRoutingRules")
     private List<ApplicationGatewayRequestRoutingRuleInner> requestRoutingRules;
 
     /**
-     * Gets or sets resource guid property of the ApplicationGateway resource.
+     * Resource guid property of the ApplicationGateway resource.
      */
     @JsonProperty(value = "properties.resourceGuid")
     private String resourceGuid;
 
     /**
-     * Gets provisioning state of the ApplicationGateway resource
+     * Provisioning state of the ApplicationGateway resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /**
-     * Gets a unique read-only string that changes whenever the resource is
-     * updated.
+     * A unique read-only string that changes whenever the resource is updated.
      */
     private String etag;
 
@@ -129,6 +141,26 @@ public class ApplicationGatewayInner extends Resource {
      */
     public ApplicationGatewayInner withSku(ApplicationGatewaySku sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the sslPolicy value.
+     *
+     * @return the sslPolicy value
+     */
+    public ApplicationGatewaySslPolicy sslPolicy() {
+        return this.sslPolicy;
+    }
+
+    /**
+     * Set the sslPolicy value.
+     *
+     * @param sslPolicy the sslPolicy value to set
+     * @return the ApplicationGatewayInner object itself.
+     */
+    public ApplicationGatewayInner withSslPolicy(ApplicationGatewaySslPolicy sslPolicy) {
+        this.sslPolicy = sslPolicy;
         return this;
     }
 
@@ -158,6 +190,26 @@ public class ApplicationGatewayInner extends Resource {
      */
     public ApplicationGatewayInner withGatewayIPConfigurations(List<ApplicationGatewayIPConfigurationInner> gatewayIPConfigurations) {
         this.gatewayIPConfigurations = gatewayIPConfigurations;
+        return this;
+    }
+
+    /**
+     * Get the authenticationCertificates value.
+     *
+     * @return the authenticationCertificates value
+     */
+    public List<ApplicationGatewayAuthenticationCertificateInner> authenticationCertificates() {
+        return this.authenticationCertificates;
+    }
+
+    /**
+     * Set the authenticationCertificates value.
+     *
+     * @param authenticationCertificates the authenticationCertificates value to set
+     * @return the ApplicationGatewayInner object itself.
+     */
+    public ApplicationGatewayInner withAuthenticationCertificates(List<ApplicationGatewayAuthenticationCertificateInner> authenticationCertificates) {
+        this.authenticationCertificates = authenticationCertificates;
         return this;
     }
 

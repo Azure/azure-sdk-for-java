@@ -13,18 +13,18 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.SubResource;
 
 /**
- * Frontend Port of application gateway.
+ * Authentication certificates of application gateway.
  */
 @JsonFlatten
-public class ApplicationGatewayFrontendPortInner extends SubResource {
+public class ApplicationGatewayAuthenticationCertificateInner extends SubResource {
     /**
-     * Frontend port.
+     * Certificate public data.
      */
-    @JsonProperty(value = "properties.port")
-    private Integer port;
+    @JsonProperty(value = "properties.data")
+    private String data;
 
     /**
-     * Provisioning state of the frontend port resource
+     * Provisioning state of the authentication certificate resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
@@ -42,22 +42,22 @@ public class ApplicationGatewayFrontendPortInner extends SubResource {
     private String etag;
 
     /**
-     * Get the port value.
+     * Get the data value.
      *
-     * @return the port value
+     * @return the data value
      */
-    public Integer port() {
-        return this.port;
+    public String data() {
+        return this.data;
     }
 
     /**
-     * Set the port value.
+     * Set the data value.
      *
-     * @param port the port value to set
-     * @return the ApplicationGatewayFrontendPortInner object itself.
+     * @param data the data value to set
+     * @return the ApplicationGatewayAuthenticationCertificateInner object itself.
      */
-    public ApplicationGatewayFrontendPortInner withPort(Integer port) {
-        this.port = port;
+    public ApplicationGatewayAuthenticationCertificateInner withData(String data) {
+        this.data = data;
         return this;
     }
 
@@ -74,9 +74,9 @@ public class ApplicationGatewayFrontendPortInner extends SubResource {
      * Set the provisioningState value.
      *
      * @param provisioningState the provisioningState value to set
-     * @return the ApplicationGatewayFrontendPortInner object itself.
+     * @return the ApplicationGatewayAuthenticationCertificateInner object itself.
      */
-    public ApplicationGatewayFrontendPortInner withProvisioningState(String provisioningState) {
+    public ApplicationGatewayAuthenticationCertificateInner withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -94,9 +94,9 @@ public class ApplicationGatewayFrontendPortInner extends SubResource {
      * Set the name value.
      *
      * @param name the name value to set
-     * @return the ApplicationGatewayFrontendPortInner object itself.
+     * @return the ApplicationGatewayAuthenticationCertificateInner object itself.
      */
-    public ApplicationGatewayFrontendPortInner withName(String name) {
+    public ApplicationGatewayAuthenticationCertificateInner withName(String name) {
         this.name = name;
         return this;
     }
@@ -114,9 +114,9 @@ public class ApplicationGatewayFrontendPortInner extends SubResource {
      * Set the etag value.
      *
      * @param etag the etag value to set
-     * @return the ApplicationGatewayFrontendPortInner object itself.
+     * @return the ApplicationGatewayAuthenticationCertificateInner object itself.
      */
-    public ApplicationGatewayFrontendPortInner withEtag(String etag) {
+    public ApplicationGatewayAuthenticationCertificateInner withEtag(String etag) {
         this.etag = etag;
         return this;
     }

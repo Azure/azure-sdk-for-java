@@ -102,6 +102,18 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
     private String provisioningState;
 
     /**
+     * Gets or sets the GatewayManager Etag.
+     */
+    @JsonProperty(value = "properties.gatewayManagerEtag")
+    private String gatewayManagerEtag;
+
+    /**
+     * Gets whether the provider or the customer last modified the peering.
+     */
+    @JsonProperty(value = "properties.lastModifiedBy")
+    private String lastModifiedBy;
+
+    /**
      * Gets name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
      */
@@ -369,6 +381,46 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
      */
     public ExpressRouteCircuitPeeringInner withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
+     * Get the gatewayManagerEtag value.
+     *
+     * @return the gatewayManagerEtag value
+     */
+    public String gatewayManagerEtag() {
+        return this.gatewayManagerEtag;
+    }
+
+    /**
+     * Set the gatewayManagerEtag value.
+     *
+     * @param gatewayManagerEtag the gatewayManagerEtag value to set
+     * @return the ExpressRouteCircuitPeeringInner object itself.
+     */
+    public ExpressRouteCircuitPeeringInner withGatewayManagerEtag(String gatewayManagerEtag) {
+        this.gatewayManagerEtag = gatewayManagerEtag;
+        return this;
+    }
+
+    /**
+     * Get the lastModifiedBy value.
+     *
+     * @return the lastModifiedBy value
+     */
+    public String lastModifiedBy() {
+        return this.lastModifiedBy;
+    }
+
+    /**
+     * Set the lastModifiedBy value.
+     *
+     * @param lastModifiedBy the lastModifiedBy value to set
+     * @return the ExpressRouteCircuitPeeringInner object itself.
+     */
+    public ExpressRouteCircuitPeeringInner withLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
         return this;
     }
 
