@@ -134,6 +134,7 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                     .withProtocol(TransportProtocol.TCP)    // Required
                     .withFrontendPort(81)
                     .withBackendPort(82)                    // Optionals
+                    .withIdleTimeoutInMinutes(10)
                     .attach()
                 .defineTcpProbe("tcp2")
                     .withPort(25)               // Required
@@ -177,6 +178,7 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                     .withBackendPort(8080)
                     .withFrontendPort(8080)
                     .withFloatingIp(true)
+                    .withIdleTimeoutInMinutes(11)
                     .parent()
                 .defineLoadBalancingRule("rule3")
                     .withProtocol(TransportProtocol.UDP)

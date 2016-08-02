@@ -29,7 +29,7 @@ public interface LoadBalancingRule extends
     boolean floatingIp();
 
     //TODO:
-    /* withLoadDistribution, withIdleTimeoutInMinutes
+    /* withLoadDistribution
      * withFrontend, withBackend, withProbe and return them
      */
     /**
@@ -112,7 +112,8 @@ public interface LoadBalancingRule extends
         interface WithAttach<ParentT> extends
             Attachable.InDefinition<ParentT>,
             DefinitionStages.WithBackendPort<ParentT>,
-            DefinitionStages.WithFloatingIp<ParentT> {
+            DefinitionStages.WithFloatingIp<ParentT>,
+            DefinitionStages.WithIdleTimeoutInMinutes<ParentT> {
         }
 
         /**
@@ -126,6 +127,19 @@ public interface LoadBalancingRule extends
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withFloatingIp(boolean enable);
+        }
+
+        /**
+         * The stage of a load balancing rule definition allowing to specify the connection timeout for idle connections.
+         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         */
+        interface WithIdleTimeoutInMinutes<ParentT> {
+            /**
+             * Specifies the number of minutes before an idle connection is closed.
+             * @param minutes the desired number of minutes
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withIdleTimeoutInMinutes(int minutes);
         }
     }
 
@@ -190,6 +204,18 @@ public interface LoadBalancingRule extends
              */
             Update withFloatingIp(boolean enable);
         }
+
+        /**
+         * The stage of a load balancing rule update allowing to modify the connection timeout for idle connections.
+         */
+        interface WithIdleTimeoutInMinutes {
+            /**
+             * Specifies the number of minutes before an idle connection is closed.
+             * @param minutes the desired number of minutes
+             * @return the next stage of the update
+             */
+            Update withIdleTimeoutInMinutes(int minutes);
+        }
     }
 
     /**
@@ -200,7 +226,8 @@ public interface LoadBalancingRule extends
         UpdateStages.WithFrontendPort,
         UpdateStages.WithProtocol,
         UpdateStages.WithBackendPort,
-        UpdateStages.WithFloatingIp {
+        UpdateStages.WithFloatingIp,
+        UpdateStages.WithIdleTimeoutInMinutes {
     }
 
     /**
@@ -266,6 +293,19 @@ public interface LoadBalancingRule extends
             WithAttach<ParentT> withFloatingIp(boolean enable);
         }
 
+        /**
+         * The stage of a load balancing rule definition allowing to specify the connection timeout for idle connections.
+         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         */
+        interface WithIdleTimeoutInMinutes<ParentT> {
+            /**
+             * Specifies the number of minutes before an idle connection is closed.
+             * @param minutes the desired number of minutes
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withIdleTimeoutInMinutes(int minutes);
+        }
+
         /** The final stage of the load balancing rule definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the load balancing rule definition
@@ -274,7 +314,9 @@ public interface LoadBalancingRule extends
          */
         interface WithAttach<ParentT> extends
             Attachable.InUpdate<ParentT>,
-            UpdateDefinitionStages.WithBackendPort<ParentT> {
+            UpdateDefinitionStages.WithBackendPort<ParentT>,
+            UpdateDefinitionStages.WithFloatingIp<ParentT>,
+            UpdateDefinitionStages.WithIdleTimeoutInMinutes<ParentT> {
         }
     }
 
@@ -285,7 +327,6 @@ public interface LoadBalancingRule extends
         UpdateDefinitionStages.Blank<ParentT>,
         UpdateDefinitionStages.WithAttach<ParentT>,
         UpdateDefinitionStages.WithFrontendPort<ParentT>,
-        UpdateDefinitionStages.WithProtocol<ParentT>,
-        UpdateDefinitionStages.WithFloatingIp<ParentT> {
+        UpdateDefinitionStages.WithProtocol<ParentT> {
     }
 }

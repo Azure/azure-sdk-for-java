@@ -70,6 +70,12 @@ class LoadBalancingRuleImpl
     // Fluent setters
 
     @Override
+    public LoadBalancingRuleImpl withIdleTimeoutInMinutes(int minutes) {
+        this.inner().withIdleTimeoutInMinutes(minutes);
+        return this;
+    }
+
+    @Override
     public LoadBalancingRuleImpl withFloatingIp(boolean enable) {
         this.inner().withEnableFloatingIP(enable);
         return this;
@@ -105,4 +111,5 @@ class LoadBalancingRuleImpl
     public LoadBalancerImpl attach() {
         return this.parent().withLoadBalancingRule(this);
     }
+
 }
