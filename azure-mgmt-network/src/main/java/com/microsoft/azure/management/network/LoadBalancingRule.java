@@ -29,9 +29,7 @@ public interface LoadBalancingRule extends
     boolean floatingIp();
 
     //TODO:
-    /* withLoadDistribution
-     * withFrontend, withBackend, withProbe and return them
-     */
+     /* withFrontend, withBackend, withProbe and return them */
     /**
      * @return the method of load distribution
      */
@@ -48,9 +46,14 @@ public interface LoadBalancingRule extends
     int frontendPort();
 
     /**
-     * @return the backed port the load balanced traffic is sent to
+     * @return the backend port the load balanced traffic is sent to
      */
     int backendPort();
+
+    /**
+     * @return the frontend the load balancing rule is associated with
+     */
+    Frontend frontend();
 
     /**
      * Grouping of load balancing rule definition stages.

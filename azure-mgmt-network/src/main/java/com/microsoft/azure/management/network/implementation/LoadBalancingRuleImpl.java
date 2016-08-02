@@ -5,10 +5,13 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.network.Frontend;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.LoadDistribution;
 import com.microsoft.azure.management.network.TransportProtocol;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
 /**
@@ -22,7 +25,7 @@ class LoadBalancingRuleImpl
         LoadBalancingRule.UpdateDefinition<LoadBalancer.Update>,
         LoadBalancingRule.Update {
 
-    protected LoadBalancingRuleImpl(String name, LoadBalancingRuleInner inner, LoadBalancerImpl parent) {
+    protected LoadBalancingRuleImpl(LoadBalancingRuleInner inner, LoadBalancerImpl parent) {
         super(inner, parent);
     }
 
@@ -65,6 +68,17 @@ class LoadBalancingRuleImpl
     @Override
     public LoadDistribution loadDistribution() {
         return this.inner().loadDistribution();
+    }
+
+    @Override
+    public Frontend frontend() {
+        SubResource frontendRef = this.inner().frontendIPConfiguration();
+        if (frontendRef == null) {
+            return null;
+        } else {
+            String frontendName = ResourceUtils.nameFromResourceId(frontendRef.id());
+            return this.parent().frontends().get(frontendName);
+        }
     }
 
     // Fluent setters

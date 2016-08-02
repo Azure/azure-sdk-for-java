@@ -14,6 +14,7 @@ import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.compute.VirtualMachines;
+import com.microsoft.azure.management.network.Frontend;
 import com.microsoft.azure.management.network.HttpProbe;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancers;
@@ -127,6 +128,9 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                 .withRegion(region)
                 .withExistingResourceGroup(groupName)
                 .withExistingPublicIpAddresses(pip1)
+                //.defineFrontend("frontend2")
+                //    .withExistingPublicIpAddress(pip1)
+                //    .attach()
                 .withExistingVirtualMachines(existingVMs)
                 .withBackend("backend2")
                 .withTcpProbe(80, "tcp1")
@@ -254,8 +258,14 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                 .append("\n\t\t\tProtocol: ").append(rule.protocol())
                 .append("\n\t\t\tFloating IP enabled? ").append(rule.floatingIp())
                 .append("\n\t\t\tIdle timeout in minutes: ").append(rule.idleTimeoutInMinutes())
-                .append("\n\t\t\tLoad distribution method: ").append(rule.loadDistribution().toString());
+                .append("\n\t\t\tLoad distribution method: ").append(rule.loadDistribution().toString())
+                .append("\n\t\t\tFrontend: ").append(rule.frontend().name());
+        }
 
+        // Show frontends
+        info.append("\n\tFrontends:");
+        for (Frontend frontend : resource.frontends().values()) {
+            info.append("\n\t\tFrontend name: ").append(frontend.name());
         }
 
         System.out.println(info.toString());

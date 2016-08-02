@@ -43,9 +43,14 @@ public interface LoadBalancer extends
     Map<String, HttpProbe> httpProbes();
 
     /**
-     * @return backends for this load balancer to load balance, indexed by name
+     * @return backends for this load balancer to load balance the incoming traffic among, indexed by name
      */
     Map<String, Backend> backends();
+
+    /**
+     * @return frontends for this load balancer, for the incoming traffic to come from.
+     */
+    Map<String, InternetFrontend> frontends();
 
     /**
      * @return load balancing rules, indexed by name
@@ -98,7 +103,14 @@ public interface LoadBalancer extends
          * The stage of the definition allowing to define one or more Internet-facing frontends.
          */
         interface WithInternetFrontends extends WithPublicIpAddresses<WithInternetFrontendOrBackend> {
-            // TODO defineFrontend(String name)...
+            /**
+             * Begins the definition of a new load balancer frontend.
+             * <p>
+             * The definition must be completed with a call to {@link InternetFrontend.DefinitionStages.WithAttach#attach()}
+             * @param name the name for the frontend
+             * @return the first stage of the new frontend definition
+             */
+            InternetFrontend.DefinitionStages.Blank<WithInternetFrontendOrBackend> defineInternetFrontend(String name);
         }
 
         /**
