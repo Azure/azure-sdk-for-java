@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.Tenant;
 /**
  * Implementation for {@link Tenant}.
  */
-final class TenantImpl extends
+class TenantImpl extends
         IndexableWrapperImpl<TenantIdDescriptionInner>
         implements
         Tenant {

@@ -32,7 +32,7 @@ import java.util.Date;
  *  - Delete a virtual network.
  */
 
-public final class ManageVirtualNetwork {
+public class ManageVirtualNetwork {
 
     /**
      * Main entry point.

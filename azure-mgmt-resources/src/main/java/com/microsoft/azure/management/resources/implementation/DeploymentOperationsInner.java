@@ -35,7 +35,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in DeploymentOperations.
  */
-public final class DeploymentOperationsInner {
+public class DeploymentOperationsInner {
     /** The Retrofit service to perform REST calls. */
     private DeploymentOperationsService service;
     /** The service client containing this operation class. */

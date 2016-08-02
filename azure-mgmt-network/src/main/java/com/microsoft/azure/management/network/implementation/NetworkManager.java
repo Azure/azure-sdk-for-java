@@ -20,7 +20,7 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 /**
  * Entry point to Azure network management.
  */
-public final class NetworkManager extends Manager<NetworkManager, NetworkManagementClientImpl> {
+public class NetworkManager extends Manager<NetworkManager, NetworkManagementClientImpl> {
 
     // Collections
     private PublicIpAddresses publicIpAddresses;

@@ -27,7 +27,7 @@ import java.util.List;
  *  - Delete a storage account.
  */
 
-public final class ManageStorageAccount {
+public class ManageStorageAccount {
 
     /**
      * Main entry point.

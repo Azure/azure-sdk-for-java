@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for SecurityRuleDirection.
  */
-public final class SecurityRuleDirection {
+public class SecurityRuleDirection {
     /** Static value Inbound for SecurityRuleDirection. */
     public static final SecurityRuleDirection INBOUND = new SecurityRuleDirection("Inbound");
 

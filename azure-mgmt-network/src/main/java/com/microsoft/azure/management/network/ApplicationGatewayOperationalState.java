@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for ApplicationGatewayOperationalState.
  */
-public final class ApplicationGatewayOperationalState {
+public class ApplicationGatewayOperationalState {
     /** Static value Stopped for ApplicationGatewayOperationalState. */
     public static final ApplicationGatewayOperationalState STOPPED = new ApplicationGatewayOperationalState("Stopped");
 

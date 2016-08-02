@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 /**
  * Utility methods for Azure resource IDs.
  */
-public final class ResourceUtils {
+public class ResourceUtils {
     private ResourceUtils() { }
 
     /**

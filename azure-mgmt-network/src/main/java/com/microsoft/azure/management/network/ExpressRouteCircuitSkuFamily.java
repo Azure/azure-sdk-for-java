@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for ExpressRouteCircuitSkuFamily.
  */
-public final class ExpressRouteCircuitSkuFamily {
+public class ExpressRouteCircuitSkuFamily {
     /** Static value UnlimitedData for ExpressRouteCircuitSkuFamily. */
     public static final ExpressRouteCircuitSkuFamily UNLIMITED_DATA = new ExpressRouteCircuitSkuFamily("UnlimitedData");
 

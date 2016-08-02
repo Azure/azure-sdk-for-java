@@ -25,7 +25,7 @@ import java.lang.reflect.Type;
 /**
  * A similar implementation of {@link retrofit2.converter.jackson.JacksonConverterFactory} which supports polymorphism.
  */
-public final class JacksonConverterFactory extends Converter.Factory {
+public class JacksonConverterFactory extends Converter.Factory {
     /**
      * Create an instance using a default {@link ObjectMapper} instance for conversion.
      *
@@ -77,7 +77,7 @@ public final class JacksonConverterFactory extends Converter.Factory {
      *
      * @param <T> type of request object
      */
-    final class JacksonRequestBodyConverter<T> implements Converter<T, RequestBody> {
+    class JacksonRequestBodyConverter<T> implements Converter<T, RequestBody> {
         /** Jackson object writer. */
         private final ObjectWriter adapter;
 
@@ -96,7 +96,7 @@ public final class JacksonConverterFactory extends Converter.Factory {
      *
      * @param <T> the expected object type to convert to
      */
-    final class JacksonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
+    class JacksonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
         /** Jackson object reader. */
         private final ObjectReader adapter;
 

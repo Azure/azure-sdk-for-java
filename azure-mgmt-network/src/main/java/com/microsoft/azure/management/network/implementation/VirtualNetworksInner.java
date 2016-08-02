@@ -40,7 +40,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in VirtualNetworks.
  */
-public final class VirtualNetworksInner {
+public class VirtualNetworksInner {
     /** The Retrofit service to perform REST calls. */
     private VirtualNetworksService service;
     /** The service client containing this operation class. */

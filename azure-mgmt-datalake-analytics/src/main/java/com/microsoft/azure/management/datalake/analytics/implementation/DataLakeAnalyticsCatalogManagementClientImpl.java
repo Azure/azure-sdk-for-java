@@ -18,7 +18,7 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 /**
  * Initializes a new instance of the DataLakeAnalyticsCatalogManagementClientImpl class.
  */
-public final class DataLakeAnalyticsCatalogManagementClientImpl extends AzureServiceClient implements DataLakeAnalyticsCatalogManagementClient {
+public class DataLakeAnalyticsCatalogManagementClientImpl extends AzureServiceClient implements DataLakeAnalyticsCatalogManagementClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 

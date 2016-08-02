@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for AuthorizationUseStatus.
  */
-public final class AuthorizationUseStatus {
+public class AuthorizationUseStatus {
     /** Static value Available for AuthorizationUseStatus. */
     public static final AuthorizationUseStatus AVAILABLE = new AuthorizationUseStatus("Available");
 

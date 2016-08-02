@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for ServiceProviderProvisioningState.
  */
-public final class ServiceProviderProvisioningState {
+public class ServiceProviderProvisioningState {
     /** Static value NotProvisioned for ServiceProviderProvisioningState. */
     public static final ServiceProviderProvisioningState NOT_PROVISIONED = new ServiceProviderProvisioningState("NotProvisioned");
 

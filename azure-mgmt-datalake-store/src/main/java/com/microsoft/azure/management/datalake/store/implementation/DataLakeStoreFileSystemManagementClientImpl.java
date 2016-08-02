@@ -18,7 +18,7 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 /**
  * Initializes a new instance of the DataLakeStoreFileSystemManagementClientImpl class.
  */
-public final class DataLakeStoreFileSystemManagementClientImpl extends AzureServiceClient implements DataLakeStoreFileSystemManagementClient {
+public class DataLakeStoreFileSystemManagementClientImpl extends AzureServiceClient implements DataLakeStoreFileSystemManagementClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 

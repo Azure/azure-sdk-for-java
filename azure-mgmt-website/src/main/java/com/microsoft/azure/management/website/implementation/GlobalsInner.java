@@ -34,7 +34,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in Globals.
  */
-public final class GlobalsInner {
+public class GlobalsInner {
     /** The Retrofit service to perform REST calls. */
     private GlobalsService service;
     /** The service client containing this operation class. */

@@ -14,7 +14,7 @@ import java.util.Arrays;
 /**
  * Simple wrapper over Base64Url encoded byte array used during serialization/deserialization.
  */
-public final class Base64Url {
+public class Base64Url {
     /**
      * The Base64Url encoded bytes.
      */

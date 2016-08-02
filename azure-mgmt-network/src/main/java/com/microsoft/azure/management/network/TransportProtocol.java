@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for TransportProtocol.
  */
-public final class TransportProtocol {
+public class TransportProtocol {
     /** Static value Udp for TransportProtocol. */
     public static final TransportProtocol UDP = new TransportProtocol("Udp");
 

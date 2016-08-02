@@ -16,7 +16,7 @@ package com.microsoft.azure.management.network.samples;
  *  See https://azure.microsoft.com/en-us/documentation/articles/virtual-network-create-udr-arm-ps/.
  */
 
-public final class ManageUserDefinedRoute {
+public class ManageUserDefinedRoute {
 
     /**
      * Main entry point.

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for ApplicationGatewayTier.
  */
-public final class ApplicationGatewayTier {
+public class ApplicationGatewayTier {
     /** Static value Standard for ApplicationGatewayTier. */
     public static final ApplicationGatewayTier STANDARD = new ApplicationGatewayTier("Standard");
 

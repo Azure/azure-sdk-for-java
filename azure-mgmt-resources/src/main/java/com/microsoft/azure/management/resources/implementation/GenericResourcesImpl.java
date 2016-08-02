@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Implementation of the {@link GenericResources}.
  */
-final class GenericResourcesImpl
+class GenericResourcesImpl
     extends GroupableResourcesImpl<
         GenericResource,
         GenericResourceImpl,

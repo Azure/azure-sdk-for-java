@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for ProcessorArchitecture.
  */
-public final class ProcessorArchitecture {
+public class ProcessorArchitecture {
     /** Static value Amd64 for ProcessorArchitecture. */
     public static final ProcessorArchitecture AMD64 = new ProcessorArchitecture("Amd64");
 

@@ -13,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * A class of helpers to determine the location of record boundaries within byte arrays.
  */
-public final class StringExtensions {
+public class StringExtensions {
 
     private StringExtensions() {
         // empty constructor that should not be used.

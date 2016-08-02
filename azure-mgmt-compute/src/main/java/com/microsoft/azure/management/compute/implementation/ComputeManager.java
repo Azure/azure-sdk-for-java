@@ -15,7 +15,7 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 /**
  * Entry point to Azure compute resource management.
  */
-public final class ComputeManager extends Manager<ComputeManager, ComputeManagementClientImpl> {
+public class ComputeManager extends Manager<ComputeManager, ComputeManagementClientImpl> {
     // The service managers
     private StorageManager storageManager;
     private NetworkManager networkManager;
@@ -74,7 +74,7 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
     /**
      * The implementation for Configurable interface.
      */
-    private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements  Configurable {
+    private static class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements  Configurable {
         @Override
         public ComputeManager authenticate(ServiceClientCredentials credentials, String subscriptionId) {
             return ComputeManager.authenticate(buildRestClient(credentials), subscriptionId);

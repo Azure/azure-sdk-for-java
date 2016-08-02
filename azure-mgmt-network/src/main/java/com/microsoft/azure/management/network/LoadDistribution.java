@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for LoadDistribution.
  */
-public final class LoadDistribution {
+public class LoadDistribution {
     /** Static value Default for LoadDistribution. */
     public static final LoadDistribution DEFAULT = new LoadDistribution("Default");
 

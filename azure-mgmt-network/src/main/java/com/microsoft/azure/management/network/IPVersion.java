@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for IPVersion.
  */
-public final class IPVersion {
+public class IPVersion {
     /** Static value IPv4 for IPVersion. */
     public static final IPVersion IPV4 = new IPVersion("IPv4");
 

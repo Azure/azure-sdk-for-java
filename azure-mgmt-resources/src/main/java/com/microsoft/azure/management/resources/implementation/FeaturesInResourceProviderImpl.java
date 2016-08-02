@@ -17,7 +17,7 @@ import java.io.IOException;
 /**
  * The implementation of {@link Features.InResourceProvider}.
  */
-final class FeaturesInResourceProviderImpl
+class FeaturesInResourceProviderImpl
         implements Features.InResourceProvider {
     private final FeaturesInner client;
     private String resourceProviderNamespace;

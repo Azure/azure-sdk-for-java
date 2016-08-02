@@ -16,7 +16,7 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 /**
  * Initializes a new instance of the WebSiteManagementClientImpl class.
  */
-public final class WebSiteManagementClientImpl extends AzureServiceClient {
+public class WebSiteManagementClientImpl extends AzureServiceClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 

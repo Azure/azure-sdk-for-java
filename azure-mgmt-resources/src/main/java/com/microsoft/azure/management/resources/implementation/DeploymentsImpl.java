@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * The implementation for {@link Deployments}.
  */
-final class DeploymentsImpl
+class DeploymentsImpl
     implements Deployments {
 
     private final DeploymentsInner client;

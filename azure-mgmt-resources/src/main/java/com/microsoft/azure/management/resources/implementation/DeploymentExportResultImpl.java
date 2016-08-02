@@ -14,7 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.implementation.
 /**
  * Implementation for {@link DeploymentExportResult}.
  */
-final class DeploymentExportResultImpl extends
+class DeploymentExportResultImpl extends
         WrapperImpl<DeploymentExportResultInner>
         implements
         DeploymentExportResult {

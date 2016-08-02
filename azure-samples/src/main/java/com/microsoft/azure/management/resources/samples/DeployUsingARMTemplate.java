@@ -26,7 +26,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
  * Azure Resource sample for deploying resources using an ARM template.
  */
 
-public final class DeployUsingARMTemplate {
+public class DeployUsingARMTemplate {
 
     /**
      * Main entry point.

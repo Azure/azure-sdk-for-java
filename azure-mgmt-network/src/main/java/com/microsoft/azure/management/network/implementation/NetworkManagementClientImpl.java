@@ -32,7 +32,7 @@ import retrofit2.Response;
 /**
  * Initializes a new instance of the NetworkManagementClientImpl class.
  */
-public final class NetworkManagementClientImpl extends AzureServiceClient {
+public class NetworkManagementClientImpl extends AzureServiceClient {
     /** The Retrofit service to perform REST calls. */
     private NetworkManagementClientService service;
     /** the {@link AzureClient} used for long running operations. */

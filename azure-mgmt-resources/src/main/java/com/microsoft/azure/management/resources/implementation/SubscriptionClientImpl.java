@@ -16,7 +16,7 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 /**
  * Initializes a new instance of the SubscriptionClientImpl class.
  */
-public final class SubscriptionClientImpl extends AzureServiceClient {
+public class SubscriptionClientImpl extends AzureServiceClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 

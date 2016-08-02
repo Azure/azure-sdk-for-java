@@ -17,7 +17,7 @@ import java.io.IOException;
 /**
  * The implementation of {@link Subscriptions}.
  */
-final class SubscriptionsImpl
+class SubscriptionsImpl
         implements Subscriptions {
     private final SubscriptionsInner client;
 

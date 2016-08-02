@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.Feature;
 /**
  * The implementation of {@link Feature}.
  */
-final class FeatureImpl extends
+class FeatureImpl extends
         IndexableWrapperImpl<FeatureResultInner>
         implements
         Feature {

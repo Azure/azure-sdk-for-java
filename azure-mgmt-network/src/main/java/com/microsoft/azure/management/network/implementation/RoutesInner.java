@@ -40,7 +40,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in Routes.
  */
-public final class RoutesInner {
+public class RoutesInner {
     /** The Retrofit service to perform REST calls. */
     private RoutesService service;
     /** The service client containing this operation class. */

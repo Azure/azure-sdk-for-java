@@ -35,7 +35,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in ManagedHostingEnvironments.
  */
-public final class ManagedHostingEnvironmentsInner {
+public class ManagedHostingEnvironmentsInner {
     /** The Retrofit service to perform REST calls. */
     private ManagedHostingEnvironmentsService service;
     /** The service client containing this operation class. */

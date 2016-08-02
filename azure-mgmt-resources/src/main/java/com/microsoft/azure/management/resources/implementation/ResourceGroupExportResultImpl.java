@@ -16,7 +16,7 @@ import com.microsoft.azure.management.resources.ResourceManagementErrorWithDetai
 /**
  * Implementation for {@link DeploymentExportResult}.
  */
-final class ResourceGroupExportResultImpl extends
+class ResourceGroupExportResultImpl extends
         WrapperImpl<ResourceGroupExportResultInner>
         implements
         ResourceGroupExportResult {

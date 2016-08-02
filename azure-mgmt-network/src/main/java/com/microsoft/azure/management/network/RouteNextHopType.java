@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for RouteNextHopType.
  */
-public final class RouteNextHopType {
+public class RouteNextHopType {
     /** Static value VirtualNetworkGateway for RouteNextHopType. */
     public static final RouteNextHopType VIRTUAL_NETWORK_GATEWAY = new RouteNextHopType("VirtualNetworkGateway");
 

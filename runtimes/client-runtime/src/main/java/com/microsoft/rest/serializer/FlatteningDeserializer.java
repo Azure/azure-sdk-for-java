@@ -79,7 +79,7 @@ public class FlatteningDeserializer extends StdDeserializer<Object> implements R
     @Override
     public Object deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
         JsonNode root = mapper.readTree(jp);
-        final Class<?> tClass = this.defaultDeserializer.handledType();
+        class<?> tClass = this.defaultDeserializer.handledType();
         for (Field field : tClass.getDeclaredFields()) {
             JsonNode node = root;
             JsonProperty property = field.getAnnotation(JsonProperty.class);

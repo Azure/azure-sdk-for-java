@@ -46,7 +46,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in Jobs.
  */
-public final class JobsImpl implements Jobs {
+public class JobsImpl implements Jobs {
     /** The Retrofit service to perform REST calls. */
     private JobsService service;
     /** The service client containing this operation class. */

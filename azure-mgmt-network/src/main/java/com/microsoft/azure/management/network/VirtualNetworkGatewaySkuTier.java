@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for VirtualNetworkGatewaySkuTier.
  */
-public final class VirtualNetworkGatewaySkuTier {
+public class VirtualNetworkGatewaySkuTier {
     /** Static value Basic for VirtualNetworkGatewaySkuTier. */
     public static final VirtualNetworkGatewaySkuTier BASIC = new VirtualNetworkGatewaySkuTier("Basic");
 

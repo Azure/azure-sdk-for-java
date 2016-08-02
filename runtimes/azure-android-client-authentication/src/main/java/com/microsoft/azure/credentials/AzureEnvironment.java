@@ -10,7 +10,7 @@ package com.microsoft.azure.credentials;
 /**
  * An instance of this class describes an environment in Azure.
  */
-public final class AzureEnvironment {
+public class AzureEnvironment {
     /**
      * ActiveDirectory Endpoint for the Azure Environment.
      */

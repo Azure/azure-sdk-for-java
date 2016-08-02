@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for ExpressRouteCircuitSkuTier.
  */
-public final class ExpressRouteCircuitSkuTier {
+public class ExpressRouteCircuitSkuTier {
     /** Static value Standard for ExpressRouteCircuitSkuTier. */
     public static final ExpressRouteCircuitSkuTier STANDARD = new ExpressRouteCircuitSkuTier("Standard");
 

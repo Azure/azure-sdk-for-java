@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.implementation.
 /**
  * The implementation of {@link Location}.
  */
-final class LocationImpl extends
+class LocationImpl extends
         IndexableWrapperImpl<LocationInner>
         implements
         Location {

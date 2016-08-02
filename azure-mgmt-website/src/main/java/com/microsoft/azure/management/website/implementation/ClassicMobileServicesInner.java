@@ -31,7 +31,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in ClassicMobileServices.
  */
-public final class ClassicMobileServicesInner {
+public class ClassicMobileServicesInner {
     /** The Retrofit service to perform REST calls. */
     private ClassicMobileServicesService service;
     /** The service client containing this operation class. */

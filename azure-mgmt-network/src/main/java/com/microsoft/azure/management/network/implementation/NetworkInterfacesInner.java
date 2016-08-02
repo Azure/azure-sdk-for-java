@@ -41,7 +41,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in NetworkInterfaces.
  */
-public final class NetworkInterfacesInner {
+public class NetworkInterfacesInner {
     /** The Retrofit service to perform REST calls. */
     private NetworkInterfacesService service;
     /** The service client containing this operation class. */

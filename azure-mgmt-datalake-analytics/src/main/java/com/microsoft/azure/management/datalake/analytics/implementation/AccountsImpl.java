@@ -51,7 +51,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in Accounts.
  */
-public final class AccountsImpl implements Accounts {
+public class AccountsImpl implements Accounts {
     /** The Retrofit service to perform REST calls. */
     private AccountsService service;
     /** The service client containing this operation class. */

@@ -35,7 +35,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in VirtualMachineExtensions.
  */
-public final class VirtualMachineExtensionsInner {
+public class VirtualMachineExtensionsInner {
     /** The Retrofit service to perform REST calls. */
     private VirtualMachineExtensionsService service;
     /** The service client containing this operation class. */

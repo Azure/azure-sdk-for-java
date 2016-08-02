@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for ApplicationGatewaySkuName.
  */
-public final class ApplicationGatewaySkuName {
+public class ApplicationGatewaySkuName {
     /** Static value Standard_Small for ApplicationGatewaySkuName. */
     public static final ApplicationGatewaySkuName STANDARD_SMALL = new ApplicationGatewaySkuName("Standard_Small");
 

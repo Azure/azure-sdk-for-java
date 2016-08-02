@@ -17,7 +17,7 @@ import java.io.IOException;
 /**
  * Implementation for {@link Tenants}.
  */
-final class TenantsImpl
+class TenantsImpl
         implements Tenants {
     private final TenantsInner client;
 

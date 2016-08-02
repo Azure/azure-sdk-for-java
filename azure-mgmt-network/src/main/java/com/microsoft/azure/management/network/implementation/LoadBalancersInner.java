@@ -40,7 +40,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in LoadBalancers.
  */
-public final class LoadBalancersInner {
+public class LoadBalancersInner {
     /** The Retrofit service to perform REST calls. */
     private LoadBalancersService service;
     /** The service client containing this operation class. */

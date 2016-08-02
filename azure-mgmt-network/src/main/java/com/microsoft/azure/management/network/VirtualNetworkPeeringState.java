@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for VirtualNetworkPeeringState.
  */
-public final class VirtualNetworkPeeringState {
+public class VirtualNetworkPeeringState {
     /** Static value Initiated for VirtualNetworkPeeringState. */
     public static final VirtualNetworkPeeringState INITIATED = new VirtualNetworkPeeringState("Initiated");
 

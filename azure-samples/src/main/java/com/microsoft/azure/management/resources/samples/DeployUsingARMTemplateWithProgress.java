@@ -12,7 +12,7 @@ package com.microsoft.azure.management.resources.samples;
  * showing progress.
  */
 
-public final class DeployUsingARMTemplateWithProgress {
+public class DeployUsingARMTemplateWithProgress {
 
     /**
      * Main entry point.

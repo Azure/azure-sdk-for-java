@@ -43,7 +43,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in Deployments.
  */
-public final class DeploymentsInner {
+public class DeploymentsInner {
     /** The Retrofit service to perform REST calls. */
     private DeploymentsService service;
     /** The service client containing this operation class. */

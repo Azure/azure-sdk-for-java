@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for VirtualMachineSizeTypes.
  */
-public final class VirtualMachineSizeTypes {
+public class VirtualMachineSizeTypes {
     /** Static value Basic_A0 for VirtualMachineSizeTypes. */
     public static final VirtualMachineSizeTypes BASIC_A0 = new VirtualMachineSizeTypes("Basic_A0");
 

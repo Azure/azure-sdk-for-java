@@ -17,7 +17,7 @@ import com.microsoft.rest.ServiceResponse;
 /**
  * The implementation for {@link GenericResource} and its nested interfaces.
  */
-final class GenericResourceImpl
+class GenericResourceImpl
     extends GroupableResourceImpl<
         GenericResource,
         GenericResourceInner,

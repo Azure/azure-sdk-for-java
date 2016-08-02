@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for SecurityRuleAccess.
  */
-public final class SecurityRuleAccess {
+public class SecurityRuleAccess {
     /** Static value Allow for SecurityRuleAccess. */
     public static final SecurityRuleAccess ALLOW = new SecurityRuleAccess("Allow");
 

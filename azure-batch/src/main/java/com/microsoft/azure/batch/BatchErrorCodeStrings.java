@@ -6,7 +6,7 @@
 
 package com.microsoft.azure.batch;
 
-public final class BatchErrorCodeStrings {
+public class BatchErrorCodeStrings {
     // Batch Service
 
     // The specified account is disabled.

@@ -7,7 +7,7 @@
 package com.microsoft.azure.batch;
 
 // Contains error codes specific to pool resize errors.
-public final class PoolResizeErrorCodes
+public class PoolResizeErrorCodes
 {
     // The account has reached its quota of compute nodes.
     public static final String AccountCoreQuotaReached = "AccountCoreQuotaReached";

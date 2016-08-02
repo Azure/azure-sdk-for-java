@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for ApplicationGatewayProtocol.
  */
-public final class ApplicationGatewayProtocol {
+public class ApplicationGatewayProtocol {
     /** Static value Http for ApplicationGatewayProtocol. */
     public static final ApplicationGatewayProtocol HTTP = new ApplicationGatewayProtocol("Http");
 

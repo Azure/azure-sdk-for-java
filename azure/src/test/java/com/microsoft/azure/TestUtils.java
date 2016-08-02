@@ -12,7 +12,7 @@ import com.microsoft.azure.management.compute.DataDisk;
 /**
  * Test utilities.
  */
-public final class TestUtils {
+public class TestUtils {
     private TestUtils() {
 
     }

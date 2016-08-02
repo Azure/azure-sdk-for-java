@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for IPAllocationMethod.
  */
-public final class IPAllocationMethod {
+public class IPAllocationMethod {
     /** Static value Static for IPAllocationMethod. */
     public static final IPAllocationMethod STATIC = new IPAllocationMethod("Static");
 

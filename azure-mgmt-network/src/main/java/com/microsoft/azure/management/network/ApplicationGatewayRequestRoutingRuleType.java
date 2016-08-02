@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for ApplicationGatewayRequestRoutingRuleType.
  */
-public final class ApplicationGatewayRequestRoutingRuleType {
+public class ApplicationGatewayRequestRoutingRuleType {
     /** Static value Basic for ApplicationGatewayRequestRoutingRuleType. */
     public static final ApplicationGatewayRequestRoutingRuleType BASIC = new ApplicationGatewayRequestRoutingRuleType("Basic");
 

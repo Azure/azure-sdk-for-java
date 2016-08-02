@@ -40,7 +40,7 @@ import java.io.IOException;
 /**
  * The entry point for accessing resource management APIs in Azure.
  */
-public final class Azure {
+public class Azure {
     private final ResourceManager resourceManager;
     private final StorageManager storageManager;
     private final ComputeManager computeManager;
@@ -129,7 +129,7 @@ public final class Azure {
     /**
      * The implementation for {@link Configurable}.
      */
-    private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
+    private static class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         @Override
         public Authenticated authenticate(ServiceClientCredentials credentials) {
             return Azure.authenticate(buildRestClient(credentials));
@@ -190,7 +190,7 @@ public final class Azure {
     /**
      * The implementation for {@link Authenticated}.
      */
-    private static final class AuthenticatedImpl implements Authenticated {
+    private static class AuthenticatedImpl implements Authenticated {
         private final RestClient restClient;
         private final ResourceManager.Authenticated resourceManagerAuthenticated;
         private String defaultSubscription;

@@ -26,7 +26,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
  * - Delete a resource.
  */
 
-public final class ManageResource {
+public class ManageResource {
 
     /**
      * Main entry point.

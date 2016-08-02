@@ -22,7 +22,7 @@ import java.util.List;
  * list all virtual machine images published by Canonical, Red Hat and
  * SUSE by browsing through locations, publishers, offers, SKUs and images.
  */
-public final class ListVirtualMachineImages {
+public class ListVirtualMachineImages {
     /**
      * The main entry point.
      *

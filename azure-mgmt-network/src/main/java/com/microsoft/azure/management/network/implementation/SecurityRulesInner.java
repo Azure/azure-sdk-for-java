@@ -40,7 +40,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in SecurityRules.
  */
-public final class SecurityRulesInner {
+public class SecurityRulesInner {
     /** The Retrofit service to perform REST calls. */
     private SecurityRulesService service;
     /** The service client containing this operation class. */

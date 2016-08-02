@@ -42,7 +42,7 @@ import retrofit2.Response;
  * An instance of this class provides access to all the operations defined
  * in ServerFarms.
  */
-public final class ServerFarmsInner {
+public class ServerFarmsInner {
     /** The Retrofit service to perform REST calls. */
     private ServerFarmsService service;
     /** The service client containing this operation class. */

@@ -16,7 +16,7 @@ import com.microsoft.rest.serializer.JacksonMapperAdapter;
  * A serialization helper class overriding {@link JacksonMapperAdapter} with extra
  * functionality useful for Azure operations.
  */
-public final class AzureJacksonMapperAdapter extends JacksonMapperAdapter {
+public class AzureJacksonMapperAdapter extends JacksonMapperAdapter {
     /**
      * An instance of {@link ObjectMapper} to serialize/deserialize objects.
      */
