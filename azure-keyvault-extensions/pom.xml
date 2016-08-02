@@ -52,17 +52,6 @@
       <version>1.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
-        <groupId>org.apache.httpcomponents</groupId>
-        <artifactId>httpclient</artifactId>
-        <version>4.5.2</version>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-client-authentication</artifactId>
-      <version>1.0.0-beta1</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
@@ -74,24 +63,30 @@
       <version>1.54</version>
     </dependency>
     <dependency>
-        <groupId>${project.groupId}</groupId>
-    	<artifactId>azure-keyvault</artifactId>
-      	<version>${project.version}</version>
-    </dependency>
-    <dependency>
-        <groupId>${project.groupId}</groupId>
-    	<artifactId>azure-keyvault-cryptography</artifactId>
-      	<version>${project.version}</version>
-    </dependency>
-    <dependency>
-    	<groupId>com.microsoft.azure</groupId>
+    	<groupId>${project.groupId}</groupId>
     	<artifactId>azure-keyvault-core</artifactId>
-    	<version>1.0.0-SNAPSHOT</version>
+    	<version>${project.version}</version>
+    </dependency>
+    <dependency>
+    	<groupId>${project.groupId}</groupId>
+    	<artifactId>azure-keyvault-cryptography</artifactId>
+    	<version>${project.version}</version>
+    </dependency>
+    <dependency>
+    	<groupId>${project.groupId}</groupId>
+    	<artifactId>azure-keyvault</artifactId>
+    	<version>${project.version}</version>
     </dependency>
     <dependency>
     	<groupId>org.mockito</groupId>
     	<artifactId>mockito-core</artifactId>
     	<version>1.10.19</version>
+    	<scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>com.microsoft.azure</groupId>
+    	<artifactId>azure-client-authentication</artifactId>
+    	<version>1.0.0-beta2</version>
     	<scope>test</scope>
     </dependency>
   </dependencies>
