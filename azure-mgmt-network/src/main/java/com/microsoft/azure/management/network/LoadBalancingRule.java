@@ -113,7 +113,8 @@ public interface LoadBalancingRule extends
             Attachable.InDefinition<ParentT>,
             DefinitionStages.WithBackendPort<ParentT>,
             DefinitionStages.WithFloatingIp<ParentT>,
-            DefinitionStages.WithIdleTimeoutInMinutes<ParentT> {
+            DefinitionStages.WithIdleTimeoutInMinutes<ParentT>,
+            DefinitionStages.WithLoadDistribution<ParentT> {
         }
 
         /**
@@ -140,6 +141,19 @@ public interface LoadBalancingRule extends
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withIdleTimeoutInMinutes(int minutes);
+        }
+
+        /**
+         * The stage of a load balancing rule definition allowing to specify the load distribution.
+         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         */
+        interface WithLoadDistribution<ParentT> {
+            /**
+             * Specifies the load distribution mode.
+             * @param loadDistribution a supported load distribution mode
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withLoadDistribution(LoadDistribution loadDistribution);
         }
     }
 
@@ -216,6 +230,18 @@ public interface LoadBalancingRule extends
              */
             Update withIdleTimeoutInMinutes(int minutes);
         }
+
+        /**
+         * The stage of a load balancing rule update allowing to modify the load distribution.
+         */
+        interface WithLoadDistribution {
+            /**
+             * Specifies the load distribution mode.
+             * @param loadDistribution a supported load distribution mode
+             * @return the next stage of the definition
+             */
+            Update withLoadDistribution(LoadDistribution loadDistribution);
+        }
     }
 
     /**
@@ -227,7 +253,8 @@ public interface LoadBalancingRule extends
         UpdateStages.WithProtocol,
         UpdateStages.WithBackendPort,
         UpdateStages.WithFloatingIp,
-        UpdateStages.WithIdleTimeoutInMinutes {
+        UpdateStages.WithIdleTimeoutInMinutes,
+        UpdateStages.WithLoadDistribution {
     }
 
     /**
@@ -306,6 +333,19 @@ public interface LoadBalancingRule extends
             WithAttach<ParentT> withIdleTimeoutInMinutes(int minutes);
         }
 
+        /**
+         * The stage of a load balancing rule definition allowing to specify the load distribution.
+         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         */
+        interface WithLoadDistribution<ParentT> {
+            /**
+             * Specifies the load distribution mode.
+             * @param loadDistribution a supported load distribution mode
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withLoadDistribution(LoadDistribution loadDistribution);
+        }
+
         /** The final stage of the load balancing rule definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the load balancing rule definition
@@ -316,7 +356,8 @@ public interface LoadBalancingRule extends
             Attachable.InUpdate<ParentT>,
             UpdateDefinitionStages.WithBackendPort<ParentT>,
             UpdateDefinitionStages.WithFloatingIp<ParentT>,
-            UpdateDefinitionStages.WithIdleTimeoutInMinutes<ParentT> {
+            UpdateDefinitionStages.WithIdleTimeoutInMinutes<ParentT>,
+            UpdateDefinitionStages.WithLoadDistribution<ParentT> {
         }
     }
 

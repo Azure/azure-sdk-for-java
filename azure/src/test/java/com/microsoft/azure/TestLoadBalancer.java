@@ -18,6 +18,7 @@ import com.microsoft.azure.management.network.HttpProbe;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancers;
 import com.microsoft.azure.management.network.LoadBalancingRule;
+import com.microsoft.azure.management.network.LoadDistribution;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PublicIpAddress;
@@ -135,6 +136,7 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                     .withFrontendPort(81)
                     .withBackendPort(82)                    // Optionals
                     .withIdleTimeoutInMinutes(10)
+                    .withLoadDistribution(LoadDistribution.SOURCE_IP)
                     .attach()
                 .defineTcpProbe("tcp2")
                     .withPort(25)               // Required
@@ -179,6 +181,7 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                     .withFrontendPort(8080)
                     .withFloatingIp(true)
                     .withIdleTimeoutInMinutes(11)
+                    .withLoadDistribution(LoadDistribution.SOURCE_IPPROTOCOL)
                     .parent()
                 .defineLoadBalancingRule("rule3")
                     .withProtocol(TransportProtocol.UDP)

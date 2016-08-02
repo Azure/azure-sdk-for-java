@@ -105,11 +105,16 @@ class LoadBalancingRuleImpl
         return this;
     }
 
+    @Override
+    public LoadBalancingRuleImpl withLoadDistribution(LoadDistribution loadDistribution) {
+        this.inner().withLoadDistribution(loadDistribution);
+        return this;
+    }
+
     // Verbs
 
     @Override
     public LoadBalancerImpl attach() {
         return this.parent().withLoadBalancingRule(this);
     }
-
 }
