@@ -30,7 +30,7 @@ final class SubscriptionImpl extends
     private final SubscriptionsInner client;
 
     SubscriptionImpl(SubscriptionInner innerModel, final SubscriptionsInner client) {
-        super(innerModel.id(), innerModel);
+        super(innerModel);
         this.client = client;
     }
 

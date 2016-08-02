@@ -49,14 +49,14 @@ class NetworkSecurityGroupImpl
         this.rules = new ArrayList<>();
         if (this.inner().securityRules() != null) {
             for (SecurityRuleInner ruleInner : this.inner().securityRules()) {
-                this.rules.add(new NetworkSecurityRuleImpl(ruleInner.name(), ruleInner, this));
+                this.rules.add(new NetworkSecurityRuleImpl(ruleInner, this));
             }
         }
 
         this.defaultRules = new ArrayList<>();
         if (this.inner().defaultSecurityRules() != null) {
             for (SecurityRuleInner ruleInner : this.inner().defaultSecurityRules()) {
-                this.defaultRules.add(new NetworkSecurityRuleImpl(ruleInner.name(), ruleInner, this));
+                this.defaultRules.add(new NetworkSecurityRuleImpl(ruleInner, this));
             }
         }
     }
@@ -78,7 +78,7 @@ class NetworkSecurityGroupImpl
         SecurityRuleInner inner = new SecurityRuleInner();
         inner.withName(name);
         inner.withPriority(100); // Must be at least 100
-        return new NetworkSecurityRuleImpl(name, inner, this);
+        return new NetworkSecurityRuleImpl(inner, this);
     }
 
     @Override

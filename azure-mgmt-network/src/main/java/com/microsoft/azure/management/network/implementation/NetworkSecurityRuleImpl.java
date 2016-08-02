@@ -23,8 +23,8 @@ class NetworkSecurityRuleImpl
         NetworkSecurityRule.UpdateDefinition<NetworkSecurityGroup.Update>,
         NetworkSecurityRule.Update {
 
-    protected NetworkSecurityRuleImpl(String name, SecurityRuleInner inner, NetworkSecurityGroupImpl parent) {
-        super(name, inner, parent);
+    protected NetworkSecurityRuleImpl(SecurityRuleInner inner, NetworkSecurityGroupImpl parent) {
+        super(inner, parent);
     }
 
     // Getters

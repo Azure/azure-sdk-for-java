@@ -9,7 +9,7 @@ import com.microsoft.rest.ServiceCallback;
  *
  * @param <ResourceT> the type of the resource this group creates
  */
-public class CreatorTaskGroup<ResourceT> extends TaskGroupBase<ResourceT> {
+public class CreatorTaskGroup<ResourceT> extends TaskGroupBase<ResourceT, CreatorTaskItem<ResourceT>> {
     /**
      * Represents a type that know how to create resource.
      *
@@ -41,11 +41,11 @@ public class CreatorTaskGroup<ResourceT> extends TaskGroupBase<ResourceT> {
     /**
      * Creates CreatorTaskGroup.
      *
-     * @param rootCreatableId the id of the root creatable
+     * @param key the key of the root task
      * @param resourceCreator represents the resource creator that this group want to create ultimately
      */
-    public CreatorTaskGroup(String rootCreatableId, ResourceCreator<ResourceT> resourceCreator) {
-        this(rootCreatableId, new CreatorTaskItem<>(resourceCreator));
+    public CreatorTaskGroup(String key, ResourceCreator<ResourceT> resourceCreator) {
+        this(key, new CreatorTaskItem<>(resourceCreator));
     }
 
     /**
@@ -62,9 +62,9 @@ public class CreatorTaskGroup<ResourceT> extends TaskGroupBase<ResourceT> {
      * Gets a resource created by a creator task in this group.
      * <p>
      * This method can return null if the resource has not yet created that happens if the responsible task
-     * is not yet selected for execution or it's it progress
+     * is not yet selected for execution or it's it progress or provided key is invalid.
      *
-     * @param key the resource id
+     * @param key the resource key
      * @return the created resource
      */
     public ResourceT createdResource(String key) {

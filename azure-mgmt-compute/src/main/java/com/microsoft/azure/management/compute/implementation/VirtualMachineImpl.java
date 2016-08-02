@@ -1203,7 +1203,7 @@ class VirtualMachineImpl
         }
         this.dataDisks = new ArrayList<>();
         for (DataDisk dataDiskInner : this.storageProfile().dataDisks()) {
-            this.dataDisks().add(new DataDiskImpl(dataDiskInner.name(), dataDiskInner, this));
+            this.dataDisks().add(new DataDiskImpl(dataDiskInner, this));
         }
     }
 

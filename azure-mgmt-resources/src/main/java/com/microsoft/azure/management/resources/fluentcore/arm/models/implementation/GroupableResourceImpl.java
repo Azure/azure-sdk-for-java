@@ -37,10 +37,10 @@ public abstract class GroupableResourceImpl<
     private String groupName;
 
     protected GroupableResourceImpl(
-            String key,
+            String name,
             InnerModelT innerObject,
             ManagerT manager) {
-        super(key, innerObject);
+        super(name, innerObject);
         this.myManager = manager;
     }
 
@@ -100,7 +100,7 @@ public abstract class GroupableResourceImpl<
      */
     @SuppressWarnings("unchecked")
     public final FluentModelImplT withNewResourceGroup(Creatable<ResourceGroup> creatable) {
-        this.groupName = creatable.key();
+        this.groupName = creatable.name();
         this.creatableGroup = creatable;
         addCreatableDependency(creatable);
         return (FluentModelImplT) this;

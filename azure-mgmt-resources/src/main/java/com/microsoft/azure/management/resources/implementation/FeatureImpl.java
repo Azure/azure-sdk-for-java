@@ -18,7 +18,7 @@ final class FeatureImpl extends
         Feature {
 
     FeatureImpl(FeatureResultInner innerModel) {
-        super(innerModel.id(), innerModel);
+        super(innerModel);
     }
 
     @Override

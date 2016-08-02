@@ -49,7 +49,7 @@ class NetworkImpl
         this.subnets = new TreeMap<>();
         if (this.inner().subnets() != null) {
             for (SubnetInner subnetInner : this.inner().subnets()) {
-                SubnetImpl subnet = new SubnetImpl(subnetInner.name(), subnetInner, this);
+                SubnetImpl subnet = new SubnetImpl(subnetInner, this);
                 this.subnets.put(subnetInner.name(), subnet);
             }
         }
@@ -141,7 +141,7 @@ class NetworkImpl
     public SubnetImpl defineSubnet(String name) {
         SubnetInner inner = new SubnetInner();
         inner.withName(name);
-        return new SubnetImpl(name, inner, this);
+        return new SubnetImpl(inner, this);
     }
 
     // Getters

@@ -20,7 +20,7 @@ class VirtualMachineImageImpl
     private ImageReference imageReference;
 
     VirtualMachineImageImpl(Region location, String publisher, String offer, String sku, String version) {
-        super(null, null);
+        super(null);
         this.location = location;
         this.imageReference = new ImageReference();
         this.imageReference.withPublisher(publisher);
@@ -30,7 +30,7 @@ class VirtualMachineImageImpl
     }
 
     VirtualMachineImageImpl(Region location, String publisher, String offer, String sku, String version, VirtualMachineImageInner innerModel) {
-        super(innerModel.id(), innerModel);
+        super(innerModel);
         this.location = location;
         this.imageReference = new ImageReference();
         this.imageReference.withPublisher(publisher);

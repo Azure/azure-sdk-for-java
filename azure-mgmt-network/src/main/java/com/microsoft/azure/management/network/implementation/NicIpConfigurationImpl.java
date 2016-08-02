@@ -54,12 +54,11 @@ class NicIpConfigurationImpl
     // Reference to an existing load balancer whose back end pool is to be associated with this IP config
     private LoadBalancer loadBalancerToAssociate;
 
-    protected NicIpConfigurationImpl(String name,
-                                     NetworkInterfaceIPConfigurationInner inner,
+    protected NicIpConfigurationImpl(NetworkInterfaceIPConfigurationInner inner,
                                      NetworkInterfaceImpl parent,
                                      NetworkManager networkManager,
                                      final boolean isInCreateModel) {
-        super(name, inner, parent);
+        super(inner, parent);
         this.isInCreateMode = isInCreateModel;
         this.networkManager = networkManager;
     }
@@ -69,8 +68,7 @@ class NicIpConfigurationImpl
                                                                       final NetworkManager networkManager) {
         NetworkInterfaceIPConfigurationInner ipConfigurationInner = new NetworkInterfaceIPConfigurationInner();
         ipConfigurationInner.withName(name);
-        return new NicIpConfigurationImpl(name,
-                ipConfigurationInner,
+        return new NicIpConfigurationImpl(ipConfigurationInner,
                 parent,
                 networkManager,
                 true);

@@ -429,8 +429,7 @@ class NetworkInterfaceImpl
 
         this.nicIpConfigurations = new ArrayList<>();
         for (NetworkInterfaceIPConfigurationInner ipConfig : this.inner().ipConfigurations()) {
-            NicIpConfigurationImpl  nicIpConfiguration = new NicIpConfigurationImpl(ipConfig.name(),
-                    ipConfig,
+            NicIpConfigurationImpl  nicIpConfiguration = new NicIpConfigurationImpl(ipConfig,
                     this,
                     super.myManager,
                     false);

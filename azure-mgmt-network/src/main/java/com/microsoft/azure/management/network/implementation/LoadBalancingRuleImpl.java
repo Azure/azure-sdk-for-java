@@ -23,7 +23,7 @@ class LoadBalancingRuleImpl
         LoadBalancingRule.Update {
 
     protected LoadBalancingRuleImpl(String name, LoadBalancingRuleInner inner, LoadBalancerImpl parent) {
-        super(name, inner, parent);
+        super(inner, parent);
     }
 
     // Getters

@@ -27,7 +27,7 @@ class ProbeImpl
         HttpProbe.Update {
 
     protected ProbeImpl(String name, ProbeInner inner, LoadBalancerImpl parent) {
-        super(name, inner, parent);
+        super(inner, parent);
     }
 
     // Getters

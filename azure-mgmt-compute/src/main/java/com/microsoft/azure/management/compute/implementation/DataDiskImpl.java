@@ -24,8 +24,8 @@ class DataDiskImpl
         VirtualMachineDataDisk.UpdateDefinition<VirtualMachine.Update>,
         VirtualMachineDataDisk.Update {
 
-    protected DataDiskImpl(String name, DataDisk inner, VirtualMachineImpl parent) {
-        super(name, inner, parent);
+    protected DataDiskImpl(DataDisk inner, VirtualMachineImpl parent) {
+        super(inner, parent);
     }
 
     protected static DataDiskImpl prepareDataDisk(String name, DiskCreateOptionTypes createOption, VirtualMachineImpl parent) {
@@ -34,7 +34,7 @@ class DataDiskImpl
         dataDiskInner.withName(name);
         dataDiskInner.withCreateOption(createOption);
         dataDiskInner.withVhd(null);
-        return new DataDiskImpl(name, dataDiskInner, parent);
+        return new DataDiskImpl(dataDiskInner, parent);
     }
 
     protected static DataDiskImpl createNewDataDisk(int sizeInGB, VirtualMachineImpl parent) {

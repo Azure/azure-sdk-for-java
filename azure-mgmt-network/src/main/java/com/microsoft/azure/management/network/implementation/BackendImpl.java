@@ -16,7 +16,7 @@ class BackendImpl
     implements Backend {
 
     protected BackendImpl(String name, BackendAddressPoolInner inner, LoadBalancerImpl parent) {
-        super(name, inner, parent);
+        super(inner, parent);
     }
 
     // Getters

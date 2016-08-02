@@ -21,7 +21,7 @@ final class ProviderImpl extends
         Provider {
 
     ProviderImpl(ProviderInner provider) {
-        super(provider.id(), provider);
+        super(provider);
     }
 
     @Override
