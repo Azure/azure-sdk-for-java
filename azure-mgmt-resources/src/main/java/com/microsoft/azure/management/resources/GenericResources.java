@@ -7,7 +7,6 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
@@ -20,7 +19,6 @@ import java.util.List;
  */
 public interface GenericResources extends
         SupportsListingByGroup<GenericResource>,
-        SupportsGettingByGroup<GenericResource>,
         SupportsGettingById<GenericResource>,
         SupportsCreating<GenericResource.DefinitionBlank> {
     /**
@@ -36,7 +34,13 @@ public interface GenericResources extends
      * @throws IOException serialization failures
      * @throws CloudException failures thrown from Azure
      */
-    boolean checkExistence(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws IOException, CloudException;
+    boolean checkExistence(
+            String resourceGroupName,
+            String resourceProviderNamespace,
+            String parentResourcePath,
+            String resourceType,
+            String resourceName,
+            String apiVersion) throws IOException, CloudException;
 
     /**
      * Returns a resource belonging to a resource group.
@@ -51,7 +55,29 @@ public interface GenericResources extends
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      */
-    GenericResource get(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws CloudException, IOException;
+    GenericResource get(
+            String resourceGroupName,
+            String resourceProviderNamespace,
+            String parentResourcePath,
+            String resourceType,
+            String resourceName,
+            String apiVersion) throws CloudException, IOException;
+
+    /**
+     * Returns a resource belonging to a resource group.
+     * @param resourceGroupName the resource group name
+     * @param providerNamespace the provider namespace
+     * @param resourceType the resource type
+     * @param resourceName the name of the resource
+     * @return the generic resource
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws CloudException exception thrown from REST call
+     */
+    GenericResource get(
+            String resourceGroupName,
+            String providerNamespace,
+            String resourceType,
+            String resourceName) throws CloudException, IOException;
 
     /**
      * Move resources from one resource group to another.
