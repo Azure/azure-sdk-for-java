@@ -61,7 +61,6 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
-import retrofit2.http.Url;
 import retrofit2.Response;
 
 /**
@@ -123,8 +122,8 @@ public final class TasksImpl implements Tasks {
         Call<ResponseBody> terminate(@Path("jobId") String jobId, @Path("taskId") String taskId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
-        @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        @GET("{nextLink}")
+        Call<ResponseBody> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
     }
 
@@ -168,26 +167,19 @@ public final class TasksImpl implements Tasks {
      * @param jobId The id of the job to which the task is to be added.
      * @param task The task to be added.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall addAsync(String jobId, TaskAddParameter task, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> addAsync(String jobId, TaskAddParameter task, final ServiceCallback<Void> serviceCallback) {
         if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
         if (task == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter task is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter task is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(task, serviceCallback);
+        Validator.validate(task);
         final TaskAddOptions taskAddOptions = null;
         Integer timeout = null;
         String clientRequestId = null;
@@ -198,14 +190,21 @@ public final class TasksImpl implements Tasks {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.add(jobId, task, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(addDelegate(response));
+                    ServiceResponseWithHeaders<Void, TaskAddHeaders> clientResponse = addDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -266,27 +265,20 @@ public final class TasksImpl implements Tasks {
      * @param task The task to be added.
      * @param taskAddOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall addAsync(String jobId, TaskAddParameter task, TaskAddOptions taskAddOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> addAsync(String jobId, TaskAddParameter task, TaskAddOptions taskAddOptions, final ServiceCallback<Void> serviceCallback) {
         if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
         if (task == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter task is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter task is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(task, serviceCallback);
-        Validator.validate(taskAddOptions, serviceCallback);
+        Validator.validate(task);
+        Validator.validate(taskAddOptions);
         Integer timeout = null;
         if (taskAddOptions != null) {
             timeout = taskAddOptions.timeout();
@@ -308,14 +300,21 @@ public final class TasksImpl implements Tasks {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.add(jobId, task, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(addDelegate(response));
+                    ServiceResponseWithHeaders<Void, TaskAddHeaders> clientResponse = addDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -374,20 +373,14 @@ public final class TasksImpl implements Tasks {
      *
      * @param jobId The id of the job.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listAsync(final String jobId, final ListOperationCallback<CloudTask> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<PagedList<CloudTask>> listAsync(final String jobId, final ListOperationCallback<CloudTask> serviceCallback) {
         if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final TaskListOptions taskListOptions = null;
         String filter = null;
@@ -403,7 +396,7 @@ public final class TasksImpl implements Tasks {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.list(jobId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<PagedList<CloudTask>> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<List<CloudTask>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -417,7 +410,10 @@ public final class TasksImpl implements Tasks {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -502,22 +498,16 @@ public final class TasksImpl implements Tasks {
      * @param jobId The id of the job.
      * @param taskListOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listAsync(final String jobId, final TaskListOptions taskListOptions, final ListOperationCallback<CloudTask> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<PagedList<CloudTask>> listAsync(final String jobId, final TaskListOptions taskListOptions, final ListOperationCallback<CloudTask> serviceCallback) {
         if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(taskListOptions, serviceCallback);
+        Validator.validate(taskListOptions);
         String filter = null;
         if (taskListOptions != null) {
             filter = taskListOptions.filter();
@@ -555,7 +545,7 @@ public final class TasksImpl implements Tasks {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.list(jobId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<PagedList<CloudTask>> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<List<CloudTask>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -576,7 +566,10 @@ public final class TasksImpl implements Tasks {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -632,26 +625,19 @@ public final class TasksImpl implements Tasks {
      * @param jobId The id of the job to which the task collection is to be added.
      * @param value The collection of tasks to add.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall addCollectionAsync(String jobId, List<TaskAddParameter> value, final ServiceCallback<TaskAddCollectionResult> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<TaskAddCollectionResult> addCollectionAsync(String jobId, List<TaskAddParameter> value, final ServiceCallback<TaskAddCollectionResult> serviceCallback) {
         if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         if (value == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter value is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter value is required and cannot be null.");
         }
-        Validator.validate(value, serviceCallback);
+        Validator.validate(value);
         final TaskAddCollectionOptions taskAddCollectionOptions = null;
         Integer timeout = null;
         String clientRequestId = null;
@@ -664,14 +650,21 @@ public final class TasksImpl implements Tasks {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.addCollection(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, taskCollection, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<TaskAddCollectionResult> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<TaskAddCollectionResult>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(addCollectionDelegate(response));
+                    ServiceResponseWithHeaders<TaskAddCollectionResult, TaskAddCollectionHeaders> clientResponse = addCollectionDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -734,27 +727,20 @@ public final class TasksImpl implements Tasks {
      * @param value The collection of tasks to add.
      * @param taskAddCollectionOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall addCollectionAsync(String jobId, List<TaskAddParameter> value, TaskAddCollectionOptions taskAddCollectionOptions, final ServiceCallback<TaskAddCollectionResult> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<TaskAddCollectionResult> addCollectionAsync(String jobId, List<TaskAddParameter> value, TaskAddCollectionOptions taskAddCollectionOptions, final ServiceCallback<TaskAddCollectionResult> serviceCallback) {
         if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         if (value == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter value is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter value is required and cannot be null.");
         }
-        Validator.validate(value, serviceCallback);
-        Validator.validate(taskAddCollectionOptions, serviceCallback);
+        Validator.validate(value);
+        Validator.validate(taskAddCollectionOptions);
         Integer timeout = null;
         if (taskAddCollectionOptions != null) {
             timeout = taskAddCollectionOptions.timeout();
@@ -778,14 +764,21 @@ public final class TasksImpl implements Tasks {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.addCollection(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, taskCollection, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<TaskAddCollectionResult> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<TaskAddCollectionResult>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(addCollectionDelegate(response));
+                    ServiceResponseWithHeaders<TaskAddCollectionResult, TaskAddCollectionHeaders> clientResponse = addCollectionDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -850,24 +843,17 @@ public final class TasksImpl implements Tasks {
      * @param jobId The id of the job from which to delete the task.
      * @param taskId The id of the task to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteAsync(String jobId, String taskId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> deleteAsync(String jobId, String taskId, final ServiceCallback<Void> serviceCallback) {
         if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
         if (taskId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter taskId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter taskId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final TaskDeleteOptions taskDeleteOptions = null;
         Integer timeout = null;
@@ -891,14 +877,21 @@ public final class TasksImpl implements Tasks {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
         Call<ResponseBody> call = service.delete(jobId, taskId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteDelegate(response));
+                    ServiceResponseWithHeaders<Void, TaskDeleteHeaders> clientResponse = deleteDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -982,26 +975,19 @@ public final class TasksImpl implements Tasks {
      * @param taskId The id of the task to delete.
      * @param taskDeleteOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteAsync(String jobId, String taskId, TaskDeleteOptions taskDeleteOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> deleteAsync(String jobId, String taskId, TaskDeleteOptions taskDeleteOptions, final ServiceCallback<Void> serviceCallback) {
         if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
         if (taskId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter taskId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter taskId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(taskDeleteOptions, serviceCallback);
+        Validator.validate(taskDeleteOptions);
         Integer timeout = null;
         if (taskDeleteOptions != null) {
             timeout = taskDeleteOptions.timeout();
@@ -1047,14 +1033,21 @@ public final class TasksImpl implements Tasks {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
         Call<ResponseBody> call = service.delete(jobId, taskId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteDelegate(response));
+                    ServiceResponseWithHeaders<Void, TaskDeleteHeaders> clientResponse = deleteDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1121,24 +1114,17 @@ public final class TasksImpl implements Tasks {
      * @param jobId The id of the job that contains the task.
      * @param taskId The id of the task to get information about.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getAsync(String jobId, String taskId, final ServiceCallback<CloudTask> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<CloudTask> getAsync(String jobId, String taskId, final ServiceCallback<CloudTask> serviceCallback) {
         if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
         if (taskId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter taskId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter taskId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final TaskGetOptions taskGetOptions = null;
         String select = null;
@@ -1164,14 +1150,21 @@ public final class TasksImpl implements Tasks {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
         Call<ResponseBody> call = service.get(jobId, taskId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<CloudTask> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<CloudTask>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDelegate(response));
+                    ServiceResponseWithHeaders<CloudTask, TaskGetHeaders> clientResponse = getDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1263,26 +1256,19 @@ public final class TasksImpl implements Tasks {
      * @param taskId The id of the task to get information about.
      * @param taskGetOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getAsync(String jobId, String taskId, TaskGetOptions taskGetOptions, final ServiceCallback<CloudTask> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<CloudTask> getAsync(String jobId, String taskId, TaskGetOptions taskGetOptions, final ServiceCallback<CloudTask> serviceCallback) {
         if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
         if (taskId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter taskId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter taskId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(taskGetOptions, serviceCallback);
+        Validator.validate(taskGetOptions);
         String select = null;
         if (taskGetOptions != null) {
             select = taskGetOptions.select();
@@ -1336,14 +1322,21 @@ public final class TasksImpl implements Tasks {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
         Call<ResponseBody> call = service.get(jobId, taskId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<CloudTask> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<CloudTask>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDelegate(response));
+                    ServiceResponseWithHeaders<CloudTask, TaskGetHeaders> clientResponse = getDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1411,24 +1404,17 @@ public final class TasksImpl implements Tasks {
      * @param jobId The id of the job containing the task.
      * @param taskId The id of the task to update.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updateAsync(String jobId, String taskId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> updateAsync(String jobId, String taskId, final ServiceCallback<Void> serviceCallback) {
         if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
         if (taskId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter taskId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter taskId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final TaskConstraints constraints = null;
         final TaskUpdateOptions taskUpdateOptions = null;
@@ -1455,14 +1441,21 @@ public final class TasksImpl implements Tasks {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
         Call<ResponseBody> call = service.update(jobId, taskId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, taskUpdateParameter, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateDelegate(response));
+                    ServiceResponseWithHeaders<Void, TaskUpdateHeaders> clientResponse = updateDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1551,27 +1544,20 @@ public final class TasksImpl implements Tasks {
      * @param constraints Constraints that apply to this task. If omitted, the task is given the default constraints.
      * @param taskUpdateOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updateAsync(String jobId, String taskId, TaskConstraints constraints, TaskUpdateOptions taskUpdateOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> updateAsync(String jobId, String taskId, TaskConstraints constraints, TaskUpdateOptions taskUpdateOptions, final ServiceCallback<Void> serviceCallback) {
         if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
         if (taskId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter taskId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter taskId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(constraints, serviceCallback);
-        Validator.validate(taskUpdateOptions, serviceCallback);
+        Validator.validate(constraints);
+        Validator.validate(taskUpdateOptions);
         Integer timeout = null;
         if (taskUpdateOptions != null) {
             timeout = taskUpdateOptions.timeout();
@@ -1619,14 +1605,21 @@ public final class TasksImpl implements Tasks {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
         Call<ResponseBody> call = service.update(jobId, taskId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, taskUpdateParameter, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateDelegate(response));
+                    ServiceResponseWithHeaders<Void, TaskUpdateHeaders> clientResponse = updateDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1680,24 +1673,17 @@ public final class TasksImpl implements Tasks {
      * @param jobId The id of the job.
      * @param taskId The id of the task.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listSubtasksAsync(String jobId, String taskId, final ServiceCallback<CloudTaskListSubtasksResult> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<CloudTaskListSubtasksResult> listSubtasksAsync(String jobId, String taskId, final ServiceCallback<CloudTaskListSubtasksResult> serviceCallback) {
         if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
         if (taskId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter taskId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter taskId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final TaskListSubtasksOptions taskListSubtasksOptions = null;
         String select = null;
@@ -1710,14 +1696,21 @@ public final class TasksImpl implements Tasks {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.listSubtasks(jobId, taskId, this.client.apiVersion(), this.client.acceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<CloudTaskListSubtasksResult> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<CloudTaskListSubtasksResult>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSubtasksDelegate(response));
+                    ServiceResponseWithHeaders<CloudTaskListSubtasksResult, TaskListSubtasksHeaders> clientResponse = listSubtasksDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1781,26 +1774,19 @@ public final class TasksImpl implements Tasks {
      * @param taskId The id of the task.
      * @param taskListSubtasksOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listSubtasksAsync(String jobId, String taskId, TaskListSubtasksOptions taskListSubtasksOptions, final ServiceCallback<CloudTaskListSubtasksResult> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<CloudTaskListSubtasksResult> listSubtasksAsync(String jobId, String taskId, TaskListSubtasksOptions taskListSubtasksOptions, final ServiceCallback<CloudTaskListSubtasksResult> serviceCallback) {
         if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
         if (taskId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter taskId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter taskId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(taskListSubtasksOptions, serviceCallback);
+        Validator.validate(taskListSubtasksOptions);
         String select = null;
         if (taskListSubtasksOptions != null) {
             select = taskListSubtasksOptions.select();
@@ -1826,14 +1812,21 @@ public final class TasksImpl implements Tasks {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.listSubtasks(jobId, taskId, this.client.apiVersion(), this.client.acceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<CloudTaskListSubtasksResult> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<CloudTaskListSubtasksResult>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSubtasksDelegate(response));
+                    ServiceResponseWithHeaders<CloudTaskListSubtasksResult, TaskListSubtasksHeaders> clientResponse = listSubtasksDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1898,24 +1891,17 @@ public final class TasksImpl implements Tasks {
      * @param jobId The id of the job containing the task.
      * @param taskId The id of the task to terminate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall terminateAsync(String jobId, String taskId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> terminateAsync(String jobId, String taskId, final ServiceCallback<Void> serviceCallback) {
         if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
         if (taskId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter taskId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter taskId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final TaskTerminateOptions taskTerminateOptions = null;
         Integer timeout = null;
@@ -1939,14 +1925,21 @@ public final class TasksImpl implements Tasks {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
         Call<ResponseBody> call = service.terminate(jobId, taskId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(terminateDelegate(response));
+                    ServiceResponseWithHeaders<Void, TaskTerminateHeaders> clientResponse = terminateDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2030,26 +2023,19 @@ public final class TasksImpl implements Tasks {
      * @param taskId The id of the task to terminate.
      * @param taskTerminateOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall terminateAsync(String jobId, String taskId, TaskTerminateOptions taskTerminateOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> terminateAsync(String jobId, String taskId, TaskTerminateOptions taskTerminateOptions, final ServiceCallback<Void> serviceCallback) {
         if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
         if (taskId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter taskId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter taskId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(taskTerminateOptions, serviceCallback);
+        Validator.validate(taskTerminateOptions);
         Integer timeout = null;
         if (taskTerminateOptions != null) {
             timeout = taskTerminateOptions.timeout();
@@ -2095,14 +2081,21 @@ public final class TasksImpl implements Tasks {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
         Call<ResponseBody> call = service.terminate(jobId, taskId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(terminateDelegate(response));
+                    ServiceResponseWithHeaders<Void, TaskTerminateHeaders> clientResponse = terminateDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2147,16 +2140,11 @@ public final class TasksImpl implements Tasks {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<CloudTask> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<PageImpl<CloudTask>> listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<CloudTask> serviceCallback) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         final TaskListNextOptions taskListNextOptions = null;
         String clientRequestId = null;
@@ -2181,7 +2169,10 @@ public final class TasksImpl implements Tasks {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2230,18 +2221,13 @@ public final class TasksImpl implements Tasks {
      * @param taskListNextOptions Additional parameters for the operation
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listNextAsync(final String nextPageLink, final TaskListNextOptions taskListNextOptions, final ServiceCall serviceCall, final ListOperationCallback<CloudTask> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<PageImpl<CloudTask>> listNextAsync(final String nextPageLink, final TaskListNextOptions taskListNextOptions, final ServiceCall serviceCall, final ListOperationCallback<CloudTask> serviceCallback) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Validator.validate(taskListNextOptions, serviceCallback);
+        Validator.validate(taskListNextOptions);
         String clientRequestId = null;
         if (taskListNextOptions != null) {
             clientRequestId = taskListNextOptions.clientRequestId();
@@ -2273,7 +2259,10 @@ public final class TasksImpl implements Tasks {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });

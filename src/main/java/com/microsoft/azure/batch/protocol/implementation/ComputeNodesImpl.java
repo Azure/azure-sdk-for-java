@@ -72,7 +72,6 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.Streaming;
-import retrofit2.http.Url;
 import retrofit2.Response;
 
 /**
@@ -147,8 +146,8 @@ public final class ComputeNodesImpl implements ComputeNodes {
         Call<ResponseBody> list(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("$select") String select, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
-        @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        @GET("{nextLink}")
+        Call<ResponseBody> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
     }
 
@@ -197,30 +196,22 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param nodeId The id of the machine on which you want to create a user account.
      * @param user The user account to be created.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall addUserAsync(String poolId, String nodeId, ComputeNodeUser user, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> addUserAsync(String poolId, String nodeId, ComputeNodeUser user, final ServiceCallback<Void> serviceCallback) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
         }
         if (user == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter user is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter user is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(user, serviceCallback);
+        Validator.validate(user);
         final ComputeNodeAddUserOptions computeNodeAddUserOptions = null;
         Integer timeout = null;
         String clientRequestId = null;
@@ -231,14 +222,21 @@ public final class ComputeNodesImpl implements ComputeNodes {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.addUser(poolId, nodeId, user, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(addUserDelegate(response));
+                    ServiceResponseWithHeaders<Void, ComputeNodeAddUserHeaders> clientResponse = addUserDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -304,31 +302,23 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param user The user account to be created.
      * @param computeNodeAddUserOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall addUserAsync(String poolId, String nodeId, ComputeNodeUser user, ComputeNodeAddUserOptions computeNodeAddUserOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> addUserAsync(String poolId, String nodeId, ComputeNodeUser user, ComputeNodeAddUserOptions computeNodeAddUserOptions, final ServiceCallback<Void> serviceCallback) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
         }
         if (user == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter user is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter user is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(user, serviceCallback);
-        Validator.validate(computeNodeAddUserOptions, serviceCallback);
+        Validator.validate(user);
+        Validator.validate(computeNodeAddUserOptions);
         Integer timeout = null;
         if (computeNodeAddUserOptions != null) {
             timeout = computeNodeAddUserOptions.timeout();
@@ -350,14 +340,21 @@ public final class ComputeNodesImpl implements ComputeNodes {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.addUser(poolId, nodeId, user, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(addUserDelegate(response));
+                    ServiceResponseWithHeaders<Void, ComputeNodeAddUserHeaders> clientResponse = addUserDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -415,28 +412,20 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param nodeId The id of the machine on which you want to delete a user account.
      * @param userName The name of the user account to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteUserAsync(String poolId, String nodeId, String userName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> deleteUserAsync(String poolId, String nodeId, String userName, final ServiceCallback<Void> serviceCallback) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
         }
         if (userName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter userName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter userName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final ComputeNodeDeleteUserOptions computeNodeDeleteUserOptions = null;
         Integer timeout = null;
@@ -448,14 +437,21 @@ public final class ComputeNodesImpl implements ComputeNodes {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.deleteUser(poolId, nodeId, userName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteUserDelegate(response));
+                    ServiceResponseWithHeaders<Void, ComputeNodeDeleteUserHeaders> clientResponse = deleteUserDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -520,30 +516,22 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param userName The name of the user account to delete.
      * @param computeNodeDeleteUserOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteUserAsync(String poolId, String nodeId, String userName, ComputeNodeDeleteUserOptions computeNodeDeleteUserOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> deleteUserAsync(String poolId, String nodeId, String userName, ComputeNodeDeleteUserOptions computeNodeDeleteUserOptions, final ServiceCallback<Void> serviceCallback) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
         }
         if (userName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter userName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter userName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(computeNodeDeleteUserOptions, serviceCallback);
+        Validator.validate(computeNodeDeleteUserOptions);
         Integer timeout = null;
         if (computeNodeDeleteUserOptions != null) {
             timeout = computeNodeDeleteUserOptions.timeout();
@@ -565,14 +553,21 @@ public final class ComputeNodesImpl implements ComputeNodes {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.deleteUser(poolId, nodeId, userName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteUserDelegate(response));
+                    ServiceResponseWithHeaders<Void, ComputeNodeDeleteUserHeaders> clientResponse = deleteUserDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -636,34 +631,25 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param userName The name of the user account to update.
      * @param nodeUpdateUserParameter The parameters for the request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updateUserAsync(String poolId, String nodeId, String userName, NodeUpdateUserParameter nodeUpdateUserParameter, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> updateUserAsync(String poolId, String nodeId, String userName, NodeUpdateUserParameter nodeUpdateUserParameter, final ServiceCallback<Void> serviceCallback) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
         }
         if (userName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter userName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter userName is required and cannot be null.");
         }
         if (nodeUpdateUserParameter == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeUpdateUserParameter is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nodeUpdateUserParameter is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(nodeUpdateUserParameter, serviceCallback);
+        Validator.validate(nodeUpdateUserParameter);
         final ComputeNodeUpdateUserOptions computeNodeUpdateUserOptions = null;
         Integer timeout = null;
         String clientRequestId = null;
@@ -674,14 +660,21 @@ public final class ComputeNodesImpl implements ComputeNodes {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.updateUser(poolId, nodeId, userName, nodeUpdateUserParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateUserDelegate(response));
+                    ServiceResponseWithHeaders<Void, ComputeNodeUpdateUserHeaders> clientResponse = updateUserDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -752,35 +745,26 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param nodeUpdateUserParameter The parameters for the request.
      * @param computeNodeUpdateUserOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updateUserAsync(String poolId, String nodeId, String userName, NodeUpdateUserParameter nodeUpdateUserParameter, ComputeNodeUpdateUserOptions computeNodeUpdateUserOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> updateUserAsync(String poolId, String nodeId, String userName, NodeUpdateUserParameter nodeUpdateUserParameter, ComputeNodeUpdateUserOptions computeNodeUpdateUserOptions, final ServiceCallback<Void> serviceCallback) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
         }
         if (userName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter userName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter userName is required and cannot be null.");
         }
         if (nodeUpdateUserParameter == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeUpdateUserParameter is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nodeUpdateUserParameter is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(nodeUpdateUserParameter, serviceCallback);
-        Validator.validate(computeNodeUpdateUserOptions, serviceCallback);
+        Validator.validate(nodeUpdateUserParameter);
+        Validator.validate(computeNodeUpdateUserOptions);
         Integer timeout = null;
         if (computeNodeUpdateUserOptions != null) {
             timeout = computeNodeUpdateUserOptions.timeout();
@@ -802,14 +786,21 @@ public final class ComputeNodesImpl implements ComputeNodes {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.updateUser(poolId, nodeId, userName, nodeUpdateUserParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateUserDelegate(response));
+                    ServiceResponseWithHeaders<Void, ComputeNodeUpdateUserHeaders> clientResponse = updateUserDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -863,24 +854,17 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param poolId The id of the pool that contains the compute node.
      * @param nodeId The id of the compute node that you want to get information about.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getAsync(String poolId, String nodeId, final ServiceCallback<ComputeNode> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<ComputeNode> getAsync(String poolId, String nodeId, final ServiceCallback<ComputeNode> serviceCallback) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final ComputeNodeGetOptions computeNodeGetOptions = null;
         String select = null;
@@ -893,14 +877,21 @@ public final class ComputeNodesImpl implements ComputeNodes {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.get(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<ComputeNode> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<ComputeNode>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDelegate(response));
+                    ServiceResponseWithHeaders<ComputeNode, ComputeNodeGetHeaders> clientResponse = getDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -964,26 +955,19 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param nodeId The id of the compute node that you want to get information about.
      * @param computeNodeGetOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getAsync(String poolId, String nodeId, ComputeNodeGetOptions computeNodeGetOptions, final ServiceCallback<ComputeNode> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<ComputeNode> getAsync(String poolId, String nodeId, ComputeNodeGetOptions computeNodeGetOptions, final ServiceCallback<ComputeNode> serviceCallback) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(computeNodeGetOptions, serviceCallback);
+        Validator.validate(computeNodeGetOptions);
         String select = null;
         if (computeNodeGetOptions != null) {
             select = computeNodeGetOptions.select();
@@ -1009,14 +993,21 @@ public final class ComputeNodesImpl implements ComputeNodes {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.get(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<ComputeNode> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<ComputeNode>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDelegate(response));
+                    ServiceResponseWithHeaders<ComputeNode, ComputeNodeGetHeaders> clientResponse = getDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1072,24 +1063,17 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param poolId The id of the pool that contains the compute node.
      * @param nodeId The id of the compute node that you want to restart.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall rebootAsync(String poolId, String nodeId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> rebootAsync(String poolId, String nodeId, final ServiceCallback<Void> serviceCallback) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final ComputeNodeRebootOption nodeRebootOption = null;
         final ComputeNodeRebootOptions computeNodeRebootOptions = null;
@@ -1104,14 +1088,21 @@ public final class ComputeNodesImpl implements ComputeNodes {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.reboot(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, nodeRebootParameter, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(rebootDelegate(response));
+                    ServiceResponseWithHeaders<Void, ComputeNodeRebootHeaders> clientResponse = rebootDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1178,26 +1169,19 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param nodeRebootOption When to reboot the compute node and what to do with currently running tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion', 'retaineddata'
      * @param computeNodeRebootOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall rebootAsync(String poolId, String nodeId, ComputeNodeRebootOption nodeRebootOption, ComputeNodeRebootOptions computeNodeRebootOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> rebootAsync(String poolId, String nodeId, ComputeNodeRebootOption nodeRebootOption, ComputeNodeRebootOptions computeNodeRebootOptions, final ServiceCallback<Void> serviceCallback) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(computeNodeRebootOptions, serviceCallback);
+        Validator.validate(computeNodeRebootOptions);
         Integer timeout = null;
         if (computeNodeRebootOptions != null) {
             timeout = computeNodeRebootOptions.timeout();
@@ -1224,14 +1208,21 @@ public final class ComputeNodesImpl implements ComputeNodes {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.reboot(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, nodeRebootParameter, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(rebootDelegate(response));
+                    ServiceResponseWithHeaders<Void, ComputeNodeRebootHeaders> clientResponse = rebootDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1287,24 +1278,17 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param poolId The id of the pool that contains the compute node.
      * @param nodeId The id of the compute node that you want to restart.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall reimageAsync(String poolId, String nodeId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> reimageAsync(String poolId, String nodeId, final ServiceCallback<Void> serviceCallback) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final ComputeNodeReimageOption nodeReimageOption = null;
         final ComputeNodeReimageOptions computeNodeReimageOptions = null;
@@ -1319,14 +1303,21 @@ public final class ComputeNodesImpl implements ComputeNodes {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.reimage(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, nodeReimageParameter, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(reimageDelegate(response));
+                    ServiceResponseWithHeaders<Void, ComputeNodeReimageHeaders> clientResponse = reimageDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1393,26 +1384,19 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param nodeReimageOption When to reimage the compute node and what to do with currently running tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion', 'retaineddata'
      * @param computeNodeReimageOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall reimageAsync(String poolId, String nodeId, ComputeNodeReimageOption nodeReimageOption, ComputeNodeReimageOptions computeNodeReimageOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> reimageAsync(String poolId, String nodeId, ComputeNodeReimageOption nodeReimageOption, ComputeNodeReimageOptions computeNodeReimageOptions, final ServiceCallback<Void> serviceCallback) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(computeNodeReimageOptions, serviceCallback);
+        Validator.validate(computeNodeReimageOptions);
         Integer timeout = null;
         if (computeNodeReimageOptions != null) {
             timeout = computeNodeReimageOptions.timeout();
@@ -1439,14 +1423,21 @@ public final class ComputeNodesImpl implements ComputeNodes {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.reimage(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, nodeReimageParameter, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(reimageDelegate(response));
+                    ServiceResponseWithHeaders<Void, ComputeNodeReimageHeaders> clientResponse = reimageDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1502,24 +1493,17 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param poolId The id of the pool that contains the compute node.
      * @param nodeId The id of the compute node on which you want to disable task scheduling.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall disableSchedulingAsync(String poolId, String nodeId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> disableSchedulingAsync(String poolId, String nodeId, final ServiceCallback<Void> serviceCallback) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final DisableComputeNodeSchedulingOption nodeDisableSchedulingOption = null;
         final ComputeNodeDisableSchedulingOptions computeNodeDisableSchedulingOptions = null;
@@ -1534,14 +1518,21 @@ public final class ComputeNodesImpl implements ComputeNodes {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.disableScheduling(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, nodeDisableSchedulingParameter, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(disableSchedulingDelegate(response));
+                    ServiceResponseWithHeaders<Void, ComputeNodeDisableSchedulingHeaders> clientResponse = disableSchedulingDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1608,26 +1599,19 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param nodeDisableSchedulingOption What to do with currently running tasks when disable task scheduling on the compute node. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion'
      * @param computeNodeDisableSchedulingOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall disableSchedulingAsync(String poolId, String nodeId, DisableComputeNodeSchedulingOption nodeDisableSchedulingOption, ComputeNodeDisableSchedulingOptions computeNodeDisableSchedulingOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> disableSchedulingAsync(String poolId, String nodeId, DisableComputeNodeSchedulingOption nodeDisableSchedulingOption, ComputeNodeDisableSchedulingOptions computeNodeDisableSchedulingOptions, final ServiceCallback<Void> serviceCallback) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(computeNodeDisableSchedulingOptions, serviceCallback);
+        Validator.validate(computeNodeDisableSchedulingOptions);
         Integer timeout = null;
         if (computeNodeDisableSchedulingOptions != null) {
             timeout = computeNodeDisableSchedulingOptions.timeout();
@@ -1654,14 +1638,21 @@ public final class ComputeNodesImpl implements ComputeNodes {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.disableScheduling(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, nodeDisableSchedulingParameter, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(disableSchedulingDelegate(response));
+                    ServiceResponseWithHeaders<Void, ComputeNodeDisableSchedulingHeaders> clientResponse = disableSchedulingDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1714,24 +1705,17 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param poolId The id of the pool that contains the compute node.
      * @param nodeId The id of the compute node on which you want to enable task scheduling.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall enableSchedulingAsync(String poolId, String nodeId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> enableSchedulingAsync(String poolId, String nodeId, final ServiceCallback<Void> serviceCallback) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final ComputeNodeEnableSchedulingOptions computeNodeEnableSchedulingOptions = null;
         Integer timeout = null;
@@ -1743,14 +1727,21 @@ public final class ComputeNodesImpl implements ComputeNodes {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.enableScheduling(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(enableSchedulingDelegate(response));
+                    ServiceResponseWithHeaders<Void, ComputeNodeEnableSchedulingHeaders> clientResponse = enableSchedulingDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1810,26 +1801,19 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param nodeId The id of the compute node on which you want to enable task scheduling.
      * @param computeNodeEnableSchedulingOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall enableSchedulingAsync(String poolId, String nodeId, ComputeNodeEnableSchedulingOptions computeNodeEnableSchedulingOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> enableSchedulingAsync(String poolId, String nodeId, ComputeNodeEnableSchedulingOptions computeNodeEnableSchedulingOptions, final ServiceCallback<Void> serviceCallback) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(computeNodeEnableSchedulingOptions, serviceCallback);
+        Validator.validate(computeNodeEnableSchedulingOptions);
         Integer timeout = null;
         if (computeNodeEnableSchedulingOptions != null) {
             timeout = computeNodeEnableSchedulingOptions.timeout();
@@ -1851,14 +1835,21 @@ public final class ComputeNodesImpl implements ComputeNodes {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.enableScheduling(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(enableSchedulingDelegate(response));
+                    ServiceResponseWithHeaders<Void, ComputeNodeEnableSchedulingHeaders> clientResponse = enableSchedulingDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1911,24 +1902,17 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param poolId The id of the pool that contains the compute node.
      * @param nodeId The id of the compute node for which to obtain the remote login settings.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getRemoteLoginSettingsAsync(String poolId, String nodeId, final ServiceCallback<ComputeNodeGetRemoteLoginSettingsResult> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<ComputeNodeGetRemoteLoginSettingsResult> getRemoteLoginSettingsAsync(String poolId, String nodeId, final ServiceCallback<ComputeNodeGetRemoteLoginSettingsResult> serviceCallback) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final ComputeNodeGetRemoteLoginSettingsOptions computeNodeGetRemoteLoginSettingsOptions = null;
         Integer timeout = null;
@@ -1940,14 +1924,21 @@ public final class ComputeNodesImpl implements ComputeNodes {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.getRemoteLoginSettings(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<ComputeNodeGetRemoteLoginSettingsResult> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<ComputeNodeGetRemoteLoginSettingsResult>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getRemoteLoginSettingsDelegate(response));
+                    ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders> clientResponse = getRemoteLoginSettingsDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2007,26 +1998,19 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param nodeId The id of the compute node for which to obtain the remote login settings.
      * @param computeNodeGetRemoteLoginSettingsOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getRemoteLoginSettingsAsync(String poolId, String nodeId, ComputeNodeGetRemoteLoginSettingsOptions computeNodeGetRemoteLoginSettingsOptions, final ServiceCallback<ComputeNodeGetRemoteLoginSettingsResult> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<ComputeNodeGetRemoteLoginSettingsResult> getRemoteLoginSettingsAsync(String poolId, String nodeId, ComputeNodeGetRemoteLoginSettingsOptions computeNodeGetRemoteLoginSettingsOptions, final ServiceCallback<ComputeNodeGetRemoteLoginSettingsResult> serviceCallback) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(computeNodeGetRemoteLoginSettingsOptions, serviceCallback);
+        Validator.validate(computeNodeGetRemoteLoginSettingsOptions);
         Integer timeout = null;
         if (computeNodeGetRemoteLoginSettingsOptions != null) {
             timeout = computeNodeGetRemoteLoginSettingsOptions.timeout();
@@ -2048,14 +2032,21 @@ public final class ComputeNodesImpl implements ComputeNodes {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.getRemoteLoginSettings(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<ComputeNodeGetRemoteLoginSettingsResult> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<ComputeNodeGetRemoteLoginSettingsResult>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getRemoteLoginSettingsDelegate(response));
+                    ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders> clientResponse = getRemoteLoginSettingsDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2108,24 +2099,17 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param poolId The id of the pool that contains the compute node.
      * @param nodeId The id of the compute node for which you want to get the Remote Desktop Protocol file.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getRemoteDesktopAsync(String poolId, String nodeId, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<InputStream> getRemoteDesktopAsync(String poolId, String nodeId, final ServiceCallback<InputStream> serviceCallback) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final ComputeNodeGetRemoteDesktopOptions computeNodeGetRemoteDesktopOptions = null;
         Integer timeout = null;
@@ -2137,14 +2121,21 @@ public final class ComputeNodesImpl implements ComputeNodes {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.getRemoteDesktop(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<InputStream> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getRemoteDesktopDelegate(response));
+                    ServiceResponseWithHeaders<InputStream, ComputeNodeGetRemoteDesktopHeaders> clientResponse = getRemoteDesktopDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2204,26 +2195,19 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param nodeId The id of the compute node for which you want to get the Remote Desktop Protocol file.
      * @param computeNodeGetRemoteDesktopOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getRemoteDesktopAsync(String poolId, String nodeId, ComputeNodeGetRemoteDesktopOptions computeNodeGetRemoteDesktopOptions, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<InputStream> getRemoteDesktopAsync(String poolId, String nodeId, ComputeNodeGetRemoteDesktopOptions computeNodeGetRemoteDesktopOptions, final ServiceCallback<InputStream> serviceCallback) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(computeNodeGetRemoteDesktopOptions, serviceCallback);
+        Validator.validate(computeNodeGetRemoteDesktopOptions);
         Integer timeout = null;
         if (computeNodeGetRemoteDesktopOptions != null) {
             timeout = computeNodeGetRemoteDesktopOptions.timeout();
@@ -2245,14 +2229,21 @@ public final class ComputeNodesImpl implements ComputeNodes {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.getRemoteDesktop(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<InputStream> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getRemoteDesktopDelegate(response));
+                    ServiceResponseWithHeaders<InputStream, ComputeNodeGetRemoteDesktopHeaders> clientResponse = getRemoteDesktopDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2310,20 +2301,14 @@ public final class ComputeNodesImpl implements ComputeNodes {
      *
      * @param poolId The id of the pool from which you want to list nodes.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listAsync(final String poolId, final ListOperationCallback<ComputeNode> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<PagedList<ComputeNode>> listAsync(final String poolId, final ListOperationCallback<ComputeNode> serviceCallback) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final ComputeNodeListOptions computeNodeListOptions = null;
         String filter = null;
@@ -2338,7 +2323,7 @@ public final class ComputeNodesImpl implements ComputeNodes {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.list(poolId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<PagedList<ComputeNode>> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<List<ComputeNode>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -2352,7 +2337,10 @@ public final class ComputeNodesImpl implements ComputeNodes {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2433,22 +2421,16 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param poolId The id of the pool from which you want to list nodes.
      * @param computeNodeListOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listAsync(final String poolId, final ComputeNodeListOptions computeNodeListOptions, final ListOperationCallback<ComputeNode> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<PagedList<ComputeNode>> listAsync(final String poolId, final ComputeNodeListOptions computeNodeListOptions, final ListOperationCallback<ComputeNode> serviceCallback) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(computeNodeListOptions, serviceCallback);
+        Validator.validate(computeNodeListOptions);
         String filter = null;
         if (computeNodeListOptions != null) {
             filter = computeNodeListOptions.filter();
@@ -2482,7 +2464,7 @@ public final class ComputeNodesImpl implements ComputeNodes {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.list(poolId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<PagedList<ComputeNode>> serviceCall = new ServiceCall<>(call);
         call.enqueue(new ServiceResponseCallback<List<ComputeNode>>(serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -2503,7 +2485,10 @@ public final class ComputeNodesImpl implements ComputeNodes {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2548,16 +2533,11 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<ComputeNode> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<PageImpl<ComputeNode>> listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<ComputeNode> serviceCallback) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         final ComputeNodeListNextOptions computeNodeListNextOptions = null;
         String clientRequestId = null;
@@ -2582,7 +2562,10 @@ public final class ComputeNodesImpl implements ComputeNodes {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2631,18 +2614,13 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param computeNodeListNextOptions Additional parameters for the operation
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listNextAsync(final String nextPageLink, final ComputeNodeListNextOptions computeNodeListNextOptions, final ServiceCall serviceCall, final ListOperationCallback<ComputeNode> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<PageImpl<ComputeNode>> listNextAsync(final String nextPageLink, final ComputeNodeListNextOptions computeNodeListNextOptions, final ServiceCall serviceCall, final ListOperationCallback<ComputeNode> serviceCallback) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Validator.validate(computeNodeListNextOptions, serviceCallback);
+        Validator.validate(computeNodeListNextOptions);
         String clientRequestId = null;
         if (computeNodeListNextOptions != null) {
             clientRequestId = computeNodeListNextOptions.clientRequestId();
@@ -2674,7 +2652,10 @@ public final class ComputeNodesImpl implements ComputeNodes {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
