@@ -6,11 +6,7 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.management.network.NetworkSecurityGroups;
-import com.microsoft.azure.management.network.LoadBalancers;
-import com.microsoft.azure.management.network.NetworkInterfaces;
-import com.microsoft.azure.management.network.Networks;
-import com.microsoft.azure.management.network.PublicIpAddresses;
+import com.microsoft.azure.management.network.*;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
@@ -28,6 +24,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
     private NetworkSecurityGroups networkSecurityGroups;
     private NetworkInterfaces networkInterfaces;
     private LoadBalancers loadBalancers;
+    private ApplicationGateways applicationGateways;
 
     /**
      * Get a Configurable instance that can be used to create {@link NetworkManager}
@@ -154,5 +151,17 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
                     this);
         }
         return this.loadBalancers;
+    }
+
+    /**
+     * @return entry point to application gateway management
+     */
+    public ApplicationGateways applicationGateways() {
+        if (this.applicationGateways == null) {
+            this.applicationGateways = new ApplicationGatewaysImpl(
+                    super.innerManagementClient,
+                    this);
+        }
+        return this.applicationGateways;
     }
  }

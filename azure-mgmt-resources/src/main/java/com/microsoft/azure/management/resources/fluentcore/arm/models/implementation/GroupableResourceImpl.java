@@ -44,6 +44,15 @@ public abstract class GroupableResourceImpl<
         this.myManager = manager;
     }
 
+    // Helpers
+
+    protected String resourceIdBase() {
+        return new StringBuilder()
+                .append("/subscriptions/").append(this.myManager.subscriptionId())
+                .append("/resourceGroups/").append(this.resourceGroupName())
+                .toString();
+    }
+
     /*******************************************
      * Getters.
      *******************************************/
