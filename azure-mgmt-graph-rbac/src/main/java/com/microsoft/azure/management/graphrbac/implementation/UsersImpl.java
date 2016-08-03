@@ -59,7 +59,7 @@ class UsersImpl
     }
 
     @Override
-    public UserImpl getByName(String upnOrId) throws CloudException, IOException {
+    public UserImpl getByObjectId(String upnOrId) throws CloudException, IOException {
         return new UserImpl(innerCollection.get(upnOrId).getBody(), innerCollection);
     }
 }

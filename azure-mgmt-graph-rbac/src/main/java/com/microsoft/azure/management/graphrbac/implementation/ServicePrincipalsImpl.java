@@ -59,7 +59,7 @@ class ServicePrincipalsImpl
     }
 
     @Override
-    public ServicePrincipalImpl getByName(String objectId) throws CloudException, IOException {
+    public ServicePrincipalImpl getByObjectId(String objectId) throws CloudException, IOException {
         return new ServicePrincipalImpl(innerCollection.get(objectId).getBody(), innerCollection);
     }
 }
