@@ -43,8 +43,8 @@ public class CertificateBundle {
     /**
      * Thumbprint of the certificate.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Base64Url x5t;
+    @JsonProperty(value = "x5t", access = JsonProperty.Access.WRITE_ONLY)
+    private Base64Url x509Thumbprint;
 
     /**
      * The management policy.
@@ -100,15 +100,15 @@ public class CertificateBundle {
     }
 
     /**
-     * Get the x5t value.
+     * Get the x509Thumbprint value.
      *
-     * @return the x5t value
+     * @return the x509Thumbprint value
      */
-    public byte[] x5t() {
-        if (this.x5t == null) {
+    public byte[] x509Thumbprint() {
+        if (this.x509Thumbprint == null) {
             return null;
         }
-        return this.x5t.getDecodedBytes();
+        return this.x509Thumbprint.getDecodedBytes();
     }
 
     /**

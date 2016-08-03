@@ -15,13 +15,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class KeyCreateParameters {
     /**
-     * The type of key to create. For valid key types, see WebKeyTypes.
+     * The type of key to create. Valid key types, see JsonWebKeyType.
+     * Possible values include: 'EC', 'RSA', 'RSA-HSM', 'oct'.
      */
     @JsonProperty(required = true)
     private String kty;
 
     /**
-     * Size of the key.
+     * The key size in bytes. e.g. 1024 or 2048.
      */
     @JsonProperty(value = "key_size")
     private Integer keySize;

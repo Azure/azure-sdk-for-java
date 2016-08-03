@@ -15,7 +15,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class KeyVerifyParameters {
     /**
      * The signing/verification algorithm. For more information on possible
-     * algorithm types, see JsonWebKeySignatureAlgorithm.
+     * algorithm types, see JsonWebKeySignatureAlgorithm. Possible values
+     * include: 'RS256', 'RS384', 'RS512', 'RSNULL'.
      */
     @JsonProperty(value = "alg", required = true)
     private String algorithm;

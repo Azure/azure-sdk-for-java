@@ -33,6 +33,7 @@ import com.microsoft.azure.keyvault.models.KeyItem;
 import com.microsoft.azure.keyvault.models.KeyOperationResult;
 import com.microsoft.azure.keyvault.models.KeyOperationsParameters;
 import com.microsoft.azure.keyvault.models.KeyRestoreParameters;
+import com.microsoft.azure.keyvault.models.KeySignParameters;
 import com.microsoft.azure.keyvault.models.KeyUpdateParameters;
 import com.microsoft.azure.keyvault.models.KeyVaultErrorException;
 import com.microsoft.azure.keyvault.models.KeyVerifyParameters;
@@ -277,7 +278,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("keys/{key-name}/{key-version}/sign")
-        Call<ResponseBody> sign(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyOperationsParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> sign(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeySignParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("keys/{key-name}/{key-version}/verify")
@@ -434,7 +435,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
-     * @param kty The type of key to create. For valid key types, see WebKeyTypes.
+     * @param kty The type of key to create. Valid key types, see JsonWebKeyType. Possible values include: 'EC', 'RSA', 'RSA-HSM', 'oct'
      * @throws KeyVaultErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -473,7 +474,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
-     * @param kty The type of key to create. For valid key types, see WebKeyTypes.
+     * @param kty The type of key to create. Valid key types, see JsonWebKeyType. Possible values include: 'EC', 'RSA', 'RSA-HSM', 'oct'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
@@ -529,8 +530,8 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
-     * @param kty The type of key to create. For valid key types, see WebKeyTypes.
-     * @param keySize Size of the key
+     * @param kty The type of key to create. Valid key types, see JsonWebKeyType. Possible values include: 'EC', 'RSA', 'RSA-HSM', 'oct'
+     * @param keySize The key size in bytes. e.g. 1024 or 2048.
      * @param keyOps 
      * @param keyAttributes 
      * @param tags Application-specific metadata in the form of key-value pairs
@@ -571,8 +572,8 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
-     * @param kty The type of key to create. For valid key types, see WebKeyTypes.
-     * @param keySize Size of the key
+     * @param kty The type of key to create. Valid key types, see JsonWebKeyType. Possible values include: 'EC', 'RSA', 'RSA-HSM', 'oct'
+     * @param keySize The key size in bytes. e.g. 1024 or 2048.
      * @param keyOps 
      * @param keyAttributes 
      * @param tags Application-specific metadata in the form of key-value pairs
@@ -1650,12 +1651,12 @@ final class KeyVaultClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Encrypts a single block of data. The amount of data that may be encrypted is determined.
+     * Encrypts an arbitrary sequence of bytes using an encryption key that is stored in Azure Key Vault.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
      * @param keyVersion The version of the key
-     * @param algorithm algorithm identifier
+     * @param algorithm algorithm identifier. Possible values include: 'RSA-OAEP', 'RSA1_5'
      * @param value 
      * @throws KeyVaultErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -1690,12 +1691,12 @@ final class KeyVaultClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Encrypts a single block of data. The amount of data that may be encrypted is determined.
+     * Encrypts an arbitrary sequence of bytes using an encryption key that is stored in Azure Key Vault.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
      * @param keyVersion The version of the key
-     * @param algorithm algorithm identifier
+     * @param algorithm algorithm identifier. Possible values include: 'RSA-OAEP', 'RSA1_5'
      * @param value 
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -1761,7 +1762,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
      * @param keyVersion The version of the key
-     * @param algorithm algorithm identifier
+     * @param algorithm algorithm identifier. Possible values include: 'RSA-OAEP', 'RSA1_5'
      * @param value 
      * @throws KeyVaultErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -1801,7 +1802,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
      * @param keyVersion The version of the key
-     * @param algorithm algorithm identifier
+     * @param algorithm algorithm identifier. Possible values include: 'RSA-OAEP', 'RSA1_5'
      * @param value 
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -1867,7 +1868,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
      * @param keyVersion The version of the key
-     * @param algorithm algorithm identifier
+     * @param algorithm The signing/verification algorithm identifier. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm. Possible values include: 'RS256', 'RS384', 'RS512', 'RSNULL'
      * @param value 
      * @throws KeyVaultErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -1893,7 +1894,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         if (value == null) {
             throw new IllegalArgumentException("Parameter value is required and cannot be null.");
         }
-        KeyOperationsParameters parameters = new KeyOperationsParameters();
+        KeySignParameters parameters = new KeySignParameters();
         parameters.withAlgorithm(algorithm);
         parameters.withValue(value);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
@@ -1907,7 +1908,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
      * @param keyVersion The version of the key
-     * @param algorithm algorithm identifier
+     * @param algorithm The signing/verification algorithm identifier. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm. Possible values include: 'RS256', 'RS384', 'RS512', 'RSNULL'
      * @param value 
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -1941,7 +1942,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
             serviceCallback.failure(new IllegalArgumentException("Parameter value is required and cannot be null."));
             return null;
         }
-        KeyOperationsParameters parameters = new KeyOperationsParameters();
+        KeySignParameters parameters = new KeySignParameters();
         parameters.withAlgorithm(algorithm);
         parameters.withValue(value);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
@@ -1973,7 +1974,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
      * @param keyVersion The version of the key
-     * @param algorithm The signing/verification algorithm. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm.
+     * @param algorithm The signing/verification algorithm. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm. Possible values include: 'RS256', 'RS384', 'RS512', 'RSNULL'
      * @param digest The digest used for signing
      * @param signature The signature to be verified
      * @throws KeyVaultErrorException exception thrown from REST call
@@ -2018,7 +2019,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
      * @param keyVersion The version of the key
-     * @param algorithm The signing/verification algorithm. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm.
+     * @param algorithm The signing/verification algorithm. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm. Possible values include: 'RS256', 'RS384', 'RS512', 'RSNULL'
      * @param digest The digest used for signing
      * @param signature The signature to be verified
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -2090,7 +2091,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
      * @param keyVersion The version of the key
-     * @param algorithm algorithm identifier
+     * @param algorithm algorithm identifier. Possible values include: 'RSA-OAEP', 'RSA1_5'
      * @param value 
      * @throws KeyVaultErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -2130,7 +2131,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
      * @param keyVersion The version of the key
-     * @param algorithm algorithm identifier
+     * @param algorithm algorithm identifier. Possible values include: 'RSA-OAEP', 'RSA1_5'
      * @param value 
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -2196,7 +2197,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
      * @param keyVersion The version of the key
-     * @param algorithm algorithm identifier
+     * @param algorithm algorithm identifier. Possible values include: 'RSA-OAEP', 'RSA1_5'
      * @param value 
      * @throws KeyVaultErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -2236,7 +2237,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
      * @param keyVersion The version of the key
-     * @param algorithm algorithm identifier
+     * @param algorithm algorithm identifier. Possible values include: 'RSA-OAEP', 'RSA1_5'
      * @param value 
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -3740,7 +3741,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets the certificate contacts for the specified vault.
+     * Sets the specified certificate issuer.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param issuerName The name of the issuer.
@@ -3770,7 +3771,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets the certificate contacts for the specified vault.
+     * Sets the specified certificate issuer.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param issuerName The name of the issuer.
