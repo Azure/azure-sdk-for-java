@@ -84,7 +84,7 @@ public interface LoadBalancer extends
         }
 
         /**
-         * The stage of the definition describing the nature of the frontend of the load balancer: imternal or Internet-facing.
+         * The stage of the definition describing the nature of the frontend of the load balancer: internal or Internet-facing.
          */
         interface WithFrontends extends
             WithPublicIpAddresses<WithInternetFrontendOrBackend>,

@@ -14,6 +14,11 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 public interface InternetFrontend extends Frontend {
 
     /**
+     * @return the resource ID of the public IP address associated with this frontend
+     */
+    String publicIpAddressId();
+
+    /**
      * Grouping of internet-facing frontend definition stages.
      */
     interface DefinitionStages {

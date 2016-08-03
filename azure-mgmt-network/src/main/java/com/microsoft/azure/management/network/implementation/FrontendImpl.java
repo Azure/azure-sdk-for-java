@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.network.Frontend;
 import com.microsoft.azure.management.network.InternetFrontend;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.PublicIpAddress;
@@ -17,6 +18,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 class FrontendImpl
     extends ChildResourceImpl<FrontendIPConfigurationInner, LoadBalancerImpl>
     implements
+        Frontend,
         InternetFrontend,
         InternetFrontend.Definition<LoadBalancer.DefinitionStages.WithInternetFrontendOrBackend>,
         InternetFrontend.UpdateDefinition<LoadBalancer.Update>,
@@ -31,6 +33,16 @@ class FrontendImpl
     @Override
     public String name() {
         return this.inner().name();
+    }
+
+    @Override
+    public String publicIpAddressId() {
+        return this.inner().publicIPAddress().id();
+    }
+
+    @Override
+    public boolean isInternetFacing() {
+        return (this.inner().publicIPAddress() != null);
     }
 
     // Fluent setters

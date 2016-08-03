@@ -15,4 +15,9 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 public interface Frontend extends
     Wrapper<FrontendIPConfigurationInner>,
     ChildResource {
+
+    /**
+     * @return true if the front end is Internet-facing, i.e. it has a public IP address associated with it
+     */
+    boolean isInternetFacing();
 }

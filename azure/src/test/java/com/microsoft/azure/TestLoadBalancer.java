@@ -16,6 +16,7 @@ import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.network.Frontend;
 import com.microsoft.azure.management.network.HttpProbe;
+import com.microsoft.azure.management.network.InternetFrontend;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancers;
 import com.microsoft.azure.management.network.LoadBalancingRule;
@@ -265,7 +266,11 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
         // Show frontends
         info.append("\n\tFrontends:");
         for (Frontend frontend : resource.frontends().values()) {
-            info.append("\n\t\tFrontend name: ").append(frontend.name());
+            info.append("\n\t\tFrontend name: ").append(frontend.name())
+                .append("\n\t\t\tInternet facing: ").append(frontend.isInternetFacing());
+            if (frontend.isInternetFacing()) {
+                info.append("\n\t\t\tPublic IP Address ID: ").append(((InternetFrontend) frontend).publicIpAddressId());
+            }
         }
 
         System.out.println(info.toString());
