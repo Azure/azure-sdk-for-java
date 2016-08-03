@@ -77,15 +77,15 @@ You can create a service principal and grant it access privileges for a given su
   <br/>![Save client secret](/media/auth/key-generated.png)
 1. Copy the shown key into your text file and prefix it with "`key=`", for example:
   <br>`key=01234567890123456789abcdef01234567890abcdef0123456789abcdef02345`
-1. In the current URL shown in your browser, select the text between the word: "Directory/" and the next slash (/) and copy it.
+1. In the current URL shown in your browser, select the text between the word: "Directory/" and the next slash (/) and copy it. This the ID of the active directory (tenant) where your application is being registered.
   <br/>![Tenant ID](/media/auth/tenant-id.png)
 1. Paste the copied value into your text file and prefix it with "`tenant=`", for example:
-  <br>`tenant=abcdef01-1234-dcba-9876-abcdef012345`
+  <br>`tenant=72f988bf-86f1-41af-91ab-2d7cd011db47`
   <br>This represents the Active Directory instance you selected earlier.
 1. Assuming you are using the Azure worldwide public cloud, also add the following to your text file: \(Note that this file follows the Java properties file format, so certain characters, such as colons, need to be escaped with a backslash\)<br/>
-    `managementURI=https\\://management.core.windows.net/`<br/>
-    `baseURL=https\\://management.azure.com/`</br>
-    `authURL=https\\://login.windows.net/`<br/>
+    `managementURI=https\://management.core.windows.net/`<br/>
+    `baseURL=https\://management.azure.com/`</br>
+    `authURL=https\://login.windows.net/`<br/>
   Make sure to escape the colons (:) with backslashes (\\).
 1. You need to grant the created service principal a permission to access the desired Azure subscription. Go to the [Azure portal](http://portal.azure.com) again.
 1. Click **Subscriptions** and select the subscription in the list that you want to enable your application to access.
