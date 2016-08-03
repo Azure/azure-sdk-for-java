@@ -167,6 +167,10 @@ public class GroupPagedListTests {
             public ResourceGroupInner inner() {
                 return null;
             }
+
+            @Override
+            public void setInner(ResourceGroupInner inner) {
+            }
         };
     }
 }

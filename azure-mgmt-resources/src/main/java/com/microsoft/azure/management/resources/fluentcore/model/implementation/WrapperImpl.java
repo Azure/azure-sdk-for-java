@@ -24,4 +24,9 @@ public abstract class WrapperImpl<InnerT> implements Wrapper<InnerT> {
     public InnerT inner() {
         return this.innerObject;
     }
+
+    @Override
+    public void setInner(InnerT inner) {
+        this.innerObject = inner;
+    }
 }
