@@ -42,7 +42,7 @@ final class GenericResourcesImpl
     }
 
     @Override
-    public GenericResource.DefinitionBlank define(String name) {
+    public GenericResource.DefinitionStages.Blank define(String name) {
         return new GenericResourceImpl(
                 name,
                 new GenericResourceInner(),
@@ -63,8 +63,53 @@ final class GenericResourcesImpl
     }
 
     @Override
-    public GenericResource get(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws CloudException, IOException {
-        GenericResourceInner inner = this.innerCollection.get(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).getBody();
+    public GenericResource getById(String id) throws CloudException, IOException {
+        return this.get(
+                ResourceUtils.groupFromResourceId(id),
+                ResourceUtils.resourceProviderFromResourceId(id),
+                ResourceUtils.resourceTypeFromResourceId(id),
+                ResourceUtils.nameFromResourceId(id));
+    }
+
+    @Override
+    public GenericResource get(
+            String resourceGroupName,
+            String providerNamespace,
+            String resourceType,
+            String name) throws CloudException, IOException {
+
+        PagedList<GenericResource> genericResources = this.listByGroup(resourceGroupName);
+        for (GenericResource resource : genericResources) {
+            if (resource.name().equalsIgnoreCase(name)
+                    && resource.resourceProviderNamespace().equalsIgnoreCase(providerNamespace)
+                    && resource.resourceType().equalsIgnoreCase(resourceType)) {
+                return resource;
+            }
+        }
+        throw new CloudException("Generic resource not found.");
+    }
+
+    @Override
+    public GenericResource get(
+            String resourceGroupName,
+            String resourceProviderNamespace,
+            String parentResourcePath,
+            String resourceType,
+            String resourceName,
+            String apiVersion) throws CloudException, IOException {
+
+        // Correct for auto-gen'd API's treatment parent path as required even though it makes sense only for child resources
+        if (parentResourcePath == null) {
+            parentResourcePath = "";
+        }
+
+        GenericResourceInner inner = this.innerCollection.get(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion).getBody();
         GenericResourceImpl resource = new GenericResourceImpl(
                 resourceName,
                 inner,
@@ -93,17 +138,6 @@ final class GenericResourcesImpl
     }
 
     @Override
-    public GenericResource getByGroup(String groupName, String name) throws CloudException, IOException {
-        PagedList<GenericResource> genericResources = this.listByGroup(groupName);
-        for (GenericResource resource : genericResources) {
-            if (resource.name().equalsIgnoreCase(name)) {
-                return resource;
-            }
-        }
-        throw new CloudException("Generic resource not found.");
-    }
-
-    @Override
     protected GenericResourceImpl wrapModel(String id) {
         return new GenericResourceImpl(
                 id,
@@ -129,5 +163,11 @@ final class GenericResourcesImpl
                 .withProviderNamespace(ResourceUtils.resourceProviderFromResourceId(inner.id()))
                 .withResourceType(ResourceUtils.resourceTypeFromResourceId(inner.id()))
                 .withParentResource(ResourceUtils.parentResourcePathFromResourceId(inner.id()));
+    }
+
+    @Override
+    public GenericResource getByGroup(String groupName, String name) throws CloudException, IOException {
+        // Not needed, can't be supported, provided only to satisfy GroupableResourceImpl's requirements
+        return null;
     }
 }
