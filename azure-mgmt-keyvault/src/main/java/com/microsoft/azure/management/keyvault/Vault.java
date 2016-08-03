@@ -145,13 +145,27 @@ public interface Vault extends
      * Grouping of all the key vault update stages.
      */
     interface UpdateStages {
+        interface WithAccessPolicy {
+            Update withoutAccessPolicy(String objectId);
+            Update withAccessPolicy(AccessPolicy accessPolicy);
+            AccessPolicy.UpdateDefinitionStages.Blank<Update> defineAccessPolicy();
+            AccessPolicy.Update updateAccessPolicy(String objectId);
+        }
+
+        interface WithConfigurations {
+            Update enabledForDeployment(boolean enabled);
+            Update enabledForDiskEncryption(boolean enabled);
+            Update enabledForTemplateDeployment(boolean enabled);
+        }
     }
 
     /**
      * The template for a key vault update operation, containing all the settings that can be modified.
      */
     interface Update extends
-            Appliable<Vault> {
+            Appliable<Vault>,
+            UpdateStages.WithAccessPolicy,
+            UpdateStages.WithConfigurations {
     }
 }
 

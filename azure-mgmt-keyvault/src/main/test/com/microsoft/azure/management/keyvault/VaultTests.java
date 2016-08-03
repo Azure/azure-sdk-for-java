@@ -14,7 +14,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.UUID;
+import java.util.List;
 
 public class VaultTests extends KeyVaultManagementTestBase {
     private static final String RG_NAME = "javacsmrg901";
@@ -38,7 +38,6 @@ public class VaultTests extends KeyVaultManagementTestBase {
         Vault vault = keyVaultManager.vaults().define(VAULT_NAME)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME)
-                .withTenantId(UUID.fromString(credentials.getDomain()))
                 .defineAccessPolicy()
                     .forServicePrincipal(sp)
                     .allowKeyGetting()
@@ -49,5 +48,23 @@ public class VaultTests extends KeyVaultManagementTestBase {
                 .create();
         Assert.assertNotNull(vault);
         // GET
+        vault = keyVaultManager.vaults().getByGroup(RG_NAME, VAULT_NAME);
+        Assert.assertNotNull(vault);
+        // LIST
+        List<Vault> vaults = keyVaultManager.vaults().listByGroup(RG_NAME);
+        for (Vault v : vaults) {
+            if (VAULT_NAME.equals(v.name())) {
+                vault = v;
+                break;
+            }
+        }
+        Assert.assertNotNull(vault);
+        // UPDATE
+        vault.update()
+                .updateAccessPolicy(sp.objectId())
+                    .allowKeyAllPermissions()
+                    .disallowSecretAllPermissions()
+                    .parent()
+                .apply();
     }
 }
