@@ -153,7 +153,7 @@ public interface LoadBalancer extends
              * Adds the specified set of virtual machines, assuming they are from the same
              * availability set, to this load balancer's back end address pool.
              * <p>
-             * This will create a new back end address pool for this load balancer and add references to
+             * This will create a new backend address pool for this load balancer and add references to
              * the primary IP configurations of the primary network interfaces of each of the provided set of
              * virtual machines.
              * <p>
@@ -165,7 +165,7 @@ public interface LoadBalancer extends
              * @param vms existing virtual machines
              * @return the next stage of the update
              */
-            WithBackendOrCreate withExistingVirtualMachines(SupportsNetworkInterfaces...vms);
+            WithBackendOrCreate withExistingVirtualMachinesAsBackend(SupportsNetworkInterfaces...vms);
 
             /**
              * Adds the specified set of virtual machines, assuming they are from the same
@@ -186,7 +186,7 @@ public interface LoadBalancer extends
              * @param vms existing virtual machines
              * @return the next stage of the update
              */
-            WithBackendOrCreate withExistingVirtualMachines(String backendName, SupportsNetworkInterfaces...vms);
+            WithBackendOrCreate withExistingVirtualMachinesAsBackend(String backendName, SupportsNetworkInterfaces...vms);
         }
 
         /**
@@ -196,25 +196,37 @@ public interface LoadBalancer extends
          */
         interface WithPublicIpAddresses<ReturnT> {
             /**
-             * Sets the provided set of public IP addresses as the front end for the load balancer, making it an Internet-facing load balancer.
+             * Assigns the provided set of public IP addresses front end to the load balancer, making it an Internet-facing load balancer.
+             * <p>
+             * This will create a new default frontend for the load balancer with an auto-generated name.
              * @param publicIpAddresses existing public IP addresses
              * @return the next stage of the resource definition
              */
-            ReturnT withExistingPublicIpAddresses(PublicIpAddress...publicIpAddresses);
+            ReturnT withExistingPublicIpAddressesAsFrontend(PublicIpAddress...publicIpAddresses);
 
             /**
-             * Adds a new public IP address to the front end of the load balancer, using an automatically generated name and leaf DNS label
+             * Assigns the provided set of public IP addresses to the specified frontend of the load balancer, making it an Internet-facing load balancer.
+             * <p>
+             * If the specified frontend does not exist, a new one will be created.
+             * @param frontendName
+             * @param publicIpAddresses existing public IP addresses
+             * @return the next stage of the resource definition
+             */
+            ReturnT withExistingPublicIpAddressesAsFrontend(String frontendName, PublicIpAddress...publicIpAddresses);
+
+            /**
+             * Adds a new public IP address to the default front end of the load balancer, using an automatically generated name and leaf DNS label
              * derived from the load balancer's name, in the same resource group and region.
              * @return the next stage of the definition
              */
-            ReturnT withNewPublicIpAddress();
+            ReturnT withNewFrontendPublicIpAddressAsFrontend();
 
             /**
-             * Adds a new public IP address to the front end of the load balancer, using the specified DNS leaft label,
+             * Adds a new public IP address to the front end of the load balancer, using the specified DNS leaf label,
              * an automatically generated name derived from the DNS label, in the same resource group and region.
              * @return the next stage of the definition
              */
-            ReturnT withNewPublicIpAddress(String dnsLeafLabel);
+            ReturnT withNewFrontendPublicIpAddressAsFrontend(String dnsLeafLabel);
 
             /**
              * Adds a new public IP address to the front end of the load balancer, creating the public IP based on the provided {@link Creatable}
@@ -222,7 +234,7 @@ public interface LoadBalancer extends
              *
              * @return the next stage of the definition
              */
-            ReturnT withNewPublicIpAddress(Creatable<PublicIpAddress> creatablePublicIpAddress);
+            ReturnT withNewFrontendPublicIpAddressAsFrontend(Creatable<PublicIpAddress> creatablePublicIpAddress);
         }
 
         /**
@@ -292,8 +304,6 @@ public interface LoadBalancer extends
 
             /**
              * Adds a TCP probe checking the specified port.
-             * <p>
-             * An automatically generated name is assigned to the probe.
              * @param port the port number for the probe to monitor
              * @param name the name for the probe, so that the probe can be referenced from load balancing rules
              * @return the next stage of the definition

@@ -134,13 +134,21 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
         LoadBalancer lb = resources.define(newName)
                 .withRegion(region)
                 .withExistingResourceGroup(groupName)
-                .withExistingPublicIpAddresses(pip1)
+
+                // Frontend
+                .withExistingPublicIpAddressesAsFrontend("frontend1", pip1)
                 .defineInternetFrontend("frontend2")
                     .withExistingPublicIpAddress(pip2)
                     .attach()
-                .withExistingVirtualMachines(existingVMs)
+
+                // Backend
+                .withExistingVirtualMachinesAsBackend("backend1", existingVMs)
                 .withBackend("backend2")
+
+                // Probes
                 .withTcpProbe(80, "tcp1")
+
+                // Load balancing rules
                 .withLoadBalancingRule(80, TransportProtocol.TCP, "rule1")
                 .defineLoadBalancingRule("rule2")
                     .withProtocol(TransportProtocol.TCP)    // Required
@@ -149,6 +157,8 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                     .withIdleTimeoutInMinutes(10)
                     .withLoadDistribution(LoadDistribution.SOURCE_IP)
                     .attach()
+
+                // More probes
                 .defineTcpProbe("tcp2")
                     .withPort(25)               // Required
                     .withIntervalInSeconds(15)  // Optionals
