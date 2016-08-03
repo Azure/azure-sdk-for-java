@@ -42,7 +42,7 @@ final class GenericResourcesImpl
     }
 
     @Override
-    public GenericResource.DefinitionBlank define(String name) {
+    public GenericResource.DefinitionStages.Blank define(String name) {
         return new GenericResourceImpl(
                 name,
                 new GenericResourceInner(),
