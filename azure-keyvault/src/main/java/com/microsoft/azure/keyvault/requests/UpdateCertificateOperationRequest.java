@@ -1,4 +1,4 @@
-package com.microsoft.azure.keyvault.implementation.requests;
+package com.microsoft.azure.keyvault.requests;
 
 import com.microsoft.azure.keyvault.models.CertificateOperation;
 
@@ -44,6 +44,7 @@ public class UpdateCertificateOperationRequest {
 
     /**
      * builds the {@link UpdateCertificateOperationRequest} object
+     * @return the {@link UpdateCertificateOperationRequest} object
      */
     public UpdateCertificateOperationRequest build() {
       return new UpdateCertificateOperationRequest(this);

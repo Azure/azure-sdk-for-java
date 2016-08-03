@@ -1,4 +1,4 @@
-package com.microsoft.azure.keyvault.implementation.requests;
+package com.microsoft.azure.keyvault.requests;
 
 import java.util.Collections;
 import java.util.Map;
@@ -74,6 +74,7 @@ public class UpdateCertificateRequest {
 
     /**
      * builds the {@link UpdateCertificateRequest} object
+     * @return the {@link UpdateCertificateRequest} object
      */
     public UpdateCertificateRequest build() {
       return new UpdateCertificateRequest(this);

@@ -16,7 +16,7 @@
  *
  */
 
-package com.microsoft.azure.keyvault.implementation;
+package com.microsoft.azure.keyvault;
 
 import java.net.URI;
 import java.net.URISyntaxException;

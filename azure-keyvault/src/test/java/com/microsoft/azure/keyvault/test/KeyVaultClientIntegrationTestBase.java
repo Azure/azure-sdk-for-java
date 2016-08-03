@@ -28,8 +28,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
-
-import com.microsoft.azure.keyvault.implementation.KeyVaultClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -37,6 +35,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.microsoft.aad.adal4j.AuthenticationContext;
 import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.aad.adal4j.ClientCredential;
+import com.microsoft.azure.keyvault.KeyVaultClient;
 import com.microsoft.azure.keyvault.authentication.KeyVaultCredentials;
 
 public class KeyVaultClientIntegrationTestBase {

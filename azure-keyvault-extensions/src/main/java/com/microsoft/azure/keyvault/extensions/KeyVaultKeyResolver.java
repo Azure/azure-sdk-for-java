@@ -23,17 +23,17 @@ import java.util.concurrent.Future;
 
 import org.apache.commons.codec.binary.Base64;
 
-import com.microsoft.azure.keyvault.implementation.KeyVaultClient;
+import com.microsoft.azure.keyvault.KeyIdentifier;
+import com.microsoft.azure.keyvault.KeyVaultClient;
+import com.microsoft.azure.keyvault.SecretIdentifier;
 import com.microsoft.azure.keyvault.core.IKey;
 import com.microsoft.azure.keyvault.core.IKeyResolver;
 import com.microsoft.azure.keyvault.cryptography.SymmetricKey;
 import com.microsoft.azure.keyvault.models.KeyBundle;
-import com.microsoft.azure.keyvault.implementation.KeyIdentifier;
 import com.microsoft.azure.keyvault.models.SecretBundle;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
-import com.microsoft.azure.keyvault.implementation.SecretIdentifier;
 
 public class KeyVaultKeyResolver implements IKeyResolver {
 

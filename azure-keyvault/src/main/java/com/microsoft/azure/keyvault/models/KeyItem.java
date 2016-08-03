@@ -8,7 +8,7 @@ package com.microsoft.azure.keyvault.models;
 
 import java.util.Map;
 
-import com.microsoft.azure.keyvault.implementation.KeyIdentifier;
+import com.microsoft.azure.keyvault.KeyIdentifier;
 
 /**
  * The key item containing key metadata.

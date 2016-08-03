@@ -7,9 +7,10 @@
 package com.microsoft.azure.keyvault.models;
 
 import java.util.Map;
+
+import com.microsoft.azure.keyvault.CertificateIdentifier;
 import com.microsoft.rest.Base64Url;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.azure.keyvault.implementation.CertificateIdentifier;
 
 /**
  * The certificate item containing certificate metadata.

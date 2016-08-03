@@ -16,22 +16,22 @@
  *
  */
 
-package com.microsoft.azure.keyvault.implementation;
+package com.microsoft.azure.keyvault;
 
-public final class KeyIdentifier extends ObjectIdentifier {
-    public static boolean isKeyIdentifier(String identifier) {
-        return ObjectIdentifier.isObjectIdentifier("keys", identifier);
+public final class SecretIdentifier extends ObjectIdentifier {
+    public static boolean isSecretIdentifier(String identifier) {
+        return ObjectIdentifier.isObjectIdentifier("secrets", identifier);
     }
 
-    public KeyIdentifier(String vault, String name) {
+    public SecretIdentifier(String vault, String name) {
         this(vault, name, "");
     }
 
-    public KeyIdentifier(String vault, String name, String version) {
-        super(vault, "keys", name, version);
+    public SecretIdentifier(String vault, String name, String version) {
+        super(vault, "secrets", name, version);
     }
 
-    public KeyIdentifier(String identifier) {
-        super("keys", identifier);
+    public SecretIdentifier(String identifier) {
+        super("secrets", identifier);
     }
 }

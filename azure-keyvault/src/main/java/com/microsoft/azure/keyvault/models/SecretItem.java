@@ -8,7 +8,7 @@ package com.microsoft.azure.keyvault.models;
 
 import java.util.Map;
 
-import com.microsoft.azure.keyvault.implementation.SecretIdentifier;
+import com.microsoft.azure.keyvault.SecretIdentifier;
 
 /**
  * The secret item containing secret metadata.

@@ -52,12 +52,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.keyvault.implementation.CertificateIdentifier;
-import com.microsoft.azure.keyvault.implementation.SecretIdentifier;
-import com.microsoft.azure.keyvault.implementation.requests.CreateCertificateRequest;
-import com.microsoft.azure.keyvault.implementation.requests.ImportCertificateRequest;
-import com.microsoft.azure.keyvault.implementation.requests.SetCertificateIssuerRequest;
-import com.microsoft.azure.keyvault.implementation.requests.UpdateCertificateIssuerRequest;
+import com.microsoft.azure.keyvault.CertificateIdentifier;
+import com.microsoft.azure.keyvault.SecretIdentifier;
 import com.microsoft.azure.keyvault.models.AdministratorDetails;
 import com.microsoft.azure.keyvault.models.CertificateBundle;
 import com.microsoft.azure.keyvault.models.Contact;
@@ -73,6 +69,10 @@ import com.microsoft.azure.keyvault.models.CertificatePolicy;
 import com.microsoft.azure.keyvault.models.SecretBundle;
 import com.microsoft.azure.keyvault.models.SecretProperties;
 import com.microsoft.azure.keyvault.models.X509CertificateProperties;
+import com.microsoft.azure.keyvault.requests.CreateCertificateRequest;
+import com.microsoft.azure.keyvault.requests.ImportCertificateRequest;
+import com.microsoft.azure.keyvault.requests.SetCertificateIssuerRequest;
+import com.microsoft.azure.keyvault.requests.UpdateCertificateIssuerRequest;
 
 public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase {
 
@@ -656,9 +656,8 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
 		Assert.assertNotNull(certificateBundle.sid());
 		Assert.assertNotNull(certificateBundle.x5t());
 		
-		//TODO the x5t is different - fix it
-		//Assert.assertTrue(toHexString(certificateBundle.x5t()).equalsIgnoreCase("7cb8b7539d87ba7215357b9b9049dff2d3fa59ba"));
-
+		Assert.assertTrue(toHexString(certificateBundle.x5t()).equalsIgnoreCase("7cb8b7539d87ba7215357b9b9049dff2d3fa59ba"));
+		
 		// Load the CER part into X509Certificate object
 		Assert.assertNotNull(certificateBundle.cer());
 		ByteArrayInputStream cerStream = new ByteArrayInputStream(certificateBundle.cer());
@@ -1251,9 +1250,19 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
 	}
 
 	private String toHexString(byte[] x5t) {
+
 		if(x5t == null)
 			return "";
 		
-		return new String(x5t, StandardCharsets.UTF_8).replace("-", "");
+	    StringBuilder hexString = new StringBuilder();
+	    for (int i = 0; i < x5t.length; i++) {
+	        String hex = Integer.toHexString(0xFF & x5t[i]);
+	        if (hex.length() == 1) {
+	            hexString.append('0');
+	        }
+	        hexString.append(hex);
+	    }
+
+	    return hexString.toString().replace("-", "");
 	}
 }

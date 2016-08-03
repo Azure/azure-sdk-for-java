@@ -1,19 +1,18 @@
-package com.microsoft.azure.keyvault.implementation.requests;
+package com.microsoft.azure.keyvault.requests;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
+import com.microsoft.azure.keyvault.models.JsonWebKey;
 import com.microsoft.azure.keyvault.models.KeyAttributes;
 
-public class CreateKeyRequest {
+public class ImportKeyRequest {
 
   private final String vaultBaseUrl;
   private final String keyName;
-  private final String keyType;
-  private final Integer keySize;
-  private final List<String> keyOperations;
+  private final JsonWebKey key;
+  private final boolean isHsm;
   private final KeyAttributes keyAttributes;
   private final Map<String, String> tags;
 
@@ -22,52 +21,39 @@ public class CreateKeyRequest {
     // Required parameters
     private final String vaultBaseUrl;
     private final String keyName;
-    private final String keyType;
+    private final JsonWebKey key;
 
     // Optional parameters
-    private Integer keySize;
-    private List<String> keyOperations;
+    private boolean isHsm;
     private KeyAttributes attributes;
     private Map<String, String> tags;
 
     /**
-     * The builder for constructing {@link CreateKeyRequest} object
+     * The builder for constructing {@link ImportKeyRequest} object
      * 
      * @param vaultBaseUrl
      *          The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName
      *          The name of the key in the given vault
-     * @param keyType
-     *          The type of key to create. For valid key types, see
-     *          {@link WebKeyTypes}.
+     * @param key
+     *          The Json web key.
      */
-    public Builder(String vaultBaseUrl, String keyName, String keyType) {
+    public Builder(String vaultBaseUrl, String keyName, JsonWebKey key) {
       this.vaultBaseUrl = vaultBaseUrl;
       this.keyName = keyName;
-      this.keyType = keyType;
+      this.key = key;
     }
 
     /**
-     * Set the key size value.
+     * Set the isHsm to true if the key is imported as a hardware key to HSM,
+     * false otherwise.
      * 
      * @param size
      *          the size of the key
      * @return the Builder object itself.
      */
-    public Builder withKeySize(Integer size) {
-      this.keySize = size;
-      return this;
-    }
-
-    /**
-     * Set the key operations value.
-     * 
-     * @param size
-     *          the size of the key
-     * @return the Builder object itself.
-     */
-    public Builder withKeyOperations(List<String> keyOps) {
-      this.keyOperations = keyOps;
+    public Builder withHsm(boolean isHsm) {
+      this.isHsm = isHsm;
       return this;
     }
 
@@ -78,8 +64,8 @@ public class CreateKeyRequest {
      *          the key management attributes value to set
      * @return the Builder object itself.
      */
-    public Builder withAttributes(KeyAttributes attributes) {
-      this.attributes = attributes;
+    public Builder withAttributes(KeyAttributes value) {
+      this.attributes = value;
       return this;
     }
 
@@ -96,23 +82,37 @@ public class CreateKeyRequest {
     }
 
     /**
-     * builds the {@link CreateKeyRequest} object
+     * builds the {@link ImportKeyRequest} object
+     * @return the {@link ImportKeyRequest} object
      */
-    public CreateKeyRequest build() {
-      return new CreateKeyRequest(this);
+    public ImportKeyRequest build() {
+      return new ImportKeyRequest(this);
     }
   }
 
-  private CreateKeyRequest(Builder builder) {
+  private ImportKeyRequest(Builder builder) {
     vaultBaseUrl = builder.vaultBaseUrl;
     keyName = builder.keyName;
-    keyType = builder.keyType;
-    keySize = builder.keySize;
+    isHsm = builder.isHsm;
 
-    if (builder.keyOperations != null) {
-      keyOperations = new ArrayList<String>(builder.keyOperations);
+    if (builder.key != null) {
+      key = new JsonWebKey()
+          .withKty(builder.key.kty())
+          .withN(builder.key.n())
+          .withE(builder.key.e())
+          .withD(builder.key.d())
+          .withP(builder.key.p())
+          .withQ(builder.key.q())
+          .withDp(builder.key.dp())
+          .withDq(builder.key.dq())
+          .withQi(builder.key.qi())
+          .withK(builder.key.k())
+          .withT(builder.key.t());
+      if (builder.key.keyOps() != null) {
+        key.withKeyOps(new ArrayList<String>(builder.key.keyOps()));
+      }
     } else {
-      keyOperations = null;
+      key = null;
     }
 
     if (builder.attributes != null) {
@@ -146,28 +146,21 @@ public class CreateKeyRequest {
   }
 
   /**
-   * @return the key type
+   * @return the key
    */
-  public String keyType() {
-    return keyType;
+  public JsonWebKey key() {
+    return key;
   }
 
   /**
-   * @return the key size
+   * @return the isHsm
    */
-  public Integer keySize() {
-    return keySize;
+  public boolean isHsm() {
+    return isHsm;
   }
 
   /**
-   * @return the key operations
-   */
-  public List<String> keyOperations() {
-    return keyOperations;
-  }
-
-  /**
-   * @return the key attributes
+   * @return the key attribute
    */
   public KeyAttributes keyAttributes() {
     return keyAttributes;
@@ -179,4 +172,5 @@ public class CreateKeyRequest {
   public Map<String, String> tags() {
     return tags;
   }
+
 }

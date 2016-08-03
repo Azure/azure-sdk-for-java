@@ -16,7 +16,7 @@
  *
  */
 
-package com.microsoft.azure.keyvault.implementation;
+package com.microsoft.azure.keyvault;
 
 public final class CertificateIdentifier extends ObjectIdentifier {
 	

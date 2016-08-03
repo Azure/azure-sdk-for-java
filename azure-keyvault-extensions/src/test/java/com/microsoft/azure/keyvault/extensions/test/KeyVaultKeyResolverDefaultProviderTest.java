@@ -18,10 +18,10 @@ import org.junit.Test;
 
 import com.microsoft.azure.keyvault.core.IKey;
 import com.microsoft.azure.keyvault.extensions.KeyVaultKeyResolver;
-import com.microsoft.azure.keyvault.implementation.requests.CreateKeyRequest;
-import com.microsoft.azure.keyvault.implementation.requests.SetSecretRequest;
 import com.microsoft.azure.keyvault.models.KeyBundle;
 import com.microsoft.azure.keyvault.models.SecretBundle;
+import com.microsoft.azure.keyvault.requests.CreateKeyRequest;
+import com.microsoft.azure.keyvault.requests.SetSecretRequest;
 
 //
 //Copyright © Microsoft Corporation, All Rights Reserved

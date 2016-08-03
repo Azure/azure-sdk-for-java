@@ -1,15 +1,14 @@
-package com.microsoft.azure.keyvault.implementation.requests;
+package com.microsoft.azure.keyvault.requests;
 
 import java.util.Collections;
 import java.util.Map;
 
-import com.microsoft.azure.keyvault.implementation.SecretIdentifier;
 import com.microsoft.azure.keyvault.models.SecretAttributes;
 
-public class UpdateSecretRequest {
+public class SetSecretRequest {
   private final String vaultBaseUrl;
   private final String secretName;
-  private final String secretVersion;
+  private final String value;
   private final String contentType;
   private final SecretAttributes secretAttributes;
   private final Map<String, String> tags;
@@ -19,44 +18,27 @@ public class UpdateSecretRequest {
     // Required parameters
     private final String vaultBaseUrl;
     private final String secretName;
+    private final String value;
 
     // Optional parameters
-    private String secretVersion;
     private String contentType;
     private SecretAttributes attributes;
     private Map<String, String> tags;
 
     /**
-     * The builder for constructing {@link UpdateSecretRequest} object
+     * The builder for constructing {@link SetSecretRequest} object
      * 
      * @param vaultBaseUrl
      *          The vault name, e.g. https://myvault.vault.azure.net
      * @param secretName
      *          The name of the secret in the given vault
+     * @param value
+     *          The value of the secret
      */
-    public Builder(String vaultBaseUrl, String secretName) {
+    public Builder(String vaultBaseUrl, String secretName, String value) {
       this.vaultBaseUrl = vaultBaseUrl;
       this.secretName = secretName;
-    }
-
-    /**
-     * The builder for constructing {@link UpdateSecretRequest} object
-     * 
-     * @param secretId
-     *          The secret identifier, e.g.
-     *          https://{vault-name}.vault.azure.net/secrets/{secret-name}/{
-     *          secret-version}
-     */
-    public Builder(String secretId) {
-      SecretIdentifier id = new SecretIdentifier(secretId);
-      this.vaultBaseUrl = id.vault();
-      this.secretName = id.name();
-      this.secretVersion = id.version();
-    }
-
-    public Builder withVersion(String version) {
-      this.secretVersion = version;
-      return this;
+      this.value = value;
     }
 
     /**
@@ -96,22 +78,25 @@ public class UpdateSecretRequest {
     }
 
     /**
-     * builds the {@link UpdateSecretRequest} object
+     * builds the {@link SetSecretRequest} object
+     * @return the {@link SetSecretRequest} object
      */
-    public UpdateSecretRequest build() {
-      return new UpdateSecretRequest(this);
+    public SetSecretRequest build() {
+      return new SetSecretRequest(this);
     }
   }
 
-  private UpdateSecretRequest(Builder builder) {
+  private SetSecretRequest(Builder builder) {
     vaultBaseUrl = builder.vaultBaseUrl;
     secretName = builder.secretName;
-    secretVersion = builder.secretVersion == null ? "" : builder.secretVersion;
+    value = builder.value;
     contentType = builder.contentType;
 
     if (builder.attributes != null) {
-      secretAttributes = (SecretAttributes) new SecretAttributes().withNotBefore(builder.attributes.notBefore())
-          .withEnabled(builder.attributes.enabled()).withExpires(builder.attributes.expires());
+      secretAttributes = (SecretAttributes) new SecretAttributes()
+          .withNotBefore(builder.attributes.notBefore())
+          .withEnabled(builder.attributes.enabled())
+          .withExpires(builder.attributes.expires());
     } else {
       secretAttributes = null;
     }
@@ -138,10 +123,10 @@ public class UpdateSecretRequest {
   }
 
   /**
-   * @return the secretVersion
+   * @return the value
    */
-  public String secretVersion() {
-    return secretVersion;
+  public String value() {
+    return value;
   }
 
   /**
@@ -164,4 +149,5 @@ public class UpdateSecretRequest {
   public Map<String, String> tags() {
     return tags;
   }
+
 }

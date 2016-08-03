@@ -25,7 +25,7 @@ import java.util.concurrent.Future;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
-import com.microsoft.azure.keyvault.implementation.KeyVaultClient;
+import com.microsoft.azure.keyvault.KeyVaultClient;
 import com.microsoft.azure.keyvault.core.IKey;
 import com.microsoft.azure.keyvault.cryptography.RsaKey;
 import com.microsoft.azure.keyvault.cryptography.Strings;

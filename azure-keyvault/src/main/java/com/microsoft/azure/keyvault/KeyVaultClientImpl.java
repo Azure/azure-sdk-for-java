@@ -4,7 +4,7 @@
  * regenerated.
  */
 
-package com.microsoft.azure.keyvault.implementation;
+package com.microsoft.azure.keyvault;
 
 import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
