@@ -6,6 +6,7 @@
 package com.microsoft.azure.eventprocessorhost;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
@@ -96,12 +97,35 @@ class EventHubPartitionPump extends PartitionPump
 		this.internalOperationFuture = null;
 		
 		// Create new receiver and set options
-    	String startingOffset = this.partitionContext.getInitialOffset();
+    	Object startAt = this.partitionContext.getInitialOffset();
     	long epoch = this.lease.getEpoch();
-    	this.host.logWithHostAndPartition(Level.FINE, this.partitionContext, "Opening EH receiver with epoch " + epoch + " at offset " + startingOffset);
-		this.internalOperationFuture = this.eventHubClient.createEpochReceiver(this.partitionContext.getConsumerGroupName(), this.partitionContext.getPartitionId(), startingOffset, epoch);
+    	this.host.logWithHostAndPartition(Level.FINE, this.partitionContext, "Opening EH receiver with epoch " + epoch + " at location " + startAt);
+    	if (startAt instanceof String)
+    	{
+    		this.internalOperationFuture = this.eventHubClient.createEpochReceiver(this.partitionContext.getConsumerGroupName(), this.partitionContext.getPartitionId(),
+    				(String)startAt, epoch);
+    	}
+    	else if (startAt instanceof Instant) 
+    	{
+    		this.internalOperationFuture = this.eventHubClient.createEpochReceiver(this.partitionContext.getConsumerGroupName(), this.partitionContext.getPartitionId(),
+    				(Instant)startAt, epoch);
+    	}
+    	else
+    	{
+    		String errMsg = "Starting offset is not String or Instant, is " + ((startAt != null) ? startAt.getClass().toString() : "null");
+    		this.host.logWithHostAndPartition(Level.SEVERE, this.partitionContext, errMsg);
+    		throw new RuntimeException(errMsg);
+    	}
 		this.lease.setEpoch(epoch);
-		this.partitionReceiver = (PartitionReceiver) this.internalOperationFuture.get();
+		if (this.internalOperationFuture != null)
+		{
+			this.partitionReceiver = (PartitionReceiver) this.internalOperationFuture.get();
+		}
+		else
+		{
+			this.host.logWithHostAndPartition(Level.SEVERE, this.partitionContext, "createEpochReceiver failed with null");
+			throw new RuntimeException("createEpochReceiver failed with null");
+		}
 		this.partitionReceiver.setPrefetchCount(this.host.getEventProcessorOptions().getPrefetchCount());
 		this.partitionReceiver.setReceiveTimeout(this.host.getEventProcessorOptions().getReceiveTimeOut());
 		this.internalOperationFuture = null;

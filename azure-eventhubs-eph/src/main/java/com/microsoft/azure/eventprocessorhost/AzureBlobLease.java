@@ -5,7 +5,6 @@
 
 package com.microsoft.azure.eventprocessorhost;
 
-import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.BlobProperties;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
@@ -14,7 +13,7 @@ import com.microsoft.azure.storage.blob.LeaseState;
 class AzureBlobLease extends Lease
 {
 	private transient CloudBlockBlob blob; // do not serialize
-	private String offset = PartitionReceiver.START_OF_STREAM;
+	private String offset = null; // null means checkpoint is uninitialized
 	private long sequenceNumber = 0;
 	
 	AzureBlobLease(String partitionId, CloudBlockBlob blob)

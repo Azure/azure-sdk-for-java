@@ -486,8 +486,7 @@ public final class EventProcessorHost
      * Synchronized string UUID generation convenience method.
      * 
      * We saw null and empty strings returned from UUID.randomUUID().toString() when used from multiple
-     * threads and there is no clear answer on the net about whether it is really thread-safe or not. Synchronizing
-     * on a static object has made the problem go away.
+     * threads and there is no clear answer on the net about whether it is really thread-safe or not.
      * <p>
      * One of the major users of UUIDs is the built-in lease and checkpoint manager, which can be replaced by
      * user implementations. This UUID generation method is public so user implementations can use it as well and
@@ -497,11 +496,10 @@ public final class EventProcessorHost
      */
     public static String safeCreateUUID()
     {
-    	String uuid = "not generated";
     	synchronized (EventProcessorHost.uuidSynchronizer)
     	{
-    		uuid = UUID.randomUUID().toString();
+    		final String uuid = UUID.randomUUID().toString();
+        	return uuid;
     	}
-    	return uuid;
     }
 }

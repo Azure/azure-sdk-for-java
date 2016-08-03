@@ -32,8 +32,12 @@ class Pump
     		// There already is a pump. Make sure the pump is working and replace the lease.
     		if ((capturedPump.getPumpStatus() == PartitionPumpStatus.PP_ERRORED) || capturedPump.isClosing())
     		{
-    			// The existing pump is bad. Remove it and create a new one.
-    			removePump(partitionId, CloseReason.Shutdown).get();
+    			// The existing pump is bad. Remove it (if it exists!) and create a new one.
+    			Future<?> removing = removePump(partitionId, CloseReason.Shutdown);
+    			if (removing != null)
+    			{
+    				removing.get();
+    			}
     			createNewPump(partitionId, lease);
     		}
     		else

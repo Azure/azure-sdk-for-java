@@ -9,11 +9,11 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
-import java.util.UUID;
 import java.util.concurrent.*;
 import java.util.logging.Level;
 
 import com.google.gson.Gson;
+import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.storage.AccessCondition;
 import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
@@ -115,9 +115,14 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     private Checkpoint getCheckpointSync(String partitionId) throws URISyntaxException, IOException, StorageException
     {
     	AzureBlobLease lease = getLeaseSync(partitionId);
-    	Checkpoint checkpoint = new Checkpoint(partitionId);
-    	checkpoint.setOffset(lease.getOffset());
-    	checkpoint.setSequenceNumber(lease.getSequenceNumber());
+    	Checkpoint checkpoint = null;
+    	if (lease.getOffset() != null)
+    	{
+	    	checkpoint = new Checkpoint(partitionId);
+	    	checkpoint.setOffset(lease.getOffset());
+	    	checkpoint.setSequenceNumber(lease.getSequenceNumber());
+    	}
+    	// else offset is null meaning no checkpoint stored for this partition so return null
     	return checkpoint;
     }
 
@@ -127,10 +132,16 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
         return EventProcessorHost.getExecutorService().submit(() -> createCheckpointIfNotExistsSync(partitionId));
     }
     
-    private Checkpoint createCheckpointIfNotExistsSync(String partitionId) throws URISyntaxException, IOException, StorageException
+    private Checkpoint createCheckpointIfNotExistsSync(String partitionId) throws Exception
     {
     	// Normally the lease will already be created, checkpoint store is initialized after lease store.
     	AzureBlobLease lease = createLeaseIfNotExistsSync(partitionId);
+    	if (lease.getOffset() == null)
+    	{
+	    	lease.setOffset(PartitionReceiver.START_OF_STREAM);
+	    	lease.setSequenceNumber(0);
+	    	updateLeaseSync(lease);
+    	}
     	Checkpoint checkpoint = new Checkpoint(partitionId);
     	checkpoint.setOffset(lease.getOffset());
     	checkpoint.setSequenceNumber(lease.getSequenceNumber());
@@ -157,7 +168,17 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     @Override
     public Future<Void> deleteCheckpoint(String partitionId)
     {
-    	// Make this a no-op to avoid deleting leases by accident.
+    	return EventProcessorHost.getExecutorService().submit(() -> deleteCheckpointSync(partitionId));
+    }
+    
+    private Void deleteCheckpointSync(String partitionId) throws Exception
+    {
+    	// "Delete" a checkpoint by changing the offset to null, so first we need to fetch the most current lease
+    	AzureBlobLease lease = getLeaseSync(partitionId);
+    	this.host.logWithHostAndPartition(Level.FINE, partitionId, "Deleting checkpoint for " + partitionId);
+    	lease.setOffset(null);
+    	lease.setSequenceNumber(0L);
+    	updateLeaseSync(lease);
         return null;
     }
 
