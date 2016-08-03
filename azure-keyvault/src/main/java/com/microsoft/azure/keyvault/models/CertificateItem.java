@@ -35,7 +35,7 @@ public class CertificateItem {
      * Thumbprint of the certificate.
      */
     @JsonProperty(value = "x5t")
-    private Base64Url x5T;
+    private Base64Url x509Thumbprint;
 
     /**
      * Get the id value.
@@ -98,28 +98,28 @@ public class CertificateItem {
     }
 
     /**
-     * Get the x5T value.
+     * Get the x509Thumbprint value.
      *
-     * @return the x5T value
+     * @return the x509Thumbprint value
      */
-    public byte[] x5T() {
-        if (this.x5T == null) {
+    public byte[] x509Thumbprint() {
+        if (this.x509Thumbprint == null) {
             return null;
         }
-        return this.x5T.getDecodedBytes();
+        return this.x509Thumbprint.getDecodedBytes();
     }
 
     /**
-     * Set the x5T value.
+     * Set the x509Thumbprint value.
      *
-     * @param x5T the x5T value to set
+     * @param x509Thumbprint the x509Thumbprint value to set
      * @return the CertificateItem object itself.
      */
-    public CertificateItem withX5T(byte[] x5T) {
-        if (x5T == null) {
-            this.x5T = null;
+    public CertificateItem withX509Thumbprint(byte[] x509Thumbprint) {
+        if (x509Thumbprint == null) {
+            this.x509Thumbprint = null;
         } else {
-            this.x5T = Base64Url.encode(x5T);
+            this.x509Thumbprint = Base64Url.encode(x509Thumbprint);
         }
         return this;
     }

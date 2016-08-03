@@ -44,6 +44,11 @@ public class SecretBundle {
     private Map<String, String> tags;
 
     /**
+     * The key id for certificate.
+     */
+    private String kid;
+
+    /**
      * Get the value value.
      *
      * @return the value value
@@ -143,14 +148,33 @@ public class SecretBundle {
         return this;
     }
     
+    /**
+     * Get the kid value.
+     *
+     * @return the kid value
+     */
+    public String kid() {
+        return this.kid;
+    }
 
+    /**
+     * Set the kid value.
+     *
+     * @param kid the kid value to set
+     * @return the SecretBundle object itself.
+     */
+    public SecretBundle withKid(String kid) {
+        this.kid = kid;
+        return this;
+    }
+    
     public SecretIdentifier secretIdentifier() {
         if (id() == null || id().length() == 0) {
             return null;
         }
         return new SecretIdentifier(id());
     }
-
+    
     @Override
     public String toString() {
         ObjectMapper mapper = new ObjectMapper();

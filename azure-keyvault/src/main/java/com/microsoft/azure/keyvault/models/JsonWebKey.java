@@ -37,7 +37,8 @@ public class JsonWebKey {
     private String kid;
 
     /**
-     * Key type, usually RSA.
+     * Key type, usually RSA. Possible values include: 'EC', 'RSA', 'RSA-HSM',
+     * 'oct'.
      */
     private String kty;
 

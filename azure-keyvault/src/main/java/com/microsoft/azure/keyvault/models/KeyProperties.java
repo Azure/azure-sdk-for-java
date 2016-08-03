@@ -24,7 +24,7 @@ public class KeyProperties {
     private String keyType;
 
     /**
-     * The key size.
+     * The key size in bytes. e.g. 1024 or 2048.
      */
     @JsonProperty(value = "key_size")
     private Integer keySize;

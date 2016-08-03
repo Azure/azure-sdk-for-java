@@ -149,7 +149,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
 		Assert.assertNotNull(certificateBundle.id());
 		Assert.assertNotNull(certificateBundle.keyIdentifier());
 		Assert.assertNotNull(certificateBundle.secretIdentifier());
-		Assert.assertNotNull(certificateBundle.x5t());
+		Assert.assertNotNull(certificateBundle.x509Thumbprint());
 
 		// Load the CER part into X509Certificate object
 		Assert.assertNotNull(certificateBundle.cer());
@@ -247,7 +247,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
 		Assert.assertNotNull(certificateBundle.id());
 		Assert.assertNotNull(certificateBundle.kid());
 		Assert.assertNotNull(certificateBundle.sid());
-		Assert.assertNotNull(certificateBundle.x5t());
+		Assert.assertNotNull(certificateBundle.x509Thumbprint());
 
 		// Load the CER part into X509Certificate object
 		Assert.assertNotNull(certificateBundle.cer());
@@ -376,7 +376,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
 		Assert.assertNotNull(certificateBundle.id());
 		Assert.assertNotNull(certificateBundle.keyIdentifier());
 		Assert.assertNotNull(certificateBundle.secretIdentifier());
-		Assert.assertNotNull(certificateBundle.x5t());
+		Assert.assertNotNull(certificateBundle.x509Thumbprint());
 		Assert.assertNotNull(certificateBundle.policy());
 		Assert.assertNotNull(certificateBundle.policy().issuerReference());
 		Assert.assertNotNull(certificateBundle.policy().issuerReference().name());
@@ -514,7 +514,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
 		Assert.assertNotNull(certificateBundle.id());
 		Assert.assertNotNull(certificateBundle.kid());
 		Assert.assertNotNull(certificateBundle.sid());
-		Assert.assertNotNull(certificateBundle.x5t());
+		Assert.assertNotNull(certificateBundle.x509Thumbprint());
 		Assert.assertNotNull(certificateBundle.policy());
 		Assert.assertNotNull(certificateBundle.policy().issuerReference());
 		Assert.assertNotNull(certificateBundle.policy().issuerReference().name());
@@ -654,9 +654,9 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
 		Assert.assertNotNull(certificateBundle.id());
 		Assert.assertNotNull(certificateBundle.kid());
 		Assert.assertNotNull(certificateBundle.sid());
-		Assert.assertNotNull(certificateBundle.x5t());
+		Assert.assertNotNull(certificateBundle.x509Thumbprint());
 		
-		Assert.assertTrue(toHexString(certificateBundle.x5t()).equalsIgnoreCase("7cb8b7539d87ba7215357b9b9049dff2d3fa59ba"));
+		Assert.assertTrue(toHexString(certificateBundle.x509Thumbprint()).equalsIgnoreCase("7cb8b7539d87ba7215357b9b9049dff2d3fa59ba"));
 		
 		// Load the CER part into X509Certificate object
 		Assert.assertNotNull(certificateBundle.cer());
@@ -793,8 +793,8 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
 		Assert.assertNotNull(certificateBundle.id());
 		Assert.assertNotNull(certificateBundle.kid());
 		Assert.assertNotNull(certificateBundle.sid());
-		Assert.assertNotNull(certificateBundle.x5t());
-		Assert.assertTrue(toHexString(certificateBundle.x5t()).equalsIgnoreCase("d86db6736c335f08ef39aa27ef83836e8eba95b9"));
+		Assert.assertNotNull(certificateBundle.x509Thumbprint());
+		Assert.assertTrue(toHexString(certificateBundle.x509Thumbprint()).equalsIgnoreCase("d86db6736c335f08ef39aa27ef83836e8eba95b9"));
 
 		// Load the CER part into X509Certificate object
 		Assert.assertNotNull(certificateBundle.cer());

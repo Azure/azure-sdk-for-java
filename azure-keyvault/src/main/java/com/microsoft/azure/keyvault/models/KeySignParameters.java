@@ -12,9 +12,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The key operations parameters.
  */
-public class KeyOperationsParameters {
+public class KeySignParameters {
     /**
-     * algorithm identifier. Possible values include: 'RSA-OAEP', 'RSA1_5'.
+     * The signing/verification algorithm identifier. For more information on
+     * possible algorithm types, see JsonWebKeySignatureAlgorithm. Possible
+     * values include: 'RS256', 'RS384', 'RS512', 'RSNULL'.
      */
     @JsonProperty(value = "alg", required = true)
     private String algorithm;
@@ -38,9 +40,9 @@ public class KeyOperationsParameters {
      * Set the algorithm value.
      *
      * @param algorithm the algorithm value to set
-     * @return the KeyOperationsParameters object itself.
+     * @return the KeySignParameters object itself.
      */
-    public KeyOperationsParameters withAlgorithm(String algorithm) {
+    public KeySignParameters withAlgorithm(String algorithm) {
         this.algorithm = algorithm;
         return this;
     }
@@ -61,9 +63,9 @@ public class KeyOperationsParameters {
      * Set the value value.
      *
      * @param value the value value to set
-     * @return the KeyOperationsParameters object itself.
+     * @return the KeySignParameters object itself.
      */
-    public KeyOperationsParameters withValue(byte[] value) {
+    public KeySignParameters withValue(byte[] value) {
         if (value == null) {
             this.value = null;
         } else {
