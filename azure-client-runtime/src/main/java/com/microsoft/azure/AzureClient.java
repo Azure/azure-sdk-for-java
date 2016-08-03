@@ -840,7 +840,10 @@ public class AzureClient extends AzureServiceClient {
             this.pollingCallback = new ServiceCallback<T>() {
                 @Override
                 public void failure(Throwable t) {
-                    clientCallback.failure(t);
+                    if (clientCallback != null) {
+                        clientCallback.failure(t);
+                    }
+                    serviceCall.failure(t);
                 }
 
                 @Override
@@ -863,17 +866,20 @@ public class AzureClient extends AzureServiceClient {
                 } else {
                     ServiceException serviceException = new ServiceException("No async header in response");
                     pollingCallback.failure(serviceException);
-                    serviceCall.failure(serviceException);
                 }
             } else {
                 // Check if operation failed
                 if (AzureAsyncOperation.getFailedStatuses().contains(pollingState.getStatus())) {
                     ServiceException serviceException = new ServiceException("Async operation failed");
-                    clientCallback.failure(serviceException);
+                    if (clientCallback != null) {
+                        clientCallback.failure(serviceException);
+                    }
                     serviceCall.failure(serviceException);
                 } else {
                     ServiceResponse<T> serviceResponse = new ServiceResponse<>(pollingState.getResource(), pollingState.getResponse());
-                    clientCallback.success(serviceResponse);
+                    if (clientCallback != null) {
+                        clientCallback.success(serviceResponse);
+                    }
                     serviceCall.success(serviceResponse);
                 }
             }
