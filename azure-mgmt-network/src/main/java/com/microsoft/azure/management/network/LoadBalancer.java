@@ -50,7 +50,7 @@ public interface LoadBalancer extends
     /**
      * @return frontends for this load balancer, for the incoming traffic to come from.
      */
-    Map<String, InternetFrontend> frontends();
+    Map<String, Frontend> frontends();
 
     /**
      * @return load balancing rules, indexed by name
@@ -474,7 +474,7 @@ public interface LoadBalancer extends
          */
         interface WithLoadBalancingRule {
             /**
-             * Creates a load balancing rule between the specified front end and back end ports and protocol.
+             * Adds a load balancing rule between the specified front end and back end ports and protocol.
              * @param frontendPort the port number on the front end to accept incoming traffic on
              * @param protocol the protocol to load balance
              * @param backendPort the port number on the back end to send load balanced traffic to
@@ -484,7 +484,7 @@ public interface LoadBalancer extends
             Update withLoadBalancingRule(int frontendPort, TransportProtocol protocol, int backendPort, String name);
 
             /**
-             * Creates a load balancing rule between the specified front end and back end ports and protocol.
+             * Adds a load balancing rule between the specified front end and back end ports and protocol.
              * <p>
              * The new rule will be assigned an automatically generated name.
              * @param frontendPort the port number on the front end to accept incoming traffic on
@@ -495,7 +495,7 @@ public interface LoadBalancer extends
             Update withLoadBalancingRule(int frontendPort, TransportProtocol protocol, int backendPort);
 
             /**
-             * Creates a load balancing rule for the specified port and protocol.
+             * Adds a load balancing rule for the specified port and protocol.
              * @param port the port number on the front and back end for the network traffic to be load balanced on
              * @param protocol the protocol to load balance
              * @return the next stage of the definition
@@ -532,6 +532,27 @@ public interface LoadBalancer extends
              */
             LoadBalancingRule.Update updateLoadBalancingRule(String name);
         }
+
+        /**
+         * The stage of a load balancer update allowing to define, remove or edit Internet-facing frontends.
+         */
+        interface WithInternetFrontends {
+            /**
+             * Begins the update of a new load balancer frontend.
+             * <p>
+             * The definition must be completed with a call to {@link InternetFrontend.UpdateDefinitionStages.WithAttach#attach()}
+             * @param name the name for the frontend
+             * @return the first stage of the new frontend definition
+             */
+            InternetFrontend.UpdateDefinitionStages.Blank<Update> defineInternetFrontend(String name);
+
+            /**
+             * Removed the specified frontend from the load balancer.
+             * @param name the name of an existing front end on this load balancer
+             * @return the next stage of the update
+             */
+            Update withoutFrontend(String name);
+        }
     }
 
     /**
@@ -545,6 +566,7 @@ public interface LoadBalancer extends
         Resource.UpdateWithTags<Update>,
         UpdateStages.WithProbe,
         UpdateStages.WithBackend,
-        UpdateStages.WithLoadBalancingRule {
+        UpdateStages.WithLoadBalancingRule,
+        UpdateStages.WithInternetFrontends {
     }
 }

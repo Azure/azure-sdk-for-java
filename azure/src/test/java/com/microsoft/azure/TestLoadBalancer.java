@@ -123,15 +123,21 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                 .withNewResourceGroup(groupName)
                 .withLeafDomainLabel(pipName1)
                 .create();
+        
+        PublicIpAddress pip2 = this.pips.define(pipName1 + "b")
+                .withRegion(region)
+                .withExistingResourceGroup(groupName)
+                .withLeafDomainLabel(pipName1 + "b")
+                .create();
 
         // Create a load balancer
         LoadBalancer lb = resources.define(newName)
                 .withRegion(region)
                 .withExistingResourceGroup(groupName)
                 .withExistingPublicIpAddresses(pip1)
-                //.defineFrontend("frontend2")
-                //    .withExistingPublicIpAddress(pip1)
-                //    .attach()
+                .defineInternetFrontend("frontend2")
+                    .withExistingPublicIpAddress(pip2)
+                    .attach()
                 .withExistingVirtualMachines(existingVMs)
                 .withBackend("backend2")
                 .withTcpProbe(80, "tcp1")
@@ -164,6 +170,7 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
     public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
         resource =  resource.update()
                 .withoutProbe("tcp2")
+                .withoutFrontend("frontend2")
                 .defineHttpProbe("http2")
                     .withRequestPath("/foo")
                     .withNumberOfProbes(3)

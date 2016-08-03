@@ -91,7 +91,27 @@ public interface InternetFrontend extends Frontend {
          * The first stage of an internet-facing frontend definition.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface Blank<ParentT> extends WithAttach<ParentT> {
+        interface Blank<ParentT> extends WithPublicIpAddress<ParentT> {
+        }
+
+        /**
+         * The stage of an internet-facing frontend update allowing to specify an existing public IP address.
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
+        interface WithPublicIpAddress<ParentT> {
+            /**
+             * Associates the specified existing public IP address with this frontend of the load balancer.
+             * @param pip a public IP address
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withExistingPublicIpAddress(PublicIpAddress pip);
+
+            /**
+             * Associates the specified existing public IP address with this frontend of the load balancer.
+             * @param resourceId the resource ID of an existing public IP address
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withExistingPublicIpAddress(String resourceId);
         }
 
         /** The final stage of the internet-facing frontend definition.
@@ -110,6 +130,7 @@ public interface InternetFrontend extends Frontend {
      */
     interface UpdateDefinition<ParentT> extends
         UpdateDefinitionStages.Blank<ParentT>,
-        UpdateDefinitionStages.WithAttach<ParentT> {
+        UpdateDefinitionStages.WithAttach<ParentT>,
+        UpdateDefinitionStages.WithPublicIpAddress<ParentT> {
     }
 }
