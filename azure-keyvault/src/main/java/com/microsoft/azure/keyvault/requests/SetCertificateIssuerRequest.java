@@ -1,9 +1,10 @@
-package com.microsoft.azure.keyvault.implementation.requests;
+package com.microsoft.azure.keyvault.requests;
 
 import com.microsoft.azure.keyvault.models.IssuerAttributes;
 import com.microsoft.azure.keyvault.models.IssuerBundle;
 
-public class UpdateCertificateIssuerRequest {
+public class SetCertificateIssuerRequest {
+
   private final String vaultBaseUrl;
   private final String issuerName;
   private final IssuerBundle issuer;
@@ -18,13 +19,12 @@ public class UpdateCertificateIssuerRequest {
     private IssuerBundle issuer;
 
     /**
-     * The builder for constructing {@link UpdateCertificateIssuerRequest}
-     * object
+     * The builder for constructing {@link SetCertificateIssuerRequest} object
      * 
      * @param vaultBaseUrl
      *          The vault name, e.g. https://myvault.vault.azure.net
      * @param issuerName
-     *          The name of the issuer in the given vault
+     *          The name of the issuer.
      */
     public Builder(String vaultBaseUrl, String issuerName) {
       this.vaultBaseUrl = vaultBaseUrl;
@@ -44,17 +44,17 @@ public class UpdateCertificateIssuerRequest {
     }
 
     /**
-     * builds the {@link UpdateCertificateIssuerRequest} object
+     * builds the {@link SetCertificateIssuerRequest} object
+     * @return the {@link SetCertificateIssuerRequest} object
      */
-    public UpdateCertificateIssuerRequest build() {
-      return new UpdateCertificateIssuerRequest(this);
+    public SetCertificateIssuerRequest build() {
+      return new SetCertificateIssuerRequest(this);
     }
   }
 
-  private UpdateCertificateIssuerRequest(Builder builder) {
+  private SetCertificateIssuerRequest(Builder builder) {
     vaultBaseUrl = builder.vaultBaseUrl;
     issuerName = builder.issuerName;
-
     if (builder.issuer != null) {
       issuer = new IssuerBundle()
           .withProvider(builder.issuer.provider())
@@ -89,4 +89,5 @@ public class UpdateCertificateIssuerRequest {
   public IssuerBundle issuer() {
     return issuer;
   }
+
 }

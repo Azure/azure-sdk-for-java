@@ -28,10 +28,10 @@ import org.junit.Test;
 import com.microsoft.azure.keyvault.models.KeyVaultErrorException;
 import com.microsoft.azure.keyvault.models.SecretBundle;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.keyvault.implementation.SecretIdentifier;
-import com.microsoft.azure.keyvault.implementation.requests.SetSecretRequest;
-import com.microsoft.azure.keyvault.implementation.requests.UpdateSecretRequest;
+import com.microsoft.azure.keyvault.SecretIdentifier;
 import com.microsoft.azure.keyvault.models.SecretItem;
+import com.microsoft.azure.keyvault.requests.SetSecretRequest;
+import com.microsoft.azure.keyvault.requests.UpdateSecretRequest;
 
 public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
 

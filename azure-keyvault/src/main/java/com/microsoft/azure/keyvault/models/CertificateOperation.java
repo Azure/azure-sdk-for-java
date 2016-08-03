@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.microsoft.azure.keyvault.implementation.CertificateOperationIdentifier;
+import com.microsoft.azure.keyvault.CertificateOperationIdentifier;
 
 /**
  * A certificate operation is returned in case of async requests.

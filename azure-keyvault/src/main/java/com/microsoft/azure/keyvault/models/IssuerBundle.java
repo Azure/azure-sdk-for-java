@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.microsoft.azure.keyvault.implementation.IssuerIdentifier;
+import com.microsoft.azure.keyvault.IssuerIdentifier;
 
 /**
  * The issuer for Key Vault certificate.

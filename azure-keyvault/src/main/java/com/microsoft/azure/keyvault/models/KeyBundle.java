@@ -12,7 +12,7 @@ import java.util.Map;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.microsoft.azure.keyvault.implementation.KeyIdentifier;
+import com.microsoft.azure.keyvault.KeyIdentifier;
 
 /**
  * A KeyBundle consisting of a WebKey plus its Attributes.

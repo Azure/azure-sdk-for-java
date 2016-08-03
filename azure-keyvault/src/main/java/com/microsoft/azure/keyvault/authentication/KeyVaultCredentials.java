@@ -156,6 +156,14 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
 	}
 	
 	/**
+	 * Abstract method to be implemented
+	 * 
+	 * @param authorization Identifier of the authority, a URL.
+	 * @param resource Identifier of the target resource that is the recipient of the requested token, a URL.
+	 * @param scope The scope of the authentication request.
+	 * 
+	 * @return The access token
+	 * 
      * Answers a server challenge with a token header.
      * <p>
      * Implementations typically use ADAL to get a token, as performed in the

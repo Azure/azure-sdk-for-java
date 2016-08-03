@@ -1,11 +1,11 @@
-package com.microsoft.azure.keyvault.implementation.requests;
+package com.microsoft.azure.keyvault.requests;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import com.microsoft.azure.keyvault.implementation.KeyIdentifier;
+import com.microsoft.azure.keyvault.KeyIdentifier;
 import com.microsoft.azure.keyvault.models.KeyAttributes;
 
 public class UpdateKeyRequest {
@@ -107,6 +107,7 @@ public class UpdateKeyRequest {
 
     /**
      * builds the {@link UpdateKeyRequest} object
+     * @return the {@link UpdateKeyRequest} object
      */
     public UpdateKeyRequest build() {
       return new UpdateKeyRequest(this);

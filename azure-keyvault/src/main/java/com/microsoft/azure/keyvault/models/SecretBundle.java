@@ -12,7 +12,7 @@ import java.util.Map;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.microsoft.azure.keyvault.implementation.SecretIdentifier;
+import com.microsoft.azure.keyvault.SecretIdentifier;
 
 /**
  * A Secret consisting of a value, id and its attributes.

@@ -1,4 +1,4 @@
-package com.microsoft.azure.keyvault.implementation.requests;
+package com.microsoft.azure.keyvault.requests;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,6 +67,7 @@ public class MergeCertificateRequest {
 
     /**
      * builds the {@link MergeCertificateRequest} object
+     * @return the {@link MergeCertificateRequest} object
      */
     public MergeCertificateRequest build() {
       return new MergeCertificateRequest(this);

@@ -1,4 +1,4 @@
-package com.microsoft.azure.keyvault.implementation.requests;
+package com.microsoft.azure.keyvault.requests;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,6 +82,7 @@ public class CreateCertificateRequest {
 
     /**
      * builds the {@link CreateCertificateRequest} object
+     * @return the {@link CreateCertificateRequest} object
      */
     public CreateCertificateRequest build() {
       return new CreateCertificateRequest(this);

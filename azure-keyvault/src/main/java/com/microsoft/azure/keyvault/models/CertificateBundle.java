@@ -6,9 +6,9 @@
 
 package com.microsoft.azure.keyvault.models;
 
-import com.microsoft.azure.keyvault.implementation.CertificateIdentifier;
-import com.microsoft.azure.keyvault.implementation.KeyIdentifier;
-import com.microsoft.azure.keyvault.implementation.SecretIdentifier;
+import com.microsoft.azure.keyvault.CertificateIdentifier;
+import com.microsoft.azure.keyvault.KeyIdentifier;
+import com.microsoft.azure.keyvault.SecretIdentifier;
 import com.microsoft.rest.Base64Url;
 
 import java.io.IOException;
