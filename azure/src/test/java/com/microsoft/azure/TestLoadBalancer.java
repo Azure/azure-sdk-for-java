@@ -123,7 +123,7 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                 .withNewResourceGroup(groupName)
                 .withLeafDomainLabel(pipName1)
                 .create();
-        
+
         PublicIpAddress pip2 = this.pips.define(pipName1 + "b")
                 .withRegion(region)
                 .withExistingResourceGroup(groupName)
